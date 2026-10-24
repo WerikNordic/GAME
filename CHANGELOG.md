@@ -65,3 +65,6 @@
 
 ## v63
 - Câmera volta a girar; casas, barracas e objetos ficam retos e com orientação fixa
+
+## v64
+- Giro 360 da câmera: construções giram junto com o chão, ancoradas no próprio centro

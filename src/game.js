@@ -15111,7 +15111,7 @@ void main() {
       let a = this.ctx, n = this.scenery, o = [];
       for (let r of t.obstacles) {
         if (r.kind === "water") continue;
-        let i = r.x + r.w / 2, s = ce(i, r.y + r.h * 0.5 + Math.min(r.h, r.w) * 0.35), l = Ja(i, r.y + r.h * 0.5 + Math.min(r.h, r.w) * 0.35), c = Sh(r.x, r.y, 11), d = t.theme ?? "grass", f = ce(i, r.y + r.h / 2), u = (m) => mo ? O4(m, FIXYAW, this.tilt) : null;
+        let i = r.x + r.w / 2, s = ce(i, r.y + r.h * 0.5 + Math.min(r.h, r.w) * 0.35), l = Ja(i, r.y + r.h * 0.5 + Math.min(r.h, r.w) * 0.35), c = Sh(r.x, r.y, 11), d = t.theme ?? "grass", f = ce(i, r.y + r.h / 2), u = (m) => mo ? O4(m, this.yawNow, this.tilt) : null;
         if (r.kind === "house") {
           let m = s.x - 55, p = s.y + 4;
           o.push({ depth: l, sx: s.x, sy: p, draw: () => {
