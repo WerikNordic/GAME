@@ -74,3 +74,6 @@
 
 ## v66
 - Muralhas e torres gigantes; bancos menores com ponto de sentar (sem sentar automático); menos barracas; casas em grade regular
+
+## v67
+- Runas de Werik (5 cidades, conquista e título), partículas ambientais por tema, torres translúcidas quando ocultam o personagem, ajuda de comandos
