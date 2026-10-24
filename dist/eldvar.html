@@ -15006,8 +15006,8 @@ void main() {
     pet = { x: 0, y: 0, ok: false, moving: false };
     scenery = null;
     flat = null;
-    yaw = FIXYAW;
-    yawNow = FIXYAW;
+    yaw = 0;
+    yawNow = 0;
     tilt = 0.5;
     zoomMul = 1;
     baseZoom = 1;
@@ -15082,7 +15082,7 @@ void main() {
           this.store.dash();
           break;
         case "Home":
-          this.yaw = FIXYAW, this.tilt = 0.5, this.zoomMul = 1;
+          this.yaw = 0, this.tilt = 0.5, this.zoomMul = 1;
           break;
         default:
           break;
@@ -15158,7 +15158,7 @@ void main() {
     };
     onPointerMove = (t) => {
       let a = this.canvas.getBoundingClientRect();
-      this.drag && (t.shiftKey && (this.shiftUsed = true, this.tilt += (t.clientY - this.drag.y) * 15e-4), this.drag = { x: t.clientX, y: t.clientY }), this.ptr.x = t.clientX, this.ptr.y = t.clientY, this.ptr.inside = t.clientX >= a.left && t.clientX <= a.right && t.clientY >= a.top && t.clientY <= a.bottom && t.target === this.canvas;
+      this.drag && (this.yaw += (t.clientX - this.drag.x) * 6e-3, t.shiftKey && (this.shiftUsed = true, this.tilt += (t.clientY - this.drag.y) * 15e-4), this.drag = { x: t.clientX, y: t.clientY }), this.ptr.x = t.clientX, this.ptr.y = t.clientY, this.ptr.inside = t.clientX >= a.left && t.clientX <= a.right && t.clientY >= a.top && t.clientY <= a.bottom && t.target === this.canvas;
     };
     onWheel = (t) => {
       t.preventDefault();
@@ -15269,7 +15269,7 @@ void main() {
       let a = this.ctx, n = this.scenery, o = [];
       for (let r of t.obstacles) {
         if (r.kind === "water") continue;
-        let i = r.x + r.w / 2, s = ce(i, r.y + r.h * 0.5 + Math.min(r.h, r.w) * 0.35), l = Ja(i, r.y + r.h * 0.5 + Math.min(r.h, r.w) * 0.35), c = Sh(r.x, r.y, 11), d = t.theme ?? "grass", f = ce(i, r.y + r.h / 2), u = (m) => mo ? O4(m, this.yawNow, this.tilt) : null;
+        let i = r.x + r.w / 2, s = ce(i, r.y + r.h * 0.5 + Math.min(r.h, r.w) * 0.35), l = Ja(i, r.y + r.h * 0.5 + Math.min(r.h, r.w) * 0.35), c = Sh(r.x, r.y, 11), d = t.theme ?? "grass", f = ce(i, r.y + r.h / 2), u = (m) => mo ? O4(m, FIXYAW, this.tilt) : null;
         if (r.kind === "house") {
           let m = s.x - 55, p = s.y + 4;
           o.push({ depth: l, sx: s.x, sy: p, draw: () => {

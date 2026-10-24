@@ -62,3 +62,6 @@
 
 ## v62
 - Câmera travada em visão reta: casas, barracas e chão alinhados e fixos (sem rotação)
+
+## v63
+- Câmera volta a girar; casas, barracas e objetos ficam retos e com orientação fixa
