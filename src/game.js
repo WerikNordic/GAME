@@ -7808,6 +7808,8 @@ Error generating stack: ` + n.message + `
     return r;
   }
   var $m = { fountain: { w: 64, h: 48 }, well: { w: 36, h: 30 }, stall: { w: 72, h: 36 }, lamp: { w: 12, h: 12 }, banner: { w: 12, h: 12 }, statue: { w: 40, h: 36 }, post: { w: 22, h: 18 }, tower: { w: 52, h: 44 }, bench: { w: 44, h: 16 }, cart: { w: 56, h: 32 }, hay: { w: 40, h: 28 }, planter: { w: 34, h: 22 }, pillar: { w: 20, h: 20 }, pillar_broken: { w: 22, h: 20 }, wall: { w: 56, h: 14 }, wall_v: { w: 14, h: 56 }, arch: { w: 64, h: 16 }, tent: { w: 52, h: 38 }, campfire: { w: 24, h: 22 }, runestone: { w: 20, h: 14 }, gravestone: { w: 16, h: 10 }, altar: { w: 42, h: 28 }, obelisk: { w: 20, h: 20 }, longhouse: { w: 120, h: 50 }, keep: { w: 170, h: 150 }, palace: { w: 250, h: 100 }, hof: { w: 230, h: 120 }, warrior: { w: 52, h: 44 }, brazier: { w: 18, h: 18 }, forge: { w: 92, h: 36 } };
+  var DSC = { palace: 2.3, keep: 2.1, hof: 1.8, longhouse: 1.45, warrior: 1.9, statue: 1.9, fountain: 1.8, tower: 1.35, forge: 1.5, stall: 1.3, tent: 1.5, well: 1.4, cart: 1.2, obelisk: 1.6, altar: 1.4, brazier: 1.3, lamp: 1.15, banner: 1.4 };
+  for (let e of Object.keys(DSC)) $m[e] && ($m[e].w = Math.round($m[e].w * DSC[e]), $m[e].h = Math.round($m[e].h * DSC[e]));
   function R8() {
     let a = Oe(1138), n = [], o = { x: 250, y: 540, w: 160, h: 180 }, r = { x: 330, y: 630 }, i = [], s = { x: 1700, y: 330, r: 210 }, l = [{ monster: "lobo_faminto", x: 820, y: 540, radius: 230, count: 8 }, { monster: "lobo_faminto", x: 720, y: 240, radius: 170, count: 4 }, { monster: "javali", x: 1030, y: 820, radius: 170, count: 5 }, { monster: "goblin_saqueador", x: 1450, y: 960, radius: 170, count: 6 }, { monster: "hati", x: s.x, y: s.y, radius: 0, count: 1 }];
     n.push({ kind: "water", x: 840, y: 1e3, w: 320, h: 200 });
@@ -8016,7 +8018,7 @@ Error generating stack: ` + n.message + `
     for (let [_, G] of [[130, 150], [1080, 460], [450, 160], [790, 690]]) l(ne.x + _, ne.y + G);
     s("well", ne.x + 610, ne.y + 480);
     let Te = (_, G) => {
-      s("longhouse", _ - 64, G), s("longhouse", _ + 64, G), s("banner", _, G + 50), l(_ - 90, G + 56), l(_ + 90, G + 56), s("lamp", _ - 150, G + 46), s("lamp", _ + 150, G + 46), m(_ - 150, G - 60, 300, 140);
+      s("longhouse", _ - 112, G), s("longhouse", _ + 112, G), s("banner", _, G + 60), l(_ - 90, G + 66), l(_ + 90, G + 66), s("lamp", _ - 215, G + 50), s("lamp", _ + 215, G + 50), m(_ - 210, G - 70, 420, 160);
     };
     Te(1500, 3180), Te(3750, tt.plazaY - 330);
     let Ae = { x: 3350, y: tt.plazaY - 450, w: 1400, h: 900 };
@@ -8032,11 +8034,11 @@ Error generating stack: ` + n.message + `
     let Qt = tt.streetsX, yo = z / 2 + 22, hs = T / 2 + 62, gs = [[c.x + 70, Qt[0] - yo], [Qt[0] + yo, d - hs], [d + hs, Qt[1] - yo], [Qt[1] + yo, c.x + c.w - 70]], bs = [[tt.palaceY + 600, tt.streetN - z / 2 - 20], [tt.streetS + z / 2 + 30, c.y + c.h - 120]], Wl = [];
     for (let [_, G] of bs) for (let [re, ie] of gs) Wl.push({ x: re, y: _, w: ie - re, h: G - _ });
     let K0 = (_, G, re, ie) => u.some((ve) => _ < ve.x + ve.w + 20 && _ + re + 20 > ve.x && G < ve.y + ve.h + 20 && G + ie + 20 > ve.y), F0 = M;
-    for (let _ of Wl) for (let G = _.y + 40; G + 60 < _.y + _.h; G += 190) {
+    for (let _ of Wl) for (let G = _.y + 40; G + 60 < _.y + _.h; G += 235) {
       p.push({ x: _.x, y: G + 76, w: _.w, h: Wo.alley });
-      for (let re = _.x + 20; re + 130 < _.x + _.w; re += 190) {
-        let ie = re + 60, ve = G + 30;
-        if (K0(re, G, 120, 52) || F0.some((ht) => Math.hypot(ht.x - ie, ht.y - ve) < 130)) continue;
+      for (let re = _.x + 20; re + 190 < _.x + _.w; re += 250) {
+        let ie = re + 88, ve = G + 34;
+        if (K0(re, G, 176, 78) || F0.some((ht) => Math.hypot(ht.x - ie, ht.y - ve) < 150)) continue;
         let ut = n();
         if (ut < 0.1) {
           s(ut < 0.05 ? "planter" : "hay", ie, ve);
@@ -13014,7 +13016,7 @@ void main() {
     for (let a of [14, 36, 58]) for (let n of [-22, 22]) L(e, S(n, a, 8.4), 2.6, 4, 0.6, 10470655, { seg: 6, ring: 4, mat: on });
     return O(e, S(0, 90, 0), 8, 6, 8, 10470655, on), e;
   }
-  function eS(e, t) {
+  function eS(e, t, vr = 0) {
     let a = ss[e], n = new ua(), o = a.stone, r = a.wood, i = e === "fire" || e === "forge" ? 16747050 : 7123168;
     switch (t) {
       case "fountain":
@@ -13126,7 +13128,8 @@ void main() {
         return n;
       }
       case "longhouse": {
-        let c = e === "snow" ? 14674162 : e === "fire" ? 5909026 : e === "forge" ? 4869720 : e === "marble" ? 15129796 : e === "lush" ? 6064698 : e === "void" ? 4864632 : e === "crystal" ? 6970016 : 6455356, d = Y(r, 0.72);
+        let c = e === "snow" ? 14674162 : e === "fire" ? 5909026 : e === "forge" ? 4869720 : e === "marble" ? 15129796 : e === "lush" ? 6064698 : e === "void" ? 4864632 : e === "crystal" ? 6970016 : [6455356, 9857580, 5073786, 10781250][vr % 4], d = Y(r, 0.72 + (vr === 2 ? 0.1 : 0));
+        e !== "grass" && (c = Y(c, [1, 0.88, 1.12, 0.96][vr % 4]));
         O(n, S(0, 4, 0), 126, 8, 58, Y(o, 0.9), Q), O(n, S(0, 22, 0), 120, 28, 52, d, Re);
         for (let x = -120 / 2 + 6; x <= 120 / 2 - 5; x += 16) O(n, S(x, 22, 52 / 2 + 0.7), 3.6, 28, 1.6, Y(r, 1.05)), O(n, S(x, 22, -52 / 2 - 0.7), 3.6, 28, 1.6, Y(r, 1.05));
         O(n, S(0, 36.5, 52 / 2 + 0.8), 122, 3, 2, Y(r, 1.12));
@@ -13137,6 +13140,7 @@ void main() {
           O(n, S(b, f + 1.6, m - 0.4), 1.4, 2.6, 1.4, Y(c, 0.7));
         }
         O(n, S(0, u + 0.8, 0), 2 * p + 2, 3, 3.4, r, Q);
+        vr % 2 === 1 && O(n, S(vr === 1 ? 28 : -34, 72, -9), 10, 26, 10, Y(o, 0.85), Q);
         for (let x of [-1, 1]) F(n, S(x * (p + 2), u - 0.5, 0).mul(A.RZ(-x * 0.7)), 2.4, 0.6, 15, Y(r, 1.2), { seg: 6 }), L(n, S(x * (p + 8), u + 9, 0), 2.6, 2, 2, Y(r, 1.25), { seg: 6, ring: 4 });
         O(n, S(0, 14, 52 / 2 + 1.2), 13, 24, 2.2, Y(r, 0.55)), O(n, S(0, 27, 52 / 2 + 1.6), 17, 3, 2.6, Y(r, 1.15));
         let h = { shine: 0.5, glow: 0.85 };
@@ -13221,7 +13225,7 @@ void main() {
       case "portal":
         return Jk();
       case "deco":
-        return eS(e.theme, e.deco ?? "");
+        return eS(e.theme, e.deco ?? "", e.variant);
     }
   }
   function y4(e) {
@@ -13288,7 +13292,7 @@ void main() {
   function _4(e, t, a) {
     let n = gh(e), o = k4.get(n);
     if (o === void 0 && (o = x4(e), k4.set(n, o)), !o) return null;
-    let r = -(t + Math.PI / 4), i = Math.asin(Math.min(0.95, Math.max(0.2, a))), s = M4 * Rt, l = d4(o, r, i, s), [c, d] = y4(e), f = (c + d) / 2, u = f * M4 * Rt, m = u * a, p = 3 * Rt, h = Math.floor(Math.min(l.minX, -u) - p), x = Math.ceil(Math.max(l.maxX, u) + p), b = Math.floor(Math.min(l.minY, -m) - p), g = Math.ceil(Math.max(l.maxY, m) + p), y = x - h, v = g - b, k = A0(o, { w: y, h: v, ax: -h, ay: -b, pxu: s, yaw: r, pitch: i, ss: fh, outline: 1, gain: 1.6, sat: 1.15, inner: 0.4 }), R = document.createElement("canvas");
+    let r = -(t + Math.PI / 4), i = Math.asin(Math.min(0.95, Math.max(0.2, a))), ds = e.kind === "deco" ? DSC[e.deco ?? ""] ?? 1 : 1, s = M4 * Rt * ds, l = d4(o, r, i, s), [c, d] = y4(e), f = (c + d) / 2 * ds, u = f * M4 * Rt, m = u * a, p = 3 * Rt, h = Math.floor(Math.min(l.minX, -u) - p), x = Math.ceil(Math.max(l.maxX, u) + p), b = Math.floor(Math.min(l.minY, -m) - p), g = Math.ceil(Math.max(l.maxY, m) + p), y = x - h, v = g - b, k = A0(o, { w: y, h: v, ax: -h, ay: -b, pxu: s, yaw: r, pitch: i, ss: fh, outline: 1, gain: 1.6, sat: 1.15, inner: 0.4 }), R = document.createElement("canvas");
     R.width = y, R.height = v;
     let w = R.getContext("2d"), M = w.createRadialGradient(-h, -b, 0, -h, -b, u);
     M.addColorStop(0, "rgba(10,14,8,0.42)"), M.addColorStop(0.6, "rgba(10,14,8,0.24)"), M.addColorStop(1, "rgba(10,14,8,0)"), w.save(), w.translate(-h, -b), w.scale(1, a), w.translate(h, b), w.fillStyle = M, w.fillRect(-h - u, -b - u, u * 2, u * 2), w.restore();
@@ -14243,7 +14247,7 @@ void main() {
         } else if (r.kind === "deco") {
           let m = n.decos[r.deco ?? ""];
           (m || mo) && o.push({ depth: l, sx: s.x, sy: s.y, tall: r.deco === "tower" || r.deco === "statue" || r.deco === "keep" || r.deco === "palace" || r.deco === "hof" || r.deco === "warrior" || r.deco === "longhouse" || r.deco === "banner" || r.deco === "lamp", draw: () => {
-            let p = u({ kind: "deco", theme: d, variant: 0, deco: r.deco });
+            let p = u({ kind: "deco", theme: d, variant: r.deco === "longhouse" ? Math.abs(Math.round(r.x / 10) + Math.round(r.y / 10) * 3) % 4 : 0, deco: r.deco });
             p ? nt(a, p, f.x, f.y) : m && nt(a, m, s.x, s.y + 4);
           } });
         } else if (r.kind === "crate") o.push({ depth: l, sx: s.x, sy: s.y, draw: () => {
