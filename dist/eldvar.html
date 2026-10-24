@@ -8023,8 +8023,8 @@ Error generating stack: ` + n.message + `
     for (; r.length < a; ) r.push(T8(t, o));
     return r;
   }
-  var $m = { fountain: { w: 64, h: 48 }, well: { w: 36, h: 30 }, stall: { w: 72, h: 36 }, lamp: { w: 12, h: 12 }, banner: { w: 12, h: 12 }, statue: { w: 40, h: 36 }, post: { w: 22, h: 18 }, tower: { w: 52, h: 44 }, bench: { w: 44, h: 16 }, cart: { w: 56, h: 32 }, hay: { w: 40, h: 28 }, planter: { w: 34, h: 22 }, pillar: { w: 20, h: 20 }, pillar_broken: { w: 22, h: 20 }, wall: { w: 56, h: 14 }, wall_v: { w: 14, h: 56 }, arch: { w: 64, h: 16 }, tent: { w: 52, h: 38 }, campfire: { w: 24, h: 22 }, runestone: { w: 20, h: 14 }, gravestone: { w: 16, h: 10 }, altar: { w: 42, h: 28 }, obelisk: { w: 20, h: 20 }, longhouse: { w: 120, h: 50 }, keep: { w: 170, h: 150 }, palace: { w: 250, h: 100 }, hof: { w: 230, h: 120 }, warrior: { w: 52, h: 44 }, brazier: { w: 18, h: 18 }, forge: { w: 92, h: 36 }, church: { w: 110, h: 70 }, castle: { w: 150, h: 110 }, monument: { w: 44, h: 44 }, bigforge: { w: 120, h: 70 }, colossus: { w: 56, h: 56 }, airship: { w: 84, h: 44 } };
-  var DSC = { palace: 2.3, keep: 2.1, hof: 1.8, longhouse: 1.85, warrior: 1.9, statue: 1.9, fountain: 3.6, tower: 1.35, forge: 1.5, stall: 1.3, tent: 1.5, well: 1.4, cart: 1.2, obelisk: 1.6, altar: 1.4, brazier: 1.3, lamp: 1.15, banner: 1.4, church: 1.7, castle: 2, monument: 2.2, bigforge: 1.8, colossus: 2.4, airship: 1.6, bench: 2 };
+  var $m = { fountain: { w: 64, h: 48 }, well: { w: 36, h: 30 }, stall: { w: 72, h: 36 }, lamp: { w: 12, h: 12 }, banner: { w: 12, h: 12 }, statue: { w: 40, h: 36 }, post: { w: 22, h: 18 }, tower: { w: 52, h: 44 }, bench: { w: 44, h: 16 }, cart: { w: 56, h: 32 }, hay: { w: 40, h: 28 }, planter: { w: 34, h: 22 }, pillar: { w: 20, h: 20 }, pillar_broken: { w: 22, h: 20 }, wall: { w: 56, h: 26 }, wall_v: { w: 26, h: 56 }, arch: { w: 64, h: 16 }, tent: { w: 52, h: 38 }, campfire: { w: 24, h: 22 }, runestone: { w: 20, h: 14 }, gravestone: { w: 16, h: 10 }, altar: { w: 42, h: 28 }, obelisk: { w: 20, h: 20 }, longhouse: { w: 120, h: 50 }, keep: { w: 170, h: 150 }, palace: { w: 250, h: 100 }, hof: { w: 230, h: 120 }, warrior: { w: 52, h: 44 }, brazier: { w: 18, h: 18 }, forge: { w: 92, h: 36 }, church: { w: 110, h: 70 }, castle: { w: 150, h: 110 }, monument: { w: 44, h: 44 }, bigforge: { w: 120, h: 70 }, colossus: { w: 56, h: 56 }, airship: { w: 84, h: 44 } };
+  var DSC = { palace: 2.3, keep: 2.1, hof: 1.8, longhouse: 1.85, warrior: 1.9, statue: 1.9, fountain: 3.6, tower: 1.7, forge: 1.5, stall: 1.3, tent: 1.5, well: 1.4, cart: 1.2, obelisk: 1.6, altar: 1.4, brazier: 1.3, lamp: 1.15, banner: 1.4, church: 1.7, castle: 2, monument: 2.2, bigforge: 1.8, colossus: 2.4, airship: 1.6, bench: 1.15 };
   for (let e of Object.keys(DSC)) $m[e] && ($m[e].w = Math.round($m[e].w * DSC[e]), $m[e].h = Math.round($m[e].h * DSC[e]));
   function R8() {
     let a = Oe(1138), n = [], o = { x: 250, y: 540, w: 160, h: 180 }, r = { x: 330, y: 630 }, i = [], s = { x: 1700, y: 330, r: 210 }, l = [{ monster: "lobo_faminto", x: 820, y: 540, radius: 230, count: 8 }, { monster: "lobo_faminto", x: 720, y: 240, radius: 170, count: 4 }, { monster: "javali", x: 1030, y: 820, radius: 170, count: 5 }, { monster: "goblin_saqueador", x: 1450, y: 960, radius: 170, count: 6 }, { monster: "hati", x: s.x, y: s.y, radius: 0, count: 1 }];
@@ -8255,7 +8255,7 @@ Error generating stack: ` + n.message + `
     r.push({ id: `${e.id}:${i++}`, kind: "lore", x: ee.x, y: ee.y + 55, label: "Hof dos Dias Antigos", text: "Dizem que o primeiro sacerdote do hof gravou nas vigas o nome de cada pessoa que lhe pediu ajuda e n\xE3o p\xF4de ser ajudada. As vigas j\xE1 foram trocadas duas vezes; os nomes, tr\xEAs." });
     let ne = { x: 450, y: tt2.plazaY - 450, w: 1400, h: 900 };
     m(ne.x, ne.y, ne.w, ne.h), p.push({ x: ne.x, y: ne.y + 130, w: ne.w, h: ne.h - 260 });
-    for (let _ = ne.x + 70; _ < ne.x + ne.w - 40; _ += 160) s("stall", _, ne.y + 90), s("stall", _, ne.y + ne.h - 90), _ % 3 === 0 && s("cart", _ + 40, ne.y + 200);
+    for (let _ = ne.x + 70; _ < ne.x + ne.w - 40; _ += 480) s("stall", _, ne.y + 90), s("stall", _, ne.y + ne.h - 90), _ % 3 === 0 && s("cart", _ + 40, ne.y + 200);
     for (let [_, G] of [[130, 150], [1080, 460], [450, 160], [790, 690]]) l(ne.x + _, ne.y + G);
     s("well", ne.x + 610, ne.y + 480);
     let Te = (_, G) => {
@@ -8290,7 +8290,7 @@ Error generating stack: ` + n.message + `
         for (let gy = R.y + 60; gy < R.y + R.h - 40; gy += 70) for (let gx = R.x + 70; gx < R.x + R.w - 40; gx += 80) Math.hypot(gx - cx, gy - cy) < 100 || s("gravestone", gx, gy);
         s("altar", cx, cy), s("brazier", cx - 90, cy + 40), s("brazier", cx + 90, cy + 40);
       } else if (kd === "stalls") {
-        for (let gy = R.y + 80; gy < R.y + R.h - 50; gy += 180) for (let gx = R.x + 100; gx < R.x + R.w - 80; gx += 170) s("stall", gx, gy), (gx / 170 | 0) % 2 && s("cart", gx + 30, gy + 80);
+        for (let gy = R.y + 80; gy < R.y + R.h - 50; gy += 300) for (let gx = R.x + 100; gx < R.x + R.w - 80; gx += 340) s("stall", gx, gy), (gx / 170 | 0) % 2 && s("cart", gx + 30, gy + 80);
       } else if (kd === "church") {
         s("church", cx, cy - 10), s("brazier", cx - 130, cy + 74), s("brazier", cx + 50, cy + 74), s("lamp", cx - 40, cy + 80), s("planter", cx - 190, cy + 20), s("planter", cx + 150, cy + 30), s("bench", cx - 90, cy + 110), s("bench", cx + 20, cy + 110);
         for (let [gx, gy] of [[-180, -60], [-210, -20], [190, -50], [220, 0]]) s("gravestone", cx + gx, cy + gy);
@@ -8359,18 +8359,18 @@ Error generating stack: ` + n.message + `
         let cx2 = q.x + q.w / 2, cy2 = q.y + q.h / 2;
         fronts.some((bq) => cx2 > bq.x && cx2 < bq.x + bq.w && cy2 > bq.y && cy2 < bq.y + bq.h) && o.splice(gi, 1);
       }
+      for (let gi = o.length - 1; gi >= 0; gi--) o[gi].kind === "deco" && o[gi].deco === "stall" && n() < 0.55 && o.splice(gi, 1);
       let streets = p.filter((q) => Math.min(q.w, q.h) >= 60), hit = (x0, y0, w0, h0, mg) => o.some((q) => q.kind !== "tree" && q.kind !== "rock" && x0 < q.x + q.w + mg && x0 + w0 + mg > q.x && y0 < q.y + q.h + mg && y0 + h0 + mg > q.y) || u.some((q) => x0 < q.x + q.w + 20 && x0 + w0 + 20 > q.x && y0 < q.y + q.h + 20 && y0 + h0 + 20 > q.y) || streets.some((q) => x0 < q.x + q.w + 36 && x0 + w0 + 36 > q.x && y0 < q.y + q.h + 36 && y0 + h0 + 36 > q.y) || M.some((q) => q.x > x0 - 90 && q.x < x0 + w0 + 90 && q.y > y0 - 90 && q.y < y0 + h0 + 90) || r.some((q) => q.x > x0 - 70 && q.x < x0 + w0 + 70 && q.y > y0 - 70 && q.y < y0 + h0 + 70) || x0 + w0 > f.from - 260 && x0 < f.to + 260 && y0 + h0 > a - 900;
-      let kinds = ["longhouse", "longhouse", "smith", "smith", "market", "market", "garden", "camp", "bigsmith", "longhouse"], pl = 0;
-      for (let gy = c.y + 140; gy < c.y + c.h - 160; gy += 210) for (let gx = c.x + 150; gx < c.x + c.w - 150; gx += 270) {
-        let jx = gx + (n() - 0.5) * 50, jy = gy + (n() - 0.5) * 40, kd = kinds[Math.floor(n() * kinds.length)];
-        if (n() < 0.22) continue;
+      let kinds = ["longhouse", "longhouse", "smith", "longhouse", "garden", "longhouse", "longhouse", "bigsmith"], pl = 0, ix = 0;
+      for (let gy = c.y + 140, iy = 0; gy < c.y + c.h - 160; gy += 230, iy++) for (let gx = c.x + 150, ix2 = 0; gx < c.x + c.w - 150; gx += 290, ix2++) {
+        let jx = gx, jy = gy, kd = kinds[(ix2 + iy * 3) % kinds.length];
         let fp = kd === "smith" ? [150, 120] : kd === "market" ? [200, 110] : kd === "garden" ? [150, 110] : kd === "camp" ? [150, 100] : kd === "bigsmith" ? [230, 150] : [$m.longhouse.w, $m.longhouse.h + 20];
         if (hit(jx - fp[0] / 2, jy - fp[1] / 2, fp[0], fp[1], 70)) continue;
         pl++;
-        if (kd === "longhouse") s("longhouse", jx, jy), n() < 0.5 && s("lamp", jx + $m.longhouse.w / 2 + 14, jy + 30), n() < 0.3 && s("planter", jx - $m.longhouse.w / 2 - 20, jy + 34);
-        else if (kd === "smith") s("forge", jx, jy - 10), s("brazier", jx - 85, jy + 36), s("brazier", jx + 85, jy + 36), n() < 0.6 && s("cart", jx + 50, jy + 50), n() < 0.6 && s("hay", jx - 60, jy + 50);
+        if (kd === "longhouse") s("longhouse", jx, jy), s("lamp", jx + $m.longhouse.w / 2 + 14, jy + 30), s("lamp", jx - $m.longhouse.w / 2 - 14, jy + 30);
+        else if (kd === "smith") s("forge", jx, jy - 10), s("brazier", jx - 85, jy + 36), s("brazier", jx + 85, jy + 36), s("hay", jx - 60, jy + 50);
         else if (kd === "bigsmith") s("bigforge", jx, jy - 6), s("brazier", jx - 125, jy + 50), s("brazier", jx + 125, jy + 50), s("cart", jx + 100, jy + 62);
-        else if (kd === "market") s("stall", jx - 55, jy), s("stall", jx + 55, jy), s("cart", jx, jy + 46), n() < 0.5 && s("lamp", jx + 100, jy - 10);
+        else if (kd === "market") s("stall", jx, jy), s("cart", jx + 70, jy + 30);
         else if (kd === "garden") s("well", jx, jy), s("planter", jx - 60, jy + 8), s("planter", jx + 60, jy + 8), s("bench", jx, jy + 48);
         else s("tent", jx - 46, jy), s("campfire", jx + 20, jy + 18), s("tent", jx + 70, jy - 6);
       }
@@ -9231,7 +9231,7 @@ Error generating stack: ` + n.message + `
     pendingNpc = null;
     pendingSit = null;
     benchAt(x, y) {
-      for (let o of this.map.obstacles) if (o.kind === "deco" && o.deco === "bench" && x > o.x - 14 && x < o.x + o.w + 14 && y > o.y - 24 && y < o.y + o.h + 14) return o;
+      for (let o of this.map.obstacles) if (o.kind === "deco" && o.deco === "bench" && Math.hypot(x - (o.x + o.w / 2), y - (o.y + o.h / 2)) < 20) return o;
       return null;
     }
     commandSit(b) {
@@ -13974,9 +13974,12 @@ void main() {
       case "post":
         return F(n, S(0, 0, 0), 5, 4.2, 56, r, { seg: 8, mat: Re }), F(n, S(0, 56, 0), 5.4, 0, 7, r, { seg: 8 }), n;
       case "tower":
-        O(n, S(0, 36, 0), 40, 72, 36, o, Q), O(n, S(0, 74, 0), 48, 8, 44, Y(o, 0.9), Q);
-        for (let [s, l] of [[-20, -17], [20, -17], [-20, 17], [20, 17], [0, 20], [0, -20]]) O(n, S(s, 82, l), 9, 9, 9, Y(o, 0.95), Q);
-        return O(n, S(0, 42, 18.5), 10, 18, 1.6, 1710626), O(n, S(0, 20, 18.5), 12, 22, 1.6, r), n;
+        O(n, S(0, 5, 0), 50, 10, 48, Y(o, 0.8), Q), O(n, S(0, 75, 0), 42, 140, 38, o, Q);
+        for (let yy of [30, 60, 90, 120]) O(n, S(0, yy, 0), 44, 1.6, 40, Y(o, 0.78), Q);
+        O(n, S(0, 148, 0), 56, 10, 52, Y(o, 0.88), Q);
+        for (let [s, l] of [[-22, -20], [0, -22], [22, -20], [-22, 0], [22, 0], [-22, 20], [0, 22], [22, 20]]) O(n, S(s, 160, l), 10, 14, 10, Y(o, 0.97), Q);
+        for (let yy of [100, 125]) O(n, S(0, yy, 19.6), 5, 16, 1.6, 1710626);
+        return O(n, S(0, 20, 19.6), 14, 28, 1.8, 1710626), O(n, S(0, 20, 20.4), 18, 4, 1.4, r), n;
       case "bench":
         O(n, S(0, 12, 0), 42, 4, 12, r, Q), O(n, S(0, 22, -5), 42, 10, 3, r, Q);
         for (let s of [-17, 17]) O(n, S(s, 5, 0), 4, 10, 10, Y(r, 0.7));
@@ -14004,12 +14007,11 @@ void main() {
           let [y, v] = d(h, b);
           O(n, c(u, m, p), y, x, v, g, Q);
         };
-        f(0, 11, 0, 54, 22, 12, l), f(-14, 27, 0, 22, 12, 11, Y(l, 1.06)), f(13, 24, 0, 16, 7, 11, Y(l, 0.94));
-        for (let u of [-20, 0, 20]) f(u, 10, 6.2, 16, 1.2, 0.6, Y(l, 0.75));
-        if (f(22, 3, 10, 9, 6, 8, Y(l, 0.88)), f(-24, 2, -10, 7, 4, 6, Y(l, 0.8)), e === "grass" || e === "lush") {
-          let [u, m] = d(20, 8);
-          L(n, c(-8, 24, 0), u / 2, 3, m / 2, 4880954, { seg: 8, ring: 4, mat: Re });
-        }
+        f(0, 6, 0, 58, 12, 26, Y(l, 0.82)), f(0, 54, 0, 56, 84, 20, l), f(0, 98, 0, 58, 6, 26, Y(l, 0.86));
+        for (let m of [30, 55, 80]) f(0, m, 0, 57, 1.4, 21, Y(l, 0.78));
+        for (let u of [-26, 26]) f(u, 52, 0, 5, 96, 24, Y(l, 1.1));
+        for (let u of [-22, -7, 8, 23]) f(u, 108, 10, 9, 14, 5, Y(l, 1.05)), f(u, 108, -10, 9, 14, 5, Y(l, 1.05));
+        for (let u of [-12, 12]) f(u, 66, 10.6, 3, 14, 1.4, 1710626);
         return n;
       }
       case "arch": {
@@ -15303,7 +15305,7 @@ void main() {
           let m = n.decos[r.deco ?? ""];
           (m || mo) && o.push({ depth: l, sx: s.x, sy: s.y, tall: r.deco === "tower" || r.deco === "statue" || r.deco === "keep" || r.deco === "palace" || r.deco === "hof" || r.deco === "warrior" || r.deco === "longhouse" || r.deco === "banner" || r.deco === "lamp" || r.deco === "church" || r.deco === "castle" || r.deco === "monument" || r.deco === "bigforge" || r.deco === "colossus" || r.deco === "airship", draw: () => {
             let p = u({ kind: "deco", theme: d, variant: r.deco === "longhouse" ? Math.abs(Math.round(r.x / 10) + Math.round(r.y / 10) * 3) % 6 : r.deco === "colossus" ? Math.abs(Math.round(r.x / 7) * 5 + Math.round(r.y / 11) * 3) % 5 : 0, deco: r.deco });
-            p ? nt(a, p, f.x, f.y) : m && nt(a, m, s.x, s.y + 4);
+            p ? nt(a, p, f.x, f.y) : m && nt(a, m, s.x, s.y + 4), r.deco === "bench" && this.benchMark(f.x, f.y - 16);
           } });
         } else if (r.kind === "crate") o.push({ depth: l, sx: s.x, sy: s.y, draw: () => {
           let m = u({ kind: c < 0.5 ? "crate" : "barrel", theme: d, variant: 0 });
@@ -15383,6 +15385,10 @@ void main() {
         if (w.rnd() < dt * 0.3 && (w.tgt = w.near()), w.rnd() < dt * 0.12) w.wait = 250 + w.rnd() * 1500;
       }
       return this._wk.list;
+    }
+    benchMark(x, y) {
+      let c = this.ctx, k = 0.5 + 0.5 * Math.sin(this.clock / 420);
+      c.save(), c.globalAlpha = 0.55 + 0.35 * k, c.strokeStyle = "#ffd27a", c.fillStyle = "rgba(20,14,6,0.55)", c.lineWidth = 2, c.beginPath(), c.ellipse(x, y, 9 + k * 1.5, 5 + k * 0.8, 0, 0, Math.PI * 2), c.fill(), c.stroke(), c.fillStyle = "#ffd27a", c.fillRect(x - 3, y - 2.5, 6, 1.6), c.fillRect(x - 3, y - 2.5, 1.6, 5), c.fillRect(x + 1.4, y - 2.5, 1.6, 5), c.restore();
     }
     drawWalker(t) {
       let a = this.ctx, { x: n, y: o } = ce(t.x, t.y), { dir: r, flip: i } = Kl(t.ang), s = t.ph < 0 ? -1 : Math.floor(t.ph * ea) % ea, l = fa(t.id, r, s, 0), c = t.ph < 0 ? 0 : t.ph * Math.PI * 2, d = Xi(t.ang), f = d.x / (Math.hypot(d.x, d.y) || 1), u = Math.sin(this.clock / 480 + t.seed) * 0.012;

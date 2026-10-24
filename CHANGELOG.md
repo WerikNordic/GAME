@@ -71,3 +71,6 @@
 
 ## v65
 - Casas de 2 e 3 andares, mais espaço entre casas, barracas removidas da frente das casas
+
+## v66
+- Muralhas e torres gigantes; bancos menores com ponto de sentar (sem sentar automático); menos barracas; casas em grade regular
