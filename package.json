@@ -1,0 +1,1 @@
+{ "name": "eldvar", "version": "53.0.0", "private": true, "scripts": { "build": "node build.mjs && mkdir -p public && cp dist/eldvar.html public/index.html" } }
