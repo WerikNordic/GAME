@@ -7,6 +7,14 @@
 - /guilda, /g, /grupo, /p, /amigo (locais; sem servidor de jogo ainda).
 - ESC nao pausa; tela de entrada nordica; novos efeitos sonoros; sem visual inicial de classe.
 
+## v58 — Boss mundial, NPCs livres e marcos
+- **Jörmungandr (boss mundial)**: evento mensal (dia 15, 20h, local), dura 5h. 10 min antes aparece aviso; 20s antes começa rock pesado, a tela treme cada vez mais e uma bola de fogo desce do céu; no impacto: clarão, onda de choque, tremor forte em qualquer mapa e título "JÖRMUNGANDR DESPERTOU". Banner no topo com HP compartilhado e botão grátis "Ir até Jörmungandr" para a Cratera.
+- HP compartilhado via Supabase (`wb_sync`, soma o dano de todos + "Einherjar" simulados); sem internet vira HP local.
+- Arena `wb_cratera` (oculta) com serpente 3D procedural, ataques e recompensas.
+- NPCs de cidade andam de forma aleatória (alvos, pausas e velocidades próprias) dentro das ruas.
+- Novos marcos 3D: igreja, castelo, monumento rúnico, forja grande, colosso/estátua, dirigível — em ~30 mapas e nas 7 cidades.
+- Debug: `?debug` → `__wb.forceIn(segundos)` dispara o evento.
+
 ## v54
 - Cada habilidade tem som próprio: altura e timbre variam conforme a cor/efeito da skill.
 

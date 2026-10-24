@@ -116,3 +116,18 @@ main.title .title-card .footer{color:#a9a38f}
 .adm-btns{display:flex;gap:4px;flex:0 0 auto}
 .adm-info{text-align:left;justify-items:start}
 .adm-info small{text-align:left}
+
+/* v58 boss mundial */
+#wb-banner{position:fixed;top:44px;left:50%;transform:translateX(-50%);z-index:9000;min-width:300px;max-width:min(92vw,520px);padding:8px 14px 10px;border:1px solid #b8742a;border-radius:6px;background:linear-gradient(180deg,rgba(60,12,6,.94),rgba(24,6,4,.94));box-shadow:0 0 18px rgba(255,90,20,.45),inset 0 0 12px rgba(255,140,40,.18);color:#ffe9c0;font-size:12px;text-align:center;pointer-events:auto}
+#wb-banner[hidden],#wb-title[hidden]{display:none}
+#wb-banner .wb-row{display:flex;justify-content:space-between;gap:12px;align-items:baseline;flex-wrap:wrap}
+#wb-banner .wb-row b{color:#ffb347;letter-spacing:.04em}
+#wb-banner .wb-bar{position:relative;height:16px;margin:6px 0;border:1px solid #6b2a12;border-radius:3px;background:#1a0705;overflow:hidden}
+#wb-banner .wb-bar i{position:absolute;inset:0 auto 0 0;background:linear-gradient(90deg,#8a1d0e,#e0501c 60%,#ffb347);box-shadow:0 0 10px rgba(255,120,30,.7)}
+#wb-banner .wb-bar em{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-style:normal;font-size:11px;text-shadow:0 1px 2px #000}
+#wb-banner button{background:linear-gradient(180deg,#d1561c,#8d2a0c);color:#fff;border:1px solid #ffb347;border-radius:4px;padding:5px 14px;cursor:pointer;font-weight:bold;letter-spacing:.03em}
+#wb-banner button:hover{filter:brightness(1.2)}
+#wb-banner .wb-here{color:#ffd27a;font-weight:bold}
+#wb-title{position:fixed;inset:0;z-index:99995;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none;text-align:center;transition:opacity .2s}
+#wb-title .wb-t1{font:900 clamp(30px,6.4vw,84px)/1.05 Georgia,serif;letter-spacing:.08em;color:#ffe2a0;text-shadow:0 0 18px #ff5a10,0 0 44px #ff2a00,0 4px 0 #6b1a06}
+#wb-title .wb-t2{margin-top:14px;font:italic clamp(14px,2.2vw,26px) Georgia,serif;color:#ffd0a0;text-shadow:0 0 12px #000,0 2px 6px #000}

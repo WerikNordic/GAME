@@ -7752,7 +7752,7 @@ Error generating stack: ` + n.message + `
     return a > Math.PI && (a -= Math.PI * 2), a < -Math.PI && (a += Math.PI * 2), Math.abs(a);
   }
   var Bt = (e) => Math.round(e * 16), Wo = { city: { w: Bt(325), h: Bt(400) }, avenue: Bt(18), street: Bt(9), alley: Bt(4), wallThickness: Bt(3.5), wallHeightM: 14, fountain: Bt(14), gate: Bt(15), house: { w: Bt(8), d: Bt(8) }, tavern: { w: Bt(12), d: Bt(12) }, hof: { w: Bt(40), d: Bt(50) }, palace: { w: Bt(60), d: Bt(70) } };
-  var Ux = { ruin: 175, camp: 120, stones: 140, graves: 130, nook: 60, shrine: 130 }, E8 = { grass: ['Aqui jurou o \xFAltimo jarl: "Enquanto houver pedra, haver\xE1 mem\xF3ria." A pedra ficou. A mem\xF3ria, n\xE3o.', "As ra\xEDzes sobem pelas runas e as apagam, uma a uma. N\xE3o \xE9 descuido da floresta; \xE9 fome.", "Seis passaram por esta clareira e cinco deixaram marcas na pedra. O sexto deixou apenas a porta aberta.", "Quem l\xEA isto j\xE1 est\xE1 sendo lido.", "O corvo n\xE3o vigia os mortos. Vigia quem volta para cont\xE1-los."], snow: ["O gelo guarda o que o tempo devolveria.", "Sob esta pedra dorme o nome de uma cidade. Ningu\xE9m lembra de qual.", "Contei as noites at\xE9 a quadrag\xE9sima. Depois a neve passou a contar por mim.", "O gigante n\xE3o est\xE1 adormecido. Est\xE1 esperando que algu\xE9m pare de ter medo.", "Se ouvir passos atr\xE1s de voc\xEA no gelo, n\xE3o olhe. S\xE3o os seus, de ontem."], fire: ["Surtr n\xE3o acendeu o mundo. Apenas parou de apag\xE1-lo.", "As cinzas aqui s\xE3o quentes mesmo sem fogo. Algo ainda respira embaixo delas.", "Forjaram esta l\xE2mina para cortar o Ragnar\xF6k. Ela cortou o forjador.", "Cada brasa \xE9 uma promessa que ningu\xE9m cumpriu.", "O rio de magma sobe a cada juramento quebrado. Anda subindo r\xE1pido."], forge: ["A bigorna ainda ressoa, embora ningu\xE9m bata nela h\xE1 mil anos.", "Os aut\xF4matos n\xE3o obedecem ao ferro. Obedecem \xE0 batida que os acordou.", "Todo an\xE3o sabe: o que se forja com raiva volta para cobrar.", "Nesta oficina trabalhou algu\xE9m que nunca foi visto saindo.", "O cofre n\xE3o guarda ouro. Guarda a raz\xE3o pela qual o ouro foi escondido."], lush: ["A floresta lembra de cada machado. Est\xE1 sendo paciente.", "Aqui as esta\xE7\xF5es brigam. Hoje venceu o outono; amanh\xE3, ningu\xE9m sabe.", "Se as vozes do p\xE2ntano chamarem seu nome, responda com outro nome.", "Cada flor desta clareira nasceu de um corpo. A floresta \xE9 grata.", "O cora\xE7\xE3o verde bate devagar. Quando acelerar, corra."], crystal: ["O cristal n\xE3o reflete a luz. Reflete quem a olhou antes.", "Entre dois prismas existe um corredor que s\xF3 aparece de lado.", "A aurora quebrou aqui. Os cacos ainda tentam voltar ao c\xE9u.", "Os astr\xF4nomos apontaram para cima por tanto tempo que esqueceram de olhar para baixo.", "Se o seu reflexo piscar primeiro, desvie o olhar."], marble: ["Os deuses escreveram as leis em m\xE1rmore para que ningu\xE9m as apagasse. Ningu\xE9m previu que algu\xE9m as lesse de tr\xE1s para a frente.", "O sol partido ainda tenta amanhecer. N\xE3o consegue decidir por qual metade.", "Esta pra\xE7a j\xE1 ouviu tr\xEAs juramentos de paz. Todos terminam em guerra.", "Valqu\xEDrias voltaram deste campo. A pergunta \xE9: voltaram as mesmas?", "N\xE3o h\xE1 arquivo mais perigoso que o das coisas que eram verdade."], void: ["Aqui o ch\xE3o lembra a si mesmo de forma diferente a cada passo.", "Esta pedra existe de um lado s\xF3. D\xEA a volta e voc\xEA ver\xE1.", "O que foi esquecido n\xE3o some: muda de lugar.", "A ruptura n\xE3o \xE9 um buraco. \xC9 uma porta que algu\xE9m deixou aberta por dentro.", "Contei nove ecos. O d\xE9cimo n\xE3o era meu."] }, A8 = ['Di\xE1rio: "Dia 3. Os guardas n\xE3o voltaram do bosque. Hoje o fogo apagou sozinho."', 'Di\xE1rio: "Dia 9. Comida para mais dois dias. A estrada atr\xE1s de n\xF3s sumiu."', 'Di\xE1rio: "Dia 12. Ouvimos tambores abaixo da terra. O capit\xE3o mandou ignorar."', 'Di\xE1rio: "\xDAltima p\xE1gina. Se algu\xE9m ler isto: n\xE3o siga as luzes."', 'Di\xE1rio: "Dia 5. Encontramos um ba\xFA que n\xE3o estava no mapa. Dividimos o que havia. Foi o erro."'], C8 = ['Epit\xE1fio: "Caiu protegendo uma porta que j\xE1 estava aberta."', 'Epit\xE1fio: "Aqui jaz quem contou a verdade cedo demais."', 'Epit\xE1fio: "Sem nome, por pedido dele. Com raz\xE3o."', 'Epit\xE1fio: "Voltou da guerra e n\xE3o voltou para casa."', 'Epit\xE1fio: "Dorme. A vig\xEDlia agora \xE9 de outro."'];
+  var Ux = { ruin: 175, camp: 120, stones: 140, graves: 130, nook: 60, shrine: 130, church: 190, castle: 260, monument: 130, bigforge: 190, colossus: 150, airship: 170 }, E8 = { grass: ['Aqui jurou o \xFAltimo jarl: "Enquanto houver pedra, haver\xE1 mem\xF3ria." A pedra ficou. A mem\xF3ria, n\xE3o.', "As ra\xEDzes sobem pelas runas e as apagam, uma a uma. N\xE3o \xE9 descuido da floresta; \xE9 fome.", "Seis passaram por esta clareira e cinco deixaram marcas na pedra. O sexto deixou apenas a porta aberta.", "Quem l\xEA isto j\xE1 est\xE1 sendo lido.", "O corvo n\xE3o vigia os mortos. Vigia quem volta para cont\xE1-los."], snow: ["O gelo guarda o que o tempo devolveria.", "Sob esta pedra dorme o nome de uma cidade. Ningu\xE9m lembra de qual.", "Contei as noites at\xE9 a quadrag\xE9sima. Depois a neve passou a contar por mim.", "O gigante n\xE3o est\xE1 adormecido. Est\xE1 esperando que algu\xE9m pare de ter medo.", "Se ouvir passos atr\xE1s de voc\xEA no gelo, n\xE3o olhe. S\xE3o os seus, de ontem."], fire: ["Surtr n\xE3o acendeu o mundo. Apenas parou de apag\xE1-lo.", "As cinzas aqui s\xE3o quentes mesmo sem fogo. Algo ainda respira embaixo delas.", "Forjaram esta l\xE2mina para cortar o Ragnar\xF6k. Ela cortou o forjador.", "Cada brasa \xE9 uma promessa que ningu\xE9m cumpriu.", "O rio de magma sobe a cada juramento quebrado. Anda subindo r\xE1pido."], forge: ["A bigorna ainda ressoa, embora ningu\xE9m bata nela h\xE1 mil anos.", "Os aut\xF4matos n\xE3o obedecem ao ferro. Obedecem \xE0 batida que os acordou.", "Todo an\xE3o sabe: o que se forja com raiva volta para cobrar.", "Nesta oficina trabalhou algu\xE9m que nunca foi visto saindo.", "O cofre n\xE3o guarda ouro. Guarda a raz\xE3o pela qual o ouro foi escondido."], lush: ["A floresta lembra de cada machado. Est\xE1 sendo paciente.", "Aqui as esta\xE7\xF5es brigam. Hoje venceu o outono; amanh\xE3, ningu\xE9m sabe.", "Se as vozes do p\xE2ntano chamarem seu nome, responda com outro nome.", "Cada flor desta clareira nasceu de um corpo. A floresta \xE9 grata.", "O cora\xE7\xE3o verde bate devagar. Quando acelerar, corra."], crystal: ["O cristal n\xE3o reflete a luz. Reflete quem a olhou antes.", "Entre dois prismas existe um corredor que s\xF3 aparece de lado.", "A aurora quebrou aqui. Os cacos ainda tentam voltar ao c\xE9u.", "Os astr\xF4nomos apontaram para cima por tanto tempo que esqueceram de olhar para baixo.", "Se o seu reflexo piscar primeiro, desvie o olhar."], marble: ["Os deuses escreveram as leis em m\xE1rmore para que ningu\xE9m as apagasse. Ningu\xE9m previu que algu\xE9m as lesse de tr\xE1s para a frente.", "O sol partido ainda tenta amanhecer. N\xE3o consegue decidir por qual metade.", "Esta pra\xE7a j\xE1 ouviu tr\xEAs juramentos de paz. Todos terminam em guerra.", "Valqu\xEDrias voltaram deste campo. A pergunta \xE9: voltaram as mesmas?", "N\xE3o h\xE1 arquivo mais perigoso que o das coisas que eram verdade."], void: ["Aqui o ch\xE3o lembra a si mesmo de forma diferente a cada passo.", "Esta pedra existe de um lado s\xF3. D\xEA a volta e voc\xEA ver\xE1.", "O que foi esquecido n\xE3o some: muda de lugar.", "A ruptura n\xE3o \xE9 um buraco. \xC9 uma porta que algu\xE9m deixou aberta por dentro.", "Contei nove ecos. O d\xE9cimo n\xE3o era meu."] }, A8 = ['Di\xE1rio: "Dia 3. Os guardas n\xE3o voltaram do bosque. Hoje o fogo apagou sozinho."', 'Di\xE1rio: "Dia 9. Comida para mais dois dias. A estrada atr\xE1s de n\xF3s sumiu."', 'Di\xE1rio: "Dia 12. Ouvimos tambores abaixo da terra. O capit\xE3o mandou ignorar."', 'Di\xE1rio: "\xDAltima p\xE1gina. Se algu\xE9m ler isto: n\xE3o siga as luzes."', 'Di\xE1rio: "Dia 5. Encontramos um ba\xFA que n\xE3o estava no mapa. Dividimos o que havia. Foi o erro."'], C8 = ['Epit\xE1fio: "Caiu protegendo uma porta que j\xE1 estava aberta."', 'Epit\xE1fio: "Aqui jaz quem contou a verdade cedo demais."', 'Epit\xE1fio: "Sem nome, por pedido dele. Com raz\xE3o."', 'Epit\xE1fio: "Voltou da guerra e n\xE3o voltou para casa."', 'Epit\xE1fio: "Dorme. A vig\xEDlia agora \xE9 de outro."'];
   function it(e, t, a, n) {
     let o = e.sizes[t];
     e.obstacles.push({ kind: "deco", deco: t, x: Math.round(a - o.w / 2), y: Math.round(n - o.h / 2), w: o.w, h: o.h });
@@ -7800,12 +7800,39 @@ Error generating stack: ` + n.message + `
         for (let [s, l] of i) n.obstacles.push({ kind: "rock", x: Math.round(t + s - 16), y: Math.round(a + l - 14), w: 32, h: 28 });
         return o() < 0.6 && it(n, "gravestone", t + 42, a + 18), { x: t, y: a + 40 };
       }
+      case "church": {
+        it(n, "church", t, a), it(n, "brazier", t - 130, a + 70), it(n, "brazier", t + 40, a + 70), it(n, "lamp", t - 40, a + 74);
+        for (let [l, c] of [[-150, -20], [-150, 40], [-170, 10], [110, 90]]) it(n, "gravestone", t + l, a + c);
+        return Qi(n, t - 70, a + 96, r, "Pedra da capela", "post", true), { x: t - 10, y: a + 62 + 40 };
+      }
+      case "castle": {
+        it(n, "castle", t, a), it(n, "banner", t - 60, a + 120), it(n, "banner", t + 60, a + 120), it(n, "brazier", t - 90, a + 134), it(n, "brazier", t + 90, a + 134), it(n, "warrior", t - 170, a + 140), it(n, "warrior", t + 170, a + 140);
+        return Qi(n, t, a + 170, r, "Placa da fortaleza", "post", true), { x: t, y: a + 110 + 70 };
+      }
+      case "monument": {
+        it(n, "monument", t, a), it(n, "banner", t - 80, a + 56), it(n, "banner", t + 80, a + 56);
+        for (let [l, c] of [[-62, 62], [62, 62], [0, 78]]) it(n, "runestone", t + l, a + c);
+        return Qi(n, t, a + 96, r, "Inscri\xE7\xE3o do monumento", "post", true), { x: t, y: a + 96 + 30 };
+      }
+      case "bigforge": {
+        it(n, "bigforge", t, a), it(n, "brazier", t - 60, a + 90), it(n, "brazier", t + 60, a + 90), it(n, "cart", t - 150, a + 40), it(n, "hay", t + 150, a + 50);
+        return Iu(n, t + 100, a + 100), { x: t, y: a + 63 + 60 };
+      }
+      case "colossus": {
+        it(n, "colossus", t, a), it(n, "brazier", t - 100, a + 66), it(n, "brazier", t + 100, a + 66);
+        return Qi(n, t, a + 96, r, "Base do colosso", "post", true), { x: t, y: a + 67 + 40 };
+      }
+      case "airship": {
+        it(n, "airship", t, a), it(n, "cart", t - 110, a + 56), it(n, "hay", t + 100, a + 60), it(n, "post", t + 78, a - 52), it(n, "lamp", t - 80, a + 52);
+        return Iu(n, t + 40, a + 70), { x: t, y: a + 35 + 60 };
+      }
       case "shrine": {
         for (let [i, s] of [[-1, -1], [1, -1], [-1, 1], [1, 1]]) it(n, "obelisk", t + i * 92, a + s * 70);
         return it(n, "altar", t, a - 10), it(n, "arch", t, a - 90), Qi(n, t - 56, a + 40, r, "Santu\xE1rio esquecido"), Iu(n, t + 56, a + 40), { x: t, y: a + 96 };
       }
     }
   }
+  var LMK = { midgard_brumaforte: "church", midgard_cemiterio: "church", vana_santuario: "church", alf_catedral: "church", asg_praca: "church", midgard_ruinas: "castle", muspel_cidadela: "castle", asg_fortaleza: "castle", jotunheim_trono: "castle", niflheim_palacio: "castle", midgard_bosque: "monument", alf_observatorio: "monument", lim_cidade: "monument", asg_idavoll: "monument", niflheim_rio: "monument", midgard_minas: "bigforge", svart_forja: "bigforge", svart_nidavellir: "bigforge", svart_mercado: "bigforge", muspel_caldeira: "bigforge", jotunheim_passo: "colossus", vana_jardim: "colossus", asg_ponte: "colossus", alf_lumen: "colossus", lim_mar: "colossus", vana_pantano: "colossus", alf_campos: "airship", lim_deserto: "airship", svart_trilhos: "airship", midgard_lago: "airship", asg_arquivo: "airship", midgard_estrada: "airship" };
   function Vx(e, t, a, n) {
     let o = ["ruin", "camp", "stones", "nook", "nook", "shrine"];
     (e === "grass" || e === "snow" || e === "lush") && o.push("graves", "graves");
@@ -7813,8 +7840,8 @@ Error generating stack: ` + n.message + `
     for (; r.length < a; ) r.push(T8(t, o));
     return r;
   }
-  var $m = { fountain: { w: 64, h: 48 }, well: { w: 36, h: 30 }, stall: { w: 72, h: 36 }, lamp: { w: 12, h: 12 }, banner: { w: 12, h: 12 }, statue: { w: 40, h: 36 }, post: { w: 22, h: 18 }, tower: { w: 52, h: 44 }, bench: { w: 44, h: 16 }, cart: { w: 56, h: 32 }, hay: { w: 40, h: 28 }, planter: { w: 34, h: 22 }, pillar: { w: 20, h: 20 }, pillar_broken: { w: 22, h: 20 }, wall: { w: 56, h: 14 }, wall_v: { w: 14, h: 56 }, arch: { w: 64, h: 16 }, tent: { w: 52, h: 38 }, campfire: { w: 24, h: 22 }, runestone: { w: 20, h: 14 }, gravestone: { w: 16, h: 10 }, altar: { w: 42, h: 28 }, obelisk: { w: 20, h: 20 }, longhouse: { w: 120, h: 50 }, keep: { w: 170, h: 150 }, palace: { w: 250, h: 100 }, hof: { w: 230, h: 120 }, warrior: { w: 52, h: 44 }, brazier: { w: 18, h: 18 }, forge: { w: 92, h: 36 } };
-  var DSC = { palace: 2.3, keep: 2.1, hof: 1.8, longhouse: 1.45, warrior: 1.9, statue: 1.9, fountain: 3.6, tower: 1.35, forge: 1.5, stall: 1.3, tent: 1.5, well: 1.4, cart: 1.2, obelisk: 1.6, altar: 1.4, brazier: 1.3, lamp: 1.15, banner: 1.4 };
+  var $m = { fountain: { w: 64, h: 48 }, well: { w: 36, h: 30 }, stall: { w: 72, h: 36 }, lamp: { w: 12, h: 12 }, banner: { w: 12, h: 12 }, statue: { w: 40, h: 36 }, post: { w: 22, h: 18 }, tower: { w: 52, h: 44 }, bench: { w: 44, h: 16 }, cart: { w: 56, h: 32 }, hay: { w: 40, h: 28 }, planter: { w: 34, h: 22 }, pillar: { w: 20, h: 20 }, pillar_broken: { w: 22, h: 20 }, wall: { w: 56, h: 14 }, wall_v: { w: 14, h: 56 }, arch: { w: 64, h: 16 }, tent: { w: 52, h: 38 }, campfire: { w: 24, h: 22 }, runestone: { w: 20, h: 14 }, gravestone: { w: 16, h: 10 }, altar: { w: 42, h: 28 }, obelisk: { w: 20, h: 20 }, longhouse: { w: 120, h: 50 }, keep: { w: 170, h: 150 }, palace: { w: 250, h: 100 }, hof: { w: 230, h: 120 }, warrior: { w: 52, h: 44 }, brazier: { w: 18, h: 18 }, forge: { w: 92, h: 36 }, church: { w: 110, h: 70 }, castle: { w: 150, h: 110 }, monument: { w: 44, h: 44 }, bigforge: { w: 120, h: 70 }, colossus: { w: 56, h: 56 }, airship: { w: 84, h: 44 } };
+  var DSC = { palace: 2.3, keep: 2.1, hof: 1.8, longhouse: 1.45, warrior: 1.9, statue: 1.9, fountain: 3.6, tower: 1.35, forge: 1.5, stall: 1.3, tent: 1.5, well: 1.4, cart: 1.2, obelisk: 1.6, altar: 1.4, brazier: 1.3, lamp: 1.15, banner: 1.4, church: 1.7, castle: 2, monument: 2.2, bigforge: 1.8, colossus: 2.4, airship: 1.6 };
   for (let e of Object.keys(DSC)) $m[e] && ($m[e].w = Math.round($m[e].w * DSC[e]), $m[e].h = Math.round($m[e].h * DSC[e]));
   function R8() {
     let a = Oe(1138), n = [], o = { x: 250, y: 540, w: 160, h: 180 }, r = { x: 330, y: 630 }, i = [], s = { x: 1700, y: 330, r: 210 }, l = [{ monster: "lobo_faminto", x: 820, y: 540, radius: 230, count: 8 }, { monster: "lobo_faminto", x: 720, y: 240, radius: 170, count: 4 }, { monster: "javali", x: 1030, y: 820, radius: 170, count: 5 }, { monster: "goblin_saqueador", x: 1450, y: 960, radius: 170, count: 6 }, { monster: "hati", x: s.x, y: s.y, radius: 0, count: 1 }];
@@ -7867,7 +7894,7 @@ Error generating stack: ` + n.message + `
     let m = e.lakes.map((D) => ({ x: Math.round(D.x * o), y: Math.round(D.y * r), w: Math.round(D.w * o), h: Math.round(D.h * r) }));
     for (let D of m) l.push({ kind: "water", ...D });
     for (let [D, Z] of e.crates ?? []) l.push({ kind: "crate", x: Math.round(Z < 480 ? D + i : D * o), y: Math.round(Z < 480 ? Z : Z * r), w: 30, h: 30 });
-    let p = e.spawns.map((D) => D.radius === 0 ? { ...D, x: a / 2, y: n / 2 } : { ...D, x: Math.round(D.x * o), y: Math.round(D.y * r), radius: Math.round(D.radius * 1.25), count: Math.ceil(D.count * 1.5) }), h = [{ x: d.x, y: d.y, r: 110 }, { x: a / 2, y: n - 130, r: 110 }, ...e.city ? [{ x: 60, y: n / 2, r: 120 }] : [], { x: a / 2, y: n / 2, r: 60 }, ...u.map((D) => ({ x: D.x, y: D.y, r: 50 })), ...p.map((D) => ({ x: D.x, y: D.y, r: 40 })), ...Array.from({ length: 14 }, (D, Z) => ({ x: a / 2, y: n * (0.12 + Z * 0.058), r: 80 }))], x = (D, Z) => D > f.x - 10 && D < f.x + f.w + 10 && Z > f.y - 10 && Z < f.y + f.h + 10, b = (D, Z) => l.some((q) => q.x < D.x + D.w + Z && q.x + q.w + Z > D.x && q.y < D.y + D.h + Z && q.y + q.h + Z > D.y), g = $x[e.id], y = e.village ? 3 : 5, v = { rng: s, theme: e.theme ?? "grass", tier: t, mapId: e.id, sizes: $m, obstacles: l, pois: c, n: 0 }, k = Vx(v.theme, s, y, !!g), R = [], w = [{ x: a / 2 - 70, y: 0, w: 140, h: 50, label: "Retorno", locked: false, toMap: e.prev, toSpawn: e.prev === "campos_midgard" ? { x: 1570, y: 1150 } : e.prev === "planicies_jotunheim" ? { x: 970, y: 1150 } : { x: a / 2, y: n - 130 } }];
+    let p = e.spawns.map((D) => D.radius === 0 ? { ...D, x: a / 2, y: n / 2 } : { ...D, x: Math.round(D.x * o), y: Math.round(D.y * r), radius: Math.round(D.radius * 1.25), count: Math.ceil(D.count * 1.5) }), h = [{ x: d.x, y: d.y, r: 110 }, { x: a / 2, y: n - 130, r: 110 }, ...e.city ? [{ x: 60, y: n / 2, r: 120 }] : [], { x: a / 2, y: n / 2, r: 60 }, ...u.map((D) => ({ x: D.x, y: D.y, r: 50 })), ...p.map((D) => ({ x: D.x, y: D.y, r: 40 })), ...Array.from({ length: 14 }, (D, Z) => ({ x: a / 2, y: n * (0.12 + Z * 0.058), r: 80 }))], x = (D, Z) => D > f.x - 10 && D < f.x + f.w + 10 && Z > f.y - 10 && Z < f.y + f.h + 10, b = (D, Z) => l.some((q) => q.x < D.x + D.w + Z && q.x + q.w + Z > D.x && q.y < D.y + D.h + Z && q.y + q.h + Z > D.y), g = $x[e.id], y = e.village ? 3 : 5, v = { rng: s, theme: e.theme ?? "grass", tier: t, mapId: e.id, sizes: $m, obstacles: l, pois: c, n: 0 }, k = (LMK[e.id] ? [LMK[e.id]] : []).concat(Vx(v.theme, s, y, !!g)), R = [], w = [{ x: a / 2 - 70, y: 0, w: 140, h: 50, label: "Retorno", locked: false, toMap: e.prev, toSpawn: e.prev === "campos_midgard" ? { x: 1570, y: 1150 } : e.prev === "planicies_jotunheim" ? { x: 970, y: 1150 } : { x: a / 2, y: n - 130 } }];
     for (let D of k) {
       let Z = Ux[D];
       for (let q = 0; q < 400; q++) {
@@ -7899,13 +7926,13 @@ Error generating stack: ` + n.message + `
     return { CX: a, plazaY: 3600, palaceY: 900, streetN: 2700, streetS: 5150, streetsX: [1250, 3950], wall: { x: 240, y: 160, w: e - 480, h: t - 320 }, gate: { from: a - Wo.gate / 2, to: a + Wo.gate / 2 }, plots: [[4350, 4780], [2900, 5750], [1700, 5750], [4350, 2050], [850, 2050], [3300, 4900], [850, 4850], [3250, 2050], [1750, 2050]] };
   })();
   var CSTY = {
-    cidade_midgard: { mirror: false, plaza: "radial", wall: "towers", blocks: "dense", gap: 250, alt: 0.1 },
-    cidade_ravnhaven: { mirror: true, plaza: "colonnade", wall: "towers", blocks: "rows", gap: 250, alt: 0.14, feat: { 1: "park", 6: "park", 3: "stalls" }, tt: { streetsX: [1000, 4200], streetN: 2560 } },
-    cidade_isenborg: { mirror: false, plaza: "obelisks", wall: "palisade", blocks: "camp", gap: 262, alt: 0.3, feat: { 0: "camp", 3: "camp", 5: "graves", 7: "yard" }, tt: { streetsX: [1150, 4050], streetS: 5260 } },
-    cidade_eldvik: { mirror: true, plaza: "braziers", wall: "ruined", blocks: "dense", gap: 240, alt: 0.12, feat: { 2: "yard", 4: "forge", 5: "yard" }, tt: { streetsX: [950, 4250], streetN: 2800 } },
-    cidade_kharnheim: { mirror: false, plaza: "market", wall: "towers", blocks: "forge", gap: 255, alt: 0.3, feat: { 1: "stalls", 2: "forge", 5: "forge", 6: "stalls" }, tt: { streetsX: [1100, 4150], streetN: 2620, streetS: 5200 } },
-    cidade_freyrhain: { mirror: true, plaza: "garden", wall: "palisade", blocks: "gardens", gap: 275, alt: 0.38, feat: { 0: "park", 2: "park", 5: "park", 7: "park" }, tt: { streetsX: [1200, 4000], streetN: 2500 } },
-    cidade_gladsheim: { mirror: false, plaza: "colonnade", wall: "ruined", blocks: "sparse", gap: 300, alt: 0.18, feat: { 1: "yard", 6: "park", 3: "graves", 4: "park" }, tt: { streetsX: [900, 4300], streetS: 5300 } }
+    cidade_midgard: { mirror: false, plaza: "radial", wall: "towers", blocks: "dense", gap: 250, alt: 0.1, feat: { 1: "church", 4: "monument", 6: "statue" } },
+    cidade_ravnhaven: { mirror: true, plaza: "colonnade", wall: "towers", blocks: "rows", gap: 250, alt: 0.14, feat: { 1: "park", 6: "park", 3: "stalls", 2: "church", 5: "airship" }, tt: { streetsX: [1000, 4200], streetN: 2560 } },
+    cidade_isenborg: { mirror: false, plaza: "obelisks", wall: "palisade", blocks: "camp", gap: 262, alt: 0.3, feat: { 0: "camp", 3: "camp", 5: "graves", 7: "yard", 2: "castle", 1: "monument" }, tt: { streetsX: [1150, 4050], streetS: 5260 } },
+    cidade_eldvik: { mirror: true, plaza: "braziers", wall: "ruined", blocks: "dense", gap: 240, alt: 0.12, feat: { 2: "yard", 4: "forge", 5: "yard", 0: "bigforge", 3: "statue", 1: "church" }, tt: { streetsX: [950, 4250], streetN: 2800 } },
+    cidade_kharnheim: { mirror: false, plaza: "market", wall: "towers", blocks: "forge", gap: 255, alt: 0.3, feat: { 1: "stalls", 2: "forge", 5: "forge", 6: "stalls", 0: "bigforge", 3: "airship", 4: "statue" }, tt: { streetsX: [1100, 4150], streetN: 2620, streetS: 5200 } },
+    cidade_freyrhain: { mirror: true, plaza: "garden", wall: "palisade", blocks: "gardens", gap: 275, alt: 0.38, feat: { 0: "park", 2: "park", 5: "park", 7: "park", 1: "church", 3: "statue", 4: "monument" }, tt: { streetsX: [1200, 4000], streetN: 2500 } },
+    cidade_gladsheim: { mirror: false, plaza: "colonnade", wall: "ruined", blocks: "sparse", gap: 300, alt: 0.18, feat: { 1: "yard", 6: "park", 3: "graves", 4: "park", 0: "castle", 2: "church", 5: "airship" }, tt: { streetsX: [900, 4300], streetS: 5300 } }
   };
   function z8(e) {
     let ST = CSTY[e.id] ?? CSTY.cidade_midgard, rs = Oe(e.seed + 55), tt2 = Object.assign({}, tt, ST.tt ?? {});
@@ -8081,6 +8108,20 @@ Error generating stack: ` + n.message + `
         s("altar", cx, cy), s("brazier", cx - 90, cy + 40), s("brazier", cx + 90, cy + 40);
       } else if (kd === "stalls") {
         for (let gy = R.y + 80; gy < R.y + R.h - 50; gy += 180) for (let gx = R.x + 100; gx < R.x + R.w - 80; gx += 170) s("stall", gx, gy), (gx / 170 | 0) % 2 && s("cart", gx + 30, gy + 80);
+      } else if (kd === "church") {
+        s("church", cx, cy - 10), s("brazier", cx - 130, cy + 74), s("brazier", cx + 50, cy + 74), s("lamp", cx - 40, cy + 80), s("planter", cx - 190, cy + 20), s("planter", cx + 150, cy + 30), s("bench", cx - 90, cy + 110), s("bench", cx + 20, cy + 110);
+        for (let [gx, gy] of [[-180, -60], [-210, -20], [190, -50], [220, 0]]) s("gravestone", cx + gx, cy + gy);
+      } else if (kd === "castle") {
+        let cw = R.w >= 340 && R.h >= 260;
+        cw ? (s("castle", cx, cy - 10), s("banner", cx - 70, cy + 128), s("banner", cx + 70, cy + 128), s("brazier", cx - 100, cy + 140), s("brazier", cx + 100, cy + 140)) : s("church", cx, cy);
+      } else if (kd === "monument") {
+        s("monument", cx, cy - 10), s("banner", cx - 90, cy + 50), s("banner", cx + 90, cy + 50), s("brazier", cx - 70, cy + 70), s("brazier", cx + 70, cy + 70), s("planter", cx - 150, cy + 10), s("planter", cx + 150, cy + 10);
+      } else if (kd === "statue") {
+        s("colossus", cx, cy - 10), s("brazier", cx - 110, cy + 70), s("brazier", cx + 110, cy + 70), s("bench", cx - 160, cy), s("bench", cx + 160, cy), s("lamp", cx - 70, cy + 90), s("lamp", cx + 70, cy + 90);
+      } else if (kd === "airship") {
+        s("airship", cx, cy - 10), s("cart", cx - 130, cy + 60), s("hay", cx + 130, cy + 60), s("post", cx + 90, cy - 60), s("lamp", cx - 90, cy + 60);
+      } else if (kd === "bigforge") {
+        s("bigforge", cx, cy - 10), s("brazier", cx - 70, cy + 100), s("brazier", cx + 70, cy + 100), s("cart", cx - 170, cy + 40), s("hay", cx + 170, cy + 50);
       } else if (kd === "forge") {
         s("forge", cx, cy - 20), s("brazier", cx - 130, cy + 70), s("brazier", cx + 130, cy + 70), s("cart", R.x + 120, R.y + 100), s("hay", R.x + R.w - 120, R.y + 110), s("cart", R.x + R.w - 130, R.y + R.h - 90), s("hay", R.x + 110, R.y + R.h - 90);
       }
@@ -8138,6 +8179,20 @@ Error generating stack: ` + n.message + `
     let h = [...new Set(n.spawns.filter((y) => y.radius > 0).map((y) => y.monster))], b = [[430, 700], [1170, 560], [800, 1020], [380, 250]].map(([y, v], k) => ({ monster: h[k % h.length], x: y, y: v, radius: 190, count: 9 })), g = Qx[t.id] ?? { map: e, x: n.width / 2, y: n.height / 2 + 120 };
     return { id: t.id, name: t.name, width: o, height: r, spawn: c, safeZone: { x: 700, y: 60, w: 200, h: 180 }, obstacles: s, spawns: b, npcs: [], pois: l, portals: [{ x: 730, y: 0, w: 140, h: 50, label: "Voltar \xE0 superf\xEDcie", locked: false, toMap: g.map, toSpawn: { x: g.x, y: g.y } }], bossDen: { x: 800, y: 1080, r: 10 }, theme: n.theme, safeLabel: "Entrada secreta", scars: [], mood: [(n.mood?.[0] ?? 1) * 0.62, (n.mood?.[1] ?? 1) * 0.62, (n.mood?.[2] ?? 1) * 0.7], hidden: true };
   }
+  function wbArena() {
+    let rg = Oe(7777), ob = [];
+    for (let k = 0; k < 26; k++) {
+      let ang = k / 26 * 6.283;
+      if (Math.abs(ang - 1.5708) < 0.5) continue;
+      ob.push({ kind: "rock", x: Math.round(960 + Math.cos(ang) * 470 - 16), y: Math.round(520 + Math.sin(ang) * 330 - 14), w: 32, h: 28 });
+    }
+    for (let k = 0, g = 0; k < 90 && g < 5e3; g++) {
+      let x = 40 + rg() * 1840, y = 40 + rg() * 1200;
+      if (Math.hypot(x - 960, (y - 520) * 1.4) < 420 || y > 980 && x > 780 && x < 1140) continue;
+      ob.push(rg() < 0.7 ? { kind: "rock", x: Math.round(x - 16), y: Math.round(y - 14), w: 32, h: 28 } : { kind: "tree", x: Math.round(x - 11), y: Math.round(y - 9), w: 22, h: 18 }), k++;
+    }
+    return { id: "wb_cratera", name: "Cratera de J\xF6rmungandr", width: 1920, height: 1280, spawn: { x: 960, y: 1120 }, safeZone: { x: 860, y: 1040, w: 200, h: 180 }, obstacles: ob, spawns: [{ monster: "jormungandr", x: 960, y: 520, radius: 0, count: 1 }], npcs: [], pois: [], portals: [{ x: 860, y: 1230, w: 200, h: 50, label: "Voltar a Midgard", locked: false, toMap: "cidade_midgard", toSpawn: { x: 2200, y: 330 } }], bossDen: { x: 960, y: 520, r: 10 }, theme: "fire", safeLabel: "Borda da cratera", scars: [], mood: [1, 0.7, 0.62], hidden: true, depth: 99 };
+  }
   var Xm = R8();
   Xm.portals.sort((e, t) => e.toMap === "planicies_jotunheim" ? -1 : t.toMap === "planicies_jotunheim" ? 1 : 0);
   var Yx = q8(), Jt = { [Xm.id]: Xm, [Yx.id]: Yx };
@@ -8145,6 +8200,7 @@ Error generating stack: ` + n.message + `
     Jt[e.id] = N8(e, t), Jt[e.id].depth = t + 1;
   });
   for (let e of D8) Jt[e.id] = z8(e);
+  Jt.wb_cratera = wbArena();
   var xn = Jt.cidade_midgard;
   xn.portals[0].toSpawn = { x: 330, y: 630 };
   for (let [e, t] of Object.entries($x)) Jt[t.id] = O8(e, t, 9e3 + e.length * 31 + t.id.length);
@@ -8478,7 +8534,7 @@ Error generating stack: ` + n.message + `
     }
     return n;
   }
-  var Qu = { lobo_faminto: { id: "lobo_faminto", name: "Lobo Faminto", level: 1, hp: 70, atk: 10, def: 0, exp: 9, speed: 85, radius: 13, aggro: 150, leash: 380, attackRange: 26, windupMs: 380, recoverMs: 700, archetype: "melee", respawnMs: 2e4, silver: [2, 5], color: 8022616, shape: "wolf", ai: { family: "lobo" }, drops: [{ item: "vasilha_mistura", chance: 0.05, min: 1, max: 1 }, { item: "erva_vermelha", chance: 0.09, min: 1, max: 1 }, { item: "erva_azul", chance: 0.06, min: 1, max: 1 }, { item: "erva_espinhosa", chance: 0.03, min: 1, max: 1 }, { item: "flecha_ferro", chance: 0.12, min: 3, max: 8 }, { item: "tintura_carmesim", chance: 0.04, min: 1, max: 1 }, { item: "cachecol_de_la", chance: 0.05, min: 1, max: 1 }, { item: "carta_lobo", chance: 5e-3, min: 1, max: 1 }, { item: "pele_lobo", chance: 0.4, min: 1, max: 1 }, { item: "gema_azul", chance: 0.02, min: 1, max: 1 }, { item: "carne_assada", chance: 0.12, min: 1, max: 1 }, { item: "hidromel_curativo", chance: 0.05, min: 1, max: 1 }, { item: "runa_vigor", chance: 0.03, min: 1, max: 1 }] }, javali: { id: "javali", name: "Javali de Midgard", level: 3, hp: 190, atk: 18, def: 2, exp: 22, speed: 70, radius: 16, aggro: 120, leash: 360, attackRange: 190, windupMs: 650, recoverMs: 1100, archetype: "charger", respawnMs: 25e3, silver: [4, 9], color: 7031343, shape: "boar", drops: [{ item: "vasilha_mistura", chance: 0.05, min: 1, max: 1 }, { item: "erva_vermelha", chance: 0.09, min: 1, max: 1 }, { item: "erva_azul", chance: 0.06, min: 1, max: 1 }, { item: "erva_espinhosa", chance: 0.03, min: 1, max: 1 }, { item: "flecha_ferro", chance: 0.12, min: 3, max: 8 }, { item: "barba_trancada", chance: 0.05, min: 1, max: 1 }, { item: "tintura_verde", chance: 0.04, min: 1, max: 1 }, { item: "carta_javali", chance: 5e-3, min: 1, max: 1 }, { item: "presa_javali", chance: 0.35, min: 1, max: 1 }, { item: "carne_assada", chance: 0.2, min: 1, max: 2 }, { item: "infusao_runica", chance: 0.06, min: 1, max: 1 }, { item: "runa_forca", chance: 0.03, min: 1, max: 1 }] }, goblin_saqueador: { id: "goblin_saqueador", name: "Goblin Saqueador", level: 5, hp: 300, atk: 24, def: 4, exp: 40, speed: 92, radius: 13, aggro: 180, leash: 420, attackRange: 28, windupMs: 420, recoverMs: 650, archetype: "melee", respawnMs: 3e4, silver: [8, 16], color: 6064698, shape: "goblin", ai: { family: "goblin", looter: true, fleeBelowHp: 0.15, fleeMs: 4e3 }, drops: [{ item: "vasilha_mistura", chance: 0.05, min: 1, max: 1 }, { item: "erva_vermelha", chance: 0.09, min: 1, max: 1 }, { item: "erva_azul", chance: 0.06, min: 1, max: 1 }, { item: "erva_espinhosa", chance: 0.03, min: 1, max: 1 }, { item: "flecha_ferro", chance: 0.12, min: 3, max: 8 }, { item: "adaga_ferro", chance: 0.05, min: 1, max: 1 }, { item: "elmo_de_ferro", chance: 0.05, min: 1, max: 1 }, { item: "tapa_olho", chance: 0.04, min: 1, max: 1 }, { item: "tintura_azul", chance: 0.05, min: 1, max: 1 }, { item: "carta_saqueador", chance: 5e-3, min: 1, max: 1 }, { item: "sucata_goblin", chance: 0.4, min: 1, max: 2 }, { item: "espada_goblin", chance: 0.04, min: 1, max: 1 }, { item: "couro_reforcado", chance: 0.02, min: 1, max: 1 }, { item: "infusao_runica", chance: 0.1, min: 1, max: 1 }, { item: "hidromel_curativo", chance: 0.08, min: 1, max: 1 }, { item: "runa_mente", chance: 0.025, min: 1, max: 1 }] }, lobo_gelo: { id: "lobo_gelo", name: "Lobo da Geada", level: 6, hp: 260, atk: 22, def: 3, exp: 38, speed: 95, radius: 13, aggro: 170, leash: 400, attackRange: 26, windupMs: 360, recoverMs: 650, archetype: "melee", respawnMs: 22e3, silver: [6, 12], color: 11457776, shape: "frostwolf", ai: { family: "lobo" }, drops: [{ item: "vasilha_mistura", chance: 0.05, min: 1, max: 1 }, { item: "erva_vermelha", chance: 0.09, min: 1, max: 1 }, { item: "erva_azul", chance: 0.06, min: 1, max: 1 }, { item: "erva_espinhosa", chance: 0.03, min: 1, max: 1 }, { item: "flecha_ferro", chance: 0.12, min: 3, max: 8 }, { item: "tintura_roxa", chance: 0.03, min: 1, max: 1 }, { item: "mascara_de_couro", chance: 0.03, min: 1, max: 1 }, { item: "presa_gelo", chance: 0.4, min: 1, max: 1 }, { item: "carne_assada", chance: 0.15, min: 1, max: 1 }, { item: "hidromel_curativo", chance: 0.08, min: 1, max: 1 }] }, draugr: { id: "draugr", name: "Draugr Congelado", level: 8, hp: 420, atk: 30, def: 7, exp: 62, speed: 70, radius: 14, aggro: 150, leash: 380, attackRange: 30, windupMs: 520, recoverMs: 800, archetype: "melee", respawnMs: 28e3, silver: [10, 20], color: 10470616, shape: "draugr", drops: [{ item: "vasilha_mistura", chance: 0.05, min: 1, max: 1 }, { item: "erva_vermelha", chance: 0.09, min: 1, max: 1 }, { item: "erva_azul", chance: 0.06, min: 1, max: 1 }, { item: "erva_espinhosa", chance: 0.03, min: 1, max: 1 }, { item: "flecha_ferro", chance: 0.12, min: 3, max: 8 }, { item: "tintura_negra", chance: 0.04, min: 1, max: 1 }, { item: "oculos_de_forja", chance: 0.03, min: 1, max: 1 }, { item: "carta_draugr", chance: 5e-3, min: 1, max: 1 }, { item: "osso_gelido", chance: 0.45, min: 1, max: 1 }, { item: "infusao_runica", chance: 0.12, min: 1, max: 1 }, { item: "machado_gelo", chance: 0.015, min: 1, max: 1 }, { item: "armadura_gelida", chance: 0.02, min: 1, max: 1 }, { item: "runa_egide", chance: 0.03, min: 1, max: 1 }] }, yeti_nevasca: { id: "yeti_nevasca", name: "Yeti da Nevasca", level: 9, hp: 640, atk: 40, def: 6, exp: 95, speed: 66, radius: 20, aggro: 120, leash: 360, attackRange: 200, windupMs: 700, recoverMs: 1200, archetype: "charger", respawnMs: 34e3, silver: [16, 30], color: 15266559, shape: "yeti", ai: { lowHp: { kind: "enrage", atkMul: 1.4, speedMul: 1.15 } }, drops: [{ item: "vasilha_mistura", chance: 0.05, min: 1, max: 1 }, { item: "erva_vermelha", chance: 0.09, min: 1, max: 1 }, { item: "erva_azul", chance: 0.06, min: 1, max: 1 }, { item: "erva_espinhosa", chance: 0.03, min: 1, max: 1 }, { item: "flecha_ferro", chance: 0.12, min: 3, max: 8 }, { item: "carta_yeti", chance: 5e-3, min: 1, max: 1 }, { item: "pelo_yeti", chance: 0.4, min: 1, max: 1 }, { item: "hidromel_forte", chance: 0.1, min: 1, max: 1 }, { item: "amuleto_geada", chance: 0.03, min: 1, max: 1 }] }, salamandra_brasa: { id: "salamandra_brasa", name: "Brasa Viva", level: 11, hp: 520, atk: 36, def: 8, exp: 78, speed: 78, radius: 14, aggro: 180, leash: 420, attackRange: 28, windupMs: 420, recoverMs: 700, archetype: "melee", respawnMs: 3e4, silver: [14, 26], color: 16742970, shape: "cinder", ai: { lowHp: { kind: "enrage", atkMul: 1.5, speedMul: 1.2 } }, drops: [{ item: "vasilha_mistura", chance: 0.05, min: 1, max: 1 }, { item: "erva_vermelha", chance: 0.09, min: 1, max: 1 }, { item: "erva_azul", chance: 0.06, min: 1, max: 1 }, { item: "erva_espinhosa", chance: 0.03, min: 1, max: 1 }, { item: "flecha_ferro", chance: 0.12, min: 3, max: 8 }, { item: "carta_salamandra", chance: 5e-3, min: 1, max: 1 }, { item: "sucata_goblin", chance: 0.3, min: 1, max: 2 }, { item: "infusao_runica", chance: 0.08, min: 1, max: 1 }, { item: "runa_mente", chance: 0.03, min: 1, max: 1 }] }, automato_ferro: { id: "automato_ferro", name: "Aut\xF4mato de Ferro", level: 14, hp: 760, atk: 46, def: 16, exp: 110, speed: 62, radius: 16, aggro: 170, leash: 400, attackRange: 30, windupMs: 560, recoverMs: 900, archetype: "melee", respawnMs: 32e3, silver: [20, 36], color: 9082020, shape: "automaton", ai: { lowHp: { kind: "power", mult: 2.2, radius: 120 } }, drops: [{ item: "vasilha_mistura", chance: 0.05, min: 1, max: 1 }, { item: "erva_vermelha", chance: 0.09, min: 1, max: 1 }, { item: "erva_azul", chance: 0.06, min: 1, max: 1 }, { item: "erva_espinhosa", chance: 0.03, min: 1, max: 1 }, { item: "flecha_ferro", chance: 0.12, min: 3, max: 8 }, { item: "sucata_goblin", chance: 0.5, min: 1, max: 3 }, { item: "infusao_runica", chance: 0.08, min: 1, max: 1 }, { item: "runa_egide", chance: 0.04, min: 1, max: 1 }] }, guardiao_raiz: { id: "guardiao_raiz", name: "Guardi\xE3o de Raiz", level: 16, hp: 860, atk: 50, def: 12, exp: 128, speed: 70, radius: 15, aggro: 180, leash: 420, attackRange: 28, windupMs: 480, recoverMs: 800, archetype: "melee", respawnMs: 3e4, silver: [20, 40], color: 5933626, shape: "sylvan", ai: { lowHp: { kind: "power", mult: 2, radius: 130 } }, drops: [{ item: "vasilha_mistura", chance: 0.05, min: 1, max: 1 }, { item: "erva_vermelha", chance: 0.09, min: 1, max: 1 }, { item: "erva_azul", chance: 0.06, min: 1, max: 1 }, { item: "erva_espinhosa", chance: 0.03, min: 1, max: 1 }, { item: "flecha_ferro", chance: 0.12, min: 3, max: 8 }, { item: "sucata_goblin", chance: 0.35, min: 1, max: 2 }, { item: "infusao_runica", chance: 0.08, min: 1, max: 1 }, { item: "runa_vigor", chance: 0.04, min: 1, max: 1 }] }, construto_prisma: { id: "construto_prisma", name: "Construto Prism\xE1tico", level: 18, hp: 980, atk: 56, def: 15, exp: 150, speed: 70, radius: 15, aggro: 180, leash: 420, attackRange: 28, windupMs: 480, recoverMs: 800, archetype: "melee", respawnMs: 3e4, silver: [22, 44], color: 11832575, shape: "prism", ai: { lowHp: { kind: "teleport", minDistance: 380 } }, drops: [{ item: "vasilha_mistura", chance: 0.05, min: 1, max: 1 }, { item: "erva_vermelha", chance: 0.09, min: 1, max: 1 }, { item: "erva_azul", chance: 0.06, min: 1, max: 1 }, { item: "erva_espinhosa", chance: 0.03, min: 1, max: 1 }, { item: "flecha_ferro", chance: 0.12, min: 3, max: 8 }, { item: "sucata_goblin", chance: 0.35, min: 1, max: 2 }, { item: "infusao_runica", chance: 0.08, min: 1, max: 1 }, { item: "runa_mente", chance: 0.04, min: 1, max: 1 }] }, sentinela_pedra: { id: "sentinela_pedra", name: "Sentinela de Pedra", level: 20, hp: 1100, atk: 60, def: 20, exp: 180, speed: 68, radius: 16, aggro: 180, leash: 420, attackRange: 30, windupMs: 500, recoverMs: 850, archetype: "melee", respawnMs: 32e3, silver: [26, 52], color: 14734490, shape: "sentinel", ai: { behavior: "assist", family: "pedra", assistRadius: 400, lowHp: { kind: "enrage", atkMul: 1.4, speedMul: 1.1 } }, drops: [{ item: "vasilha_mistura", chance: 0.05, min: 1, max: 1 }, { item: "erva_vermelha", chance: 0.09, min: 1, max: 1 }, { item: "erva_azul", chance: 0.06, min: 1, max: 1 }, { item: "erva_espinhosa", chance: 0.03, min: 1, max: 1 }, { item: "flecha_ferro", chance: 0.12, min: 3, max: 8 }, { item: "sucata_goblin", chance: 0.4, min: 1, max: 3 }, { item: "infusao_runica", chance: 0.1, min: 1, max: 1 }, { item: "runa_egide", chance: 0.05, min: 1, max: 1 }] }, eco_vazio: { id: "eco_vazio", name: "Eco do Vazio", level: 24, hp: 1400, atk: 72, def: 24, exp: 240, speed: 68, radius: 16, aggro: 180, leash: 420, attackRange: 30, windupMs: 500, recoverMs: 850, archetype: "melee", respawnMs: 32e3, silver: [30, 60], color: 8014544, shape: "voidling", ai: { lowHp: { kind: "teleport", minDistance: 420 } }, drops: [{ item: "vasilha_mistura", chance: 0.05, min: 1, max: 1 }, { item: "erva_vermelha", chance: 0.09, min: 1, max: 1 }, { item: "erva_azul", chance: 0.06, min: 1, max: 1 }, { item: "erva_espinhosa", chance: 0.03, min: 1, max: 1 }, { item: "flecha_ferro", chance: 0.12, min: 3, max: 8 }, { item: "sucata_goblin", chance: 0.4, min: 1, max: 3 }, { item: "infusao_runica", chance: 0.1, min: 1, max: 1 }, { item: "runa_mente", chance: 0.05, min: 1, max: 1 }] }, javali_vana: { id: "javali_vana", name: "Javali de Vanaheim", level: 15, hp: 780, atk: 46, def: 12, exp: 100, speed: 76, radius: 17, aggro: 140, leash: 380, attackRange: 190, windupMs: 620, recoverMs: 1e3, archetype: "charger", respawnMs: 28e3, silver: [14, 26], color: 7047743, shape: "boar", ai: { behavior: "passive", family: "javali" }, drops: [{ item: "vasilha_mistura", chance: 0.05, min: 1, max: 1 }, { item: "erva_vermelha", chance: 0.09, min: 1, max: 1 }, { item: "erva_azul", chance: 0.06, min: 1, max: 1 }, { item: "erva_espinhosa", chance: 0.03, min: 1, max: 1 }, { item: "flecha_ferro", chance: 0.12, min: 3, max: 8 }, { item: "presa_javali", chance: 0.4, min: 1, max: 1 }, { item: "carne_assada", chance: 0.25, min: 1, max: 2 }, { item: "runa_forca", chance: 0.04, min: 1, max: 1 }] }, broto_espinhoso: { id: "broto_espinhoso", name: "Broto Espinhoso", level: 15, hp: 640, atk: 44, def: 14, exp: 96, speed: 20, radius: 14, aggro: 160, leash: 200, attackRange: 70, windupMs: 450, recoverMs: 900, archetype: "melee", respawnMs: 28e3, silver: [14, 28], color: 5808698, shape: "blob", ai: { behavior: "plant" }, drops: [{ item: "vasilha_mistura", chance: 0.05, min: 1, max: 1 }, { item: "erva_vermelha", chance: 0.09, min: 1, max: 1 }, { item: "erva_azul", chance: 0.06, min: 1, max: 1 }, { item: "erva_espinhosa", chance: 0.03, min: 1, max: 1 }, { item: "flecha_ferro", chance: 0.12, min: 3, max: 8 }, { item: "sucata_goblin", chance: 0.3, min: 1, max: 2 }, { item: "infusao_runica", chance: 0.1, min: 1, max: 1 }, { item: "runa_vigor", chance: 0.04, min: 1, max: 1 }] }, cao_magma: { id: "cao_magma", name: "C\xE3o de Magma", level: 12, hp: 560, atk: 40, def: 9, exp: 88, speed: 98, radius: 16, aggro: 190, leash: 420, attackRange: 190, windupMs: 600, recoverMs: 1e3, archetype: "charger", respawnMs: 3e4, silver: [16, 30], color: 12600874, shape: "wolf", ai: { family: "cao", lowHp: { kind: "enrage", atkMul: 1.3, speedMul: 1.25 } }, drops: [{ item: "vasilha_mistura", chance: 0.05, min: 1, max: 1 }, { item: "erva_vermelha", chance: 0.09, min: 1, max: 1 }, { item: "erva_azul", chance: 0.06, min: 1, max: 1 }, { item: "erva_espinhosa", chance: 0.03, min: 1, max: 1 }, { item: "flecha_ferro", chance: 0.12, min: 3, max: 8 }, { item: "carne_assada", chance: 0.2, min: 1, max: 2 }, { item: "infusao_runica", chance: 0.08, min: 1, max: 1 }, { item: "runa_forca", chance: 0.03, min: 1, max: 1 }] }, hel_rainha: { id: "hel_rainha", name: "Hel, a Rainha dos Mortos", level: 22, hp: 9e3, atk: 78, def: 22, exp: 2600, speed: 80, radius: 34, aggro: 280, leash: 560, attackRange: 58, windupMs: 540, recoverMs: 850, archetype: "melee", respawnMs: 42e4, silver: [264, 396], color: 7310008, shape: "jotun", boss: true, adds: { monster: "draugr", count: 2 }, drops: [{ item: "vasilha_mistura", chance: 0.05, min: 1, max: 1 }, { item: "erva_vermelha", chance: 0.09, min: 1, max: 1 }, { item: "erva_azul", chance: 0.06, min: 1, max: 1 }, { item: "erva_espinhosa", chance: 0.03, min: 1, max: 1 }, { item: "flecha_ferro", chance: 0.12, min: 3, max: 8 }, { item: "infusao_runica", chance: 1, min: 2, max: 4 }, { item: "hidromel_forte", chance: 0.8, min: 1, max: 3 }, { item: "runa_forca", chance: 0.3, min: 1, max: 1 }, { item: "runa_vigor", chance: 0.3, min: 1, max: 1 }, { item: "runa_egide", chance: 0.3, min: 1, max: 1 }, { item: "runa_mente", chance: 0.3, min: 1, max: 1 }] }, arauto_surtr: { id: "arauto_surtr", name: "Arauto de Surtr", level: 20, hp: 7600, atk: 72, def: 18, exp: 2100, speed: 80, radius: 34, aggro: 280, leash: 560, attackRange: 58, windupMs: 540, recoverMs: 850, archetype: "melee", respawnMs: 42e4, silver: [240, 360], color: 16734752, shape: "jotun", boss: true, adds: { monster: "salamandra_brasa", count: 2 }, drops: [{ item: "vasilha_mistura", chance: 0.05, min: 1, max: 1 }, { item: "erva_vermelha", chance: 0.09, min: 1, max: 1 }, { item: "erva_azul", chance: 0.06, min: 1, max: 1 }, { item: "erva_espinhosa", chance: 0.03, min: 1, max: 1 }, { item: "flecha_ferro", chance: 0.12, min: 3, max: 8 }, { item: "infusao_runica", chance: 1, min: 2, max: 4 }, { item: "hidromel_forte", chance: 0.8, min: 1, max: 3 }, { item: "runa_forca", chance: 0.3, min: 1, max: 1 }, { item: "runa_vigor", chance: 0.3, min: 1, max: 1 }, { item: "runa_egide", chance: 0.3, min: 1, max: 1 }, { item: "runa_mente", chance: 0.3, min: 1, max: 1 }] }, rei_automato: { id: "rei_automato", name: "Rei Aut\xF4mato de Nidavellir", level: 24, hp: 10500, atk: 86, def: 30, exp: 3e3, speed: 80, radius: 34, aggro: 280, leash: 560, attackRange: 58, windupMs: 540, recoverMs: 850, archetype: "melee", respawnMs: 42e4, silver: [288, 432], color: 10134708, shape: "jotun", boss: true, adds: { monster: "automato_ferro", count: 2 }, drops: [{ item: "vasilha_mistura", chance: 0.05, min: 1, max: 1 }, { item: "erva_vermelha", chance: 0.09, min: 1, max: 1 }, { item: "erva_azul", chance: 0.06, min: 1, max: 1 }, { item: "erva_espinhosa", chance: 0.03, min: 1, max: 1 }, { item: "flecha_ferro", chance: 0.12, min: 3, max: 8 }, { item: "infusao_runica", chance: 1, min: 2, max: 4 }, { item: "hidromel_forte", chance: 0.8, min: 1, max: 3 }, { item: "runa_forca", chance: 0.3, min: 1, max: 1 }, { item: "runa_vigor", chance: 0.3, min: 1, max: 1 }, { item: "runa_egide", chance: 0.3, min: 1, max: 1 }, { item: "runa_mente", chance: 0.3, min: 1, max: 1 }] }, coracao_verde: { id: "coracao_verde", name: "Guardi\xE3o do Cora\xE7\xE3o Verde", level: 26, hp: 12e3, atk: 92, def: 26, exp: 3400, speed: 80, radius: 34, aggro: 280, leash: 560, attackRange: 58, windupMs: 540, recoverMs: 850, archetype: "melee", respawnMs: 42e4, silver: [312, 468], color: 4892746, shape: "jotun", boss: true, adds: { monster: "guardiao_raiz", count: 2 }, drops: [{ item: "vasilha_mistura", chance: 0.05, min: 1, max: 1 }, { item: "erva_vermelha", chance: 0.09, min: 1, max: 1 }, { item: "erva_azul", chance: 0.06, min: 1, max: 1 }, { item: "erva_espinhosa", chance: 0.03, min: 1, max: 1 }, { item: "flecha_ferro", chance: 0.12, min: 3, max: 8 }, { item: "infusao_runica", chance: 1, min: 2, max: 4 }, { item: "hidromel_forte", chance: 0.8, min: 1, max: 3 }, { item: "runa_forca", chance: 0.3, min: 1, max: 1 }, { item: "runa_vigor", chance: 0.3, min: 1, max: 1 }, { item: "runa_egide", chance: 0.3, min: 1, max: 1 }, { item: "runa_mente", chance: 0.3, min: 1, max: 1 }] }, guardiao_prismatico: { id: "guardiao_prismatico", name: "Guardi\xE3o Prism\xE1tico", level: 28, hp: 13500, atk: 98, def: 32, exp: 3900, speed: 80, radius: 34, aggro: 280, leash: 560, attackRange: 58, windupMs: 540, recoverMs: 850, archetype: "melee", respawnMs: 42e4, silver: [336, 504], color: 11832575, shape: "jotun", boss: true, adds: { monster: "construto_prisma", count: 2 }, drops: [{ item: "vasilha_mistura", chance: 0.05, min: 1, max: 1 }, { item: "erva_vermelha", chance: 0.09, min: 1, max: 1 }, { item: "erva_azul", chance: 0.06, min: 1, max: 1 }, { item: "erva_espinhosa", chance: 0.03, min: 1, max: 1 }, { item: "flecha_ferro", chance: 0.12, min: 3, max: 8 }, { item: "infusao_runica", chance: 1, min: 2, max: 4 }, { item: "hidromel_forte", chance: 0.8, min: 1, max: 3 }, { item: "runa_forca", chance: 0.3, min: 1, max: 1 }, { item: "runa_vigor", chance: 0.3, min: 1, max: 1 }, { item: "runa_egide", chance: 0.3, min: 1, max: 1 }, { item: "runa_mente", chance: 0.3, min: 1, max: 1 }] }, campeao_sol_partido: { id: "campeao_sol_partido", name: "Campe\xE3o do Sol Partido", level: 32, hp: 16e3, atk: 110, def: 38, exp: 4800, speed: 80, radius: 34, aggro: 280, leash: 560, attackRange: 58, windupMs: 540, recoverMs: 850, archetype: "melee", respawnMs: 42e4, silver: [384, 576], color: 15253584, shape: "jotun", boss: true, adds: { monster: "sentinela_pedra", count: 2 }, drops: [{ item: "vasilha_mistura", chance: 0.05, min: 1, max: 1 }, { item: "erva_vermelha", chance: 0.09, min: 1, max: 1 }, { item: "erva_azul", chance: 0.06, min: 1, max: 1 }, { item: "erva_espinhosa", chance: 0.03, min: 1, max: 1 }, { item: "flecha_ferro", chance: 0.12, min: 3, max: 8 }, { item: "infusao_runica", chance: 1, min: 2, max: 4 }, { item: "hidromel_forte", chance: 0.8, min: 1, max: 3 }, { item: "runa_forca", chance: 0.3, min: 1, max: 1 }, { item: "runa_vigor", chance: 0.3, min: 1, max: 1 }, { item: "runa_egide", chance: 0.3, min: 1, max: 1 }, { item: "runa_mente", chance: 0.3, min: 1, max: 1 }] }, devorador_ruptura: { id: "devorador_ruptura", name: "Devorador da Ruptura", level: 38, hp: 22e3, atk: 128, def: 44, exp: 6500, speed: 80, radius: 34, aggro: 280, leash: 560, attackRange: 58, windupMs: 540, recoverMs: 850, archetype: "melee", respawnMs: 42e4, silver: [456, 684], color: 8010448, shape: "jotun", boss: true, adds: { monster: "eco_vazio", count: 3 }, drops: [{ item: "vasilha_mistura", chance: 0.05, min: 1, max: 1 }, { item: "erva_vermelha", chance: 0.09, min: 1, max: 1 }, { item: "erva_azul", chance: 0.06, min: 1, max: 1 }, { item: "erva_espinhosa", chance: 0.03, min: 1, max: 1 }, { item: "flecha_ferro", chance: 0.12, min: 3, max: 8 }, { item: "infusao_runica", chance: 1, min: 2, max: 4 }, { item: "hidromel_forte", chance: 0.8, min: 1, max: 3 }, { item: "runa_forca", chance: 0.3, min: 1, max: 1 }, { item: "runa_vigor", chance: 0.3, min: 1, max: 1 }, { item: "runa_egide", chance: 0.3, min: 1, max: 1 }, { item: "runa_mente", chance: 0.3, min: 1, max: 1 }] }, hrimgar: { id: "hrimgar", name: "Hr\xEDmgar, o Gigante da Geada", level: 14, hp: 4600, atk: 54, def: 12, exp: 1100, speed: 82, radius: 34, aggro: 280, leash: 560, attackRange: 58, windupMs: 520, recoverMs: 850, archetype: "melee", respawnMs: 42e4, silver: [260, 380], color: 10475775, shape: "jotun", boss: true, adds: { monster: "lobo_gelo", count: 2 }, drops: [{ item: "vasilha_mistura", chance: 0.05, min: 1, max: 1 }, { item: "erva_vermelha", chance: 0.09, min: 1, max: 1 }, { item: "erva_azul", chance: 0.06, min: 1, max: 1 }, { item: "erva_espinhosa", chance: 0.03, min: 1, max: 1 }, { item: "flecha_ferro", chance: 0.12, min: 3, max: 8 }, { item: "coracao_de_gelo", chance: 1, min: 1, max: 1 }, { item: "hidromel_forte", chance: 0.8, min: 1, max: 3 }, { item: "manto_de_geada", chance: 0.35, min: 1, max: 1 }, { item: "anel_do_inverno", chance: 0.2, min: 1, max: 1 }, { item: "machado_gelo", chance: 0.15, min: 1, max: 1 }, { item: "lamina_gelo", chance: 0.15, min: 1, max: 1 }, { item: "arco_gelo", chance: 0.15, min: 1, max: 1 }, { item: "cajado_gelo", chance: 0.15, min: 1, max: 1 }, { item: "lanca_gelo", chance: 0.15, min: 1, max: 1 }, { item: "runa_egide", chance: 0.35, min: 1, max: 1 }] }, hati: { id: "hati", name: "Hati, o Lobo Lunar", level: 10, hp: 2300, atk: 32, def: 8, exp: 520, speed: 100, radius: 26, aggro: 260, leash: 520, attackRange: 46, windupMs: 450, recoverMs: 800, archetype: "melee", respawnMs: 3e5, silver: [120, 180], color: 13227775, shape: "hati", boss: true, drops: [{ item: "vasilha_mistura", chance: 0.05, min: 1, max: 1 }, { item: "erva_vermelha", chance: 0.09, min: 1, max: 1 }, { item: "erva_azul", chance: 0.06, min: 1, max: 1 }, { item: "erva_espinhosa", chance: 0.03, min: 1, max: 1 }, { item: "flecha_ferro", chance: 0.12, min: 3, max: 8 }, { item: "carta_hati", chance: 5e-4, min: 1, max: 1 }, { item: "pelagem_lunar", chance: 1, min: 1, max: 2 }, { item: "hidromel_forte", chance: 0.6, min: 1, max: 2 }, { item: "manto_lobo_lunar", chance: 0.35, min: 1, max: 1 }, { item: "pingente_lunar", chance: 0.2, min: 1, max: 1 }, { item: "runa_forca", chance: 0.3, min: 1, max: 1 }] } }, yy = 0.5, vy = 1.25, My = 1.3, ar = { radius: 95, windupMs: 1e3, mult: 1.7, everyMs: 6500 }, ky = { monster: "lobo_faminto", count: 2 };
+  var Qu = { jormungandr: { id: "jormungandr", name: "J\xF6rmungandr, a Serpente do Mundo", level: 60, hp: 4e6, atk: 190, def: 70, exp: 60000, speed: 62, radius: 74, aggro: 900, leash: 6e3, attackRange: 130, windupMs: 900, recoverMs: 1000, archetype: "melee", respawnMs: 1e9, silver: [6e3, 9e3], color: 2124360, shape: "jotun", boss: true, adds: { monster: "eco_vazio", count: 3 }, drops: [{ item: "infusao_runica", chance: 1, min: 8, max: 14 }, { item: "hidromel_forte", chance: 1, min: 4, max: 8 }, { item: "runa_ancestral", chance: 0.9, min: 1, max: 2 }, { item: "runa_forca", chance: 0.6, min: 1, max: 1 }, { item: "runa_vigor", chance: 0.6, min: 1, max: 1 }, { item: "runa_egide", chance: 0.6, min: 1, max: 1 }, { item: "runa_mente", chance: 0.6, min: 1, max: 1 }, { item: "coroa_de_ouro", chance: 0.08, min: 1, max: 1 }] }, lobo_faminto: { id: "lobo_faminto", name: "Lobo Faminto", level: 1, hp: 70, atk: 10, def: 0, exp: 9, speed: 85, radius: 13, aggro: 150, leash: 380, attackRange: 26, windupMs: 380, recoverMs: 700, archetype: "melee", respawnMs: 2e4, silver: [2, 5], color: 8022616, shape: "wolf", ai: { family: "lobo" }, drops: [{ item: "vasilha_mistura", chance: 0.05, min: 1, max: 1 }, { item: "erva_vermelha", chance: 0.09, min: 1, max: 1 }, { item: "erva_azul", chance: 0.06, min: 1, max: 1 }, { item: "erva_espinhosa", chance: 0.03, min: 1, max: 1 }, { item: "flecha_ferro", chance: 0.12, min: 3, max: 8 }, { item: "tintura_carmesim", chance: 0.04, min: 1, max: 1 }, { item: "cachecol_de_la", chance: 0.05, min: 1, max: 1 }, { item: "carta_lobo", chance: 5e-3, min: 1, max: 1 }, { item: "pele_lobo", chance: 0.4, min: 1, max: 1 }, { item: "gema_azul", chance: 0.02, min: 1, max: 1 }, { item: "carne_assada", chance: 0.12, min: 1, max: 1 }, { item: "hidromel_curativo", chance: 0.05, min: 1, max: 1 }, { item: "runa_vigor", chance: 0.03, min: 1, max: 1 }] }, javali: { id: "javali", name: "Javali de Midgard", level: 3, hp: 190, atk: 18, def: 2, exp: 22, speed: 70, radius: 16, aggro: 120, leash: 360, attackRange: 190, windupMs: 650, recoverMs: 1100, archetype: "charger", respawnMs: 25e3, silver: [4, 9], color: 7031343, shape: "boar", drops: [{ item: "vasilha_mistura", chance: 0.05, min: 1, max: 1 }, { item: "erva_vermelha", chance: 0.09, min: 1, max: 1 }, { item: "erva_azul", chance: 0.06, min: 1, max: 1 }, { item: "erva_espinhosa", chance: 0.03, min: 1, max: 1 }, { item: "flecha_ferro", chance: 0.12, min: 3, max: 8 }, { item: "barba_trancada", chance: 0.05, min: 1, max: 1 }, { item: "tintura_verde", chance: 0.04, min: 1, max: 1 }, { item: "carta_javali", chance: 5e-3, min: 1, max: 1 }, { item: "presa_javali", chance: 0.35, min: 1, max: 1 }, { item: "carne_assada", chance: 0.2, min: 1, max: 2 }, { item: "infusao_runica", chance: 0.06, min: 1, max: 1 }, { item: "runa_forca", chance: 0.03, min: 1, max: 1 }] }, goblin_saqueador: { id: "goblin_saqueador", name: "Goblin Saqueador", level: 5, hp: 300, atk: 24, def: 4, exp: 40, speed: 92, radius: 13, aggro: 180, leash: 420, attackRange: 28, windupMs: 420, recoverMs: 650, archetype: "melee", respawnMs: 3e4, silver: [8, 16], color: 6064698, shape: "goblin", ai: { family: "goblin", looter: true, fleeBelowHp: 0.15, fleeMs: 4e3 }, drops: [{ item: "vasilha_mistura", chance: 0.05, min: 1, max: 1 }, { item: "erva_vermelha", chance: 0.09, min: 1, max: 1 }, { item: "erva_azul", chance: 0.06, min: 1, max: 1 }, { item: "erva_espinhosa", chance: 0.03, min: 1, max: 1 }, { item: "flecha_ferro", chance: 0.12, min: 3, max: 8 }, { item: "adaga_ferro", chance: 0.05, min: 1, max: 1 }, { item: "elmo_de_ferro", chance: 0.05, min: 1, max: 1 }, { item: "tapa_olho", chance: 0.04, min: 1, max: 1 }, { item: "tintura_azul", chance: 0.05, min: 1, max: 1 }, { item: "carta_saqueador", chance: 5e-3, min: 1, max: 1 }, { item: "sucata_goblin", chance: 0.4, min: 1, max: 2 }, { item: "espada_goblin", chance: 0.04, min: 1, max: 1 }, { item: "couro_reforcado", chance: 0.02, min: 1, max: 1 }, { item: "infusao_runica", chance: 0.1, min: 1, max: 1 }, { item: "hidromel_curativo", chance: 0.08, min: 1, max: 1 }, { item: "runa_mente", chance: 0.025, min: 1, max: 1 }] }, lobo_gelo: { id: "lobo_gelo", name: "Lobo da Geada", level: 6, hp: 260, atk: 22, def: 3, exp: 38, speed: 95, radius: 13, aggro: 170, leash: 400, attackRange: 26, windupMs: 360, recoverMs: 650, archetype: "melee", respawnMs: 22e3, silver: [6, 12], color: 11457776, shape: "frostwolf", ai: { family: "lobo" }, drops: [{ item: "vasilha_mistura", chance: 0.05, min: 1, max: 1 }, { item: "erva_vermelha", chance: 0.09, min: 1, max: 1 }, { item: "erva_azul", chance: 0.06, min: 1, max: 1 }, { item: "erva_espinhosa", chance: 0.03, min: 1, max: 1 }, { item: "flecha_ferro", chance: 0.12, min: 3, max: 8 }, { item: "tintura_roxa", chance: 0.03, min: 1, max: 1 }, { item: "mascara_de_couro", chance: 0.03, min: 1, max: 1 }, { item: "presa_gelo", chance: 0.4, min: 1, max: 1 }, { item: "carne_assada", chance: 0.15, min: 1, max: 1 }, { item: "hidromel_curativo", chance: 0.08, min: 1, max: 1 }] }, draugr: { id: "draugr", name: "Draugr Congelado", level: 8, hp: 420, atk: 30, def: 7, exp: 62, speed: 70, radius: 14, aggro: 150, leash: 380, attackRange: 30, windupMs: 520, recoverMs: 800, archetype: "melee", respawnMs: 28e3, silver: [10, 20], color: 10470616, shape: "draugr", drops: [{ item: "vasilha_mistura", chance: 0.05, min: 1, max: 1 }, { item: "erva_vermelha", chance: 0.09, min: 1, max: 1 }, { item: "erva_azul", chance: 0.06, min: 1, max: 1 }, { item: "erva_espinhosa", chance: 0.03, min: 1, max: 1 }, { item: "flecha_ferro", chance: 0.12, min: 3, max: 8 }, { item: "tintura_negra", chance: 0.04, min: 1, max: 1 }, { item: "oculos_de_forja", chance: 0.03, min: 1, max: 1 }, { item: "carta_draugr", chance: 5e-3, min: 1, max: 1 }, { item: "osso_gelido", chance: 0.45, min: 1, max: 1 }, { item: "infusao_runica", chance: 0.12, min: 1, max: 1 }, { item: "machado_gelo", chance: 0.015, min: 1, max: 1 }, { item: "armadura_gelida", chance: 0.02, min: 1, max: 1 }, { item: "runa_egide", chance: 0.03, min: 1, max: 1 }] }, yeti_nevasca: { id: "yeti_nevasca", name: "Yeti da Nevasca", level: 9, hp: 640, atk: 40, def: 6, exp: 95, speed: 66, radius: 20, aggro: 120, leash: 360, attackRange: 200, windupMs: 700, recoverMs: 1200, archetype: "charger", respawnMs: 34e3, silver: [16, 30], color: 15266559, shape: "yeti", ai: { lowHp: { kind: "enrage", atkMul: 1.4, speedMul: 1.15 } }, drops: [{ item: "vasilha_mistura", chance: 0.05, min: 1, max: 1 }, { item: "erva_vermelha", chance: 0.09, min: 1, max: 1 }, { item: "erva_azul", chance: 0.06, min: 1, max: 1 }, { item: "erva_espinhosa", chance: 0.03, min: 1, max: 1 }, { item: "flecha_ferro", chance: 0.12, min: 3, max: 8 }, { item: "carta_yeti", chance: 5e-3, min: 1, max: 1 }, { item: "pelo_yeti", chance: 0.4, min: 1, max: 1 }, { item: "hidromel_forte", chance: 0.1, min: 1, max: 1 }, { item: "amuleto_geada", chance: 0.03, min: 1, max: 1 }] }, salamandra_brasa: { id: "salamandra_brasa", name: "Brasa Viva", level: 11, hp: 520, atk: 36, def: 8, exp: 78, speed: 78, radius: 14, aggro: 180, leash: 420, attackRange: 28, windupMs: 420, recoverMs: 700, archetype: "melee", respawnMs: 3e4, silver: [14, 26], color: 16742970, shape: "cinder", ai: { lowHp: { kind: "enrage", atkMul: 1.5, speedMul: 1.2 } }, drops: [{ item: "vasilha_mistura", chance: 0.05, min: 1, max: 1 }, { item: "erva_vermelha", chance: 0.09, min: 1, max: 1 }, { item: "erva_azul", chance: 0.06, min: 1, max: 1 }, { item: "erva_espinhosa", chance: 0.03, min: 1, max: 1 }, { item: "flecha_ferro", chance: 0.12, min: 3, max: 8 }, { item: "carta_salamandra", chance: 5e-3, min: 1, max: 1 }, { item: "sucata_goblin", chance: 0.3, min: 1, max: 2 }, { item: "infusao_runica", chance: 0.08, min: 1, max: 1 }, { item: "runa_mente", chance: 0.03, min: 1, max: 1 }] }, automato_ferro: { id: "automato_ferro", name: "Aut\xF4mato de Ferro", level: 14, hp: 760, atk: 46, def: 16, exp: 110, speed: 62, radius: 16, aggro: 170, leash: 400, attackRange: 30, windupMs: 560, recoverMs: 900, archetype: "melee", respawnMs: 32e3, silver: [20, 36], color: 9082020, shape: "automaton", ai: { lowHp: { kind: "power", mult: 2.2, radius: 120 } }, drops: [{ item: "vasilha_mistura", chance: 0.05, min: 1, max: 1 }, { item: "erva_vermelha", chance: 0.09, min: 1, max: 1 }, { item: "erva_azul", chance: 0.06, min: 1, max: 1 }, { item: "erva_espinhosa", chance: 0.03, min: 1, max: 1 }, { item: "flecha_ferro", chance: 0.12, min: 3, max: 8 }, { item: "sucata_goblin", chance: 0.5, min: 1, max: 3 }, { item: "infusao_runica", chance: 0.08, min: 1, max: 1 }, { item: "runa_egide", chance: 0.04, min: 1, max: 1 }] }, guardiao_raiz: { id: "guardiao_raiz", name: "Guardi\xE3o de Raiz", level: 16, hp: 860, atk: 50, def: 12, exp: 128, speed: 70, radius: 15, aggro: 180, leash: 420, attackRange: 28, windupMs: 480, recoverMs: 800, archetype: "melee", respawnMs: 3e4, silver: [20, 40], color: 5933626, shape: "sylvan", ai: { lowHp: { kind: "power", mult: 2, radius: 130 } }, drops: [{ item: "vasilha_mistura", chance: 0.05, min: 1, max: 1 }, { item: "erva_vermelha", chance: 0.09, min: 1, max: 1 }, { item: "erva_azul", chance: 0.06, min: 1, max: 1 }, { item: "erva_espinhosa", chance: 0.03, min: 1, max: 1 }, { item: "flecha_ferro", chance: 0.12, min: 3, max: 8 }, { item: "sucata_goblin", chance: 0.35, min: 1, max: 2 }, { item: "infusao_runica", chance: 0.08, min: 1, max: 1 }, { item: "runa_vigor", chance: 0.04, min: 1, max: 1 }] }, construto_prisma: { id: "construto_prisma", name: "Construto Prism\xE1tico", level: 18, hp: 980, atk: 56, def: 15, exp: 150, speed: 70, radius: 15, aggro: 180, leash: 420, attackRange: 28, windupMs: 480, recoverMs: 800, archetype: "melee", respawnMs: 3e4, silver: [22, 44], color: 11832575, shape: "prism", ai: { lowHp: { kind: "teleport", minDistance: 380 } }, drops: [{ item: "vasilha_mistura", chance: 0.05, min: 1, max: 1 }, { item: "erva_vermelha", chance: 0.09, min: 1, max: 1 }, { item: "erva_azul", chance: 0.06, min: 1, max: 1 }, { item: "erva_espinhosa", chance: 0.03, min: 1, max: 1 }, { item: "flecha_ferro", chance: 0.12, min: 3, max: 8 }, { item: "sucata_goblin", chance: 0.35, min: 1, max: 2 }, { item: "infusao_runica", chance: 0.08, min: 1, max: 1 }, { item: "runa_mente", chance: 0.04, min: 1, max: 1 }] }, sentinela_pedra: { id: "sentinela_pedra", name: "Sentinela de Pedra", level: 20, hp: 1100, atk: 60, def: 20, exp: 180, speed: 68, radius: 16, aggro: 180, leash: 420, attackRange: 30, windupMs: 500, recoverMs: 850, archetype: "melee", respawnMs: 32e3, silver: [26, 52], color: 14734490, shape: "sentinel", ai: { behavior: "assist", family: "pedra", assistRadius: 400, lowHp: { kind: "enrage", atkMul: 1.4, speedMul: 1.1 } }, drops: [{ item: "vasilha_mistura", chance: 0.05, min: 1, max: 1 }, { item: "erva_vermelha", chance: 0.09, min: 1, max: 1 }, { item: "erva_azul", chance: 0.06, min: 1, max: 1 }, { item: "erva_espinhosa", chance: 0.03, min: 1, max: 1 }, { item: "flecha_ferro", chance: 0.12, min: 3, max: 8 }, { item: "sucata_goblin", chance: 0.4, min: 1, max: 3 }, { item: "infusao_runica", chance: 0.1, min: 1, max: 1 }, { item: "runa_egide", chance: 0.05, min: 1, max: 1 }] }, eco_vazio: { id: "eco_vazio", name: "Eco do Vazio", level: 24, hp: 1400, atk: 72, def: 24, exp: 240, speed: 68, radius: 16, aggro: 180, leash: 420, attackRange: 30, windupMs: 500, recoverMs: 850, archetype: "melee", respawnMs: 32e3, silver: [30, 60], color: 8014544, shape: "voidling", ai: { lowHp: { kind: "teleport", minDistance: 420 } }, drops: [{ item: "vasilha_mistura", chance: 0.05, min: 1, max: 1 }, { item: "erva_vermelha", chance: 0.09, min: 1, max: 1 }, { item: "erva_azul", chance: 0.06, min: 1, max: 1 }, { item: "erva_espinhosa", chance: 0.03, min: 1, max: 1 }, { item: "flecha_ferro", chance: 0.12, min: 3, max: 8 }, { item: "sucata_goblin", chance: 0.4, min: 1, max: 3 }, { item: "infusao_runica", chance: 0.1, min: 1, max: 1 }, { item: "runa_mente", chance: 0.05, min: 1, max: 1 }] }, javali_vana: { id: "javali_vana", name: "Javali de Vanaheim", level: 15, hp: 780, atk: 46, def: 12, exp: 100, speed: 76, radius: 17, aggro: 140, leash: 380, attackRange: 190, windupMs: 620, recoverMs: 1e3, archetype: "charger", respawnMs: 28e3, silver: [14, 26], color: 7047743, shape: "boar", ai: { behavior: "passive", family: "javali" }, drops: [{ item: "vasilha_mistura", chance: 0.05, min: 1, max: 1 }, { item: "erva_vermelha", chance: 0.09, min: 1, max: 1 }, { item: "erva_azul", chance: 0.06, min: 1, max: 1 }, { item: "erva_espinhosa", chance: 0.03, min: 1, max: 1 }, { item: "flecha_ferro", chance: 0.12, min: 3, max: 8 }, { item: "presa_javali", chance: 0.4, min: 1, max: 1 }, { item: "carne_assada", chance: 0.25, min: 1, max: 2 }, { item: "runa_forca", chance: 0.04, min: 1, max: 1 }] }, broto_espinhoso: { id: "broto_espinhoso", name: "Broto Espinhoso", level: 15, hp: 640, atk: 44, def: 14, exp: 96, speed: 20, radius: 14, aggro: 160, leash: 200, attackRange: 70, windupMs: 450, recoverMs: 900, archetype: "melee", respawnMs: 28e3, silver: [14, 28], color: 5808698, shape: "blob", ai: { behavior: "plant" }, drops: [{ item: "vasilha_mistura", chance: 0.05, min: 1, max: 1 }, { item: "erva_vermelha", chance: 0.09, min: 1, max: 1 }, { item: "erva_azul", chance: 0.06, min: 1, max: 1 }, { item: "erva_espinhosa", chance: 0.03, min: 1, max: 1 }, { item: "flecha_ferro", chance: 0.12, min: 3, max: 8 }, { item: "sucata_goblin", chance: 0.3, min: 1, max: 2 }, { item: "infusao_runica", chance: 0.1, min: 1, max: 1 }, { item: "runa_vigor", chance: 0.04, min: 1, max: 1 }] }, cao_magma: { id: "cao_magma", name: "C\xE3o de Magma", level: 12, hp: 560, atk: 40, def: 9, exp: 88, speed: 98, radius: 16, aggro: 190, leash: 420, attackRange: 190, windupMs: 600, recoverMs: 1e3, archetype: "charger", respawnMs: 3e4, silver: [16, 30], color: 12600874, shape: "wolf", ai: { family: "cao", lowHp: { kind: "enrage", atkMul: 1.3, speedMul: 1.25 } }, drops: [{ item: "vasilha_mistura", chance: 0.05, min: 1, max: 1 }, { item: "erva_vermelha", chance: 0.09, min: 1, max: 1 }, { item: "erva_azul", chance: 0.06, min: 1, max: 1 }, { item: "erva_espinhosa", chance: 0.03, min: 1, max: 1 }, { item: "flecha_ferro", chance: 0.12, min: 3, max: 8 }, { item: "carne_assada", chance: 0.2, min: 1, max: 2 }, { item: "infusao_runica", chance: 0.08, min: 1, max: 1 }, { item: "runa_forca", chance: 0.03, min: 1, max: 1 }] }, hel_rainha: { id: "hel_rainha", name: "Hel, a Rainha dos Mortos", level: 22, hp: 9e3, atk: 78, def: 22, exp: 2600, speed: 80, radius: 34, aggro: 280, leash: 560, attackRange: 58, windupMs: 540, recoverMs: 850, archetype: "melee", respawnMs: 42e4, silver: [264, 396], color: 7310008, shape: "jotun", boss: true, adds: { monster: "draugr", count: 2 }, drops: [{ item: "vasilha_mistura", chance: 0.05, min: 1, max: 1 }, { item: "erva_vermelha", chance: 0.09, min: 1, max: 1 }, { item: "erva_azul", chance: 0.06, min: 1, max: 1 }, { item: "erva_espinhosa", chance: 0.03, min: 1, max: 1 }, { item: "flecha_ferro", chance: 0.12, min: 3, max: 8 }, { item: "infusao_runica", chance: 1, min: 2, max: 4 }, { item: "hidromel_forte", chance: 0.8, min: 1, max: 3 }, { item: "runa_forca", chance: 0.3, min: 1, max: 1 }, { item: "runa_vigor", chance: 0.3, min: 1, max: 1 }, { item: "runa_egide", chance: 0.3, min: 1, max: 1 }, { item: "runa_mente", chance: 0.3, min: 1, max: 1 }] }, arauto_surtr: { id: "arauto_surtr", name: "Arauto de Surtr", level: 20, hp: 7600, atk: 72, def: 18, exp: 2100, speed: 80, radius: 34, aggro: 280, leash: 560, attackRange: 58, windupMs: 540, recoverMs: 850, archetype: "melee", respawnMs: 42e4, silver: [240, 360], color: 16734752, shape: "jotun", boss: true, adds: { monster: "salamandra_brasa", count: 2 }, drops: [{ item: "vasilha_mistura", chance: 0.05, min: 1, max: 1 }, { item: "erva_vermelha", chance: 0.09, min: 1, max: 1 }, { item: "erva_azul", chance: 0.06, min: 1, max: 1 }, { item: "erva_espinhosa", chance: 0.03, min: 1, max: 1 }, { item: "flecha_ferro", chance: 0.12, min: 3, max: 8 }, { item: "infusao_runica", chance: 1, min: 2, max: 4 }, { item: "hidromel_forte", chance: 0.8, min: 1, max: 3 }, { item: "runa_forca", chance: 0.3, min: 1, max: 1 }, { item: "runa_vigor", chance: 0.3, min: 1, max: 1 }, { item: "runa_egide", chance: 0.3, min: 1, max: 1 }, { item: "runa_mente", chance: 0.3, min: 1, max: 1 }] }, rei_automato: { id: "rei_automato", name: "Rei Aut\xF4mato de Nidavellir", level: 24, hp: 10500, atk: 86, def: 30, exp: 3e3, speed: 80, radius: 34, aggro: 280, leash: 560, attackRange: 58, windupMs: 540, recoverMs: 850, archetype: "melee", respawnMs: 42e4, silver: [288, 432], color: 10134708, shape: "jotun", boss: true, adds: { monster: "automato_ferro", count: 2 }, drops: [{ item: "vasilha_mistura", chance: 0.05, min: 1, max: 1 }, { item: "erva_vermelha", chance: 0.09, min: 1, max: 1 }, { item: "erva_azul", chance: 0.06, min: 1, max: 1 }, { item: "erva_espinhosa", chance: 0.03, min: 1, max: 1 }, { item: "flecha_ferro", chance: 0.12, min: 3, max: 8 }, { item: "infusao_runica", chance: 1, min: 2, max: 4 }, { item: "hidromel_forte", chance: 0.8, min: 1, max: 3 }, { item: "runa_forca", chance: 0.3, min: 1, max: 1 }, { item: "runa_vigor", chance: 0.3, min: 1, max: 1 }, { item: "runa_egide", chance: 0.3, min: 1, max: 1 }, { item: "runa_mente", chance: 0.3, min: 1, max: 1 }] }, coracao_verde: { id: "coracao_verde", name: "Guardi\xE3o do Cora\xE7\xE3o Verde", level: 26, hp: 12e3, atk: 92, def: 26, exp: 3400, speed: 80, radius: 34, aggro: 280, leash: 560, attackRange: 58, windupMs: 540, recoverMs: 850, archetype: "melee", respawnMs: 42e4, silver: [312, 468], color: 4892746, shape: "jotun", boss: true, adds: { monster: "guardiao_raiz", count: 2 }, drops: [{ item: "vasilha_mistura", chance: 0.05, min: 1, max: 1 }, { item: "erva_vermelha", chance: 0.09, min: 1, max: 1 }, { item: "erva_azul", chance: 0.06, min: 1, max: 1 }, { item: "erva_espinhosa", chance: 0.03, min: 1, max: 1 }, { item: "flecha_ferro", chance: 0.12, min: 3, max: 8 }, { item: "infusao_runica", chance: 1, min: 2, max: 4 }, { item: "hidromel_forte", chance: 0.8, min: 1, max: 3 }, { item: "runa_forca", chance: 0.3, min: 1, max: 1 }, { item: "runa_vigor", chance: 0.3, min: 1, max: 1 }, { item: "runa_egide", chance: 0.3, min: 1, max: 1 }, { item: "runa_mente", chance: 0.3, min: 1, max: 1 }] }, guardiao_prismatico: { id: "guardiao_prismatico", name: "Guardi\xE3o Prism\xE1tico", level: 28, hp: 13500, atk: 98, def: 32, exp: 3900, speed: 80, radius: 34, aggro: 280, leash: 560, attackRange: 58, windupMs: 540, recoverMs: 850, archetype: "melee", respawnMs: 42e4, silver: [336, 504], color: 11832575, shape: "jotun", boss: true, adds: { monster: "construto_prisma", count: 2 }, drops: [{ item: "vasilha_mistura", chance: 0.05, min: 1, max: 1 }, { item: "erva_vermelha", chance: 0.09, min: 1, max: 1 }, { item: "erva_azul", chance: 0.06, min: 1, max: 1 }, { item: "erva_espinhosa", chance: 0.03, min: 1, max: 1 }, { item: "flecha_ferro", chance: 0.12, min: 3, max: 8 }, { item: "infusao_runica", chance: 1, min: 2, max: 4 }, { item: "hidromel_forte", chance: 0.8, min: 1, max: 3 }, { item: "runa_forca", chance: 0.3, min: 1, max: 1 }, { item: "runa_vigor", chance: 0.3, min: 1, max: 1 }, { item: "runa_egide", chance: 0.3, min: 1, max: 1 }, { item: "runa_mente", chance: 0.3, min: 1, max: 1 }] }, campeao_sol_partido: { id: "campeao_sol_partido", name: "Campe\xE3o do Sol Partido", level: 32, hp: 16e3, atk: 110, def: 38, exp: 4800, speed: 80, radius: 34, aggro: 280, leash: 560, attackRange: 58, windupMs: 540, recoverMs: 850, archetype: "melee", respawnMs: 42e4, silver: [384, 576], color: 15253584, shape: "jotun", boss: true, adds: { monster: "sentinela_pedra", count: 2 }, drops: [{ item: "vasilha_mistura", chance: 0.05, min: 1, max: 1 }, { item: "erva_vermelha", chance: 0.09, min: 1, max: 1 }, { item: "erva_azul", chance: 0.06, min: 1, max: 1 }, { item: "erva_espinhosa", chance: 0.03, min: 1, max: 1 }, { item: "flecha_ferro", chance: 0.12, min: 3, max: 8 }, { item: "infusao_runica", chance: 1, min: 2, max: 4 }, { item: "hidromel_forte", chance: 0.8, min: 1, max: 3 }, { item: "runa_forca", chance: 0.3, min: 1, max: 1 }, { item: "runa_vigor", chance: 0.3, min: 1, max: 1 }, { item: "runa_egide", chance: 0.3, min: 1, max: 1 }, { item: "runa_mente", chance: 0.3, min: 1, max: 1 }] }, devorador_ruptura: { id: "devorador_ruptura", name: "Devorador da Ruptura", level: 38, hp: 22e3, atk: 128, def: 44, exp: 6500, speed: 80, radius: 34, aggro: 280, leash: 560, attackRange: 58, windupMs: 540, recoverMs: 850, archetype: "melee", respawnMs: 42e4, silver: [456, 684], color: 8010448, shape: "jotun", boss: true, adds: { monster: "eco_vazio", count: 3 }, drops: [{ item: "vasilha_mistura", chance: 0.05, min: 1, max: 1 }, { item: "erva_vermelha", chance: 0.09, min: 1, max: 1 }, { item: "erva_azul", chance: 0.06, min: 1, max: 1 }, { item: "erva_espinhosa", chance: 0.03, min: 1, max: 1 }, { item: "flecha_ferro", chance: 0.12, min: 3, max: 8 }, { item: "infusao_runica", chance: 1, min: 2, max: 4 }, { item: "hidromel_forte", chance: 0.8, min: 1, max: 3 }, { item: "runa_forca", chance: 0.3, min: 1, max: 1 }, { item: "runa_vigor", chance: 0.3, min: 1, max: 1 }, { item: "runa_egide", chance: 0.3, min: 1, max: 1 }, { item: "runa_mente", chance: 0.3, min: 1, max: 1 }] }, hrimgar: { id: "hrimgar", name: "Hr\xEDmgar, o Gigante da Geada", level: 14, hp: 4600, atk: 54, def: 12, exp: 1100, speed: 82, radius: 34, aggro: 280, leash: 560, attackRange: 58, windupMs: 520, recoverMs: 850, archetype: "melee", respawnMs: 42e4, silver: [260, 380], color: 10475775, shape: "jotun", boss: true, adds: { monster: "lobo_gelo", count: 2 }, drops: [{ item: "vasilha_mistura", chance: 0.05, min: 1, max: 1 }, { item: "erva_vermelha", chance: 0.09, min: 1, max: 1 }, { item: "erva_azul", chance: 0.06, min: 1, max: 1 }, { item: "erva_espinhosa", chance: 0.03, min: 1, max: 1 }, { item: "flecha_ferro", chance: 0.12, min: 3, max: 8 }, { item: "coracao_de_gelo", chance: 1, min: 1, max: 1 }, { item: "hidromel_forte", chance: 0.8, min: 1, max: 3 }, { item: "manto_de_geada", chance: 0.35, min: 1, max: 1 }, { item: "anel_do_inverno", chance: 0.2, min: 1, max: 1 }, { item: "machado_gelo", chance: 0.15, min: 1, max: 1 }, { item: "lamina_gelo", chance: 0.15, min: 1, max: 1 }, { item: "arco_gelo", chance: 0.15, min: 1, max: 1 }, { item: "cajado_gelo", chance: 0.15, min: 1, max: 1 }, { item: "lanca_gelo", chance: 0.15, min: 1, max: 1 }, { item: "runa_egide", chance: 0.35, min: 1, max: 1 }] }, hati: { id: "hati", name: "Hati, o Lobo Lunar", level: 10, hp: 2300, atk: 32, def: 8, exp: 520, speed: 100, radius: 26, aggro: 260, leash: 520, attackRange: 46, windupMs: 450, recoverMs: 800, archetype: "melee", respawnMs: 3e5, silver: [120, 180], color: 13227775, shape: "hati", boss: true, drops: [{ item: "vasilha_mistura", chance: 0.05, min: 1, max: 1 }, { item: "erva_vermelha", chance: 0.09, min: 1, max: 1 }, { item: "erva_azul", chance: 0.06, min: 1, max: 1 }, { item: "erva_espinhosa", chance: 0.03, min: 1, max: 1 }, { item: "flecha_ferro", chance: 0.12, min: 3, max: 8 }, { item: "carta_hati", chance: 5e-4, min: 1, max: 1 }, { item: "pelagem_lunar", chance: 1, min: 1, max: 2 }, { item: "hidromel_forte", chance: 0.6, min: 1, max: 2 }, { item: "manto_lobo_lunar", chance: 0.35, min: 1, max: 1 }, { item: "pingente_lunar", chance: 0.2, min: 1, max: 1 }, { item: "runa_forca", chance: 0.3, min: 1, max: 1 }] } }, yy = 0.5, vy = 1.25, My = 1.3, ar = { radius: 95, windupMs: 1e3, mult: 1.7, everyMs: 6500 }, ky = { monster: "lobo_faminto", count: 2 };
   function oo(e) {
     return Object.prototype.hasOwnProperty.call(Qu, e) ? Qu[e] : void 0;
   }
@@ -9517,6 +9573,7 @@ Error generating stack: ` + n.message + `
         }
         this.updateMonster(n, t);
       }
+      this.map.id === "wb_cratera" && WB.syncBoss(this);
     }
     respawnSlot(t) {
       let a = this.groupOfSlot(t.slot);
@@ -10627,6 +10684,20 @@ Error generating stack: ` + n.message + `
       let a = lv(this.ps, t);
       return this.toast(a.msg, a.ok ? "good" : "bad"), a.ok && this.saveGame(), this.refresh(), a.ok;
     }
+    warpToWorldBoss() {
+      if (!this.ps || !this.world || this.online) return;
+      if (this.world.map.id === "wb_cratera") {
+        this.toast("Voc\xEA j\xE1 est\xE1 na cratera.", "info");
+        return;
+      }
+      let n = en("wb_cratera");
+      this.saveGame(), this.world = new nr(this.ps, n, void 0, n.spawn), this.panel = "none", this.warpMode = false, this.dialogue = null, this.pushLog("Voc\xEA desceu \xE0 Cratera de J\xF6rmungandr.", "system"), this.saveGame(), this.refresh();
+    }
+    leaveWorldBoss() {
+      if (!this.ps || !this.world || this.online || this.world.map.id !== "wb_cratera") return;
+      let n = en("cidade_midgard");
+      this.world = new nr(this.ps, n, void 0, { x: 2200, y: 330 }), this.pushLog("A cratera se fechou. Voc\xEA foi levado de volta a Midgard.", "system"), this.saveGame(), this.refresh();
+    }
     warpToMap(t) {
       if (!this.ps || !this.world || !this.warpMode || this.online) return;
       if (t === this.world.map.id) {
@@ -10766,6 +10837,230 @@ Error generating stack: ` + n.message + `
       return { ok: false, error: "Sem conex\xE3o com o servidor. Verifique sua internet." };
     }
   }
+  var WB = {
+    maxHp: 4e6, simDps: 4e6 / (8 * 3600), durMs: 5 * 3600 * 1e3, force: null, hp: 4e6, pend: 0, localDmg: 0, online: false, lastSync: 0, rock: null, ac: null, announced: "", impacted: "", ui: null, fx: null, raf: 0, shakeOn: false,
+    sched(now) {
+      if (this.force) return { start: this.force, key: "dbg" + this.force };
+      let d = new Date(now), y = d.getFullYear(), m = d.getMonth();
+      for (let k of [-1, 0, 1]) {
+        let s = new Date(y, m + k, 15, 20, 0, 0).getTime();
+        if (s + this.durMs + 6e5 > now) return { start: s, key: `${new Date(s).getFullYear()}-${new Date(s).getMonth() + 1}` };
+      }
+      return { start: 0, key: "" };
+    },
+    phase(now) {
+      let s = this.sched(now), t = now - s.start, cur = this.cur(now, s), ph = "none";
+      if (t >= -6e5 && t < -2e4) ph = "announce";
+      else if (t >= -2e4 && t < 0) ph = "fall";
+      else if (t >= 0 && t < 4500) ph = "impact";
+      else if (t >= 4500 && t < this.durMs && cur > 0) ph = "active";
+      else if (t >= 4500 && t < this.durMs + 6e5) ph = "over";
+      return { ph, t, s, cur };
+    },
+    cur(now, s) {
+      s = s ?? this.sched(now);
+      let base = this.online ? this.hp - this.pend : this.maxHp - this.simDps * Math.max(0, Math.min(this.durMs, now - s.start)) / 1e3 - this.localDmg;
+      return Math.max(0, Math.min(this.maxHp, Math.round(base)));
+    },
+    hit(d) {
+      this.pend += d, this.localDmg += d;
+    },
+    reset() {
+      this.hp = this.maxHp, this.pend = 0, this.localDmg = 0, this.defeatAt = 0, this.online = false, this.announced = "", this.impacted = "";
+    },
+    forceIn(sec) {
+      this.reset(), this.force = Date.now() + sec * 1e3, this.announced = this.impacted = "";
+    },
+    async sync() {
+      let now = Date.now(), p = this.phase(now);
+      if (p.ph !== "active" || this.force || now - this.lastSync < 5e3) return;
+      this.lastSync = now;
+      let dmg = Math.floor(this.pend);
+      this.pend -= dmg;
+      let r = await sbRpc("wb_sync", { p_key: p.s.key, p_max: this.maxHp, p_dmg: dmg, p_sim: this.simDps, p_start: p.s.start, p_end: p.s.start + this.durMs });
+      r && r.ok && typeof r.hp == "number" ? (this.online = true, this.hp = r.hp) : (this.online = false, this.pend += dmg);
+    },
+    syncBoss(w) {
+      for (let m of w.monsters) {
+        if (m.def.id !== "jormungandr" || m.state === "dead") continue;
+        let now = Date.now(), p = this.phase(now);
+        if (p.ph === "impact") continue;
+        if (p.ph !== "active") {
+          if (p.cur <= 0 && p.t > 0 && p.t < this.durMs) m.hp = 1, w.killMonster(m);
+          else m.hp = 0, m.state = "dead", m.diedAt = w.time, m.respawnAt = 1e18;
+          continue;
+        }
+        m._seen === void 0 && (m._seen = m.hp), m.hp < m._seen && this.hit(m._seen - m.hp);
+        let c = this.cur(now, p.s);
+        m.hp > c && (m.hp = c), m._seen = m.hp, m.hp <= 0 && w.killMonster(m);
+      }
+    },
+    fmt(n) {
+      return Math.round(n).toLocaleString("pt-BR");
+    },
+    mk(tag, css, parent) {
+      let e = document.createElement(tag);
+      return e.style.cssText = css, (parent ?? document.body).appendChild(e), e;
+    },
+    ensureUi() {
+      if (this.ui) return this.ui;
+      let b = this.mk("div", "", document.body);
+      b.id = "wb-banner", b.hidden = true;
+      let ti = this.mk("div", "", document.body);
+      ti.id = "wb-title", ti.hidden = true;
+      return this.ui = { b, ti };
+    },
+    updateUi(p) {
+      let u = this.ensureUi(), pl = typeof j < "u" && j.screen === "playing" && j.world, show = pl && (p.ph === "announce" || p.ph === "active" || p.ph === "over" || p.ph === "impact" && p.t > 3e3);
+      if (u.b.hidden = !show, !show) return;
+      let here = j.world.map.id === "wb_cratera", mm = (ms) => {
+        let s = Math.max(0, Math.ceil(ms / 1e3)), h = Math.floor(s / 3600), mi = Math.floor(s % 3600 / 60), se = s % 60;
+        return h > 0 ? `${h}h ${String(mi).padStart(2, "0")}m` : `${String(mi).padStart(2, "0")}:${String(se).padStart(2, "0")}`;
+      }, html;
+      if (p.ph === "announce") html = `<div class="wb-row"><b>⚠ Presságio</b><span>Jörmungandr desperta em <b>${mm(-p.t)}</b></span></div>`;
+      else if (p.ph === "over") html = `<div class="wb-row"><b>🐍 Jörmungandr</b><span>${p.cur <= 0 ? "foi derrotado! Midgard respira de novo." : "mergulhou de volta ao oceano... até o próximo mês."}</span></div>`;
+      else {
+        let pc = Math.max(0, Math.min(100, p.cur / this.maxHp * 100));
+        html = `<div class="wb-row"><b>🐍 BOSS MUNDIAL · Jörmungandr</b><span>${this.online ? "● compartilhado" : "○ local"} · restam ${mm(this.durMs - p.t)}</span></div><div class="wb-bar"><i style="width:${pc.toFixed(2)}%"></i><em>${this.fmt(p.cur)} / ${this.fmt(this.maxHp)}</em></div>${here ? '<div class="wb-here">Você está na cratera — lute!</div>' : '<button id="wb-go">⚔ Ir até Jörmungandr</button>'}`;
+      }
+      u.b.innerHTML !== html && (u.b.innerHTML = html, u.b.querySelector("#wb-go")?.addEventListener("click", () => j.warpToWorldBoss()));
+    },
+    rockStart() {
+      if (this.rock) return;
+      try {
+        let AC = window.AudioContext ?? window.webkitAudioContext;
+        if (!AC) return;
+        let a = this.ac ?? (this.ac = new AC());
+        a.state === "suspended" && a.resume();
+        let out = a.createGain();
+        out.gain.value = 1e-4, out.gain.setTargetAtTime(0.6, a.currentTime, 0.3);
+        let comp = a.createDynamicsCompressor();
+        out.connect(comp), comp.connect(a.destination);
+        let nb = a.createBuffer(1, a.sampleRate, a.sampleRate), nd = nb.getChannelData(0);
+        for (let i = 0; i < nd.length; i++) nd[i] = Math.random() * 2 - 1;
+        let curve = new Float32Array(1024);
+        for (let i = 0; i < 1024; i++) curve[i] = Math.tanh((i / 512 - 1) * 16);
+        let bpm = 158, beat = 60 / bpm, e8 = beat / 2, hz = (s) => 82.41 * Math.pow(2, s / 12), roots = [0, 0, 3, 5, 0, 0, 7, 6], offs = [0, 0, 0, 0, 0, 0, 3, 5], durs = [0.3, 0.1, 0.1, 0.1, 0.3, 0.1, 0.22, 0.34];
+        let env = (g, t0, atk, peak, dec) => (g.gain.setValueAtTime(1e-4, t0), g.gain.exponentialRampToValueAtTime(peak, t0 + atk), g.gain.exponentialRampToValueAtTime(1e-4, t0 + atk + dec)), guitar = (t0, semi, dur, vel) => {
+          let g = a.createGain(), sh = a.createWaveShaper(), lp = a.createBiquadFilter();
+          sh.curve = curve, sh.oversample = "2x", lp.type = "lowpass", lp.frequency.value = 3400, lp.Q.value = 0.7, env(g, t0, 3e-3, vel, dur), g.connect(sh), sh.connect(lp), lp.connect(out);
+          for (let iv of [0, 7, 12]) for (let dt of [-7, 7]) {
+            let o = a.createOscillator();
+            o.type = "sawtooth", o.frequency.value = hz(semi + iv + 12), o.detune.value = dt, o.connect(g), o.start(t0), o.stop(t0 + dur + 0.1);
+          }
+        }, bass = (t0, semi, dur) => {
+          let o = a.createOscillator(), g = a.createGain(), lp = a.createBiquadFilter();
+          o.type = "square", o.frequency.value = hz(semi), lp.type = "lowpass", lp.frequency.value = 520, env(g, t0, 4e-3, 0.5, dur), o.connect(lp), lp.connect(g), g.connect(out), o.start(t0), o.stop(t0 + dur + 0.1);
+        }, noise = (t0, type, f, dur, vel) => {
+          let s = a.createBufferSource(), fl = a.createBiquadFilter(), g = a.createGain();
+          s.buffer = nb, fl.type = type, fl.frequency.value = f, env(g, t0, 2e-3, vel, dur), s.connect(fl), fl.connect(g), g.connect(out), s.start(t0), s.stop(t0 + dur + 0.1);
+        }, kick = (t0) => {
+          let o = a.createOscillator(), g = a.createGain();
+          o.frequency.setValueAtTime(160, t0), o.frequency.exponentialRampToValueAtTime(42, t0 + 0.13), env(g, t0, 2e-3, 1.3, 0.3), o.connect(g), g.connect(out), o.start(t0), o.stop(t0 + 0.5);
+        }, snare = (t0) => {
+          noise(t0, "bandpass", 1900, 0.2, 0.85);
+          let o = a.createOscillator(), g = a.createGain();
+          o.type = "triangle", o.frequency.value = 190, env(g, t0, 2e-3, 0.6, 0.12), o.connect(g), g.connect(out), o.start(t0), o.stop(t0 + 0.3);
+        }, st = { next: a.currentTime + 0.2, step: 0 }, sched = () => {
+          for (; st.next < a.currentTime + 0.6; ) {
+            let s = st.step, bar = Math.floor(s / 8) % 8, pos = s % 8, root = roots[bar] + (bar === 7 && pos > 5 ? 0 : 0), t0 = st.next, acc = durs[pos] > 0.2;
+            guitar(t0, root + offs[pos], durs[pos], acc ? 0.5 : 0.36), bass(t0, root + offs[pos] - 12, durs[pos] + 0.05), noise(t0, "highpass", 7e3, 0.05, 0.16), (pos === 0 || pos === 3 || pos === 4 || bar % 4 === 3 && (pos === 6 || pos === 7)) && kick(t0), (pos === 2 || pos === 6) && snare(t0), s % 64 === 0 && noise(t0, "highpass", 4200, 1.6, 0.5), st.next += e8, st.step++;
+          }
+        };
+        sched();
+        let timer = setInterval(sched, 120);
+        this.rock = { out, timer, a };
+        let m = window.__eldMusic;
+        m && m.track && (m.track.stop(), m.track = null), m && (m.key = "__wb");
+      } catch (e) {
+        this.rock = null;
+      }
+    },
+    rockStop() {
+      let r = this.rock;
+      if (!r) return;
+      this.rock = null, r.out.gain.setTargetAtTime(1e-4, r.a.currentTime, 0.7), setTimeout(() => {
+        clearInterval(r.timer);
+        try {
+          r.out.disconnect();
+        } catch {
+        }
+      }, 3e3);
+      let m = window.__eldMusic;
+      m && (m.key = "");
+    },
+    shake(mag) {
+      let b = document.body;
+      mag > 0.2 ? (b.style.transform = `translate(${((Math.random() - 0.5) * mag).toFixed(1)}px,${((Math.random() - 0.5) * mag).toFixed(1)}px)`, this.shakeOn = true) : this.shakeOn && (b.style.transform = "", this.shakeOn = false);
+    },
+    cinematic(now) {
+      let p = this.phase(now), t = p.t, cv = this.fx;
+      if (!(t >= -2e4 && t < 11e3)) {
+        cv && (cv.remove(), this.fx = null, this.shake(0), this.ui && (this.ui.ti.hidden = true));
+        return false;
+      }
+      if (!cv) {
+        cv = this.fx = this.mk("canvas", "position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:99990;", document.body), cv.id = "wb-fx";
+      }
+      let W = cv.width = innerWidth, H = cv.height = innerHeight, c = cv.getContext("2d"), ix = W * 0.5, iy = H * 0.62, mag = 0;
+      c.clearRect(0, 0, W, H);
+      if (t < 0) {
+        let u = (t + 2e4) / 2e4;
+        mag = 0.6 + 8 * u * u, c.fillStyle = `rgba(120,10,0,${(0.05 + 0.3 * u * u).toFixed(3)})`, c.fillRect(0, 0, W, H);
+        if (t > -13e3) {
+          let p2 = (t + 13e3) / 13e3, e = Math.pow(p2, 1.5), fx = (q) => W * (0.84 - 0.34 * q), fy = (q) => -90 + (iy + 90) * q, rad = (q) => 12 + 150 * Math.pow(q, 1.1);
+          for (let i = 46; i >= 0; i--) {
+            let q = Math.max(0, e - i * 0.011), x = fx(q), y = fy(q), r = rad(q) * (1 - i / 60) * 0.85, fl = Math.sin(now / 60 + i * 1.7) * 0.15, g = c.createRadialGradient(x, y, 0, x, y, r);
+            g.addColorStop(0, `rgba(255,${200 - i * 3 | 0},80,${(0.5 - i * 0.008).toFixed(3)})`), g.addColorStop(0.5, `rgba(240,80,10,${(0.32 - i * 0.005 + fl * 0.1).toFixed(3)})`), g.addColorStop(1, "rgba(60,10,0,0)"), c.fillStyle = g, c.beginPath(), c.arc(x, y, r, 0, 7), c.fill();
+          }
+          let x = fx(e), y = fy(e), r = rad(e);
+          for (let k = 0; k < 18; k++) {
+            let a = k * 2.399 + now / 300, l = r * (1.1 + 0.5 * Math.sin(now / 90 + k)), gx = x + Math.cos(a) * l * 0.7, gy = y + Math.sin(a) * l * 0.7 - r * 0.2, g = c.createRadialGradient(gx, gy, 0, gx, gy, r * 0.55);
+            g.addColorStop(0, "rgba(255,150,30,0.35)"), g.addColorStop(1, "rgba(255,60,0,0)"), c.fillStyle = g, c.beginPath(), c.arc(gx, gy, r * 0.55, 0, 7), c.fill();
+          }
+          let g = c.createRadialGradient(x, y, 0, x, y, r);
+          g.addColorStop(0, "rgba(255,255,230,1)"), g.addColorStop(0.35, "rgba(255,210,90,0.98)"), g.addColorStop(0.75, "rgba(255,90,10,0.85)"), g.addColorStop(1, "rgba(160,20,0,0)"), c.fillStyle = g, c.beginPath(), c.arc(x, y, r, 0, 7), c.fill();
+          e > 0.55 && (c.fillStyle = `rgba(255,240,200,${((e - 0.55) * 0.5).toFixed(3)})`, c.fillRect(0, 0, W, H));
+        }
+      } else {
+        let u = t / 4500, f = Math.max(0, 1 - t / 1400);
+        mag = 4 + 34 * Math.pow(Math.max(0, 1 - t / 7e3), 1.3);
+        for (let [sp, lw, al] of [[900, 46, 0.7], [560, 26, 0.5], [300, 14, 0.4]]) {
+          let rr = t / 1e3 * sp, a = Math.max(0, 1 - t / 4200) * al;
+          c.strokeStyle = `rgba(255,${150 + (sp > 700 ? 80 : 0)},60,${a.toFixed(3)})`, c.lineWidth = lw * Math.max(0.2, 1 - t / 5e3), c.beginPath(), c.ellipse(ix, iy, rr, rr * 0.42, 0, 0, 7), c.stroke();
+        }
+        for (let k = 0; k < 90; k++) {
+          let a = k * 2.399, sp = 160 + k * 11 % 420, x = ix + Math.cos(a) * sp * t / 1e3 * 1.6, y = iy + Math.sin(a) * sp * t / 1e3 * 0.7 - (sp * t / 1e3 * 0.9 - 380 * Math.pow(t / 1e3, 2)), al = Math.max(0, 1 - t / 5e3);
+          c.fillStyle = `rgba(${k % 3 ? 255 : 90},${k % 3 ? 140 : 70},${k % 3 ? 40 : 50},${al.toFixed(3)})`, c.fillRect(x, y, 3 + k % 4, 3 + k % 3);
+        }
+        c.fillStyle = `rgba(30,6,0,${(Math.max(0, 0.5 - t / 8e3)).toFixed(3)})`, c.fillRect(0, 0, W, H);
+        c.fillStyle = `rgba(255,248,230,${f.toFixed(3)})`, c.fillRect(0, 0, W, H);
+        let ui = this.ensureUi();
+        t > 600 && t < 9e3 ? (ui.ti.hidden = false, ui.ti.style.opacity = String(Math.min(1, (t - 600) / 700) * Math.min(1, (9e3 - t) / 1200)), ui.ti.innerHTML = '<div class="wb-t1">JÖRMUNGANDR DESPERTOU</div><div class="wb-t2">A Serpente do Mundo caiu sobre Midgard</div>') : ui.ti.hidden = true;
+      }
+      return this.shake(mag), true;
+    },
+    loop() {
+      this.raf = 0, this.cinematic(Date.now()) && (this.raf = requestAnimationFrame(() => this.loop()));
+    },
+    tick() {
+      let now = Date.now(), p = this.phase(now), here = typeof j < "u" && j.world?.map?.id === "wb_cratera";
+      if (typeof j < "u" && j.screen === "playing") {
+        if (p.ph === "announce" && this.announced !== p.s.key) this.announced = p.s.key, j.pushLog("Um presságio sacode o céu: Jörmungandr, a Serpente do Mundo, despertará em instantes!", "system");
+        if ((p.ph === "impact" || p.ph === "active") && this.impacted !== p.s.key && p.t < 9e4) this.impacted = p.s.key, j.pushLog("BOSS MUNDIAL: Jörmungandr desceu sobre Midgard! Use o botão no topo da tela para ir até a Cratera.", "system");
+      }
+      let wantRock = p.ph === "fall" || p.ph === "impact" || p.t >= 0 && p.t < 3e4 && p.ph === "active" || here && p.ph === "active";
+      wantRock ? this.rockStart() : this.rockStop();
+      (p.ph === "fall" || p.ph === "impact") && !this.raf && (this.raf = requestAnimationFrame(() => this.loop())), !this.raf && this.fx && this.cinematic(now), here && p.ph !== "active" && p.ph !== "impact" && (p.ph === "over" && p.cur <= 0 ? (this.defeatAt ||= now, now - this.defeatAt > 9e4 && j.leaveWorldBoss()) : j.leaveWorldBoss()), this.updateUi(p), this.sync();
+    }
+  };
+  typeof window < "u" && typeof document < "u" && setInterval(() => {
+    try {
+      WB.tick();
+    } catch (e) {
+      window.__wbErr = e;
+    }
+  }, 250);
   function cloudStore(ls) {
     if (!ls) return ls;
     let timers = {}, re = () => new RegExp("^eldvar\\.save\\." + (window.__acct || "").replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "\\.(\\d)$");
@@ -11651,6 +11946,7 @@ Error generating stack: ` + n.message + `
       this.volume = Math.max(0, Math.min(1, t)), this.master && this.ctx && this.master.gain.setTargetAtTime(this.volume, this.ctx.currentTime, 0.2), this.volume <= 1e-3 && this.track && (this.track.stop(), this.track = null, this.key = "");
     }
     setScene(t) {
+      if (window.__eldMusic = this, WB.rock) return;
       if (this.volume <= 1e-3) return;
       let a = `${t.mapId}|${t.night ? "n" : "d"}`;
       if (a === this.key) return;
@@ -13454,6 +13750,95 @@ void main() {
         return F(n, S(0, 0, 0), 5, 3, 22, 2762274, { seg: 8, mat: Ve }), F(n, S(0, 22, 0), 9, 12, 7, 3814444, { seg: 10, mat: Ve }), L(n, S(0, 30, 0), 8, 5, 8, 16742954, { seg: 8, ring: 5, mat: { shine: 0.3, glow: 0.8 } }), L(n, S(0, 36, 0), 4, 6, 4, 16765024, { seg: 6, ring: 4, mat: { shine: 0.3, glow: 0.9 } }), n;
       case "forge":
         return O(n, S(0, 16, 0), 46, 32, 34, Y(o, 0.8), Q), O(n, S(0, 33, 0), 52, 4, 40, Y(o, 0.7), Q), O(n, S(-6, 14, 17.4), 20, 18, 1.6, 1380364), L(n, S(-6, 11, 17.8), 8, 5, 1.2, 16738848, { seg: 8, ring: 4, mat: { shine: 0.3, glow: 0.95 } }), F(n, S(10, 35, -6), 8, 6, 52, Y(o, 0.72), { seg: 8, mat: Q }), O(n, S(34, 9, 4), 22, 8, 12, 3816004, Ve), O(n, S(34, 16, 4), 14, 7, 9, 4868692, Ve), O(n, S(46, 17, 4), 9, 4, 5, 4868692, Ve), F(n, S(-34, 0, 12), 8, 8, 18, 6965802, { seg: 10 }), L(n, S(-34, 18, 12), 7.4, 1.2, 7.4, 4885184, { seg: 10, ring: 3, mat: Q }), n;
+      case "church": {
+        let cl = a.cloth[0], gd = a.gold, rf = Y(cl, 0.8), tri = (p, q, w, c) => Ne(n, [p, q, w, p], c, { mat: Re }), gable = (W, D, y, H, c) => {
+          let b = W / 2, g = D / 2;
+          tri([-b, y, g], [b, y, g], [b, y + H, 0], c), tri([-b, y, g], [b, y + H, 0], [-b, y + H, 0], c), tri([b, y, -g], [-b, y, -g], [-b, y + H, 0], Y(c, 0.8)), tri([b, y, -g], [-b, y + H, 0], [b, y + H, 0], Y(c, 0.8)), tri([b, y, g], [b, y, -g], [b, y + H, 0], Y(c, 0.9)), tri([-b, y, -g], [-b, y, g], [-b, y + H, 0], Y(c, 0.9));
+        };
+        O(n, S(0, 2, 6), 128, 4, 58, Y(o, 0.8), Q), O(n, S(-10, 17, 0), 70, 30, 44, o, Q), gable(78, 52, 30, 20, rf);
+        for (let u of [-40, -20, 0, 20]) O(n, S(u, 13, 23), 4, 26, 3, Y(o, 0.88), Q);
+        for (let u of [-30, -10, 10]) O(n, S(u, 19, 22.4), 6.4, 13, 1.2, 1315343), O(n, S(u, 19, 22.8), 3.8, 10, 0.8, 16757850, { shine: 0.4, glow: 0.9 });
+        O(n, S(-10, 9, 22.8), 12, 18, 1.4, 1710626), O(n, S(-10, 19.5, 22.9), 8, 3, 1.2, 1710626), O(n, S(-10, 2.5, 29), 22, 4, 12, Y(o, 0.9), Q);
+        O(n, S(38, 34, 0), 26, 68, 26, Y(o, 1.05), Q), O(n, S(38, 70, 0), 30, 4, 30, Y(o, 0.85), Q);
+        for (let [u, v] of [[0, 13.4], [0, -13.4]]) O(n, S(38 + u, 56, v), 8, 12, 1.2, 1315343);
+        O(n, S(51.4, 56, 0), 1.2, 12, 8, 1315343), O(n, S(38, 22, 13.4), 7, 9, 1.2, 16757850, { shine: 0.4, glow: 0.8 });
+        F(n, S(38, 72, 0).mul(A.RY(Math.PI / 4)), 21, 0, 40, rf, { seg: 4, mat: Re }), O(n, S(38, 116, 0), 2.4, 14, 2.4, gd, Ve), O(n, S(38, 118, 0), 9, 2.4, 2.4, gd, Ve);
+        F(n, S(-52, 0, 0), 15, 15, 24, Y(o, 0.95), { seg: 14, mat: Q }), F(n, S(-52, 24, 0), 17, 0, 16, rf, { seg: 14, mat: Re }), L(n, S(-52, 14, 14), 3, 6, 1.2, 16757850, { seg: 8, ring: 5, mat: { shine: 0.4, glow: 0.9 } });
+        return n;
+      }
+      case "castle": {
+        let cl = a.cloth[0], rf = Y(cl, 0.75);
+        O(n, S(0, 2, 0), 150, 4, 112, Y(o, 0.75), Q), O(n, S(0, 38, -8), 44, 76, 40, o, Q), O(n, S(0, 79, -8), 52, 5, 48, Y(o, 0.9), Q);
+        for (let u = -20; u <= 20; u += 10) O(n, S(u, 85, 15.4), 5, 6, 4, Y(o, 0.95), Q), O(n, S(u, 85, -31.4), 5, 6, 4, Y(o, 0.95), Q);
+        F(n, S(0, 84, -8), 1.2, 1.2, 36, r, { seg: 5 }), O(n, S(8, 108, -8), 15, 9, 0.8, cl, { shine: 0.1, glow: 0 });
+        for (let [u, v] of [[-62, -42], [62, -42], [-62, 42], [62, 42]]) {
+          F(n, S(u, 0, v), 13.5, 11.5, 70, Y(o, 1.02), { seg: 14, mat: Q }), F(n, S(u, 70, v), 15.5, 15.5, 6, Y(o, 0.85), { seg: 14, mat: Q }), F(n, S(u, 76, v), 15, 0, 30, rf, { seg: 14, mat: Re }), F(n, S(u, 104, v), 0.8, 0.8, 12, r, { seg: 5 });
+          O(n, S(u, 48, v + (v > 0 ? 11.4 : -11.4)), 3.4, 9, 1.2, 1315343);
+        }
+        O(n, S(0, 17, 42), 112, 34, 7, Y(o, 0.95), Q), O(n, S(0, 17, -42), 112, 34, 7, Y(o, 0.92), Q), O(n, S(-62, 17, 0), 7, 34, 84, Y(o, 0.9), Q), O(n, S(62, 17, 0), 7, 34, 84, Y(o, 0.9), Q);
+        for (let u = -50; u <= 50; u += 12) u > -14 && u < 14 || (O(n, S(u, 37, 42), 5.5, 5, 7, Y(o, 1), Q), O(n, S(u, 37, -42), 5.5, 5, 7, Y(o, 1), Q));
+        for (let u = -30; u <= 30; u += 15) O(n, S(-62, 37, u), 7, 5, 5.5, Y(o, 1), Q), O(n, S(62, 37, u), 7, 5, 5.5, Y(o, 1), Q);
+        O(n, S(0, 26, 44), 30, 52, 14, Y(o, 1.06), Q), O(n, S(0, 54, 44), 36, 5, 18, Y(o, 0.9), Q);
+        for (let u of [-14, -7, 0, 7, 14]) O(n, S(u, 59, 44), 4.4, 5, 18, Y(o, 1), Q);
+        O(n, S(0, 13, 51.6), 15, 26, 1.4, 1315343), O(n, S(0, 28, 51.7), 15, 3.6, 1.2, 1315343), O(n, S(0, 11, 51.9), 11, 20, 0.8, 5056544, { shine: 0.2, glow: 0 });
+        for (let u of [-12, 12]) O(n, S(u, 41, 51.8), 4.6, 22, 0.8, cl), L(n, S(u * 1.7, 22, 52), 3, 3, 3, 16757850, { seg: 8, ring: 5, mat: { shine: 0.4, glow: 1 } });
+        return n;
+      }
+      case "monument": {
+        let gd = a.gold, hw = (y) => 0.7071 * (11 - 5 * (y - 18) / 100), glow = { shine: 0.5, glow: 0.9 };
+        O(n, S(0, 3, 0), 46, 6, 46, Y(o, 0.84), Q), O(n, S(0, 9, 0), 36, 6, 36, Y(o, 0.92), Q), O(n, S(0, 15, 0), 26, 6, 26, o, Q);
+        F(n, S(0, 18, 0).mul(A.RY(Math.PI / 4)), 11, 6, 100, Y(o, 1.05), { seg: 4, mat: Q }), F(n, S(0, 118, 0).mul(A.RY(Math.PI / 4)), 6, 0, 14, gd, { seg: 4, mat: Ve });
+        for (let y of [34, 50, 66, 82, 98]) O(n, S(0, y, hw(y) + 0.5), 3.2, 7, 0.8, 16757850, glow), O(n, S(0, y, -hw(y) - 0.5), 3.2, 7, 0.8, 16757850, glow), O(n, S(hw(y) + 0.5, y, 0), 0.8, 7, 3.2, 16757850, glow), O(n, S(-hw(y) - 0.5, y, 0), 0.8, 7, 3.2, 16757850, glow);
+        for (let [u, v] of [[-19, -19], [19, -19], [-19, 19], [19, 19]]) F(n, S(u, 12, v), 3, 2.4, 14, Y(o, 0.8), { seg: 6, mat: Q }), L(n, S(u, 29, v), 3.4, 3.2, 3.4, 16742954, { seg: 8, ring: 5, mat: { shine: 0.3, glow: 0.9 } });
+        return n;
+      }
+      case "bigforge": {
+        let rf = Y(r, 0.78), tri = (p, q, w, c) => Ne(n, [p, q, w, p], c, { mat: Re }), gable = (W, D, y, H, c) => {
+          let b = W / 2, g = D / 2;
+          tri([-b, y, g], [b, y, g], [b, y + H, 0], c), tri([-b, y, g], [b, y + H, 0], [-b, y + H, 0], c), tri([b, y, -g], [-b, y, -g], [-b, y + H, 0], Y(c, 0.8)), tri([b, y, -g], [-b, y + H, 0], [b, y + H, 0], Y(c, 0.8)), tri([b, y, g], [b, y, -g], [b, y + H, 0], Y(c, 0.9)), tri([-b, y, -g], [-b, y, g], [-b, y + H, 0], Y(c, 0.9));
+        }, hot = { shine: 0.3, glow: 0.95 };
+        O(n, S(0, 2, 6), 112, 4, 66, Y(o, 0.7), Q), O(n, S(0, 20, -4), 92, 36, 50, Y(o, 0.85), Q), gable(100, 58, 38, 18, rf);
+        F(n, S(26, 38, -12), 9.5, 7.5, 54, Y(o, 0.7), { seg: 8, mat: Q }), F(n, S(-22, 38, -12), 6.5, 5.5, 40, Y(o, 0.72), { seg: 8, mat: Q });
+        L(n, S(26, 92, -12), 6.4, 3, 6.4, 16742954, { seg: 8, ring: 5, mat: hot }), L(n, S(-22, 78, -12), 4.6, 2.4, 4.6, 16742954, { seg: 8, ring: 5, mat: hot });
+        O(n, S(-6, 17, 21.6), 34, 26, 2, 1380364), O(n, S(-6, 13, 22.4), 24, 16, 1, 1710626), L(n, S(-6, 9, 22.9), 11, 5, 1.6, 16738848, { seg: 10, ring: 5, mat: hot }), O(n, S(-6, 29, 22.6), 38, 4, 2.4, Y(o, 0.7), Q);
+        O(n, S(34, 7, 30), 16, 8, 9, 2762274, Ve), O(n, S(34, 13, 30), 22, 4, 11, 3814444, Ve), F(n, S(26, 8, 30).mul(A.RZ(Math.PI / 2)), 2, 2, 8, 3814444, { seg: 6 });
+        O(n, S(-38, 7, 30), 20, 12, 12, r, Q), O(n, S(-38, 12.6, 30), 17, 1.6, 9, i, { shine: 0.9, glow: 0.2 });
+        for (let u = 0; u < 4; u++) O(n, S(-44 + u * 8, 5, 40), 7, 3, 4, 14172204, Ve);
+        L(n, S(14, 4, 38), 3, 2, 3, 16742954, { seg: 6, ring: 4, mat: hot });
+        return n;
+      }
+      case "colossus": {
+        let gd = a.gold, st = nn(o, 16777215, 0.12), cl = a.cloth[0];
+        O(n, S(0, 5, 0), 54, 10, 54, Y(o, 0.84), Q), O(n, S(0, 15, 0), 42, 10, 42, Y(o, 0.94), Q), O(n, S(0, 23, 0), 32, 6, 32, o, Q);
+        for (let u of [-7, 7]) F(n, S(u, 26, 0), 5.6, 4.6, 38, st, { seg: 10, mat: Q });
+        F(n, S(0, 52, 0), 14, 9.6, 24, Y(cl, 0.95), { seg: 14, mat: Re }), F(n, S(0, 74, 0), 10.6, 11.4, 28, st, { seg: 14, mat: Q });
+        for (let u of [-1, 1]) L(n, S(u * 13, 98, 0), 5.6, 5.2, 5.6, st, { seg: 10, ring: 8, mat: Q });
+        L(n, S(0, 112, 0), 7, 7.8, 7, nn(o, 16777215, 0.2), { seg: 12, ring: 8, mat: Q }), F(n, S(0, 113, 0), 7.8, 7.8, 5, Y(st, 0.8), { seg: 12, mat: Q });
+        for (let u of [-1, 1]) F(n, S(u * 7.8, 118, 0).mul(A.RZ(-u * 0.9)), 2.2, 0.5, 12, 15261896, { seg: 6 });
+        for (let u of [-1, 1]) {
+          let w = (p, q, t, c) => Ne(n, [p, q, t, p], c, { mat: Re });
+          w([u * 11, 100, -7], [u * 56, 138, -12], [u * 44, 90, -9], Y(gd, 0.95)), w([u * 11, 100, -7], [u * 44, 90, -9], [u * 14, 74, -8], Y(gd, 0.8)), w([u * 11, 100, -7], [u * 36, 124, -10], [u * 56, 138, -12], Y(gd, 1.1));
+        }
+        F(n, S(16, 94, 3).mul(A.RZ(-0.25)), 3, 2.6, 24, st, { seg: 8, mat: Q }), F(n, S(21, 26, 8), 1.5, 1.5, 136, r, { seg: 6 }), F(n, S(21, 162, 8), 3.4, 0, 17, 14212840, { seg: 6, mat: Ve });
+        F(n, S(-15, 88, 4).mul(A.RZ(0.2)), 3, 2.6, 22, st, { seg: 8, mat: Q }), L(n, S(-21, 78, 9), 12, 12, 2.4, gd, { seg: 14, ring: 8, mat: Ve }), L(n, S(-21, 78, 11.2), 4, 4, 1.4, 16757850, { seg: 8, ring: 5, mat: { shine: 0.4, glow: 0.7 } });
+        return n;
+      }
+      case "airship": {
+        let cl = a.cloth[0], cl2 = a.cloth[1] ?? 15787720, gd = a.gold;
+        F(n, S(-34, 0, 0), 3, 2, 62, Y(o, 0.7), { seg: 8, mat: Ve }), F(n, S(-34, 60, 0), 4.4, 0, 6, gd, { seg: 8, mat: Ve }), O(n, S(-34, 2, 0), 14, 4, 14, Y(o, 0.8), Q);
+        F(n, S(-34, 56, 0).mul(A.RZ(-1.15)), 0.7, 0.7, 24, Y(r, 0.7), { seg: 4 });
+        L(n, S(4, 66, 0), 42, 15.5, 15.5, cl, { seg: 22, ring: 14, mat: Re });
+        for (let k = -3; k <= 3; k++) {
+          let x = k * 11, q = Math.sqrt(Math.max(0.02, 1 - Math.pow(x / 42, 2)));
+          L(n, S(4 + x, 66, 0), 3.2, 15.5 * q + 0.5, 15.5 * q + 0.5, k % 2 ? cl2 : gd, { seg: 10, ring: 10, mat: Re });
+        }
+        O(n, S(-38, 76, 0), 12, 1.4, 22, cl2, Re), O(n, S(-38, 66, 0), 12, 20, 1.4, cl2, Re), O(n, S(-38, 56, 0), 12, 1.4, 22, cl2, Re);
+        O(n, S(4, 40, 0), 28, 7, 12, r, Q), O(n, S(4, 44.8, 0), 30, 1.6, 14, Y(r, 0.7), Q), O(n, S(4, 36, 0), 20, 2, 8, Y(r, 0.6), Q);
+        for (let u of [-9, 9]) for (let v of [-4, 4]) F(n, S(4 + u, 44, v), 0.5, 0.5, 20, Y(r, 0.6), { seg: 4 });
+        for (let u = -1; u <= 1; u += 2) O(n, S(4 + u * 8, 40, 6.4), 7, 3.6, 0.8, 16757850, { shine: 0.4, glow: 0.8 });
+        F(n, S(-14, 32, 0).mul(A.RZ(Math.PI / 2)), 1.6, 1.6, 9, Y(o, 0.7), { seg: 6 }), O(n, S(-16, 33.4, 0), 1.2, 9, 1.6, 14172204, Ve), O(n, S(-16, 33.4, 0), 1.2, 1.6, 9, 14172204, Ve);
+        return n;
+      }
       case "planter":
         O(n, S(0, 7, 0), 32, 14, 18, r, Q), L(n, S(0, 15, 0), 15, 4, 8, 4861986, { seg: 10, ring: 4 });
         for (let s = 0; s < 8; s++) L(n, S(-12 + s * 3.4, 20 + s % 3, (s % 2 - 0.5) * 6), 3.4, 3.4, 3.4, [15760048, 15915082, 16777215, 14172204][s % 4], { seg: 6, ring: 4, mat: on });
@@ -13495,7 +13880,7 @@ void main() {
       case "portal":
         return [34, 16];
       default:
-        return e.deco === "wall" ? [34, 12] : e.deco === "wall_v" ? [12, 34] : e.deco === "tent" ? [32, 24] : e.deco === "altar" ? [26, 18] : e.deco === "arch" ? [38, 12] : e.deco === "fountain" ? [38, 30] : e.deco === "tower" ? [34, 28] : e.deco === "longhouse" ? [74, 36] : e.deco === "keep" ? [96, 96] : e.deco === "palace" ? [140, 64] : e.deco === "hof" ? [120, 74] : e.deco === "warrior" ? [30, 26] : e.deco === "forge" ? [48, 30] : e.deco === "stall" ? [44, 22] : [20, 16];
+        return e.deco === "wall" ? [34, 12] : e.deco === "wall_v" ? [12, 34] : e.deco === "tent" ? [32, 24] : e.deco === "altar" ? [26, 18] : e.deco === "arch" ? [38, 12] : e.deco === "fountain" ? [38, 30] : e.deco === "tower" ? [34, 28] : e.deco === "longhouse" ? [74, 36] : e.deco === "keep" ? [96, 96] : e.deco === "palace" ? [140, 64] : e.deco === "hof" ? [120, 74] : e.deco === "warrior" ? [30, 26] : e.deco === "forge" ? [48, 30] : e.deco === "stall" ? [44, 22] : e.deco === "church" ? [120, 62] : e.deco === "castle" ? [140, 100] : e.deco === "monument" ? [48, 48] : e.deco === "bigforge" ? [100, 58] : e.deco === "colossus" ? [54, 54] : e.deco === "airship" ? [100, 40] : [20, 16];
     }
   }
   var Rt = 2, S4 = 0.38, fh = 2;
@@ -14498,7 +14883,7 @@ void main() {
           } });
         } else if (r.kind === "deco") {
           let m = n.decos[r.deco ?? ""];
-          (m || mo) && o.push({ depth: l, sx: s.x, sy: s.y, tall: r.deco === "tower" || r.deco === "statue" || r.deco === "keep" || r.deco === "palace" || r.deco === "hof" || r.deco === "warrior" || r.deco === "longhouse" || r.deco === "banner" || r.deco === "lamp", draw: () => {
+          (m || mo) && o.push({ depth: l, sx: s.x, sy: s.y, tall: r.deco === "tower" || r.deco === "statue" || r.deco === "keep" || r.deco === "palace" || r.deco === "hof" || r.deco === "warrior" || r.deco === "longhouse" || r.deco === "banner" || r.deco === "lamp" || r.deco === "church" || r.deco === "castle" || r.deco === "monument" || r.deco === "bigforge" || r.deco === "colossus" || r.deco === "airship", draw: () => {
             let p = u({ kind: "deco", theme: d, variant: r.deco === "longhouse" ? Math.abs(Math.round(r.x / 10) + Math.round(r.y / 10) * 3) % 4 : 0, deco: r.deco });
             p ? nt(a, p, f.x, f.y) : m && nt(a, m, s.x, s.y + 4);
           } });
@@ -14521,14 +14906,37 @@ void main() {
       this.statics = o.sort((r, i) => r.depth - i.depth), this.staticMap = t;
     }
     walkers(t) {
-      let a = (t.paved ?? []).slice(0, 2), n = t.npcs.map((s) => s.id);
-      if (!a.length || !n.length) return [];
-      let o = this.clock / 1e3, r = [], i = 14;
-      for (let s = 0; s < i; s++) {
-        let l = a[s % a.length], c = l.h > l.w, d = (c ? l.h : l.w) - 200, f = 30 + s % 3 * 9, u = s * 37 % 100 / 100 - 0.5, m = d * 2 / f, p = (o + s * 23.7) % m / m, h = p < 0.5 ? p * 2 : 2 - p * 2, x = p < 0.5, b = 100 + h * d, g = c ? l.x + l.w / 2 + u * (l.w - 120) : l.x + b, y = c ? l.y + b : l.y + l.h / 2 + u * (l.h - 120), v = Math.sin(o * 0.35 + s * 2.1) > 0.82, k = c ? x ? Math.PI / 2 : -Math.PI / 2 : x ? 0 : Math.PI;
-        r.push({ id: n[(s * 3 + 1) % n.length], x: g, y, ang: v ? k + Math.sin(o + s) * 1.4 : k, ph: v ? -1 : (o * f / 46 + s) % 1, seed: s * 1.37 });
+      let ps = (t.paved ?? []).slice(0, 3), ids = t.npcs.map((s) => s.id);
+      if (!ps.length || !ids.length) return [];
+      let now = this.clock;
+      if (!this._wk || this._wk.id !== t.id) {
+        let r = 12345 + (t.id || "").length * 97, rnd = () => (r = (r * 1664525 + 1013904223) >>> 0) / 4294967296, list = [];
+        for (let i = 0; i < 14; i++) {
+          let R = ps[i % ps.length], mx = Math.min(70, R.w / 3), my = Math.min(70, R.h / 3);
+          let pick = () => ({ x: R.x + mx + rnd() * (R.w - mx * 2), y: R.y + my + rnd() * (R.h - my * 2) });
+          let p0 = pick();
+          list.push({ id: ids[(i * 3 + 1) % ids.length], x: p0.x, y: p0.y, ang: rnd() * 6.283, ph: -1, seed: i * 1.37, R, mx, my, tgt: pick(), wait: rnd() * 4e3, sp: 24 + rnd() * 22, pick, rnd });
+        }
+        this._wk = { id: t.id, list, last: now };
       }
-      return r;
+      let dt = Math.min(0.1, Math.max(0, (now - this._wk.last) / 1e3));
+      this._wk.last = now;
+      for (let w of this._wk.list) {
+        if (w.wait > 0) {
+          w.wait -= dt * 1e3, w.ph = -1;
+          if (w.wait <= 0) w.tgt = w.pick();
+          else if (w.rnd() < dt * 0.4) w.ang += (w.rnd() - 0.5) * 2;
+          continue;
+        }
+        let dx = w.tgt.x - w.x, dy = w.tgt.y - w.y, d = Math.hypot(dx, dy);
+        if (d < 4) { w.wait = 1500 + w.rnd() * 6e3, w.sp = 24 + w.rnd() * 22; continue; }
+        let st = Math.min(d, w.sp * dt), nx = w.x + dx / d * st, ny = w.y + dy / d * st;
+        nx = Math.max(w.R.x + w.mx * 0.5, Math.min(w.R.x + w.R.w - w.mx * 0.5, nx)), ny = Math.max(w.R.y + w.my * 0.5, Math.min(w.R.y + w.R.h - w.my * 0.5, ny));
+        let ta = Math.atan2(dy, dx), da = Math.atan2(Math.sin(ta - w.ang), Math.cos(ta - w.ang));
+        w.ang += da * Math.min(1, dt * 6), w.x = nx, w.y = ny, w.ph = ((w.ph < 0 ? 0 : w.ph) + w.sp * dt / 46) % 1;
+        if (w.rnd() < dt * 0.05) w.wait = 800 + w.rnd() * 3e3;
+      }
+      return this._wk.list;
     }
     drawWalker(t) {
       let a = this.ctx, { x: n, y: o } = ce(t.x, t.y), { dir: r, flip: i } = Kl(t.ang), s = t.ph < 0 ? -1 : Math.floor(t.ph * ea) % ea, l = fa(t.id, r, s, 0), c = t.ph < 0 ? 0 : t.ph * Math.PI * 2, d = Xi(t.ang), f = d.x / (Math.hypot(d.x, d.y) || 1), u = Math.sin(this.clock / 480 + t.seed) * 0.012;
@@ -14924,6 +15332,7 @@ void main() {
       n.save(), n.globalAlpha = l ? 0.3 : 1, l ? (n.translate(o.x, o.y), n.rotate(Math.PI / 2), nt(n, f, 0, 0, s, $a, $a)) : nt(n, f, o.x, o.y + 6, s, $a, $a), n.restore(), l || (this.nameOn(`o${t.id}`) && this.text(`${t.name} \xB7 Nv ${t.level}`, o.x, o.y + 16, 12, "#9fe8ff"), this.bar(o.x, o.y - 52, 38, Math.max(0, t.hp / Math.max(1, t.maxHp)), "#58b8d4"));
     }
     drawMonster(t, a) {
+      if (t.def.id === "jormungandr") return this.drawSerpent(t, a);
       let n = this.store.world;
       if (!n) return;
       let o = this.ctx, r = ce(t.pos.x, t.pos.y), i = this.animOf(`m${t.id}`, t.pos.x, t.pos.y, a), s = i.moving ? Math.floor(i.phase * ea) : -1, l = t.state === "windup" ? 2 : t.state === "charge" ? 3 : 0, { dir: c, flip: d } = Kl(t.facing), f = t.def.shape, u, m = 1, p = d;
@@ -14936,6 +15345,50 @@ void main() {
       nt(o, u, r.x + b.dx, r.y + 4 + b.dy, p, m * b.sx, m * b.sy, p ? -b.rot : b.rot), x && o.restore();
       let g = Math.max(0, t.hp / t.maxHp), v = n.targetId === t.id || x || g < 1 || t.state === "chase" || t.state === "windup" || t.state === "charge" || t.state === "recover", k = r.y - (t.def.boss ? t.def.radius * 3.4 : f === "goblin" || f === "draugr" || f === "cinder" || f === "automaton" || f === "sylvan" || f === "prism" || f === "sentinel" || f === "voidling" ? 56 : t.def.radius * 2.6 + 8);
       v && this.bar(r.x, k + 8, Math.max(34, t.def.radius * 2.4), g, t.def.boss ? "#c77dff" : "#e0483e"), (t.golden || this.nameOn(`m${t.id}`)) && this.text(t.golden ? `\u2726 ${t.def.name} dourado` : t.def.name, r.x, k - 4, t.def.boss ? 14 : 11, t.golden ? "#ffd24a" : t.def.boss ? "#ffe9a8" : "#ffffff", t.def.boss || !!t.golden);
+    }
+    drawSerpent(t, a) {
+      let n = this.store.world;
+      if (!n) return;
+      let o = this.ctx, r = ce(t.pos.x, t.pos.y), T = this.clock / 1e3, dead = t.state === "dead", fade = dead ? Math.max(0, 1 - (n.time - (t.diedAt ?? 0)) / 2600) : 1;
+      if (fade <= 0) return;
+      let wind = t.state === "windup", flip = Xi(t.facing).x < 0 ? -1 : 1, N = 54, pts = [];
+      for (let i = 0; i < N; i++) {
+        let s = i / (N - 1), th = s * 6.283 * 1.55 + 0.6 + (dead ? 0 : Math.sin(T * 0.7) * 0.12), rho = 20 + 112 * Math.pow(s, 0.85), lift = Math.pow(1 - s, 2.2) * (dead ? 14 : 100 + (wind ? 14 * Math.sin(T * 20) : 0)), und = dead ? 0 : Math.sin(s * 16 - T * 2.6) * 5 * (0.4 + s);
+        pts.push({ s, x: r.x + Math.cos(th) * rho * flip + und * 0.3, y: r.y + 6 + Math.sin(th) * rho * 0.42 - lift + und, w: s < 0.04 ? 17 : 21 * (1 - Math.pow(s, 2.6) * 0.92) + 2 });
+      }
+      o.save(), o.globalAlpha = fade;
+      let x = this.hover?.kind === "monster" && this.hover.id === t.id;
+      x && (o.shadowColor = "#ffd34d", o.shadowBlur = 18), this.blob(r.x, r.y + 8, 130);
+      let order = pts.slice().sort((p, q) => p.y - q.y);
+      for (let p of order) {
+        let g = o.createRadialGradient(p.x - p.w * 0.3, p.y - p.w * 0.35, p.w * 0.1, p.x, p.y, p.w);
+        g.addColorStop(0, wind ? "#7fd0a0" : "#58b08c"), g.addColorStop(0.55, wind ? "#2c7a5a" : "#1f6a52"), g.addColorStop(1, "#0d2a24"), o.fillStyle = g, o.beginPath(), o.arc(p.x, p.y, p.w, 0, 7), o.fill();
+        let k = Math.floor(p.s * N);
+        k % 2 === 0 && (o.strokeStyle = "rgba(10,40,34,0.55)", o.lineWidth = 1.4, o.beginPath(), o.arc(p.x, p.y, p.w * 0.72, 3.6, 5.6), o.stroke(), o.beginPath(), o.arc(p.x, p.y, p.w * 0.42, 3.6, 5.6), o.stroke()), k % 3 === 0 && p.s > 0.06 && (o.save(), o.globalCompositeOperation = "lighter", o.fillStyle = `rgba(255,${110 + 60 * Math.sin(T * 3 + k) | 0},20,${(0.35 + 0.2 * Math.sin(T * 2 + k)).toFixed(3)})`, o.beginPath(), o.arc(p.x + 1, p.y - p.w * 0.45, Math.max(2, p.w * 0.26), 0, 7), o.fill(), o.restore());
+      }
+      let h = pts[0], hx = h.x, hy = h.y;
+      o.save(), o.translate(hx, hy - 4), o.scale(flip, 1);
+      let jaw = wind ? 15 + 4 * Math.sin(T * 24) : 5 + 1.5 * Math.sin(T * 3);
+      o.fillStyle = "#14403a", o.beginPath(), o.moveTo(-18, 0), o.quadraticCurveTo(0, 16 + jaw, 40, 6 + jaw), o.lineTo(36, 2), o.quadraticCurveTo(8, 8, -18, 0), o.fill();
+      let hg = o.createLinearGradient(0, -30, 0, 14);
+      hg.addColorStop(0, "#6fc4a0"), hg.addColorStop(1, "#1c5a48"), o.fillStyle = hg, o.beginPath(), o.moveTo(-22, 4), o.quadraticCurveTo(-18, -26, 8, -26), o.quadraticCurveTo(38, -24, 46, -4), o.quadraticCurveTo(30, 2, 6, 6), o.closePath(), o.fill();
+      o.fillStyle = "#e8d8a0";
+      for (let [px, py, hh] of [[-16, -22, 20], [-6, -26, 26], [6, -27, 20]]) o.beginPath(), o.moveTo(px, py), o.lineTo(px - 11, py - hh), o.lineTo(px + 4, py + 2), o.fill();
+      for (let q = 0; q < 6; q++) o.beginPath(), o.moveTo(10 + q * 5, 4), o.lineTo(12 + q * 5, 10 + jaw * 0.5), o.lineTo(14 + q * 5, 4), o.fill();
+      o.save(), o.globalCompositeOperation = "lighter";
+      let eg = o.createRadialGradient(18, -12, 0, 18, -12, wind ? 22 : 14);
+      eg.addColorStop(0, "rgba(255,230,120,1)"), eg.addColorStop(1, "rgba(255,60,0,0)"), o.fillStyle = eg, o.beginPath(), o.arc(18, -12, wind ? 22 : 14, 0, 7), o.fill(), o.restore(), o.fillStyle = "#ff3a10", o.beginPath(), o.ellipse(18, -12, 4.2, 2.4, -0.3, 0, 7), o.fill(), o.fillStyle = "#1a0500", o.fillRect(17, -14, 1.8, 4);
+      if (wind) {
+        o.save(), o.globalCompositeOperation = "lighter";
+        for (let q = 0; q < 5; q++) {
+          let fg = o.createRadialGradient(48 + q * 18, 10 + jaw * 0.4, 0, 48 + q * 18, 10 + jaw * 0.4, 18 + q * 6);
+          fg.addColorStop(0, `rgba(255,${200 - q * 30},60,0.65)`), fg.addColorStop(1, "rgba(255,40,0,0)"), o.fillStyle = fg, o.beginPath(), o.arc(48 + q * 18, 10 + jaw * 0.4, 18 + q * 6, 0, 7), o.fill();
+        }
+        o.restore();
+      } else Math.sin(T * 1.7) > 0.6 && (o.strokeStyle = "#c0203a", o.lineWidth = 1.6, o.beginPath(), o.moveTo(44, 4), o.lineTo(58, 6), o.lineTo(64, 2), o.moveTo(58, 6), o.lineTo(64, 10), o.stroke());
+      o.restore(), o.restore();
+      let g = Math.max(0, t.hp / t.maxHp), top = r.y - 190;
+      !dead && (this.bar(r.x, top + 8, 170, g, "#c77dff"), this.text(t.def.name, r.x, top - 4, 15, "#ffe9a8"));
     }
     hexCircle(t, a, n, o) {
       let r = this.ctx;
@@ -15883,7 +16336,7 @@ void main() {
   var y5 = oe(ue(), 1), x5 = document.getElementById("root");
   if (!x5) throw new Error("Elemento #root n\xE3o encontrado.");
   (0, b5.createRoot)(x5).render((0, y5.jsx)(Dh, {}));
-  new URLSearchParams(window.location.search).has("debug") && (window.__eldvar = j);
+  new URLSearchParams(window.location.search).has("debug") && (window.__eldvar = j, window.__wb = WB);
 })();
 /*! Bundled license information:
 
