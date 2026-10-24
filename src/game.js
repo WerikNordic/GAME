@@ -14310,6 +14310,7 @@ void main() {
     let t = e.equipment.weapon ? $(e.equipment.weapon)?.weaponType : void 0, a = (n) => n ? $(n)?.headStyle : void 0;
     return { base: e.line, hair: kh(e.name), gear: t ? cS[t] ?? "none" : "none", top: a(e.equipment.headTop), mid: a(e.equipment.headMid), low: a(e.equipment.headLow), bk: e.equipment.back ? $(e.equipment.back)?.backStyle : void 0, sx: e.gender === "f" ? "f" : void 0, dye: e.dye ?? 0, hs: e.style?.hairStyle, hc: e.style?.hairColor, ti: e.tier || 0 };
   }
+  var FIXYAW = Math.PI / 4;
   var TIERLOOK = {
     berserker: [null, { tunic: 8071714, trim: 15254090, pauld: 10133672, cape: 8002588 }, { tunic: 3815492, trim: 15251530, pauld: 15251530, cape: 11541532, head: "horns", aura: 16734762 }],
     escudeiro: [null, { tunic: 9071146, trim: 15782000, cape: 6961690, pauld: 15782000 }, { tunic: 6961824, trim: 16765514, cape: 4856432, pauld: 16765514, head: "circlet", aura: 16765514 }],
@@ -14847,8 +14848,8 @@ void main() {
     pet = { x: 0, y: 0, ok: false, moving: false };
     scenery = null;
     flat = null;
-    yaw = 0;
-    yawNow = 0;
+    yaw = FIXYAW;
+    yawNow = FIXYAW;
     tilt = 0.5;
     zoomMul = 1;
     baseZoom = 1;
@@ -14923,7 +14924,7 @@ void main() {
           this.store.dash();
           break;
         case "Home":
-          this.yaw = 0, this.tilt = 0.5, this.zoomMul = 1;
+          this.yaw = FIXYAW, this.tilt = 0.5, this.zoomMul = 1;
           break;
         default:
           break;
@@ -14999,7 +15000,7 @@ void main() {
     };
     onPointerMove = (t) => {
       let a = this.canvas.getBoundingClientRect();
-      this.drag && (this.yaw += (t.clientX - this.drag.x) * 6e-3, t.shiftKey && (this.shiftUsed = true, this.tilt += (t.clientY - this.drag.y) * 15e-4), this.drag = { x: t.clientX, y: t.clientY }), this.ptr.x = t.clientX, this.ptr.y = t.clientY, this.ptr.inside = t.clientX >= a.left && t.clientX <= a.right && t.clientY >= a.top && t.clientY <= a.bottom && t.target === this.canvas;
+      this.drag && (t.shiftKey && (this.shiftUsed = true, this.tilt += (t.clientY - this.drag.y) * 15e-4), this.drag = { x: t.clientX, y: t.clientY }), this.ptr.x = t.clientX, this.ptr.y = t.clientY, this.ptr.inside = t.clientX >= a.left && t.clientX <= a.right && t.clientY >= a.top && t.clientY <= a.bottom && t.target === this.canvas;
     };
     onWheel = (t) => {
       t.preventDefault();
@@ -15110,7 +15111,7 @@ void main() {
       let a = this.ctx, n = this.scenery, o = [];
       for (let r of t.obstacles) {
         if (r.kind === "water") continue;
-        let i = r.x + r.w / 2, s = ce(i, r.y + r.h * 0.5 + Math.min(r.h, r.w) * 0.35), l = Ja(i, r.y + r.h * 0.5 + Math.min(r.h, r.w) * 0.35), c = Sh(r.x, r.y, 11), d = t.theme ?? "grass", f = ce(i, r.y + r.h / 2), u = (m) => mo ? O4(m, 0, this.tilt) : null;
+        let i = r.x + r.w / 2, s = ce(i, r.y + r.h * 0.5 + Math.min(r.h, r.w) * 0.35), l = Ja(i, r.y + r.h * 0.5 + Math.min(r.h, r.w) * 0.35), c = Sh(r.x, r.y, 11), d = t.theme ?? "grass", f = ce(i, r.y + r.h / 2), u = (m) => mo ? O4(m, this.yawNow, this.tilt) : null;
         if (r.kind === "house") {
           let m = s.x - 55, p = s.y + 4;
           o.push({ depth: l, sx: s.x, sy: p, draw: () => {

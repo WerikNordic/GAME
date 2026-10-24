@@ -59,3 +59,6 @@
 - Custo dos atributos oculto
 - Cidades preenchidas: ferrarias, mercados, casas, jardins e acampamentos nos espaços vazios
 - Barracas e caixas dentro das casas removidas
+
+## v62
+- Câmera travada em visão reta: casas, barracas e chão alinhados e fixos (sem rotação)
