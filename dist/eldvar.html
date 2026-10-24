@@ -8024,7 +8024,7 @@ Error generating stack: ` + n.message + `
     return r;
   }
   var $m = { fountain: { w: 64, h: 48 }, well: { w: 36, h: 30 }, stall: { w: 72, h: 36 }, lamp: { w: 12, h: 12 }, banner: { w: 12, h: 12 }, statue: { w: 40, h: 36 }, post: { w: 22, h: 18 }, tower: { w: 52, h: 44 }, bench: { w: 44, h: 16 }, cart: { w: 56, h: 32 }, hay: { w: 40, h: 28 }, planter: { w: 34, h: 22 }, pillar: { w: 20, h: 20 }, pillar_broken: { w: 22, h: 20 }, wall: { w: 56, h: 14 }, wall_v: { w: 14, h: 56 }, arch: { w: 64, h: 16 }, tent: { w: 52, h: 38 }, campfire: { w: 24, h: 22 }, runestone: { w: 20, h: 14 }, gravestone: { w: 16, h: 10 }, altar: { w: 42, h: 28 }, obelisk: { w: 20, h: 20 }, longhouse: { w: 120, h: 50 }, keep: { w: 170, h: 150 }, palace: { w: 250, h: 100 }, hof: { w: 230, h: 120 }, warrior: { w: 52, h: 44 }, brazier: { w: 18, h: 18 }, forge: { w: 92, h: 36 }, church: { w: 110, h: 70 }, castle: { w: 150, h: 110 }, monument: { w: 44, h: 44 }, bigforge: { w: 120, h: 70 }, colossus: { w: 56, h: 56 }, airship: { w: 84, h: 44 } };
-  var DSC = { palace: 2.3, keep: 2.1, hof: 1.8, longhouse: 1.45, warrior: 1.9, statue: 1.9, fountain: 3.6, tower: 1.35, forge: 1.5, stall: 1.3, tent: 1.5, well: 1.4, cart: 1.2, obelisk: 1.6, altar: 1.4, brazier: 1.3, lamp: 1.15, banner: 1.4, church: 1.7, castle: 2, monument: 2.2, bigforge: 1.8, colossus: 2.4, airship: 1.6 };
+  var DSC = { palace: 2.3, keep: 2.1, hof: 1.8, longhouse: 1.85, warrior: 1.9, statue: 1.9, fountain: 3.6, tower: 1.35, forge: 1.5, stall: 1.3, tent: 1.5, well: 1.4, cart: 1.2, obelisk: 1.6, altar: 1.4, brazier: 1.3, lamp: 1.15, banner: 1.4, church: 1.7, castle: 2, monument: 2.2, bigforge: 1.8, colossus: 2.4, airship: 1.6, bench: 2 };
   for (let e of Object.keys(DSC)) $m[e] && ($m[e].w = Math.round($m[e].w * DSC[e]), $m[e].h = Math.round($m[e].h * DSC[e]));
   function R8() {
     let a = Oe(1138), n = [], o = { x: 250, y: 540, w: 160, h: 180 }, r = { x: 330, y: 630 }, i = [], s = { x: 1700, y: 330, r: 210 }, l = [{ monster: "lobo_faminto", x: 820, y: 540, radius: 230, count: 8 }, { monster: "lobo_faminto", x: 720, y: 240, radius: 170, count: 4 }, { monster: "javali", x: 1030, y: 820, radius: 170, count: 5 }, { monster: "goblin_saqueador", x: 1450, y: 960, radius: 170, count: 6 }, { monster: "hati", x: s.x, y: s.y, radius: 0, count: 1 }];
@@ -8073,7 +8073,7 @@ Error generating stack: ` + n.message + `
   var L8 = 3360, Xx = 2240, $x = { midgard_ruinas: { id: "segredo_vargheim", name: "Cripta Esquecida de Vargheim", label: "Passagem sob o altar" }, midgard_cemiterio: { id: "segredo_juramento", name: "C\xE2mara dos Juramentos", label: "Laje solta" }, jotunheim_glaciar: { id: "segredo_gelo", name: "Gruta do Gigante Esquecido", label: "Fenda no gelo" }, niflheim_floresta: { id: "segredo_niflheim", name: "Clareira Sem Nome", label: "N\xE9voa que n\xE3o se move" }, muspel_floresta: { id: "segredo_brasa", name: "Forno Abandonado de Surtr", label: "Fuma\xE7a subindo do ch\xE3o" }, svart_forja: { id: "segredo_forja", name: "Oficina Perdida dos An\xF5es", label: "Al\xE7ap\xE3o de ferro" }, vana_pantano: { id: "segredo_vozes", name: "Ninho das Vozes", label: "Ra\xEDzes que se abrem" }, alf_caverna: { id: "segredo_prisma", name: "Galeria do Eco Claro", label: "Prisma rachado" }, asg_arquivo: { id: "segredo_arquivo", name: "Biblioteca Sem P\xE1ginas", label: "Estante girat\xF3ria" }, lim_jardim: { id: "segredo_limiar", name: "Quarto Fora do Tempo", label: "Porta que n\xE3o estava l\xE1" } };
   function N8(e, t) {
     let a = L8, n = Xx, o = a / 1920, r = n / 1280, i = (a - 1920) / 2, s = Oe(e.seed), l = [], c = [], d = { x: a / 2, y: 130 }, f = e.village ? { x: 740 + i, y: 70, w: 460, h: 420 } : { x: 860 + i, y: 60, w: 220, h: 200 }, u = (e.npcs ?? []).map((D) => ({ id: D.id, x: D.x + i, y: D.y }));
-    for (let [D, Z] of e.houses ?? []) l.push({ kind: "house", x: D + i, y: Z, w: 110, h: 84 });
+    for (let [D, Z] of e.houses ?? []) l.push({ kind: "house", x: D + i, y: Z, w: 138, h: 104 });
     let m = e.lakes.map((D) => ({ x: Math.round(D.x * o), y: Math.round(D.y * r), w: Math.round(D.w * o), h: Math.round(D.h * r) }));
     for (let D of m) l.push({ kind: "water", ...D });
     for (let [D, Z] of e.crates ?? []) l.push({ kind: "crate", x: Math.round(Z < 480 ? D + i : D * o), y: Math.round(Z < 480 ? Z : Z * r), w: 30, h: 30 });
@@ -9197,6 +9197,17 @@ Error generating stack: ` + n.message + `
     path = [];
     targetId = null;
     pendingNpc = null;
+    pendingSit = null;
+    benchAt(x, y) {
+      for (let o of this.map.obstacles) if (o.kind === "deco" && o.deco === "bench" && x > o.x - 14 && x < o.x + o.w + 14 && y > o.y - 24 && y < o.y + o.h + 14) return o;
+      return null;
+    }
+    commandSit(b) {
+      if (this.player.deadAt !== null) return false;
+      this.sitting && (this.sitting = false);
+      let tx = b.x + b.w / 2, ty = b.y + b.h + 16, n = El(this.player.pos, { x: tx, y: ty }, this.player.radius, this.map.obstacles, this.map.width, this.map.height);
+      return !n || n.length === 0 ? false : (this.clearOrders(), this.path = n, this.pendingSit = { x: tx, y: ty, bx: b.x + b.w / 2, by: b.y + b.h / 2 }, true);
+    }
     pendingPoi = null;
     repathAt = 0;
     stuckMs = 0;
@@ -9242,7 +9253,7 @@ Error generating stack: ` + n.message + `
       return this.clearOrders(), this.move.x = 0, this.move.y = 0, "Posi\xE7\xE3o sincronizada.";
     }
     clearOrders() {
-      this.path = [], this.targetId = null, this.pendingNpc = null, this.pendingPoi = null, this.stuckMs = 0;
+      this.path = [], this.targetId = null, this.pendingNpc = null, this.pendingPoi = null, this.pendingSit = null, this.stuckMs = 0;
     }
     commandMove(t, a) {
       if (this.player.deadAt !== null) return false;
@@ -9391,6 +9402,12 @@ Error generating stack: ` + n.message + `
             let i = this.pendingPoi;
             this.clearOrders(), this.emit({ type: "poiReached", id: i });
           } else this.path.length === 0 && (this.pendingPoi = null);
+        }
+        if (this.pendingSit) {
+          let q = this.pendingSit;
+          if (Math.hypot(q.x - n.pos.x, q.y - n.pos.y) <= 30 || this.path.length === 0) {
+            if (this.clearOrders(), this.time - n.lastCombatAt >= 3e3 && Math.hypot(q.x - n.pos.x, q.y - n.pos.y) <= 70) n.pos.x = q.x, n.pos.y = q.y - 4, n.facing = -Math.PI / 2, this.sitting = true, this.emit({ type: "sat" });
+          }
         }
         if (this.pendingNpc) {
           let r = this.map.npcs.find((i) => i.id === this.pendingNpc);
@@ -10649,6 +10666,12 @@ Error generating stack: ` + n.message + `
     }
     commandMove(t, a) {
       return !this.paused && !!this.world?.commandMove(t, a);
+    }
+    benchAt(t, a) {
+      return this.paused ? null : this.world?.benchAt(t, a) ?? null;
+    }
+    commandSit(t) {
+      return !this.paused && !!this.world?.commandSit(t);
     }
     commandTarget(t) {
       return !this.paused && !!this.world?.commandTarget(t);
@@ -13425,6 +13448,11 @@ void main() {
       let fl = t.moving ? Math.sin(r * 2) * 0.16 : Math.sin(r * 0.5) * 0.04;
       for (let C of [-1, 1]) for (let B = 0; B < 5; B++) L(a, f.mul(A.T(C * (0.2 + B * 0.13), 1.5 - B * 0.12, -0.3 - B * 0.01)).mul(A.RZ(-C * (0.55 + B * 0.2 + fl))), 0.05, 0.46 - B * 0.05, 0.07, B % 2 ? e.wingsBack[1] : e.wingsBack[0], { seg: 8, mat: _n });
     }
+    if (e.pauld) for (let C of [-1, 1]) L(a, f.mul(A.T(C * 0.37, 1.36, 0)), 0.17, 0.1, 0.17, e.pauld, { seg: 10, n: 2, mat: at }), e.ti >= 2 && F(a, f.mul(A.T(C * 0.42, 1.4, 0)).mul(A.RZ(-C * 0.55)), 0.01, 0.06, 0.26, Xa, { seg: 6, mat: at });
+    if (e.aura) {
+      Xt(a, d.mul(A.T(0, 0.04, 0)), 0.78, 0.03, e.aura, { seg: 28, ring: 4, mat: oh }), Xt(a, d.mul(A.T(0, 0.05, 0)), 0.58, 0.02, Y(e.aura, 0.8), { seg: 24, ring: 4, mat: oh });
+      for (let C = 0; C < 4; C++) L(a, f.mul(A.T(Math.cos(C * 1.57 + r * 0.5) * 0.66, 0.45 + C * 0.4, Math.sin(C * 1.57 + r * 0.5) * 0.66)), 0.065, 0.065, 0.065, e.aura, { seg: 8, mat: oh });
+    }
     if (e.quiver) {
       let C = f.mul(A.T(0.17, 1.12, -0.3)).mul(A.RZ(-0.3));
       F(a, C.mul(A.T(0, -0.3, 0)), 0.09, 0.1, 0.6, f4, { seg: 10 });
@@ -13752,7 +13780,26 @@ void main() {
     for (let t of [6, 26]) Xt(e, S(0, t, 0), 12.4 - (t === 6 ? 0.4 : 0), 1.2, 6975094, { seg: 16, ring: 5, mat: Ve });
     return L(e, S(0, 32.5, 0), 11, 1.5, 11, 12093520, { seg: 14, ring: 4 }), e;
   }
-  function Wk(e) {
+  function Wk(e, vr = 0) {
+    let a = Wk0(e);
+    if (!vr) return a;
+    let t = jl[e], gl = { shine: 0.5, glow: 0.85 }, hip = (cx, cz, hw, hd, y0, hh, c1, c2) => {
+      let l = cx - hw, r = cx + hw, f = cz + hd, b = cz - hd;
+      Ne(a, [[l, y0, f], [r, y0, f], [cx, y0 + hh, cz], [l, y0, f]], c1, { mat: Q }), Ne(a, [[r, y0, b], [l, y0, b], [cx, y0 + hh, cz], [r, y0, b]], c2, { mat: Q }), Ne(a, [[r, y0, f], [r, y0, b], [cx, y0 + hh, cz], [r, y0, f]], Y(c1, 0.85), { mat: Q }), Ne(a, [[l, y0, b], [l, y0, f], [cx, y0 + hh, cz], [l, y0, b]], Y(c2, 0.85), { mat: Q });
+    };
+    if (vr === 1) {
+      O(a, S(-70, 3.5, 12), 44, 7, 60, t.stone, Q), O(a, S(-70, 21, 12), 40, 28, 54, t.wall, Q), O(a, S(-70, 18, 40), 12, 20, 2, t.beam), O(a, S(-70, 24, 40.8), 10, 10, 1.4, t.glow, gl), hip(-70, 12, 26, 32, 35, 24, t.roof, t.roof2), O(a, S(-84, 52, 2), 10, 26, 10, t.stone, Q);
+    } else if (vr === 2) {
+      F(a, S(-56, 7, -34), 17, 18, 70, t.stone, { seg: 12, mat: Q }), F(a, S(-56, 77, -34), 0.8, 24, 34, t.roof, { seg: 12, mat: Ve }), O(a, S(-56, 48, -16), 8, 12, 2, t.glow, gl), O(a, S(-56, 70, -16), 6, 10, 2, t.glow, gl), F(a, S(-56, 111, -34), 0.6, 0.6, 14, t.trim, { seg: 4 });
+    } else if (vr === 3) {
+      for (let b of [-38, -13, 13, 38]) F(a, S(b, 7, 52), 3.2, 3.6, 30, t.beam, { seg: 8, mat: Q });
+      O(a, S(0, 4, 48), 94, 4, 24, t.stone, Q), O(a, S(0, 38, 46), 100, 3, 28, t.roof, Q), O(a, S(0, 41.5, 46), 96, 3, 22, t.roof2, Q), O(a, S(44, 70, -18), 14, 36, 14, t.stone, Q), O(a, S(44, 90, -18), 18, 4, 18, Y(t.stone, 0.8)), O(a, S(-30, 20, 38.8), 10, 12, 1.4, t.glow, gl), O(a, S(30, 20, 38.8), 10, 12, 1.4, t.glow, gl);
+    } else if (vr === 4) {
+      O(a, S(0, 52, 0), 66, 26, 52, t.wall, Q), hip(0, 0, 38, 32, 65, 26, t.roof2, t.roof), O(a, S(0, 54, 27), 12, 12, 2, t.glow, gl), O(a, S(-24, 54, 27), 8, 12, 2, t.glow, gl), O(a, S(24, 54, 27), 8, 12, 2, t.glow, gl), F(a, S(0, 92, 0), 0.6, 0.6, 18, t.trim, { seg: 4 });
+    }
+    return a;
+  }
+  function Wk0(e) {
     let t = jl[e], a = new ua(), n = 100, o = 74, r = t.kind === "temple" ? 38 : 40, i = { shine: 0.5, glow: 0.85 }, s = () => {
       for (let b of [-26, 26]) O(a, S(b, 26, o / 2 + 0.6), 14, 14, 1.6, t.beam), O(a, S(b, 26, o / 2 + 1.2), 11, 11, 1.2, t.glow, i);
       for (let b of [-16, 16]) O(a, S(n / 2 + 0.6, 26, b), 1.6, 14, 14, t.beam), O(a, S(n / 2 + 1.2, 26, b), 1.2, 11, 11, t.glow, i);
@@ -13995,6 +14042,16 @@ void main() {
         O(n, S(0, 14, 52 / 2 + 1.2), 13, 24, 2.2, Y(r, 0.55)), O(n, S(0, 27, 52 / 2 + 1.6), 17, 3, 2.6, Y(r, 1.15));
         let h = { shine: 0.5, glow: 0.85 };
         for (let x of [-38, -22, 22, 38]) O(n, S(x, 24, 52 / 2 + 1.6), 9, 9, 1.4, Y(r, 1.2)), O(n, S(x, 24, 52 / 2 + 2.2), 6.4, 6.4, 1, 16762992, h);
+        if (vr === 1) {
+          O(n, S(-22, 22, -48), 50, 28, 46, d, Re), O(n, S(-22, 4, -48), 56, 8, 52, Y(o, 0.9), Q);
+          let wx = -22, wz = -48, hw = 31, hd = 28, y0 = 36, hh = 26;
+          Ne(n, [[wx - hw, y0, wz + hd], [wx + hw, y0, wz + hd], [wx, y0 + hh, wz], [wx - hw, y0, wz + hd]], c, { mat: Re }), Ne(n, [[wx + hw, y0, wz - hd], [wx - hw, y0, wz - hd], [wx, y0 + hh, wz], [wx + hw, y0, wz - hd]], Y(c, 0.82), { mat: Re }), Ne(n, [[wx + hw, y0, wz + hd], [wx + hw, y0, wz - hd], [wx, y0 + hh, wz], [wx + hw, y0, wz + hd]], Y(c, 0.9), { mat: Re }), Ne(n, [[wx - hw, y0, wz - hd], [wx - hw, y0, wz + hd], [wx, y0 + hh, wz], [wx - hw, y0, wz - hd]], Y(c, 0.75), { mat: Re });
+        } else if (vr === 2) {
+          F(n, S(-p + 2, 8, -m + 4), 15, 16, 66, Y(o, 0.95), { seg: 12, mat: Q }), F(n, S(-p + 2, 74, -m + 4), 0.8, 22, 32, c, { seg: 12, mat: Re }), O(n, S(-p + 2, 52, -m + 20), 8, 12, 2, 16762992, h), F(n, S(-p + 2, 106, -m + 4), 0.5, 0.5, 14, Y(r, 1.2), { seg: 4 });
+        } else if (vr === 3) {
+          for (let x of [-44, -22, 0, 22, 44]) F(n, S(x, 8, m + 12), 2.6, 3, 30, Y(r, 1.05), { seg: 8, mat: Q });
+          O(n, S(0, 4, m + 10), 108, 4, 20, Y(o, 0.9), Q), O(n, S(0, 40, m + 8), 116, 3, 24, c, Re), O(n, S(0, 43, m + 6), 110, 3, 18, Y(c, 0.85), Re);
+        }
         return n;
       }
       case "keep": {
@@ -14157,7 +14214,7 @@ void main() {
       case "rock":
         return Kk(e.theme, e.variant);
       case "house":
-        return Wk(e.theme);
+        return Wk(e.theme, e.variant);
       case "crate":
         return Fk();
       case "barrel":
@@ -14232,7 +14289,7 @@ void main() {
   function _4(e, t, a) {
     let n = gh(e), o = k4.get(n);
     if (o === void 0 && (o = x4(e), k4.set(n, o)), !o) return null;
-    let r = -(t + Math.PI / 4), i = Math.asin(Math.min(0.95, Math.max(0.2, a))), ds = e.kind === "deco" ? DSC[e.deco ?? ""] ?? 1 : 1, s = M4 * Rt * ds, l = d4(o, r, i, s), [c, d] = y4(e), f = (c + d) / 2 * ds, u = f * M4 * Rt, m = u * a, p = 3 * Rt, h = Math.floor(Math.min(l.minX, -u) - p), x = Math.ceil(Math.max(l.maxX, u) + p), b = Math.floor(Math.min(l.minY, -m) - p), g = Math.ceil(Math.max(l.maxY, m) + p), y = x - h, v = g - b, k = A0(o, { w: y, h: v, ax: -h, ay: -b, pxu: s, yaw: r, pitch: i, ss: fh, outline: 1, gain: 1.6, sat: 1.15, inner: 0.4 }), R = document.createElement("canvas");
+    let r = -(t + Math.PI / 4), i = Math.asin(Math.min(0.95, Math.max(0.2, a))), ds = e.kind === "deco" ? DSC[e.deco ?? ""] ?? 1 : e.kind === "house" ? 1.3 : 1, s = M4 * Rt * ds, l = d4(o, r, i, s), [c, d] = y4(e), f = (c + d) / 2 * ds, u = f * M4 * Rt, m = u * a, p = 3 * Rt, h = Math.floor(Math.min(l.minX, -u) - p), x = Math.ceil(Math.max(l.maxX, u) + p), b = Math.floor(Math.min(l.minY, -m) - p), g = Math.ceil(Math.max(l.maxY, m) + p), y = x - h, v = g - b, k = A0(o, { w: y, h: v, ax: -h, ay: -b, pxu: s, yaw: r, pitch: i, ss: fh, outline: 1, gain: 1.6, sat: 1.15, inner: 0.4 }), R = document.createElement("canvas");
     R.width = y, R.height = v;
     let w = R.getContext("2d"), M = w.createRadialGradient(-h, -b, 0, -h, -b, u);
     M.addColorStop(0, "rgba(10,14,8,0.42)"), M.addColorStop(0.6, "rgba(10,14,8,0.24)"), M.addColorStop(1, "rgba(10,14,8,0)"), w.save(), w.translate(-h, -b), w.scale(1, a), w.translate(h, b), w.fillStyle = M, w.fillRect(-h - u, -b - u, u * 2, u * 2), w.restore();
@@ -14376,20 +14433,31 @@ void main() {
   }
   var da = /* @__PURE__ */ new Map(), ea = 8, cS = { axe: "axe", sword: "sword", bow: "bow", staff: "staff", spear: "spear", dagger: "dagger" };
   function po(e) {
-    return `${e.base}@${e.hair ?? ""}|g:${e.gear ?? ""}|t:${e.top ?? ""}|m:${e.mid ?? ""}|l:${e.low ?? ""}|b:${e.bk ?? ""}${e.sx ? "|x:f" : ""}|d:${e.dye ?? 0}${e.hs ? `|s:${e.hs}` : ""}${e.hc !== void 0 ? `|c:${e.hc}` : ""}`;
+    return `${e.base}@${e.hair ?? ""}|g:${e.gear ?? ""}|t:${e.top ?? ""}|m:${e.mid ?? ""}|l:${e.low ?? ""}|b:${e.bk ?? ""}${e.sx ? "|x:f" : ""}|d:${e.dye ?? 0}${e.hs ? `|s:${e.hs}` : ""}${e.hc !== void 0 ? `|c:${e.hc}` : ""}${e.ti ? `|j:${e.ti}` : ""}`;
   }
   function Yl(e) {
     let [t, ...a] = e.split("|"), [n, o] = t.split("@"), r = (i) => a.find((s) => s.startsWith(i + ":"))?.slice(i.length + 1) ?? "";
-    return { base: n, hair: o ? Number(o) : void 0, gear: r("g") || void 0, top: r("t") || void 0, mid: r("m") || void 0, low: r("l") || void 0, bk: r("b") || void 0, sx: r("x") || void 0, dye: Number(r("d")) || 0, hs: r("s") || void 0, hc: r("c") ? Number(r("c")) : void 0 };
+    return { base: n, hair: o ? Number(o) : void 0, gear: r("g") || void 0, top: r("t") || void 0, mid: r("m") || void 0, low: r("l") || void 0, bk: r("b") || void 0, sx: r("x") || void 0, dye: Number(r("d")) || 0, hs: r("s") || void 0, hc: r("c") ? Number(r("c")) : void 0, ti: Number(r("j")) || 0 };
   }
   function cs(e) {
     let t = e.equipment.weapon ? $(e.equipment.weapon)?.weaponType : void 0, a = (n) => n ? $(n)?.headStyle : void 0;
-    return { base: e.line, hair: kh(e.name), gear: t ? cS[t] ?? "none" : "none", top: a(e.equipment.headTop), mid: a(e.equipment.headMid), low: a(e.equipment.headLow), bk: e.equipment.back ? $(e.equipment.back)?.backStyle : void 0, sx: e.gender === "f" ? "f" : void 0, dye: e.dye ?? 0, hs: e.style?.hairStyle, hc: e.style?.hairColor };
+    return { base: e.line, hair: kh(e.name), gear: t ? cS[t] ?? "none" : "none", top: a(e.equipment.headTop), mid: a(e.equipment.headMid), low: a(e.equipment.headLow), bk: e.equipment.back ? $(e.equipment.back)?.backStyle : void 0, sx: e.gender === "f" ? "f" : void 0, dye: e.dye ?? 0, hs: e.style?.hairStyle, hc: e.style?.hairColor, ti: e.tier || 0 };
   }
+  var TIERLOOK = {
+    berserker: [null, { tunic: 8071714, trim: 15254090, pauld: 10133672, cape: 8002588 }, { tunic: 3815492, trim: 15251530, pauld: 15251530, cape: 11541532, head: "horns", aura: 16734762 }],
+    escudeiro: [null, { tunic: 9071146, trim: 15782000, cape: 6961690, pauld: 15782000 }, { tunic: 6961824, trim: 16765514, cape: 4856432, pauld: 16765514, head: "circlet", aura: 16765514 }],
+    cacador: [null, { tunic: 3041850, cape: 2378282, pauld: 6866554 }, { tunic: 2054724, trim: 12120224, cape: 1719850, pauld: 6996090, head: "hood", aura: 8060826 }],
+    volva: [null, { tunic: 3824304, trim: 16769162, pauld: 16769162 }, { tunic: 2763408, trim: 16769162, cape: 5913280, head: "circlet", pauld: 16769162, aura: 9089279 }],
+    valquiria: [null, { pauld: 15262912, trim: 16769162 }, { tunic: 16052448, trim: 16765514, cape: 16773312, pauld: 16765514, head: "wings", wingsBack: [16777215, 16771488], aura: 16771744 }],
+    skald: [null, { tunic: 3877456, cape: 2365000, pauld: 4864600 }, { tunic: 2364980, trim: 12607743, cape: 1182242, pauld: 6961808, head: "hood", aura: 11559039 }],
+    thay: [null, { tunic: 13654560, trim: 16765514, pauld: 16765514 }, { tunic: 12065820, trim: 16765514, cape: 8006156, pauld: 16765514, head: "circlet", aura: 16742954 }]
+  };
   function R4(e) {
     let t = { ...I0[e.base] ?? I0.berserker };
     if (["berserker", "escudeiro", "cacador", "volva", "valquiria", "skald", "thay"].includes(e.base)) {
       t.head = "none", delete t.cape, delete t.quiver;
+      let tp = TIERLOOK[e.base]?.[Math.min(2, e.ti || 0)];
+      tp && Object.assign(t, tp), t.ti = e.ti || 0;
     }
     if (e.mid && e.mid.startsWith("eye_")) { t.eye = EYEC[e.mid]; e = { ...e, mid: void 0 }; }
     return e.hair !== void 0 && !Number.isNaN(e.hair) && (t.hair = xh[e.hair % xh.length]), e.hs && (t.hairStyle = e.hs), e.hc !== void 0 && !Number.isNaN(e.hc) && (t.hair = e.hc), e.gear && (t.gear = e.gear), e.top && (t.head = e.top), e.mid && (t.mid = e.mid), e.low && (t.low = e.low), e.sx === "f" && (t.slim = true, e.hs || (t.hairStyle = "long")), e.bk && BACKS[e.bk] && (BACKS[e.bk].type === "cape" ? t.cape = BACKS[e.bk].c : BACKS[e.bk].type === "quiver" ? t.quiver = true : t.wingsBack = [BACKS[e.bk].c, BACKS[e.bk].c2]), t;
@@ -15054,6 +15122,11 @@ void main() {
         a.commandNpc(r.id) || this.add({ k: "dest", x: o.x, y: o.y, t0: this.clock, dur: 500, bad: true }), this.ptr.held = false;
         return;
       }
+      let bn = a.benchAt?.(o.x, o.y);
+      if (bn && a.commandSit(bn)) {
+        this.add({ k: "dest", x: o.x, y: o.y, t0: this.clock, dur: 900 }), this.ptr.held = false;
+        return;
+      }
       let i = a.commandMove(o.x, o.y);
       this.add({ k: "dest", x: o.x, y: o.y, t0: this.clock, dur: i ? 900 : 500, bad: !i }), this.ptr.holdMove = i;
     };
@@ -15170,11 +15243,11 @@ void main() {
       let a = this.ctx, n = this.scenery, o = [];
       for (let r of t.obstacles) {
         if (r.kind === "water") continue;
-        let i = r.x + r.w / 2, s = ce(i, r.y + r.h * 0.5 + Math.min(r.h, r.w) * 0.35), l = Ja(i, r.y + r.h * 0.5 + Math.min(r.h, r.w) * 0.35), c = Sh(r.x, r.y, 11), d = t.theme ?? "grass", f = ce(i, r.y + r.h / 2), u = (m) => mo ? O4(m, this.yawNow, this.tilt) : null;
+        let i = r.x + r.w / 2, s = ce(i, r.y + r.h * 0.5 + Math.min(r.h, r.w) * 0.35), l = Ja(i, r.y + r.h * 0.5 + Math.min(r.h, r.w) * 0.35), c = Sh(r.x, r.y, 11), d = t.theme ?? "grass", f = ce(i, r.y + r.h / 2), u = (m) => mo ? O4(m, 0, this.tilt) : null;
         if (r.kind === "house") {
           let m = s.x - 55, p = s.y + 4;
           o.push({ depth: l, sx: s.x, sy: p, draw: () => {
-            let h = u({ kind: "house", theme: d, variant: 0 });
+            let h = u({ kind: "house", theme: d, variant: Math.abs(Math.round(r.x / 13) * 7 + Math.round(r.y / 17) * 3) % 5 });
             if (h) {
               nt(a, h, f.x, f.y);
               let x = jl[d].kind;
@@ -15209,19 +15282,26 @@ void main() {
       this.statics = o.sort((r, i) => r.depth - i.depth), this.staticMap = t;
     }
     walkers(t) {
-      let ps = (t.paved ?? []).slice(0, 3), ids = t.npcs.map((s) => s.id);
+      let ps = (t.paved ?? []).slice(0, 5), ids = t.npcs.map((s) => s.id);
       if (!ps.length || !ids.length) return [];
       let now = this.clock;
       if (!this._wk || this._wk.id !== t.id) {
         let r = 12345 + (t.id || "").length * 97, rnd = () => (r = (r * 1664525 + 1013904223) >>> 0) / 4294967296, list = [], blk = t.obstacles.filter((o) => o.kind === "deco" || o.kind === "house" || o.kind === "crate" || o.kind === "water" || o.kind === "rock" || o.kind === "tree").map((o) => ({ x: o.x - 16, y: o.y - 14, w: o.w + 32, h: o.h + 28 })), hit = (x, y) => blk.some((o) => x > o.x && x < o.x + o.w && y > o.y && y < o.y + o.h);
-        for (let i = 0; i < 14; i++) {
+        for (let i = 0; i < 18; i++) {
           let R = ps[i % ps.length], mx = Math.min(70, R.w / 3), my = Math.min(70, R.h / 3);
           let pick = () => {
             let q;
             for (let z = 0; z < 24; z++) if (q = { x: R.x + mx + rnd() * (R.w - mx * 2), y: R.y + my + rnd() * (R.h - my * 2) }, !hit(q.x, q.y)) return q;
             return q;
           }, p0 = pick();
-          list.push({ id: ids[(i * 3 + 1) % ids.length], x: p0.x, y: p0.y, ang: rnd() * 6.283, ph: -1, seed: i * 1.37, R, mx, my, tgt: pick(), wait: rnd() * 4e3, sp: 24 + rnd() * 22, pick, rnd, hit });
+          let w0 = { id: ids[(i * 3 + 1) % ids.length], x: p0.x, y: p0.y, ang: rnd() * 6.283, ph: -1, seed: i * 1.37, R, mx, my, tgt: pick(), wait: rnd() * 1500, sp: 26 + rnd() * 24, pick, rnd, hit };
+          w0.near = () => {
+            for (let z = 0; z < 14; z++) {
+              let a = w0.rnd() * 6.283, dd = 40 + w0.rnd() * 150, qx = w0.x + Math.cos(a) * dd, qy = w0.y + Math.sin(a) * dd;
+              if (qx > R.x + mx * 0.5 && qx < R.x + R.w - mx * 0.5 && qy > R.y + my * 0.5 && qy < R.y + R.h - my * 0.5 && !hit(qx, qy)) return { x: qx, y: qy };
+            }
+            return pick();
+          }, list.push(w0);
         }
         this._wk = { id: t.id, list, last: now };
       }
@@ -15230,35 +15310,35 @@ void main() {
       for (let w of this._wk.list) {
         if (w.wait > 0) {
           w.wait -= dt * 1e3, w.ph = -1;
-          if (w.wait <= 0) w.tgt = w.pick();
+          if (w.wait <= 0) w.tgt = w.near();
           else if (w.rnd() < dt * 0.4) w.ang += (w.rnd() - 0.5) * 2;
           continue;
         }
         let dx = w.tgt.x - w.x, dy = w.tgt.y - w.y, d = Math.hypot(dx, dy);
-        if (d < 4) { w.wait = 1500 + w.rnd() * 6e3, w.sp = 24 + w.rnd() * 22; continue; }
+        if (d < 4) { w.wait = 150 + w.rnd() * 1400, w.sp = 24 + w.rnd() * 26; continue; }
         let st = Math.min(d, w.sp * dt), nx = w.x + dx / d * st, ny = w.y + dy / d * st;
         nx = Math.max(w.R.x + w.mx * 0.5, Math.min(w.R.x + w.R.w - w.mx * 0.5, nx)), ny = Math.max(w.R.y + w.my * 0.5, Math.min(w.R.y + w.R.h - w.my * 0.5, ny));
         w.hit(nx, ny) || (w.stk = 0);
         if (w.hit(nx, ny)) {
           if (w.stk = (w.stk || 0) + dt, w.stk > 1.1) {
-            w.stk = 0, w.tgt = w.pick(), w.wait = 200;
+            w.stk = 0, w.tgt = w.near(), w.wait = 200;
             continue;
           }
           let ox = w.hit(nx, w.y), oy = w.hit(w.x, ny);
           if (!ox) ny = w.y;
           else if (!oy) nx = w.x;
           else {
-            w.tgt = w.pick(), w.wait = 300 + w.rnd() * 1200;
+            w.tgt = w.near(), w.wait = 300 + w.rnd() * 1200;
             continue;
           }
           if (w.hit(nx, ny)) {
-            w.tgt = w.pick(), w.wait = 300;
+            w.tgt = w.near(), w.wait = 300;
             continue;
           }
         }
         let ta = Math.atan2(dy, dx), da = Math.atan2(Math.sin(ta - w.ang), Math.cos(ta - w.ang));
         w.ang += da * Math.min(1, dt * 6), w.x = nx, w.y = ny, w.ph = ((w.ph < 0 ? 0 : w.ph) + w.sp * dt / 46) % 1;
-        if (w.rnd() < dt * 0.05) w.wait = 800 + w.rnd() * 3e3;
+        if (w.rnd() < dt * 0.3 && (w.tgt = w.near()), w.rnd() < dt * 0.12) w.wait = 250 + w.rnd() * 1500;
       }
       return this._wk.list;
     }

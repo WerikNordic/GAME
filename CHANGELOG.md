@@ -47,3 +47,10 @@
 ## v59
 - 7 classes (Espadachim, Mercador, Arqueiro, Mago, Noviço, Gatuno, Thay), estátuas aleatórias (anjo, Bafomé, Morroc, serpente), cidades reorganizadas, NPCs desviam da fonte, iluminação sem escurecer
 - @afk nas cidades principais, Ctrl+C abre janela de mensagem privada
+
+## v60
+- Estruturas fixas ao girar a câmera
+- Bancos maiores, clique para sentar
+- Casas maiores com modelos diferentes (ala, torre, varanda, 2º andar)
+- NPCs andam de forma aleatória o tempo todo
+- Visual por classe e por evolução (ombreiras, capas, asas, aura, elmos)
