@@ -25,3 +25,8 @@ main.title .title-card .footer{color:#a9a38f}
 .dialogue footer{padding:4px 8px 7px}
 .dialogue .btn{min-height:26px!important;padding:2px 10px!important;font-size:12px}
 .panel{max-height:94vh;overflow:auto}
+
+.skill-bonus{background:linear-gradient(#f4f8ff,#dbe6f7);border:1px solid #7f9cc9;border-radius:3px;padding:6px 8px;margin-top:4px;color:#1d2f52;font-size:12px;cursor:pointer}
+.skill-bonus>b{display:block;margin-bottom:3px;color:#1b3a78}
+.skill-bonus .sb-row{display:flex;justify-content:space-between;gap:10px;border-top:1px dotted #9fb3d6;padding:1px 0}
+.skill-bonus .sb-next{color:#35607a;font-style:italic}

@@ -36,6 +36,11 @@ main.title .title-card .footer{color:#a9a38f}
 .dialogue footer{padding:4px 8px 7px}
 .dialogue .btn{min-height:26px!important;padding:2px 10px!important;font-size:12px}
 .panel{max-height:94vh;overflow:auto}
+
+.skill-bonus{background:linear-gradient(#f4f8ff,#dbe6f7);border:1px solid #7f9cc9;border-radius:3px;padding:6px 8px;margin-top:4px;color:#1d2f52;font-size:12px;cursor:pointer}
+.skill-bonus>b{display:block;margin-bottom:3px;color:#1b3a78}
+.skill-bonus .sb-row{display:flex;justify-content:space-between;gap:10px;border-top:1px dotted #9fb3d6;padding:1px 0}
+.skill-bonus .sb-next{color:#35607a;font-style:italic}
 </style></head>
   <body>
     <div id="root"></div>
@@ -7431,6 +7436,12 @@ Error generating stack: ` + n.message + `
     { id: "mascara_caca", name: "M\xE1scara de Ca\xE7a", kind: "headLow", headStyle: "mask", rarity: "uncommon", reqLevel: 1, stack: 1, sell: 1, desc: "Cabe\xE7a (baixo): m\xE1scara de couro. Apenas visual.", cosmetic: true },
     { id: "barba_trancada", name: "Barba Tran\xE7ada", kind: "headLow", headStyle: "beard", rarity: "uncommon", reqLevel: 1, stack: 1, sell: 1, desc: "Cabe\xE7a (baixo): barba de guerreiro. Apenas visual.", cosmetic: true },
   ];
+
+  [
+    ["capa_viking", "Capa de Guerreiro", "cape", "uncommon"], ["capa_lobo", "Capa de Pele de Lobo", "cape", "common"], ["capa_real", "Manto do Jarl", "cape", "rare"], ["capa_sombra", "Manto das Sombras", "cape", "rare"],
+    ["aljava_cacador", "Aljava do Ca\xE7ador", "quiver", "common"], ["aljava_prata", "Aljava de Prata", "quiver", "rare"],
+    ["asas_corvo", "Asas de Corvo", "wings", "rare"], ["asas_anjo", "Asas de Luz", "wings", "epic"], ["asas_brasa", "Asas de Brasa", "wings", "epic"]
+  ].forEach(([id, name, ty, rarity]) => { Wa[id] = { id, name, kind: "back", backStyle: id, rarity, reqLevel: 1, stack: 1, sell: 1, desc: "Costas: " + ty.replace("cape", "capa").replace("quiver", "aljava").replace("wings", "asas") + " decorativa. Apenas visual.", cosmetic: true }; });
   for (let e of QCOS) Wa[e.id] = e;
   for (let e of M8) Wa[e.id] = e;
   for (let e of Object.values(Wa)) {
@@ -7851,7 +7862,7 @@ Error generating stack: ` + n.message + `
     return r;
   }
   var $m = { fountain: { w: 64, h: 48 }, well: { w: 36, h: 30 }, stall: { w: 72, h: 36 }, lamp: { w: 12, h: 12 }, banner: { w: 12, h: 12 }, statue: { w: 40, h: 36 }, post: { w: 22, h: 18 }, tower: { w: 52, h: 44 }, bench: { w: 44, h: 16 }, cart: { w: 56, h: 32 }, hay: { w: 40, h: 28 }, planter: { w: 34, h: 22 }, pillar: { w: 20, h: 20 }, pillar_broken: { w: 22, h: 20 }, wall: { w: 56, h: 14 }, wall_v: { w: 14, h: 56 }, arch: { w: 64, h: 16 }, tent: { w: 52, h: 38 }, campfire: { w: 24, h: 22 }, runestone: { w: 20, h: 14 }, gravestone: { w: 16, h: 10 }, altar: { w: 42, h: 28 }, obelisk: { w: 20, h: 20 }, longhouse: { w: 120, h: 50 }, keep: { w: 170, h: 150 }, palace: { w: 250, h: 100 }, hof: { w: 230, h: 120 }, warrior: { w: 52, h: 44 }, brazier: { w: 18, h: 18 }, forge: { w: 92, h: 36 } };
-  var DSC = { palace: 2.3, keep: 2.1, hof: 1.8, longhouse: 1.45, warrior: 1.9, statue: 1.9, fountain: 1.8, tower: 1.35, forge: 1.5, stall: 1.3, tent: 1.5, well: 1.4, cart: 1.2, obelisk: 1.6, altar: 1.4, brazier: 1.3, lamp: 1.15, banner: 1.4 };
+  var DSC = { palace: 2.3, keep: 2.1, hof: 1.8, longhouse: 1.45, warrior: 1.9, statue: 1.9, fountain: 3.6, tower: 1.35, forge: 1.5, stall: 1.3, tent: 1.5, well: 1.4, cart: 1.2, obelisk: 1.6, altar: 1.4, brazier: 1.3, lamp: 1.15, banner: 1.4 };
   for (let e of Object.keys(DSC)) $m[e] && ($m[e].w = Math.round($m[e].w * DSC[e]), $m[e].h = Math.round($m[e].h * DSC[e]));
   function R8() {
     let a = Oe(1138), n = [], o = { x: 250, y: 540, w: 160, h: 180 }, r = { x: 330, y: 630 }, i = [], s = { x: 1700, y: 330, r: 210 }, l = [{ monster: "lobo_faminto", x: 820, y: 540, radius: 230, count: 8 }, { monster: "lobo_faminto", x: 720, y: 240, radius: 170, count: 4 }, { monster: "javali", x: 1030, y: 820, radius: 170, count: 5 }, { monster: "goblin_saqueador", x: 1450, y: 960, radius: 170, count: 6 }, { monster: "hati", x: s.x, y: s.y, radius: 0, count: 1 }];
@@ -8165,7 +8176,7 @@ Error generating stack: ` + n.message + `
     for (let n of e) n.target === t[n.kind] && (a[n.kind] += n.pct);
     return (1 + a.race) * (1 + a.element) * (1 + a.size);
   }
-  var yn = ["str", "agi", "vit", "int", "dex", "luk"], Pr = ["berserker", "escudeiro", "cacador", "volva", "valquiria", "skald"], vl = ["weapon", "armor", "headTop", "headMid", "headLow", "accessory"], Pt = (e) => vl.includes(e), er = { volume: 0.5, music: 0.35, damageNumbers: true, alwaysNames: false, screenShake: true, touchControls: "auto" };
+  var yn = ["str", "agi", "vit", "int", "dex", "luk"], Pr = ["berserker", "escudeiro", "cacador", "volva", "valquiria", "skald"], vl = ["weapon", "armor", "headTop", "headMid", "headLow", "back", "accessory"], Pt = (e) => vl.includes(e), er = { volume: 0.5, music: 0.35, damageNumbers: true, alwaysNames: false, screenShake: true, touchControls: "auto" };
   var j8 = { berserker: "Berserker", escudeiro: "Escudeiro", cacador: "Ca\xE7ador", volva: "V\xF6lva", valquiria: "Valqu\xEDria", skald: "Skald" };
   function Ml(e, t) {
     return Pt(t.kind) ? e.level < t.reqLevel ? { ok: false, msg: `Requer n\xEDvel ${t.reqLevel}.` } : t.allowedJobs?.length && !t.allowedJobs.includes(e.line) ? { ok: false, msg: `Sua classe n\xE3o pode equipar ${t.name}. Apenas: ${t.allowedJobs.map((a) => j8[a]).join(", ")} (e evolu\xE7\xF5es).` } : t.kind === "weapon" && t.weaponType && !Ce[e.line].weapons.includes(t.weaponType) ? { ok: false, msg: "Sua classe n\xE3o pode usar este tipo de arma." } : { ok: true, msg: "" } : { ok: false, msg: "Este item n\xE3o \xE9 equip\xE1vel." };
@@ -8435,7 +8446,7 @@ Error generating stack: ` + n.message + `
     if (i.length >= r) return { ok: false, msg: `${n.name} n\xE3o tem encaixes livres (${i.length}/${r}).` };
     let s = o.cardFor ?? "weapon";
     if (s !== n.kind) {
-      let l = { weapon: "Arma", armor: "Armadura", accessory: "Acess\xF3rio", headTop: "Cabe\xE7a (topo)", headMid: "Cabe\xE7a (meio)", headLow: "Cabe\xE7a (baixo)" };
+      let l = { weapon: "Arma", armor: "Armadura", accessory: "Acess\xF3rio", headTop: "Cabe\xE7a (topo)", headMid: "Cabe\xE7a (meio)", headLow: "Cabe\xE7a (baixo)", back: "Costas" };
       return { ok: false, msg: `${o.name} \xE9 uma carta de ${l[s]} e n\xE3o pode ser encaixada em ${l[n.kind]}.` };
     }
     return Ea(e.inventory, a, 1) ? (e.cards[t] = [...i, a], no(e), { ok: true, msg: `${o.name} fundida a ${n.name} (${i.length + 1}/${r}).` }) : { ok: false, msg: `Voc\xEA n\xE3o tem ${o.name}.` };
@@ -8524,6 +8535,15 @@ Error generating stack: ` + n.message + `
     { id: "exp_ervas", kind: "exp", name: "Cesto do Herbalista", desc: "Ervas para as po\xE7\xF5es de Eir.", need: [["erva_vermelha",10],["erva_azul",10],["erva_espinhosa",5]], pct: 0.2 },
     { id: "exp_gelo", kind: "exp", name: "Despojos da Geada", desc: "Presas e ossos do norte congelado.", need: [["presa_gelo",15],["osso_gelido",10]], pct: 0.4 },
     { id: "exp_yeti", kind: "exp", name: "Tributo do Yeti", desc: "Um tributo digno de um jarl.", need: [["pelo_yeti",5],["coracao_de_gelo",1]], pct: 0.6 },
+    { id: "vis_capa1", kind: "look", name: "Capa de Guerreiro", desc: "", need: [["pele_lobo",12],["presa_javali",6]], reward: "capa_viking" },
+    { id: "vis_capa2", kind: "look", name: "Pele de Lobo nas Costas", desc: "", need: [["pele_lobo",20]], reward: "capa_lobo" },
+    { id: "vis_capa3", kind: "look", name: "Manto do Jarl", desc: "", need: [["pelo_yeti",8],["gema_azul",4],["runa_egide",1]], reward: "capa_real" },
+    { id: "vis_capa4", kind: "look", name: "Manto das Sombras", desc: "", need: [["pelagem_lunar",4],["osso_gelido",8]], reward: "capa_sombra" },
+    { id: "vis_aljava1", kind: "look", name: "Aljava Nova", desc: "", need: [["pele_lobo",8],["presa_javali",4]], reward: "aljava_cacador" },
+    { id: "vis_aljava2", kind: "look", name: "Aljava de Prata", desc: "", need: [["gema_azul",5],["sucata_goblin",12]], reward: "aljava_prata" },
+    { id: "vis_asas2", kind: "look", name: "Asas de Corvo", desc: "", need: [["pelagem_lunar",3],["osso_gelido",6]], reward: "asas_corvo" },
+    { id: "vis_asas3", kind: "look", name: "Asas de Luz", desc: "", need: [["runa_vigor",2],["runa_mente",2],["coracao_de_gelo",1]], reward: "asas_anjo" },
+    { id: "vis_asas4", kind: "look", name: "Asas de Brasa", desc: "", need: [["runa_forca",2],["sucata_goblin",15],["erva_espinhosa",6]], reward: "asas_brasa" },
     { id: "vis_gorro", kind: "look", name: "Um Gorro Quentinho", desc: "", need: [["pele_lobo",10],["erva_vermelha",5]], reward: "gorro_la" },
     { id: "vis_guirlanda", kind: "look", name: "Guirlanda da Primavera", desc: "", need: [["erva_vermelha",10],["erva_azul",10],["erva_espinhosa",5]], reward: "guirlanda" },
     { id: "vis_bandana", kind: "look", name: "Faixa de Saqueador", desc: "", need: [["sucata_goblin",8],["presa_javali",5]], reward: "bandana_escarlate" },
@@ -8727,7 +8747,7 @@ Error generating stack: ` + n.message + `
       return Math.max(0, (this.due.get(t) ?? this.o.now()) - this.o.now());
     }
   };
-  var gp = { consumable: 3, weapon: 50, armor: 40, accessory: 5, headTop: 15, headMid: 3, headLow: 3, card: 1, material: 2, quest: 1, ammo: 0.1 }, Br = class {
+  var gp = { consumable: 3, weapon: 50, armor: 40, accessory: 5, headTop: 15, headMid: 3, headLow: 3, back: 5, card: 1, material: 2, quest: 1, ammo: 0.1 }, Br = class {
     constructor(t) {
       this.def = t;
       this.id = t.id, this.name = t.name, this.minLevel = t.reqLevel, this.sellPrice = t.sell, this.weight = t.weight ?? gp[t.kind];
@@ -8785,6 +8805,7 @@ Error generating stack: ` + n.message + `
         case "headTop":
         case "headMid":
         case "headLow":
+        case "back":
           return new dp(t);
         case "card":
           return new fp(t);
@@ -8831,7 +8852,7 @@ Error generating stack: ` + n.message + `
     let r = Rl(e) * aM - Tl(e);
     return Math.max(0, Math.min(a, Math.floor(r / o)));
   }
-  var Dy = { exp: 1, drop: 1, mobAtk: 1 }, Zu = 90 * 6e4, xp = 12 * 6e4, Oy = 20 * 6e4;
+  var Dy = { exp: 1, drop: 1, mobAtk: 1 }, Zu = 90 * 6e4, xp = 12 * 6e4, Oy = 300 * 6e4;
   function Hy(e) {
     return (e % Zu + Zu) % Zu / Zu;
   }
@@ -8870,8 +8891,7 @@ Error generating stack: ` + n.message + `
   var kp = { lua_sangue: { id: "lua_sangue", name: "Lua de Sangue", desc: "Os monstros ficam mais fortes (+25% de dano), mas d\xE3o +50% de EXP e +30% de drops.", when: "night", weight: 2, mods: { exp: 1.5, drop: 1.3, mobAtk: 1.25 }, field: true, color: "#e0405a" }, chuva_estrelas: { id: "chuva_estrelas", name: "Chuva de Estrelas", desc: "Estrelas cadentes cruzam o c\xE9u. +25% de EXP.", when: "night", weight: 2, mods: { exp: 1.25, drop: 1, mobAtk: 1 }, field: true, color: "#bcd8ff" }, aurora: { id: "aurora", name: "Aurora Boreal", desc: "Fitas de luz no c\xE9u da noite. +15% de EXP e +10% de drops.", when: "night", weight: 1, mods: { exp: 1.15, drop: 1.1, mobAtk: 1 }, field: true, color: "#7dffc8" }, bencao_freyja: { id: "bencao_freyja", name: "B\xEAn\xE7\xE3o de Freyja", desc: "P\xF3len dourado no ar. +15% de EXP, +10% de drops e monstros 10% mais fracos.", when: "day", weight: 2, mods: { exp: 1.15, drop: 1.1, mobAtk: 0.9 }, field: true, color: "#ffd86b" }, monstro_dourado: { id: "monstro_dourado", name: "Monstro Dourado", desc: "Um monstro do mapa brilha em ouro: mais resistente, vale 5\xD7 EXP e 3\xD7 drops.", when: "any", weight: 3, mods: { exp: 1, drop: 1, mobAtk: 1 }, field: true, color: "#ffc83a" }, festival: { id: "festival", name: "Festival do Hidromel", desc: "Fogos nas cidades e brindes por todo lado. +10% de EXP em qualquer mapa.", when: "day", weight: 2, mods: { exp: 1.1, drop: 1, mobAtk: 1 }, field: false, color: "#ff9a4a" } };
   function sM(e) {
     let t = Oe(e * 1597334677 + 7);
-    if (t() > 0.55) return null;
-    let a = e * Oy + Math.floor(t() * 7 * 6e4), n = a + Math.floor((6 + t() * 4) * 6e4), o = oM(a), r = Object.values(kp).filter((l) => l.when === "any" || l.when === "night" === o), i = r.reduce((l, c) => l + c.weight, 0), s = t() * i;
+    let a = e * Oy + Math.floor(t() * (Oy - 11 * 6e4)), n = a + Math.floor((6 + t() * 4) * 6e4), o = oM(a), r = Object.values(kp).filter((l) => l.when === "any" || l.when === "night" === o), i = r.reduce((l, c) => l + c.weight, 0), s = t() * i;
     for (let l of r) if (s -= l.weight, s <= 0) return { def: l, startsAt: a, endsAt: n };
     return { def: r[0], startsAt: a, endsAt: n };
   }
@@ -9529,7 +9549,7 @@ Error generating stack: ` + n.message + `
       t.windupKind === "bite" ? (a.deadAt === null && Be(t.pos, a.pos) <= t.def.attackRange * 1.4 + a.radius && (this.emit({ type: "fx", kind: "bite", x: t.pos.x, y: t.pos.y, angle: t.facing, range: t.def.attackRange, arc: 90, magic: false, fromPlayer: false }), this.damagePlayer(t, 1)), t.state = "recover", t.stateUntil = this.time + t.def.recoverMs / t.speedMul) : t.windupKind === "slam" ? (a.deadAt === null && Be(t.slamCenter, a.pos) <= t.slamR + a.radius * 0.5 && this.damagePlayer(t, t.slamM), t.nextSlamAt = this.time + ar.everyMs, t.state = "recover", t.stateUntil = this.time + t.def.recoverMs) : (t.state = "charge", t.stateUntil = this.time + 420, t.chargeHit = false);
     }
     updateMonster(t, a) {
-      let n = t.def, o = a / 1e3, r = this.player, i = r.deadAt === null && !this.inSafeZone(r.pos), s = Be(t.pos, r.pos), l = n.speed * t.speedMul * (this.time < t.slowUntil ? 0.5 : 1);
+      let n = t.def, o = a / 1e3, r = this.player, i = r.deadAt === null && !this.inSafeZone(r.pos) && this.time >= 3e3, s = Be(t.pos, r.pos), l = n.speed * t.speedMul * (this.time < t.slowUntil ? 0.5 : 1);
       if (this.time < t.stunUntil) return;
       let c = ro(n.ai) === "plant", d = { targetVisible: i, dTarget: s, aggro: n.aggro, attackRange: n.attackRange, provoked: t.provoked, hpFrac: t.hp / t.maxHp, distHome: Be(t.pos, t.home), leash: n.leash, fleeUntilPassed: this.time >= t.fleeUntil, fleeSafeDistance: s > n.aggro * 1.6 };
       switch (t.state) {
@@ -11080,6 +11100,25 @@ Error generating stack: ` + n.message + `
     let a = Mn(t.id);
     he(t.id, "anel") ? (e.ellipse(16, 19, 9, 8, P(15254090), { sep: true }), e.ellipse(16, 19, 5, 4.5, P(2760752), { flat: "o" }), e.poly([[12, 8], [20, 8], [22, 13], [16, 17], [10, 13]], P(a === 11450050 ? 10477823 : a), { sep: true }), e.dot(14, 10, 16777215)) : (e.line(5, 4, 16, 17, 13152368), e.line(27, 4, 16, 17, 13152368), e.poly([[16, 15], [23, 21], [16, 29], [9, 21]], P(a === 11450050 ? 15228970 : a), { sep: true }), e.ellipse(16, 22, 3, 3, P(16777215), { flat: "h" }), e.dot(13, 19, 16777215));
   }
+  var BACKS = {
+    capa_viking: { type: "cape", c: 10104832, c2: 15254090 },
+    capa_lobo: { type: "cape", c: 7829367, c2: 12303291 },
+    capa_real: { type: "cape", c: 2503224, c2: 15254090 },
+    capa_sombra: { type: "cape", c: 3156292, c2: 7298482 },
+    aljava_cacador: { type: "quiver", c: 6965802, c2: 15852728 },
+    aljava_prata: { type: "quiver", c: 9738644, c2: 16777215 },
+    asas_corvo: { type: "wings", c: 2894892, c2: 7298482 },
+    asas_anjo: { type: "wings", c: 16448767, c2: 16770000 },
+    asas_brasa: { type: "wings", c: 14178600, c2: 16764030 }
+  };
+  function BKI(e, t) {
+    let a = BACKS[t.id] ?? BACKS.capa_viking, c = P(a.c), d = P(a.c2);
+    if (a.type === "cape") e.poly([[9, 5], [23, 5], [28, 27], [4, 27]], c, { sep: true }), e.rect(8, 4, 16, 3, d, { sep: true }), e.dot(16, 6, 16777215);
+    else if (a.type === "quiver") {
+      e.poly([[12, 9], [20, 9], [22, 28], [10, 28]], c, { sep: true }), e.line(13, 9, 11, 3, d, 1), e.line(16, 9, 16, 2, d, 1), e.line(19, 9, 21, 3, d, 1);
+      for (let o of [11, 16, 21]) e.dot(o, 2, 16777215);
+    } else e.poly([[16, 20], [3, 6], [5, 18], [9, 24]], c, { sep: true }), e.poly([[16, 20], [29, 6], [27, 18], [23, 24]], c, { sep: true }), e.line(16, 20, 5, 9, d, 1), e.line(16, 20, 27, 9, d, 1);
+  }
   function UM(e, t) {
     let a = t.id, n = Mn(a);
     if (t.kind === "headTop") he(a, "coroa") ? (e.poly([[5, 24], [5, 10], [11, 17], [16, 6], [21, 17], [27, 10], [27, 24]], P(15254090), { sep: true }), e.dot(16, 12, 15217482), e.dot(8, 17, 5163263), e.dot(24, 17, 5163263)) : he(a, "capuz") ? (e.poly([[6, 27], [8, 12], [16, 4], [24, 12], [26, 27], [20, 22], [12, 22]], P(3107642), { sep: true }), e.ellipse(16, 17, 5, 6, P(1323034), { flat: "o" })) : (e.poly([[6, 20], [7, 11], [16, 4], [25, 11], [26, 20], [22, 20], [22, 26], [10, 26], [10, 20]], P(he(a, "urso") ? 8018488 : 11844806), { sep: true }), e.rect(14, 8, 4, 13, P(10134445), { sep: true }), he(a, "urso") && (e.ellipse(8, 8, 3, 3, P(8018488), { sep: true }), e.ellipse(24, 8, 3, 3, P(8018488), { sep: true })));
@@ -11192,7 +11231,7 @@ Error generating stack: ` + n.message + `
     let t = Hv.get(e);
     if (t) return t;
     let a = new Me(ir, ir), n = $(e);
-    return n ? n.kind === "weapon" ? jM(a, n) : n.kind === "armor" ? BM(a, n) : n.kind === "accessory" ? IM(a, n) : n.kind === "headTop" || n.kind === "headMid" || n.kind === "headLow" ? UM(a, n) : n.kind === "consumable" ? VM(a, n) : n.kind === "card" ? XM(a, n) : n.kind === "ammo" ? $M(a, n) : n.kind === "quest" ? Ov(a) : n.socket || he(n.id, "runa") ? QM(a, n) : YM(a, n) : Ov(a), a.outline(), t = a.toCanvas(), Hv.set(e, t), t;
+    return n ? n.kind === "weapon" ? jM(a, n) : n.kind === "armor" ? BM(a, n) : n.kind === "accessory" ? IM(a, n) : n.kind === "back" ? BKI(a, n) : n.kind === "headTop" || n.kind === "headMid" || n.kind === "headLow" ? UM(a, n) : n.kind === "consumable" ? VM(a, n) : n.kind === "card" ? XM(a, n) : n.kind === "ammo" ? $M(a, n) : n.kind === "quest" ? Ov(a) : n.socket || he(n.id, "runa") ? QM(a, n) : YM(a, n) : Ov(a), a.outline(), t = a.toCanvas(), Hv.set(e, t), t;
   }
   var KM = { golpe_runico: "slash", salto_trovao: "dash", redemoinho: "nova", furia_lobo: "wolf", golpe_escudo: "shield", investida_escudo: "dash", muralha: "shield", juramento_tyr: "nova", tiro_certeiro: "bolt", armadilha_skadi: "trap", chuva_flechas: "volley", flecha_perfurante: "pierce", lanca_gelo: "ice", raio_trovao: "lightning", tempestade_runas: "nova", meteoro_muspel: "meteor", lanca_divina: "spear", voo_valquiria: "wing", cura_valquirica: "heal", ressuscitar: "ankh", nota_dissonante: "resonance", balada_cura: "note", cancao_batalha: "buff", requiem: "lightning" }, FM = { cone: "slash", line: "dash", nova: "nova", buff: "buff", projectile: "bolt", meteor: "meteor", volley: "volley", chain: "lightning", heal: "heal", resurrect: "ankh" }, Bv = { slash: 15228970, shield: 4885224, wolf: 13148240, dash: 8050943, nova: 15254090, buff: 15900720, bolt: 8050776, trap: 10477823, volley: 8050776, pierce: 8050776, ice: 9425136, lightning: 16048202, meteor: 16742954, spear: 14673646, wing: 15265010, heal: 5824650, ankh: 15254090, note: 15900720, resonance: 12607720 }, ZM = { redemoinho: 15228970, juramento_tyr: 6992127, tempestade_runas: 10516712, salto_trovao: 15915082, investida_escudo: 8040703, voo_valquiria: 15265010, requiem: 15228970, golpe_runico: 16747066, lanca_divina: 16773296 };
   function Iv(e, t, a) {
@@ -11317,6 +11356,8 @@ Error generating stack: ` + n.message + `
   }, slot_headMid: (e) => {
     e.rect(3, 12, 26, 4, P(4870240), { sep: true });
     for (let t of [10, 22]) e.ellipse(t, 14, 6, 6, P(5922928), { sep: true });
+  }, slot_back: (e) => {
+    e.poly([[9, 5], [23, 5], [27, 27], [5, 27]], P(4870240), { sep: true }), e.rect(13, 3, 6, 4, P(5922928), { sep: true });
   }, slot_headLow: (e) => {
     e.ellipse(16, 12, 11, 5, P(4870240), { sep: true }), e.poly([[19, 14], [25, 28], [18, 26], [15, 15]], P(4870240), { sep: true });
   } }, u0 = /* @__PURE__ */ new Map();
@@ -12224,6 +12265,10 @@ void main() {
       let y = a.moving ? Math.round(i * 2) : 0, v = E(t.cape);
       e.poly(s ? [[o - 5, r + 1], [o - 13 + y, r + 24], [o - 2, r + 22], [o + 1, r + 3]] : [[o - 9, r], [o - 12 + y, r + 25], [o + 12 + y, r + 25], [o + 9, r]], v, { sep: true });
     }
+    if (t.wingsBack) {
+      let w1 = E(t.wingsBack[0]), w2 = E(t.wingsBack[1]), fl = a.moving ? Math.round(Math.abs(i) * 2) : 0;
+      e.poly([[o - 3, r + 4], [o - 15, r - 7 - fl], [o - 12, r + 5], [o - 8, r + 12], [o - 2, r + 11]], w1, { sep: true }), e.poly([[o + 3, r + 4], [o + 15, r - 7 - fl], [o + 12, r + 5], [o + 8, r + 12], [o + 2, r + 11]], w1, { sep: true }), e.line(o - 3, r + 5, o - 13, r - 5 - fl, 16777215), e.line(o + 3, r + 5, o + 13, r - 5 - fl, 16777215);
+    }
     if (t.quiver && l !== "down") {
       let y = s ? o - 10 : o + 2;
       e.rect(y, r - 1, 6, 17, E(6965802), { sep: true });
@@ -12713,6 +12758,10 @@ void main() {
       let C = t.moving ? Math.sin(r + 1) * 0.12 : 0.04;
       L(a, f.mul(A.T(0, 0.95, -0.27)).mul(A.RX(-0.12 - C)), 0.33, 0.52, 0.06, e.cape, { seg: 14, n: 2.6 });
     }
+    if (e.wingsBack) {
+      let fl = t.moving ? Math.sin(r * 2) * 0.16 : Math.sin(r * 0.5) * 0.04;
+      for (let C of [-1, 1]) for (let B = 0; B < 5; B++) L(a, f.mul(A.T(C * (0.2 + B * 0.13), 1.5 - B * 0.12, -0.3 - B * 0.01)).mul(A.RZ(-C * (0.55 + B * 0.2 + fl))), 0.05, 0.46 - B * 0.05, 0.07, B % 2 ? e.wingsBack[1] : e.wingsBack[0], { seg: 8, mat: _n });
+    }
     if (e.quiver) {
       let C = f.mul(A.T(0.17, 1.12, -0.3)).mul(A.RZ(-0.3));
       F(a, C.mul(A.T(0, -0.3, 0)), 0.09, 0.1, 0.6, f4, { seg: 10 });
@@ -13184,7 +13233,7 @@ void main() {
       }
       case "gravestone": {
         let s = nn(o, 5925466, 0.15);
-        return O(n, S(0, 8, 0), 12, 16, 4, s, Q), L(n, S(0, 16, 0), 6, 4, 2.2, s, { seg: 10, ring: 5, mat: Q }), O(n, S(0, 10, 2.2), 2, 8, 0.8, Y(s, 0.7)), O(n, S(0, 12, 2.2), 7, 2, 0.8, Y(s, 0.7)), O(n, S(0, 1, 6), 12, 2, 8, 4864554, Re), n;
+        return O(n, S(0, 8, 0), 12, 16, 4, s, Q), L(n, S(0, 16, 0), 6, 4, 2.2, s, { seg: 10, ring: 5, mat: Q }), O(n, S(0, 10, 2.2), 2, 8, 0.8, Y(s, 0.7)), O(n, S(0, 15.5, 2.2), 7, 2, 0.8, Y(s, 0.7)), O(n, S(0, 1, 6), 12, 2, 8, 4864554, Re), n;
       }
       case "altar": {
         let s = nn(o, 6978138, e === "grass" || e === "lush" ? 0.18 : 0.05);
@@ -13510,15 +13559,15 @@ void main() {
   }
   var da = /* @__PURE__ */ new Map(), ea = 8, cS = { axe: "axe", sword: "sword", bow: "bow", staff: "staff", spear: "spear", dagger: "dagger" };
   function po(e) {
-    return `${e.base}@${e.hair ?? ""}|g:${e.gear ?? ""}|t:${e.top ?? ""}|m:${e.mid ?? ""}|l:${e.low ?? ""}|d:${e.dye ?? 0}${e.hs ? `|s:${e.hs}` : ""}${e.hc !== void 0 ? `|c:${e.hc}` : ""}`;
+    return `${e.base}@${e.hair ?? ""}|g:${e.gear ?? ""}|t:${e.top ?? ""}|m:${e.mid ?? ""}|l:${e.low ?? ""}|b:${e.bk ?? ""}|d:${e.dye ?? 0}${e.hs ? `|s:${e.hs}` : ""}${e.hc !== void 0 ? `|c:${e.hc}` : ""}`;
   }
   function Yl(e) {
     let [t, ...a] = e.split("|"), [n, o] = t.split("@"), r = (i) => a.find((s) => s.startsWith(i + ":"))?.slice(i.length + 1) ?? "";
-    return { base: n, hair: o ? Number(o) : void 0, gear: r("g") || void 0, top: r("t") || void 0, mid: r("m") || void 0, low: r("l") || void 0, dye: Number(r("d")) || 0, hs: r("s") || void 0, hc: r("c") ? Number(r("c")) : void 0 };
+    return { base: n, hair: o ? Number(o) : void 0, gear: r("g") || void 0, top: r("t") || void 0, mid: r("m") || void 0, low: r("l") || void 0, bk: r("b") || void 0, dye: Number(r("d")) || 0, hs: r("s") || void 0, hc: r("c") ? Number(r("c")) : void 0 };
   }
   function cs(e) {
     let t = e.equipment.weapon ? $(e.equipment.weapon)?.weaponType : void 0, a = (n) => n ? $(n)?.headStyle : void 0;
-    return { base: e.line, hair: kh(e.name), gear: t ? e.line === "skald" && t === "staff" ? "lyre" : e.line === "escudeiro" && t === "sword" ? "swordshield" : cS[t] : "none", top: a(e.equipment.headTop), mid: a(e.equipment.headMid), low: a(e.equipment.headLow), dye: e.dye ?? 0, hs: e.style?.hairStyle, hc: e.style?.hairColor };
+    return { base: e.line, hair: kh(e.name), gear: t ? e.line === "skald" && t === "staff" ? "lyre" : e.line === "escudeiro" && t === "sword" ? "swordshield" : cS[t] : "none", top: a(e.equipment.headTop), mid: a(e.equipment.headMid), low: a(e.equipment.headLow), bk: e.equipment.back ? $(e.equipment.back)?.backStyle : void 0, dye: e.dye ?? 0, hs: e.style?.hairStyle, hc: e.style?.hairColor };
   }
   function R4(e) {
     let t = { ...I0[e.base] ?? I0.berserker };
@@ -13526,7 +13575,7 @@ void main() {
       t.head = "none", delete t.cape, delete t.quiver;
     }
     if (e.mid && e.mid.startsWith("eye_")) { t.eye = EYEC[e.mid]; e = { ...e, mid: void 0 }; }
-    return e.hair !== void 0 && !Number.isNaN(e.hair) && (t.hair = xh[e.hair % xh.length]), e.hs && (t.hairStyle = e.hs), e.hc !== void 0 && !Number.isNaN(e.hc) && (t.hair = e.hc), e.gear && (t.gear = e.gear), e.top && (t.head = e.top), e.mid && (t.mid = e.mid), e.low && (t.low = e.low), t;
+    return e.hair !== void 0 && !Number.isNaN(e.hair) && (t.hair = xh[e.hair % xh.length]), e.hs && (t.hairStyle = e.hs), e.hc !== void 0 && !Number.isNaN(e.hc) && (t.hair = e.hc), e.gear && (t.gear = e.gear), e.top && (t.head = e.top), e.mid && (t.mid = e.mid), e.low && (t.low = e.low), e.bk && BACKS[e.bk] && (BACKS[e.bk].type === "cape" ? t.cape = BACKS[e.bk].c : BACKS[e.bk].type === "quiver" ? t.quiver = true : t.wingsBack = [BACKS[e.bk].c, BACKS[e.bk].c2]), t;
   }
   var z0 = /* @__PURE__ */ new Map(), D0 = /* @__PURE__ */ new Map(), Xl = class {
     constructor(t) {
@@ -14356,12 +14405,59 @@ void main() {
       let a = this.ctx, { x: n, y: o } = ce(t.x, t.y), { dir: r, flip: i } = Kl(t.ang), s = t.ph < 0 ? -1 : Math.floor(t.ph * ea) % ea, l = fa(t.id, r, s, 0), c = t.ph < 0 ? 0 : t.ph * Math.PI * 2, d = Xi(t.ang), f = d.x / (Math.hypot(d.x, d.y) || 1), u = Math.sin(this.clock / 480 + t.seed) * 0.012;
       this.blob(n, o + 4, 14), nt(a, l, n + Math.sin(c) * 0.5, o + 6, i, $a * (1 - u * 0.5), $a * (1 + u - (t.ph < 0 ? 0 : 0.02 * Math.abs(Math.cos(c)))), t.ph < 0 ? 0 : Math.sin(c) * 0.028 + f * 0.05);
     }
+    fountainLife(f, c, T) {
+      let n = this.ctx, e = ce(f.x + f.w / 2 + 100, f.y + f.h / 2), sc = Math.hypot(e.x - c.x, e.y - c.y) / 100, R = f.w * 0.36 * sc, ry = R * 0.5, top = c.y - R * 0.95, t = T / 1000;
+      n.save();
+      n.globalCompositeOperation = "source-over";
+      for (let k = 0; k < 3; k++) {
+        let ph = (t * 0.55 + k / 3) % 1;
+        n.strokeStyle = "rgba(200,235,255," + (0.5 * (1 - ph)).toFixed(3) + ")", n.lineWidth = 1.4, n.beginPath(), n.ellipse(c.x, c.y - R * 0.18, R * (0.2 + 0.75 * ph), ry * (0.2 + 0.75 * ph) , 0, 0, 6.283), n.stroke();
+      }
+      for (let k = 0; k < 46; k++) {
+        let ph = (t * 0.9 + k * 0.137) % 1, ang = k * 2.399 + Math.floor(t * 0.9 + k * 0.137) * 0.7, spread = (0.25 + (k % 5) * 0.16) * R, x = c.x + Math.cos(ang) * spread * ph, y = top + (ph * ph * 4 - ph * 1.4) * R * 0.9 * 0.55 + Math.sin(ang) * spread * ph * 0.5 + ph * R * 0.9;
+        y = top + R * 0.02 - Math.sin(ph * 3.1416) * R * 0.55 * (0.5 + (k % 5) * 0.12) + ph * ph * (R * 0.95) + Math.sin(ang) * spread * ph * 0.5;
+        n.globalAlpha = 0.85 * (1 - ph * 0.4), n.fillStyle = k % 3 ? "#cfeaff" : "#ffffff", n.fillRect(x, y, 2, 2.6);
+      }
+      n.globalAlpha = 1;
+      let rimR = R * 0.98;
+      for (let b = 0; b < 3; b++) {
+        let per = 26 + b * 5, ph = ((t + b * 9) % per) / per, bx, by, drink = 0, flap = Math.sin(t * 22 + b) , dir = 1;
+        let ca = t * 0.5 + b * 2.1;
+        if (ph < 0.38) {
+          let r2 = rimR * (2.6 - ph * 2.2), a = ca + ph * 5;
+          bx = c.x + Math.cos(a) * r2, by = c.y - R * 1.5 + Math.sin(a) * r2 * 0.4 - (0.38 - ph) * 40 * R / 40 * 0.4, dir = Math.sin(a) > 0 ? -1 : 1;
+        } else if (ph < 0.46) {
+          let u = (ph - 0.38) / 0.08, a = ca + 0.38 * 5, r2 = rimR * (2.6 - 0.38 * 2.2), sx = c.x + Math.cos(a) * r2, sy = c.y - R * 1.5 + Math.sin(a) * r2 * 0.4, ex = c.x + Math.cos(b * 2.1 + 0.8) * rimR * 0.9, ey = c.y + Math.sin(b * 2.1 + 0.8) * rimR * 0.45 - R * 0.28;
+          bx = sx + (ex - sx) * u, by = sy + (ey - sy) * u, dir = ex > sx ? 1 : -1;
+        } else if (ph < 0.78) {
+          bx = c.x + Math.cos(b * 2.1 + 0.8) * rimR * 0.9, by = c.y + Math.sin(b * 2.1 + 0.8) * rimR * 0.45 - R * 0.28, drink = 1, flap = 0, dir = Math.cos(b * 2.1 + 0.8) > 0 ? -1 : 1;
+        } else {
+          let u = (ph - 0.78) / 0.22, sx = c.x + Math.cos(b * 2.1 + 0.8) * rimR * 0.9, sy = c.y + Math.sin(b * 2.1 + 0.8) * rimR * 0.45 - R * 0.28, ex = sx + (b - 1) * R * 3 + R * 1.5, ey = sy - R * 2.4;
+          bx = sx + (ex - sx) * u, by = sy + (ey - sy) * u * u, dir = ex > sx ? 1 : -1;
+        }
+        let z = Math.max(0.6, R / 38);
+        n.save(), n.translate(bx, by), n.scale(dir * z, z), n.fillStyle = b % 2 ? "#3a3a46" : "#6b5a48", n.strokeStyle = n.fillStyle, n.lineWidth = 1.5, n.beginPath(), n.ellipse(0, 0, 5, 3, 0, 0, 6.283), n.fill();
+        let hy = drink ? 3 + Math.sin(t * 9 + b) * 1.2 : -1;
+        n.beginPath(), n.arc(5, hy, 2.2, 0, 6.283), n.fill(), n.fillStyle = "#e8a23a", n.beginPath(), n.moveTo(7, hy - 0.6), n.lineTo(10, hy + 0.4), n.lineTo(7, hy + 1), n.fill(), n.fillStyle = n.strokeStyle;
+        if (drink) {
+          n.beginPath(), n.moveTo(-5, 0), n.lineTo(-9, -1), n.lineTo(-5, 1.5), n.fill(), n.strokeStyle = "#2a2a30", n.beginPath(), n.moveTo(-1, 3), n.lineTo(-1, 6), n.moveTo(2, 3), n.lineTo(2, 6), n.stroke();
+        } else {
+          n.beginPath(), n.moveTo(-1, 0), n.quadraticCurveTo(-3, -8 * flap - 2, -7, -6 * flap), n.quadraticCurveTo(0, -3 * flap, 3, -1), n.fill(), n.beginPath(), n.moveTo(-1, 0), n.quadraticCurveTo(-1, 6 * flap + 2, -5, 7 * flap), n.quadraticCurveTo(1, 3 * flap, 3, 1), n.fill();
+        }
+        n.restore();
+      }
+      n.restore();
+    }
     cityAmbience(t, a) {
       let n = this.ctx, o = this.clock;
       n.save();
       for (let i of t.obstacles) {
-        if (i.kind !== "deco" || Math.abs(i.x - a.x) > 800 || Math.abs(i.y - a.y) > 600 || !(i.deco === "brazier" || i.deco === "forge" || i.deco === "campfire") && i.deco !== "longhouse") continue;
+        if (i.kind !== "deco" || Math.abs(i.x - a.x) > 800 || Math.abs(i.y - a.y) > 600 || !(i.deco === "brazier" || i.deco === "forge" || i.deco === "campfire") && i.deco !== "longhouse" && i.deco !== "fountain") continue;
         let l = ce(i.x + i.w / 2, i.y + i.h / 2);
+        if (i.deco === "fountain") {
+          this.fountainLife(i, l, o);
+          continue;
+        }
         if (i.deco === "longhouse") {
           this.smoke(l.x + 18, l.y - 120);
           continue;
@@ -14751,7 +14847,7 @@ void main() {
         let R = 0.85 + 0.15 * Math.sin(r / 130 + k.x);
         this.light(k.x + k.w / 2, k.y + k.h + 6, 26, 150, "255,176,96", 0.62 * R);
       }
-      for (let k of a.obstacles) k.kind !== "deco" || k.deco !== "lamp" && k.deco !== "fountain" || Math.abs(k.x - t.player.pos.x) > 700 || Math.abs(k.y - t.player.pos.y) > 520 || (k.deco === "lamp" ? this.light(k.x + k.w / 2, k.y + k.h / 2, 52, 120, "255,200,120", 0.55 * (0.9 + 0.1 * Math.sin(r / 150 + k.x))) : this.light(k.x + k.w / 2, k.y + k.h / 2, 30, 110, "150,200,255", 0.4));
+      for (let k of a.obstacles) k.kind !== "deco" || k.deco !== "lamp" && k.deco !== "fountain" && k.deco !== "brazier" && k.deco !== "campfire" && k.deco !== "forge" || Math.abs(k.x - t.player.pos.x) > 700 || Math.abs(k.y - t.player.pos.y) > 520 || (k.deco === "brazier" || k.deco === "campfire" || k.deco === "forge" ? this.light(k.x + k.w / 2, k.y + k.h / 2, 46, k.deco === "forge" ? 190 : 150, "255,150,60", 0.7 * (0.85 + 0.15 * Math.sin(r / 90 + k.x * 3))) : k.deco === "lamp" ? this.light(k.x + k.w / 2, k.y + k.h / 2, 52, 120, "255,200,120", 0.55 * (0.9 + 0.1 * Math.sin(r / 150 + k.x))) : this.light(k.x + k.w / 2, k.y + k.h / 2, 30, 110, "150,200,255", 0.4));
       for (let k of a.portals) this.light(k.x + k.w / 2, k.y + k.h / 2, 30, 90, "150,130,255", 0.7 + 0.15 * Math.sin(r / 420));
       let i = t.player, s = 0.92 + 0.08 * Math.sin(r / 90);
       this.light(i.pos.x, i.pos.y, 20, 240, "255,240,215", (0.62 + 0.38 * (this.evView?.daylight ?? 1)) * s);
@@ -15284,7 +15380,7 @@ void main() {
     return (0, Ah.jsx)("div", { className: "toasts", "aria-live": "polite", children: e.map((t) => (0, Ah.jsx)("div", { className: `toast toast-${t.tone}`, children: t.text }, t.id)) });
   }
   var cr = oe(St(), 1);
-  var X = oe(ue(), 1), NS = { weapon: "Arma", armor: "Armadura", accessory: "Acess\xF3rio", headTop: "Cabe\xE7a (topo)", headMid: "Cabe\xE7a (meio)", headLow: "Cabe\xE7a (baixo)" };
+  var X = oe(ue(), 1), NS = { weapon: "Arma", armor: "Armadura", accessory: "Acess\xF3rio", headTop: "Cabe\xE7a (topo)", headMid: "Cabe\xE7a (meio)", headLow: "Cabe\xE7a (baixo)", back: "Costas" };
   function zS() {
     let e = ge(), t = (0, cr.useRef)(null), [a, n] = (0, cr.useState)("down"), o = e.player, r = o ? po(cs(o)) : "";
     return (0, cr.useEffect)(() => {
@@ -15452,15 +15548,29 @@ void main() {
     return (0, se.jsx)(Yt, { id: "bestiary", title: "Besti\xE1rio", onClose: () => j.closePanel(), wide: true, children: (0, se.jsxs)("div", { className: "bestiary", children: [(0, se.jsxs)("div", { className: "bestiary-list", children: [(0, se.jsx)("input", { type: "text", placeholder: "Buscar monstro\u2026", value: t, onChange: (c) => a(c.target.value), "aria-label": "Buscar monstro" }), (0, se.jsxs)("select", { value: n, onChange: (c) => o(c.target.value), "aria-label": "Filtrar por ra\xE7a", children: [(0, se.jsx)("option", { value: "todos", children: "Todas as ra\xE7as" }), Object.entries(Rh).map(([c, d]) => (0, se.jsx)("option", { value: c, children: d }, c))] }), (0, se.jsxs)("div", { className: "bestiary-items", role: "list", children: [r.map((c) => (0, se.jsxs)("button", { role: "listitem", className: `bestiary-item${l?.id === c.id ? " sel" : ""}`, onClick: () => s(c.id), children: [(0, se.jsxs)("span", { children: [c.name, c.boss ? " \u2605" : ""] }), (0, se.jsxs)("small", { children: ["Nv ", c.level] })] }, c.id)), r.length === 0 && (0, se.jsx)("i", { className: "muted", children: "Nenhum monstro encontrado." })] })] }), l && (0, se.jsxs)("div", { className: "bestiary-card", children: [(0, se.jsx)(jS, { r: l }), (0, se.jsxs)("h3", { children: [l.name, " ", l.boss && (0, se.jsx)("small", { className: "muted", children: "MVP" })] }), (0, se.jsx)("table", { className: "bestiary-tbl", children: (0, se.jsxs)("tbody", { children: [(0, se.jsxs)("tr", { children: [(0, se.jsx)("th", { children: "N\xEDvel" }), (0, se.jsx)("td", { children: l.level }), (0, se.jsx)("th", { children: "HP" }), (0, se.jsx)("td", { children: l.hp.toLocaleString("pt-BR") })] }), (0, se.jsxs)("tr", { children: [(0, se.jsx)("th", { children: "Ataque" }), (0, se.jsx)("td", { children: l.atk }), (0, se.jsx)("th", { children: "Defesa" }), (0, se.jsx)("td", { children: l.def })] }), (0, se.jsxs)("tr", { children: [(0, se.jsx)("th", { children: "Elemento" }), (0, se.jsx)("td", { children: qh[l.element] }), (0, se.jsx)("th", { children: "Ra\xE7a" }), (0, se.jsx)("td", { children: Rh[l.race] })] }), (0, se.jsxs)("tr", { children: [(0, se.jsx)("th", { children: "Tamanho" }), (0, se.jsx)("td", { children: n5[l.size] }), (0, se.jsx)("th", { children: "Velocidade" }), (0, se.jsx)("td", { children: l.speed })] }), (0, se.jsxs)("tr", { children: [(0, se.jsx)("th", { children: "EXP base" }), (0, se.jsx)("td", { children: l.expBase }), (0, se.jsx)("th", { children: "EXP classe" }), (0, se.jsx)("td", { children: l.expJob })] }), (0, se.jsxs)("tr", { children: [(0, se.jsx)("th", { children: "Zens" }), (0, se.jsxs)("td", { children: [l.silver[0], "\u2013", l.silver[1]] }), (0, se.jsx)("th", { children: "IA" }), (0, se.jsx)("td", { children: l.behavior })] })] }) }), l.traits.length > 0 && (0, se.jsx)("p", { className: "muted", children: l.traits.join(" \xB7 ") }), (0, se.jsx)("h4", { children: "Dano recebido por elemento" }), (0, se.jsx)("div", { className: "bestiary-elems", children: Lh.map((c) => (0, se.jsxs)("span", { className: l.weakness[c] > 100 ? "weak" : l.weakness[c] < 100 ? "resist" : "", children: [qh[c], " ", (0, se.jsxs)("b", { children: [l.weakness[c], "%"] })] }, c)) }), (0, se.jsx)("h4", { children: "Drops" }), (0, se.jsx)("ul", { className: "bestiary-drops", children: l.drops.map((c) => (0, se.jsxs)("li", { children: [(0, se.jsxs)("span", { children: [(0, se.jsx)(Aa, { id: c.item, size: 22 }), " ", c.name] }), (0, se.jsxs)("b", { children: [c.pct, "%"] })] }, c.item)) }), (0, se.jsx)("h4", { children: "Onde encontrar" }), (0, se.jsx)("p", { children: l.maps.length ? l.maps.map((c) => `${c.name} (${c.count})`).join(" \xB7 ") : (0, se.jsx)("i", { className: "muted", children: "Invocado / evento" }) })] })] }) });
   }
   var ma = oe(ue(), 1);
+  function skBonus(n, r) {
+    let m = jy(r), L = [], pc = (v) => Math.round(v * 100) + "%";
+    if (n.mult) L.push(["Dano", pc(n.mult * m) + (n.magic ? " do ATQ M\xE1gico" : " do ATQ") + " (n\xEDvel " + r + ")"]);
+    if (n.heal) L.push(["Cura", pc(n.heal * m) + " da vida m\xE1xima"]);
+    if (n.buff) {
+      let b = n.buff;
+      b.atk && L.push(["B\xF4nus de ataque", "+" + pc(b.atk * m)]), b.def && L.push(["B\xF4nus de defesa", "+" + pc(b.def * m)]), b.spd && L.push(["B\xF4nus de velocidade", "+" + pc(b.spd * Math.min(m, 1.4))]), b.crit && L.push(["B\xF4nus de cr\xEDtico", "+" + pc(b.crit * Math.min(m, 1.4))]), L.push(["Dura\xE7\xE3o", Math.round(b.ms / 1e3) + "s"]);
+    }
+    n.range && L.push(["Alcance", n.range]), n.radius && L.push(["Raio", n.radius]), n.arc && n.kind === "cone" && L.push(["Arco", n.arc + "\xB0"]), n.stunMs && L.push(["Atordoa", (n.stunMs / 1e3).toFixed(1) + "s"]), n.slowMs && L.push(["Lentid\xE3o", (n.slowMs / 1e3).toFixed(1) + "s"]);
+    L.push(["Custo de mana", Ju(n.mp, r)]), L.push(["Recarga", (By(n.cooldown, r) / 1e3).toFixed(1) + "s"]);
+    return L;
+  }
   function l5() {
-    let t = ge().player;
+    let [selSk, setSelSk] = (0, Ln.useState)(-1), t = ge().player;
     if (!t) return null;
     let a = Ce[t.line];
     return (0, ma.jsxs)(Yt, { id: "skills", title: "Habilidades", onClose: () => j.closePanel(), children: [(0, ma.jsxs)("div", { className: "attr-points", children: [(0, ma.jsx)("span", { children: "Pontos de habilidade" }), (0, ma.jsx)("b", { children: t.skillPoints })] }), a.skills.map((n, o) => {
       let r = t.skillLevels[o] ?? 1, i = n.tier > t.tier;
-      return (0, ma.jsxs)("div", { className: "attr-row", style: { gridTemplateColumns: "auto 1fr auto auto" }, children: [(0, ma.jsx)("div", { className: "skill-ico", draggable: !i, onDragStart: (s) => {
+      return (0, ma.jsxs)("div", { className: "attr-row", style: { gridTemplateColumns: "auto 1fr auto auto" }, onContextMenu: (ev) => {
+        ev.preventDefault(), setSelSk(selSk === o ? -1 : o);
+      }, children: [selSk === o && (0, ma.jsxs)("div", { className: "skill-bonus", style: { gridColumn: "1 / -1", order: 9 }, onClick: () => setSelSk(-1), children: [(0, ma.jsx)("b", { children: n.name + " \u2014 Nv " + r + (r >= Ll(t.tier) ? " (m\xE1x.)" : "") }), skBonus(n, r).map(([k, v], q) => (0, ma.jsxs)("div", { className: "sb-row", children: [(0, ma.jsx)("span", { children: k }), (0, ma.jsx)("b", { children: v })] }, q)), r < Ll(t.tier) && n.mult ? (0, ma.jsx)("div", { className: "sb-row sb-next", children: (0, ma.jsx)("span", { children: "Nv " + (r + 1) + ": dano " + Math.round(n.mult * jy(r + 1) * 100) + "% \xB7 mana " + Ju(n.mp, r + 1) }) }) : null] }),(0, ma.jsx)("div", { className: "skill-ico", draggable: !i, onDragStart: (s) => {
         s.dataTransfer.setData(Qr, JSON.stringify({ t: "skill", i: o })), s.dataTransfer.effectAllowed = "copy";
-      }, title: "Arraste para a barra de atalhos", children: (0, ma.jsx)(h0, { id: n.id, kind: n.kind, size: 36 }) }), (0, ma.jsxs)("span", { title: n.desc, children: [n.name, i ? " \u{1F512}" : "", (0, ma.jsx)("br", {}), (0, ma.jsx)("small", { className: "muted", children: n.desc })] }), (0, ma.jsxs)("b", { children: ["Nv ", r] }), (0, ma.jsx)("button", { className: "btn btn-small", disabled: t.skillPoints < 1 || i || r >= Ll(t.tier), onClick: () => j.upgradeSkillAt(o), "aria-label": `Aumentar ${n.name}`, children: "+" })] }, n.id);
+      }, title: "Arraste para a barra de atalhos \u00B7 bot\xE3o direito: ver b\xF4nus", children: (0, ma.jsx)(h0, { id: n.id, kind: n.kind, size: 36 }) }), (0, ma.jsxs)("span", { title: n.desc, children: [n.name, i ? " \u{1F512}" : "", (0, ma.jsx)("br", {}), (0, ma.jsx)("small", { className: "muted", children: n.desc })] }), (0, ma.jsxs)("b", { children: ["Nv ", r] }), (0, ma.jsx)("button", { className: "btn btn-small", disabled: t.skillPoints < 1 || i || r >= Ll(t.tier), onClick: () => j.upgradeSkillAt(o), "aria-label": `Aumentar ${n.name}`, children: "+" })] }, n.id);
     })] });
   }
   var Mt = oe(ue(), 1);
