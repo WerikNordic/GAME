@@ -8343,6 +8343,31 @@ Error generating stack: ` + n.message + `
       let re = n() < 0.25;
       o.push(re ? { kind: "rock", x: Math.round(_ - 16), y: Math.round(G - 14), w: 32, h: 28 } : { kind: "tree", x: Math.round(_ - 11), y: Math.round(G - 9), w: 22, h: 18 }), Jl++;
     }
+    {
+      let BIG = ["longhouse", "keep", "palace", "hof", "castle", "church", "forge", "bigforge", "colossus", "monument", "airship"], SMALL = ["stall", "cart", "hay", "planter", "bench", "lamp", "brazier", "post", "tent", "campfire", "well", "runestone", "gravestone", "banner"];
+      let bigs = o.filter((q) => q.kind === "deco" && BIG.includes(q.deco)).map((q) => ({ x: q.x - 6, y: q.y - 6, w: q.w + 12, h: q.h + 12 }));
+      for (let gi = o.length - 1; gi >= 0; gi--) {
+        let q = o[gi];
+        if (!(q.kind === "crate" || q.kind === "deco" && SMALL.includes(q.deco))) continue;
+        let cx2 = q.x + q.w / 2, cy2 = q.y + q.h / 2;
+        bigs.some((bq) => cx2 > bq.x && cx2 < bq.x + bq.w && cy2 > bq.y && cy2 < bq.y + bq.h) && o.splice(gi, 1);
+      }
+      let streets = p.filter((q) => Math.min(q.w, q.h) >= 60), hit = (x0, y0, w0, h0, mg) => o.some((q) => q.kind !== "tree" && q.kind !== "rock" && x0 < q.x + q.w + mg && x0 + w0 + mg > q.x && y0 < q.y + q.h + mg && y0 + h0 + mg > q.y) || u.some((q) => x0 < q.x + q.w + 20 && x0 + w0 + 20 > q.x && y0 < q.y + q.h + 20 && y0 + h0 + 20 > q.y) || streets.some((q) => x0 < q.x + q.w + 36 && x0 + w0 + 36 > q.x && y0 < q.y + q.h + 36 && y0 + h0 + 36 > q.y) || M.some((q) => q.x > x0 - 90 && q.x < x0 + w0 + 90 && q.y > y0 - 90 && q.y < y0 + h0 + 90) || r.some((q) => q.x > x0 - 70 && q.x < x0 + w0 + 70 && q.y > y0 - 70 && q.y < y0 + h0 + 70) || x0 + w0 > f.from - 260 && x0 < f.to + 260 && y0 + h0 > a - 900;
+      let kinds = ["longhouse", "longhouse", "smith", "smith", "market", "market", "garden", "camp", "bigsmith", "longhouse"], pl = 0;
+      for (let gy = c.y + 140; gy < c.y + c.h - 160; gy += 210) for (let gx = c.x + 150; gx < c.x + c.w - 150; gx += 270) {
+        let jx = gx + (n() - 0.5) * 50, jy = gy + (n() - 0.5) * 40, kd = kinds[Math.floor(n() * kinds.length)];
+        if (n() < 0.22) continue;
+        let fp = kd === "smith" ? [150, 120] : kd === "market" ? [200, 110] : kd === "garden" ? [150, 110] : kd === "camp" ? [150, 100] : kd === "bigsmith" ? [230, 150] : [$m.longhouse.w, $m.longhouse.h + 20];
+        if (hit(jx - fp[0] / 2, jy - fp[1] / 2, fp[0], fp[1], 26)) continue;
+        pl++;
+        if (kd === "longhouse") s("longhouse", jx, jy), n() < 0.5 && s("lamp", jx + $m.longhouse.w / 2 + 14, jy + 30), n() < 0.3 && s("planter", jx - $m.longhouse.w / 2 - 20, jy + 34);
+        else if (kd === "smith") s("forge", jx, jy - 10), s("brazier", jx - 85, jy + 36), s("brazier", jx + 85, jy + 36), n() < 0.6 && s("cart", jx + 50, jy + 50), n() < 0.6 && s("hay", jx - 60, jy + 50);
+        else if (kd === "bigsmith") s("bigforge", jx, jy - 6), s("brazier", jx - 125, jy + 50), s("brazier", jx + 125, jy + 50), s("cart", jx + 100, jy + 62);
+        else if (kd === "market") s("stall", jx - 55, jy), s("stall", jx + 55, jy), s("cart", jx, jy + 46), n() < 0.5 && s("lamp", jx + 100, jy - 10);
+        else if (kd === "garden") s("well", jx, jy), s("planter", jx - 60, jy + 8), s("planter", jx + 60, jy + 8), s("bench", jx, jy + 48);
+        else s("tent", jx - 46, jy), s("campfire", jx + 20, jy + 18), s("tent", jx + 70, jy - 6);
+      }
+    }
     if (ST.mirror) {
       for (let _ of o) _.x = Math.round(t - (_.x + _.w));
       for (let _ of M) _.x = t - _.x;
@@ -16534,8 +16559,8 @@ void main() {
     let n = Vu(t);
     return (0, De.jsxs)(Yt, { id: "stats", title: "Atributos", onClose: () => j.closePanel(), children: [(0, De.jsxs)("div", { className: "attr-points", children: [(0, De.jsx)("span", { children: "Pontos dispon\xEDveis" }), (0, De.jsx)("b", { children: t.statPoints })] }), yn.map((o) => {
       let r = t.stats[o], i = ep(r), s = t.statPoints >= i && r < 99;
-      return (0, De.jsxs)("div", { className: "attr-row", title: OS[o], children: [(0, De.jsxs)("span", { className: "stat-name", children: [(0, De.jsx)(sr, { name: o, size: 22 }), " ", t5[o]] }), (0, De.jsxs)("b", { children: [r, n[o] ? (0, De.jsxs)("small", { className: "muted", children: [" +", n[o]] }) : null] }), (0, De.jsx)("span", { className: `cost${s ? " ok" : ""}`, children: r >= 99 ? "m\xE1ximo" : `custo ${i}` }), (0, De.jsx)("button", { className: "btn btn-small", disabled: !s, onClick: () => j.allocate(o), "aria-label": `Aumentar ${t5[o]} (custa ${i} pontos)`, children: "+" })] }, o);
-    }), (0, De.jsx)("small", { className: "muted", children: "O custo sobe a cada dezena: de 1 a 10 custa 2 pontos, de 11 a 20 custa 3, e assim por diante." }), (0, De.jsxs)("ul", { className: "derived", children: [(0, De.jsxs)("li", { children: ["Vida m\xE1x.: ", (0, De.jsx)("b", { children: a.maxHp })] }), (0, De.jsxs)("li", { children: ["Mana m\xE1x.: ", (0, De.jsx)("b", { children: a.maxMp })] }), (0, De.jsxs)("li", { children: ["Ataque: ", (0, De.jsx)("b", { children: a.atk })] }), (0, De.jsxs)("li", { children: ["Atq. m\xE1gico: ", (0, De.jsx)("b", { children: a.matk })] }), (0, De.jsxs)("li", { children: ["Defesa: ", (0, De.jsx)("b", { children: a.def })] }), (0, De.jsxs)("li", { children: ["Cr\xEDtico: ", (0, De.jsxs)("b", { children: [(a.crit * 100).toFixed(1), "%"] })] }), (0, De.jsxs)("li", { children: ["Esquiva: ", (0, De.jsxs)("b", { children: [(a.dodge * 100).toFixed(1), "%"] })] }), (0, De.jsxs)("li", { children: ["Velocidade: ", (0, De.jsx)("b", { children: Math.round(a.speed) })] })] })] });
+      return (0, De.jsxs)("div", { className: "attr-row", title: OS[o], children: [(0, De.jsxs)("span", { className: "stat-name", children: [(0, De.jsx)(sr, { name: o, size: 22 }), " ", t5[o]] }), (0, De.jsxs)("b", { children: [r, n[o] ? (0, De.jsxs)("small", { className: "muted", children: [" +", n[o]] }) : null] }), r >= 99 ? (0, De.jsx)("span", { className: "cost", children: "m\xE1ximo" }) : null, (0, De.jsx)("button", { className: "btn btn-small", disabled: !s, onClick: () => j.allocate(o), "aria-label": `Aumentar ${t5[o]}`, children: "+" })] }, o);
+    }), (0, De.jsxs)("ul", { className: "derived", children: [(0, De.jsxs)("li", { children: ["Vida m\xE1x.: ", (0, De.jsx)("b", { children: a.maxHp })] }), (0, De.jsxs)("li", { children: ["Mana m\xE1x.: ", (0, De.jsx)("b", { children: a.maxMp })] }), (0, De.jsxs)("li", { children: ["Ataque: ", (0, De.jsx)("b", { children: a.atk })] }), (0, De.jsxs)("li", { children: ["Atq. m\xE1gico: ", (0, De.jsx)("b", { children: a.matk })] }), (0, De.jsxs)("li", { children: ["Defesa: ", (0, De.jsx)("b", { children: a.def })] }), (0, De.jsxs)("li", { children: ["Cr\xEDtico: ", (0, De.jsxs)("b", { children: [(a.crit * 100).toFixed(1), "%"] })] }), (0, De.jsxs)("li", { children: ["Esquiva: ", (0, De.jsxs)("b", { children: [(a.dodge * 100).toFixed(1), "%"] })] }), (0, De.jsxs)("li", { children: ["Velocidade: ", (0, De.jsx)("b", { children: Math.round(a.speed) })] })] })] });
   }
   var Ln = oe(St(), 1);
   var Rh = { humanoide: "Humanoide", besta: "Bruto", morto_vivo: "Morto-vivo", gigante: "Gigante", elemental: "Elemental", construto: "Construto", planta: "Planta", demonio: "Dem\xF4nio", amorfo: "Amorfo" }, qh = { neutro: "Neutro", fogo: "Fogo", gelo: "Gelo", terra: "Terra", sombra: "Sombra", sagrado: "Sagrado" }, n5 = { pequeno: "Pequeno", medio: "M\xE9dio", grande: "Grande" }, Lh = ["neutro", "fogo", "gelo", "terra", "sombra", "sagrado"], HS = { passive: "Passivo", aggressive: "Agressivo", plant: "Planta (im\xF3vel)", assist: "Assistente" }, PS = (e) => Math.round(e * 1e4) / 100;

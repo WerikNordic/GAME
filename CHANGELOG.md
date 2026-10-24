@@ -54,3 +54,8 @@
 - Casas maiores com modelos diferentes (ala, torre, varanda, 2º andar)
 - NPCs andam de forma aleatória o tempo todo
 - Visual por classe e por evolução (ombreiras, capas, asas, aura, elmos)
+
+## v61
+- Custo dos atributos oculto
+- Cidades preenchidas: ferrarias, mercados, casas, jardins e acampamentos nos espaços vazios
+- Barracas e caixas dentro das casas removidas
