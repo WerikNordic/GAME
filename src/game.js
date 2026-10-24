@@ -10044,11 +10044,13 @@ Error generating stack: ` + n.message + `
         return { ok: true, msg: "" };
     }
   }
+  var AUTH_ON = false;
   try {
     window.__acct = window.localStorage.getItem("eldvar.session") || "", window.__tok = window.localStorage.getItem("eldvar.token") || "";
   } catch {
     window.__acct = "", window.__tok = "";
   }
+  AUTH_ON || (window.__acct = "", window.__tok = "");
   var Gp = 1, jp = 3, dv = "eldvar.settings.v1", Bp = (e) => `eldvar.save.${window.__acct ? window.__acct + "." : ""}${e}`, Vt = (e) => typeof e == "object" && e !== null && !Array.isArray(e), Ut = (e, t, a, n) => {
     let o = typeof e == "number" && Number.isFinite(e) ? Math.floor(e) : n;
     return Math.max(t, Math.min(a, o));
@@ -11010,7 +11012,7 @@ Error generating stack: ` + n.message + `
         }
       });
     }, [acct]);
-    if (!acct && !/[?&]debug/.test(window.location.search)) return (0, le.jsx)(AuthScreen, { onDone: (a2, ad) => (j.refresh(), setIsAdm(ad), setAcct(a2)) });
+    if (AUTH_ON && !acct && !/[?&]debug/.test(window.location.search)) return (0, le.jsx)(AuthScreen, { onDone: (a2, ad) => (j.refresh(), setIsAdm(ad), setAcct(a2)) });
     return (0, le.jsxs)("main", { className: "title", children: [(0, le.jsx)("div", { className: "title-bg", "aria-hidden": "true" }), (0, le.jsxs)("div", { className: "title-card", children: [(0, le.jsx)("div", { className: "runes", "aria-hidden": "true", children: _v }), (0, le.jsx)("h1", { className: "logo", children: "ELDVAR" }), (0, le.jsx)("p", { className: "subtitle", children: "As Cr\xF4nicas do Fim" }), acct && (0, le.jsxs)("p", { className: "acct-line", children: ["Conta: ", acct, " \xB7 ", (0, le.jsx)("button", { className: "linkbtn", onClick: () => {
       window.__tok && sbRpc("eld_logout", { p_token: window.__tok });
       try {

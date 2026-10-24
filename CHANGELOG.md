@@ -32,3 +32,6 @@
 
 ## v57.1
 - Se o servidor não responder, a tela de login oferece "Jogar offline (sem conta)".
+
+## v57.2
+- Login pausado (AUTH_ON = false em src/game.js). Código, conta e banco continuam prontos para reativar.
