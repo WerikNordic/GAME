@@ -29,3 +29,6 @@
 ## v57
 - Contas na nuvem (Supabase): cadastro com e-mail e senha, aprovação pelo administrador (1ª conta = admin), progresso salvo na conta e disponível em qualquer aparelho.
 - Menu "Administração" para aprovar/bloquear contas.
+
+## v57.1
+- Se o servidor não responder, a tela de login oferece "Jogar offline (sem conta)".
