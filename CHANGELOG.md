@@ -43,3 +43,7 @@
 
 ## v57.2
 - Login pausado (AUTH_ON = false em src/game.js). Código, conta e banco continuam prontos para reativar.
+
+## v59
+- 7 classes (Espadachim, Mercador, Arqueiro, Mago, Noviço, Gatuno, Thay), estátuas aleatórias (anjo, Bafomé, Morroc, serpente), cidades reorganizadas, NPCs desviam da fonte, iluminação sem escurecer
+- @afk nas cidades principais, Ctrl+C abre janela de mensagem privada

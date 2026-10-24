@@ -131,3 +131,12 @@ main.title .title-card .footer{color:#a9a38f}
 #wb-title{position:fixed;inset:0;z-index:99995;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none;text-align:center;transition:opacity .2s}
 #wb-title .wb-t1{font:900 clamp(30px,6.4vw,84px)/1.05 Georgia,serif;letter-spacing:.08em;color:#ffe2a0;text-shadow:0 0 18px #ff5a10,0 0 44px #ff2a00,0 4px 0 #6b1a06}
 #wb-title .wb-t2{margin-top:14px;font:italic clamp(14px,2.2vw,26px) Georgia,serif;color:#ffd0a0;text-shadow:0 0 12px #000,0 2px 6px #000}
+
+.pm-win{position:fixed;z-index:60;width:260px;background:rgba(18,16,28,.94);border:1px solid #c9a24b;border-radius:6px;box-shadow:0 6px 24px #000a;color:#eee;font-size:13px;pointer-events:auto}
+.pm-win header{display:flex;align-items:center;gap:6px;padding:4px 6px;background:linear-gradient(#3a2f55,#241c38);border-radius:5px 5px 0 0}
+.pm-win .grip{cursor:grab;color:#c9a24b}
+.pm-win .pm-name{flex:1;min-width:0;background:#0006;border:1px solid #555;color:#ffd27a;padding:2px 5px;border-radius:3px}
+.pm-win .pm-x{background:none;border:0;color:#ccc;cursor:pointer}
+.pm-win .pm-log{height:120px;overflow-y:auto;padding:6px;display:flex;flex-direction:column;gap:3px}
+.pm-win .pm-log .me{color:#9fd8ff}.pm-win .pm-log .sys{color:#ffb8e6}
+.pm-win .pm-in{width:calc(100% - 12px);margin:0 6px 6px;background:#0007;border:1px solid #555;color:#fff;padding:4px 6px;border-radius:3px}
