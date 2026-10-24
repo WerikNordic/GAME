@@ -13497,6 +13497,20 @@ void main() {
       Xt(a, d.mul(A.T(0, 0.04, 0)), 0.78, 0.03, e.aura, { seg: 28, ring: 4, mat: oh }), Xt(a, d.mul(A.T(0, 0.05, 0)), 0.58, 0.02, Y(e.aura, 0.8), { seg: 24, ring: 4, mat: oh });
       for (let C = 0; C < 4; C++) L(a, f.mul(A.T(Math.cos(C * 1.57 + r * 0.5) * 0.66, 0.45 + C * 0.4, Math.sin(C * 1.57 + r * 0.5) * 0.66)), 0.065, 0.065, 0.065, e.aura, { seg: 8, mat: oh });
     }
+    if (e.epic) {
+      let gold = 16766784, ice = 10800127, pk = 16746200, ph = r * 0.5;
+      for (let C = 0; C < 3; C++) Xt(a, d.mul(A.T(0, 0.04 + C * 0.01, 0)), 0.95 + C * 0.28, 0.035, [gold, pk, ice][C], { seg: 36, ring: 4, mat: oh });
+      for (let C = 0; C < 8; C++) {
+        let an = C / 8 * 6.283 + ph;
+        F(a, f.mul(A.T(Math.cos(an) * 0.95, 0, Math.sin(an) * 0.95)), 0.035, 0.035, 2.6 + (C % 2) * 1.2, C % 2 ? gold : ice, { seg: 6, mat: oh });
+      }
+      for (let C = 0; C < 8; C++) {
+        let an = C / 8 * 6.283 - ph * 1.4, hh = 0.5 + C % 4 * 0.5;
+        L(a, f.mul(A.T(Math.cos(an) * 0.72, hh, Math.sin(an) * 0.72)), 0.09, 0.09, 0.09, [gold, pk, ice, 16777215][C % 4], { seg: 8, mat: oh });
+      }
+      Xt(a, f.mul(A.T(0, 2.25, 0)).mul(A.RX(-0.12)), 0.42, 0.04, gold, { seg: 28, ring: 5, mat: oh }), Xt(a, f.mul(A.T(0, 2.35, 0)).mul(A.RX(0.1)), 0.3, 0.025, 16777215, { seg: 24, ring: 4, mat: oh });
+      for (let C of [-1, 1]) for (let B = 0; B < 6; B++) L(a, f.mul(A.T(C * (0.22 + B * 0.16), 1.65 - B * 0.12, -0.38)).mul(A.RZ(-C * (0.6 + B * 0.2))), 0.05, 0.62 - B * 0.06, 0.05, B % 2 ? gold : 16777215, { seg: 8, mat: oh });
+    }
     if (e.quiver) {
       let C = f.mul(A.T(0.17, 1.12, -0.3)).mul(A.RZ(-0.3));
       F(a, C.mul(A.T(0, -0.3, 0)), 0.09, 0.1, 0.6, f4, { seg: 10 });
@@ -14488,17 +14502,24 @@ void main() {
   }
   var da = /* @__PURE__ */ new Map(), ea = 8, cS = { axe: "axe", sword: "sword", bow: "bow", staff: "staff", spear: "spear", dagger: "dagger" };
   function po(e) {
-    return `${e.base}@${e.hair ?? ""}|g:${e.gear ?? ""}|t:${e.top ?? ""}|m:${e.mid ?? ""}|l:${e.low ?? ""}|b:${e.bk ?? ""}${e.sx ? "|x:f" : ""}|d:${e.dye ?? 0}${e.hs ? `|s:${e.hs}` : ""}${e.hc !== void 0 ? `|c:${e.hc}` : ""}${e.ti ? `|j:${e.ti}` : ""}`;
+    return `${e.base}@${e.hair ?? ""}|g:${e.gear ?? ""}|t:${e.top ?? ""}|m:${e.mid ?? ""}|l:${e.low ?? ""}|b:${e.bk ?? ""}${e.sx ? "|x:f" : ""}|d:${e.dye ?? 0}${e.hs ? `|s:${e.hs}` : ""}${e.hc !== void 0 ? `|c:${e.hc}` : ""}${e.ti ? `|j:${e.ti}` : ""}${e.ep ? "|e:1" : ""}`;
   }
   function Yl(e) {
     let [t, ...a] = e.split("|"), [n, o] = t.split("@"), r = (i) => a.find((s) => s.startsWith(i + ":"))?.slice(i.length + 1) ?? "";
-    return { base: n, hair: o ? Number(o) : void 0, gear: r("g") || void 0, top: r("t") || void 0, mid: r("m") || void 0, low: r("l") || void 0, bk: r("b") || void 0, sx: r("x") || void 0, dye: Number(r("d")) || 0, hs: r("s") || void 0, hc: r("c") ? Number(r("c")) : void 0, ti: Number(r("j")) || 0 };
+    return { base: n, hair: o ? Number(o) : void 0, gear: r("g") || void 0, top: r("t") || void 0, mid: r("m") || void 0, low: r("l") || void 0, bk: r("b") || void 0, sx: r("x") || void 0, dye: Number(r("d")) || 0, hs: r("s") || void 0, hc: r("c") ? Number(r("c")) : void 0, ti: Number(r("j")) || 0, ep: r("e") === "1" ? 1 : 0 };
   }
   function cs(e) {
     let t = e.equipment.weapon ? $(e.equipment.weapon)?.weaponType : void 0, a = (n) => n ? $(n)?.headStyle : void 0;
-    return { base: e.line, hair: kh(e.name), gear: t ? cS[t] ?? "none" : "none", top: a(e.equipment.headTop), mid: a(e.equipment.headMid), low: a(e.equipment.headLow), bk: e.equipment.back ? $(e.equipment.back)?.backStyle : void 0, sx: e.gender === "f" ? "f" : void 0, dye: e.dye ?? 0, hs: e.style?.hairStyle, hc: e.style?.hairColor, ti: e.tier || 0 };
+    return { base: e.line, hair: kh(e.name), gear: t ? cS[t] ?? "none" : "none", top: a(e.equipment.headTop), mid: a(e.equipment.headMid), low: a(e.equipment.headLow), bk: e.equipment.back ? $(e.equipment.back)?.backStyle : void 0, sx: e.gender === "f" ? "f" : void 0, dye: e.dye ?? 0, hs: e.style?.hairStyle, hc: e.style?.hairColor, ti: e.tier || 0, ep: e.level >= 99 ? 1 : 0 };
   }
-  var FIXYAW = Math.PI / 4;
+  var FIXYAW = Math.PI / 4, CAM0 = (() => {
+    try {
+      let c = JSON.parse(localStorage.getItem("eldvar.cam") || "{}"), k = (v, lo, hi, d) => typeof v == "number" && isFinite(v) ? Math.max(lo, Math.min(hi, v)) : d;
+      return { yaw: k(c.yaw, -1e3, 1e3, 0), tilt: k(c.tilt, 0.3, 0.72, 0.5), zoom: k(c.zoom, 0.3, 3, 1) };
+    } catch {
+      return { yaw: 0, tilt: 0.5, zoom: 1 };
+    }
+  })();
   var TIERLOOK = {
     berserker: [null, { tunic: 8071714, trim: 15254090, pauld: 10133672, cape: 8002588 }, { tunic: 3815492, trim: 15251530, pauld: 15251530, cape: 11541532, head: "horns", aura: 16734762 }],
     escudeiro: [null, { tunic: 9071146, trim: 15782000, cape: 6961690, pauld: 15782000 }, { tunic: 6961824, trim: 16765514, cape: 4856432, pauld: 16765514, head: "circlet", aura: 16765514 }],
@@ -14515,6 +14536,7 @@ void main() {
       let tp = TIERLOOK[e.base]?.[Math.min(2, e.ti || 0)];
       tp && Object.assign(t, tp), t.ti = e.ti || 0;
     }
+    e.ep && (t.epic = true);
     if (e.mid && e.mid.startsWith("eye_")) { t.eye = EYEC[e.mid]; e = { ...e, mid: void 0 }; }
     return e.hair !== void 0 && !Number.isNaN(e.hair) && (t.hair = xh[e.hair % xh.length]), e.hs && (t.hairStyle = e.hs), e.hc !== void 0 && !Number.isNaN(e.hc) && (t.hair = e.hc), e.gear && (t.gear = e.gear), e.top && (t.head = e.top), e.mid && (t.mid = e.mid), e.low && (t.low = e.low), e.sx === "f" && (t.slim = true, e.hs || (t.hairStyle = "long")), e.bk && BACKS[e.bk] && (BACKS[e.bk].type === "cape" ? t.cape = BACKS[e.bk].c : BACKS[e.bk].type === "quiver" ? t.quiver = true : t.wingsBack = [BACKS[e.bk].c, BACKS[e.bk].c2]), t;
   }
@@ -15036,10 +15058,19 @@ void main() {
     pet = { x: 0, y: 0, ok: false, moving: false };
     scenery = null;
     flat = null;
-    yaw = 0;
-    yawNow = 0;
-    tilt = 0.5;
-    zoomMul = 1;
+    yaw = CAM0.yaw;
+    yawNow = CAM0.yaw;
+    tilt = CAM0.tilt;
+    zoomMul = CAM0.zoom;
+    saveCam() {
+      let k = `${this.yaw.toFixed(3)}|${this.tilt.toFixed(3)}|${this.zoomMul.toFixed(3)}`;
+      if (k === this._cs || this.clock - (this._cst ?? 0) < 400) return;
+      this._cs = k, this._cst = this.clock;
+      try {
+        localStorage.setItem("eldvar.cam", JSON.stringify({ yaw: this.yaw, tilt: this.tilt, zoom: this.zoomMul }));
+      } catch {
+      }
+    }
     baseZoom = 1;
     camKey = "";
     drag = null;
@@ -15237,7 +15268,7 @@ void main() {
     };
     updateCamera(t, a) {
       let n = this.down;
-      this.tilt = Math.max(0.3, Math.min(0.72, this.tilt)), this.yawNow += (this.yaw - this.yawNow) * (1 - Math.pow(0.82, t / 16.67)), Math.abs(this.yaw - this.yawNow) < 5e-4 && (this.yawNow = this.yaw), this.zoom = this.baseZoom * this.zoomMul;
+      this.tilt = Math.max(0.3, Math.min(0.72, this.tilt)), this.saveCam(), this.yawNow += (this.yaw - this.yawNow) * (1 - Math.pow(0.82, t / 16.67)), Math.abs(this.yaw - this.yawNow) < 5e-4 && (this.yawNow = this.yaw), this.zoom = this.baseZoom * this.zoomMul;
       let o = this.store.world?.player.pos;
       Dx(this.yawNow, this.tilt, o ? o.x : a.width / 2, o ? o.y : a.height / 2), typeof location < "u" && location.search.includes("debug") && (window.__eldvarCam = { yaw: this.yaw, tilt: this.tilt });
       let r = `${a.id}:${this.yawNow.toFixed(4)}:${this.tilt.toFixed(4)}`;
@@ -15410,6 +15441,19 @@ void main() {
         let tw = 0.35 + 0.65 * Math.max(0, Math.sin(T / (500 + i * 40) + i * 2));
         c.fillStyle = `rgba(${cfg.col},${cfg.a * tw})`, c.beginPath(), c.arc(x, y, cfg.sz * (0.7 + tw * 0.6), 0, Math.PI * 2), c.fill();
         cfg.sz > 1.5 && (c.fillStyle = `rgba(${cfg.col},${cfg.a * tw * 0.18})`, c.beginPath(), c.arc(x, y, cfg.sz * 4, 0, Math.PI * 2), c.fill());
+      }
+      c.restore();
+    }
+    epicFx(x, y, ph) {
+      let c = this.ctx, T = this.clock, k = 0.5 + 0.5 * Math.sin(T / 380);
+      if (c.save(), c.globalCompositeOperation = "lighter", ph === 0) {
+        let g = c.createRadialGradient(x, y + 2, 4, x, y + 2, 78 + k * 8);
+        g.addColorStop(0, `rgba(255,214,110,${0.5 + k * 0.15})`), g.addColorStop(0.5, "rgba(255,150,90,0.22)"), g.addColorStop(1, "rgba(255,120,200,0)"), c.fillStyle = g, c.beginPath(), c.ellipse(x, y + 2, 78 + k * 8, 38 + k * 4, 0, 0, Math.PI * 2), c.fill();
+        let b = c.createLinearGradient(0, y - 190, 0, y);
+        b.addColorStop(0, "rgba(255,230,150,0)"), b.addColorStop(1, `rgba(255,220,140,${0.2 + k * 0.1})`), c.fillStyle = b, c.fillRect(x - 22, y - 190, 44, 190);
+      } else for (let i = 0; i < 22; i++) {
+        let u = (T / (1500 + i % 5 * 220) + i * 0.137) % 1, an = i * 2.4 + T / 900, rr = 14 + (i % 4) * 8 + u * 6;
+        c.fillStyle = `rgba(${i % 3 ? "255,224,130" : "255,170,230"},${(1 - u) * 0.95})`, c.beginPath(), c.arc(x + Math.cos(an) * rr, y + 2 - u * 120 + Math.sin(an) * rr * 0.4, 1.2 + (1 - u) * 1.6, 0, Math.PI * 2), c.fill();
       }
       c.restore();
     }
@@ -15796,9 +15840,9 @@ void main() {
       let n = this.ctx, o = a.player, r = ce(o.pos.x, o.pos.y), i = this.animOf("p", o.pos.x, o.pos.y, t), { dir: s, flip: l } = Kl(o.facing), c = a.isDead(), d = Km(this.clock - i.atkAt, i.atkImpact, i.atkDur), f = a.sitting ? -2 : i.moving ? Math.floor(i.phase * ea) : -1, u = fa(po(cs(a.ps)), s, f, d, i.atkStyle);
       if (n.save(), n.globalAlpha = c ? 0.3 : 1, c) n.translate(r.x, r.y), n.rotate(Math.PI / 2), N4(() => nt(n, u, 0, 0, l, $a, $a));
       else {
-        this.blob(r.x, r.y + 4, 15);
+        this.blob(r.x, r.y + 4, 15), a.ps.level >= 99 && this.epicFx(r.x, r.y, 0);
         let m = this.organic(i, o.facing, { moving: i.moving, atkT: this.clock - i.atkAt, atkImpact: i.atkImpact, atkDur: i.atkDur, breath: a.sitting ? 8e-3 : 0.011 });
-        a.sitting && (m.dx = 0, m.dy = 0, m.rot *= 0.3), nt(n, u, r.x + m.dx, r.y + 6 + m.dy, l, $a * m.sx, $a * m.sy, m.rot);
+        a.sitting && (m.dx = 0, m.dy = 0, m.rot *= 0.3), nt(n, u, r.x + m.dx, r.y + 6 + m.dy, l, $a * m.sx, $a * m.sy, m.rot), a.ps.level >= 99 && this.epicFx(r.x, r.y, 1);
       }
       if (n.restore(), !c) {
         let m = a.sitting ? -14 : 0;

@@ -77,3 +77,7 @@
 
 ## v67
 - Runas de Werik (5 cidades, conquista e título), partículas ambientais por tema, torres translúcidas quando ocultam o personagem, ajuda de comandos
+
+## v68
+- Câmera (giro, inclinação e zoom) lembrada ao sair e voltar
+- Nível 99: aura ÉPICA (anéis, pilares de luz, orbes, halo, asas de luz, brilho dourado e faíscas)
