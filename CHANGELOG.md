@@ -17,3 +17,11 @@
 - Eventos aleatórios: um por janela de 5h, em horário aleatório.
 - Botão direito numa habilidade (painel L) mostra seus bônus.
 - Novo slot "Costas": capas, aljavas e asas só aparecem quando equipadas (9 itens, obtidos em quests de visual).
+
+## v56
+- Login/conta por e-mail e senha (conta local do navegador; a 1ª conta herda os saves antigos). Saves separados por conta.
+- Criação de personagem com sexo masculino/feminino (feminino: cabelo longo e silhueta mais fina).
+- Sem neblina no clima.
+- Cidades com layouts diferentes (espelhamento, praças, muralhas, ruas e bairros temáticos), mesmas dimensões.
+- Painéis (inventário, atributos, habilidades, etc.) compactos e organizados.
+- Barra de vida sobre a cabeça removida.

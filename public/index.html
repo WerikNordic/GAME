@@ -41,6 +41,79 @@ main.title .title-card .footer{color:#a9a38f}
 .skill-bonus>b{display:block;margin-bottom:3px;color:#1b3a78}
 .skill-bonus .sb-row{display:flex;justify-content:space-between;gap:10px;border-top:1px dotted #9fb3d6;padding:1px 0}
 .skill-bonus .sb-next{color:#35607a;font-style:italic}
+
+/* ===== v56: painéis compactos ===== */
+.panel{width:min(330px,96vw);font-size:12.5px;line-height:1.3;border-radius:5px;box-shadow:0 6px 22px #0009}
+.panel-wide{width:min(500px,96vw)}
+.panel-head{padding:4px 8px;font-size:12px;letter-spacing:.3px}
+.panel-head .btn{padding:0 7px;min-height:18px;font-size:12px;line-height:16px}
+.panel-body{padding:8px;gap:6px}
+.panel .muted{font-size:11.5px}
+.panel p{margin:0}
+.panel .btn,.panel .btn-small{min-height:24px;padding:2px 9px;font-size:12px;border-radius:3px}
+.panel .tab{min-height:24px;padding:2px 12px;font-size:12px;border-radius:3px 3px 0 0}
+.panel .tabs{gap:3px;border-bottom:1px solid #9fb3d6;padding-bottom:0}
+.attr-points{padding:3px 8px;border-radius:3px;font-size:12px;background:#dbe6f7;border:1px solid #9fb3d6}
+.attr-row{grid-template-columns:auto 1fr auto auto;gap:7px;padding:3px 4px;border-bottom:1px dotted #b6c6e2;font-size:12.5px;min-width:0}
+.attr-row>*{min-width:0}
+.attr-row .btn-small{min-width:24px;padding:0 6px}
+.attr-row small{display:block;font-size:11px;line-height:1.25}
+.attr-row .stat-name{display:flex;align-items:center;gap:6px}
+.attr-row .cost{min-width:0;font-size:11px}
+.skill-ico .pxi,.attr-row .pxi{width:26px;height:26px}
+.derived{display:grid;grid-template-columns:1fr 1fr;gap:1px 10px;font-size:12px}
+.derived li{display:flex;justify-content:space-between;border-bottom:1px dotted #c4d1e8;padding:1px 0}
+.weightbar{margin:2px 0 4px;font-size:11px}
+.bag{grid-template-columns:1fr;gap:6px}
+.grid{display:grid;grid-template-columns:repeat(6,1fr);gap:3px}
+.cell{border-width:1px;border-radius:3px;font-size:12px}
+.cell .qty{font-size:10px;right:2px;bottom:0}
+.cell .pxi{width:70%;height:70%}
+.detail{padding:6px 8px;gap:4px;min-height:70px;border-radius:3px;font-size:12px}
+.detail .btn{margin-right:3px}
+.char{gap:8px;grid-template-columns:1fr}
+.char section{padding:6px 8px;gap:4px;border-radius:3px}
+.char h3,.panel h3{font-size:12.5px;margin:0 0 2px}
+.equip-wrap{grid-template-columns:1fr;gap:6px}
+.eq-row{grid-template-columns:78px 1fr auto;gap:6px;font-size:12px;padding:2px 0;border-bottom:1px dotted #c4d1e8;min-width:0}
+.eq-row>*{min-width:0}
+.eq-row .eq-ico{display:flex;align-items:center;gap:4px;font-size:11px;white-space:nowrap}
+.eq-row .eq-ico .pxi{width:24px;height:24px}
+.eq-row b{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.eq-row small{font-size:10.5px;white-space:normal}
+.refine-list{max-height:46vh}
+.bestiary{min-width:0;gap:6px;max-height:64vh}
+.bestiary-item{padding:2px 5px;font-size:12px}
+.panel .field{gap:2px;margin-bottom:2px}
+.panel .field>span{font-size:11.5px}
+.panel input[type=text],.panel input[type=email],.panel select{min-height:24px;padding:2px 6px;font-size:12px}
+.panel .check{min-height:22px;gap:6px;font-size:12px}
+.panel .row.wrap{gap:4px}
+.hud-class,.hud .cls{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* ===== login / sexo ===== */
+.auth-tabs{display:flex;gap:4px;margin:6px 0 10px;justify-content:center}
+.auth-tabs button{flex:1;padding:6px 10px;background:#0d132488;color:#cfc7a8;border:1px solid #6b5726;border-radius:3px;cursor:pointer;font-family:inherit}
+.auth-tabs button.on{background:linear-gradient(#7a5a1a,#4a3610);color:#fff2c0}
+.auth-form{display:grid;gap:8px;min-width:min(300px,80vw)}
+.auth-form .field>span{color:#cfc7a8}
+.auth-form input[type=email],.auth-form input[type=password],.auth-form input[type=text]{padding:8px 10px;border-radius:3px;border:1px solid #6b5726;background:#0b1020;color:#f2ecd2;font-size:14px}
+.auth-show{color:#cfc7a8;min-height:0;font-size:12px}
+.auth-note{font-size:11px;text-align:center;color:#a99f7c}
+.acct-line{font-size:11px;color:#cfc7a8;margin:4px 0 8px;text-align:center}
+.linkbtn{background:none;border:0;color:#ffd35a;text-decoration:underline;cursor:pointer;font:inherit;padding:0}
+.gender-pick{display:flex;gap:8px;align-items:center;margin:8px 0}
+.gender-pick .gbtn{padding:5px 14px;border:1px solid #9fb3d6;border-radius:4px;background:#fff;color:#1d2f52;cursor:pointer;font:inherit}
+.gender-pick .gbtn.selected{background:#2c5fb3;color:#fff;border-color:#1b3a78}
+.panel-wide{width:min(420px,96vw)}
+.panel .grid{grid-template-columns:repeat(8,minmax(0,44px));justify-content:center;gap:3px}
+.panel .cell{width:100%;aspect-ratio:1}
+.panel .grid{max-height:44vh;overflow:auto;padding:2px}
+.panel-wide:has(.bestiary){width:min(460px,96vw)}
+.hud-id-text{min-width:0;display:flex;gap:6px;align-items:baseline;white-space:nowrap;overflow:hidden}
+.hud-id-text>*{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.hud-id-text{flex-wrap:wrap;overflow:visible;gap:0 6px}
+.hud-id-text>*{overflow:visible;text-overflow:clip}
 </style></head>
   <body>
     <div id="root"></div>
@@ -7946,20 +8019,30 @@ Error generating stack: ` + n.message + `
     let { w: e, h: t } = Wo.city, a = e / 2;
     return { CX: a, plazaY: 3600, palaceY: 900, streetN: 2700, streetS: 5150, streetsX: [1250, 3950], wall: { x: 240, y: 160, w: e - 480, h: t - 320 }, gate: { from: a - Wo.gate / 2, to: a + Wo.gate / 2 }, plots: [[4350, 4780], [2900, 5750], [1700, 5750], [4350, 2050], [850, 2050], [3300, 4900], [850, 4850], [3250, 2050], [1750, 2050]] };
   })();
+  var CSTY = {
+    cidade_midgard: { mirror: false, plaza: "radial", wall: "towers", blocks: "dense", gap: 250, alt: 0.1 },
+    cidade_ravnhaven: { mirror: true, plaza: "colonnade", wall: "towers", blocks: "rows", gap: 250, alt: 0.14, feat: { 1: "park", 6: "park", 3: "stalls" }, tt: { streetsX: [1000, 4200], streetN: 2560 } },
+    cidade_isenborg: { mirror: false, plaza: "obelisks", wall: "palisade", blocks: "camp", gap: 262, alt: 0.3, feat: { 0: "camp", 3: "camp", 5: "graves", 7: "yard" }, tt: { streetsX: [1150, 4050], streetS: 5260 } },
+    cidade_eldvik: { mirror: true, plaza: "braziers", wall: "ruined", blocks: "dense", gap: 240, alt: 0.12, feat: { 2: "yard", 4: "forge", 5: "yard" }, tt: { streetsX: [950, 4250], streetN: 2800 } },
+    cidade_kharnheim: { mirror: false, plaza: "market", wall: "towers", blocks: "forge", gap: 255, alt: 0.3, feat: { 1: "stalls", 2: "forge", 5: "forge", 6: "stalls" }, tt: { streetsX: [1100, 4150], streetN: 2620, streetS: 5200 } },
+    cidade_freyrhain: { mirror: true, plaza: "garden", wall: "palisade", blocks: "gardens", gap: 275, alt: 0.38, feat: { 0: "park", 2: "park", 5: "park", 7: "park" }, tt: { streetsX: [1200, 4000], streetN: 2500 } },
+    cidade_gladsheim: { mirror: false, plaza: "colonnade", wall: "ruined", blocks: "sparse", gap: 300, alt: 0.18, feat: { 1: "yard", 6: "park", 3: "graves", 4: "park" }, tt: { streetsX: [900, 4300], streetS: 5300 } }
+  };
   function z8(e) {
+    let ST = CSTY[e.id] ?? CSTY.cidade_midgard, rs = Oe(e.seed + 55), tt2 = Object.assign({}, tt, ST.tt ?? {});
     let { w: t, h: a } = Wo.city, n = Oe(e.seed), o = [], r = [], i = 0, s = (_, G, re) => {
       let ie = $m[_];
       o.push({ kind: "deco", deco: _, x: Math.round(G - ie.w / 2), y: Math.round(re - ie.h / 2), w: ie.w, h: ie.h });
     }, l = (_, G) => {
       o.push({ kind: "crate", x: _ - 15, y: G - 15, w: 30, h: 30 });
-    }, { wall: c, CX: d, gate: f } = tt, u = [], m = (_, G, re, ie) => {
+    }, { wall: c, CX: d, gate: f } = tt2, u = [], m = (_, G, re, ie) => {
       u.push({ x: _, y: G, w: re, h: ie });
-    }, p = [], h = Math.floor(Date.now() / 864e5), x = Oe(e.seed * 31 + h * 7919 + 13), b = [...tt.plots];
+    }, p = [], h = Math.floor(Date.now() / 864e5), x = Oe(e.seed * 31 + h * 7919 + 13), b = [...tt2.plots];
     for (let _ = b.length - 1; _ > 0; _--) {
       let G = Math.floor(x() * (_ + 1));
       [b[_], b[G]] = [b[G], b[_]];
     }
-    let g = { x: b[0][0], y: b[0][1] }, y = { x: b[1][0], y: b[1][1] }, v = { x: b[2][0], y: b[2][1] }, k = tt.plazaY, R = { x: 450, w: 1400 }, w = (_) => {
+    let g = { x: b[0][0], y: b[0][1] }, y = { x: b[1][0], y: b[1][1] }, v = { x: b[2][0], y: b[2][1] }, k = tt2.plazaY, R = { x: 450, w: 1400 }, w = (_) => {
       let G = x() < 0.5 ? -1 : 1, re = x() * Math.PI * 2;
       switch (_) {
         case "arauto":
@@ -7996,31 +8079,46 @@ Error generating stack: ` + n.message + `
       for (let re = 0; re < 12 && M.some((ie) => Math.hypot(ie.x - G.x, ie.y - G.y) < 130); re++) G = w(_.id);
       M.push({ id: _.id, x: Math.round(G.x), y: Math.round(G.y) });
     }
-    for (let _ = c.x; _ <= c.x + c.w; _ += 56) s("wall", _, c.y), (_ < f.from - 20 || _ > f.to) && s("wall", _, c.y + c.h);
-    for (let _ = c.y + 56; _ < c.y + c.h; _ += 56) s("wall_v", c.x, _), s("wall_v", c.x + c.w, _);
+    let wk = (_) => ST.wall !== "ruined" || rs() > 0.16;
+    for (let _ = c.x; _ <= c.x + c.w; _ += 56) wk() && s("wall", _, c.y), (_ < f.from - 20 || _ > f.to) && wk() && s("wall", _, c.y + c.h);
+    for (let _ = c.y + 56; _ < c.y + c.h; _ += 56) wk() && s("wall_v", c.x, _), wk() && s("wall_v", c.x + c.w, _);
     for (let [_, G] of [[c.x, c.y], [c.x + c.w, c.y], [c.x, c.y + c.h], [c.x + c.w, c.y + c.h], [f.from - 40, c.y + c.h], [f.to + 40, c.y + c.h]]) s("tower", _, G);
-    for (let _ = c.x + 448; _ < c.x + c.w - 100; _ += 448) s("tower", _, c.y), Math.abs(_ - d) > 200 && s("tower", _, c.y + c.h);
-    for (let _ = c.y + 560; _ < c.y + c.h - 100; _ += 560) s("tower", c.x, _), s("tower", c.x + c.w, _);
+    for (let _ = c.x + 448; _ < c.x + c.w - 100; _ += 448) ST.wall === "palisade" ? (s("brazier", _, c.y + 40), Math.abs(_ - d) > 200 && s("brazier", _, c.y + c.h - 40)) : (s("tower", _, c.y), Math.abs(_ - d) > 200 && s("tower", _, c.y + c.h));
+    for (let _ = c.y + 560; _ < c.y + c.h - 100; _ += 560) ST.wall === "palisade" ? (s("brazier", c.x + 40, _), s("brazier", c.x + c.w - 40, _)) : (s("tower", c.x, _), s("tower", c.x + c.w, _));
     s("arch", d, c.y + c.h + 8);
-    let T = Wo.avenue, z = Wo.street, I = { x: d - T / 2, y: tt.palaceY + 560, w: T, h: a - (tt.palaceY + 560) - 20 }, J = { x: c.x + 14, y: tt.plazaY - T / 2, w: c.w - 28, h: T }, D = { x: d - 600, y: tt.plazaY - 450, w: 1200, h: 900 };
+    let T = Wo.avenue, z = Wo.street, I = { x: d - T / 2, y: tt2.palaceY + 560, w: T, h: a - (tt2.palaceY + 560) - 20 }, J = { x: c.x + 14, y: tt2.plazaY - T / 2, w: c.w - 28, h: T }, D = { x: d - 600, y: tt2.plazaY - 450, w: 1200, h: 900 };
     p.push(I, J, D), m(I.x - 20, I.y, I.w + 40, I.h), m(J.x, J.y - 20, J.w, J.h + 40), m(D.x - 20, D.y - 20, D.w + 40, D.h + 40);
-    let Z = [tt.streetN, tt.streetS];
+    let Z = [tt2.streetN, tt2.streetS];
     for (let _ of Z) {
       let G = { x: c.x + 14, y: _ - z / 2, w: c.w - 28, h: z };
       p.push(G), m(G.x, G.y - 10, G.w, G.h + 20);
     }
     let q = [];
-    for (let _ of tt.streetsX) q.push([_, tt.palaceY + 560, tt.streetN - z / 2], [_, tt.streetN + z / 2, D.y - 30], [_, D.y + D.h + 30, tt.streetS - z / 2], [_, tt.streetS + z / 2, c.y + c.h - 60]);
+    for (let _ of tt2.streetsX) q.push([_, tt2.palaceY + 560, tt2.streetN - z / 2], [_, tt2.streetN + z / 2, D.y - 30], [_, D.y + D.h + 30, tt2.streetS - z / 2], [_, tt2.streetS + z / 2, c.y + c.h - 60]);
     for (let [_, G, re] of q) {
       if (re - G < 120) continue;
       let ie = { x: _ - z / 2, y: G, w: z, h: re - G };
       p.push(ie), m(ie.x - 10, ie.y, ie.w + 20, ie.h);
     }
-    let H = tt.plazaY;
+    let H = tt2.plazaY;
     s("fountain", d, H);
     for (let [_, G] of [[-150, -110], [150, -110], [-150, 110], [150, 110]]) s("brazier", d + _, H + G);
     for (let [_, G] of [[-260, 0], [260, 0], [0, -230], [0, 230]]) s("bench", d + _, H + G);
-    for (let [_, G] of [[-480, -330], [480, -330], [-480, 330], [480, 330]]) s("planter", d + _, H + G);
+    if (ST.plaza === "radial") for (let [_, G] of [[-480, -330], [480, -330], [-480, 330], [480, 330]]) s("planter", d + _, H + G);
+    else if (ST.plaza === "colonnade") for (let _ = 0; _ < 14; _++) {
+      let G = _ / 14 * Math.PI * 2;
+      s("pillar", d + Math.cos(G) * 430, H + Math.sin(G) * 330);
+    }
+    else if (ST.plaza === "obelisks") for (let [_, G] of [[-420, -300], [420, -300], [-420, 300], [420, 300]]) s("obelisk", d + _, H + G), s("brazier", d + _ * 1.18, H + G);
+    else if (ST.plaza === "braziers") for (let _ = 0; _ < 10; _++) {
+      let G = _ / 10 * Math.PI * 2;
+      s("brazier", d + Math.cos(G) * 400, H + Math.sin(G) * 310);
+    }
+    else if (ST.plaza === "market") for (let [_, G] of [[-420, -250], [420, -250], [-420, 250], [420, 250]]) s("stall", d + _, H + G), s("cart", d + _ * 1.25, H + G + 30);
+    else if (ST.plaza === "garden") for (let _ = 0; _ < 10; _++) {
+      let G = _ / 10 * Math.PI * 2;
+      s("planter", d + Math.cos(G) * 420, H + Math.sin(G) * 320);
+    }
     let V = Math.floor(n() * Ym.length);
     [[d - 520, H - 380], [d + 520, H - 380], [d - 520, H + 380], [d + 520, H + 380], [d - 240, 2150], [d + 240, 2150], [d - 240, a - 1250], [d + 240, a - 1250]].forEach(([_, G], re) => {
       let ie = Ym[(V + re) % Ym.length];
@@ -8038,7 +8136,7 @@ Error generating stack: ` + n.message + `
       s("brazier", _ - 80, G + ie / 2 - 40), s("brazier", _ + 80, G + ie / 2 - 40);
       for (let ve of [-300, 300]) s("brazier", _ + ve, G + ie / 2 - 150), s("banner", _ + ve, G + ie / 2 - 190);
       p.push({ x: _ - re / 2 + 20, y: G - ie / 2 + 20, w: re - 40, h: ie - 40 }), m(_ - re / 2 - 20, G - ie / 2 - 20, re + 40, ie + 40);
-    }, C = tt.palaceY, B = (_) => {
+    }, C = tt2.palaceY, B = (_) => {
       p.push({ x: _ - 140, y: C + 450, w: 280, h: 120 });
     };
     if (e.grand === "castle" || e.grand === "both") {
@@ -8066,7 +8164,7 @@ Error generating stack: ` + n.message + `
     for (let _ of [-310, 310]) s("banner", ee.x + _, ee.y + 120);
     for (let _ of [-170, 170]) s("warrior", ee.x + _, ee.y + 330);
     r.push({ id: `${e.id}:${i++}`, kind: "lore", x: ee.x, y: ee.y + 55, label: "Hof dos Dias Antigos", text: "Dizem que o primeiro sacerdote do hof gravou nas vigas o nome de cada pessoa que lhe pediu ajuda e n\xE3o p\xF4de ser ajudada. As vigas j\xE1 foram trocadas duas vezes; os nomes, tr\xEAs." });
-    let ne = { x: 450, y: tt.plazaY - 450, w: 1400, h: 900 };
+    let ne = { x: 450, y: tt2.plazaY - 450, w: 1400, h: 900 };
     m(ne.x, ne.y, ne.w, ne.h), p.push({ x: ne.x, y: ne.y + 130, w: ne.w, h: ne.h - 260 });
     for (let _ = ne.x + 70; _ < ne.x + ne.w - 40; _ += 160) s("stall", _, ne.y + 90), s("stall", _, ne.y + ne.h - 90), _ % 3 === 0 && s("cart", _ + 40, ne.y + 200);
     for (let [_, G] of [[130, 150], [1080, 460], [450, 160], [790, 690]]) l(ne.x + _, ne.y + G);
@@ -8074,8 +8172,8 @@ Error generating stack: ` + n.message + `
     let Te = (_, G) => {
       s("longhouse", _ - 112, G), s("longhouse", _ + 112, G), s("banner", _, G + 60), l(_ - 90, G + 66), l(_ + 90, G + 66), s("lamp", _ - 215, G + 50), s("lamp", _ + 215, G + 50), m(_ - 210, G - 70, 420, 160);
     };
-    Te(1500, 3180), Te(3750, tt.plazaY - 330);
-    let Ae = { x: 3350, y: tt.plazaY - 450, w: 1400, h: 900 };
+    Te(1500, 3180), Te(3750, tt2.plazaY - 330);
+    let Ae = { x: 3350, y: tt2.plazaY - 450, w: 1400, h: 900 };
     m(Ae.x, Ae.y, Ae.w, Ae.h), p.push({ x: Ae.x + 20, y: Ae.y + 300, w: Ae.w - 40, h: 320 }), s("forge", 4050, Ae.y + 300), s("brazier", 3880, Ae.y + 390), s("brazier", 4220, Ae.y + 390);
     for (let [_, G] of [[3500, Ae.y + 120], [4600, Ae.y + 120], [3500, Ae.y + 800], [4600, Ae.y + 800]]) s("longhouse", _, G);
     for (let [_, G] of [[3800, Ae.y + 700], [4350, Ae.y + 690]]) l(_, G);
@@ -8085,21 +8183,48 @@ Error generating stack: ` + n.message + `
     for (let [_, G] of [[-110, 20], [110, 20], [0, 110], [-70, -80], [70, -80]]) s("runestone", y.x + _, y.y + G);
     m(y.x - 190, y.y - 160, 380, 340), m(v.x - 260, v.y - 170, 520, 340);
     for (let _ of M) m(_.x - 90, _.y - 80, 180, 160);
-    let Qt = tt.streetsX, yo = z / 2 + 22, hs = T / 2 + 62, gs = [[c.x + 70, Qt[0] - yo], [Qt[0] + yo, d - hs], [d + hs, Qt[1] - yo], [Qt[1] + yo, c.x + c.w - 70]], bs = [[tt.palaceY + 600, tt.streetN - z / 2 - 20], [tt.streetS + z / 2 + 30, c.y + c.h - 120]], Wl = [];
+    let Qt = tt2.streetsX, yo = z / 2 + 22, hs = T / 2 + 62, gs = [[c.x + 70, Qt[0] - yo], [Qt[0] + yo, d - hs], [d + hs, Qt[1] - yo], [Qt[1] + yo, c.x + c.w - 70]], bs = [[tt2.palaceY + 600, tt2.streetN - z / 2 - 20], [tt2.streetS + z / 2 + 30, c.y + c.h - 120]], Wl = [];
     for (let [_, G] of bs) for (let [re, ie] of gs) Wl.push({ x: re, y: _, w: ie - re, h: G - _ });
     let K0 = (_, G, re, ie) => u.some((ve) => _ < ve.x + ve.w + 20 && _ + re + 20 > ve.x && G < ve.y + ve.h + 20 && G + ie + 20 > ve.y), F0 = M;
-    for (let _ of Wl) for (let G = _.y + 40; G + 60 < _.y + _.h; G += 235) {
+    let FEAT = (R, kd) => {
+      let cx = R.x + R.w / 2, cy = R.y + R.h / 2;
+      if (kd === "park") {
+        for (let gy = R.y + 90, ri = 0; gy < R.y + R.h - 40; gy += 130, ri++) for (let gx = R.x + 80 + (ri % 2) * 60; gx < R.x + R.w - 50; gx += 160) Math.hypot(gx - cx, gy - cy) < 120 || s(ri % 3 === 1 ? "bench" : "planter", gx, gy);
+        s("well", cx, cy), s("lamp", R.x + 40, R.y + 40), s("lamp", R.x + R.w - 40, R.y + 40), s("lamp", R.x + 40, R.y + R.h - 40), s("lamp", R.x + R.w - 40, R.y + R.h - 40);
+      } else if (kd === "camp") {
+        for (let gy = R.y + 90; gy < R.y + R.h - 60; gy += 165) for (let gx = R.x + 100; gx < R.x + R.w - 80; gx += 185) s("tent", gx, gy), s("campfire", gx + 80, gy + 60);
+      } else if (kd === "yard") {
+        for (let gx = R.x + 110; gx < R.x + R.w - 80; gx += 230) s("warrior", gx, R.y + 90), s("warrior", gx, R.y + R.h - 90);
+        for (let gx = R.x + 150; gx < R.x + R.w - 120; gx += 210) s("hay", gx, cy - 40), s("hay", gx + 60, cy + 50);
+        s("obelisk", cx, cy), s("cart", R.x + 90, cy);
+      } else if (kd === "graves") {
+        for (let gy = R.y + 60; gy < R.y + R.h - 40; gy += 70) for (let gx = R.x + 70; gx < R.x + R.w - 40; gx += 80) Math.hypot(gx - cx, gy - cy) < 100 || s("gravestone", gx, gy);
+        s("altar", cx, cy), s("brazier", cx - 90, cy + 40), s("brazier", cx + 90, cy + 40);
+      } else if (kd === "stalls") {
+        for (let gy = R.y + 80; gy < R.y + R.h - 50; gy += 180) for (let gx = R.x + 100; gx < R.x + R.w - 80; gx += 170) s("stall", gx, gy), (gx / 170 | 0) % 2 && s("cart", gx + 30, gy + 80);
+      } else if (kd === "forge") {
+        s("forge", cx, cy - 20), s("brazier", cx - 130, cy + 70), s("brazier", cx + 130, cy + 70), s("cart", R.x + 120, R.y + 100), s("hay", R.x + R.w - 120, R.y + 110), s("cart", R.x + R.w - 130, R.y + R.h - 90), s("hay", R.x + 110, R.y + R.h - 90);
+      }
+    };
+    for (let _ of Wl) {
+      let fk = ST.feat?.[Wl.indexOf(_)];
+      if (fk) {
+        FEAT(_, fk);
+        continue;
+      }
+      for (let G = _.y + 40; G + 60 < _.y + _.h; G += 235) {
       p.push({ x: _.x, y: G + 76, w: _.w, h: Wo.alley });
-      for (let re = _.x + 20; re + 190 < _.x + _.w; re += 250) {
+      for (let re = _.x + 20; re + 190 < _.x + _.w; re += ST.gap) {
         let ie = re + 88, ve = G + 34;
         if (K0(re, G, 176, 78) || F0.some((ht) => Math.hypot(ht.x - ie, ht.y - ve) < 150)) continue;
         let ut = n();
-        if (ut < 0.1) {
-          s(ut < 0.05 ? "planter" : "hay", ie, ve);
+        if (ut < ST.alt) {
+          s(ST.blocks === "camp" ? ut < ST.alt * 0.6 ? "tent" : "campfire" : ST.blocks === "forge" ? ut < ST.alt * 0.5 ? "cart" : "hay" : ST.blocks === "gardens" || ST.blocks === "rows" ? ut < ST.alt * 0.75 ? "planter" : "hay" : ut < 0.05 ? "planter" : "hay", ie, ve);
           continue;
         }
         s("longhouse", ie, ve), n() < 0.22 && s("lamp", ie + 70, ve + 40);
       }
+    }
     }
     for (let _ of M) for (let G = o.length - 1; G >= 0; G--) {
       let re = o[G];
@@ -8113,6 +8238,11 @@ Error generating stack: ` + n.message + `
       if (_ > c.x - 60 && _ < c.x + c.w + 60 && G > c.y - 60 && G < c.y + c.h + 60 || _ > f.from - 120 && _ < f.to + 120 && G > c.y + c.h) continue;
       let re = n() < 0.25;
       o.push(re ? { kind: "rock", x: Math.round(_ - 16), y: Math.round(G - 14), w: 32, h: 28 } : { kind: "tree", x: Math.round(_ - 11), y: Math.round(G - 9), w: 22, h: 18 }), Jl++;
+    }
+    if (ST.mirror) {
+      for (let _ of o) _.x = Math.round(t - (_.x + _.w));
+      for (let _ of M) _.x = t - _.x;
+      for (let _ of r) _.x = t - _.x;
     }
     return { id: e.id, name: e.name, width: t, height: a, spawn: { x: d, y: a - 420 }, safeZone: { x: c.x, y: c.y, w: c.w, h: c.h }, obstacles: o, spawns: [], maxMonsters: 0, npcs: M, pois: r, portals: [{ x: f.from, y: a - 60, w: f.to - f.from, h: 60, label: "Sa\xEDda da cidade", locked: false, toMap: e.from, toSpawn: { x: 130, y: 630 } }], bossDen: { x: t / 2, y: a / 2 + 600, r: 10 }, theme: e.theme, safeLabel: e.safeLabel, scars: [], mood: e.mood, city: true, paved: p };
   }
@@ -8865,7 +8995,7 @@ Error generating stack: ` + n.message + `
     let t = Hy(e), a = vp(e);
     return a >= 0.98 ? "dia" : a <= 0.02 ? "noite" : t < 0.7 ? "entardecer" : "amanhecer";
   }
-  var oM = (e) => vp(e) < 0.35, rM = [["clear", 42], ["precip", 26], ["fog", 16], ["storm", 16]];
+  var oM = (e) => vp(e) < 0.35, rM = [["clear", 52], ["precip", 28], ["storm", 20]];
   function yp(e) {
     let t = Oe(e * 2654435761 + 11)() * 100, a = 0;
     for (let [n, o] of rM) if (a += o, t < a) return n;
@@ -10035,7 +10165,12 @@ Error generating stack: ` + n.message + `
         return { ok: true, msg: "" };
     }
   }
-  var Gp = 1, jp = 3, dv = "eldvar.settings.v1", Bp = (e) => `eldvar.save.${e}`, Vt = (e) => typeof e == "object" && e !== null && !Array.isArray(e), Ut = (e, t, a, n) => {
+  try {
+    window.__acct = window.localStorage.getItem("eldvar.session") || "";
+  } catch {
+    window.__acct = "";
+  }
+  var Gp = 1, jp = 3, dv = "eldvar.settings.v1", Bp = (e) => `eldvar.save.${window.__acct ? window.__acct + "." : ""}${e}`, Vt = (e) => typeof e == "object" && e !== null && !Array.isArray(e), Ut = (e, t, a, n) => {
     let o = typeof e == "number" && Number.isFinite(e) ? Math.floor(e) : n;
     return Math.max(t, Math.min(a, o));
   }, es = (e, t, a, n) => {
@@ -10092,6 +10227,7 @@ Error generating stack: ` + n.message + `
     let R = {};
     if (Vt(e.kills)) for (let [M, T] of Object.entries(e.kills)) oo(M) && (R[M] = Ut(T, 0, 1e9, 0));
     let w = { name: t, line: e.line, tier: a, level: n, exp: n >= Gr ? 0 : Ut(e.exp, 0, tr(n) - 1, 0), jobLevel: o, jobExp: Ut(e.jobExp, 0, 1e7, 0), statPoints: Ut(e.statPoints, 0, 9999, 0), stats: r, hp: es(e.hp, 1, 1e6, 1), mp: es(e.mp, 0, 1e6, 0), silver: Ut(e.silver, 0, 1e9, 0), inventory: s, equipment: c, quests: f, kills: R, playTimeMs: Ut(e.playTimeMs, 0, 1e12, 0), refine: m, visited: p, found: h, skillPoints: y, skillLevels: g, sockets: k, cards: v, dye: Number.isInteger(e.dye) && e.dye >= 0 && e.dye <= 16777215 ? e.dye : 0 };
+    e.gender === "f" && (w.gender = "f");
     if (Vt(e.style)) {
       let M = {};
       (e.style.hairStyle === "short" || e.style.hairStyle === "long" || e.style.hairStyle === "bald") && (M.hairStyle = e.style.hairStyle), Number.isInteger(e.style.hairColor) && e.style.hairColor >= 0 && e.style.hairColor <= 16777215 && (M.hairColor = e.style.hairColor), (M.hairStyle || M.hairColor !== void 0) && (w.style = M);
@@ -10230,10 +10366,10 @@ Error generating stack: ` + n.message + `
     closeSettings() {
       this.panel = this.screen === "playing" ? "pause" : "none", this.refresh();
     }
-    newGame(t, a, n) {
+    newGame(t, a, n, g) {
       let o;
       try {
-        o = Wy(t, a);
+        o = Wy(t, a), g === "f" && (o.gender = "f");
       } catch (r) {
         return { ok: false, error: r instanceof Error ? r.message : "Dados inv\xE1lidos." };
       }
@@ -10886,12 +11022,68 @@ Error generating stack: ` + n.message + `
       m("register");
     }, children: "Criar conta e entrar" }), (0, le.jsx)("button", { className: "btn", type: "button", onClick: e, disabled: c, children: "Voltar" }), f && (0, le.jsx)("p", { className: "error", role: "alert", children: f }), (0, le.jsx)("p", { className: "muted", children: "Servidor de teste: fatia vertical (sem NPCs, quests, itens ou habilidades online ainda)." })] });
   }
+  function authHash(e, t) {
+    let a = e + "|" + t + "|eldvar";
+    try {
+      if (window.crypto?.subtle) return window.crypto.subtle.digest("SHA-256", new TextEncoder().encode(a)).then((n) => Array.from(new Uint8Array(n)).map((o) => o.toString(16).padStart(2, "0")).join(""));
+    } catch {
+    }
+    let n = 2166136261, o = 5381;
+    for (let r = 0; r < a.length; r++) n = Math.imul(n ^ a.charCodeAt(r), 16777619) >>> 0, o = (o * 33 ^ a.charCodeAt(r)) >>> 0;
+    return Promise.resolve("f" + n.toString(16) + o.toString(16));
+  }
+  function authAccts() {
+    try {
+      return JSON.parse(window.localStorage.getItem("eldvar.accounts") || "{}") || {};
+    } catch {
+      return {};
+    }
+  }
+  function AuthScreen({ onDone }) {
+    let [mode, setMode] = (0, lo.useState)("login"), [em, setEm] = (0, lo.useState)(""), [pw, setPw] = (0, lo.useState)(""), [pw2, setPw2] = (0, lo.useState)(""), [err, setErr] = (0, lo.useState)(null), [busy, setBusy] = (0, lo.useState)(false), [show, setShow] = (0, lo.useState)(false);
+    let go = async (ev) => {
+      ev.preventDefault();
+      let email = em.trim().toLowerCase();
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) return setErr("Digite um e-mail v\xE1lido.");
+      if (pw.length < 6) return setErr("A senha precisa ter pelo menos 6 caracteres.");
+      if (mode === "register" && pw !== pw2) return setErr("As senhas n\xE3o conferem.");
+      setBusy(true), setErr(null);
+      let acc = authAccts(), h = await authHash(email, pw);
+      if (mode === "register") {
+        if (acc[email]) return setBusy(false), setErr("Este e-mail j\xE1 est\xE1 cadastrado. Entre com a senha.");
+        let first = Object.keys(acc).length === 0;
+        acc[email] = { h };
+        try {
+          window.localStorage.setItem("eldvar.accounts", JSON.stringify(acc));
+          if (first) for (let k = 1; k <= 3; k++) {
+            let old = window.localStorage.getItem("eldvar.save." + k);
+            old && window.localStorage.setItem("eldvar.save." + email + "." + k, old);
+          }
+        } catch {
+          return setBusy(false), setErr("N\xE3o foi poss\xEDvel salvar a conta neste navegador.");
+        }
+      } else if (!acc[email] || acc[email].h !== h) return setBusy(false), setErr("E-mail ou senha incorretos.");
+      try {
+        window.localStorage.setItem("eldvar.session", email);
+      } catch {
+      }
+      window.__acct = email, setBusy(false), onDone(email);
+    };
+    return (0, le.jsxs)("main", { className: "title", children: [(0, le.jsx)("div", { className: "title-bg", "aria-hidden": "true" }), (0, le.jsxs)("div", { className: "title-card", children: [(0, le.jsx)("h1", { className: "logo", children: "ELDVAR" }), (0, le.jsx)("p", { className: "subtitle", children: "As Cr\xF4nicas do Fim" }), (0, le.jsxs)("div", { className: "auth-tabs", role: "tablist", children: [(0, le.jsx)("button", { role: "tab", className: mode === "login" ? "on" : "", onClick: () => (setMode("login"), setErr(null)), children: "Entrar" }), (0, le.jsx)("button", { role: "tab", className: mode === "register" ? "on" : "", onClick: () => (setMode("register"), setErr(null)), children: "Criar conta" })] }), (0, le.jsxs)("form", { className: "menu auth-form", onSubmit: go, children: [(0, le.jsxs)("label", { className: "field", children: [(0, le.jsx)("span", { children: "E-mail" }), (0, le.jsx)("input", { type: "email", value: em, autoComplete: "email", autoFocus: true, onChange: (a) => setEm(a.target.value) })] }), (0, le.jsxs)("label", { className: "field", children: [(0, le.jsx)("span", { children: "Senha" }), (0, le.jsx)("input", { type: show ? "text" : "password", value: pw, autoComplete: mode === "login" ? "current-password" : "new-password", onChange: (a) => setPw(a.target.value) })] }), mode === "register" && (0, le.jsxs)("label", { className: "field", children: [(0, le.jsx)("span", { children: "Repita a senha" }), (0, le.jsx)("input", { type: show ? "text" : "password", value: pw2, autoComplete: "new-password", onChange: (a) => setPw2(a.target.value) })] }), (0, le.jsxs)("label", { className: "check auth-show", children: [(0, le.jsx)("input", { type: "checkbox", checked: show, onChange: (a) => setShow(a.target.checked) }), " Mostrar senha"] }), err && (0, le.jsx)("p", { className: "error", role: "alert", children: err }), (0, le.jsx)("button", { className: "btn btn-primary", type: "submit", disabled: busy, children: mode === "login" ? "Entrar no jogo" : "Criar conta e jogar" }), (0, le.jsx)("p", { className: "muted auth-note", children: "A conta e o progresso ficam salvos neste navegador." })] })] })] });
+  }
   function Tv() {
-    let e = ge(), [t, a] = (0, lo.useState)("menu"), [n, o] = (0, lo.useState)(null), r = e.slots.filter(Boolean).sort((s, l) => (l?.savedAt ?? 0) - (s?.savedAt ?? 0))[0], i = (s) => {
+    let e = ge(), [t, a] = (0, lo.useState)("menu"), [n, o] = (0, lo.useState)(null), [acct, setAcct] = (0, lo.useState)(window.__acct || ""), r = e.slots.filter(Boolean).sort((s, l) => (l?.savedAt ?? 0) - (s?.savedAt ?? 0))[0], i = (s) => {
       let l = j.loadGame(s);
       l.ok || o(l.error ?? "N\xE3o foi poss\xEDvel carregar.");
     };
-    return (0, le.jsxs)("main", { className: "title", children: [(0, le.jsx)("div", { className: "title-bg", "aria-hidden": "true" }), (0, le.jsxs)("div", { className: "title-card", children: [(0, le.jsx)("div", { className: "runes", "aria-hidden": "true", children: _v }), (0, le.jsx)("h1", { className: "logo", children: "ELDVAR" }), (0, le.jsx)("p", { className: "subtitle", children: "As Cr\xF4nicas do Fim" }), t === "menu" && (0, le.jsxs)("nav", { className: "menu", "aria-label": "Menu principal", children: [r && (0, le.jsxs)("button", { className: "btn btn-primary", onClick: () => i(r.slot), children: ["Continuar \xB7 ", r.name] }), (0, le.jsx)("button", { className: "btn", onClick: () => j.goCreate(), children: "Novo jogo" }), (0, le.jsx)("button", { className: "btn", onClick: () => a("online"), children: "Jogar online (multiplayer)" }), (0, le.jsx)("button", { className: "btn", onClick: () => a("load"), disabled: !r, children: "Carregar jogo" }), (0, le.jsx)("button", { className: "btn", onClick: () => j.openSettings("title"), children: "Configura\xE7\xF5es" }), (0, le.jsx)("button", { className: "btn", onClick: () => a("about"), children: "Sobre" })] }), t === "online" && (0, le.jsx)(OM, { onBack: () => a("menu") }), t === "load" && (0, le.jsxs)("div", { className: "menu", children: [e.slots.map((s, l) => (0, le.jsxs)(l0, { slot: l + 1, info: s, children: [s && (0, le.jsx)("button", { className: "btn btn-small btn-primary", onClick: () => i(l + 1), children: "Jogar" }), s && (0, le.jsx)("button", { className: "btn btn-small", onClick: () => {
+    if (!acct && !/[?&]debug/.test(window.location.search)) return (0, le.jsx)(AuthScreen, { onDone: (a2) => (j.refresh(), setAcct(a2)) });
+    return (0, le.jsxs)("main", { className: "title", children: [(0, le.jsx)("div", { className: "title-bg", "aria-hidden": "true" }), (0, le.jsxs)("div", { className: "title-card", children: [(0, le.jsx)("div", { className: "runes", "aria-hidden": "true", children: _v }), (0, le.jsx)("h1", { className: "logo", children: "ELDVAR" }), (0, le.jsx)("p", { className: "subtitle", children: "As Cr\xF4nicas do Fim" }), acct && (0, le.jsxs)("p", { className: "acct-line", children: ["Conta: ", acct, " \xB7 ", (0, le.jsx)("button", { className: "linkbtn", onClick: () => {
+      try {
+        window.localStorage.removeItem("eldvar.session");
+      } catch {
+      }
+      window.__acct = "", j.refresh(), setAcct("");
+    }, children: "Sair" })] }), t === "menu" && (0, le.jsxs)("nav", { className: "menu", "aria-label": "Menu principal", children: [r && (0, le.jsxs)("button", { className: "btn btn-primary", onClick: () => i(r.slot), children: ["Continuar \xB7 ", r.name] }), (0, le.jsx)("button", { className: "btn", onClick: () => j.goCreate(), children: "Novo jogo" }), (0, le.jsx)("button", { className: "btn", onClick: () => a("online"), children: "Jogar online (multiplayer)" }), (0, le.jsx)("button", { className: "btn", onClick: () => a("load"), disabled: !r, children: "Carregar jogo" }), (0, le.jsx)("button", { className: "btn", onClick: () => j.openSettings("title"), children: "Configura\xE7\xF5es" }), (0, le.jsx)("button", { className: "btn", onClick: () => a("about"), children: "Sobre" })] }), t === "online" && (0, le.jsx)(OM, { onBack: () => a("menu") }), t === "load" && (0, le.jsxs)("div", { className: "menu", children: [e.slots.map((s, l) => (0, le.jsxs)(l0, { slot: l + 1, info: s, children: [s && (0, le.jsx)("button", { className: "btn btn-small btn-primary", onClick: () => i(l + 1), children: "Jogar" }), s && (0, le.jsx)("button", { className: "btn btn-small", onClick: () => {
       window.confirm(`Apagar o slot ${l + 1}? Isso n\xE3o pode ser desfeito.`) && j.removeSlot(l + 1);
     }, children: "Apagar" })] }, l)), (0, le.jsx)("button", { className: "btn", onClick: () => a("menu"), children: "Voltar" })] }), t === "about" && (0, le.jsxs)("div", { className: "about", children: [(0, le.jsx)("p", { children: Yp.context }), (0, le.jsx)("p", { children: Yp.premise }), (0, le.jsxs)("p", { className: "notice", children: [(0, le.jsx)("strong", { children: "Modo local" }), " \xE9 para um jogador: o progresso fica salvo apenas neste navegador. ", (0, le.jsx)("strong", { children: "Modo online" }), " \xE9 uma fatia vertical: exige um servidor Nidavellir em execu\xE7\xE3o (veja o README) e ainda n\xE3o tem NPCs, quests, itens nem habilidades."] }), (0, le.jsx)("button", { className: "btn", onClick: () => a("menu"), children: "Voltar" })] }), e.notice && (0, le.jsx)("p", { className: "error", role: "alert", children: e.notice }), n && (0, le.jsx)("p", { className: "error", role: "alert", children: n }), !yv && (0, le.jsx)("p", { className: "error", role: "alert", children: "Armazenamento do navegador indispon\xEDvel: o progresso n\xE3o poder\xE1 ser salvo." }), (0, le.jsx)("p", { className: "footer", children: "Prot\xF3tipo jog\xE1vel \xB7 modo local (1 jogador) ou servidor de teste online" })] }), e.panel === "settings" && (0, le.jsx)(c0, {})] });
   }
@@ -11387,14 +11579,14 @@ Error generating stack: ` + n.message + `
   var Hl = oe(St(), 1);
   var ke = oe(ue(), 1), JM = { str: "FOR", agi: "AGI", vit: "VIT", int: "INT", dex: "DES", luk: "SOR" };
   function Yv() {
-    let e = ge(), [t, a] = (0, Hl.useState)(""), [n, o] = (0, Hl.useState)("berserker"), r = e.slots.findIndex((m) => m === null), [i, s] = (0, Hl.useState)(r >= 0 ? r + 1 : 1), [l, c] = (0, Hl.useState)(null), d = Ce[n], f = Nl(t), u = () => {
+    let e = ge(), [t, a] = (0, Hl.useState)(""), [n, o] = (0, Hl.useState)("berserker"), r = e.slots.findIndex((m) => m === null), [i, s] = (0, Hl.useState)(r >= 0 ? r + 1 : 1), [gd, setGd] = (0, Hl.useState)("m"), [l, c] = (0, Hl.useState)(null), d = Ce[n], f = Nl(t), u = () => {
       if (e.slots[i - 1] && !window.confirm(`O slot ${i} j\xE1 tem um personagem. Substituir?`)) return;
-      let m = j.newGame(t, n, i);
+      let m = j.newGame(t, n, i, gd);
       m.ok || c(m.error ?? "N\xE3o foi poss\xEDvel criar o personagem.");
     };
     return (0, ke.jsx)("main", { className: "create", children: (0, ke.jsxs)("div", { className: "create-card", children: [(0, ke.jsx)("h1", { children: "Despertar" }), (0, ke.jsx)("p", { className: "muted", children: "As runas em sua pele despertaram. Quem \xE9 voc\xEA?" }), (0, ke.jsxs)("label", { className: "field", children: [(0, ke.jsx)("span", { children: "Nome (2 a 16 caracteres)" }), (0, ke.jsx)("input", { type: "text", value: t, maxLength: 16, autoFocus: true, onChange: (m) => {
       a(m.target.value), c(null);
-    }, placeholder: "Ex.: Ragnhild" })] }), (0, ke.jsx)("div", { className: "class-grid", role: "radiogroup", "aria-label": "Classe inicial", children: Pr.map((m) => {
+    }, placeholder: "Ex.: Ragnhild" })] }), (0, ke.jsxs)("div", { className: "gender-pick", role: "radiogroup", "aria-label": "Sexo", children: [(0, ke.jsx)("span", { children: "Sexo" }), [["m", "\u2642 Masculino"], ["f", "\u2640 Feminino"]].map(([gv, gl]) => (0, ke.jsx)("button", { type: "button", role: "radio", "aria-checked": gd === gv, className: `gbtn${gd === gv ? " selected" : ""}`, onClick: () => setGd(gv), children: gl }, gv))] }), (0, ke.jsx)("div", { className: "class-grid", role: "radiogroup", "aria-label": "Classe inicial", children: Pr.map((m) => {
       let p = Ce[m];
       return (0, ke.jsxs)("button", { role: "radio", "aria-checked": m === n, className: `class-card${m === n ? " selected" : ""}`, onClick: () => o(m), children: [(0, ke.jsx)(Uv, { line: m, size: 44 }), (0, ke.jsx)("strong", { children: p.names[1] }), (0, ke.jsx)("small", { children: p.role })] }, m);
     }) }), (0, ke.jsxs)("section", { className: "class-detail", children: [(0, ke.jsxs)("h3", { children: [d.names[1], " ", (0, ke.jsxs)("small", { className: "muted", children: ["\u2192 ", d.names[2]] })] }), (0, ke.jsx)("p", { children: d.desc }), (0, ke.jsx)("ul", { className: "stat-preview", children: yn.map((m) => (0, ke.jsxs)("li", { children: [(0, ke.jsx)("span", { children: JM[m] }), (0, ke.jsx)("div", { className: "mini-bar", children: (0, ke.jsx)("i", { style: { width: `${Math.min(100, d.base[m] * 10)}%` } }) }), (0, ke.jsx)("b", { children: d.base[m] })] }, m)) }), (0, ke.jsxs)("p", { className: "muted", children: ["Habilidades iniciais: ", (0, ke.jsx)("b", { children: d.skills[0].name }), " e ", (0, ke.jsx)("b", { children: d.skills[1].name }), ". Na evolu\xE7\xE3o: ", (0, ke.jsx)("b", { children: d.skills[2].name }), " e ", (0, ke.jsx)("b", { children: d.skills[3].name }), "."] })] }), (0, ke.jsxs)("fieldset", { className: "slots", children: [(0, ke.jsx)("legend", { children: "Onde salvar" }), e.slots.map((m, p) => (0, ke.jsxs)("label", { className: "slot-pick", children: [(0, ke.jsx)("input", { type: "radio", name: "slot", checked: i === p + 1, onChange: () => s(p + 1) }), (0, ke.jsx)(l0, { slot: p + 1, info: m })] }, p))] }), l && (0, ke.jsx)("p", { className: "error", role: "alert", children: l }), (0, ke.jsxs)("div", { className: "row", children: [(0, ke.jsx)("button", { className: "btn", onClick: () => j.goTitle(), children: "Voltar" }), (0, ke.jsx)("button", { className: "btn btn-primary", disabled: !f, onClick: u, children: "Come\xE7ar a jornada" })] })] }) });
@@ -12776,7 +12968,7 @@ void main() {
       let Te = ne.mul(A.T(0, -0.22, 0.01));
       L(a, Te, 0.092, 0.092, 0.092, u, { seg: 10 }), y[C] = ee.mul(A.T(0, -0.27, 0)).mul(ls(-B.elbow)), v[C] = B.th - B.elbow;
     }
-    let M = n ? 1.6 : 1.82, T = n ? 0.5 : 1, z = f.mul(A.T(0, M, 0)).mul(A.RX(t.lvl ? c.lean * -0.4 : 0)).mul(new A([T, 0, 0, 0, T, 0, 0, 0, T])), I = (C, B, ee) => z.mul(A.T(C, B, ee));
+    let M = n ? 1.6 : 1.82, T = n ? 0.5 : 1, z = f.mul(A.T(0, M, 0)).mul(A.RX(t.lvl ? c.lean * -0.4 : 0)).mul(new A(e.slim ? [T * 0.9, 0, 0, 0, T * 0.97, 0, 0, 0, T * 0.9] : [T, 0, 0, 0, T, 0, 0, 0, T])), I = (C, B, ee) => z.mul(A.T(C, B, ee));
     L(a, I(0, 0, 0), 0.5, 0.47, 0.48, u, { seg: 20, ring: 15, mat: _n }), L(a, I(0, -0.43, 0.02), 0.2, 0.1, 0.18, u, { seg: 10, ring: 6 });
     for (let C of [-1, 1]) e.pointyEars ? F(a, I(C * 0.47, 0.02, 0).mul(A.RZ(-C * (Math.PI / 2 + 0.25))), 0.07, 0, 0.34, u, { seg: 8 }) : L(a, I(C * 0.49, -0.04, -0.01), 0.07, 0.1, 0.07, u, { seg: 8 });
     let J = e.eye ?? 2365488, D = e.eye !== void 0;
@@ -13559,15 +13751,15 @@ void main() {
   }
   var da = /* @__PURE__ */ new Map(), ea = 8, cS = { axe: "axe", sword: "sword", bow: "bow", staff: "staff", spear: "spear", dagger: "dagger" };
   function po(e) {
-    return `${e.base}@${e.hair ?? ""}|g:${e.gear ?? ""}|t:${e.top ?? ""}|m:${e.mid ?? ""}|l:${e.low ?? ""}|b:${e.bk ?? ""}|d:${e.dye ?? 0}${e.hs ? `|s:${e.hs}` : ""}${e.hc !== void 0 ? `|c:${e.hc}` : ""}`;
+    return `${e.base}@${e.hair ?? ""}|g:${e.gear ?? ""}|t:${e.top ?? ""}|m:${e.mid ?? ""}|l:${e.low ?? ""}|b:${e.bk ?? ""}${e.sx ? "|x:f" : ""}|d:${e.dye ?? 0}${e.hs ? `|s:${e.hs}` : ""}${e.hc !== void 0 ? `|c:${e.hc}` : ""}`;
   }
   function Yl(e) {
     let [t, ...a] = e.split("|"), [n, o] = t.split("@"), r = (i) => a.find((s) => s.startsWith(i + ":"))?.slice(i.length + 1) ?? "";
-    return { base: n, hair: o ? Number(o) : void 0, gear: r("g") || void 0, top: r("t") || void 0, mid: r("m") || void 0, low: r("l") || void 0, bk: r("b") || void 0, dye: Number(r("d")) || 0, hs: r("s") || void 0, hc: r("c") ? Number(r("c")) : void 0 };
+    return { base: n, hair: o ? Number(o) : void 0, gear: r("g") || void 0, top: r("t") || void 0, mid: r("m") || void 0, low: r("l") || void 0, bk: r("b") || void 0, sx: r("x") || void 0, dye: Number(r("d")) || 0, hs: r("s") || void 0, hc: r("c") ? Number(r("c")) : void 0 };
   }
   function cs(e) {
     let t = e.equipment.weapon ? $(e.equipment.weapon)?.weaponType : void 0, a = (n) => n ? $(n)?.headStyle : void 0;
-    return { base: e.line, hair: kh(e.name), gear: t ? e.line === "skald" && t === "staff" ? "lyre" : e.line === "escudeiro" && t === "sword" ? "swordshield" : cS[t] : "none", top: a(e.equipment.headTop), mid: a(e.equipment.headMid), low: a(e.equipment.headLow), bk: e.equipment.back ? $(e.equipment.back)?.backStyle : void 0, dye: e.dye ?? 0, hs: e.style?.hairStyle, hc: e.style?.hairColor };
+    return { base: e.line, hair: kh(e.name), gear: t ? e.line === "skald" && t === "staff" ? "lyre" : e.line === "escudeiro" && t === "sword" ? "swordshield" : cS[t] : "none", top: a(e.equipment.headTop), mid: a(e.equipment.headMid), low: a(e.equipment.headLow), bk: e.equipment.back ? $(e.equipment.back)?.backStyle : void 0, sx: e.gender === "f" ? "f" : void 0, dye: e.dye ?? 0, hs: e.style?.hairStyle, hc: e.style?.hairColor };
   }
   function R4(e) {
     let t = { ...I0[e.base] ?? I0.berserker };
@@ -13575,7 +13767,7 @@ void main() {
       t.head = "none", delete t.cape, delete t.quiver;
     }
     if (e.mid && e.mid.startsWith("eye_")) { t.eye = EYEC[e.mid]; e = { ...e, mid: void 0 }; }
-    return e.hair !== void 0 && !Number.isNaN(e.hair) && (t.hair = xh[e.hair % xh.length]), e.hs && (t.hairStyle = e.hs), e.hc !== void 0 && !Number.isNaN(e.hc) && (t.hair = e.hc), e.gear && (t.gear = e.gear), e.top && (t.head = e.top), e.mid && (t.mid = e.mid), e.low && (t.low = e.low), e.bk && BACKS[e.bk] && (BACKS[e.bk].type === "cape" ? t.cape = BACKS[e.bk].c : BACKS[e.bk].type === "quiver" ? t.quiver = true : t.wingsBack = [BACKS[e.bk].c, BACKS[e.bk].c2]), t;
+    return e.hair !== void 0 && !Number.isNaN(e.hair) && (t.hair = xh[e.hair % xh.length]), e.hs && (t.hairStyle = e.hs), e.hc !== void 0 && !Number.isNaN(e.hc) && (t.hair = e.hc), e.gear && (t.gear = e.gear), e.top && (t.head = e.top), e.mid && (t.mid = e.mid), e.low && (t.low = e.low), e.sx === "f" && (t.slim = true, e.hs || (t.hairStyle = "long")), e.bk && BACKS[e.bk] && (BACKS[e.bk].type === "cape" ? t.cape = BACKS[e.bk].c : BACKS[e.bk].type === "quiver" ? t.quiver = true : t.wingsBack = [BACKS[e.bk].c, BACKS[e.bk].c2]), t;
   }
   var z0 = /* @__PURE__ */ new Map(), D0 = /* @__PURE__ */ new Map(), Xl = class {
     constructor(t) {
@@ -14522,6 +14714,7 @@ void main() {
       r.fillStyle = "#ffffff", r.strokeStyle = "#1d2a44", r.lineWidth = 2, r.lineJoin = "round", r.beginPath(), r.roundRect(a - i / 2, n - s, i, s, 8), r.fill(), r.stroke(), r.beginPath(), r.moveTo(a - 5, n - 1), r.lineTo(a, n + 7), r.lineTo(a + 5, n - 1), r.closePath(), r.fillStyle = "#ffffff", r.fill(), r.stroke(), r.fillStyle = "#ffffff", r.fillRect(a - 4, n - 3, 8, 3), r.fillStyle = t === "\u2665" ? "#e0305a" : "#1d2a44", r.textAlign = "center", r.textBaseline = "middle", r.fillText(t, a, n - s / 2 + 1), r.restore();
     }
     bar(t, a, n, o, r) {
+      return;
       let i = this.ctx;
       i.fillStyle = "rgba(8,6,4,0.85)", i.beginPath(), i.roundRect(t - n / 2 - 1.2, a - 3.2, n + 2.4, 6.4, 3), i.fill();
       let s = i.createLinearGradient(0, a - 2.4, 0, a + 2.4);
