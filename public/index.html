@@ -7591,6 +7591,7 @@ Error generating stack: ` + n.message + `
     let r = o[1].toLowerCase(), i = o[2].trim(), s = (l, c = "", d) => [{ channel: "sistema", text: c, command: l, arg: d }];
     if (r === "sit" || r === "sentar") return s("sit");
     if (r === "stand" || r === "levantar") return s("stand");
+    if (r === "boss" || r === "jormungandr") return WB.forceIn(25), [{ channel: "sistema", text: "J\xF6rmungandr desperta em 25 segundos... (modo teste)" }];
     if (r === "where" || r === "onde") return s("where");
     if (r === "who" || r === "quem") return s("who");
     if (r === "exp" || r === "xp") return s("exp");
