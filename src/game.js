@@ -10037,7 +10037,7 @@ Error generating stack: ` + n.message + `
       let M = [...new Set(e.feitos.filter((T) => typeof T == "string" && !!qp[T]))];
       M.length && (w.feitos = M);
     }
-    typeof e.checkpoint == "string" && en(e.checkpoint) && (w.checkpoint = e.checkpoint), Array.isArray(e.rqDone) && (w.rqDone = [...new Set(e.rqDone.filter((M) => typeof M == "string" && RQ.some((T) => T.id === M)))]);
+    typeof e.checkpoint == "string" && en(e.checkpoint) && (w.checkpoint = e.checkpoint), typeof e.guild == "string" && /^[\p{L}0-9 '-]{3,16}$/u.test(e.guild) && (w.guild = e.guild), Array.isArray(e.friends) && (w.friends = e.friends.filter((M) => typeof M == "string" && /^[\p{L}0-9 '-]{2,16}$/u.test(M)).slice(0, 50)), Array.isArray(e.rqDone) && (w.rqDone = [...new Set(e.rqDone.filter((M) => typeof M == "string" && RQ.some((T) => T.id === M)))]);
     return typeof e.title == "string" && zl(w).includes(e.title) && (w.title = e.title), Number.isInteger(e.daily) && e.daily >= 0 && e.daily < 1e7 && (w.daily = e.daily), typeof e.ammo == "string" && $(e.ammo)?.kind === "ammo" && (w.ammo = e.ammo), e.ammoGift === true && (w.ammoGift = true), no(w), w.hp < 1 && (w.hp = 1), w;
   }
   function SM(e, t, a, n) {
@@ -10354,6 +10354,7 @@ Error generating stack: ` + n.message + `
       let a = rqDo(this.ps, t);
       this.toast(a.msg, a.ok ? "good" : "bad"), a.ok && (a.gain && (a.gain.levels > 0 && this.toast(`N\xEDvel ${this.ps.level}!`, "good"), a.gain.jobLevels > 0 && this.toast(`N\xEDvel de classe ${this.ps.jobLevel}!`, "good")), this.pushLog(a.msg, "system", "good"), this.saveGameQuiet()), this.refresh();
     }
+    party = null;
     warpRespawn(t) {
       let a = en(t);
       if (!a || !this.ps || this.online) return;
@@ -10419,9 +10420,38 @@ Error generating stack: ` + n.message + `
       }
       this.useItemAt(n);
     }
+    socialCmd(t, a) {
+      let n = this.ps, o = (r, i = "info") => this.pushLog(r, "system", i), l = a.split(/\s+/), c = (l[0] ?? "").toLowerCase(), d = l.slice(1).join(" ").trim();
+      if (t === "guilda" || t === "guild") {
+        if (c === "criar" || c === "create") {
+          if (n.guild) return o(`Voc\xEA j\xE1 est\xE1 na guilda ${n.guild}. Use /guilda sair antes.`, "bad");
+          if (!/^[\p{L}0-9 '-]{3,16}$/u.test(d)) return o("Nome de guilda inv\xE1lido (3 a 16 letras ou n\xFAmeros). Ex.: /guilda criar Filhos de Odin", "bad");
+          if (n.level < 10) return o("Criar uma guilda exige n\xEDvel 10.", "bad");
+          if (n.silver < 500) return o("Criar uma guilda custa 500 Zens.", "bad");
+          n.silver -= 500, n.guild = d, this.pushLog(`Guilda ${d} fundada! Use /g mensagem para falar com a guilda.`, "guilda", "good"), this.announce(`[Global] ${n.name} fundou a guilda ${d}!`), this.saveGameQuiet();
+        } else if (c === "sair" || c === "leave") n.guild ? (this.pushLog(`Voc\xEA saiu da guilda ${n.guild}.`, "guilda"), delete n.guild, this.saveGameQuiet()) : o("Voc\xEA n\xE3o tem guilda.", "bad");
+        else n.guild ? o(`Guilda: ${n.guild}. Membros online: voc\xEA${this.online ? "" : " (modo local)"}. Comandos: /g msg, /guilda sair`) : o("Voc\xEA n\xE3o tem guilda. Use /guilda criar NOME (n\xEDvel 10, 500 Zens).");
+      } else if (t === "amigo" || t === "amigos") {
+        n.friends || (n.friends = []);
+        if (c === "add" || c === "adicionar") {
+          if (!/^[\p{L}0-9 '-]{2,16}$/u.test(d)) return o("Nome inv\xE1lido. Ex.: /amigo add Astrid", "bad");
+          n.friends.includes(d) ? o(`${d} j\xE1 est\xE1 na sua lista.`, "bad") : n.friends.length >= 50 ? o("Lista de amigos cheia (50).", "bad") : (n.friends.push(d), o(`${d} adicionado aos amigos.`, "good"), this.saveGameQuiet());
+        } else if (c === "remover" || c === "rem") {
+          let i = n.friends.indexOf(d);
+          i >= 0 ? (n.friends.splice(i, 1), o(`${d} removido.`), this.saveGameQuiet()) : o("Amigo n\xE3o encontrado.", "bad");
+        } else o(n.friends.length ? `Amigos (${n.friends.length}): ${n.friends.join(", ")}${this.world?.others?.length ? "" : ". Nenhum online neste mapa."}` : "Sem amigos ainda. Use /amigo add NOME.");
+      } else if (t === "grupo" || t === "party") {
+        c === "criar" || c === "create" ? this.party ? o("Voc\xEA j\xE1 est\xE1 num grupo.", "bad") : (this.party = { name: d || `Grupo de ${n.name}` }, this.pushLog(`Grupo "${this.party.name}" criado. Use /p mensagem para falar.`, "grupo", "good")) : c === "sair" || c === "leave" ? this.party ? (this.pushLog("Voc\xEA saiu do grupo.", "grupo"), this.party = null) : o("Voc\xEA n\xE3o est\xE1 num grupo.", "bad") : o(this.party ? `Grupo: ${this.party.name}. Comandos: /p msg, /grupo sair` : "Sem grupo. Use /grupo criar [nome].");
+      }
+    }
     sendChat(t) {
       if (!this.ps) return;
-      let a = zx(t, { self: this.ps.name, players: this.world?.others.map((n) => n.name) ?? [], inParty: false, inGuild: false });
+      let q = t.trim().match(/^\/(guilda|guild|amigo|amigos|grupo|party)\b\s*(.*)$/i);
+      if (q) {
+        this.socialCmd(q[1].toLowerCase(), q[2].trim()), this.refresh();
+        return;
+      }
+      let a = zx(t, { self: this.ps.name, players: this.world?.others.map((n) => n.name) ?? [], inParty: !!this.party, inGuild: !!this.ps.guild });
       for (let n of a) !n.command && n.channel !== "sistema" && n.channel !== "sussurro" && this.world?.setSpeech(n.text.replace(/^[^:]*:\s*/, ""));
       for (let n of a) n.command && this.runChatCommand(n.command, n.arg) || (n.command === "craft" ? (this.pushLog(n.text, "system", "info"), n.arg && (this.world?.craftPotion(n.arg), this.saveGameQuiet())) : n.command === "refresh" ? (this.pushLog(n.text, "system", "info"), this.pushLog(this.world?.refresh() ?? "", "system", "info")) : this.pushLog(n.text, n.channel === "sistema" ? "system" : n.channel, n.channel === "sistema" ? "bad" : "info"));
       this.refresh();
