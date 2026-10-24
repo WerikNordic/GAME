@@ -25,3 +25,7 @@
 - Cidades com layouts diferentes (espelhamento, praças, muralhas, ruas e bairros temáticos), mesmas dimensões.
 - Painéis (inventário, atributos, habilidades, etc.) compactos e organizados.
 - Barra de vida sobre a cabeça removida.
+
+## v57
+- Contas na nuvem (Supabase): cadastro com e-mail e senha, aprovação pelo administrador (1ª conta = admin), progresso salvo na conta e disponível em qualquer aparelho.
+- Menu "Administração" para aprovar/bloquear contas.

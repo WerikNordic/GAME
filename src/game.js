@@ -10045,9 +10045,9 @@ Error generating stack: ` + n.message + `
     }
   }
   try {
-    window.__acct = window.localStorage.getItem("eldvar.session") || "";
+    window.__acct = window.localStorage.getItem("eldvar.session") || "", window.__tok = window.localStorage.getItem("eldvar.token") || "";
   } catch {
-    window.__acct = "";
+    window.__acct = "", window.__tok = "";
   }
   var Gp = 1, jp = 3, dv = "eldvar.settings.v1", Bp = (e) => `eldvar.save.${window.__acct ? window.__acct + "." : ""}${e}`, Vt = (e) => typeof e == "object" && e !== null && !Array.isArray(e), Ut = (e, t, a, n) => {
     let o = typeof e == "number" && Number.isFinite(e) ? Math.floor(e) : n;
@@ -10755,7 +10755,40 @@ Error generating stack: ` + n.message + `
       return null;
     }
   }
-  var yv = xv() !== null, j = new o0(xv());
+  var SBU = "https://emnpakqfvargtvyffixy.supabase.co", SBK = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVtbnBha3FmdmFyZ3R2eWZmaXh5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI4NzA4MDMsImV4cCI6MjEwODQ0NjgwM30.l6568JTHkZcbHQbU9zP1UOqLgNg6w_6K8s1TOrHHZno";
+  async function sbRpc(fn, args) {
+    try {
+      let r = await fetch(SBU + "/rest/v1/rpc/" + fn, { method: "POST", headers: { apikey: SBK, Authorization: "Bearer " + SBK, "Content-Type": "application/json" }, body: JSON.stringify(args || {}) });
+      return await r.json();
+    } catch {
+      return { ok: false, error: "Sem conex\xE3o com o servidor. Verifique sua internet." };
+    }
+  }
+  function cloudStore(ls) {
+    if (!ls) return ls;
+    let timers = {}, re = () => new RegExp("^eldvar\\.save\\." + (window.__acct || "").replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "\\.(\\d)$");
+    return {
+      getItem: (k) => ls.getItem(k),
+      key: (i) => ls.key(i),
+      get length() {
+        return ls.length;
+      },
+      clear: () => ls.clear(),
+      setItem: (k, v) => {
+        ls.setItem(k, v);
+        let m = window.__tok && window.__acct ? re().exec(k) : null;
+        if (m) {
+          clearTimeout(timers[m[1]]), timers[m[1]] = setTimeout(() => sbRpc("eld_put_save", { p_token: window.__tok, p_slot: +m[1], p_data: ls.getItem(k) ?? v }), 1500);
+        }
+      },
+      removeItem: (k) => {
+        ls.removeItem(k);
+        let m = window.__tok && window.__acct ? re().exec(k) : null;
+        m && (clearTimeout(timers[m[1]]), sbRpc("eld_del_save", { p_token: window.__tok, p_slot: +m[1] }));
+      }
+    };
+  }
+  var yv = xv() !== null, j = new o0(cloudStore(xv()));
   function ge() {
     return (0, bv.useSyncExternalStore)(j.subscribe, j.getSnapshot, j.getSnapshot);
   }
@@ -10901,68 +10934,89 @@ Error generating stack: ` + n.message + `
       m("register");
     }, children: "Criar conta e entrar" }), (0, le.jsx)("button", { className: "btn", type: "button", onClick: e, disabled: c, children: "Voltar" }), f && (0, le.jsx)("p", { className: "error", role: "alert", children: f }), (0, le.jsx)("p", { className: "muted", children: "Servidor de teste: fatia vertical (sem NPCs, quests, itens ou habilidades online ainda)." })] });
   }
-  function authHash(e, t) {
-    let a = e + "|" + t + "|eldvar";
-    try {
-      if (window.crypto?.subtle) return window.crypto.subtle.digest("SHA-256", new TextEncoder().encode(a)).then((n) => Array.from(new Uint8Array(n)).map((o) => o.toString(16).padStart(2, "0")).join(""));
-    } catch {
+  async function authPull(email, tok) {
+    let r = await sbRpc("eld_get_saves", { p_token: tok }), had = false;
+    if (r && r.ok && Array.isArray(r.saves)) for (let x of r.saves) {
+      had = true;
+      try {
+        window.localStorage.setItem("eldvar.save." + email + "." + x.slot, x.data);
+      } catch {
+      }
     }
-    let n = 2166136261, o = 5381;
-    for (let r = 0; r < a.length; r++) n = Math.imul(n ^ a.charCodeAt(r), 16777619) >>> 0, o = (o * 33 ^ a.charCodeAt(r)) >>> 0;
-    return Promise.resolve("f" + n.toString(16) + o.toString(16));
-  }
-  function authAccts() {
-    try {
-      return JSON.parse(window.localStorage.getItem("eldvar.accounts") || "{}") || {};
-    } catch {
-      return {};
+    if (!had) for (let k = 1; k <= 3; k++) {
+      try {
+        let old = window.localStorage.getItem("eldvar.save." + k) ?? window.localStorage.getItem("eldvar.save." + email + "." + k);
+        old && (window.localStorage.setItem("eldvar.save." + email + "." + k, old), sbRpc("eld_put_save", { p_token: tok, p_slot: k, p_data: old }));
+      } catch {
+      }
     }
   }
   function AuthScreen({ onDone }) {
-    let [mode, setMode] = (0, lo.useState)("login"), [em, setEm] = (0, lo.useState)(""), [pw, setPw] = (0, lo.useState)(""), [pw2, setPw2] = (0, lo.useState)(""), [err, setErr] = (0, lo.useState)(null), [busy, setBusy] = (0, lo.useState)(false), [show, setShow] = (0, lo.useState)(false);
+    let [mode, setMode] = (0, lo.useState)("login"), [em, setEm] = (0, lo.useState)(""), [pw, setPw] = (0, lo.useState)(""), [pw2, setPw2] = (0, lo.useState)(""), [err, setErr] = (0, lo.useState)(null), [ok, setOk] = (0, lo.useState)(null), [busy, setBusy] = (0, lo.useState)(false), [show, setShow] = (0, lo.useState)(false);
+    let doLogin = async (email) => {
+      let r = await sbRpc("eld_login", { p_email: email, p_pass: pw });
+      if (!r || !r.ok) return setBusy(false), setErr(r?.error ?? r?.message ?? "N\xE3o foi poss\xEDvel entrar.");
+      try {
+        window.localStorage.setItem("eldvar.session", r.email), window.localStorage.setItem("eldvar.token", r.token);
+      } catch {
+      }
+      window.__acct = r.email, window.__tok = r.token, window.__admin = !!r.admin, await authPull(r.email, r.token), setBusy(false), onDone(r.email, !!r.admin);
+    };
     let go = async (ev) => {
       ev.preventDefault();
       let email = em.trim().toLowerCase();
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) return setErr("Digite um e-mail v\xE1lido.");
       if (pw.length < 6) return setErr("A senha precisa ter pelo menos 6 caracteres.");
       if (mode === "register" && pw !== pw2) return setErr("As senhas n\xE3o conferem.");
-      setBusy(true), setErr(null);
-      let acc = authAccts(), h = await authHash(email, pw);
+      setBusy(true), setErr(null), setOk(null);
       if (mode === "register") {
-        if (acc[email]) return setBusy(false), setErr("Este e-mail j\xE1 est\xE1 cadastrado. Entre com a senha.");
-        let first = Object.keys(acc).length === 0;
-        acc[email] = { h };
-        try {
-          window.localStorage.setItem("eldvar.accounts", JSON.stringify(acc));
-          if (first) for (let k = 1; k <= 3; k++) {
-            let old = window.localStorage.getItem("eldvar.save." + k);
-            old && window.localStorage.setItem("eldvar.save." + email + "." + k, old);
-          }
-        } catch {
-          return setBusy(false), setErr("N\xE3o foi poss\xEDvel salvar a conta neste navegador.");
-        }
-      } else if (!acc[email] || acc[email].h !== h) return setBusy(false), setErr("E-mail ou senha incorretos.");
-      try {
-        window.localStorage.setItem("eldvar.session", email);
-      } catch {
+        let r = await sbRpc("eld_register", { p_email: email, p_pass: pw });
+        if (!r || !r.ok) return setBusy(false), setErr(r?.error ?? "N\xE3o foi poss\xEDvel criar a conta.");
+        if (r.status !== "approved") return setBusy(false), setOk("Conta criada! Agora aguarde o administrador aprovar seu acesso. Depois \xE9 s\xF3 entrar com seu e-mail e senha."), setMode("login"), setPw(""), setPw2("");
       }
-      window.__acct = email, setBusy(false), onDone(email);
+      await doLogin(email);
     };
-    return (0, le.jsxs)("main", { className: "title", children: [(0, le.jsx)("div", { className: "title-bg", "aria-hidden": "true" }), (0, le.jsxs)("div", { className: "title-card", children: [(0, le.jsx)("h1", { className: "logo", children: "ELDVAR" }), (0, le.jsx)("p", { className: "subtitle", children: "As Cr\xF4nicas do Fim" }), (0, le.jsxs)("div", { className: "auth-tabs", role: "tablist", children: [(0, le.jsx)("button", { role: "tab", className: mode === "login" ? "on" : "", onClick: () => (setMode("login"), setErr(null)), children: "Entrar" }), (0, le.jsx)("button", { role: "tab", className: mode === "register" ? "on" : "", onClick: () => (setMode("register"), setErr(null)), children: "Criar conta" })] }), (0, le.jsxs)("form", { className: "menu auth-form", onSubmit: go, children: [(0, le.jsxs)("label", { className: "field", children: [(0, le.jsx)("span", { children: "E-mail" }), (0, le.jsx)("input", { type: "email", value: em, autoComplete: "email", autoFocus: true, onChange: (a) => setEm(a.target.value) })] }), (0, le.jsxs)("label", { className: "field", children: [(0, le.jsx)("span", { children: "Senha" }), (0, le.jsx)("input", { type: show ? "text" : "password", value: pw, autoComplete: mode === "login" ? "current-password" : "new-password", onChange: (a) => setPw(a.target.value) })] }), mode === "register" && (0, le.jsxs)("label", { className: "field", children: [(0, le.jsx)("span", { children: "Repita a senha" }), (0, le.jsx)("input", { type: show ? "text" : "password", value: pw2, autoComplete: "new-password", onChange: (a) => setPw2(a.target.value) })] }), (0, le.jsxs)("label", { className: "check auth-show", children: [(0, le.jsx)("input", { type: "checkbox", checked: show, onChange: (a) => setShow(a.target.checked) }), " Mostrar senha"] }), err && (0, le.jsx)("p", { className: "error", role: "alert", children: err }), (0, le.jsx)("button", { className: "btn btn-primary", type: "submit", disabled: busy, children: mode === "login" ? "Entrar no jogo" : "Criar conta e jogar" }), (0, le.jsx)("p", { className: "muted auth-note", children: "A conta e o progresso ficam salvos neste navegador." })] })] })] });
+    return (0, le.jsxs)("main", { className: "title", children: [(0, le.jsx)("div", { className: "title-bg", "aria-hidden": "true" }), (0, le.jsxs)("div", { className: "title-card", children: [(0, le.jsx)("h1", { className: "logo", children: "ELDVAR" }), (0, le.jsx)("p", { className: "subtitle", children: "As Cr\xF4nicas do Fim" }), (0, le.jsxs)("div", { className: "auth-tabs", role: "tablist", children: [(0, le.jsx)("button", { role: "tab", className: mode === "login" ? "on" : "", onClick: () => (setMode("login"), setErr(null)), children: "Entrar" }), (0, le.jsx)("button", { role: "tab", className: mode === "register" ? "on" : "", onClick: () => (setMode("register"), setErr(null), setOk(null)), children: "Criar conta" })] }), (0, le.jsxs)("form", { className: "menu auth-form", onSubmit: go, children: [(0, le.jsxs)("label", { className: "field", children: [(0, le.jsx)("span", { children: "E-mail" }), (0, le.jsx)("input", { type: "email", value: em, autoComplete: "email", autoFocus: true, onChange: (a) => setEm(a.target.value) })] }), (0, le.jsxs)("label", { className: "field", children: [(0, le.jsx)("span", { children: "Senha" }), (0, le.jsx)("input", { type: show ? "text" : "password", value: pw, autoComplete: mode === "login" ? "current-password" : "new-password", onChange: (a) => setPw(a.target.value) })] }), mode === "register" && (0, le.jsxs)("label", { className: "field", children: [(0, le.jsx)("span", { children: "Repita a senha" }), (0, le.jsx)("input", { type: show ? "text" : "password", value: pw2, autoComplete: "new-password", onChange: (a) => setPw2(a.target.value) })] }), (0, le.jsxs)("label", { className: "check auth-show", children: [(0, le.jsx)("input", { type: "checkbox", checked: show, onChange: (a) => setShow(a.target.checked) }), " Mostrar senha"] }), ok && (0, le.jsx)("p", { className: "auth-ok", role: "status", children: ok }), err && (0, le.jsx)("p", { className: "error", role: "alert", children: err }), (0, le.jsx)("button", { className: "btn btn-primary", type: "submit", disabled: busy, children: busy ? "Aguarde\u2026" : mode === "login" ? "Entrar no jogo" : "Criar conta" }), (0, le.jsx)("p", { className: "muted auth-note", children: "Seu progresso fica salvo na sua conta, em qualquer aparelho." })] })] })] });
+  }
+  function AdminPanel({ onBack }) {
+    let [rows, setRows] = (0, lo.useState)(null), [msg, setMsg] = (0, lo.useState)(null), load = async () => {
+      let r = await sbRpc("eld_admin_list", { p_token: window.__tok });
+      r && r.ok ? setRows(r.accounts) : setMsg("N\xE3o foi poss\xEDvel carregar as contas.");
+    };
+    (0, lo.useEffect)(() => {
+      load();
+    }, []);
+    let setSt = async (id, st) => {
+      await sbRpc("eld_admin_set", { p_token: window.__tok, p_id: id, p_status: st }), load();
+    }, lab = { pending: "Aguardando", approved: "Aprovada", blocked: "Bloqueada" };
+    return (0, le.jsxs)("div", { className: "menu admin-list", children: [(0, le.jsx)("h3", { children: "Contas" }), msg && (0, le.jsx)("p", { className: "error", children: msg }), !rows && !msg && (0, le.jsx)("p", { className: "muted", children: "Carregando\u2026" }), rows && rows.length === 0 && (0, le.jsx)("p", { className: "muted", children: "Nenhuma conta." }), rows && rows.map((x) => (0, le.jsxs)("div", { className: `adm-row st-${x.status}`, children: [(0, le.jsxs)("div", { className: "adm-info", children: [(0, le.jsx)("b", { children: x.email }), x.admin ? " \u2605" : "", (0, le.jsx)("small", { children: `${lab[x.status]} \xB7 criada em ${new Date(x.created).toLocaleDateString("pt-BR")}` })] }), !x.admin && (0, le.jsxs)("div", { className: "adm-btns", children: [x.status !== "approved" && (0, le.jsx)("button", { className: "btn btn-small btn-primary", onClick: () => setSt(x.id, "approved"), children: "Aprovar" }), x.status !== "blocked" && (0, le.jsx)("button", { className: "btn btn-small", onClick: () => setSt(x.id, "blocked"), children: "Bloquear" })] })] }, x.id)), (0, le.jsx)("button", { className: "btn", onClick: load, children: "Atualizar" }), (0, le.jsx)("button", { className: "btn", onClick: onBack, children: "Voltar" })] });
   }
   function Tv() {
-    let e = ge(), [t, a] = (0, lo.useState)("menu"), [n, o] = (0, lo.useState)(null), [acct, setAcct] = (0, lo.useState)(window.__acct || ""), r = e.slots.filter(Boolean).sort((s, l) => (l?.savedAt ?? 0) - (s?.savedAt ?? 0))[0], i = (s) => {
+    let e = ge(), [t, a] = (0, lo.useState)("menu"), [n, o] = (0, lo.useState)(null), [acct, setAcct] = (0, lo.useState)(window.__acct || ""), [isAdm, setIsAdm] = (0, lo.useState)(!!window.__admin), r = e.slots.filter(Boolean).sort((s, l) => (l?.savedAt ?? 0) - (s?.savedAt ?? 0))[0], i = (s) => {
       let l = j.loadGame(s);
       l.ok || o(l.error ?? "N\xE3o foi poss\xEDvel carregar.");
     };
-    if (!acct && !/[?&]debug/.test(window.location.search)) return (0, le.jsx)(AuthScreen, { onDone: (a2) => (j.refresh(), setAcct(a2)) });
+    (0, lo.useEffect)(() => {
+      acct && window.__tok && sbRpc("eld_whoami", { p_token: window.__tok }).then((w) => {
+        if (w && w.ok) window.__admin = !!w.admin, setIsAdm(!!w.admin);
+        else if (w && w.ok === false && !w.error) {
+          try {
+            window.localStorage.removeItem("eldvar.session"), window.localStorage.removeItem("eldvar.token");
+          } catch {
+          }
+          window.__acct = "", window.__tok = "", j.refresh(), setAcct("");
+        }
+      });
+    }, [acct]);
+    if (!acct && !/[?&]debug/.test(window.location.search)) return (0, le.jsx)(AuthScreen, { onDone: (a2, ad) => (j.refresh(), setIsAdm(ad), setAcct(a2)) });
     return (0, le.jsxs)("main", { className: "title", children: [(0, le.jsx)("div", { className: "title-bg", "aria-hidden": "true" }), (0, le.jsxs)("div", { className: "title-card", children: [(0, le.jsx)("div", { className: "runes", "aria-hidden": "true", children: _v }), (0, le.jsx)("h1", { className: "logo", children: "ELDVAR" }), (0, le.jsx)("p", { className: "subtitle", children: "As Cr\xF4nicas do Fim" }), acct && (0, le.jsxs)("p", { className: "acct-line", children: ["Conta: ", acct, " \xB7 ", (0, le.jsx)("button", { className: "linkbtn", onClick: () => {
+      window.__tok && sbRpc("eld_logout", { p_token: window.__tok });
       try {
-        window.localStorage.removeItem("eldvar.session");
+        window.localStorage.removeItem("eldvar.session"), window.localStorage.removeItem("eldvar.token");
       } catch {
       }
-      window.__acct = "", j.refresh(), setAcct("");
-    }, children: "Sair" })] }), t === "menu" && (0, le.jsxs)("nav", { className: "menu", "aria-label": "Menu principal", children: [r && (0, le.jsxs)("button", { className: "btn btn-primary", onClick: () => i(r.slot), children: ["Continuar \xB7 ", r.name] }), (0, le.jsx)("button", { className: "btn", onClick: () => j.goCreate(), children: "Novo jogo" }), (0, le.jsx)("button", { className: "btn", onClick: () => a("online"), children: "Jogar online (multiplayer)" }), (0, le.jsx)("button", { className: "btn", onClick: () => a("load"), disabled: !r, children: "Carregar jogo" }), (0, le.jsx)("button", { className: "btn", onClick: () => j.openSettings("title"), children: "Configura\xE7\xF5es" }), (0, le.jsx)("button", { className: "btn", onClick: () => a("about"), children: "Sobre" })] }), t === "online" && (0, le.jsx)(OM, { onBack: () => a("menu") }), t === "load" && (0, le.jsxs)("div", { className: "menu", children: [e.slots.map((s, l) => (0, le.jsxs)(l0, { slot: l + 1, info: s, children: [s && (0, le.jsx)("button", { className: "btn btn-small btn-primary", onClick: () => i(l + 1), children: "Jogar" }), s && (0, le.jsx)("button", { className: "btn btn-small", onClick: () => {
+      window.__acct = "", window.__tok = "", window.__admin = false, j.refresh(), setIsAdm(false), setAcct("");
+    }, children: "Sair" })] }), t === "menu" && (0, le.jsxs)("nav", { className: "menu", "aria-label": "Menu principal", children: [r && (0, le.jsxs)("button", { className: "btn btn-primary", onClick: () => i(r.slot), children: ["Continuar \xB7 ", r.name] }), (0, le.jsx)("button", { className: "btn", onClick: () => j.goCreate(), children: "Novo jogo" }), (0, le.jsx)("button", { className: "btn", onClick: () => a("online"), children: "Jogar online (multiplayer)" }), (0, le.jsx)("button", { className: "btn", onClick: () => a("load"), disabled: !r, children: "Carregar jogo" }), (0, le.jsx)("button", { className: "btn", onClick: () => j.openSettings("title"), children: "Configura\xE7\xF5es" }), (0, le.jsx)("button", { className: "btn", onClick: () => a("about"), children: "Sobre" }), isAdm && (0, le.jsx)("button", { className: "btn", onClick: () => a("admin"), children: "\u2605 Administra\xE7\xE3o (aprovar contas)" })] }), t === "admin" && (0, le.jsx)(AdminPanel, { onBack: () => a("menu") }), t === "online" && (0, le.jsx)(OM, { onBack: () => a("menu") }), t === "load" && (0, le.jsxs)("div", { className: "menu", children: [e.slots.map((s, l) => (0, le.jsxs)(l0, { slot: l + 1, info: s, children: [s && (0, le.jsx)("button", { className: "btn btn-small btn-primary", onClick: () => i(l + 1), children: "Jogar" }), s && (0, le.jsx)("button", { className: "btn btn-small", onClick: () => {
       window.confirm(`Apagar o slot ${l + 1}? Isso n\xE3o pode ser desfeito.`) && j.removeSlot(l + 1);
     }, children: "Apagar" })] }, l)), (0, le.jsx)("button", { className: "btn", onClick: () => a("menu"), children: "Voltar" })] }), t === "about" && (0, le.jsxs)("div", { className: "about", children: [(0, le.jsx)("p", { children: Yp.context }), (0, le.jsx)("p", { children: Yp.premise }), (0, le.jsxs)("p", { className: "notice", children: [(0, le.jsx)("strong", { children: "Modo local" }), " \xE9 para um jogador: o progresso fica salvo apenas neste navegador. ", (0, le.jsx)("strong", { children: "Modo online" }), " \xE9 uma fatia vertical: exige um servidor Nidavellir em execu\xE7\xE3o (veja o README) e ainda n\xE3o tem NPCs, quests, itens nem habilidades."] }), (0, le.jsx)("button", { className: "btn", onClick: () => a("menu"), children: "Voltar" })] }), e.notice && (0, le.jsx)("p", { className: "error", role: "alert", children: e.notice }), n && (0, le.jsx)("p", { className: "error", role: "alert", children: n }), !yv && (0, le.jsx)("p", { className: "error", role: "alert", children: "Armazenamento do navegador indispon\xEDvel: o progresso n\xE3o poder\xE1 ser salvo." }), (0, le.jsx)("p", { className: "footer", children: "Prot\xF3tipo jog\xE1vel \xB7 modo local (1 jogador) ou servidor de teste online" })] }), e.panel === "settings" && (0, le.jsx)(c0, {})] });
   }

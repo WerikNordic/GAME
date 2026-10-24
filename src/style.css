@@ -103,3 +103,16 @@ main.title .title-card .footer{color:#a9a38f}
 .hud-id-text>*{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
 .hud-id-text{flex-wrap:wrap;overflow:visible;gap:0 6px}
 .hud-id-text>*{overflow:visible;text-overflow:clip}
+
+.auth-ok{background:#10351f;border:1px solid #2f7a4a;color:#bff0cf;padding:6px 8px;border-radius:3px;font-size:12px;margin:0}
+.admin-list{display:grid;gap:6px;max-height:55vh;overflow:auto;min-width:min(380px,84vw)}
+.admin-list h3{margin:0;color:#ffd35a;text-align:center}
+.adm-row{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:6px 8px;border:1px solid #6b5726;border-radius:3px;background:#0d132499}
+.adm-row.st-pending{border-color:#d9a21b;background:#2a2108aa}
+.adm-row.st-blocked{opacity:.6}
+.adm-info{display:grid;min-width:0}
+.adm-info b{overflow:hidden;text-overflow:ellipsis;color:#f2ecd2}
+.adm-info small{color:#a99f7c;font-size:11px}
+.adm-btns{display:flex;gap:4px;flex:0 0 auto}
+.adm-info{text-align:left;justify-items:start}
+.adm-info small{text-align:left}
