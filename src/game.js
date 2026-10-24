@@ -11358,7 +11358,7 @@ Error generating stack: ` + n.message + `
       }
       return this.ctx;
     }
-    play(t) {
+    play(t, sd) {
       if (this.volume <= 0) return;
       let a = ek[t], n = this.ensure();
       if (!(!a || !n)) try {
@@ -11373,7 +11373,8 @@ Error generating stack: ` + n.message + `
           W.gain.value = 0.5;
           D.connect(F2), F2.connect(D), D.connect(W), W.connect(n.destination), this.wet = D;
         }
-        let o = n.currentTime, jt = 1 + (Math.random() - 0.5) * 0.08;
+        let o = n.currentTime, jt = 1 + (Math.random() - 0.5) * 0.08, sv = sd ? (Math.imul(sd | 0, 2654435761) >>> 0) : 0, SM = sv ? Math.pow(2, ((sv % 13) - 6) / 12) : 1, SF = sv ? 0.6 + ((sv >>> 8) % 100) / 100 * 1.2 : 1;
+        jt *= SM;
         for (let r of a) {
           let l = o + (r.at ?? 0), s = n.createGain(), src;
           if (r.n) {
@@ -11384,7 +11385,7 @@ Error generating stack: ` + n.message + `
           let out = src;
           if (r.fl) {
             let f = n.createBiquadFilter();
-            f.type = r.fl, f.Q.value = r.fq ?? 1, f.frequency.setValueAtTime(r.ff, l), r.fto && f.frequency.exponentialRampToValueAtTime(r.fto, l + r.d), src.connect(f), out = f;
+            f.type = r.fl, f.Q.value = r.fq ?? 1, f.frequency.setValueAtTime(r.ff * SF, l), r.fto && f.frequency.exponentialRampToValueAtTime(r.fto * SF, l + r.d), src.connect(f), out = f;
           }
           let g = Math.max(1e-4, (r.g ?? 0.2) * this.volume), a02 = Math.min(r.att ?? 8e-3, r.d * 0.5);
           s.gain.setValueAtTime(1e-4, l), s.gain.exponentialRampToValueAtTime(g, l + a02), s.gain.exponentialRampToValueAtTime(1e-4, l + r.d), out.connect(s), s.connect(n.destination), r.w && this.wet && s.connect(this.wet), src.start(l), src.stop(l + r.d + 0.05);
@@ -15054,44 +15055,44 @@ void main() {
       let r = this.rgbOf(t.light, t.magic ? 9425151 : 16764794);
       switch (t.kind) {
         case "cone":
-          this.add({ k: "slash", x: t.x, y: t.y, angle: t.angle, arc: t.arc, range: t.range, color: t.light !== void 0 ? "#" + t.light.toString(16).padStart(6, "0") : n, t0: this.clock, dur: 260 }), this.sfx.play("swing"), t.light !== void 0 && this.burst(t.x + Math.cos(t.angle) * t.range * 0.7, t.y + Math.sin(t.angle) * t.range * 0.7, 8, ["#ffffff", "#" + t.light.toString(16).padStart(6, "0")], 150, 2, 380, 200, 14);
+          this.add({ k: "slash", x: t.x, y: t.y, angle: t.angle, arc: t.arc, range: t.range, color: t.light !== void 0 ? "#" + t.light.toString(16).padStart(6, "0") : n, t0: this.clock, dur: 260 }), this.sfx.play("swing", (t.light ?? 0) + (t.style ? t.style.length * 977 : 0)), t.light !== void 0 && this.burst(t.x + Math.cos(t.angle) * t.range * 0.7, t.y + Math.sin(t.angle) * t.range * 0.7, 8, ["#ffffff", "#" + t.light.toString(16).padStart(6, "0")], 150, 2, 380, 200, 14);
           break;
         case "nova":
-          this.add({ k: "circle", x: t.x, y: t.y, r: t.range, color: r, t0: this.clock, dur: 900 }), this.add({ k: "impact", x: t.x, y: t.y, r: t.range, color: r, style: "nova", t0: this.clock, dur: 520 }), this.sfx.play("magic"), this.burst(t.x, t.y, 26, ["#ffffff", "#" + (t.light ?? 16764794).toString(16).padStart(6, "0")], 190, 2.4, 700, 60, 6), this.store.getSnapshot().settings.screenShake && (this.shake = { until: this.clock + 140, mag: 3 });
+          this.add({ k: "circle", x: t.x, y: t.y, r: t.range, color: r, t0: this.clock, dur: 900 }), this.add({ k: "impact", x: t.x, y: t.y, r: t.range, color: r, style: "nova", t0: this.clock, dur: 520 }), this.sfx.play("magic", (t.light ?? 0) + (t.style ? t.style.length * 977 : 0)), this.burst(t.x, t.y, 26, ["#ffffff", "#" + (t.light ?? 16764794).toString(16).padStart(6, "0")], 190, 2.4, 700, 60, 6), this.store.getSnapshot().settings.screenShake && (this.shake = { until: this.clock + 140, mag: 3 });
           break;
         case "heal":
-          this.add({ k: "circle", x: t.x, y: t.y, r: 60, color: r, t0: this.clock, dur: 1e3 }), this.add({ k: "pillar", x: t.x, y: t.y, color: r, h: 220, t0: this.clock, dur: 900 }), this.sfx.play("heal"), this.burst(t.x, t.y, 22, ["#b8ffc8", "#ffffff", "#7dff9a"], 60, 2.6, 1100, -90, 8);
+          this.add({ k: "circle", x: t.x, y: t.y, r: 60, color: r, t0: this.clock, dur: 1e3 }), this.add({ k: "pillar", x: t.x, y: t.y, color: r, h: 220, t0: this.clock, dur: 900 }), this.sfx.play("heal", (t.light ?? 0) + (t.style ? t.style.length * 977 : 0)), this.burst(t.x, t.y, 22, ["#b8ffc8", "#ffffff", "#7dff9a"], 60, 2.6, 1100, -90, 8);
           break;
         case "buff":
-          this.add({ k: "circle", x: t.x, y: t.y, r: 62, color: r, t0: this.clock, dur: 1e3 }), this.add({ k: "pillar", x: t.x, y: t.y, color: r, h: 260, t0: this.clock, dur: 900 }), this.sfx.play("buff"), this.burst(t.x, t.y, 18, ["#ffffff", "#ffd34d"], 70, 2.4, 1e3, -110, 6);
+          this.add({ k: "circle", x: t.x, y: t.y, r: 62, color: r, t0: this.clock, dur: 1e3 }), this.add({ k: "pillar", x: t.x, y: t.y, color: r, h: 260, t0: this.clock, dur: 900 }), this.sfx.play("buff", (t.light ?? 0) + (t.style ? t.style.length * 977 : 0)), this.burst(t.x, t.y, 18, ["#ffffff", "#ffd34d"], 70, 2.4, 1e3, -110, 6);
           break;
         case "shot":
-          this.sfx.play("shot");
+          this.sfx.play("shot", (t.light ?? 0) + (t.style ? t.style.length * 977 : 0));
           break;
         case "charge":
           this.add({ k: "line", x: t.x, y: t.y, angle: t.angle, range: t.range, t0: this.clock, dur: 650 });
           break;
         case "line": {
           let i = t.x + Math.cos(t.angle) * t.range, s = t.y + Math.sin(t.angle) * t.range;
-          this.add({ k: "beam", x: t.x, y: t.y, x2: i, y2: s, color: r, width: t.arc, t0: this.clock, dur: 340 }), this.sfx.play("slash"), this.burst(i, s, 14, ["#ffffff", "#" + (t.light ?? 16764794).toString(16).padStart(6, "0")], 170, 2.2, 520, 120, 10), this.store.getSnapshot().settings.screenShake && (this.shake = { until: this.clock + 110, mag: 3 });
+          this.add({ k: "beam", x: t.x, y: t.y, x2: i, y2: s, color: r, width: t.arc, t0: this.clock, dur: 340 }), this.sfx.play("slash", (t.light ?? 0) + (t.style ? t.style.length * 977 : 0)), this.burst(i, s, 14, ["#ffffff", "#" + (t.light ?? 16764794).toString(16).padStart(6, "0")], 170, 2.2, 520, 120, 10), this.store.getSnapshot().settings.screenShake && (this.shake = { until: this.clock + 110, mag: 3 });
           break;
         }
         case "chain":
           if (t.pts) {
-            this.add({ k: "bolt", pts: t.pts, color: r, t0: this.clock, dur: 420 }), this.sfx.play("lightning");
+            this.add({ k: "bolt", pts: t.pts, color: r, t0: this.clock, dur: 420 }), this.sfx.play("lightning", (t.light ?? 0) + (t.style ? t.style.length * 977 : 0));
             for (let i = 2; i + 1 < t.pts.length; i += 2) this.burst(t.pts[i], t.pts[i + 1], 10, ["#ffffff", "#" + (t.light ?? 13154559).toString(16).padStart(6, "0")], 150, 2, 420, 150, 14);
           }
           break;
         case "meteor":
-          this.add({ k: "meteor", x: t.x, y: t.y, r: t.range, color: r, style: t.style ?? "meteor", t0: this.clock, dur: t.ms ?? 700 }), this.sfx.play("meteor");
+          this.add({ k: "meteor", x: t.x, y: t.y, r: t.range, color: r, style: t.style ?? "meteor", t0: this.clock, dur: t.ms ?? 700 }), this.sfx.play("meteor", (t.light ?? 0) + (t.style ? t.style.length * 977 : 0));
           break;
         case "impact": {
-          this.add({ k: "impact", x: t.x, y: t.y, r: t.range, color: r, style: t.style ?? "meteor", t0: this.clock, dur: 900 }), this.sfx.play("crit"), this.burst(t.x, t.y, 36, ["#ffffff", "#" + (t.light ?? 16752704).toString(16).padStart(6, "0"), "#ffd070"], 260, 2.8, 800, 260, 8), this.store.getSnapshot().settings.screenShake && (this.shake = { until: this.clock + 260, mag: 8 }), this.flash.until = this.clock + 90;
+          this.add({ k: "impact", x: t.x, y: t.y, r: t.range, color: r, style: t.style ?? "meteor", t0: this.clock, dur: 900 }), this.sfx.play("crit", (t.light ?? 0) + (t.style ? t.style.length * 977 : 0)), this.burst(t.x, t.y, 36, ["#ffffff", "#" + (t.light ?? 16752704).toString(16).padStart(6, "0"), "#ffd070"], 260, 2.8, 800, 260, 8), this.store.getSnapshot().settings.screenShake && (this.shake = { until: this.clock + 260, mag: 8 }), this.flash.until = this.clock + 90;
           break;
         }
         case "dash": {
           let i = t.pts?.[0] ?? t.x, s = t.pts?.[1] ?? t.y;
-          this.add({ k: "dash", x: t.x, y: t.y, x2: i, y2: s, t0: this.clock, dur: 360 }), this.burst(t.x, t.y, 10, ["#cfd8e8", "#ffffff"], 80, 2.2, 500, 120, 4, false), this.sfx.play("swing");
+          this.add({ k: "dash", x: t.x, y: t.y, x2: i, y2: s, t0: this.clock, dur: 360 }), this.burst(t.x, t.y, 10, ["#cfd8e8", "#ffffff"], 80, 2.2, 500, 120, 4, false), this.sfx.play("swing", (t.light ?? 0) + (t.style ? t.style.length * 977 : 0));
           break;
         }
         default:

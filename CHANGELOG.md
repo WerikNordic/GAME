@@ -6,3 +6,6 @@
 - Sentado: clicar so vira o personagem. Chat: Geral/Privado/Grupo/Guilda. Moeda: Zens.
 - /guilda, /g, /grupo, /p, /amigo (locais; sem servidor de jogo ainda).
 - ESC nao pausa; tela de entrada nordica; novos efeitos sonoros; sem visual inicial de classe.
+
+## v54
+- Cada habilidade tem som próprio: altura e timbre variam conforme a cor/efeito da skill.
