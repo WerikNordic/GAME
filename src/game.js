@@ -8159,7 +8159,7 @@ Error generating stack: ` + n.message + `
       }
       for (let G = _.y + 40; G + 60 < _.y + _.h; G += 235) {
       p.push({ x: _.x, y: G + 76, w: _.w, h: Wo.alley });
-      for (let re = _.x + 20; re + 190 < _.x + _.w; re += ST.gap) {
+      for (let re = _.x + 20; re + 190 < _.x + _.w; re += ST.gap + 110) {
         let ie = re + 88, ve = G + 34;
         if (K0(re, G, 176, 78) || F0.some((ht) => Math.hypot(ht.x - ie, ht.y - ve) < 150)) continue;
         let ut = n(), ap = Math.max(ST.alt, 0.6);
@@ -8194,13 +8194,20 @@ Error generating stack: ` + n.message + `
         let cx2 = q.x + q.w / 2, cy2 = q.y + q.h / 2;
         bigs.some((bq) => cx2 > bq.x && cx2 < bq.x + bq.w && cy2 > bq.y && cy2 < bq.y + bq.h) && o.splice(gi, 1);
       }
+      let fronts = o.filter((q) => q.kind === "deco" && q.deco === "longhouse").map((q) => ({ x: q.x - 30, y: q.y - 30, w: q.w + 60, h: q.h + 150 }));
+      for (let gi = o.length - 1; gi >= 0; gi--) {
+        let q = o[gi];
+        if (!(q.kind === "crate" || q.kind === "deco" && (q.deco === "stall" || q.deco === "cart" || q.deco === "hay"))) continue;
+        let cx2 = q.x + q.w / 2, cy2 = q.y + q.h / 2;
+        fronts.some((bq) => cx2 > bq.x && cx2 < bq.x + bq.w && cy2 > bq.y && cy2 < bq.y + bq.h) && o.splice(gi, 1);
+      }
       let streets = p.filter((q) => Math.min(q.w, q.h) >= 60), hit = (x0, y0, w0, h0, mg) => o.some((q) => q.kind !== "tree" && q.kind !== "rock" && x0 < q.x + q.w + mg && x0 + w0 + mg > q.x && y0 < q.y + q.h + mg && y0 + h0 + mg > q.y) || u.some((q) => x0 < q.x + q.w + 20 && x0 + w0 + 20 > q.x && y0 < q.y + q.h + 20 && y0 + h0 + 20 > q.y) || streets.some((q) => x0 < q.x + q.w + 36 && x0 + w0 + 36 > q.x && y0 < q.y + q.h + 36 && y0 + h0 + 36 > q.y) || M.some((q) => q.x > x0 - 90 && q.x < x0 + w0 + 90 && q.y > y0 - 90 && q.y < y0 + h0 + 90) || r.some((q) => q.x > x0 - 70 && q.x < x0 + w0 + 70 && q.y > y0 - 70 && q.y < y0 + h0 + 70) || x0 + w0 > f.from - 260 && x0 < f.to + 260 && y0 + h0 > a - 900;
       let kinds = ["longhouse", "longhouse", "smith", "smith", "market", "market", "garden", "camp", "bigsmith", "longhouse"], pl = 0;
       for (let gy = c.y + 140; gy < c.y + c.h - 160; gy += 210) for (let gx = c.x + 150; gx < c.x + c.w - 150; gx += 270) {
         let jx = gx + (n() - 0.5) * 50, jy = gy + (n() - 0.5) * 40, kd = kinds[Math.floor(n() * kinds.length)];
         if (n() < 0.22) continue;
         let fp = kd === "smith" ? [150, 120] : kd === "market" ? [200, 110] : kd === "garden" ? [150, 110] : kd === "camp" ? [150, 100] : kd === "bigsmith" ? [230, 150] : [$m.longhouse.w, $m.longhouse.h + 20];
-        if (hit(jx - fp[0] / 2, jy - fp[1] / 2, fp[0], fp[1], 26)) continue;
+        if (hit(jx - fp[0] / 2, jy - fp[1] / 2, fp[0], fp[1], 70)) continue;
         pl++;
         if (kd === "longhouse") s("longhouse", jx, jy), n() < 0.5 && s("lamp", jx + $m.longhouse.w / 2 + 14, jy + 30), n() < 0.3 && s("planter", jx - $m.longhouse.w / 2 - 20, jy + 34);
         else if (kd === "smith") s("forge", jx, jy - 10), s("brazier", jx - 85, jy + 36), s("brazier", jx + 85, jy + 36), n() < 0.6 && s("cart", jx + 50, jy + 50), n() < 0.6 && s("hay", jx - 60, jy + 50);
@@ -13897,14 +13904,23 @@ void main() {
         O(n, S(0, 4, 0), 126, 8, 58, Y(o, 0.9), Q), O(n, S(0, 22, 0), 120, 28, 52, d, Re);
         for (let x = -120 / 2 + 6; x <= 120 / 2 - 5; x += 16) O(n, S(x, 22, 52 / 2 + 0.7), 3.6, 28, 1.6, Y(r, 1.05)), O(n, S(x, 22, -52 / 2 - 0.7), 3.6, 28, 1.6, Y(r, 1.05));
         O(n, S(0, 36.5, 52 / 2 + 0.8), 122, 3, 2, Y(r, 1.12));
-        let f = 36, u = 64, m = 52 / 2 + 8, p = 120 / 2 + 7;
+        let ex = vr === 4 ? 30 : vr === 5 ? 60 : 0;
+        for (let j = 0; j < ex / 30; j++) {
+          let yy = 51 + 30 * j;
+          O(n, S(0, yy, 0), 118, 30, 50, d, Re), O(n, S(0, yy + 14.5, 52 / 2 + 0.8), 122, 3, 2, Y(r, 1.12));
+          for (let x = -54; x <= 54; x += 18) O(n, S(x, yy, 52 / 2 + 0.7), 3.6, 30, 1.6, Y(r, 1.05)), O(n, S(x, yy, -52 / 2 - 0.7), 3.6, 30, 1.6, Y(r, 1.05));
+          for (let x of [-40, -20, 0, 20, 40]) O(n, S(x, yy, 52 / 2 + 1.6), 9, 10, 1.4, Y(r, 1.2)), O(n, S(x, yy, 52 / 2 + 2.2), 6.4, 7, 1, 16762992, { shine: 0.5, glow: 0.85 });
+          O(n, S(0, yy - 11, 52 / 2 + 5), 112, 2.4, 9, Y(r, 0.95), Q);
+        }
+        let f = 36 + ex, u = 64 + ex, m = 52 / 2 + 8, p = 120 / 2 + 7;
         Ne(n, [[-p, f, m], [p, f, m], [p, u, 0], [-p, u, 0]], c, { mat: Re }), Ne(n, [[-p, f, -m], [-p, u, 0], [p, u, 0], [p, f, -m]], Y(c, 0.82), { mat: Re }), Ne(n, [[-p + 1, f, m], [-p + 1, u, 0], [-p + 1, f, -m], [-p + 1, f, m]], Y(d, 1.1), { mat: Re }), Ne(n, [[p - 1, f, m], [p - 1, f, -m], [p - 1, u, 0], [p - 1, f, m]], Y(d, 1.1), { mat: Re });
         for (let x = 0; x < 7; x++) {
           let b = -p + 6 + x * ((2 * p - 12) / 6);
           O(n, S(b, f + 1.6, m - 0.4), 1.4, 2.6, 1.4, Y(c, 0.7));
         }
         O(n, S(0, u + 0.8, 0), 2 * p + 2, 3, 3.4, r, Q);
-        vr % 2 === 1 && O(n, S(vr === 1 ? 28 : -34, 72, -9), 10, 26, 10, Y(o, 0.85), Q);
+        vr % 2 === 1 && vr < 4 && O(n, S(vr === 1 ? 28 : -34, 72, -9), 10, 26, 10, Y(o, 0.85), Q);
+        vr >= 4 && O(n, S(vr === 4 ? 30 : -30, 72 + ex, -9), 10, 26, 10, Y(o, 0.85), Q);
         for (let x of [-1, 1]) F(n, S(x * (p + 2), u - 0.5, 0).mul(A.RZ(-x * 0.7)), 2.4, 0.6, 15, Y(r, 1.2), { seg: 6 }), L(n, S(x * (p + 8), u + 9, 0), 2.6, 2, 2, Y(r, 1.25), { seg: 6, ring: 4 });
         O(n, S(0, 14, 52 / 2 + 1.2), 13, 24, 2.2, Y(r, 0.55)), O(n, S(0, 27, 52 / 2 + 1.6), 17, 3, 2.6, Y(r, 1.15));
         let h = { shine: 0.5, glow: 0.85 };
@@ -15128,7 +15144,7 @@ void main() {
         } else if (r.kind === "deco") {
           let m = n.decos[r.deco ?? ""];
           (m || mo) && o.push({ depth: l, sx: s.x, sy: s.y, tall: r.deco === "tower" || r.deco === "statue" || r.deco === "keep" || r.deco === "palace" || r.deco === "hof" || r.deco === "warrior" || r.deco === "longhouse" || r.deco === "banner" || r.deco === "lamp" || r.deco === "church" || r.deco === "castle" || r.deco === "monument" || r.deco === "bigforge" || r.deco === "colossus" || r.deco === "airship", draw: () => {
-            let p = u({ kind: "deco", theme: d, variant: r.deco === "longhouse" ? Math.abs(Math.round(r.x / 10) + Math.round(r.y / 10) * 3) % 4 : r.deco === "colossus" ? Math.abs(Math.round(r.x / 7) * 5 + Math.round(r.y / 11) * 3) % 5 : 0, deco: r.deco });
+            let p = u({ kind: "deco", theme: d, variant: r.deco === "longhouse" ? Math.abs(Math.round(r.x / 10) + Math.round(r.y / 10) * 3) % 6 : r.deco === "colossus" ? Math.abs(Math.round(r.x / 7) * 5 + Math.round(r.y / 11) * 3) % 5 : 0, deco: r.deco });
             p ? nt(a, p, f.x, f.y) : m && nt(a, m, s.x, s.y + 4);
           } });
         } else if (r.kind === "crate") o.push({ depth: l, sx: s.x, sy: s.y, draw: () => {

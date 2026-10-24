@@ -68,3 +68,6 @@
 
 ## v64
 - Giro 360 da câmera: construções giram junto com o chão, ancoradas no próprio centro
+
+## v65
+- Casas de 2 e 3 andares, mais espaço entre casas, barracas removidas da frente das casas
