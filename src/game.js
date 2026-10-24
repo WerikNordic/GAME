@@ -15879,7 +15879,11 @@ void main() {
     }, [d, t, n]);
     let f = () => {
       let u = r.trim();
-      i(""), u && (j.sendChat(u), u.startsWith("/w") || u.toLowerCase().startsWith("/whisper") ? a("sussurro") : u.startsWith("/") || a((m) => m)), document.activeElement?.blur(), o(false);
+      if (i(""), !u) {
+        document.activeElement?.blur(), o(false);
+        return;
+      }
+      j.sendChat(u), u.startsWith("/w") || u.toLowerCase().startsWith("/whisper") ? a("sussurro") : u.startsWith("/") || a((m) => m);
     };
     return (0, ho.useEffect)(() => {
       let u = () => {
