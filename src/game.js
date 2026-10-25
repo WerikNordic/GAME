@@ -10103,7 +10103,7 @@ Error generating stack: ` + n.message + `
       if (this.player.deadAt !== null) return;
       let t = [];
       for (let a of this.loot) if (!(this.time >= a.expiresAt)) {
-        if (Be(a.pos, this.player.pos) <= 30) {
+        if (Be(a.pos, this.player.pos) <= 30 && !(a.holdUntil && this.time < a.holdUntil)) {
           let n = Ny(this.ps, a.itemId, a.qty);
           if (n <= 0) {
             this.time - this.fullToastAt > 3e3 && (this.fullToastAt = this.time, this.toast("Peso demais: voc\xEA n\xE3o consegue carregar mais isso.", "bad")), t.push(a);
@@ -10636,7 +10636,7 @@ Error generating stack: ` + n.message + `
     let a = 80 + e.level * 14, n = e.level >= 20 ? "hidromel_forte" : "hidromel_curativo";
     return !Fi(e.inventory, n, 5) || !Fi(e.inventory, "infusao_runica", 2) ? { ok: false, msg: "Mochila cheia: libere espa\xE7o para o presente." } : (He(e.inventory, n, 5), He(e.inventory, "infusao_runica", 2), e.silver += a, e.daily = iv(t), { ok: true, msg: `Presente do dia: ${a} Zens, 5 po\xE7\xF5es de vida e 2 de mana.` });
   }
-  var zp = [{ id: "short", name: "Curto" }, { id: "long", name: "Longo" }, { id: "bald", name: "Raspado" }], Dp = [2763320, 5913122, 9058850, 10119738, 13146698, 14205050, 15263982, 6974066, 8006186, 13647962, 3820138, 3836554, 4889162, 9063096], Op = [0, 11545130, 13656106, 13146666, 3836474, 2787962, 2775728, 8010408, 13126282, 3158588, 15262940, 8018490, 6978186, 1718890], Np = { hairStyle: 60, hairColor: 80, cloth: 100 };
+  var HV50 = [{ n: "Curto Clássico", L: 0, F: 1, T: 1, X: "" }, { n: "Repicado", L: 0, F: 5, T: 1, X: "" }, { n: "Militar", L: 0, F: 7, T: 0, X: "" }, { n: "Topete", L: 0, F: 2, T: 2, X: "" }, { n: "Pompadour", L: 0, F: 4, T: 2, X: "" }, { n: "Franja Lateral Esq.", L: 1, F: 2, T: 1, X: "" }, { n: "Franja Lateral Dir.", L: 1, F: 3, T: 1, X: "" }, { n: "Partido ao Meio", L: 1, F: 4, T: 1, X: "" }, { n: "Cacheado Curto", L: 0, F: 1, T: 2, X: "curl" }, { n: "Black Power", L: 0, F: 0, T: 3, X: "" }, { n: "Moicano", L: 0, F: 0, T: 1, X: "mohawk" }, { n: "Espetado", L: 0, F: 5, T: 2, X: "spikes" }, { n: "Chanel Curto", L: 1, F: 1, T: 1, X: "bob" }, { n: "Pixie", L: 0, F: 2, T: 1, X: "" }, { n: "Coque Samurai", L: 0, F: 7, T: 1, X: "topknot" }, { n: "Cortina Curta", L: 1, F: 6, T: 1, X: "" }, { n: "Escovinha", L: 0, F: 7, T: 2, X: "" }, { n: "Ondulado Curto", L: 1, F: 1, T: 1, X: "wave" }, { n: "Tigela", L: 1, F: 7, T: 1, X: "bob" }, { n: "Undercut", L: 0, F: 2, T: 2, X: "" }, { n: "Longo Liso", L: 3, F: 1, T: 1, X: "" }, { n: "Longo Partido", L: 3, F: 4, T: 1, X: "" }, { n: "Longo Franja Lateral", L: 3, F: 2, T: 1, X: "" }, { n: "Longo Cortina", L: 3, F: 6, T: 1, X: "" }, { n: "Cacheado Longo", L: 3, F: 1, T: 1, X: "curl" }, { n: "Ondulado Longo", L: 3, F: 4, T: 1, X: "wave" }, { n: "Rabo de Cavalo", L: 1, F: 1, T: 1, X: "pony" }, { n: "Rabo Alto", L: 1, F: 4, T: 1, X: "ponyhigh" }, { n: "Maria-Chiquinha", L: 1, F: 1, T: 1, X: "twin" }, { n: "Tranças Duplas", L: 1, F: 4, T: 1, X: "dbraid" }, { n: "Trança Lateral", L: 1, F: 2, T: 1, X: "braid" }, { n: "Trança Nórdica", L: 1, F: 1, T: 1, X: "braidc" }, { n: "Coque Alto", L: 0, F: 4, T: 1, X: "bun" }, { n: "Dois Coques", L: 0, F: 1, T: 1, X: "buns" }, { n: "Coque Baixo", L: 1, F: 4, T: 1, X: "lowbun" }, { n: "Meio Preso", L: 3, F: 4, T: 1, X: "halfup" }, { n: "Crina de Guerra", L: 3, F: 0, T: 1, X: "mane" }, { n: "Valquíria", L: 2, F: 2, T: 1, X: "braid" }, { n: "Lisa até a Cintura", L: 4, F: 1, T: 1, X: "" }, { n: "Cintura Partida", L: 4, F: 4, T: 1, X: "" }, { n: "Hime", L: 4, F: 8, T: 1, X: "hime" }, { n: "Chanel Longo", L: 2, F: 1, T: 1, X: "bob" }, { n: "Volumoso", L: 3, F: 1, T: 3, X: "" }, { n: "Rainha do Gelo", L: 4, F: 2, T: 2, X: "wave" }, { n: "Tranças Baixas", L: 2, F: 4, T: 1, X: "lowtwin" }, { n: "Rabos Altos", L: 1, F: 1, T: 1, X: "twinhigh" }, { n: "Selvagem", L: 3, F: 5, T: 2, X: "spikes" }, { n: "Longo Repicado", L: 2, F: 5, T: 1, X: "" }, { n: "Coroa de Tranças", L: 0, F: 4, T: 1, X: "crown" }, { n: "Dreads", L: 3, F: 1, T: 1, X: "dread" }], zp = [{ id: "short", name: "Curto" }, { id: "long", name: "Longo" }, { id: "bald", name: "Raspado" }, ...HV50.map((h, i) => ({ id: "v" + (i + 1), name: h.n }))], Dp = [2763320, 5913122, 9058850, 10119738, 13146698, 14205050, 15263982, 6974066, 8006186, 13647962, 3820138, 3836554, 4889162, 9063096], Op = [0, 11545130, 13656106, 13146666, 3836474, 2787962, 2775728, 8010408, 13126282, 3158588, 15262940, 8018490, 6978186, 1718890], Np = { hairStyle: 60, hairColor: 80, cloth: 100 };
   function Hp(e, t) {
     let a = 1 + Math.floor(e.level / 10) * 0.5, n = 0;
     return t.hairStyle !== void 0 && t.hairStyle !== e.style?.hairStyle && (n += Np.hairStyle), t.hairColor !== void 0 && t.hairColor !== e.style?.hairColor && (n += Np.hairColor), t.dye !== void 0 && t.dye !== e.dye && (n += Np.cloth), Math.round(n * a);
@@ -10755,7 +10755,7 @@ Error generating stack: ` + n.message + `
     e.gender === "f" && (w.gender = "f");
     if (Vt(e.style)) {
       let M = {};
-      (e.style.hairStyle === "short" || e.style.hairStyle === "long" || e.style.hairStyle === "bald") && (M.hairStyle = e.style.hairStyle), Number.isInteger(e.style.hairColor) && e.style.hairColor >= 0 && e.style.hairColor <= 16777215 && (M.hairColor = e.style.hairColor), (M.hairStyle || M.hairColor !== void 0) && (w.style = M);
+      (e.style.hairStyle === "short" || e.style.hairStyle === "long" || e.style.hairStyle === "bald" || /^v([1-9]|[1-4][0-9]|50)$/.test(e.style.hairStyle)) && (M.hairStyle = e.style.hairStyle), Number.isInteger(e.style.hairColor) && e.style.hairColor >= 0 && e.style.hairColor <= 16777215 && (M.hairColor = e.style.hairColor), (M.hairStyle || M.hairColor !== void 0) && (w.style = M);
     }
     if (Array.isArray(e.feitos)) {
       let M = [...new Set(e.feitos.filter((T) => typeof T == "string" && !!qp[T]))];
@@ -11039,13 +11039,13 @@ Error generating stack: ` + n.message + `
       this.world?.setAttackHeld(t);
     }
     pressAttack() {
-      this.paused || this.world?.pressAttack();
+      this.paused || this.dialogue || this.world?.pressAttack();
     }
     cast(t) {
-      this.paused || this.world?.castSkill(t);
+      this.paused || this.dialogue || this.world?.castSkill(t);
     }
     dash() {
-      this.paused || this.world?.dash();
+      this.paused || this.dialogue || this.world?.dash();
     }
     ultimate() {
       this.paused || this.world?.ultimate?.();
@@ -11054,22 +11054,22 @@ Error generating stack: ` + n.message + `
       this.paused || this.world?.usePotion(t);
     }
     commandMove(t, a) {
-      return !this.paused && !!this.world?.commandMove(t, a);
+      return !this.paused && !this.dialogue && !!this.world?.commandMove(t, a);
     }
     benchAt(t, a) {
       return this.paused ? null : this.world?.benchAt(t, a) ?? null;
     }
     commandSit(t) {
-      return !this.paused && !!this.world?.commandSit(t);
+      return !this.paused && !this.dialogue && !!this.world?.commandSit(t);
     }
     commandTarget(t) {
-      return !this.paused && !!this.world?.commandTarget(t);
+      return !this.paused && !this.dialogue && !!this.world?.commandTarget(t);
     }
     commandNpc(t) {
       return !this.paused && !!this.world?.commandNpc(t);
     }
     commandPoi(t) {
-      return !this.paused && !!this.world?.commandPoi(t);
+      return !this.paused && !this.dialogue && !!this.world?.commandPoi(t);
     }
     openPoi(t) {
       if (!this.world || !this.ps) return;
@@ -11468,7 +11468,7 @@ Error generating stack: ` + n.message + `
     openDialogue(t) {
       if (!this.ps) return;
       let a = Pp(t, this.ps);
-      a && (this.dialogue = { ...a, lineIndex: 0 }, this.world?.setMove(0, 0), this.world?.setAttackHeld(false), this.refresh());
+      a && (this.dialogue = { ...a, lineIndex: 0 }, this.world?.clearOrders?.(), this.world?.setMove(0, 0), this.world?.setAttackHeld(false), this.refresh());
     }
     dialogueNext() {
       if (this.dialogue) {
@@ -11545,6 +11545,16 @@ Error generating stack: ` + n.message + `
       if (!this.ps) return;
       let a = dy(this.ps, t);
       this.toast(a.msg, a.ok ? "good" : "bad"), this.refresh();
+    }
+    dropAt(t, a) {
+      if (!this.ps || !this.world) return;
+      let it = this.ps.inventory.slots[t], id = it?.id, q = it ? Math.min(a, it.qty) : 0, n = ly(this.ps.inventory, t, a);
+      if (!n.ok) { this.toast(n.msg, "bad"), this.refresh(); return; }
+      let w = this.world, f = w.player.facing ?? 0, pos = { x: w.player.pos.x + Math.cos(f) * 62, y: w.player.pos.y + Math.sin(f) * 62 };
+      w.spawnLoot(id, q, pos);
+      let L = w.loot[w.loot.length - 1];
+      L && (L.holdUntil = w.time + 3500, L.expiresAt = w.time + 3e5);
+      this.toast(`${$(id)?.name ?? id} x${q} largado no ch\u00E3o.`, "info"), this.refresh();
     }
     discardAt(t, a) {
       if (!this.ps) return;
@@ -12673,6 +12683,36 @@ Error generating stack: ` + n.message + `
       return { n: r.n, sum: r.sum };
     }
   };
+  var MV = (() => {
+    const o = {}, bark = (at, f, to, g = 0.3) => [{ f, to, d: 0.14, t: "sawtooth", g, at, fl: "lowpass", ff: 1500, fto: 500 }, { n: 1, fl: "bandpass", ff: 1000, fq: 1, d: 0.09, g: g * 0.7, at }], yelp = (at, f, to, d = 0.16, g = 0.22) => [{ f, to, d, t: "sine", g, at }, { f: f * 2, to: to * 2, d, t: "sine", g: g * 0.35, at }], growl = (at, f, d, g = 0.28) => [{ f, to: f * 0.8, d, t: "sawtooth", g, at, fl: "lowpass", ff: 420, fq: 4 }, { n: 1, fl: "lowpass", ff: 380, d, g: g * 0.7, at }], hiss = (at, d, g = 0.22, ff = 3500) => [{ n: 1, fl: "highpass", ff, d, g, at, att: d * 0.3 }], clang = (at, f, g = 0.2) => [{ f, d: 0.28, t: "square", g, at, to: f * 0.99 }, { f: f * 1.51, d: 0.2, t: "square", g: g * 0.6, at }, { n: 1, fl: "highpass", ff: 3000, d: 0.04, g: g * 0.8, at }], squeal = (at, f, to, d, g = 0.22) => [{ f, to, d, t: "sawtooth", g, at, fl: "bandpass", ff: f * 1.3, fq: 2 }];
+    o.v_wolf_idle = [...growl(0, 85, 0.55, 0.22)]; o.v_wolf_aggro = [...bark(0, 300, 170), ...bark(0.2, 280, 150), ...bark(0.42, 320, 160)]; o.v_wolf_hurt = [...yelp(0, 650, 1150, 0.12), ...yelp(0.13, 1100, 520, 0.22)]; o.v_wolf_die = [...yelp(0, 900, 1250, 0.14), ...yelp(0.16, 1200, 220, 0.7, 0.2)];
+    o.v_boar_idle = [...growl(0, 110, 0.22, 0.3), ...growl(0.3, 100, 0.2, 0.25)]; o.v_boar_aggro = [...squeal(0, 260, 520, 0.22), { n: 1, fl: "lowpass", ff: 800, d: 0.18, g: 0.35, at: 0.18 }, ...growl(0.2, 90, 0.35, 0.3)]; o.v_boar_hurt = squeal(0, 900, 520, 0.28, 0.26); o.v_boar_die = [...squeal(0, 800, 160, 0.7, 0.26), ...hiss(0.1, 0.4, 0.1, 800)];
+    o.v_goblin_idle = [0, 0.1, 0.2, 0.34, 0.44].map((at, i) => ({ f: i % 2 ? 640 : 760, d: 0.07, t: "square", g: 0.1, at, fl: "bandpass", ff: 900, fq: 2 })); o.v_goblin_aggro = squeal(0, 450, 1050, 0.3, 0.2).concat(squeal(0.32, 500, 900, 0.2, 0.15)); o.v_goblin_hurt = [{ f: 520, to: 260, d: 0.2, t: "square", g: 0.22, fl: "lowpass", ff: 1600 }]; o.v_goblin_die = [{ f: 500, to: 90, d: 0.6, t: "square", g: 0.22, fl: "lowpass", ff: 1200 }, ...hiss(0.1, 0.3, 0.08, 1500)];
+    o.v_undead_idle = [{ f: 80, to: 62, d: 0.9, t: "sawtooth", g: 0.14, fl: "bandpass", ff: 260, fq: 3, att: 0.3 }, { n: 1, fl: "bandpass", ff: 420, fq: 4, d: 0.8, g: 0.12, att: 0.3 }]; o.v_undead_aggro = [{ f: 220, to: 420, d: 0.5, t: "sawtooth", g: 0.18, fl: "bandpass", ff: 600, fq: 3, att: 0.1 }, ...hiss(0.05, 0.4, 0.12, 1800)]; o.v_undead_hurt = [{ n: 1, fl: "highpass", ff: 2200, d: 0.05, g: 0.4 }, { f: 130, to: 90, d: 0.2, t: "sawtooth", g: 0.18, fl: "lowpass", ff: 500 }]; o.v_undead_die = [0, 0.07, 0.15, 0.22, 0.31, 0.4, 0.52].map((at) => ({ n: 1, fl: "highpass", ff: 1800 + at * 2000, d: 0.05, g: 0.3, at })).concat([{ f: 110, to: 45, d: 0.8, t: "sawtooth", g: 0.16, fl: "lowpass", ff: 300 }]);
+    o.v_giant_idle = [{ f: 52, to: 46, d: 1.1, t: "sine", g: 0.38, att: 0.4 }, ...growl(0.1, 60, 0.9, 0.16)]; o.v_giant_aggro = [...growl(0, 100, 0.8, 0.4), { f: 150, to: 240, d: 0.7, t: "sawtooth", g: 0.2, fl: "lowpass", ff: 700, att: 0.15 }, { n: 1, fl: "lowpass", ff: 600, d: 0.6, g: 0.3 }]; o.v_giant_hurt = [...growl(0, 130, 0.3, 0.38)]; o.v_giant_die = [...growl(0, 120, 1.2, 0.4), { f: 140, to: 40, d: 1.3, t: "sawtooth", g: 0.2, fl: "lowpass", ff: 500 }];
+    o.v_blob_idle = [{ f: 280, to: 620, d: 0.12, t: "sine", g: 0.2 }, { f: 360, to: 740, d: 0.1, t: "sine", g: 0.16, at: 0.22 }]; o.v_blob_aggro = [{ f: 200, to: 520, d: 0.2, t: "sine", g: 0.24 }, { f: 250, to: 640, d: 0.18, t: "sine", g: 0.2, at: 0.2 }]; o.v_blob_hurt = [{ n: 1, fl: "lowpass", ff: 900, fto: 200, d: 0.14, g: 0.35 }, { f: 520, to: 190, d: 0.16, t: "sine", g: 0.24 }]; o.v_blob_die = [{ f: 600, to: 120, d: 0.3, t: "sine", g: 0.26 }, { n: 1, fl: "bandpass", ff: 1400, d: 0.06, g: 0.4, at: 0.3 }];
+    o.v_lizard_idle = hiss(0, 0.7, 0.14, 4200); o.v_lizard_aggro = [...hiss(0, 0.6, 0.28, 3000), ...growl(0.1, 130, 0.4, 0.18)]; o.v_lizard_hurt = [...squeal(0, 1200, 700, 0.2, 0.2), ...hiss(0, 0.2, 0.18)]; o.v_lizard_die = [...hiss(0, 0.9, 0.26, 2600), ...squeal(0, 900, 200, 0.7, 0.14)];
+    o.v_mech_idle = [{ f: 62, d: 0.9, t: "square", g: 0.1, fl: "lowpass", ff: 260, att: 0.3 }, { n: 1, fl: "highpass", ff: 3500, d: 0.03, g: 0.25, at: 0.5 }, { n: 1, fl: "highpass", ff: 3500, d: 0.03, g: 0.2, at: 0.7 }]; o.v_mech_aggro = [{ f: 90, to: 200, d: 0.5, t: "sawtooth", g: 0.22, fl: "lowpass", ff: 700, att: 0.1 }, ...clang(0.35, 520, 0.14)]; o.v_mech_hurt = clang(0, 880, 0.28); o.v_mech_die = [...clang(0, 700, 0.26), { n: 1, fl: "lowpass", ff: 1200, fto: 120, d: 0.9, g: 0.4, at: 0.1 }];
+    o.v_stone_idle = [{ f: 48, d: 1, t: "sine", g: 0.3, att: 0.4 }, { n: 1, fl: "lowpass", ff: 300, d: 0.7, g: 0.2, att: 0.3 }]; o.v_stone_aggro = [{ n: 1, fl: "lowpass", ff: 500, fto: 150, d: 0.8, g: 0.45, att: 0.1 }, { f: 70, to: 50, d: 0.7, t: "sine", g: 0.4 }]; o.v_stone_hurt = [{ n: 1, fl: "bandpass", ff: 700, d: 0.1, g: 0.5 }, { f: 120, to: 60, d: 0.14, t: "sine", g: 0.4 }]; o.v_stone_die = [{ n: 1, fl: "lowpass", ff: 800, fto: 80, d: 1.3, g: 0.5 }, { f: 90, to: 35, d: 1.1, t: "sine", g: 0.4 }];
+    o.v_void_idle = [{ f: 220, to: 233, d: 1, t: "sine", g: 0.1, att: 0.4 }, { f: 233, to: 220, d: 1, t: "sine", g: 0.1, att: 0.4 }, { f: 880, to: 940, d: 0.9, t: "sine", g: 0.04, att: 0.4, w: 1 }]; o.v_void_aggro = [{ f: 160, to: 640, d: 0.7, t: "sawtooth", g: 0.14, fl: "bandpass", ff: 900, fq: 3, att: 0.2, w: 1 }, { f: 170, to: 680, d: 0.7, t: "sawtooth", g: 0.12, att: 0.2, fl: "bandpass", ff: 900, fq: 3 }]; o.v_void_hurt = [{ f: 700, to: 90, d: 0.3, t: "sawtooth", g: 0.18, fl: "lowpass", ff: 1400, w: 1 }]; o.v_void_die = [{ f: 600, to: 40, d: 1.3, t: "sine", g: 0.26, w: 1 }, { f: 640, to: 44, d: 1.3, t: "sine", g: 0.2, w: 1 }];
+    o.v_plant_idle = [{ n: 1, fl: "bandpass", ff: 2400, fq: 1, d: 0.6, g: 0.1, att: 0.25 }]; o.v_plant_aggro = [{ n: 1, fl: "bandpass", ff: 1600, d: 0.5, g: 0.25, att: 0.1 }, { f: 160, to: 240, d: 0.4, t: "sawtooth", g: 0.12, fl: "lowpass", ff: 500 }]; o.v_plant_hurt = [{ f: 330, to: 180, d: 0.2, t: "sawtooth", g: 0.2, fl: "bandpass", ff: 500, fq: 4 }, { n: 1, fl: "highpass", ff: 3000, d: 0.08, g: 0.2 }]; o.v_plant_die = [{ f: 300, to: 70, d: 0.9, t: "sawtooth", g: 0.18, fl: "bandpass", ff: 400, fq: 3 }, { n: 1, fl: "bandpass", ff: 2000, d: 0.9, g: 0.15 }];
+    o.v_beast_idle = growl(0, 95, 0.5, 0.2); o.v_beast_aggro = growl(0, 110, 0.7, 0.35); o.v_beast_hurt = squeal(0, 500, 260, 0.22, 0.24); o.v_beast_die = squeal(0, 450, 80, 0.8, 0.24);
+    return o;
+  })(), voiceOf = (def) => {
+    let sh = def.shape ?? "", id = def.id ?? "";
+    if (/^(wolf|frostwolf|hati)$/.test(sh) || /lobo|hati|cao_|fenrir/.test(id)) return "wolf";
+    if (sh === "boar" || /javali|porco/.test(id)) return "boar";
+    if (sh === "goblin" || /goblin/.test(id)) return "goblin";
+    if (sh === "draugr" || /draugr|hel_|esquel|morto/.test(id)) return "undead";
+    if (/^(yeti|jotun)$/.test(sh) || /yeti|hrimgar|gigante|jotun/.test(id)) return "giant";
+    if (sh === "blob" || /blob|slime|gel/.test(id)) return "blob";
+    if (sh === "cinder" || /salamandra|lagarto|surtr/.test(id)) return "lizard";
+    if (sh === "automaton" || sh === "prism" || /automato|construto|prism/.test(id)) return "mech";
+    if (sh === "sentinel" || /golem|sentinela|guardiao_p/.test(id)) return "stone";
+    if (sh === "voidling" || /vazio|ruptura|devorador/.test(id)) return "void";
+    if (sh === "sylvan" || /broto|raiz|verde|vana/.test(id)) return "plant";
+    return "beast";
+  };
   var ek = {
     hit: [{ n: 1, fl: "lowpass", ff: 900, fto: 200, d: 0.09, g: 0.5 }, { f: 150, d: 0.1, t: "sine", g: 0.45, to: 55 }],
     crit: [{ n: 1, fl: "highpass", ff: 1500, d: 0.07, g: 0.4 }, { f: 880, d: 0.28, t: "square", g: 0.13, to: 860, w: 1 }, { f: 1330, d: 0.22, t: "sine", g: 0.2, w: 1 }, { f: 120, d: 0.14, t: "sine", g: 0.5, to: 45 }],
@@ -12708,9 +12748,15 @@ Error generating stack: ` + n.message + `
       }
       return this.ctx;
     }
+    voice(def, kind, id, dist) {
+      if (!def || this.volume <= 0) return;
+      let k = Math.max(0, 1 - dist / 950);
+      if (k <= 0.03) return;
+      this.vm = 0.35 + 0.9 * k, this.play(`v_${voiceOf(def)}_${kind}`, id * 7919 + 13), this.vm = 1;
+    }
     play(t, sd) {
       if (this.volume <= 0) return;
-      let a = ek[t], n = this.ensure();
+      let a = ek[t] ?? MV[t], n = this.ensure();
       if (!(!a || !n)) try {
         n.state === "suspended" && n.resume();
         if (!this.nb) {
@@ -12737,7 +12783,7 @@ Error generating stack: ` + n.message + `
             let f = n.createBiquadFilter();
             f.type = r.fl, f.Q.value = r.fq ?? 1, f.frequency.setValueAtTime(r.ff * SF, l), r.fto && f.frequency.exponentialRampToValueAtTime(r.fto * SF, l + r.d), src.connect(f), out = f;
           }
-          let g = Math.max(1e-4, (r.g ?? 0.2) * this.volume), a02 = Math.min(r.att ?? 8e-3, r.d * 0.5);
+          let g = Math.max(1e-4, (r.g ?? 0.2) * this.volume * (this.vm ?? 1)), a02 = Math.min(r.att ?? 8e-3, r.d * 0.5);
           s.gain.setValueAtTime(1e-4, l), s.gain.exponentialRampToValueAtTime(g, l + a02), s.gain.exponentialRampToValueAtTime(1e-4, l + r.d), out.connect(s), s.connect(n.destination), r.w && this.wet && s.connect(this.wet), src.start(l), src.stop(l + r.d + 0.05);
         }
       } catch {
@@ -13993,7 +14039,7 @@ void main() {
     }
     return { w: t.w, h: t.h, data: ae };
   }
-  typeof location < 'u' && location.search.includes('debug') && (window.__game = () => ({ j, Ce, Jy, Rb, Cc, _p, Ua, en, Jt, nr }), window.__sprDbg = () => ({ hh, R4, ea, ROXQM, O4, P0, Vl }), window.__spr2 = () => ({ O4, _4 }));
+  typeof location < 'u' && location.search.includes('debug') && (window.__game = () => ({ j, Ce, Jy, Rb, Cc, _p, Ua, en, Jt, nr }), window.__sprDbg = () => ({ cs, po, fa, hh, R4, ea, ROXQM, O4, P0, Vl }), window.__spr2 = () => ({ O4, _4 }));
   var c4 = [1, -1, 0, 0, 1, -1, 1, -1], u4 = [0, 0, 1, -1, 1, -1, -1, 1];
   function d4(e, t, a, n) {
     let o = A.RX(a).mul(A.RY(t)), r = o.r, i = 1e9, s = -1e9, l = 1e9, c = -1e9;
@@ -15362,7 +15408,7 @@ function ROXQM(f, c, s, l, def) {
     }
     e.ep && (t.epic = true);
     if (e.mid && e.mid.startsWith("eye_")) { t.eye = EYEC[e.mid]; e = { ...e, mid: void 0 }; }
-    return e.hair !== void 0 && !Number.isNaN(e.hair) && (t.hair = xh[e.hair % xh.length]), e.hs && (t.hairStyle = e.hs), e.hc !== void 0 && !Number.isNaN(e.hc) && (t.hair = e.hc), e.gear && (t.gear = e.gear), e.top && (t.head = e.top), e.mid && (t.mid = e.mid), e.low && (t.low = e.low), e.sx === "f" && (t.slim = true, e.hs || (t.hairStyle = "long")), e.bk && BACKS[e.bk] && (BACKS[e.bk].type === "cape" ? t.cape = BACKS[e.bk].c : BACKS[e.bk].type === "quiver" ? t.quiver = true : t.wingsBack = [BACKS[e.bk].c, BACKS[e.bk].c2]), t;
+    return e.hair !== void 0 && !Number.isNaN(e.hair) && (t.hair = xh[e.hair % xh.length]), e.hs && (t.hairStyle = e.hs, /^v\d+$/.test(e.hs) && HV50[Number(e.hs.slice(1)) - 1] && (t.hvp = HV50[Number(e.hs.slice(1)) - 1], t.hairStyle = "short")), e.hc !== void 0 && !Number.isNaN(e.hc) && (t.hair = e.hc, t.eye === void 0 && (t.eye = (((e.hc >> 16 & 255) + 40 > 255 ? 255 : (e.hc >> 16 & 255) + 40) << 16) | (((e.hc >> 8 & 255) + 40 > 255 ? 255 : (e.hc >> 8 & 255) + 40) << 8) | ((e.hc & 255) + 40 > 255 ? 255 : (e.hc & 255) + 40))), e.gear && (t.gear = e.gear), e.top && (t.head = e.top), e.mid && (t.mid = e.mid), e.low && (t.low = e.low), e.sx === "f" && (t.slim = true, e.hs || (t.hairStyle = "long")), e.bk && BACKS[e.bk] && (BACKS[e.bk].type === "cape" ? t.cape = BACKS[e.bk].c : BACKS[e.bk].type === "quiver" ? t.quiver = true : t.wingsBack = [BACKS[e.bk].c, BACKS[e.bk].c2]), t;
   }
   var z0 = /* @__PURE__ */ new Map(), D0 = /* @__PURE__ */ new Map(), Xl = class {
     constructor(t) {
@@ -16061,9 +16107,36 @@ function ROXQM(f, c, s, l, def) {
     onPointerUp = () => {
       this.drag = null, this.ptr.held = false, this.ptr.holdMove = false;
     };
+    monVoice(id, kind) {
+      let w = this.store.world, m = w?.monsters.find((q) => q.id === id);
+      if (!w || !m) return;
+      let now = this.clock, M = this._mv ?? (this._mv = /* @__PURE__ */ new Map()), last = M.get(id) ?? -1e9;
+      if (now - last < (kind === "hurt" ? 520 : 1500)) return;
+      M.set(id, now), this.sfx.voice(m.def, kind, m.id, Math.hypot(m.pos.x - w.player.pos.x, m.pos.y - w.player.pos.y));
+    }
+    voiceTick() {
+      let w = this.store.world;
+      if (!w || w.isDead() || this.store.paused) return;
+      let now = this.clock, S = this._ms ?? (this._ms = /* @__PURE__ */ new Map());
+      for (let m of w.monsters) {
+        if (m.state === "dead") continue;
+        let d = Math.hypot(m.pos.x - w.player.pos.x, m.pos.y - w.player.pos.y);
+        if (d > 950) continue;
+        let prev = S.get(m.id);
+        if (prev !== m.state) {
+          S.set(m.id, m.state);
+          if ((m.state === "chase" || m.state === "windup") && prev !== "chase" && prev !== "windup" && prev !== "charge" && prev !== "recover") { this.monVoice(m.id, "aggro"); continue; }
+        }
+        if (m.state === "idle" || m.state === "return") {
+          let nx = m._vn ?? (m._vn = now + 2500 + Math.random() * 7000);
+          if (now >= nx) { m._vn = now + 5000 + Math.random() * 9000; this.sfx.voice(m.def, "idle", m.id, d); }
+        }
+      }
+    }
     readInput() {
+      this.voiceTick();
       let t = this.store;
-      if (t.paused) {
+      if (t.paused || t.dialogue) {
         t.setMove(0, 0), t.setAttackHeld(false);
         return;
       }
@@ -16768,7 +16841,7 @@ function ROXQM(f, c, s, l, def) {
         a.sitting && (m.dx = 0, m.dy = 0, m.rot *= 0.3), nt(n, u, r.x + m.dx, r.y + 6 + m.dy - moff + jy2, l, $a * m.sx, $a * m.sy, m.rot);
         a.ps.equipment.headTop === "poring_saltitante" && !a.sitting && drawPoring(n, r.x + m.dx, r.y + 6 + m.dy - moff, 1, this.clock, s, l);
         if (mnt) {
-          let mw = ROXQM("corvo", s, i.moving ? Math.floor(i.phase * ea) : -1, atkM ? 1 : 0, { id: "montaria", color: 13209406 }), lun = atkM ? Math.sin(Math.min(1, (this.clock - i.atkAt) / Math.max(260, i.atkDur || 0)) * Math.PI) : 0;
+          let mw = ROXQM("corvo", s, i.moving ? Math.floor(i.phase * ea) : -1, atkM ? 1 : 0, { id: "montaria" + (a.ps.dye || 0), color: a.ps.dye || 13209406 }), lun = atkM ? Math.sin(Math.min(1, (this.clock - i.atkAt) / Math.max(260, i.atkDur || 0)) * Math.PI) : 0;
           mw && nt(n, mw, r.x, r.y + 10 - lun * 4, l, $a * (a.sitting ? 1.04 : 1) * (1 + lun * 0.08), $a * (a.sitting ? 0.78 : 1) * (1 - lun * 0.04));
         }
         a.ps.level >= 99 && this.epicFx(r.x, r.y, 1);
@@ -17207,7 +17280,7 @@ function ROXQM(f, c, s, l, def) {
       let a = this.store.world, n = this.store.getSnapshot().settings, o = a?.player.pos.x ?? 0, r = a?.player.pos.y ?? 0;
       for (let i of t) switch (i.type) {
         case "damage":
-          n.damageNumbers && (i.miss ? this.floatText(i.x, i.y, "Esquivou", "#ffffff", 13, 18) : i.target === "player" ? this.floatText(i.x, i.y, String(i.amount), "#ff2a2a", 18, 18) : (i.crit ? this.floatText(i.x, i.y, String(i.amount), "#ffe640", 34, 18, true) : this.floatText(i.x, i.y, String(i.amount), "#ffffff", 22, 18), this.comboText(i.id, i.x, i.y, i.amount))), i.miss || (this.sfx.play(i.target === "player" ? "hurt" : i.crit ? "crit" : "hit"), this.burst(i.x, i.y, i.crit ? 18 : 9, i.target === "player" ? ["#ff4a3a", "#ffb0a0"] : ["#fff6c8", "#ffd34d", "#ffffff"], i.crit ? 200 : 130, 2.2, 420, 300, 10), this.add({ k: "beam", x: i.x, y: i.y, x2: i.x, y2: i.y, color: i.target === "player" ? "255,80,60" : "255,230,170", width: 0, t0: this.clock, dur: 120 }), i.target === "monster" && this.light(i.x, i.y, 10, i.crit ? 130 : 80, i.crit ? "255,210,100" : "255,235,190", 0.9)), i.target === "player" && n.screenShake && !i.miss && (this.shake = { until: this.clock + 120, mag: 4 });
+          n.damageNumbers && (i.miss ? this.floatText(i.x, i.y, "Esquivou", "#ffffff", 13, 18) : i.target === "player" ? this.floatText(i.x, i.y, String(i.amount), "#ff2a2a", 18, 18) : (i.crit ? this.floatText(i.x, i.y, String(i.amount), "#ffe640", 34, 18, true) : this.floatText(i.x, i.y, String(i.amount), "#ffffff", 22, 18), this.comboText(i.id, i.x, i.y, i.amount))), i.miss || (this.sfx.play(i.target === "player" ? "hurt" : i.crit ? "crit" : "hit"), i.target === "monster" && this.monVoice(i.id, "hurt"), this.burst(i.x, i.y, i.crit ? 18 : 9, i.target === "player" ? ["#ff4a3a", "#ffb0a0"] : ["#fff6c8", "#ffd34d", "#ffffff"], i.crit ? 200 : 130, 2.2, 420, 300, 10), this.add({ k: "beam", x: i.x, y: i.y, x2: i.x, y2: i.y, color: i.target === "player" ? "255,80,60" : "255,230,170", width: 0, t0: this.clock, dur: 120 }), i.target === "monster" && this.light(i.x, i.y, 10, i.crit ? 130 : 80, i.crit ? "255,210,100" : "255,235,190", 0.9)), i.target === "player" && n.screenShake && !i.miss && (this.shake = { until: this.clock + 120, mag: 4 });
           break;
         case "fx":
           this.showFx(i);
@@ -17237,6 +17310,7 @@ function ROXQM(f, c, s, l, def) {
           this.sfx.play("boss");
           break;
         case "kill":
+          { let km = a?.monsters.find((q) => q.def.id === i.monsterId); km && this.sfx.voice(km.def, "die", km.id, Math.hypot(i.x - o, i.y - r)); }
           this.ring(i.x, i.y, "#ffffff", 28), this.burst(i.x, i.y, 16, ["#e8e0c8", "#b8b0a0", "#ffffff"], 120, 3, 700, 200, 8);
           break;
         default:
@@ -17533,16 +17607,16 @@ function ROXQM(f, c, s, l, def) {
       let m = f ? $(f.id) : void 0;
       return (0, X.jsx)("button", { role: "listitem", className: `cell${o === u ? " sel" : ""}${f ? "" : " empty"}`, style: m ? { borderColor: so[m.rarity] } : void 0, draggable: m?.kind === "consumable" || m?.kind === "ammo", onDragStart: (p) => {
         (m?.kind === "consumable" || m?.kind === "ammo") && (p.dataTransfer.setData(Qr, JSON.stringify({ t: "item", id: m.id })), p.dataTransfer.effectAllowed = "copy");
-      }, onClick: () => r(f ? u : null), "aria-label": m ? `${m.name} x${f?.qty}` : "Slot vazio", children: m && (0, X.jsxs)(X.Fragment, { children: [(0, X.jsx)(Aa, { id: m.id, size: 36 }), f.qty > 1 && (0, X.jsx)("i", { className: "qty", children: f.qty })] }) }, u);
+      }, onClick: () => r(f ? u : null), onDoubleClick: () => { m && Pt(m.kind) && (j.equipAt(u), r(null)); }, "aria-label": m ? `${m.name} x${f?.qty}` : "Slot vazio", children: m && (0, X.jsxs)(X.Fragment, { children: [(0, X.jsx)(Aa, { id: m.id, size: 36 }), f.qty > 1 && (0, X.jsx)("i", { className: "qty", children: f.qty })] }) }, u);
     }) }), (0, X.jsx)("aside", { className: "detail", children: c && l && o !== null ? (0, X.jsxs)(X.Fragment, { children: [(0, X.jsxs)("h3", { style: { color: so[c.rarity] }, children: [(0, X.jsx)(Aa, { id: c.id, size: 40 }), " ", c.name] }), (0, X.jsx)("small", { children: Ev(c) }), (0, X.jsx)("p", { children: c.desc }), d && !Ml(i, c).ok && (0, X.jsx)("p", { className: "error", children: Ml(i, c).msg }), (0, X.jsxs)("div", { className: "row wrap", children: [c.kind === "consumable" && (0, X.jsx)("small", { className: "muted", children: "Arraste para a barra F1\u2013F12." }), c.kind === "consumable" && (0, X.jsx)("button", { className: "btn btn-primary btn-small", onClick: () => j.useItemAt(o), children: "Usar" }), c.kind === "ammo" && (0, X.jsx)("small", { className: "muted", children: "Arraste para a barra F1\u2013F12: a tecla troca a flecha da aljava." }), c.kind === "ammo" && (0, X.jsx)("button", { className: "btn btn-primary btn-small", onClick: () => j.useItemAt(o), children: i.ammo === c.id ? "Na aljava" : "Equipar na aljava" }), d && (0, X.jsx)("button", { className: "btn btn-primary btn-small", onClick: () => {
       j.equipAt(o), r(null);
     }, children: "Equipar" }), c.kind !== "quest" && (0, X.jsx)("button", { className: "btn btn-small", onClick: () => {
-      j.discardAt(o, 1), l.qty <= 1 && r(null);
-    }, children: "Descartar 1" }), c.kind !== "quest" && l.qty > 1 && (0, X.jsx)("button", { className: "btn btn-small", onClick: () => {
-      window.confirm(`Descartar todos os ${l.qty} de ${c.name}?`) && (j.discardAt(o, l.qty), r(null));
-    }, children: "Descartar tudo" })] }), c.kind === "quest" && (0, X.jsx)("small", { className: "muted", children: "Item de quest: n\xE3o pode ser descartado." })] }) : (0, X.jsx)("p", { className: "muted", children: "Selecione um item." }) })] }), a === "char" && (0, X.jsxs)("div", { className: "equip-wrap", children: [(0, X.jsx)(zS, {}), (0, X.jsxs)("div", { className: "char", children: [(0, X.jsxs)("section", { children: [(0, X.jsx)("h3", { children: "Equipamento" }), vl.map((f) => {
+      j.dropAt(o, 1), l.qty <= 1 && r(null);
+    }, children: "Largar 1 no chão" }), c.kind !== "quest" && l.qty > 1 && (0, X.jsx)("button", { className: "btn btn-small", onClick: () => {
+      j.dropAt(o, l.qty), r(null);
+    }, children: "Largar tudo" })] }), c.kind === "quest" && (0, X.jsx)("small", { className: "muted", children: "Item de quest: n\xE3o pode ser descartado." })] }) : (0, X.jsx)("p", { className: "muted", children: "Selecione um item." }) })] }), a === "char" && (0, X.jsxs)("div", { className: "equip-wrap", children: [(0, X.jsx)(zS, {}), (0, X.jsxs)("div", { className: "char", children: [(0, X.jsxs)("section", { children: [(0, X.jsx)("h3", { children: "Equipamento" }), vl.map((f) => {
       let u = i.equipment[f] ? $(i.equipment[f]) : void 0;
-      return (0, X.jsxs)("div", { className: "eq-row", children: [(0, X.jsxs)("span", { className: "muted eq-ico", children: [u ? (0, X.jsx)(Aa, { id: u.id, size: 32 }) : (0, X.jsx)(sr, { name: `slot_${f}`, size: 32 }), NS[f]] }), (0, X.jsx)("div", { children: u ? (0, X.jsxs)(X.Fragment, { children: [(0, X.jsx)("b", { style: { color: so[u.rarity] }, children: u.name }), (0, X.jsxs)("small", { children: [Vp(u.bonus).join(" \xB7 "), i.cards[u.id]?.length ? ` \xB7 Cartas: ${i.cards[u.id].map((m) => $(m)?.name).join(", ")}` : ""] })] }) : (0, X.jsx)("i", { className: "muted", children: "vazio" }) }), u && (0, X.jsx)("button", { className: "btn btn-small", onClick: () => j.unequipSlot(f), children: "Remover" })] }, f);
+      return (0, X.jsxs)("div", { className: "eq-row", title: u ? "Duplo clique para desequipar" : void 0, onDoubleClick: u ? () => j.unequipSlot(f) : void 0, children: [(0, X.jsxs)("span", { className: "muted eq-ico", children: [u ? (0, X.jsx)(Aa, { id: u.id, size: 32 }) : (0, X.jsx)(sr, { name: `slot_${f}`, size: 32 }), NS[f]] }), (0, X.jsx)("div", { children: u ? (0, X.jsxs)(X.Fragment, { children: [(0, X.jsx)("b", { style: { color: so[u.rarity] }, children: u.name }), (0, X.jsxs)("small", { children: [Vp(u.bonus).join(" \xB7 "), i.cards[u.id]?.length ? ` \xB7 Cartas: ${i.cards[u.id].map((m) => $(m)?.name).join(", ")}` : ""] })] }) : (0, X.jsx)("i", { className: "muted", children: "vazio" }) }), u && (0, X.jsx)("button", { className: "btn btn-small", onClick: () => j.unequipSlot(f), children: "Remover" })] }, f);
     }), jr(i) && (0, X.jsxs)("div", { className: "eq-row", children: [(0, X.jsx)("span", { className: "muted", children: "Aljava" }), (0, X.jsx)("div", { children: i.ammo && $(i.ammo) ? (0, X.jsxs)(X.Fragment, { children: [(0, X.jsx)("b", { children: $(i.ammo)?.name }), (0, X.jsxs)("small", { children: [ry(i), " flechas \xB7 elemento ", $(i.ammo)?.element ?? "neutro"] })] }) : (0, X.jsx)("i", { className: "muted", children: "vazia \u2014 equipe uma flecha pelo invent\xE1rio" }) })] })] }), (0, X.jsxs)("section", { children: [(0, X.jsx)("h3", { children: "Pontos" }), (0, X.jsxs)("p", { className: "muted", children: [i.statPoints, " de atributo \xB7 ", i.skillPoints, " de habilidade. Use as janelas Atributos (T) e Habilidades (L)."] }), (0, X.jsxs)("div", { className: "row wrap", children: [(0, X.jsx)("button", { className: "btn btn-small", onClick: () => j.togglePanel("stats"), children: "Atributos" }), (0, X.jsx)("button", { className: "btn btn-small", onClick: () => j.togglePanel("skills"), children: "Habilidades" })] })] }), (0, X.jsxs)("section", { children: [(0, X.jsx)("h3", { children: "Combate" }), (0, X.jsxs)("ul", { className: "derived", children: [(0, X.jsxs)("li", { children: ["Vida m\xE1x.: ", (0, X.jsx)("b", { children: s.maxHp })] }), (0, X.jsxs)("li", { children: ["Mana m\xE1x.: ", (0, X.jsx)("b", { children: s.maxMp })] }), (0, X.jsxs)("li", { children: ["Ataque: ", (0, X.jsx)("b", { children: s.atk })] }), (0, X.jsxs)("li", { children: ["Ataque m\xE1gico: ", (0, X.jsx)("b", { children: s.matk })] }), (0, X.jsxs)("li", { children: ["Defesa: ", (0, X.jsx)("b", { children: s.def })] }), (0, X.jsxs)("li", { children: ["Cr\xEDtico: ", (0, X.jsxs)("b", { children: [(s.crit * 100).toFixed(1), "%"] })] }), (0, X.jsxs)("li", { children: ["Esquiva: ", (0, X.jsxs)("b", { children: [(s.dodge * 100).toFixed(1), "%"] })] }), (0, X.jsxs)("li", { children: ["Velocidade: ", (0, X.jsx)("b", { children: Math.round(s.speed) })] })] })] })] })] }), a === "quests" && (0, X.jsx)("div", { className: "quests", children: Object.values(Or).map((f) => {
       let u = tn(i, f.id);
       return u === "locked" ? null : (0, X.jsxs)("article", { className: `quest quest-${u}`, children: [(0, X.jsxs)("header", { children: [(0, X.jsx)("strong", { children: f.name }), (0, X.jsx)("small", { children: { available: "Dispon\xEDvel", active: "Em andamento", ready: "Pronta para entregar", done: "Conclu\xEDda", locked: "" }[u] })] }), (0, X.jsx)("p", { children: f.summary }), (u === "active" || u === "ready") && Fu(i, f.id).map((m, p) => (0, X.jsxs)("small", { children: [m.label, ": ", m.have, "/", m.need] }, p)), u === "available" && (0, X.jsxs)("small", { className: "muted", children: ["Fale com ", f.giver === "eira" ? "Eira" : f.giver, " na vila."] })] }, f.id);
@@ -17747,7 +17821,7 @@ function ROXQM(f, c, s, l, def) {
       return () => clearTimeout(b);
     }, [u, c]), !t || !f) return null;
     let m = Hp(t, { hairStyle: n, hairColor: r, dye: s }), p = { hs: t.style?.hairStyle, hc: t.style?.hairColor };
-    return (0, Ye.jsx)("div", { className: "overlay", role: "dialog", "aria-modal": "true", "aria-label": "Estilista", children: (0, Ye.jsxs)("div", { className: "panel stylist", children: [(0, Ye.jsxs)("header", { className: "panel-head", children: [(0, Ye.jsx)("h2", { children: "Espelho da Estilista" }), (0, Ye.jsx)("button", { className: "btn btn-small", onClick: () => j.closePanel(), "aria-label": "Fechar", children: "\u2715" })] }), (0, Ye.jsxs)("div", { className: "sty-body", children: [(0, Ye.jsxs)("div", { className: "sty-prev", children: [(0, Ye.jsx)("canvas", { ref: a, width: 220, height: 300, "aria-label": "Pr\xE9via" }), (0, Ye.jsx)("button", { className: "btn btn-small", onClick: () => d((h) => h === "down" ? "dq" : h === "dq" ? "side" : h === "side" ? "uq" : h === "uq" ? "up" : "down"), children: "\u27F3 Girar" })] }), (0, Ye.jsxs)("div", { className: "sty-opts", children: [(0, Ye.jsx)("h4", { children: "Corte" }), (0, Ye.jsx)("div", { className: "sty-row", children: zp.map((h) => (0, Ye.jsx)("button", { className: `btn btn-small${n === h.id || !n && h.id === "short" && !p.hs ? " on" : ""}`, onClick: () => o(h.id), children: h.name }, h.id)) }), (0, Ye.jsx)("h4", { children: "Cor do cabelo" }), (0, Ye.jsx)("div", { className: "sty-sw", children: Dp.map((h) => (0, Ye.jsx)("button", { className: `sw${r === h ? " on" : ""}`, style: { background: Q0(h) }, onClick: () => i(h), "aria-label": `Cabelo ${Q0(h)}` }, h)) }), (0, Ye.jsx)("h4", { children: "Cor da roupa" }), (0, Ye.jsx)("div", { className: "sty-sw", children: Op.map((h) => (0, Ye.jsx)("button", { className: `sw${s === h ? " on" : ""}${h === 0 ? " orig" : ""}`, style: h ? { background: Q0(h) } : void 0, onClick: () => l(h), "aria-label": h ? `Roupa ${Q0(h)}` : "Cor original", children: h === 0 ? "\u2300" : "" }, h)) })] })] }), (0, Ye.jsxs)("footer", { className: "sty-foot", children: [(0, Ye.jsxs)("span", { children: ["Custo: ", (0, Ye.jsx)("b", { children: m }), " Zens \xB7 voc\xEA tem ", (0, Ye.jsx)("b", { children: t.silver })] }), (0, Ye.jsxs)("span", { children: [(0, Ye.jsx)("button", { className: "btn btn-small", onClick: () => {
+    return (0, Ye.jsx)("div", { className: "overlay", role: "dialog", "aria-modal": "true", "aria-label": "Estilista", children: (0, Ye.jsxs)("div", { className: "panel stylist", children: [(0, Ye.jsxs)("header", { className: "panel-head", children: [(0, Ye.jsx)("h2", { children: "Espelho da Estilista" }), (0, Ye.jsx)("button", { className: "btn btn-small", onClick: () => j.closePanel(), "aria-label": "Fechar", children: "\u2715" })] }), (0, Ye.jsxs)("div", { className: "sty-body", children: [(0, Ye.jsxs)("div", { className: "sty-prev", children: [(0, Ye.jsx)("canvas", { ref: a, width: 220, height: 300, "aria-label": "Pr\xE9via" }), (0, Ye.jsx)("button", { className: "btn btn-small", onClick: () => d((h) => h === "down" ? "dq" : h === "dq" ? "side" : h === "side" ? "uq" : h === "uq" ? "up" : "down"), children: "\u27F3 Girar" })] }), (0, Ye.jsxs)("div", { className: "sty-opts", children: [(0, Ye.jsx)("h4", { children: "Corte" }), (0, Ye.jsx)("div", { className: "sty-row sty-grid", children: zp.filter((h) => h.id !== "short" && h.id !== "long").map((h) => (0, Ye.jsx)("button", { className: `btn btn-small${n === h.id || !n && h.id === "v1" && !p.hs ? " on" : ""}`, onClick: () => o(h.id), children: h.name }, h.id)) }), (0, Ye.jsx)("h4", { children: "Cor do cabelo" }), (0, Ye.jsx)("div", { className: "sty-sw", children: Dp.map((h) => (0, Ye.jsx)("button", { className: `sw${r === h ? " on" : ""}`, style: { background: Q0(h) }, onClick: () => i(h), "aria-label": `Cabelo ${Q0(h)}` }, h)) }), (0, Ye.jsx)("h4", { children: "Cor da roupa" }), (0, Ye.jsx)("div", { className: "sty-sw", children: Op.map((h) => (0, Ye.jsx)("button", { className: `sw${s === h ? " on" : ""}${h === 0 ? " orig" : ""}`, style: h ? { background: Q0(h) } : void 0, onClick: () => l(h), "aria-label": h ? `Roupa ${Q0(h)}` : "Cor original", children: h === 0 ? "\u2300" : "" }, h)) })] })] }), (0, Ye.jsxs)("footer", { className: "sty-foot", children: [(0, Ye.jsxs)("span", { children: ["Custo: ", (0, Ye.jsx)("b", { children: m }), " Zens \xB7 voc\xEA tem ", (0, Ye.jsx)("b", { children: t.silver })] }), (0, Ye.jsxs)("span", { children: [(0, Ye.jsx)("button", { className: "btn btn-small", onClick: () => {
       o(t.style?.hairStyle), i(t.style?.hairColor), l(t.dye);
     }, children: "Desfazer" }), " ", (0, Ye.jsx)("button", { className: "btn btn-primary", disabled: m === 0 || t.silver < m, onClick: () => {
       j.applyStyleChange({ hairStyle: n, hairColor: r, dye: s }) && j.closePanel();

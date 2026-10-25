@@ -172,3 +172,10 @@
 - Montaria: senta junto com o personagem; exige a habilidade Montaria (NPC Montaria); portal de saída devolve ao mesmo portal de entrada.
 - Estátuas só em algumas cidades; visual aparece no inventário e no Alt+Q; quests só no Alt+G; Alt+C substitui Ctrl+C.
 - Cada cidade ganhou traçado e marcos próprios (anel, porto, zigue-zague, dunas, forja, espiral, colunata, jardim, feira, sol, cemitério).
+
+## v116
+- Ao falar com um NPC o personagem fica parado (sem andar/atacar/cliques de movimento) até fechar o diálogo.
+- Estilista: cor da roupa também tinge a montaria; 50 cortes de cabelo (curtos e longos: coques, tranças, rabos, moicano, afro, dreads...); sobrancelhas e olhos acompanham a cor do cabelo.
+- Inventário: "Largar no chão" (itens caem à frente do personagem, sem recolher na hora); duplo clique equipa (inventário) e desequipa (Alt+Q).
+- Janelas Alt+Q/E/S/A/G reduzidas a 50%.
+- Sons por espécie de monstro (lobo, javali, goblin, morto-vivo, gigante, gelatina, lagarto, máquina, pedra, vazio, planta): voz ociosa, ao notar o jogador, ao ser atingido e ao morrer; volume por distância.

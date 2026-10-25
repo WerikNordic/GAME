@@ -141,3 +141,5 @@ main.title .title-card .footer{color:#a9a38f}
 .pm-win .pm-log .me{color:#9fd8ff}.pm-win .pm-log .sys{color:#ffb8e6}
 .pm-win .pm-in{width:calc(100% - 12px);margin:0 6px 6px;background:#0007;border:1px solid #555;color:#fff;padding:4px 6px;border-radius:3px}
 .pm-win .pm-log .in{color:#ffd27a}
+.panel-float{transform:scale(.5);transform-origin:top left}
+.sty-grid{max-height:190px;overflow:auto;display:flex;flex-wrap:wrap;gap:4px}.sty-grid .btn{min-height:28px;padding:3px 7px;font-size:11.5px}
