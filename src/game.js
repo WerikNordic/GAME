@@ -13413,7 +13413,7 @@ void main() {
     }
     return { w: t.w, h: t.h, data: ae };
   }
-  typeof location < 'u' && location.search.includes('debug') && (window.__game = () => ({ j, Ce, Jy, Rb, Cc, _p, Ua, en, Jt }), window.__sprDbg = () => ({ hh, R4, ea }));
+  typeof location < 'u' && location.search.includes('debug') && (window.__game = () => ({ j, Ce, Jy, Rb, Cc, _p, Ua, en, Jt, nr }), window.__sprDbg = () => ({ hh, R4, ea, ROXQM }));
   var c4 = [1, -1, 0, 0, 1, -1, 1, -1], u4 = [0, 0, 1, -1, 1, -1, -1, 1];
   function d4(e, t, a, n) {
     let o = A.RX(a).mul(A.RY(t)), r = o.r, i = 1e9, s = -1e9, l = 1e9, c = -1e9;
@@ -14341,6 +14341,16 @@ void main() {
   }
   var uo = { lw: 80, lh: 112, lax: 40, lay: 100, pxu: 30 }, vE = { ax: uo.lax, ay: uo.lay };
 /*__ROX__*/
+var QCACHE = /* @__PURE__ */ new Map();
+function ROXQM(f, c, s, l, def) {
+  if (!["wolf", "frostwolf", "hati", "boar", "yeti", "blob"].includes(f) || typeof ROX === "undefined" || typeof location < "u" && /[?&]old\b/.test(location.search)) return null;
+  let key = `${f}:${def.id}:${c}:${s}:${l}`, h = QCACHE.get(key);
+  if (h) return h;
+  let eyes = { wolf: 0xffc040, frostwolf: 0x80e0ff, hati: 0xe0f0ff, boar: 0xff5a4a, yeti: 0xff5050, blob: 0xffffff };
+  h = ROX({ quad: f, col: def.color, id: def.id, eye: def.id === "cao_magma" ? 0xff7a20 : eyes[f] }, c, s, l, "");
+  QCACHE.set(key, h);
+  return h;
+}
   function hh(e, t, a, n, o) {
     if (typeof ROX !== 'undefined' && !(typeof location < 'u' && /[?&]old\b/.test(location.search)) && e.pro !== false) return ROX(e, t, a, n, o);
     let r = p4(e, { phase: a < 0 ? 0 : a / 8, moving: a >= 0, lvl: n, style: o, sit: a === -2 }), i = A0(r, { w: uo.lw * Rt, h: uo.lh * Rt, ax: uo.lax * Rt, ay: uo.lay * Rt, pxu: uo.pxu * Rt, yaw: rh[t], pitch: S4, ss: e.pro === false ? fh : 1, outline: e.pro === false ? 1.1 : 1.6, inner: e.pro === false ? void 0 : 0.55 });
@@ -15902,7 +15912,7 @@ void main() {
       let n = this.store.world;
       if (!n) return;
       let o = this.ctx, r = ce(t.pos.x, t.pos.y), i = this.animOf(`m${t.id}`, t.pos.x, t.pos.y, a), s = i.moving ? Math.floor(i.phase * ea) : -1, l = t.state === "windup" ? 2 : t.state === "charge" ? 3 : 0, { dir: c, flip: d } = Kl(t.facing), f = t.def.shape, u, m = 1, p = d;
-      f === "goblin" || f === "draugr" || f === "cinder" || f === "automaton" || f === "sylvan" || f === "prism" || f === "sentinel" || f === "voidling" ? u = Xr(f, c, s, l) ?? fa(f, c, s, l) : (u = Xr(f, c, s, l) ?? us(f, s, l, c), p = mo ? d : Xi(t.facing).x < 0);
+      f === "goblin" || f === "draugr" || f === "cinder" || f === "automaton" || f === "sylvan" || f === "prism" || f === "sentinel" || f === "voidling" ? u = Xr(f, c, s, l) ?? fa(f, c, s, l) : (u = ROXQM(f, c, s, l, t.def) ?? Xr(f, c, s, l) ?? us(f, s, l, c), p = mo ? d : Xi(t.facing).x < 0);
       let h = `${f}:${c}:${s}:${l}`;
       t.def.boss && f === "jotun" && t.def.id !== "hrimgar" && (u = ds(u, `bs${t.def.id}:${s}:${l}`, t.def.color, 0.78)), t.state === "windup" ? u = ds(u, h, 16724016, 0.5) : n.time < t.stunUntil ? u = ds(u, h, 16769126, 0.5) : n.time < t.slowUntil ? u = ds(u, h, 7321855, 0.45) : t.phase === 2 && (u = ds(u, h, 16736352, 0.28)), t.state === "charge" && (m *= 1.08);
       let x = this.hover?.kind === "monster" && this.hover.id === t.id;

@@ -13572,7 +13572,7 @@ void main() {
     }
     return { w: t.w, h: t.h, data: ae };
   }
-  typeof location < 'u' && location.search.includes('debug') && (window.__game = () => ({ j, Ce, Jy, Rb, Cc, _p, Ua, en, Jt }), window.__sprDbg = () => ({ hh, R4, ea }));
+  typeof location < 'u' && location.search.includes('debug') && (window.__game = () => ({ j, Ce, Jy, Rb, Cc, _p, Ua, en, Jt, nr }), window.__sprDbg = () => ({ hh, R4, ea, ROXQM }));
   var c4 = [1, -1, 0, 0, 1, -1, 1, -1], u4 = [0, 0, 1, -1, 1, -1, -1, 1];
   function d4(e, t, a, n) {
     let o = A.RX(a).mul(A.RY(t)), r = o.r, i = 1e9, s = -1e9, l = 1e9, c = -1e9;
@@ -14545,18 +14545,19 @@ var ROX = (() => {
     const RB = CP[e.cls] ? Math.max(0, (e.ti || 0) - 2) : 0;
     const ACC = { berserker: 0xff5a3a, escudeiro: 0xffc040, cacador: 0x4adf7a, volva: 0xb070ff, valquiria: 0x6ad0ff, skald: 0x9a7aff, thay: 0xff7a2a }[e.cls] || 0xffd860;
     const prof = CP[e.cls] || NP || { k: 1.3, wx: 1, tw: 1, lg: 1, hair: "", sit: "" };
-    const K = prof.k, WX = prof.wx, hsty = prof.hair;
+    const QK = { wolf: 1.6, frostwolf: 1.6, hati: 2.5, boar: 1.7, yeti: 1.6, blob: 2.0 };
+    const K = e.quad ? (QK[e.quad] ?? 1.3) : prof.k, WX = prof.wx, hsty = prof.hair;
     const yawT = { down: 0, dq: Math.PI / 4, side: Math.PI / 2, uq: Math.PI * 3 / 4, up: Math.PI };
     const th = yawT[dir] ?? 0, cth = Math.cos(th), sth = Math.sin(th);
     const walking = frame >= 0, sit = frame === -2;
-    const ph = walking ? (frame / 12) * Math.PI * 2 : 0;
+    const ph = walking ? (frame / (typeof ea === "number" ? ea : 12)) * Math.PI * 2 : 0;
     const buf = new Array(SW * SH).fill(null);
     const put = (x, y, c) => { x |= 0; y |= 0; if (x < 0 || y < 0 || x >= SW || y >= SH) return; buf[y * SW + x] = c; };
     const sx = (x, z) => AX + (x * cth * WX + z * sth) * K;
     const sy = (y) => AY + (y - 98) * K - (sit ? -6 : 0);
     const dp = (x, z) => z * cth - x * sth;
     const parts = [];
-    const add = (d, fn) => parts.push({ d, fn });
+    let add = (d, fn) => parts.push({ d, fn });
     const cls = e.cls;
     const P = (h) => ramp(h);
     const hairR = (h) => { const b = hexc(h), lum = (b[0] * .3 + b[1] * .59 + b[2] * .11) / 255, s2 = lum < .3 ? 1.6 : 1.22; const bb = b.map((v) => Math.min(255, v * s2)); return [mixc(bb, [60, 20, 40], .5), mixc(bb, [60, 20, 40], .26), bb, mixc(bb, [255, 236, 170], .3), mixc(bb, [255, 250, 210], .6)]; }, skinR = (h) => { const b = hexc(h), sh = [150, 70, 80], hi = [255, 240, 220]; return [mixc(b, sh, .42), mixc(b, sh, .2), mixc(b, [255,220,200], .06), mixc(b, hi, .35), mixc(b, hi, .6)]; }, skin = skinR(e.skin ?? 15780008), hair = hairR(e.hair ?? 9058850), tunic = P(e.tunic ?? 9054758), trim = P(e.trim ?? 15254090), pants = P(((e.pants ?? 5914414) & 0xfefefe) / 2 + 0x606060 | 0), boots = P(e.boots ?? 3876120);
@@ -14595,15 +14596,61 @@ var ROX = (() => {
     const E3 = (x, y, z, rx, ry, rz, rm, bias = 0) => add(dp(x, z), () => ellS(sx(x, z), sy(y), bodyW(rx, rz), ry * K, rm, bias, Math.sign(cth) || 1));
     const C3 = (x0, y0, z0, x1, y1, z1, r0, r1, rm, bias = 0) => add((dp(x0, z0) + dp(x1, z1)) / 2, () => capS(sx(x0, z0), sy(y0), sx(x1, z1), sy(y1), r0 * K, r1 * K, rm, bias));
     const POLY3 = (pts3, fn, dOff = 0) => { let d = 0; pts3.forEach((p) => d += dp(p[0], p[2])); add(d / pts3.length + dOff, () => polyS(pts3.map((p) => [sx(p[0], p[2]), sy(p[1])]), fn)); };
+    // ---------- QUADRÚPEDES / CRIATURAS (monstros) ----------
+    if (e.quad) {
+      const QD = e.quad, col = e.col ?? 0x808080, lt = (c, t) => { const m = mixc(hexc(c), [255, 255, 255], t); return (m[0] << 16 | m[1] << 8 | m[2]) | 0; };
+      const fur = P(col), furL = P(lt(col, .4)), furD = P((col >> 1) & 0x7f7f7f), dark = P(0x2a2028), white = P(0xffffff), eyeR = P(e.eye ?? 0xffc040), paw = P(0x40343c);
+      const atkq = lvl > 0, hz = atkq ? 5 : 0, wob = walking ? Math.abs(Math.cos(ph)) * 1.2 : 0, wag = walking ? Math.sin(ph * 2) * 3 : 0;
+      const quadLegs = (len, thick, zs, lx) => { for (const zi of zs) for (const side of [-1, 1]) { const p2 = ph + (side * zi > 0 ? 0 : Math.PI), swq = walking ? Math.sin(p2) * 7 : 0, lf = walking ? Math.max(0, -Math.cos(p2)) * 4 : 0, x = side * lx; C3(x, 98 - len, zi, x, 97 - lf, zi + swq, thick, thick * .7, fur); E3(x, 98 - lf, zi + swq + 1.5, thick * .9, 2, thick * 1.1, paw); if (zi < 0) E3(x, 98 - len + 1, zi, thick * 1.3, len * .5, thick * 1.5, fur); } };
+      if (QD === "wolf" || QD === "frostwolf" || QD === "hati") {
+        E3(0, 80 - wob, -1, 8.6, 8.8, 15, fur); E3(0, 79 - wob, 8, 7.8, 8.6, 8, fur, .05); E3(0, 83 - wob, -9, 7.2, 7.2, 7, fur, -.04); E3(0, 86 - wob, 1, 5.2, 3.4, 11, furL);
+        if (QD === "hati") E3(0, 76 - wob, 11, 9.4, 9, 5.4, furL, .06);
+        quadLegs(15, 3.6, [9, -9], 5.4);
+        C3(0, 78 - wob, 10, 0, 71, 16 + hz * .6, 6.2, 5.4, fur); E3(0, 69.5, 18 + hz, 6.4, 5.9, 6.5, fur);
+        C3(0, 72, 21 + hz, 0, 73, 29 + hz, 4.3, 3, furL); E3(0, 72, 29.8 + hz, 2.1, 1.8, 1.8, dark);
+        if (atkq) { C3(0, 74.8, 22 + hz, 0, 78.4, 28 + hz, 2.5, 1.6, dark); for (const sd of [-1, 1]) E3(sd * 1.8, 75, 28.4 + hz, .7, 1.2, .7, white); }
+        for (const sd of [-1, 1]) { E3(sd * 3.9, 67.6, 22.8 + hz, 1.5, 1.3, 1.1, eyeR, .25); POLY3([[sd * 2.4, 63, 16 + hz], [sd * 7.2, 63, 17 + hz], [sd * 5.6, 53.5 - (QD === "hati" ? 3 : 0), 15 + hz]], (x, y) => rampAt(fur, .6 + (BAY[y & 3][x & 3]) * .12), .3); POLY3([[sd * 3.4, 62.5, 16.6 + hz], [sd * 6, 62.5, 17 + hz], [sd * 5.2, 57, 16 + hz]], (x, y) => rampAt(P(0xd08a90), .5), .32); }
+        C3(0, 77, -14, wag * .5, 71, -25, 3.2, 1.9, fur); E3(wag, 70, -27, 2.6, 2.6, 3.8, furL);
+        for (let i = 0; i < 6; i++) { const z = 11 - i * 4.4, sp = QD === "frostwolf" ? P(0xcfeaff) : furL, h = QD === "frostwolf" ? 9 : 6; POLY3([[-2, 72, z], [2, 72, z], [0, 72 - h, z - 2.4]], (x, y) => rampAt(sp, .7 - (y - sy(72 - h)) * .02), .4); }
+        if (e.id === "cao_magma") add(dp(0, 0) + .45, () => { for (const [a1, b1, a2, b2] of [[-8, 76, 4, 80], [-3, 84, 6, 74], [2, 80, 8, 86]]) lineS(sx(a1 * .6, a2 - 6), sy(b1), sx(a2 * .6, a2 - 2), sy(b2), [255, 150, 40]); });
+      } else if (QD === "boar") {
+        E3(0, 78 - wob, 0, 10.6, 10.6, 14, fur); E3(0, 72 - wob, 6, 8.4, 6.2, 7.6, furD); E3(0, 86 - wob, 1, 6.4, 3.6, 10, furL);
+        quadLegs(12, 4.2, [8, -8], 6.4);
+        E3(0, 76, 17 + hz, 8, 7.6, 7.6, fur); E3(0, 78, 24 + hz, 4.8, 4.2, 3, P(0xd9a0a0)); for (const sd of [-1, 1]) { E3(sd * 1.8, 78, 26.6 + hz, .8, .9, .6, dark); C3(sd * 4.2, 79, 23 + hz, sd * 5.4, 73.5, 26 + hz, 1.3, .5, white); E3(sd * 4.8, 72.5, 20 + hz, 1.2, 1.1, 1, P(0xff5a4a), .2); POLY3([[sd * 3, 68.5, 15 + hz], [sd * 7.4, 69, 16 + hz], [sd * 6.6, 62, 15 + hz]], (x, y) => rampAt(furD, .5), .3); }
+        for (let i = 0; i < 6; i++) { const z = 9 - i * 3.6; POLY3([[-2.4, 70 - wob, z], [2.4, 70 - wob, z], [0, 63, z - 2]], (x, y) => rampAt(dark, .8 - (y - sy(63)) * .03), .4); }
+        C3(0, 76, -13, 2 + wag * .3, 72, -17, 1.6, 1, furD);
+      } else if (QD === "yeti") {
+        const lf = (sd) => walking ? Math.max(0, -Math.cos(ph + (sd > 0 ? 0 : Math.PI))) * 4 : 0, sw1 = (sd) => walking ? Math.sin(ph + (sd > 0 ? 0 : Math.PI)) * 6 : 0;
+        for (const sd of [-1, 1]) { C3(sd * 6.4, 76, 0, sd * 6.8, 96 - lf(sd), sw1(sd), 6.8, 5.2, fur); E3(sd * 6.8, 97 - lf(sd), sw1(sd) + 3, 6.6, 3.2, 7.6, furD); }
+        E3(0, 58 - wob, 0, 15.6, 19.6, 11.6, fur); E3(0, 62 - wob, 5, 10, 12, 6, furL, .08);
+        for (const sd of [-1, 1]) { const ax2 = atkq ? 12 : -sw1(sd) * .9, ay2 = atkq ? 44 : 70; C3(sd * 15.6, 46, 0, sd * 21, ay2 - 8, ax2 * .5, 6.2, 5.4, fur); C3(sd * 21, ay2 - 8, ax2 * .5, sd * 21.4, ay2, ax2, 5.6, 5.8, fur); E3(sd * 21.4, ay2 + 3, ax2, 6.2, 5.6, 6, furL, .05); for (let k = -1; k <= 1; k++) E3(sd * 21.4 + k * 3, ay2 + 8, ax2 + 1, 1.2, 2.4, 1.2, white); POLY3([[sd * 10, 44, 3], [sd * 20, 44, 3], [sd * 15, 36, 2]], (x, y) => rampAt(furL, .7), .3); }
+        E3(0, 38, 3 + hz * .4, 11.4, 10, 10.4, fur); E3(0, 39.5, 10.6 + hz * .4, 7.2, 6.2, 3, P(0x8ec8e8)); for (const sd of [-1, 1]) { E3(sd * 3.2, 37.4, 12.6 + hz * .4, 1.5, 1.3, 1, P(0xff4040), .25); C3(sd * 2.6, 44, 12 + hz * .4, sd * 3, 47, 12.4 + hz * .4, .8, .5, white); } C3(-6, 34.6, 11.2, 6, 34.6, 11.2, 1.8, 1.8, furD); E3(0, 44, 12 + hz * .4, 3.6, 1.1, 1.4, dark);
+        for (const sd of [-1, 1]) POLY3([[sd * 9.6, 30, 2], [sd * 12.6, 31, 2], [sd * 12, 22, 1]], (x, y) => rampAt(P(0xe8e0d0), .6), .35);
+      } else if (QD === "blob") {
+        const sq = walking ? Math.sin(ph * 2) * .6 : 0;
+        E3(0, 88 - wob, 0, 16 + sq, 12 - sq, 16 + sq, fur); E3(0, 90, 2, 12, 5, 13, furL, -.1);
+        for (let i = 0; i < 7; i++) { const an = i / 7 * Math.PI * 2, bx = Math.cos(an) * 8, bz = Math.sin(an) * 8; POLY3([[bx - 2.4, 80, bz], [bx + 2.4, 80, bz], [bx * 1.2, 70 - (i % 2) * 3, bz * 1.2]], (x, y) => rampAt(furL, .8 - (y - sy(70)) * .04), .5); }
+        for (const sd of [-1, 1]) { E3(sd * 5.4, 85, 13, 3.4, 3.8, 2.6, white); E3(sd * 5.4, 85.6, 14.8, 1.7, 2, 1.1, dark); }
+        E3(0, 92, 14, 5, 1.2, 1.4, dark); if (atkq) E3(0, 93, 14.4, 4.2, 2.4, 1.4, dark);
+      }
+      add = () => {};
+    }
     const front = cth > 0.12, back = cth < -0.12;
     const sw = walking ? Math.sin(ph) : 0, bob = walking ? Math.abs(Math.cos(ph)) * 1.2 : 0;
     const atk = lvl > 0 ? lvl : 0;
     // ---------- RENASCIDO: asas, auréola, brilho ----------
     if (RB) {
       const wn = RB >= 3 ? 5 : RB === 2 ? 4 : 3, wsw = walking ? Math.sin(ph) * 1.5 : 0;
-      if (RB >= 2) for (const side of [-1, 1]) for (let i = 0; i < wn; i++) {
-        const rm = i === wn - 1 ? accR : i % 2 ? P(0xfff0c0) : P(0xffffff), len = 14 + i * 8 + RB * 3;
-        add(dp(side * 7, -13) - 4 + i * .01, () => { const X0 = sx(side * 7, -13), Y0 = sy(46 - i * 1.4), X1 = sx(side * (14 + len * .8), -17), Y1 = sy(40 - i * 8 - RB * 3 - wsw); capS(X0, Y0, X1, Y1, 6.4 * K, 1.8 * K, rm, .06); lineS(X0, Y0, X1, Y1, rm[4]); });
+      if (RB >= 2) for (const side of [-1, 1]) for (let row = 0; row < 2; row++) for (let i = 0; i < wn; i++) {
+        const t = i / (wn - 1), ang = (-12 + t * 100) * Math.PI / 180, L = (row ? 30 : 40) * K + (RB - 2) * 12 * K + Math.sin(t * 3.1) * 10 * K * (row ? .6 : 1), W = (row ? 6 : 7.4) * K;
+        const rm = row ? accR : i === wn - 1 ? accR : i % 2 ? P(0xfff0c0) : P(0xf4f4ff);
+        add(dp(side * 7, -13) - 4 - row * .01 + i * .001, () => {
+          const X0 = sx(side * 8, -13), Y0 = sy(44 - row * 2), cx = side * Math.cos(ang), cy = -Math.sin(ang), nx = -cy, ny = cx, wv = walking ? Math.sin(ph) * .05 : 0;
+          const px = (u, v) => [X0 + (cx * u + nx * v) * 1, Y0 + (cy * u + ny * v)];
+          const pts = [px(0, -W * .35), px(L * .3, -W), px(L * .72, -W * .75), px(L * (1 + wv), 0), px(L * .72, W * .75), px(L * .3, W), px(0, W * .35)];
+          polyS(pts, (x, y) => { const q = ((x - X0) * cx + (y - Y0) * cy) / L; return rampAt(rm, .86 - q * .22 + (BAY[y & 3][x & 3]) * .1 - (i === wn - 1 ? 0 : 0)); });
+          lineS(X0, Y0, X0 + cx * L * .96, Y0 + cy * L * .96, rm[2]);
+        });
       }
       add(dp(0, 0) + .995, () => { const X = sx(0, -1), Y = sy(hdY - 25), rx = 12.5 * K * (.55 + .45 * Math.abs(cth)), ry = 3.4 * K; for (let a = 0; a < 90; a++) { const an = a / 90 * Math.PI * 2, c = Math.cos(an), sn = Math.sin(an); put(X + c * rx, Y + sn * ry, gold[3]); put(X + c * (rx - 1), Y + sn * (ry - .7), gold[4]); put(X + c * (rx + 1), Y + sn * (ry + .7), gold[1]); } if (RB >= 3) for (let a = 0; a < 90; a++) { const an = a / 90 * Math.PI * 2; put(X + Math.cos(an) * (rx + 4), Y + Math.sin(an) * (ry + 2) - 2, accR[3]); } });
       add(dp(0, 8) + .57, () => { if (!front) return; const X = sx(0, 8), Y = sy(51); ellS(X, Y, 3.6 * K * Math.abs(cth) + 1, 3.8 * K, accR, .1); put(X - 1, Y - 2, [255, 255, 255]); if (RB >= 2) { lineS(X - 8 * K * cth, sy(46), X - 2 * K, sy(52), gold[4]); lineS(X + 8 * K * cth, sy(46), X + 2 * K, sy(52), gold[4]); } });
@@ -14841,6 +14888,16 @@ var ROX = (() => {
   };
 })();
 
+var QCACHE = /* @__PURE__ */ new Map();
+function ROXQM(f, c, s, l, def) {
+  if (!["wolf", "frostwolf", "hati", "boar", "yeti", "blob"].includes(f) || typeof ROX === "undefined" || typeof location < "u" && /[?&]old\b/.test(location.search)) return null;
+  let key = `${f}:${def.id}:${c}:${s}:${l}`, h = QCACHE.get(key);
+  if (h) return h;
+  let eyes = { wolf: 0xffc040, frostwolf: 0x80e0ff, hati: 0xe0f0ff, boar: 0xff5a4a, yeti: 0xff5050, blob: 0xffffff };
+  h = ROX({ quad: f, col: def.color, id: def.id, eye: def.id === "cao_magma" ? 0xff7a20 : eyes[f] }, c, s, l, "");
+  QCACHE.set(key, h);
+  return h;
+}
   function hh(e, t, a, n, o) {
     if (typeof ROX !== 'undefined' && !(typeof location < 'u' && /[?&]old\b/.test(location.search)) && e.pro !== false) return ROX(e, t, a, n, o);
     let r = p4(e, { phase: a < 0 ? 0 : a / 8, moving: a >= 0, lvl: n, style: o, sit: a === -2 }), i = A0(r, { w: uo.lw * Rt, h: uo.lh * Rt, ax: uo.lax * Rt, ay: uo.lay * Rt, pxu: uo.pxu * Rt, yaw: rh[t], pitch: S4, ss: e.pro === false ? fh : 1, outline: e.pro === false ? 1.1 : 1.6, inner: e.pro === false ? void 0 : 0.55 });
@@ -16402,7 +16459,7 @@ var ROX = (() => {
       let n = this.store.world;
       if (!n) return;
       let o = this.ctx, r = ce(t.pos.x, t.pos.y), i = this.animOf(`m${t.id}`, t.pos.x, t.pos.y, a), s = i.moving ? Math.floor(i.phase * ea) : -1, l = t.state === "windup" ? 2 : t.state === "charge" ? 3 : 0, { dir: c, flip: d } = Kl(t.facing), f = t.def.shape, u, m = 1, p = d;
-      f === "goblin" || f === "draugr" || f === "cinder" || f === "automaton" || f === "sylvan" || f === "prism" || f === "sentinel" || f === "voidling" ? u = Xr(f, c, s, l) ?? fa(f, c, s, l) : (u = Xr(f, c, s, l) ?? us(f, s, l, c), p = mo ? d : Xi(t.facing).x < 0);
+      f === "goblin" || f === "draugr" || f === "cinder" || f === "automaton" || f === "sylvan" || f === "prism" || f === "sentinel" || f === "voidling" ? u = Xr(f, c, s, l) ?? fa(f, c, s, l) : (u = ROXQM(f, c, s, l, t.def) ?? Xr(f, c, s, l) ?? us(f, s, l, c), p = mo ? d : Xi(t.facing).x < 0);
       let h = `${f}:${c}:${s}:${l}`;
       t.def.boss && f === "jotun" && t.def.id !== "hrimgar" && (u = ds(u, `bs${t.def.id}:${s}:${l}`, t.def.color, 0.78)), t.state === "windup" ? u = ds(u, h, 16724016, 0.5) : n.time < t.stunUntil ? u = ds(u, h, 16769126, 0.5) : n.time < t.slowUntil ? u = ds(u, h, 7321855, 0.45) : t.phase === 2 && (u = ds(u, h, 16736352, 0.28)), t.state === "charge" && (m *= 1.08);
       let x = this.hover?.kind === "monster" && this.hover.id === t.id;
