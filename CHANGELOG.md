@@ -164,3 +164,4 @@
 - v109: pet (lobo, NPC Mestre dos Jogos) e montaria (grifo, NPC Montaria, só Berserker) separados; montaria ataca junto (dano só do personagem); cenário dos mapas de caça alinhado em pomares com corredores; aviso de item (ícone + nome) no topo da tela.
 - v110: Gelatina Saltitante agora pula continuamente na cabeça (animada).
 - v111: /montar, /desmontar e /pet; montaria e pet permanecem até o comando (inclusive após sair do jogo).
+- v112: Gelatina Saltitante 28% menor.

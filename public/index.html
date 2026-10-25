@@ -17347,7 +17347,7 @@ function ROXQM(f, c, s, l, def) {
         a.sitting && (m.dx = 0, m.dy = 0, m.rot *= 0.3), nt(n, u, r.x + m.dx, r.y + 6 + m.dy - (mnt ? 42 : 0) + jy2, l, $a * m.sx, $a * m.sy, m.rot);
         if (a.ps.equipment.headTop === "poring_saltitante" && !a.sitting) {
           let tt = (this.clock / 640) % 1, hop = Math.abs(Math.sin(tt * Math.PI)), land = 1 - hop, wd = 1 + land * 0.2 - hop * 0.1, ht = 1 - land * 0.2 + hop * 0.12, py = r.y + 6 + m.dy - (mnt ? 42 : 0) - 60 - hop * 15;
-          n.save(), n.translate(r.x + m.dx, py), n.scale(wd, ht);
+          n.save(), n.translate(r.x + m.dx, py + 2), n.scale(wd * 0.72, ht * 0.72);
           let gr = n.createRadialGradient(-3, -5, 1, 0, 0, 12); gr.addColorStop(0, "#ffd6e2"), gr.addColorStop(0.6, "#ff9cb8"), gr.addColorStop(1, "#e0688a");
           n.fillStyle = gr, n.strokeStyle = "#a83a60", n.lineWidth = 1.4, n.beginPath(), n.ellipse(0, 0, 11, 9, 0, 0, Math.PI * 2), n.fill(), n.stroke();
           n.fillStyle = "rgba(255,255,255,.7)", n.beginPath(), n.ellipse(-4, -4, 3, 1.8, -0.5, 0, Math.PI * 2), n.fill();
