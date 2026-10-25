@@ -146,3 +146,4 @@
 - v91: Aprendiz sem classe; Lider de Classe nas 7 cidades (escolha de classe no job 10, evolucao no job 50); renascimento no nivel 99 (volta ao 1, tiers 3-5, job 10 e 50 de novo). Barba do ferreiro menor.
 - v92: NPCs com nome da funcao; minimapa com icones e legenda por funcao; Teletransportador gratis com lista das 7 cidades; visual especial do renascido (aureola, gema, asas, brilho).
 - v93: asas de pena no renascido; ciclo de andar corrigido; monstros (lobos, javali, yeti, gosma, Hati) em pixel art no mesmo estilo dos personagens.
+- v94: login desligado temporariamente (AUTH_ON=false) para testes.

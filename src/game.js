@@ -10217,7 +10217,7 @@ Error generating stack: ` + n.message + `
         return { ok: true, msg: "" };
     }
   }
-  var AUTH_ON = true;
+  var AUTH_ON = false;
   try {
     window.__acct = window.localStorage.getItem("eldvar.session") || "", window.__tok = window.localStorage.getItem("eldvar.token") || "";
   } catch {
