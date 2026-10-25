@@ -28,9 +28,19 @@ var ROX = (() => {
     skald: { k: 1.24, wx: .9, tw: .88, lg: .86, hair: "fringe", sit: "lean" },
     thay: { k: 1.3, wx: 1, tw: 1.02, lg: 1, hair: "topknot", sit: "perch2" }
   };
+  const NPP = {
+    brokk: { t: 0, k: 1.4, wx: 1.2, tw: 1.26, lg: 1.2 }, torvald: { t: 0, k: 1.38, wx: 1.18, tw: 1.22, lg: 1.18 },
+    bruna: { t: 0, k: 1.3, wx: 1.06, tw: 1.04, lg: 1 }, munin: { t: 0, k: 1.2, wx: .9, tw: .86, lg: .9 },
+    sigrun: { t: 0, k: 1.22, wx: .9, tw: .86, lg: .9 }, cronista: { t: 0, k: 1.22, wx: .92, tw: .9, lg: .9 },
+    arauto: { t: 1, k: 1.34, wx: 1.04, tw: 1.04, lg: 1 }, questor: { t: 0, k: 1.28, wx: .96, tw: .94, lg: .94 },
+    ottar: { t: 1, k: 1.4, wx: 1.16, tw: 1.2, lg: 1.14 }, checkpoint: { t: 2, k: 1.42, wx: 1.18, tw: 1.24, lg: 1.16 },
+    eira: { t: 1, k: 1.3, wx: .96, tw: .94, lg: .96 }, ylva: { t: 0, k: 1.26, wx: .94, tw: .9, lg: .92 },
+    estilista: { t: 0, k: 1.26, wx: .9, tw: .86, lg: .9 }
+  };
   return function ROX(e, dir, frame, lvl, style) {
-    const T = CP[e.cls] ? (e.ti || 0) : 1;
-    const prof = CP[e.cls] || { k: 1.3, wx: 1, tw: 1, lg: 1, hair: "", sit: "" };
+    const NP = NPP[e.cls];
+    const T = CP[e.cls] ? (e.ti || 0) : NP ? NP.t : 1;
+    const prof = CP[e.cls] || NP || { k: 1.3, wx: 1, tw: 1, lg: 1, hair: "", sit: "" };
     const K = prof.k, WX = prof.wx, hsty = prof.hair;
     const yawT = { down: 0, dq: Math.PI / 4, side: Math.PI / 2, uq: Math.PI * 3 / 4, up: Math.PI };
     const th = yawT[dir] ?? 0, cth = Math.cos(th), sth = Math.sin(th);
@@ -240,6 +250,44 @@ var ROX = (() => {
         const pts = [[x0 - 4.6, y0, z0], [x0 + 4.6, y0, z0], [x0 + (x0 < 0 ? -1.4 : 1.4) * (i == 2 ? 0 : 1) + (i == 2 ? 1.2 : 0), y0 + len, z0 + 1]];
         add(dp(x0, z0) + .75, () => { if (cth < -0.1) return; polyS(pts.map((p) => [sx(p[0], p[2]), sy(p[1])]), (x, y) => rampAt(hair, .78 - (y - sy(y0)) * .03 + (hashn(x, y, 5) - .5) * .06)); lineS(sx(x0, z0), sy(y0 + 1), sx(pts[2][0], pts[2][2]), sy(y0 + len - 2), hair[1]); lineS(sx(x0 - 1.4, z0), sy(y0 + 2), sx(pts[2][0] - .6, pts[2][2]), sy(y0 + len - 4), hair[4]); }); });
       add(dp(0, 14) + .8, () => { if (cth < -.1) return; for (const [x0, y0, x1, y1] of [[-9, 4, -6, 9], [0, 3, 2, 8], [8, 4, 10, 9]]) lineS(sx(x0, 12), sy(hdY - y0 - 4), sx(x1, 12), sy(hdY - y1 - 4), hair[4]); });
+    }
+    // ---------- props e visual próprio dos NPCs ----------
+    if (NP) {
+      const id = e.cls, wd = P(0x8a5a30), steelP = P(0xb4bed2), parch = P(0xe8dcc0), dk = P(0x3a2416), hy0 = 69 - bob * .3;
+      const hand = (sd) => [sx(sd * 19.3, 0), sy(hy0)];
+      const apron = (rm, y0, y1, w) => add(dp(0, 10) + .66, () => { if (cth < -.2) return; polyS([[sx(-w, 8), sy(y0)], [sx(w, 8), sy(y0)], [sx(w + 2, 8), sy(y1)], [sx(-w - 2, 8), sy(y1)]], (x, y) => rampAt(rm, .55 - (y - sy(y0)) * .004 + BAY[y & 3][x & 3] * .12)); lineS(sx(-w + 1, 8), sy(y0), sx(-13, 2), sy(44), rm[1]); lineS(sx(w - 1, 8), sy(y0), sx(13, 2), sy(44), rm[1]); });
+      if (id === "brokk" || id === "torvald") {
+        apron(dk, 47, 90, 9.5);
+        add(dp(0, 14) + .97, () => { if (cth < -.2) return; ellS(sx(0, 10), sy(hdY + 15), bodyW(9.4, 7.5), 4.8 * K, hair, .02); lineS(sx(-6, 12), sy(hdY + 11), sx(6, 12), sy(hdY + 11), hair[3]); });
+        add(dp(19.3, 3) + .5, () => { const [X, Y] = hand(1); capS(X, Y, X + 3 * K, Y - 27 * K, 1.7 * K, 1.5 * K, wd); ellS(X + 3 * K, Y - 29 * K, 7 * K, 4.4 * K, steelP); lineS(X - 4 * K, Y - 31 * K, X + 10 * K, Y - 31 * K, steelP[4]); });
+      } else if (id === "bruna") {
+        add(dp(0, -14) + .1, () => { const X = sx(2, -14); ellS(X, sy(56), bodyW(13, 9), 15 * K, P(0xb08a50), 0); ellS(X, sy(40), 4.4 * K, 3.2 * K, P(0xb08a50), .1); lineS(X - 3, sy(46), X + 3, sy(46), P(0x6a4a24)[1]); });
+        apron(parch, 52, 91, 8.5);
+        add(dp(0, 2) + .96, () => { ellS(sx(0, -1), sy(hdY - 9), bodyW(18.6, 16.8), 9.4 * K, P(0xc03a3a), .04); lineS(sx(-17, 0), sy(hdY - 3), sx(17, 0), sy(hdY - 3), P(0xc03a3a)[1]); ellS(sx(0, -16), sy(hdY - 3), 4 * K, 3.6 * K, P(0xc03a3a), .08); });
+        add(dp(-14, 3) + .6, () => { ellS(sx(-12, 3), sy(66), 3.8 * K, 4.2 * K, gold, .05); put(sx(-12, 3), sy(62), gold[1]); });
+      } else if (id === "munin") {
+        add(dp(19.3, 6) + .5, () => { const [X, Y] = hand(1), oy = Y - 17 * K; ellS(X, oy, 9.5 * K, 9.5 * K, P(0x4a2a8a), -.1); ellS(X, oy, 7 * K, 7 * K, P(0xb890ff), .2); put(X - 2, oy - 2, [255, 255, 255]); put(X - 3, oy - 1, [235, 220, 255]); lineS(X - 2, oy + 2, X + 2, oy - 1, P(0x4a2a8a)[0]); });
+        add(dp(-14, 2) + .9, () => { const X = sx(-15, 0), Y = sy(36), bl = P(0x20202c); ellS(X, Y, 6 * K, 4.6 * K, bl, .1); ellS(X + 4 * K, Y - 4 * K, 3.2 * K, 3 * K, bl, .1); capS(X + 6.4 * K, Y - 4 * K, X + 10 * K, Y - 3 * K, 1.4 * K, .5 * K, P(0xe8a040)); put(X + 5 * K, Y - 5 * K, [255, 220, 120]); capS(X - 4 * K, Y + 1, X - 10 * K, Y + 5 * K, 2.2 * K, .8 * K, bl); });
+      } else if (id === "sigrun") {
+        add(dp(0, 20) + .98, () => { const [X, Y] = hand(1); for (const [dx, dy] of [[-10, -22], [4, -30], [16, -18]]) { const gx = X + dx * K * .8, gy = Y + dy * K * .8; polyS([[gx, gy - 4 * K], [gx + 3 * K, gy], [gx, gy + 4 * K], [gx - 3 * K, gy]], (x, y) => rampAt(gold, .7 + (BAY[y & 3][x & 3]) * .2)); lineS(gx, gy - 2 * K, gx, gy + 2 * K, [90, 40, 10]); put(gx, gy, [255, 255, 255]); } });
+      } else if (id === "cronista") {
+        add(dp(-19.3, 6) + .5, () => { const [X, Y] = hand(-1); polyS([[X - 6 * K, Y - 14 * K], [X + 6 * K, Y - 14 * K], [X + 6 * K, Y], [X - 6 * K, Y]], (x, y) => rampAt(P(0x7a2a2a), .5 - (y - (Y - 14 * K)) * .01)); lineS(X + 5 * K, Y - 13 * K, X + 5 * K, Y - 1, parch[3]); lineS(X - 5 * K, Y - 13 * K, X + 5 * K, Y - 13 * K, gold[3]); ellS(X, Y - 7 * K, 1.8 * K, 1.8 * K, gold); });
+        add(dp(0, 14) + .965, () => { if (cth < .1) return; for (const sd of [-1, 1]) { const X = sx(sd * 7.4, 12), Y = sy(hdY + 4.6); for (let a = 0; a < 20; a++) { const an = a / 20 * Math.PI * 2; put(X + Math.cos(an) * 4.4, Y + Math.sin(an) * 4.2, [60, 50, 40]); } } lineS(sx(-3, 12), sy(hdY + 4), sx(3, 12), sy(hdY + 4), [60, 50, 40]); });
+      } else if (id === "arauto") {
+        add(dp(0, 10) + .66, () => { if (cth < -.2) return; polyS([[sx(-8, 8), sy(47)], [sx(8, 8), sy(47)], [sx(10, 8), sy(88)], [sx(0, 8), sy(93)], [sx(-10, 8), sy(88)]], (x, y) => rampAt(trim, .6 - (y - sy(47)) * .004 + BAY[y & 3][x & 3] * .1)); ellS(sx(0, 9), sy(62), 3.6 * K * Math.abs(cth) + 1, 3.8 * K, gold); });
+        add(dp(19.3, 3) + .5, () => { const [X, Y] = hand(1); capS(X - 5 * K, Y - 3 * K, X + 5 * K, Y - 3 * K, 2.8 * K, 2.8 * K, parch); ellS(X - 5 * K, Y - 3 * K, 2 * K, 2.8 * K, P(0xd0c098)); lineS(X - 2 * K, Y - 5 * K, X + 2 * K, Y - 5 * K, [150, 120, 90]); });
+        add(dp(-12, 4) + .62, () => { const X = sx(-12, 4), Y = sy(70); capS(X, Y - 4 * K, X + 1.4 * K, Y + 5 * K, 3.6 * K, 1.4 * K, P(0xe6d4a0)); });
+      } else if (id === "questor") {
+        add(dp(0, 6) + .64, () => { if (cth < -.2) return; lineS(sx(-13, 3), sy(44), sx(11, 5), sy(68), leather[1]); lineS(sx(-12, 3), sy(44), sx(12, 5), sy(68), leather[3]); const X = sx(12, 5), Y = sy(70); ellS(X, Y, 5.2 * K, 4.6 * K, leather, .05); lineS(X - 4 * K, Y - 2 * K, X + 4 * K, Y - 2 * K, gold[3]); });
+        add(dp(19.3, 3) + .5, () => { const [X, Y] = hand(1); capS(X - 4 * K, Y - 3 * K, X + 4 * K, Y - 3 * K, 2.4 * K, 2.4 * K, parch); ellS(X + 4 * K, Y - 3 * K, 1.8 * K, 2.4 * K, P(0xd0c098)); put(X, Y - 9 * K, [255, 211, 77]); lineS(X, Y - 14 * K, X, Y - 10 * K, [255, 211, 77]); });
+      } else if (id === "ottar" || id === "checkpoint" || id === "eira") {
+        add(dp(19.3, 3) + .5, () => { const [X, Y] = hand(1); capS(X, Y + 24 * K, X + 1.4 * K, Y - 56 * K, 1.5 * K, 1.4 * K, wd); polyS([[X + 1.4 * K - 3.4 * K, Y - 54 * K], [X + 1.4 * K + 3.4 * K, Y - 54 * K], [X + 1.4 * K, Y - 70 * K]], (x, y) => rampAt(steelP, .8 - (y - (Y - 70 * K)) * .01)); lineS(X + 1.4 * K - 4 * K, Y - 52 * K, X + 1.4 * K + 4 * K, Y - 52 * K, gold[3]); });
+        if (id !== "eira") add(dp(-23, 4) + .55, () => { const X = sx(-22, 4), Y = sy(62); ellS(X, Y, 8.5 * K * (.5 + .5 * Math.abs(cth)) + 1, 12 * K, steelP, -.05); ellS(X, Y, 3 * K, 3 * K, gold); });
+        if (id === "checkpoint") add(dp(0, 2) + .97, () => { ellS(sx(0, 0), sy(hdY - 8), bodyW(19, 17), 10.6 * K, steelP, .04); lineS(sx(-18, 0), sy(hdY - 2), sx(18, 0), sy(hdY - 2), steelP[1]); if (front) capS(sx(0, 16), sy(hdY - 7), sx(0, 16), sy(hdY + 6), 1.6, 1.6, steelP); });
+      } else if (id === "estilista") {
+        add(dp(8, 4) + .98, () => { const X = sx(11, 2), Y = sy(hdY - 15), pk = P(0xf070a8); ellS(X - 5 * K, Y, 5.6 * K, 4 * K, pk, .04); ellS(X + 5 * K, Y, 5.6 * K, 4 * K, pk, .04); ellS(X, Y, 2.4 * K, 2.4 * K, P(0xc84a84), 0); });
+        add(dp(19.3, 3) + .5, () => { const [X, Y] = hand(1), sv = P(0xd4dae8); lineS(X, Y - 3 * K, X - 5 * K, Y - 17 * K, sv[4]); lineS(X + 1, Y - 3 * K, X + 6 * K, Y - 17 * K, sv[3]); ellS(X - 2 * K, Y - 2 * K, 2.2 * K, 2.2 * K, gold); ellS(X + 3 * K, Y - 2 * K, 2.2 * K, 2.2 * K, gold); });
+      }
     }
     // acessórios de cabeça
     const hd = e.head;

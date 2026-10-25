@@ -142,3 +142,4 @@
 - v87: cabelo espetado largo, placa de aco no peito, cores mais vivas nos sprites.
 - v88: sem espetos; cada classe com penteado, porte e jeito de sentar proprios.
 - v89: visual evolui por classe: novato simples, 2a classe com couro/ombreiras, final com placa de aco, dourado e capa.
+- v90: NPCs com visual proprio: ferreiros (avental, barba, martelo), mercadora (saco, avental, lenco), Munin (orbe e corvo), guardas (lanca e escudo), cronista, arauto, questora, estilista, Sigrun.
