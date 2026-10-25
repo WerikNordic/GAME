@@ -14303,7 +14303,9 @@ void main() {
     setTimeout(t, 0);
   }
   var uo = { lw: 80, lh: 112, lax: 40, lay: 100, pxu: 30 }, vE = { ax: uo.lax, ay: uo.lay };
+/*__ROX__*/
   function hh(e, t, a, n, o) {
+    if (typeof ROX !== 'undefined' && !(typeof location < 'u' && /[?&]old\b/.test(location.search)) && e.pro !== false) return ROX(e, t, a, n, o);
     let r = p4(e, { phase: a < 0 ? 0 : a / 8, moving: a >= 0, lvl: n, style: o, sit: a === -2 }), i = A0(r, { w: uo.lw * Rt, h: uo.lh * Rt, ax: uo.lax * Rt, ay: uo.lay * Rt, pxu: uo.pxu * Rt, yaw: rh[t], pitch: S4, ss: e.pro === false ? fh : 1, outline: e.pro === false ? 1.1 : 1.6, inner: e.pro === false ? void 0 : 0.55 });
     return e.pro !== false && tS(i, 7), { cv: mh(i), ax: uo.lax, ay: uo.lay, k: 1 / Rt };
   }

@@ -135,3 +135,6 @@
 
 ## v84
 - Armas so aparecem ao atacar; arco fica nas costas do cacador; mercador usa mochila.
+
+## v85
+- Novo desenhista de personagens pixel-art detalhado (5 direcoes, andar, ataque). ?old = sprites antigos.
