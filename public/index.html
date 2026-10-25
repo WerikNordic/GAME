@@ -14449,13 +14449,38 @@ void main() {
     setTimeout(t, 0);
   }
   var uo = { lw: 80, lh: 112, lax: 40, lay: 100, pxu: 30 }, vE = { ax: uo.lax, ay: uo.lay };
+  var PXON = (() => { try { return localStorage.getItem("eldvar.px") !== "0"; } catch { return true; } })();
+  function PX(o) {
+    if (!PXON || !o || !o.cv) return o;
+    let f = Math.max(2, Math.round(1.5 / o.k)), W = o.cv.width, H = o.cv.height, sw = Math.ceil(W / f), sh = Math.ceil(H / f);
+    let sc = document.createElement("canvas");
+    sc.width = sw, sc.height = sh;
+    let c = sc.getContext("2d", { willReadFrequently: true });
+    c.imageSmoothingEnabled = true, c.imageSmoothingQuality = "high", c.drawImage(o.cv, 0, 0, sw, sh);
+    let im = c.getImageData(0, 0, sw, sh), d = im.data, m = new Uint8Array(sw * sh);
+    for (let i = 0; i < m.length; i++) m[i] = d[i * 4 + 3] >= 120 ? 1 : 0;
+    for (let y = 0; y < sh; y++) for (let x = 0; x < sw; x++) {
+      let i = y * sw + x, k = i * 4;
+      if (!m[i]) { d[k + 3] = 0; continue; }
+      let edge = !(x > 0 && m[i - 1]) || !(x < sw - 1 && m[i + 1]) || !(y > 0 && m[i - sw]) || !(y < sh - 1 && m[i + sw]);
+      let q = (v) => Math.min(255, Math.round(v / 10) * 10);
+      let lu = d[k] * 0.3 + d[k + 1] * 0.59 + d[k + 2] * 0.11, sat = (v) => Math.max(0, Math.min(255, (lu + (v - lu) * 1.22 - 128) * 1.1 + 128));
+      d[k] = q(sat(d[k])), d[k + 1] = q(sat(d[k + 1])), d[k + 2] = q(sat(d[k + 2])), d[k + 3] = 255;
+      edge && (d[k] = d[k] * 0.45 + 12, d[k + 1] = d[k + 1] * 0.4 + 8, d[k + 2] = d[k + 2] * 0.42 + 10);
+    }
+    c.putImageData(im, 0, 0);
+    let out = document.createElement("canvas");
+    out.width = sw * f, out.height = sh * f;
+    let oc = out.getContext("2d");
+    return oc.imageSmoothingEnabled = false, oc.drawImage(sc, 0, 0, sw * f, sh * f), { cv: out, ax: o.ax, ay: o.ay, k: o.k };
+  }
   function hh(e, t, a, n, o) {
     let r = p4(e, { phase: a < 0 ? 0 : a / 8, moving: a >= 0, lvl: n, style: o, sit: a === -2 }), i = A0(r, { w: uo.lw * Rt, h: uo.lh * Rt, ax: uo.lax * Rt, ay: uo.lay * Rt, pxu: uo.pxu * Rt, yaw: rh[t], pitch: S4, ss: e.pro === false ? fh : 1, outline: e.pro === false ? 1.1 : 1.6, inner: e.pro === false ? void 0 : 0.55 });
-    return e.pro !== false && tS(i, 7), { cv: mh(i), ax: uo.lax, ay: uo.lay, k: 1 / Rt };
+    return e.pro !== false && tS(i, 7), PX({ cv: mh(i), ax: uo.lax, ay: uo.lay, k: 1 / Rt });
   }
   function w4(e, t, a, n) {
     let o = g4[e], r = h4(e, { phase: a < 0 ? 0 : a / 8, moving: a >= 0, atk: n }), i = o.w / 2, s = o.h - 14, l = A0(r, { w: o.w * Rt, h: o.h * Rt, ax: i * Rt, ay: s * Rt, pxu: o.pxu * Rt, yaw: rh[t], pitch: S4, ss: fh, outline: 1.1 });
-    return { cv: mh(l), ax: i, ay: s, k: 1 / Rt };
+    return PX({ cv: mh(l), ax: i, ay: s, k: 1 / Rt });
   }
   var M4 = 1.131, k4 = /* @__PURE__ */ new Map(), gh = (e) => `${e.kind}:${e.theme}:${e.variant}:${e.deco ?? ""}`;
   function _4(e, t, a) {

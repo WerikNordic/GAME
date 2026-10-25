@@ -1,3 +1,6 @@
+# v73
+- Visual pixel-art estilo Ragnarok: personagens, NPCs e monstros agora em pixels nitidos com contorno escuro, cores mais vivas (desligar: localStorage eldvar.px=0).
+
 # v72
 - Mensagens globais agora aparecem como faixa de texto (igual a entrada em cidades), sem pop-up.
 - Dirigivel voa pelo mapa todo em rota aleatoria, com sombra no chao.
