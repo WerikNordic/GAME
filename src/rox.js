@@ -44,7 +44,7 @@ var ROX = (() => {
     const RB = CP[e.cls] ? Math.max(0, (e.ti || 0) - 2) : 0;
     const ACC = { berserker: 0xff5a3a, escudeiro: 0xffc040, cacador: 0x4adf7a, volva: 0xb070ff, valquiria: 0x6ad0ff, skald: 0x9a7aff, thay: 0xff7a2a }[e.cls] || 0xffd860;
     const prof = CP[e.cls] || NP || { k: 1.3, wx: 1, tw: 1, lg: 1, hair: "", sit: "" };
-    const QK = { wolf: 1.6, frostwolf: 1.6, hati: 2.5, boar: 1.7, yeti: 1.6, blob: 2.0, goblin: 1.6, draugr: 1.5, cinder: 1.75, automaton: 1.65, sylvan: 1.6, prism: 1.7, sentinel: 1.65, voidling: 1.7, jotun: 2.1 };
+    const QK = { wolf: 1.6, frostwolf: 1.6, hati: 2.5, boar: 1.7, yeti: 1.6, blob: 2.0, goblin: 1.6, draugr: 1.5, cinder: 1.75, automaton: 1.65, sylvan: 1.6, prism: 1.7, sentinel: 1.65, voidling: 1.7, jotun: 2.1, grifo: 2.0 };
     const SZ = .58, K = (e.quad ? (QK[e.quad] ?? 1.3) : prof.k) * SZ, WX = prof.wx, hsty = prof.hair;
     const yawT = { down: 0, dq: Math.PI / 4, side: Math.PI / 2, uq: Math.PI * 3 / 4, up: Math.PI };
     const th = yawT[dir] ?? 0, cth = Math.cos(th), sth = Math.sin(th);
@@ -118,6 +118,25 @@ var ROX = (() => {
         C3(0, 77, -14, wag * .5, 71, -25, 3.2, 1.9, fur); E3(wag, 70, -27, 2.6, 2.6, 3.8, furL);
         for (let i = 0; i < 6; i++) { const z = 11 - i * 4.4, sp = QD === "frostwolf" ? P(0xcfeaff) : furL, h = QD === "frostwolf" ? 9 : 6; POLY3([[-2, 72, z], [2, 72, z], [0, 72 - h, z - 2.4]], (x, y) => rampAt(sp, .7 - (y - sy(72 - h)) * .02), .4); }
         if (e.id === "cao_magma") add(dp(0, 0) + .45, () => { for (const [a1, b1, a2, b2] of [[-8, 76, 4, 80], [-3, 84, 6, 74], [2, 80, 8, 86]]) lineS(sx(a1 * .6, a2 - 6), sy(b1), sx(a2 * .6, a2 - 2), sy(b2), [255, 150, 40]); });
+      } else if (QD === "grifo") {
+        const gold = P(0xc98f3e), goldL = P(0xeec070), fea = P(0xf6f1e4), feaD = P(0xb9b2a2), beak = P(0xffc02c), brn = P(0x6e4220), blu = P(0x7fb4ff);
+        const lift = walking ? Math.sin(ph) * 9 : Math.sin(ph) * 2 + 3, wy = 84 - wob;
+        E3(0, 82 - wob, -1, 8.8, 8.6, 15, gold); E3(0, 81 - wob, -10, 8, 8.6, 8, gold, -.04); E3(0, 84 - wob, 8, 8.4, 9.6, 8, fea, .05); E3(0, 88 - wob, 1, 5.4, 3.2, 11, goldL);
+        for (const sd of [-1, 1]) for (let i = 0; i < 5; i++) E3(sd * 3.2, 80 - wob + i * 1.4, 12 - i * 2.6, 2.6, 2.8, 2.6, i % 2 ? fea : feaD, .1);
+        quadLegs(15, 4, [-9], 5.6);
+        for (const side of [-1, 1]) { const p2 = ph + (side > 0 ? 0 : Math.PI), swq = walking ? Math.sin(p2) * 7 : 0, lf = walking ? Math.max(0, -Math.cos(p2)) * 4 : 0, x = side * 5; C3(x, 79, 9, x, 96 - lf, 9 + swq, 3.8, 2.2, fea); E3(x, 97 - lf, 9 + swq + 2.4, 3, 1.8, 4.2, beak); for (const t of [-1.6, 0, 1.6]) E3(x + t, 98 - lf, 9 + swq + 6, .8, .8, 2.2, dark); }
+        for (const sd of [-1, 1]) {
+          const rt = [sd * 6, wy - 4, -1], tp = [[sd * 14, wy - 20 - lift, -4], [sd * 34, wy - 28 - lift * 1.4, -7], [sd * 54, wy - 24 - lift * 1.9, -10], [sd * 62, wy - 12 - lift * 1.3, -12], [sd * 56, wy + 2 - lift * .6, -12], [sd * 44, wy + 8, -10], [sd * 24, wy + 10, -6]];
+          for (let k = 0; k < tp.length - 1; k++) POLY3([rt, tp[k], tp[k + 1]], (x, y) => rampAt(k % 2 ? fea : gold, .55 + BAY[y & 3][x & 3] * .1 + k * .035), .2 - k * .02);
+          for (let k = 2; k < tp.length; k++) POLY3([[sd * 30, wy - 2, -6], [tp[k][0], tp[k][1], tp[k][2]], [tp[k][0] - sd * 6, tp[k][1] + 12, tp[k][2]]], (x, y) => rampAt(feaD, .5 + k * .04), .1);
+          C3(sd * 6, wy - 4, -1, sd * 34, wy - 28 - lift * 1.4, -7, 2.2, 1.6, brn);
+        }
+        C3(0, 80, 11, 0, 66, 17 + hz * .6, 6.8, 5.4, fea); for (let i = 0; i < 4; i++) E3(0, 78 - i * 3.6, 12 + i * 1.6, 5.6 - i * .4, 2.6, 3, i % 2 ? feaD : fea);
+        E3(0, 61, 20 + hz, 5.4, 5.2, 6, fea); E3(0, 57, 17 + hz, 4.4, 2.6, 4, goldL);
+        for (let i = 0; i < 4; i++) POLY3([[-3 + i * 2, 58, 15 + hz], [-2 + i * 2, 52 - i % 2 * 2, 10 + hz - i], [-1 + i * 2, 58, 17 + hz]], (x, y) => rampAt(fea, .8 - (y & 3) * .05), .4);
+        C3(0, 62, 24 + hz, 0, 64.5, 31 + hz, 3.6, 1.4, beak); E3(0, 66.2, 31.4 + hz, 1.3, 2.6, 1.7, beak, .2); if (atkq) C3(0, 66, 28 + hz, 0, 70, 31 + hz, 2, 1.2, dark);
+        for (const sd of [-1, 1]) E3(sd * 3.8, 59.4, 23 + hz, 1.3, 1.3, 1.1, eyeR, .25);
+        C3(0, 80, -15, wag * .5, 74, -27, 2.6, 1.8, gold); E3(wag * .8, 72, -29, 2.8, 3.8, 3.2, brn);
       } else if (QD === "boar") {
         E3(0, 78 - wob, 0, 10.6, 10.6, 14, fur); E3(0, 72 - wob, 6, 8.4, 6.2, 7.6, furD); E3(0, 86 - wob, 1, 6.4, 3.6, 10, furL);
         quadLegs(12, 4.2, [8, -8], 6.4);
