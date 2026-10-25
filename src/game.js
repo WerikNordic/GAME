@@ -12438,7 +12438,7 @@ Error generating stack: ` + n.message + `
       }
       await doLogin(email);
     };
-    return (0, le.jsxs)("main", { className: "title", children: [(0, le.jsx)("div", { className: "title-bg", "aria-hidden": "true" }), (0, le.jsxs)("div", { className: "title-card", children: [(0, le.jsx)("h1", { className: "logo", children: "ELDVAR" }), (0, le.jsx)("p", { className: "subtitle", children: "As Cr\xF4nicas do Fim" }), (0, le.jsxs)("div", { className: "auth-tabs", role: "tablist", children: [(0, le.jsx)("button", { role: "tab", className: mode === "login" ? "on" : "", onClick: () => (setMode("login"), setErr(null)), children: "Entrar" }), (0, le.jsx)("button", { role: "tab", className: mode === "register" ? "on" : "", onClick: () => (setMode("register"), setErr(null), setOk(null)), children: "Criar conta" })] }), (0, le.jsxs)("form", { className: "menu auth-form", onSubmit: go, children: [(0, le.jsxs)("label", { className: "field", children: [(0, le.jsx)("span", { children: "E-mail" }), (0, le.jsx)("input", { type: "email", value: em, autoComplete: "email", autoFocus: true, onChange: (a) => setEm(a.target.value) })] }), (0, le.jsxs)("label", { className: "field", children: [(0, le.jsx)("span", { children: "Senha" }), (0, le.jsx)("input", { type: show ? "text" : "password", value: pw, autoComplete: mode === "login" ? "current-password" : "new-password", onChange: (a) => setPw(a.target.value) })] }), mode === "register" && (0, le.jsxs)("label", { className: "field", children: [(0, le.jsx)("span", { children: "Repita a senha" }), (0, le.jsx)("input", { type: show ? "text" : "password", value: pw2, autoComplete: "new-password", onChange: (a) => setPw2(a.target.value) })] }), (0, le.jsxs)("label", { className: "check auth-show", children: [(0, le.jsx)("input", { type: "checkbox", checked: show, onChange: (a) => setShow(a.target.checked) }), " Mostrar senha"] }), ok && (0, le.jsx)("p", { className: "auth-ok", role: "status", children: ok }), err && (0, le.jsx)("p", { className: "error", role: "alert", children: err }), (0, le.jsx)("button", { className: "btn btn-primary", type: "submit", disabled: busy, children: busy ? "Aguarde\u2026" : mode === "login" ? "Entrar no jogo" : "Criar conta" }), err && /conex/.test(err) && (0, le.jsx)("button", { className: "btn", type: "button", onClick: () => {
+    return (0, le.jsxs)("main", { className: "title", children: [Hh("div", { className: "title-bg", "aria-hidden": "true" }, Hh(TitleBackdrop, {})), (0, le.jsxs)("div", { className: "title-card", children: [(0, le.jsx)("h1", { className: "logo", children: "ELDVAR" }), (0, le.jsx)("p", { className: "subtitle", children: "As Cr\xF4nicas do Fim" }), (0, le.jsxs)("div", { className: "auth-tabs", role: "tablist", children: [(0, le.jsx)("button", { role: "tab", className: mode === "login" ? "on" : "", onClick: () => (setMode("login"), setErr(null)), children: "Entrar" }), (0, le.jsx)("button", { role: "tab", className: mode === "register" ? "on" : "", onClick: () => (setMode("register"), setErr(null), setOk(null)), children: "Criar conta" })] }), (0, le.jsxs)("form", { className: "menu auth-form", onSubmit: go, children: [(0, le.jsxs)("label", { className: "field", children: [(0, le.jsx)("span", { children: "E-mail" }), (0, le.jsx)("input", { type: "email", value: em, autoComplete: "email", autoFocus: true, onChange: (a) => setEm(a.target.value) })] }), (0, le.jsxs)("label", { className: "field", children: [(0, le.jsx)("span", { children: "Senha" }), (0, le.jsx)("input", { type: show ? "text" : "password", value: pw, autoComplete: mode === "login" ? "current-password" : "new-password", onChange: (a) => setPw(a.target.value) })] }), mode === "register" && (0, le.jsxs)("label", { className: "field", children: [(0, le.jsx)("span", { children: "Repita a senha" }), (0, le.jsx)("input", { type: show ? "text" : "password", value: pw2, autoComplete: "new-password", onChange: (a) => setPw2(a.target.value) })] }), (0, le.jsxs)("label", { className: "check auth-show", children: [(0, le.jsx)("input", { type: "checkbox", checked: show, onChange: (a) => setShow(a.target.checked) }), " Mostrar senha"] }), ok && (0, le.jsx)("p", { className: "auth-ok", role: "status", children: ok }), err && (0, le.jsx)("p", { className: "error", role: "alert", children: err }), (0, le.jsx)("button", { className: "btn btn-primary", type: "submit", disabled: busy, children: busy ? "Aguarde\u2026" : mode === "login" ? "Entrar no jogo" : "Criar conta" }), err && /conex/.test(err) && (0, le.jsx)("button", { className: "btn", type: "button", onClick: () => {
       window.__acct = "offline", window.__tok = "", window.__admin = false, onDone("offline", false);
     }, children: "Jogar offline (sem conta)" }), (0, le.jsx)("p", { className: "muted auth-note", children: "Seu progresso fica salvo na sua conta, em qualquer aparelho." })] })] })] });
   }
@@ -12490,7 +12490,7 @@ Error generating stack: ` + n.message + `
       });
     }, [acct]);
     if (AUTH_ON && !acct && !/[?&]debug/.test(window.location.search)) return (0, le.jsx)(AuthScreen, { onDone: (a2, ad) => (j.refresh(), setIsAdm(ad), setAcct(a2)) });
-    return (0, le.jsxs)("main", { className: "title", children: [(0, le.jsx)("div", { className: "title-bg", "aria-hidden": "true" }), (0, le.jsxs)("div", { className: "title-card", children: [(0, le.jsx)("div", { className: "runes", "aria-hidden": "true", children: _v }), (0, le.jsx)("h1", { className: "logo", children: "ELDVAR" }), (0, le.jsx)("p", { className: "subtitle", children: "As Cr\xF4nicas do Fim" }), acct && (0, le.jsxs)("p", { className: "acct-line", children: ["Conta: ", acct, " \xB7 ", (0, le.jsx)("button", { className: "linkbtn", onClick: () => {
+    return (0, le.jsxs)("main", { className: "title", children: [Hh("div", { className: "title-bg", "aria-hidden": "true" }, Hh(TitleBackdrop, {})), (0, le.jsxs)("div", { className: "title-card", children: [(0, le.jsx)("div", { className: "runes", "aria-hidden": "true", children: _v }), (0, le.jsx)("h1", { className: "logo", children: "ELDVAR" }), (0, le.jsx)("p", { className: "subtitle", children: "As Cr\xF4nicas do Fim" }), acct && (0, le.jsxs)("p", { className: "acct-line", children: ["Conta: ", acct, " \xB7 ", (0, le.jsx)("button", { className: "linkbtn", onClick: () => {
       window.__tok && sbRpc("eld_logout", { p_token: window.__tok });
       try {
         window.localStorage.removeItem("eldvar.session"), window.localStorage.removeItem("eldvar.token");
@@ -13010,6 +13010,88 @@ Error generating stack: ` + n.message + `
 
   var Hh = (tag, props, ...k) => (0, ke.jsx)(tag, { ...props, children: k.length < 2 ? k[0] : k });
 
+  function TitleBackdrop() {
+    let ref = Hl.useRef(null);
+    Hl.useEffect(() => {
+      let c = ref.current, g = c.getContext("2d"), raf = 0, W = 0, H = 0, t0 = performance.now(), mx = 0, my = 0, tmx = 0, tmy = 0;
+      let reduce = false; try { reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches; } catch {}
+      let rnd = (() => { let a = 777; return () => (a = (a * 1664525 + 1013904223) >>> 0) / 4294967296; })();
+      let stars = Array.from({ length: 170 }, () => ({ x: rnd(), y: rnd() * 0.6, r: rnd() * 1.5 + 0.4, p: rnd() * 6.28, s: rnd() * 1.6 + 0.6 }));
+      let leaves = Array.from({ length: 70 }, () => ({ x: rnd(), y: rnd(), sp: rnd() * 0.035 + 0.012, dr: rnd() * 0.03 + 0.01, r: rnd() * 2.6 + 1, p: rnd() * 6.28, k: rnd() < 0.7 ? 0 : 1 }));
+      let flies = Array.from({ length: 26 }, () => ({ x: rnd(), y: 0.6 + rnd() * 0.3, p: rnd() * 6.28, s: rnd() * 0.5 + 0.3 }));
+      let canopy = Array.from({ length: 150 }, () => { let a = rnd() * 6.28, d = Math.sqrt(rnd()); return { a, d, r: rnd() * 0.022 + 0.008, p: rnd() * 6.28, h: 38 + rnd() * 18 }; });
+      let ridge = (seed, base, amp, rough) => { let pts = [], o = seed; for (let i = 0; i <= 80; i++) { o = (o * 9301 + 49297) % 233280; pts.push(base + Math.sin(i * rough + seed) * amp + Math.sin(i * rough * 2.3 + seed * 2) * amp * 0.5 + (o / 233280 - 0.5) * amp * 0.5); } return pts; };
+      let R = [ridge(3, 0.60, 0.07, 0.22), ridge(7, 0.67, 0.055, 0.3), ridge(11, 0.73, 0.04, 0.45)];
+      let shoot = null, nextShoot = 3;
+      let resize = () => { W = c.width = Math.ceil(c.clientWidth / 2); H = c.height = Math.ceil(c.clientHeight / 2); };
+      resize(); window.addEventListener("resize", resize);
+      let onMove = (e) => { tmx = (e.clientX / window.innerWidth - 0.5), tmy = (e.clientY / window.innerHeight - 0.5); };
+      window.addEventListener("mousemove", onMove);
+      let hz = () => H * 0.76;
+      let glow = (x, y, r, col, a) => { let gr = g.createRadialGradient(x, y, 0, x, y, r); gr.addColorStop(0, col.replace("A", a)), gr.addColorStop(1, col.replace("A", 0)); g.fillStyle = gr, g.fillRect(x - r, y - r, r * 2, r * 2); };
+      let draw = (now) => {
+        let t = (now - t0) / 1000; mx += (tmx - mx) * 0.04, my += (tmy - my) * 0.04;
+        let sk = g.createLinearGradient(0, 0, 0, hz());
+        sk.addColorStop(0, "#050722"), sk.addColorStop(0.3, "#1a1d5e"), sk.addColorStop(0.58, "#6b3a9c"), sk.addColorStop(0.82, "#d9648e"), sk.addColorStop(1, "#ffb48a");
+        g.fillStyle = sk, g.fillRect(0, 0, W, H);
+        for (let q of stars) { let a = 0.4 + 0.6 * Math.sin(t * q.s + q.p); g.fillStyle = `rgba(255,255,255,${(a * 0.85).toFixed(2)})`, g.fillRect(q.x * W - mx * 6, q.y * H - my * 4, q.r, q.r); }
+        nextShoot -= 0.016; if (nextShoot < 0 && !shoot) { shoot = { x: 0.2 + rnd() * 0.6, y: rnd() * 0.25, t: 0 }; nextShoot = 5 + rnd() * 7; }
+        if (shoot) { shoot.t += 0.016; let k = shoot.t / 0.9, x = (shoot.x - k * 0.18) * W, y = (shoot.y + k * 0.1) * H; let gr = g.createLinearGradient(x, y, x + W * 0.12, y - H * 0.065); gr.addColorStop(0, `rgba(255,255,255,${Math.max(0, 1 - k)})`), gr.addColorStop(1, "rgba(255,255,255,0)"); g.strokeStyle = gr, g.lineWidth = 1.6, g.beginPath(), g.moveTo(x, y), g.lineTo(x + W * 0.12, y - H * 0.065), g.stroke(); if (k > 1) shoot = null; }
+        // aurora
+        for (let k = 0; k < 3; k++) { let hue = [150, 175, 285][k], gr = g.createLinearGradient(0, H * 0.06, 0, H * 0.5); gr.addColorStop(0, `hsla(${hue},90%,65%,0)`), gr.addColorStop(0.5, `hsla(${hue},90%,62%,${0.2 - k * 0.04})`), gr.addColorStop(1, `hsla(${hue},90%,60%,0)`); g.fillStyle = gr, g.beginPath(), g.moveTo(0, H * 0.5); for (let x = 0; x <= W; x += 6) g.lineTo(x, H * (0.2 + k * 0.05) + Math.sin(x * 0.009 + t * 0.35 + k * 2) * H * 0.06 + Math.sin(x * 0.021 - t * 0.2) * H * 0.02 - mx * 10); g.lineTo(W, H * 0.5), g.closePath(), g.fill(); }
+        // moon
+        let moonX = W * 0.2 - mx * 14, moonY = H * 0.24 - my * 8, mr = H * 0.075;
+        glow(moonX, moonY, mr * 5, "rgba(255,235,200,A)", 0.4), glow(moonX, moonY, mr * 2.4, "rgba(255,245,225,A)", 0.55);
+        g.fillStyle = "#fff3da", g.beginPath(), g.arc(moonX, moonY, mr, 0, 6.283), g.fill(); g.fillStyle = "rgba(220,190,160,.35)"; for (let [dx, dy, rr] of [[-0.3, -0.2, 0.2], [0.25, 0.1, 0.28], [-0.1, 0.35, 0.15]]) g.beginPath(), g.arc(moonX + dx * mr, moonY + dy * mr, rr * mr, 0, 6.283), g.fill();
+        // Bifrost
+        g.save(); g.lineCap = "round";
+        for (let k = 0; k < 7; k++) { let hue = k * 50, off = (k - 3) * H * 0.0085; g.strokeStyle = `hsla(${hue},95%,68%,${0.32 + 0.1 * Math.sin(t * 0.8 + k)})`, g.lineWidth = H * 0.0095, g.shadowColor = `hsla(${hue},100%,70%,.8)`, g.shadowBlur = 12, g.beginPath(), g.moveTo(-W * 0.05 - mx * 8, hz() - H * 0.02 + off), g.quadraticCurveTo(W * 0.46 - mx * 14, -H * 0.34 + off - my * 6, W * 1.05, H * 0.34 + off), g.stroke(); }
+        g.restore();
+        for (let k = 0; k < 14; k++) { let u = (k / 14 + t * 0.03) % 1, x = (-0.05 + 1.1 * u) * W, y = (1 - u) * (1 - u) * (hz() - H * 0.02) + 2 * u * (1 - u) * (-H * 0.34) + u * u * (H * 0.34); g.fillStyle = `rgba(255,255,255,${0.5 + 0.5 * Math.sin(t * 3 + k)})`, g.fillRect(x - 1, y - 1, 2.4, 2.4); }
+        // Asgard island
+        let ix = W * 0.74 - mx * 18, iy = H * 0.3 + Math.sin(t * 0.6) * H * 0.008 - my * 8, iw = W * 0.11;
+        glow(ix, iy - H * 0.04, iw * 1.6, "rgba(255,210,120,A)", 0.3);
+        g.fillStyle = "#3a2f6b", g.beginPath(), g.moveTo(ix - iw, iy), g.quadraticCurveTo(ix - iw * 0.5, iy + H * 0.08, ix, iy + H * 0.11), g.quadraticCurveTo(ix + iw * 0.5, iy + H * 0.08, ix + iw, iy), g.closePath(), g.fill();
+        g.fillStyle = "#4d8a5a", g.beginPath(), g.ellipse(ix, iy, iw, H * 0.015, 0, 0, 6.283), g.fill();
+        for (let [dx, hh, ww] of [[-0.5, 0.075, 0.1], [-0.15, 0.115, 0.13], [0.2, 0.09, 0.11], [0.52, 0.06, 0.08]]) { let bx = ix + dx * iw, bw = iw * ww * 1.8; g.fillStyle = "#f4d58a", g.fillRect(bx - bw / 2, iy - H * hh, bw, H * hh); g.fillStyle = "#e4a64a", g.beginPath(), g.moveTo(bx - bw * 0.7, iy - H * hh), g.lineTo(bx, iy - H * (hh + 0.045)), g.lineTo(bx + bw * 0.7, iy - H * hh), g.closePath(), g.fill(); g.fillStyle = "#fff6c8"; for (let q = 0; q < 3; q++) g.fillRect(bx - bw * 0.25, iy - H * hh * (0.25 + q * 0.26), bw * 0.5, 2); }
+        // mountains
+        let cols = [["#5a3f96", "#34286a"], ["#2f2a68", "#1a1a48"], ["#1a1a46", "#0c0d2c"]];
+        for (let L = 0; L < 3; L++) { let pts = R[L], par = (L + 1) * 9; let gr = g.createLinearGradient(0, H * 0.5, 0, hz()); gr.addColorStop(0, cols[L][0]), gr.addColorStop(1, cols[L][1]); g.fillStyle = gr, g.beginPath(), g.moveTo(-10, hz() + 2); for (let i = 0; i < pts.length; i++) g.lineTo((i / (pts.length - 1)) * (W + 20) - 10 - mx * par, pts[i] * H); g.lineTo(W + 10, hz() + 2), g.closePath(), g.fill(); let mist = g.createLinearGradient(0, H * (0.58 + L * 0.06), 0, hz()); mist.addColorStop(0, "rgba(255,170,190,0)"), mist.addColorStop(1, `rgba(255,170,190,${0.18 + L * 0.05})`); g.fillStyle = mist, g.fillRect(0, H * (0.58 + L * 0.06), W, hz() - H * (0.58 + L * 0.06)); }
+        // sea
+        let sea = g.createLinearGradient(0, hz(), 0, H); sea.addColorStop(0, "#c25a86"), sea.addColorStop(0.12, "#3b2f78"), sea.addColorStop(1, "#080b2a"); g.fillStyle = sea, g.fillRect(0, hz(), W, H - hz());
+        for (let i = 0; i < 26; i++) { let y = hz() + (i + 1) * (H - hz()) / 27, a = 0.06 + 0.1 * (1 - i / 26); g.strokeStyle = `rgba(255,220,230,${a})`, g.lineWidth = 1, g.beginPath(); for (let x = 0; x <= W; x += 8) { let yy = y + Math.sin(x * 0.03 + t * (0.9 + i * 0.03) + i) * (0.6 + i * 0.12); x ? g.lineTo(x, yy) : g.moveTo(x, yy); } g.stroke(); }
+        for (let i = 0; i < 18; i++) { let y = hz() + 4 + i * (H - hz()) / 20, w = (mr * 1.6) * (1 - i / 22) + Math.sin(t * 2 + i) * 3; g.fillStyle = `rgba(255,240,210,${0.35 - i * 0.017})`, g.fillRect(moonX - w / 2, y, w, 2); }
+        // ship
+        let sx = W * 0.2 - mx * 22, sy = hz() + H * 0.075 + Math.sin(t * 0.9) * 3, rot = Math.sin(t * 0.7) * 0.025;
+        g.save(); g.translate(sx, sy), g.rotate(rot); let u = H * 0.0035;
+        g.fillStyle = "#1a1228", g.beginPath(), g.moveTo(-34 * u, -6 * u), g.quadraticCurveTo(-30 * u, 8 * u, -8 * u, 10 * u), g.lineTo(18 * u, 10 * u), g.quadraticCurveTo(34 * u, 6 * u, 40 * u, -14 * u), g.quadraticCurveTo(26 * u, -3 * u, 20 * u, -6 * u), g.closePath(), g.fill();
+        g.strokeStyle = "#d9b24c", g.lineWidth = 1.6, g.beginPath(), g.moveTo(-30 * u, -5 * u), g.lineTo(34 * u, -9 * u), g.stroke();
+        for (let i = 0; i < 6; i++) { g.fillStyle = i % 2 ? "#d9b24c" : "#a8342a", g.beginPath(), g.arc((-22 + i * 9) * u, -2 * u, 2.6 * u, 0, 6.283), g.fill(); }
+        g.strokeStyle = "#2a1a14", g.lineWidth = 2.4, g.beginPath(), g.moveTo(4 * u, -6 * u), g.lineTo(4 * u, -56 * u), g.stroke();
+        let flap = Math.sin(t * 1.6) * 3 * u; g.fillStyle = "#a8261f", g.beginPath(), g.moveTo(5 * u, -54 * u), g.quadraticCurveTo(30 * u + flap, -36 * u, 28 * u + flap * 0.5, -14 * u), g.lineTo(5 * u, -14 * u), g.closePath(), g.fill(); g.strokeStyle = "#e6c15a", g.lineWidth = 1.4, g.stroke();
+        g.fillStyle = "#f6d98a", g.beginPath(), g.arc(5 * u, -57 * u, 2.4 * u, 0, 6.283), g.fill(); glow(5 * u, -57 * u, 26 * u, "rgba(255,210,120,A)", 0.7);
+        g.restore();
+        g.fillStyle = "rgba(10,8,30,.35)"; g.fillRect(sx - 30 * u, sy + 12 * u, 66 * u, 2 * u);
+        // Yggdrasil
+        let tx = W * 0.83 - mx * 30, ty = H, th = H * 0.5;
+        g.fillStyle = "#0b0a22"; g.beginPath(), g.moveTo(tx - W * 0.05, ty), g.quadraticCurveTo(tx - W * 0.012, ty - th * 0.5, tx - W * 0.014, ty - th), g.lineTo(tx + W * 0.014, ty - th), g.quadraticCurveTo(tx + W * 0.012, ty - th * 0.5, tx + W * 0.06, ty), g.closePath(), g.fill();
+        g.strokeStyle = "#0b0a22", g.lineCap = "round"; for (let [a, l, w] of [[-0.9, 0.34, 7], [-0.45, 0.4, 8], [0.4, 0.4, 8], [0.9, 0.33, 7], [-1.25, 0.22, 5], [1.25, 0.22, 5]]) { g.lineWidth = w * (H / 700), g.beginPath(), g.moveTo(tx, ty - th * 0.82), g.quadraticCurveTo(tx + Math.sin(a) * H * l * 0.4, ty - th * 0.95 - Math.cos(a) * H * l * 0.25, tx + Math.sin(a) * H * l * 0.9, ty - th * 0.88 - Math.cos(a) * H * l * 0.6), g.stroke(); }
+        let cx = tx, cy = ty - th * 1.05, cr = H * 0.34;
+        glow(cx, cy, cr * 1.3, "rgba(255,200,90,A)", 0.16);
+        g.globalCompositeOperation = "lighter"; for (let q of canopy) { let ang = q.a, rr = q.d * cr, x = cx + Math.cos(ang) * rr * 1.25, y = cy + Math.sin(ang) * rr * 0.62; if (y > ty - th * 0.62) continue; let a = 0.35 + 0.4 * Math.sin(t * 1.2 + q.p); let gr = g.createRadialGradient(x, y, 0, x, y, q.r * H); gr.addColorStop(0, `hsla(${q.h},95%,66%,${a})`), gr.addColorStop(1, `hsla(${q.h},95%,60%,0)`); g.fillStyle = gr, g.fillRect(x - q.r * H, y - q.r * H, q.r * H * 2, q.r * H * 2); } g.globalCompositeOperation = "source-over";
+        // foreground hills
+        g.fillStyle = "#05051a"; g.beginPath(), g.moveTo(-10, H); g.lineTo(-10, H * 0.93); for (let x = 0; x <= W + 10; x += 12) g.lineTo(x, H * 0.945 + Math.sin(x * 0.012 + 1) * H * 0.012 - mx * 14), g.lineTo(W + 10, H), g.closePath(), g.fill();
+        // leaves & fireflies
+        for (let q of leaves) { let y = ((q.y + t * q.sp) % 1), x = ((q.x - t * q.dr + Math.sin(t * 0.6 + q.p) * 0.02) % 1 + 1) % 1; g.fillStyle = q.k ? `rgba(255,170,200,${0.55})` : `rgba(255,214,110,${0.6})`; g.save(); g.translate(x * W - mx * 30, y * H), g.rotate(t * 0.8 + q.p), g.beginPath(), g.ellipse(0, 0, q.r * 1.6, q.r * 0.8, 0, 0, 6.283), g.fill(); g.restore(); }
+        for (let q of flies) { let x = (q.x + Math.sin(t * q.s + q.p) * 0.03) * W, y = (q.y + Math.cos(t * q.s * 1.3 + q.p) * 0.02) * H, a = 0.3 + 0.7 * Math.abs(Math.sin(t * 1.5 + q.p)); glow(x, y, 9, "rgba(190,255,150,A)", a * 0.8); g.fillStyle = `rgba(240,255,200,${a})`, g.fillRect(x - 1, y - 1, 2, 2); }
+        let vg = g.createRadialGradient(W / 2, H / 2, H * 0.35, W / 2, H / 2, H * 0.95); vg.addColorStop(0, "rgba(0,0,10,0)"), vg.addColorStop(1, "rgba(0,0,12,.55)"); g.fillStyle = vg, g.fillRect(0, 0, W, H);
+        if (!reduce) raf = requestAnimationFrame(draw);
+      };
+      raf = requestAnimationFrame(draw);
+      return () => { cancelAnimationFrame(raf), window.removeEventListener("resize", resize), window.removeEventListener("mousemove", onMove); };
+    }, []);
+    return Hh("canvas", { ref, className: "cs-canvas", "aria-hidden": "true" });
+  }
   function CsBackdrop() {
     let ref = Hl.useRef(null);
     Hl.useEffect(() => {
