@@ -180,6 +180,13 @@
 - Janelas Alt+Q/E/S/A/G reduzidas a 50%.
 - Sons por espécie de monstro (lobo, javali, goblin, morto-vivo, gigante, gelatina, lagarto, máquina, pedra, vazio, planta): voz ociosa, ao notar o jogador, ao ser atingido e ao morrer; volume por distância.
 
+## v118 — Conteúdo nível 40–99
+- 4 reinos novos (20 mapas) depois do Coração da Ruptura: Jarnvid, Hvergelmir, Valhalla Caída e Vigrid.
+- 16 monstros novos (4 elites) e 4 chefes: Fenrir, Garm, Surtr e Loki.
+- Escada de equipamentos nível 16–96 (11 tiers × 8 armas, armadura, anel, amuleto) com bônus de conjunto (2 e 3 peças).
+- 21 cartas novas, poções nobres/valhalla/yggdrasil, materiais e troféus de chefe.
+- Drops de equipamento em todos os monstros, taxas baixas.
+
 ## v117
 - Menu de pausa: teclado funcionando (↑/↓ + Enter, C continuar, S salvar, M voltar ao menu inicial); removido o popup de confirmação que bloqueava o botão.
 - Montaria: /montar exige linhagem Espadachim/Berserker.

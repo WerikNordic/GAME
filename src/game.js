@@ -7399,6 +7399,57 @@ Error generating stack: ` + n.message + `
   for (let e of M8) Wa[e.id] = e;
   [["luvas_couro", "Luvas de Couro", 1, 4, "common", 12], ["manoplas_ferro", "Manoplas de Ferro", 10, 16, "uncommon", 140], ["garras_lobo", "Garras de Lobo", 22, 30, "rare", 420], ["punhos_tyr", "Punhos de Tyr", 36, 52, "epic", 1100]].forEach(([id, name, lv, atk, rarity, sell]) => { Wa[id] = te({ id, name, kind: "weapon", weaponType: "fist", rarity, reqLevel: lv, stack: 1, sell, weight: 15, desc: "Arma de punho para Thays. Golpes r\u00E1pidos e secos.", bonus: { atk } }); });
   [["maca_ferro", "Ma\xE7a de Ferro", 1, 5, "common", 15], ["maca_cravejada", "Ma\xE7a Cravejada", 10, 17, "uncommon", 150], ["martelo_guerra", "Martelo de Guerra", 22, 32, "rare", 440], ["martelo_trovao", "Martelo do Trov\xE3o", 36, 54, "epic", 1150]].forEach(([id, name, lv, atk, rarity, sell]) => { Wa[id] = te({ id, name, kind: "weapon", weaponType: "mace", rarity, reqLevel: lv, stack: 1, sell, weight: 20, desc: "Arma de comerciante guerreiro: pesada, firme e feita para atordoar.", bonus: { atk } }); });
+
+  var GT_ = [[16,"de A\u00e7o R\u00fanico","uncommon"],[24,"da Matilha","rare"],[32,"de Obsidiana","rare"],[40,"do Draugr Real","rare"],[48,"de Ferro de Jarnvid","epic"],[56,"da Fonte Ardente","epic"],[64,"do C\u00e3o de Garm","epic"],[72,"do Einherjar","legendary"],[80,"da Valqu\u00edria","legendary"],[88,"do Crep\u00fasculo","legendary"],[96,"do Ragnar\u00f6k","legendary"]];
+  var WT_ = [["sword","Espada",1,"L\u00e2mina equilibrada."],["axe","Machado",1,"Pesado, corta osso e escudo."],["bow","Arco",1,"A corda canta antes da flecha."],["staff","Cajado",1,"Canaliza runas em poder bruto."],["spear","Lan\u00e7a",1,"Alcance e precis\u00e3o."],["dagger","Adaga",0.85,"Veloz e cruel."],["fist","Manoplas",0.95,"Para quem luta de perto."],["mace","Martelo",0.95,"Esmaga defesas."]];
+  var AR_ = ["Cota","Coura\u00e7a","Armadura","Peitoral"];
+  var SETS_ = {}, GEARIDS_ = {};
+  GT_.forEach(([lv, suf, rar], ti) => {
+    let sid = "set_" + lv, sname = "Conjunto " + suf, sell = Math.round(lv * lv * 0.45 + 90);
+    let p2 = { def: Math.round(lv * 0.3), maxHp: Math.round(lv * 2.2) }, p3 = { atk: Math.round(lv * 0.55), matk: Math.round(lv * 0.55), crit: +(0.02 + lv / 2500).toFixed(3) };
+    SETS_[sid] = { name: sname, p2, p3 };
+    let sd = " " + sname + ": 2 pe\u00e7as +" + p2.def + " DEF e +" + p2.maxHp + " Vida; 3 pe\u00e7as +" + p3.atk + " ATQ/ATQ.M e +" + Math.round(p3.crit * 1000) / 10 + "% cr\u00edtico.";
+    let ids = { weapons: [] };
+    for (let [ty, nm, k, ds] of WT_) {
+      let atk = Math.round((5 + 1.45 * lv) * k), id = ty + "_t" + lv, bonus = ty === "staff" ? { matk: Math.round(atk * 1.15) } : { atk };
+      ty === "dagger" && (bonus.crit = +(0.03 + lv / 1500).toFixed(3));
+      Wa[id] = te({ id, name: nm + " " + suf, kind: "weapon", weaponType: ty, rarity: rar, reqLevel: lv, stack: 1, sell, weight: ty === "dagger" ? 20 : void 0, desc: ds + sd, bonus, set: sid });
+      ids.weapons.push(id);
+    }
+    Wa["armadura_t" + lv] = te({ id: "armadura_t" + lv, name: AR_[ti % 4] + " " + suf, kind: "armor", rarity: rar, reqLevel: lv, stack: 1, sell: Math.round(sell * 1.4), desc: "Prote\u00e7\u00e3o forjada para quem sobrevive." + sd, bonus: { def: Math.round(0.92 * lv), maxHp: Math.round(4.6 * lv) }, set: sid });
+    Wa["anel_t" + lv] = te({ id: "anel_t" + lv, name: "Anel " + suf, kind: "accessory", rarity: rar, reqLevel: lv, stack: 1, sell: Math.round(sell * 1.2), desc: "Runa de combate gravada na banda." + sd, bonus: { crit: +(0.02 + lv / 1500).toFixed(3), atk: Math.round(lv * 0.35), matk: Math.round(lv * 0.35) }, set: sid });
+    Wa["amuleto_t" + lv] = te({ id: "amuleto_t" + lv, name: "Amuleto " + suf, kind: "accessory", rarity: rar, reqLevel: lv, stack: 1, sell: Math.round(sell * 1.2), desc: "Guarda corpo e f\u00f4lego." + sd, bonus: { maxHp: Math.round(lv * 3.2), maxMp: Math.round(lv * 1.2), vit: Math.max(1, Math.round(lv / 12)) }, set: sid });
+    ids.armor = "armadura_t" + lv, ids.ring = "anel_t" + lv, ids.amulet = "amuleto_t" + lv;
+    GEARIDS_[lv] = ids;
+  });
+  for (let k of Object.keys(Wa)) { let o = Wa[k]; o.weight === void 0 && delete o.weight; }
+  [["hidromel_nobre", "Hidromel Nobre", "hp", 500, "uncommon", 20, 70], ["elixir_valhalla", "Elixir de Valhalla", "hp", 1400, "rare", 45, 190], ["nectar_yggdrasil", "N\u00e9ctar de Yggdrasil", "hp", 3200, "epic", 70, 480], ["infusao_nobre", "Infus\u00e3o Nobre", "mp", 160, "uncommon", 20, 70], ["infusao_astral", "Infus\u00e3o Astral", "mp", 420, "rare", 45, 190], ["infusao_cosmica", "Infus\u00e3o C\u00f3smica", "mp", 900, "epic", 70, 480]].forEach(([id, name, k, v, rarity, lv, sell]) => { Wa[id] = te({ id, name, kind: "consumable", rarity, reqLevel: lv, stack: 20, sell, desc: "Restaura " + v + " de " + (k === "hp" ? "vida" : "mana") + ".", use: { [k]: v } }); });
+  [["min_jarnvid", "Min\u00e9rio de Jarnvid", "uncommon", 40, "Ferro negro da floresta de Jarnvid. Ingrediente de /forjar."], ["brasa_hvergelmir", "Brasa de Hvergelmir", "rare", 90, "Carv\u00e3o eterno da fonte ardente."], ["ouro_valhalla", "Ouro de Valhalla", "rare", 180, "Ouro dos sal\u00f5es ca\u00eddos."], ["fragmento_fim", "Fragmento do Fim", "epic", 320, "Lasca do pr\u00f3prio Ragnar\u00f6k."], ["corrente_fenrir", "Corrente Partida de Fenrir", "epic", 600, "Elo da corrente Gleipnir."], ["presa_garm", "Presa de Garm", "epic", 650, "Ainda pinga fogo."], ["brasa_surtr", "Brasa de Surtr", "epic", 700, "Quente ao toque, para sempre."], ["lasca_loki", "Lasca do Ruptor", "epic", 800, "Muda de cor quando ningu\u00e9m olha."]].forEach(([id, name, rarity, sell, desc]) => { Wa[id] = te({ id, name, kind: "material", rarity, reqLevel: 1, stack: 99, sell, desc }); });
+  [
+    ["carta_ent", "Carta do Ent Sombrio", "weapon", [{ kind: "race", target: "planta", pct: 0.25 }], "rare", "Arma: +25% de dano contra Plantas."],
+    ["carta_automato", "Carta do Aut\u00f4mato", "weapon", [{ kind: "race", target: "construto", pct: 0.25 }], "rare", "Arma: +25% de dano contra Construtos."],
+    ["carta_prisma", "Carta do Prisma", "weapon", [{ kind: "race", target: "elemental", pct: 0.25 }], "rare", "Arma: +25% de dano contra Elementais."],
+    ["carta_voidling", "Carta do Vazio", "weapon", [{ kind: "element", target: "sombra", pct: 0.25 }], "rare", "Arma: +25% de dano contra o elemento Sombra."],
+    ["carta_goblin_xama", "Carta do Goblin Xam\u00e3", "weapon", [{ kind: "race", target: "humanoide", pct: 0.2 }], "rare", "Arma: +20% de dano contra Humanoides."],
+    ["carta_golem", "Carta do Golem", "weapon", [{ kind: "element", target: "fogo", pct: 0.2 }], "rare", "Arma: +20% de dano contra o elemento Fogo."],
+    ["carta_lobo_ferro", "Carta do Lobo de Ferro", "weapon", [{ kind: "race", target: "besta", pct: 0.3 }], "epic", "Arma: +30% de dano contra Bestas."],
+    ["carta_gigante", "Carta do Gigante de Brasa", "weapon", [{ kind: "race", target: "gigante", pct: 0.3 }], "epic", "Arma: +30% de dano contra Gigantes."],
+    ["carta_einherjar", "Carta do Einherjar", "weapon", [{ kind: "size", target: "grande", pct: 0.25 }], "epic", "Arma: +25% de dano contra criaturas Grandes."],
+    ["carta_fenrir", "Carta de Fenrir", "weapon", [{ kind: "race", target: "besta", pct: 0.45 }], "legendary", "Arma: +45% de dano contra Bestas."],
+    ["carta_garm", "Carta de Garm", "weapon", [{ kind: "element", target: "fogo", pct: 0.4 }], "legendary", "Arma: +40% de dano contra o elemento Fogo."],
+    ["carta_surtr", "Carta de Surtr", "weapon", [{ kind: "race", target: "gigante", pct: 0.4 }], "legendary", "Arma: +40% de dano contra Gigantes."],
+    ["carta_loki", "Carta de Loki", "weapon", [{ kind: "element", target: "sombra", pct: 0.4 }], "legendary", "Arma: +40% de dano contra o elemento Sombra."]
+  ].forEach(([id, name, cf, mods, rarity, desc]) => { Wa[id] = te({ id, name, kind: "card", cardFor: cf, cardMods: mods, rarity, reqLevel: 1, stack: 20, sell: rarity === "legendary" ? 2400 : rarity === "epic" ? 1100 : 520, desc }); });
+  [
+    ["carta_yeti_ancestral", "Carta do Yeti Ancestral", "Bonus_MaxHP +15%", "rare", "Armadura: +15% de vida m\u00e1xima."],
+    ["carta_lobo_alfa", "Carta do Lobo Alfa", "Bonus_Speed +6", "rare", "Armadura: +6 de velocidade."],
+    ["carta_sentinela", "Carta da Sentinela \u00c1urea", "Bonus_Def +14", "rare", "Armadura: +14 de defesa."],
+    ["carta_golem_def", "Carta do Colosso", "Bonus_Def +9; Bonus_MaxHP +6%", "rare", "Armadura: +9 DEF e +6% vida."],
+    ["carta_valquiria", "Carta da Valqu\u00edria", "Bonus_MaxSP +20%", "epic", "Armadura: +20% de mana m\u00e1xima."],
+    ["carta_cristal_fim", "Carta do Cristal do Fim", "Bonus_Crit +0.05", "epic", "Armadura: +5% de cr\u00edtico."],
+    ["carta_troll", "Carta do Troll de Jarnvid", "Bonus_MaxHP +20%", "epic", "Armadura: +20% de vida m\u00e1xima."],
+    ["carta_arauto_fim", "Carta do Arauto do Fim", "Bonus_Atk +12; Bonus_Matk +12", "epic", "Armadura: +12 ATQ e ATQ.M."]
+  ].forEach(([id, name, script, rarity, desc]) => { Wa[id] = te({ id, name, kind: "card", cardFor: "armor", script, rarity, reqLevel: 1, stack: 20, sell: rarity === "epic" ? 1100 : 520, desc }); });
   for (let e of Object.values(Wa)) {
     if (e.slots !== void 0 || e.kind !== "weapon" && e.kind !== "armor" && e.kind !== "accessory") continue;
     let t = { common: 0, uncommon: 1, rare: 2, epic: 3, legendary: 4 }[e.rarity];
@@ -8637,6 +8688,29 @@ Error generating stack: ` + n.message + `
   var Xm = R8();
   Xm.portals.sort((e, t) => e.toMap === "planicies_jotunheim" ? -1 : t.toMap === "planicies_jotunheim" ? 1 : 0);
   var Yx = q8(), Jt = { [Xm.id]: Xm, [Yx.id]: Yx };
+
+  {
+    let RL_ = [
+      { th: "lush", mood: [0.5, 0.58, 0.55], seed: 1700, tr: 90, rk: 60, sl: "Acampamento de Jarnvid", id: "jarn", names: ["Orla de Jarnvid", "Bosque dos Troncos de Ferro", "Clareira das Bruxas", "Vale dos Uivos", "Covil de Fenrir"], mon: ["lobo_ferro", "troll_jarnvid", "vidente_ferrugem", "ulfhednar"], boss: "fenrir_livre" },
+      { th: "fire", mood: [1, 0.66, 0.55], seed: 1800, tr: 0, rk: 120, sl: "Posto de Hvergelmir", id: "hverg", names: ["Margem de Hvergelmir", "Rio de Esc\u00f3ria", "Pontes de Brasa", "Plan\u00edcie dos C\u00e3es Infernais", "Fonte Ardente de Garm"], mon: ["gigante_brasa", "cao_inferno", "jotun_cinzas", "chama_viva"], boss: "garm_hel" },
+      { th: "marble", mood: [0.92, 0.8, 0.7], seed: 1900, tr: 0, rk: 150, sl: "Muralha de Valhalla", id: "valh", names: ["Port\u00f5es de Valhalla Ca\u00edda", "Sal\u00e3o dos Einherjar", "Jardim das Valqu\u00edrias", "Ala dos Escudos Partidos", "Trono Calcinado"], mon: ["einherjar_caido", "valquiria_corrompida", "automato_divino", "campeao_esquecido"], boss: "surtr_final" },
+      { th: "void", mood: [0.46, 0.3, 0.6], seed: 2000, tr: 0, rk: 170, sl: "\u00daltimo Acampamento", id: "vig", names: ["Vigrid, Plan\u00edcie do Fim", "Muralha de Ossos", "Mar de Sangue", "\u00c1rvore Despeda\u00e7ada", "Palco do Ragnar\u00f6k"], mon: ["eco_final", "cristal_fim", "draugr_fim", "arauto_fim"], boss: "loki_ruptor" }
+    ];
+    Qm.find((m) => m.id === "lim_coracao").next = "jarn_1";
+    let prev = "lim_coracao";
+    RL_.forEach((R, ri) => {
+      R.names.forEach((nm, i) => {
+        let id = R.id + "_" + (i + 1), last = i === 4 && ri === 3, nx = last ? void 0 : i === 4 ? RL_[ri + 1].id + "_1" : R.id + "_" + (i + 2);
+        let [a, b, c, e] = R.mon, cnt = 11 + i;
+        let sp = [N(a, 520, 560, 220, cnt), N(b, 1400, 640, 200, cnt - 1), N(c, 960, 1e3, 200, cnt - 2), N(i % 2 ? a : b, 400, 1e3, 160, 6), N(e, 1500, 1050, 170, 2 + (i > 2 ? 1 : 0))];
+        i === 4 && sp.push({ monster: R.boss, x: 960, y: 640, radius: 0, count: 1 });
+        let ent = { id, name: nm, seed: R.seed + i * 11, theme: R.th, trees: R.tr, rocks: R.rk + i * 6, lakes: R.th === "lush" && i % 2 ? [{ x: 700 + i * 60, y: 800, w: 420, h: 200 }] : [], spawns: sp, safeLabel: R.sl, prev, mood: R.mood };
+        nx && (ent.next = nx);
+        i === 4 && (ent.crates = [[500, 600], [1400, 700]]);
+        Qm.push(ent), prev = id;
+      });
+    });
+  }
   Qm.forEach((e, t) => {
     Jt[e.id] = N8(e, t), Jt[e.id].depth = t + 1;
   });
@@ -8756,6 +8830,17 @@ Error generating stack: ` + n.message + `
       if (r > 0) {
         let i = Wm(o, r);
         t.atk += i.atk, t.matk += i.matk, t.def += i.def, t.maxHp += i.maxHp, t.crit += i.crit;
+      }
+    }
+    {
+      let sc = {};
+      for (let n of Object.values(e.equipment)) {
+        let o = n ? $(n) : void 0;
+        o && o.set && (sc[o.set] = (sc[o.set] ?? 0) + 1);
+      }
+      for (let k of Object.keys(sc)) {
+        let S = SETS_[k];
+        S && (sc[k] >= 2 && a(S.p2), sc[k] >= 3 && a(S.p3));
       }
     }
     return t;
@@ -9036,6 +9121,64 @@ Error generating stack: ` + n.message + `
     }
   }
   var BAL = { hp: 1.55, atk: 1.3, def: 1.12, exp: 0.5, silver: 0.55, drop: 0.55, bossHp: 1.35, bossAtk: 1.25, bossExp: 0.45, bossDrop: 0.8 };
+
+  {
+    const DEP_ = (id) => { let ix = []; Qm.forEach((m, i) => m.spawns && m.spawns.some((q) => q.monster === id) && ix.push(i + 1)); return ix.length ? ix.reduce((x, y) => x + y) / ix.length : 40; };
+    const G_ = (ids, lv, c, mn, mx) => ids.map((id) => ({ item: id, chance: c, min: mn, max: mx }));
+    const MATS_ = (L) => L < 54 ? "min_jarnvid" : L < 69 ? "brasa_hvergelmir" : L < 85 ? "ouro_valhalla" : "fragmento_fim";
+    const POT_ = (L) => L < 45 ? ["hidromel_nobre", "infusao_nobre"] : L < 70 ? ["elixir_valhalla", "infusao_astral"] : ["nectar_yggdrasil", "infusao_cosmica"];
+    const NM_ = [
+      ["lobo_ferro", "Lobo de Ferro", "lobo_faminto", 40, 6908266, 14, 0, "carta_lobo_ferro"],
+      ["troll_jarnvid", "Troll de Jarnvid", "goblin_saqueador", 43, 4872506, 20, 0, "carta_troll"],
+      ["vidente_ferrugem", "Vidente da Ferrugem", "guardiao_raiz", 45, 9066042, 16, 0, null],
+      ["ulfhednar", "Ulfhednar Acorrentado", "lobo_faminto", 49, 11581640, 20, 1, null],
+      ["gigante_brasa", "Gigante de Brasa", "salamandra_brasa", 55, 13647904, 22, 0, "carta_gigante"],
+      ["cao_inferno", "C\u00e3o do Inferno", "lobo_faminto", 58, 13647904, 16, 0, null],
+      ["jotun_cinzas", "J\u00f6tun de Cinzas", "yeti_nevasca", 60, 5592422, 24, 0, null],
+      ["chama_viva", "Chama Viva", "salamandra_brasa", 63, 16761920, 17, 1, null],
+      ["einherjar_caido", "Einherjar Ca\u00eddo", "sentinela_pedra", 70, 12105912, 18, 0, "carta_einherjar"],
+      ["valquiria_corrompida", "Valqu\u00edria Corrompida", "sentinela_pedra", 74, 10185424, 17, 0, "carta_valquiria"],
+      ["automato_divino", "Aut\u00f4mato Divino", "automato_ferro", 77, 15228240, 19, 0, null],
+      ["campeao_esquecido", "Campe\u00e3o Esquecido", "sentinela_pedra", 80, 14727792, 21, 1, null],
+      ["eco_final", "Eco Final", "eco_vazio", 86, 5253754, 17, 0, null],
+      ["cristal_fim", "Cristal do Fim", "construto_prisma", 90, 10124031, 18, 0, "carta_cristal_fim"],
+      ["draugr_fim", "Draugr do Fim", "draugr", 93, 8030842, 16, 0, null],
+      ["arauto_fim", "Arauto do Fim", "eco_vazio", 96, 16728160, 20, 1, "carta_arauto_fim"]
+    ];
+    for (let [id, name, base, L, color, radius, elite, card] of NM_) {
+      let B_ = Qu[base], o = Y8(DEP_(id)), E = elite ? 1 : 0;
+      let hpT = 100 * Math.pow(L, 0.97) * (E ? 2.4 : 1), atkT = 11 * Math.pow(L, 0.72) * (E ? 1.3 : 1), defT = 1.2 * L * (E ? 1.1 : 1), expT = tr(L) / 50 * (E ? 2.2 : 1);
+      let pot = POT_(L), drops = [{ item: MATS_(L), chance: E ? 0.9 : 0.5, min: 1, max: E ? 4 : 2 }, { item: pot[0], chance: 0.12, min: 1, max: 1 }, { item: pot[1], chance: 0.1, min: 1, max: 1 }];
+      card && drops.push({ item: card, chance: E ? 0.02 : 0.006, min: 1, max: 1 });
+      Qu[id] = { ...B_, id, name, level: L, hp: Math.round(hpT / o.hp / BAL.hp), atk: Math.round(atkT / o.atk / BAL.atk), def: Math.round(defT / o.def / BAL.def), exp: Math.max(1, Math.round(expT / o.exp / BAL.exp)), silver: [Math.round(L * 1.1 / o.silver / BAL.silver), Math.round(L * 2.2 / o.silver / BAL.silver)], color, radius, respawnMs: E ? 90000 : 30000, drops, ...(E ? { speed: Math.round(B_.speed * 1.08) } : {}) };
+    }
+    const NB_ = [
+      ["fenrir_livre", "Fenrir Desacorrentado", "hati", 52, 10463440, 32, "carta_fenrir", "corrente_fenrir", { monster: "lobo_ferro", count: 3 }],
+      ["garm_hel", "Garm, C\u00e3o de Hel", "hati", 68, 8396832, 34, "carta_garm", "presa_garm", { monster: "cao_inferno", count: 3 }],
+      ["surtr_final", "Surtr, Senhor das Chamas Finais", "devorador_ruptura", 84, 16739872, 40, "carta_surtr", "brasa_surtr", { monster: "einherjar_caido", count: 2 }],
+      ["loki_ruptor", "Loki, o Ruptor", "devorador_ruptura", 99, 4247712, 40, "carta_loki", "lasca_loki", { monster: "arauto_fim", count: 2 }]
+    ];
+    for (let [id, name, base, L, color, radius, card, troph, adds] of NB_) {
+      let B_ = Qu[base], pot = POT_(L), tl = Math.max(...GT_.map((g) => g[0]).filter((x) => x <= L + 8)), gi = GEARIDS_[tl];
+      let drops = [{ item: MATS_(L), chance: 1, min: 3, max: 6 }, { item: troph, chance: 1, min: 1, max: 1 }, { item: pot[0], chance: 0.9, min: 2, max: 4 }, { item: pot[1], chance: 0.8, min: 2, max: 4 }, { item: card, chance: 0.06, min: 1, max: 1 }, ...G_([gi.armor, gi.ring, gi.amulet], tl, 0.12, 1, 1), ...G_(gi.weapons, tl, 0.045, 1, 1)];
+      Qu[id] = { ...B_, id, name, level: L, boss: true, hp: Math.round(600 * Math.pow(L, 1.05) / BAL.bossHp), atk: Math.round(5.6 * Math.pow(L, 0.9) / BAL.bossAtk), def: Math.round(1.3 * L / BAL.def), exp: Math.round(tr(L) / 6 / BAL.bossExp), silver: [Math.round(L * 7 / BAL.silver), Math.round(L * 10.5 / BAL.silver)], color, radius, adds, respawnMs: 420000, drops };
+    }
+    const CARDS_ = { yeti_ancestral: "carta_yeti_ancestral", lobo_alfa: "carta_lobo_alfa", sentinela_aurea: "carta_sentinela", golem_obsidiana: "carta_golem_def", ent_sombrio: "carta_ent", automato_cobre: "carta_automato", prisma_rubi: "carta_prisma", voidling_abissal: "carta_voidling", goblin_xama: "carta_goblin_xama", salamandra_brasa: "carta_golem" };
+    for (let d of Object.values(Qu)) {
+      if (d.id === "jormungandr") continue;
+      if (CARDS_[d.id] && !d.drops.some((x) => x.item === CARDS_[d.id])) d.drops.push({ item: CARDS_[d.id], chance: 0.004, min: 1, max: 1 });
+      if (NM_.some((n) => n[0] === d.id) || NB_.some((n) => n[0] === d.id)) continue;
+      let tl = Math.max(0, ...GT_.map((g) => g[0]).filter((x) => x <= d.level + (d.boss ? 8 : 4)));
+      if (!tl) continue;
+      let lo = Math.max(0, ...GT_.map((g) => g[0]).filter((x) => x < tl)), mul = d.boss ? 22 : 1;
+      for (let [t, f] of [[tl, 1], [lo, 0.5]]) {
+        if (!t) continue;
+        let gi = GEARIDS_[t];
+        for (let id of [gi.armor, gi.ring, gi.amulet]) d.drops.push({ item: id, chance: 0.005 * f * mul, min: 1, max: 1 });
+        for (let id of gi.weapons) d.drops.push({ item: id, chance: 0.002 * f * mul, min: 1, max: 1 });
+      }
+    }
+  }
   for (let d of Object.values(Qu)) {
     if (d.id === "jormungandr") { d.atk = Math.round(d.atk * 1.15); continue; }
     let bs = !!d.boss;
@@ -14046,7 +14189,7 @@ void main() {
     }
     return { w: t.w, h: t.h, data: ae };
   }
-  typeof location < 'u' && location.search.includes('debug') && (window.__game = () => ({ WB, j, Ce, Ua, Yu, ty, I8, tr, U8, ap, Dr, Jy, Rb, Cc, _p, Ua, en, Jt, nr }), window.__defs = () => Object.values(Qu), window.__sprDbg = () => ({ cs, po, fa, hh, R4, ea, ROXQM, O4, P0, Vl }), window.__spr2 = () => ({ O4, _4 }));
+  typeof location < 'u' && location.search.includes('debug') && (window.__game = () => ({ WB, j, Ce, Ua, Yu, ty, I8, tr, U8, ap, Dr, Jy, Rb, Cc, _p, Ua, en, Jt, nr }), window.__defs = () => Object.values(Qu), window.__items = () => Wa, window.__maps = () => Jt, window.__sprDbg = () => ({ cs, po, fa, hh, R4, ea, ROXQM, O4, P0, Vl }), window.__spr2 = () => ({ O4, _4 }));
   var c4 = [1, -1, 0, 0, 1, -1, 1, -1], u4 = [0, 0, 1, -1, 1, -1, -1, 1];
   function d4(e, t, a, n) {
     let o = A.RX(a).mul(A.RY(t)), r = o.r, i = 1e9, s = -1e9, l = 1e9, c = -1e9;
