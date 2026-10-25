@@ -206,6 +206,7 @@ body.armed canvas{cursor:crosshair!important}
 .craft-list{max-height:min(55vh,420px);overflow:auto;display:grid;gap:4px;margin-top:6px}
 .craft-row{display:flex;align-items:center;gap:8px}
 .craft-ing{display:flex;flex-wrap:wrap;gap:6px;font-size:11px}.craft-ing .ok{color:#1c7a2c}.craft-ing .no{color:#b33a3a}
+.rq-row,.rq-done{display:flex!important;gap:8px;align-items:center}.rq-row small{display:block}.rq-row button{min-width:84px}
 </style></head>
   <body>
     <div id="root"></div>
@@ -9849,7 +9850,7 @@ Error generating stack: ` + n.message + `
     let a = Wu(t);
     return e === "storm" ? a === "snow" ? "Nevasca" : a === "ash" ? "Tempestade de cinzas" : a === "spores" ? "Tempestade de eco" : "Tempestade" : a === "snow" ? "Neve" : a === "ash" ? "Chuva de cinzas" : a === "spores" ? "Esporos \xE0 deriva" : "Chuva";
   }
-  var kp = { lua_sangue: { id: "lua_sangue", name: "Lua de Sangue", desc: "Os monstros ficam mais fortes (+25% de dano), mas d\xE3o +50% de EXP e +30% de drops.", when: "night", weight: 2, mods: { exp: 1.5, drop: 1.3, mobAtk: 1.25 }, field: true, color: "#e0405a" }, chuva_estrelas: { id: "chuva_estrelas", name: "Chuva de Estrelas", desc: "Estrelas cadentes cruzam o c\xE9u. +25% de EXP.", when: "night", weight: 2, mods: { exp: 1.25, drop: 1, mobAtk: 1 }, field: true, color: "#bcd8ff" }, aurora: { id: "aurora", name: "Aurora Boreal", desc: "Fitas de luz no c\xE9u da noite. +15% de EXP e +10% de drops.", when: "night", weight: 1, mods: { exp: 1.15, drop: 1.1, mobAtk: 1 }, field: true, color: "#7dffc8" }, bencao_freyja: { id: "bencao_freyja", name: "B\xEAn\xE7\xE3o de Freyja", desc: "P\xF3len dourado no ar. +15% de EXP, +10% de drops e monstros 10% mais fracos.", when: "day", weight: 2, mods: { exp: 1.15, drop: 1.1, mobAtk: 0.9 }, field: true, color: "#ffd86b" }, monstro_dourado: { id: "monstro_dourado", name: "Monstro Dourado", desc: "Um monstro do mapa brilha em ouro: mais resistente, vale 5\xD7 EXP e 3\xD7 drops.", when: "any", weight: 3, mods: { exp: 1, drop: 1, mobAtk: 1 }, field: true, color: "#ffc83a" }, yule: { id: "yule", name: "Yule em Lutie", desc: "Luzes e presentes no inverno. +25% de EXP e +25% de drops.", when: "any", weight: 6, month: 11, mods: { exp: 1.25, drop: 1.25, mobAtk: 1 }, field: true, color: "#ff5a5a" }, cacada_selvagem: { id: "cacada_selvagem", name: "Ca\xE7ada Selvagem de Odin", desc: "A horda espectral cruza a noite. +40% de EXP, +20% de drops e monstros 20% mais fortes.", when: "night", weight: 2, mods: { exp: 1.4, drop: 1.2, mobAtk: 1.2 }, field: true, color: "#9db4ff" }, festival: { id: "festival", name: "Festival do Hidromel", desc: "Fogos nas cidades e brindes por todo lado. +10% de EXP em qualquer mapa.", when: "day", weight: 2, mods: { exp: 1.1, drop: 1, mobAtk: 1 }, field: false, color: "#ff9a4a" } };
+  var kp = { lua_sangue: { id: "lua_sangue", name: "Lua de Sangue", desc: "Os monstros ficam mais fortes (+25% de dano), mas d\xE3o +50% de EXP e +30% de drops.", when: "night", weight: 2, mods: { exp: 1.5, drop: 1.3, mobAtk: 1.25 }, field: true, color: "#e0405a" }, chuva_estrelas: { id: "chuva_estrelas", name: "Chuva de Estrelas", desc: "Estrelas cadentes cruzam o c\xE9u. +25% de EXP.", when: "night", weight: 2, mods: { exp: 1.25, drop: 1, mobAtk: 1 }, field: true, color: "#bcd8ff" }, aurora: { id: "aurora", name: "Aurora Boreal", desc: "Fitas de luz no c\xE9u da noite. +15% de EXP e +10% de drops.", when: "night", weight: 1, mods: { exp: 1.15, drop: 1.1, mobAtk: 1 }, field: true, color: "#7dffc8" }, bencao_freyja: { id: "bencao_freyja", name: "B\xEAn\xE7\xE3o de Freyja", desc: "P\xF3len dourado no ar. +15% de EXP, +10% de drops e monstros 10% mais fracos.", when: "day", weight: 2, mods: { exp: 1.15, drop: 1.1, mobAtk: 0.9 }, field: true, color: "#ffd86b" }, monstro_dourado: { id: "monstro_dourado", name: "Monstro Dourado", desc: "Um monstro do mapa brilha em ouro: mais resistente, vale 5\xD7 EXP e 3\xD7 drops.", when: "any", weight: 3, mods: { exp: 1, drop: 1, mobAtk: 1 }, field: true, color: "#ffc83a" }, yule: { id: "yule", name: "Yule em Lutie", desc: "Luzes e presentes no inverno. +25% de EXP e +25% de drops.", when: "any", weight: 6, month: 11, mods: { exp: 1.25, drop: 1.25, mobAtk: 1 }, field: true, color: "#ff5a5a" }, cacada_selvagem: { id: "cacada_selvagem", name: "Ca\xE7ada Selvagem de Odin", desc: "A horda espectral cruza a noite. +40% de EXP, +20% de drops e monstros 20% mais fortes.", when: "night", weight: 2, mods: { exp: 1.4, drop: 1.2, mobAtk: 1.2 }, field: true, color: "#9db4ff" }, eclipse_fenrir: { id: "eclipse_fenrir", name: "Eclipse de Fenrir", desc: "A lua some. Monstros 35% mais fortes, +30% de EXP e +40% de drops.", when: "night", weight: 1, mods: { exp: 1.3, drop: 1.4, mobAtk: 1.35 }, field: true, color: "#a070ff" }, tormenta_thor: { id: "tormenta_thor", name: "Tormenta de Thor", desc: "Trovões rasgam o céu. +20% de EXP, +10% de drops e monstros 15% mais fortes.", when: "any", weight: 2, mods: { exp: 1.2, drop: 1.1, mobAtk: 1.15 }, field: true, color: "#8fd0ff" }, macas_idunn: { id: "macas_idunn", name: "Maçãs de Idunn", desc: "O ar cheira a maçã. +10% de EXP e monstros 15% mais fracos.", when: "day", weight: 2, mods: { exp: 1.1, drop: 1, mobAtk: 0.85 }, field: true, color: "#9cf08a" }, mercado_runas: { id: "mercado_runas", name: "Mercado de Runas", desc: "Mercadores trazem runas raras. +25% de drops em qualquer mapa.", when: "day", weight: 1, mods: { exp: 1, drop: 1.25, mobAtk: 1 }, field: false, color: "#ffb05a" }, festival: { id: "festival", name: "Festival do Hidromel", desc: "Fogos nas cidades e brindes por todo lado. +10% de EXP em qualquer mapa.", when: "day", weight: 2, mods: { exp: 1.1, drop: 1, mobAtk: 1 }, field: false, color: "#ff9a4a" } };
   function sM(e) {
     let t = Oe(e * 1597334677 + 7);
     let a = e * Oy + Math.floor(t() * (Oy - 11 * 6e4)), n = a + Math.floor((6 + t() * 4) * 6e4), o = oM(a), r = Object.values(kp).filter((l) => (l.when === "any" || l.when === "night" === o) && (l.month === void 0 || l.month === new Date(a).getMonth())), i = r.reduce((l, c) => l + c.weight, 0), s = t() * i;
@@ -11156,6 +11157,7 @@ Error generating stack: ` + n.message + `
     if (Vt(e.kills)) for (let [M, T] of Object.entries(e.kills)) oo(M) && (R[M] = Ut(T, 0, 1e9, 0));
     let w = { name: t, line: e.line, tier: a, level: n, exp: n >= Gr ? 0 : Ut(e.exp, 0, tr(n) - 1, 0), jobLevel: o, jobExp: Ut(e.jobExp, 0, 1e7, 0), statPoints: Ut(e.statPoints, 0, 9999, 0), stats: r, hp: es(e.hp, 1, 1e6, 1), mp: es(e.mp, 0, 1e6, 0), silver: Ut(e.silver, 0, 1e9, 0), inventory: s, equipment: c, quests: f, kills: R, playTimeMs: Ut(e.playTimeMs, 0, 1e12, 0), refine: m, visited: p, found: h, skillPoints: y, skillLevels: g, sockets: k, cards: v, dye: Number.isInteger(e.dye) && e.dye >= 0 && e.dye <= 16777215 ? e.dye : 0 };
     e.gender === "f" && (w.gender = "f");
+    Vt(e.rq2) && (w.rq2 = { claimed: Object.fromEntries(Object.entries(Vt(e.rq2.claimed) ? e.rq2.claimed : {}).filter(([k, v]) => v === true && /^[a-z_]+:\d$/.test(k))), base: Object.fromEntries(Object.entries(Vt(e.rq2.base) ? e.rq2.base : {}).filter(([k, v]) => /^[a-z_]+:\d$/.test(k) && Number.isFinite(v)).map(([k, v]) => [k, Math.max(0, Math.floor(v))])) });
     Vt(e.craft) && (w.craft = { forja: Ut(e.craft.forja, 0, 1e7, 0), alquimia: Ut(e.craft.alquimia, 0, 1e7, 0), cozinha: Ut(e.craft.cozinha, 0, 1e7, 0) });
     if (Vt(e.style)) {
       let M = {};
@@ -11544,7 +11546,7 @@ Error generating stack: ` + n.message + `
         return;
       }
       let a = this.panel === "equip" || this.panel === "questlog" || this.panel === "inventory" || this.panel === "stats" || this.panel === "skills" || this.panel === "bestiary";
-      this.panel === t ? this.panel = "none" : (this.panel === "none" || a) && (this.panel = t), this.refresh();
+      this.panel === t ? this.panel = "none" : (this.panel === "none" || a) && (this.panel = t), t === "questlog" && this.syncRealmQ(), this.refresh();
     }
     hotkeyKey() {
       return `eldvar.hotkeys.${this.ps?.name ?? "_"}`;
@@ -11800,6 +11802,36 @@ Error generating stack: ` + n.message + `
       ps.silver -= r.zens, ps.craft = { forja: 0, alquimia: 0, cozinha: 0, ...ps.craft }, ps.craft[r.prof] += r.xp;
       let L = craftLv(ps, r.prof);
       this.toast(`${$(r.out)?.name ?? r.out} criado!${L > craftLv({ craft: { [r.prof]: ps.craft[r.prof] - r.xp } }, r.prof) ? " " + r.prof + " subiu para o nível " + L + "!" : ""}`, "good"), this.saveGameQuiet(), this.refresh();
+    }
+    autoStats() {
+      let ps = this.ps;
+      if (!ps) return;
+      let a = Ce[ps.line].attackStat, W = { str: { str: 5, vit: 3, agi: 1, dex: 1 }, dex: { dex: 5, agi: 2.5, vit: 1.5, luk: 1 }, agi: { agi: 5, dex: 2, vit: 2, str: 1 }, int: { int: 5.5, vit: 2, dex: 1.5, agi: 1 } }[a] ?? { str: 4, vit: 3, agi: 2, dex: 1 }, n = 0, guard = 0;
+      while (guard++ < 2000) {
+        let best = null, bs = -1;
+        for (let [k, w] of Object.entries(W)) { let sc = w / ((ps.stats[k] ?? 1) + 1); sc > bs && (bs = sc, best = k); }
+        if (!best || !ty(ps, best)) { delete W[best]; if (!Object.keys(W).length) break; continue; }
+        n++;
+      }
+      this.toast(n ? `${n} ponto(s) distribuídos conforme sua classe.` : "Sem pontos suficientes.", n ? "good" : "bad"), this.saveGameQuiet(), this.refresh();
+    }
+    syncRealmQ() {
+      let ps = this.ps;
+      if (!ps) return;
+      ps.rq2 = ps.rq2 ?? { claimed: {}, base: {} };
+      REALM_Q.forEach(([, lv, steps], ri) => { let si = steps.filter((_, i) => ps.rq2.claimed[ri + ":" + i]).length; if (si < steps.length && ps.level >= lv - 2) { let k = ri + ":" + si; ps.rq2.base[k] === void 0 && (ps.rq2.base[k] = ps.kills?.[steps[si][0]] ?? 0); } });
+    }
+    claimRealmQ(ri) {
+      let ps = this.ps;
+      if (!ps) return;
+      this.syncRealmQ();
+      let [nm, lv, steps] = REALM_Q[ri], si = steps.filter((_, i) => ps.rq2.claimed[ri + ":" + i]).length, st = steps[si];
+      if (!st) return;
+      let have = (ps.kills?.[st[0]] ?? 0) - (ps.rq2.base[ri + ":" + si] ?? 0);
+      if (have < st[1]) return this.toast("Missão incompleta.", "bad");
+      let rw = rqReward(lv, si);
+      if (He(ps.inventory, rw.item[0], rw.item[1]) !== 0) return this.toast("Inventário cheio.", "bad");
+      ps.rq2.claimed[ri + ":" + si] = true, ps.silver += rw.zens, Yu(ps, rw.exp), this.syncRealmQ(), this.toast(`${nm}: passo ${si + 1} concluído! +${rw.exp} EXP, +${rw.zens} Zens.`, "good"), this.saveGameQuiet(), this.refresh();
     }
     upgradeSkillAt(t) {
       if (!this.ps) return;
@@ -13391,10 +13423,31 @@ Error generating stack: ` + n.message + `
         } catch {
         }
         this.key = a, this.track?.stop(), this.track = this.start(n, t);
+        try { this.amb?.stop(); this.amb = this.ambStart(n, t); } catch {}
       }
     }
+    ambStart(c, sc) {
+      let th = sc.theme ?? "grass", night = !!sc.night, nodes = [], timers = [], out = c.createGain();
+      out.gain.value = 0, out.connect(this.master), out.gain.setTargetAtTime(1, c.currentTime, 2), nodes.push(out);
+      let nb = c.createBuffer(1, c.sampleRate * 2, c.sampleRate), d = nb.getChannelData(0);
+      for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+      let noise = (type, f, q, g, lfo) => { let sr = c.createBufferSource(); sr.buffer = nb, sr.loop = true; let fl = c.createBiquadFilter(); fl.type = type, fl.frequency.value = f, fl.Q.value = q; let gn = c.createGain(); gn.gain.value = g; if (lfo) { let o = c.createOscillator(), og = c.createGain(); o.frequency.value = lfo, og.gain.value = g * 0.6, o.connect(og).connect(gn.gain), o.start(), nodes.push(o, og); } sr.connect(fl).connect(gn).connect(out), sr.start(), nodes.push(sr, fl, gn); };
+      let tone = (type, f0, f1, dur, g, delay = 0) => { let t0 = c.currentTime + delay, o = c.createOscillator(), gn = c.createGain(); o.type = type, o.frequency.setValueAtTime(f0, t0), o.frequency.exponentialRampToValueAtTime(Math.max(20, f1), t0 + dur), gn.gain.setValueAtTime(1e-4, t0), gn.gain.exponentialRampToValueAtTime(g, t0 + dur * 0.15), gn.gain.exponentialRampToValueAtTime(1e-4, t0 + dur), o.connect(gn).connect(out), o.start(t0), o.stop(t0 + dur + 0.05); };
+      let every = (ms, fn) => { let h = () => { try { fn(); } catch {} timers.push(setTimeout(h, ms * (0.6 + Math.random() * 0.9))); }; timers.push(setTimeout(h, ms * Math.random())); };
+      if (sc.city) { noise("bandpass", 450, 0.8, 0.035, 0.2), every(5200, () => tone("sine", 1800 + Math.random() * 600, 1500, 0.22, 0.03)); if (!night) every(4200, () => { tone("sine", 2200, 3100, 0.12, 0.03), tone("sine", 2600, 3400, 0.12, 0.025, 0.14); }); }
+      else if (th === "snow") noise("lowpass", 520, 0.6, 0.07, 0.12), every(9000, () => noise_ping());
+      else if (th === "fire") { noise("lowpass", 160, 0.5, 0.09, 0.07); every(900, () => tone("square", 900 + Math.random() * 900, 300, 0.05, 0.025)); }
+      else if (th === "forge") { noise("lowpass", 220, 0.5, 0.05, 0.1); every(2600, () => { tone("triangle", 880, 860, 0.5, 0.045), tone("sine", 1760, 1750, 0.4, 0.02); }); }
+      else if (th === "lush") { noise("highpass", 2400, 0.4, 0.012, 0.15); night ? every(500, () => tone("sine", 4300, 4300, 0.06, 0.02)) : every(1800, () => { let f = 2200 + Math.random() * 1400; tone("sine", f, f * 1.4, 0.12, 0.04), tone("sine", f * 1.2, f * 0.9, 0.1, 0.03, 0.15); }); }
+      else if (th === "crystal") { noise("highpass", 3000, 0.5, 0.01, 0.1); every(1500, () => tone("sine", 1500 + Math.random() * 2500, 1500 + Math.random() * 2500, 0.8, 0.03)); }
+      else if (th === "marble") { noise("bandpass", 700, 0.5, 0.03, 0.08); every(7000, () => { tone("sine", 392, 392, 2.4, 0.02), tone("sine", 494, 494, 2.4, 0.015, 0.2); }); }
+      else if (th === "void") { tone("sine", 55, 55, 3600, 0.05), tone("sine", 57.5, 57.5, 3600, 0.05), every(6000, () => tone("sawtooth", 140 + Math.random() * 80, 40, 1.8, 0.02)); }
+      else { noise("bandpass", 900, 0.5, 0.02 + (night ? 0 : 0.01), 0.1); night ? every(450, () => tone("sine", 4200, 4300, 0.05, 0.018)) : every(2600, () => { let f = 2600 + Math.random() * 800; tone("sine", f, f * 1.3, 0.1, 0.03); }); }
+      function noise_ping() {}
+      return { stop() { for (let t of timers) clearTimeout(t); try { out.gain.setTargetAtTime(0, c.currentTime, 0.4); } catch {} setTimeout(() => { for (let n of nodes) { try { n.stop?.(); } catch {} try { n.disconnect(); } catch {} } }, 1800); } };
+    }
     dispose() {
-      this.track?.stop(), this.track = null;
+      this.track?.stop(), this.track = null, this.amb?.stop(), this.amb = null;
       try {
         this.ctx?.close();
       } catch {
@@ -18738,10 +18791,10 @@ function ROXQM(f, c, s, l, def) {
     }, children: "Largar tudo" })] }), c.kind === "quest" && (0, X.jsx)("small", { className: "muted", children: "Item de quest: n\xE3o pode ser descartado." })] }) : (0, X.jsx)("p", { className: "muted", children: "Selecione um item." }) })] }), a === "char" && (0, X.jsxs)("div", { className: "equip-wrap", children: [(0, X.jsx)(zS, {}), (0, X.jsxs)("div", { className: "char", children: [(0, X.jsxs)("section", { children: [(0, X.jsx)("h3", { children: "Equipamento" }), vl.map((f) => {
       let u = i.equipment[f] ? $(i.equipment[f]) : void 0;
       return (0, X.jsxs)("div", { className: "eq-row", title: u ? "Duplo clique para desequipar" : void 0, onDoubleClick: u ? () => j.unequipSlot(f) : void 0, children: [(0, X.jsxs)("span", { className: "muted eq-ico", children: [u ? (0, X.jsx)(Aa, { id: u.id, size: 32 }) : (0, X.jsx)(sr, { name: `slot_${f}`, size: 32 }), NS[f]] }), (0, X.jsx)("div", { children: u ? (0, X.jsxs)(X.Fragment, { children: [(0, X.jsx)("b", { style: { color: so[u.rarity] }, children: u.name }), (0, X.jsxs)("small", { children: [Vp(u.bonus).join(" \xB7 "), i.cards[u.id]?.length ? ` \xB7 Cartas: ${i.cards[u.id].map((m) => $(m)?.name).join(", ")}` : ""] })] }) : (0, X.jsx)("i", { className: "muted", children: "vazio" }) }), u && (0, X.jsx)("button", { className: "btn btn-small", onClick: () => j.unequipSlot(f), children: "Remover" })] }, f);
-    }), jr(i) && (0, X.jsxs)("div", { className: "eq-row", children: [(0, X.jsx)("span", { className: "muted", children: "Aljava" }), (0, X.jsx)("div", { children: i.ammo && $(i.ammo) ? (0, X.jsxs)(X.Fragment, { children: [(0, X.jsx)("b", { children: $(i.ammo)?.name }), (0, X.jsxs)("small", { children: [ry(i), " flechas \xB7 elemento ", $(i.ammo)?.element ?? "neutro"] })] }) : (0, X.jsx)("i", { className: "muted", children: "vazia \u2014 equipe uma flecha pelo invent\xE1rio" }) })] })] }), (0, X.jsxs)("section", { children: [(0, X.jsx)("h3", { children: "Pontos" }), (0, X.jsxs)("p", { className: "muted", children: [i.statPoints, " de atributo \xB7 ", i.skillPoints, " de habilidade. Use as janelas Atributos (T) e Habilidades (L)."] }), (0, X.jsxs)("div", { className: "row wrap", children: [(0, X.jsx)("button", { className: "btn btn-small", onClick: () => j.togglePanel("stats"), children: "Atributos" }), (0, X.jsx)("button", { className: "btn btn-small", onClick: () => j.togglePanel("skills"), children: "Habilidades" })] })] }), (0, X.jsxs)("section", { children: [(0, X.jsx)("h3", { children: "Combate" }), (0, X.jsxs)("ul", { className: "derived", children: [(0, X.jsxs)("li", { children: ["Vida m\xE1x.: ", (0, X.jsx)("b", { children: s.maxHp })] }), (0, X.jsxs)("li", { children: ["Mana m\xE1x.: ", (0, X.jsx)("b", { children: s.maxMp })] }), (0, X.jsxs)("li", { children: ["Ataque: ", (0, X.jsx)("b", { children: s.atk })] }), (0, X.jsxs)("li", { children: ["Ataque m\xE1gico: ", (0, X.jsx)("b", { children: s.matk })] }), (0, X.jsxs)("li", { children: ["Defesa: ", (0, X.jsx)("b", { children: s.def })] }), (0, X.jsxs)("li", { children: ["Cr\xEDtico: ", (0, X.jsxs)("b", { children: [(s.crit * 100).toFixed(1), "%"] })] }), (0, X.jsxs)("li", { children: ["Esquiva: ", (0, X.jsxs)("b", { children: [(s.dodge * 100).toFixed(1), "%"] })] }), (0, X.jsxs)("li", { children: ["Velocidade: ", (0, X.jsx)("b", { children: Math.round(s.speed) })] })] })] })] })] }), a === "quests" && (0, X.jsx)("div", { className: "quests", children: Object.values(Or).map((f) => {
+    }), jr(i) && (0, X.jsxs)("div", { className: "eq-row", children: [(0, X.jsx)("span", { className: "muted", children: "Aljava" }), (0, X.jsx)("div", { children: i.ammo && $(i.ammo) ? (0, X.jsxs)(X.Fragment, { children: [(0, X.jsx)("b", { children: $(i.ammo)?.name }), (0, X.jsxs)("small", { children: [ry(i), " flechas \xB7 elemento ", $(i.ammo)?.element ?? "neutro"] })] }) : (0, X.jsx)("i", { className: "muted", children: "vazia \u2014 equipe uma flecha pelo invent\xE1rio" }) })] })] }), (0, X.jsxs)("section", { children: [(0, X.jsx)("h3", { children: "Pontos" }), (0, X.jsxs)("p", { className: "muted", children: [i.statPoints, " de atributo \xB7 ", i.skillPoints, " de habilidade. Use as janelas Atributos (T) e Habilidades (L)."] }), (0, X.jsxs)("div", { className: "row wrap", children: [(0, X.jsx)("button", { className: "btn btn-small", onClick: () => j.togglePanel("stats"), children: "Atributos" }), (0, X.jsx)("button", { className: "btn btn-small", onClick: () => j.togglePanel("skills"), children: "Habilidades" })] })] }), (0, X.jsxs)("section", { children: [(0, X.jsx)("h3", { children: "Combate" }), (0, X.jsxs)("ul", { className: "derived", children: [(0, X.jsxs)("li", { children: ["Vida m\xE1x.: ", (0, X.jsx)("b", { children: s.maxHp })] }), (0, X.jsxs)("li", { children: ["Mana m\xE1x.: ", (0, X.jsx)("b", { children: s.maxMp })] }), (0, X.jsxs)("li", { children: ["Ataque: ", (0, X.jsx)("b", { children: s.atk })] }), (0, X.jsxs)("li", { children: ["Ataque m\xE1gico: ", (0, X.jsx)("b", { children: s.matk })] }), (0, X.jsxs)("li", { children: ["Defesa: ", (0, X.jsx)("b", { children: s.def })] }), (0, X.jsxs)("li", { children: ["Cr\xEDtico: ", (0, X.jsxs)("b", { children: [(s.crit * 100).toFixed(1), "%"] })] }), (0, X.jsxs)("li", { children: ["Esquiva: ", (0, X.jsxs)("b", { children: [(s.dodge * 100).toFixed(1), "%"] })] }), (0, X.jsxs)("li", { children: ["Velocidade: ", (0, X.jsx)("b", { children: Math.round(s.speed) })] })] })] })] })] }), a === "quests" && (0, X.jsx)("div", { className: "quests", children: [Hh(RealmChron, { key: "rc" }), ...Object.values(Or).map((f) => {
       let u = tn(i, f.id);
       return u === "locked" ? null : (0, X.jsxs)("article", { className: `quest quest-${u}`, children: [(0, X.jsxs)("header", { children: [(0, X.jsx)("strong", { children: f.name }), (0, X.jsx)("small", { children: { available: "Dispon\xEDvel", active: "Em andamento", ready: "Pronta para entregar", done: "Conclu\xEDda", locked: "" }[u] })] }), (0, X.jsx)("p", { children: f.summary }), (u === "active" || u === "ready") && Fu(i, f.id).map((m, p) => (0, X.jsxs)("small", { children: [m.label, ": ", m.have, "/", m.need] }, p)), u === "available" && (0, X.jsxs)("small", { className: "muted", children: ["Fale com ", f.giver === "eira" ? "Eira" : f.giver, " na vila."] })] }, f.id);
-    }) })] });
+    })] })] });
   }
   var Qa = oe(ue(), 1);
   function F4() {
@@ -18822,7 +18875,7 @@ function ROXQM(f, c, s, l, def) {
     let e = ge(), t = e.player, a = e.derived;
     if (!t || !a) return null;
     let n = Vu(t);
-    return (0, De.jsxs)(Yt, { id: "stats", title: "Atributos", onClose: () => j.closePanel(), children: [(0, De.jsxs)("div", { className: "attr-points", children: [(0, De.jsx)("span", { children: "Pontos dispon\xEDveis" }), (0, De.jsx)("b", { children: t.statPoints })] }), yn.map((o) => {
+    return (0, De.jsxs)(Yt, { id: "stats", title: "Atributos", onClose: () => j.closePanel(), children: [(0, De.jsxs)("div", { className: "attr-points", children: [(0, De.jsx)("span", { children: "Pontos dispon\xEDveis" }), (0, De.jsx)("b", { children: t.statPoints })] }), (0, De.jsx)("button", { className: "btn btn-small btn-primary", disabled: t.statPoints < 1, title: "Gasta os pontos de acordo com o estilo da sua classe", onClick: () => j.autoStats(), children: "\u2728 Distribuir automaticamente" }), yn.map((o) => {
       let r = t.stats[o], i = ep(r), s = t.statPoints >= i && r < 99;
       return (0, De.jsxs)("div", { className: "attr-row", title: OS[o], children: [(0, De.jsxs)("span", { className: "stat-name", children: [(0, De.jsx)(sr, { name: o, size: 22 }), " ", t5[o]] }), (0, De.jsxs)("b", { children: [r, n[o] ? (0, De.jsxs)("small", { className: "muted", children: [" +", n[o]] }) : null] }), r >= 99 ? (0, De.jsx)("span", { className: "cost", children: "m\xE1ximo" }) : null, (0, De.jsx)("button", { className: "btn btn-small", disabled: !s, onClick: () => j.allocate(o), "aria-label": `Aumentar ${t5[o]}`, children: "+" })] }, o);
     }), (0, De.jsxs)("ul", { className: "derived", children: [(0, De.jsxs)("li", { children: ["Vida m\xE1x.: ", (0, De.jsx)("b", { children: a.maxHp })] }), (0, De.jsxs)("li", { children: ["Mana m\xE1x.: ", (0, De.jsx)("b", { children: a.maxMp })] }), (0, De.jsxs)("li", { children: ["Ataque: ", (0, De.jsx)("b", { children: a.atk })] }), (0, De.jsxs)("li", { children: ["Atq. m\xE1gico: ", (0, De.jsx)("b", { children: a.matk })] }), (0, De.jsxs)("li", { children: ["Defesa: ", (0, De.jsx)("b", { children: a.def })] }), (0, De.jsxs)("li", { children: ["Cr\xEDtico: ", (0, De.jsxs)("b", { children: [(a.crit * 100).toFixed(1), "%"] })] }), (0, De.jsxs)("li", { children: ["Esquiva: ", (0, De.jsxs)("b", { children: [(a.dodge * 100).toFixed(1), "%"] })] }), (0, De.jsxs)("li", { children: ["Velocidade: ", (0, De.jsx)("b", { children: Math.round(a.speed) })] })] })] });
@@ -18897,6 +18950,30 @@ function ROXQM(f, c, s, l, def) {
   }
   var Mt = oe(ue(), 1);
 
+
+  var REALM_Q = [
+    ["Midgard", 1, [["lobo_faminto", 12], ["goblin_saqueador", 12], ["hati", 1]]], ["J\u00f6tunheim", 10, [["lobo_gelo", 15], ["draugr", 15], ["hrimgar", 1]]],
+    ["Niflheim", 16, [["draugr_guerreiro", 15], ["yeti_nevasca", 15], ["hel_rainha", 1]]], ["Muspelheim", 20, [["salamandra_brasa", 20], ["cao_magma", 20], ["arauto_surtr", 1]]],
+    ["Svart\u00e1lfheim", 24, [["automato_ferro", 20], ["automato_cobre", 15], ["rei_automato", 1]]], ["Vanaheim", 28, [["guardiao_raiz", 20], ["javali_vana", 15], ["coracao_verde", 1]]],
+    ["\u00c1lfheim", 32, [["construto_prisma", 20], ["prisma_rubi", 15], ["guardiao_prismatico", 1]]], ["Asgard", 36, [["sentinela_pedra", 20], ["sentinela_aurea", 15], ["campeao_sol_partido", 1]]],
+    ["Limiar", 40, [["eco_vazio", 25], ["voidling_abissal", 15], ["devorador_ruptura", 1]]], ["Jarnvid", 45, [["lobo_ferro", 25], ["troll_jarnvid", 20], ["fenrir_livre", 1]]],
+    ["Hvergelmir", 55, [["gigante_brasa", 25], ["cao_inferno", 20], ["garm_hel", 1]]], ["Valhalla Ca\u00edda", 70, [["einherjar_caido", 25], ["valquiria_corrompida", 20], ["surtr_final", 1]]],
+    ["Vigrid", 85, [["eco_final", 30], ["cristal_fim", 25], ["loki_ruptor", 1]]]
+  ];
+  var rqReward = (lv, st) => { let tl = Math.max(0, ...GT_.map((g) => g[0]).filter((x) => x <= lv + 5)); return { exp: Math.max(25, Math.round(tr(Math.max(1, lv)) * [0.2, 0.25, 0.5][st])), zens: Math.round(lv * 40 * [1, 1.3, 2.5][st]), item: st === 2 && tl ? [GEARIDS_[tl].armor, 1] : st === 1 ? [lv < 45 ? "hidromel_nobre" : lv < 70 ? "elixir_valhalla" : "nectar_yggdrasil", 3] : [lv < 45 ? "hidromel_curativo" : "hidromel_nobre", 5] }; };
+  function RealmChron() {
+    let t = ge().player;
+    if (!t) return null;
+    let rq = t.rq2 ?? { claimed: {}, base: {} };
+    return Hh("section", { className: "realm-q" }, Hh("h3", null, "Cr\u00f4nicas dos Reinos"), Hh("p", { className: "muted" }, "Miss\u00f5es em sequ\u00eancia por reino. Progresso conta automaticamente; resgate aqui mesmo."),
+      REALM_Q.map(([nm, lv, steps], ri) => {
+        let done = steps.filter((_, i) => rq.claimed[ri + ":" + i]).length, si = done;
+        if (t.level < lv - 2) return null;
+        if (si >= steps.length) return Hh("div", { key: ri, className: "eq-row rq-done" }, Hh("b", null, nm), Hh("small", { className: "muted" }, "Cr\u00f4nica conclu\u00edda \u2713"));
+        let [mid, need] = steps[si], md = oo(mid), have = Math.max(0, (t.kills?.[mid] ?? 0) - (rq.base[ri + ":" + si] ?? (t.kills?.[mid] ?? 0))), ok = have >= need, rw = rqReward(lv, si);
+        return Hh("div", { key: ri, className: "eq-row rq-row" }, Hh("div", { style: { flex: 1 } }, Hh("b", null, nm + " \u00b7 passo " + (si + 1) + "/3"), Hh("small", null, (md?.boss ? "Derrote " : "Derrote " + need + "\u00d7 ") + (md?.name ?? mid) + ": " + Math.min(have, need) + "/" + need), Hh("small", { className: "muted" }, "Recompensa: " + rw.exp + " EXP, " + rw.zens + " Zens, " + rw.item[1] + "\u00d7 " + ($(rw.item[0])?.name ?? rw.item[0]))), Hh("button", { className: "btn btn-small btn-primary", disabled: !ok, onClick: () => j.claimRealmQ(ri) }, "Receber"));
+      }));
+  }
   function CraftPanel() {
     let t = ge().player, [prof, setProf] = Hl.useState("forja"), [tier, setTier] = Hl.useState(16);
     if (!t) return null;

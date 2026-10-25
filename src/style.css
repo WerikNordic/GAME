@@ -195,3 +195,4 @@ body.armed canvas{cursor:crosshair!important}
 .craft-list{max-height:min(55vh,420px);overflow:auto;display:grid;gap:4px;margin-top:6px}
 .craft-row{display:flex;align-items:center;gap:8px}
 .craft-ing{display:flex;flex-wrap:wrap;gap:6px;font-size:11px}.craft-ing .ok{color:#1c7a2c}.craft-ing .no{color:#b33a3a}
+.rq-row,.rq-done{display:flex!important;gap:8px;align-items:center}.rq-row small{display:block}.rq-row button{min-width:84px}

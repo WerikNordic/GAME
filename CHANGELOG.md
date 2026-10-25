@@ -180,6 +180,13 @@
 - Janelas Alt+Q/E/S/A/G reduzidas a 50%.
 - Sons por espécie de monstro (lobo, javali, goblin, morto-vivo, gigante, gelatina, lagarto, máquina, pedra, vazio, planta): voz ociosa, ao notar o jogador, ao ser atingido e ao morrer; volume por distância.
 
+## v123–v126
+- Ofício (Alt+F): profissões de forja/alquimia/culinária com receitas e nível de ofício.
+- Crônicas dos Reinos: missões encadeadas por reino, visíveis só no Alt+G.
+- Alt+A: botão de distribuição automática de atributos por classe.
+- Novos eventos de clima/hora; popups removidos (exceto confirmação de refino).
+- Sons de ambiente por bioma/cidade/noite (vento, grilos, fogo, forja, cristais, vazio).
+
 ## v122 — Fisionomia feminina
 - Personagens femininas: tronco e ombros mais estreitos, cintura marcada, saia com barra rosa, busto discreto, rosto mais fino com cílios e lábios.
 - NPCs femininas (Eira, Ylva, Estilista, Bruna, Sigrún) usam o corpo feminino.
