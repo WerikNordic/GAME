@@ -1,3 +1,6 @@
+# v70
+- Multiplayer real: jogadores de outros navegadores aparecem no mapa, chat geral do mapa com balão, mensagem privada (/w nome msg) com janela, AFK visível a todos.
+
 # v53
 - Check Point: Guardiao do Marco em toda cidade; morte revive no mapa marcado.
 - Quests de itens (EXP repetivel ou visuais sem bonus) com a NPC Hild; 17 itens visuais (gorros, guirlanda, bandana, olhos, etc.).

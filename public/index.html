@@ -151,6 +151,7 @@ main.title .title-card .footer{color:#a9a38f}
 .pm-win .pm-log{height:120px;overflow-y:auto;padding:6px;display:flex;flex-direction:column;gap:3px}
 .pm-win .pm-log .me{color:#9fd8ff}.pm-win .pm-log .sys{color:#ffb8e6}
 .pm-win .pm-in{width:calc(100% - 12px);margin:0 6px 6px;background:#0007;border:1px solid #555;color:#fff;padding:4px 6px;border-radius:3px}
+.pm-win .pm-log .in{color:#ffd27a}
 </style></head>
   <body>
     <div id="root"></div>
@@ -10854,12 +10855,21 @@ Error generating stack: ` + n.message + `
         this.goAfk();
         return;
       }
+      let wm = t.trim().match(/^\/(w|whisper|sussurro)\s+(\S+)\s+([\s\S]+)$/i);
+      if (wm && MP.ok && !this.online) {
+        let to = wm[2], tx = wm[3].slice(0, 200);
+        MP.say(tx, to).then((r) => {
+          r.ok ? (this.pushLog(`Para ${to}: ${tx}`, "sussurro", "info"), this.refresh()) : (this.pushLog(r.error, "system", "bad"), window.dispatchEvent(new CustomEvent("eldvar:pm-sys", { detail: { name: to, text: r.error } })), this.refresh());
+        });
+        return;
+      }
       let q = t.trim().match(/^\/(guilda|guild|amigo|amigos|grupo|party)\b\s*(.*)$/i);
       if (q) {
         this.socialCmd(q[1].toLowerCase(), q[2].trim()), this.refresh();
         return;
       }
-      let a = zx(t, { self: this.ps.name, players: this.world?.others.map((n) => n.name) ?? [], inParty: !!this.party, inGuild: !!this.ps.guild });
+      let a = zx(t, { self: this.ps.name, players: [...this.world?.others.map((n) => n.name) ?? [], ...MP.names()], inParty: !!this.party, inGuild: !!this.ps.guild });
+      for (let n of a) n.channel === "geral" && MP.ok && !this.online && MP.say(n.text.replace(/^[^:]*:\s*/, ""), null);
       for (let n of a) !n.command && n.channel !== "sistema" && n.channel !== "sussurro" && this.world?.setSpeech(n.text.replace(/^[^:]*:\s*/, ""));
       for (let n of a) n.command && this.runChatCommand(n.command, n.arg) || (n.command === "craft" ? (this.pushLog(n.text, "system", "info"), n.arg && (this.world?.craftPotion(n.arg), this.saveGameQuiet())) : n.command === "refresh" ? (this.pushLog(n.text, "system", "info"), this.pushLog(this.world?.refresh() ?? "", "system", "info")) : this.pushLog(n.text, n.channel === "sistema" ? "system" : n.channel, n.channel === "sistema" ? "bad" : "info"));
       this.refresh();
@@ -10879,9 +10889,10 @@ Error generating stack: ` + n.message + `
         this.storage?.setItem(this.afkKey(this.activeSlot), JSON.stringify({ map: id, x: Math.round(p.x), y: Math.round(p.y), at: Date.now(), name: who, line: this.ps.line, level: this.ps.level }));
       } catch {
       }
-      this.goTitle(), this.notice = `${who} ficou AFK em ${nm}. O personagem continua l\xE1 (vis\xEDvel para seus outros personagens).`, this.refresh();
+      MP.afkNow(), this.goTitle(), this.notice = `${who} ficou AFK em ${nm}. O personagem continua l\xE1, vis\xEDvel para os outros jogadores.`, this.refresh();
     }
     afkOthers(mapId) {
+      if (MP.ok) return MP.list(mapId);
       let now = Date.now();
       if (this._afkc && this._afkc.m === mapId && now - this._afkc.t < 4e3) return this._afkc.l;
       let l = [];
@@ -11141,6 +11152,81 @@ Error generating stack: ` + n.message + `
       return { ok: false, error: "Sem conex\xE3o com o servidor. Verifique sua internet." };
     }
   }
+  var MP = window.__mp = {
+    pid: (() => {
+      try {
+        let k = "eldvar.pid", v = localStorage.getItem(k);
+        return v || (v = (crypto.randomUUID ? crypto.randomUUID() : String(Math.random()).slice(2) + Date.now()), localStorage.setItem(k, v)), v;
+      } catch {
+        return "anon" + Math.random().toString(36).slice(2) + Date.now();
+      }
+    })(),
+    others: /* @__PURE__ */ new Map(), since: 0, busy: false, okAt: 0, mapId: "", lx: 0, ly: 0,
+    get ok() {
+      return Date.now() - this.okAt < 20000;
+    },
+    names() {
+      return [...this.others.values()].map((o) => o.name);
+    },
+    body(afk) {
+      let w = j.world, p = j.ps;
+      if (!w || !p || j.activeSlot === null) return null;
+      let pos = w.player.pos, moving = Math.hypot(pos.x - this.lx, pos.y - this.ly) > 1.5;
+      return w.map.id !== this.mapId && (this.others.clear(), this.mapId = w.map.id), this.lx = pos.x, this.ly = pos.y, { p_id: this.pid + ":" + j.activeSlot, p_name: p.name, p_line: p.line, p_tier: p.tier, p_level: p.level, p_sx: p.gender === "f" ? "f" : "", p_map: w.map.id, p_x: Math.round(pos.x), p_y: Math.round(pos.y), p_facing: +w.player.facing.toFixed(2), p_moving: moving, p_afk: !!afk, p_since: this.since };
+    },
+    async afkNow() {
+      let b = this.body(true);
+      b && await sbRpc("mp_sync", b);
+    },
+    async tick() {
+      if (this.busy || document.hidden) return;
+      let snap = j.getSnapshot();
+      if (snap.screen !== "playing" || j.online || !j.world || !j.ps) return;
+      let b = this.body(false);
+      if (!b) return;
+      this.busy = true;
+      try {
+        let r = await sbRpc("mp_sync", b);
+        if (!r || !r.ok) return;
+        this.okAt = Date.now(), this.since = r.last;
+        let seen = /* @__PURE__ */ new Set();
+        for (let o of r.others) {
+          seen.add(o.id);
+          let c = this.others.get(o.id);
+          c ? Object.assign(c, { tx: o.x, ty: o.y, facing: o.facing, moving: o.moving, afk: o.afk, level: o.level, tier: o.tier, line: o.line, name: o.name }) : this.others.set(o.id, { ...o, tx: o.x, ty: o.y, say: "", sayUntil: 0 });
+        }
+        for (let k of [...this.others.keys()]) seen.has(k) || this.others.delete(k);
+        for (let m of r.msgs) {
+          if (m.t) {
+            j.pushLog(`De ${m.f}: ${m.b}`, "sussurro", "info"), j.toast(`${m.f}: ${m.b}`, "info"), window.dispatchEvent(new CustomEvent("eldvar:pm-in", { detail: { from: m.f, text: m.b } }));
+          } else {
+            j.pushLog(`${m.f}: ${m.b}`, "geral", "info");
+            let o = [...this.others.values()].find((q) => q.name === m.f);
+            o && (o.say = m.b, o.sayUntil = performance.now() + 4500);
+          }
+        }
+        j.refresh();
+      } finally {
+        this.busy = false;
+      }
+    },
+    list(mapId) {
+      let l = [];
+      for (let o of this.others.values()) {
+        o.x === void 0 && (o.x = o.tx, o.y = o.ty);
+        let d = Math.hypot(o.tx - o.x, o.ty - o.y);
+        d > 400 ? (o.x = o.tx, o.y = o.ty) : (o.x += (o.tx - o.x) * 0.14, o.y += (o.ty - o.y) * 0.14), l.push({ id: "mp" + o.id, afk: o.afk, x: o.x, y: o.y, facing: o.facing, state: "idle", line: o.line, name: o.name, level: o.level, tier: o.tier, sx: o.sx, hp: 1, maxHp: 1, say: o.say, sayUntil: o.sayUntil });
+      }
+      return l;
+    },
+    async say(text, to) {
+      let r = await sbRpc("mp_say", { p_id: this.pid + ":" + (j.activeSlot ?? 0), p_name: j.ps?.name ?? "", p_map: j.world?.map.id ?? "", p_text: text, p_to: to ?? null });
+      return r && r.ok ? { ok: true } : { ok: false, error: r?.error ?? "Sem conex\xE3o com o servidor." };
+    }
+  };
+  setInterval(() => {
+    MP.tick();
+  }, 1200);
   var WB = {
     maxHp: 4e6, simDps: 4e6 / (8 * 3600), durMs: 5 * 3600 * 1e3, force: null, hp: 4e6, pend: 0, localDmg: 0, online: false, lastSync: 0, rock: null, ac: null, announced: "", impacted: "", ui: null, fx: null, raf: 0, shakeOn: false,
     sched(now) {
@@ -15685,7 +15771,7 @@ void main() {
         let H = ce(q.pos.x, q.pos.y);
         M(H.x, H.y) && (z.add(`m${q.id}`), T.push({ depth: Ja(q.pos.x, q.pos.y), draw: () => this.drawMonster(q, t) }));
       }
-      for (let q of [...a.others, ...n.city ? this.store.afkOthers(n.id) : []]) {
+      for (let q of [...a.others, ...this.store.afkOthers(n.id)]) {
         let H = ce(q.x, q.y);
         M(H.x, H.y) && (z.add(`o${q.id}`), T.push({ depth: Ja(q.x, q.y), draw: () => this.drawOther(q, t) }));
       }
@@ -15893,7 +15979,8 @@ void main() {
       }
     }
     drawOther(t, a) {
-      let n = this.ctx, o = ce(t.x, t.y), r = this.animOf(`o${t.id}`, t.x, t.y, a), { dir: i, flip: s } = Kl(t.facing), l = t.state === "dead", c = Km(this.clock - r.atkAt, r.atkImpact, r.atkDur), d = r.moving ? Math.floor(r.phase * ea) : -1, f = fa(`${t.line}@${kh(t.name)}`, i, d, c, r.atkStyle);
+      t.say && performance.now() < t.sayUntil && this.speechBalloon(t.say, ce(t.x, t.y).x, ce(t.x, t.y).y - 70, Math.min(1, (t.sayUntil - performance.now()) / 500));
+      let n = this.ctx, o = ce(t.x, t.y), r = this.animOf(`o${t.id}`, t.x, t.y, a), { dir: i, flip: s } = Kl(t.facing), l = t.state === "dead", c = Km(this.clock - r.atkAt, r.atkImpact, r.atkDur), d = r.moving ? Math.floor(r.phase * ea) : -1, f = fa(po({ base: t.line, hair: kh(t.name), sx: t.sx || void 0, ti: t.tier || 0, ep: t.level >= 99 ? 1 : 0 }), i, d, c, r.atkStyle);
       n.save(), n.globalAlpha = l ? 0.3 : 1, l ? (n.translate(o.x, o.y), n.rotate(Math.PI / 2), nt(n, f, 0, 0, s, $a, $a)) : nt(n, f, o.x, o.y + 6, s, $a, $a), n.restore(), l || (t.afk && this.text(`[AFK] ${t.name} \xB7 Nv ${t.level}`, o.x, o.y + 16, 12, "#ffd27a"), !t.afk && this.nameOn(`o${t.id}`) && this.text(`${t.name} \xB7 Nv ${t.level}`, o.x, o.y + 16, 12, "#9fe8ff"), this.bar(o.x, o.y - 52, 38, Math.max(0, t.hp / Math.max(1, t.maxHp)), "#58b8d4"));
     }
     drawMonster(t, a) {
@@ -16472,7 +16559,16 @@ void main() {
       u && (u.scrollTop = u.scrollHeight);
     }, [hist]), ho.useEffect(() => {
       setTimeout(() => (w.name ? min.current : nin.current)?.focus(), 30);
+      w.init && setHist(w.init);
+      let a = (e) => {
+        e.detail.from.toLowerCase() === nameRef.current.trim().toLowerCase() && setHist((h) => [...h, { k: "in", t: `${e.detail.from}: ${e.detail.text}` }]);
+      }, b = (e) => {
+        e.detail.name.toLowerCase() === nameRef.current.trim().toLowerCase() && setHist((h) => [...h, { k: "sys", t: e.detail.text }]);
+      };
+      return window.addEventListener("eldvar:pm-in", a), window.addEventListener("eldvar:pm-sys", b), () => (window.removeEventListener("eldvar:pm-in", a), window.removeEventListener("eldvar:pm-sys", b));
     }, []);
+    let nameRef = ho.useRef(name);
+    nameRef.current = name;
     let send = () => {
       let t = txt.trim(), n = name.trim();
       if (!t) return;
@@ -16498,7 +16594,8 @@ void main() {
         let nm = e.detail?.name ?? "";
         return nm && w.some((x) => x.name === nm) || w.length >= 4 ? w : [...w, { id: ++PMID, name: nm }];
       });
-      return window.addEventListener("eldvar:pm-open", o), () => window.removeEventListener("eldvar:pm-open", o);
+      let inc = (e) => setWins((w) => w.some((x) => x.name.toLowerCase() === e.detail.from.toLowerCase()) || w.length >= 4 ? w : [...w, { id: ++PMID, name: e.detail.from, init: [{ k: "in", t: `${e.detail.from}: ${e.detail.text}` }] }]);
+      return window.addEventListener("eldvar:pm-open", o), window.addEventListener("eldvar:pm-in", inc), () => (window.removeEventListener("eldvar:pm-open", o), window.removeEventListener("eldvar:pm-in", inc));
     }, []), (0, ta.jsx)(ta.Fragment, { children: wins.map((w, i) => (0, ta.jsx)(PmWin, { w, idx: i, onClose: () => setWins((x) => x.filter((y) => y.id !== w.id)) }, w.id)) });
   }
   var X4 = oe(St(), 1);
