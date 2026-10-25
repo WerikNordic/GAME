@@ -9373,7 +9373,7 @@ Error generating stack: ` + n.message + `
     }
     step(t) {
       let a = Math.max(0, Math.min(t, hM));
-      this.time += a, this.ps.playTimeMs += a, this.player.buffs = this.player.buffs.filter((n) => n.until > this.time), this.player.deadAt !== null ? this.time - this.player.deadAt >= pM && this.respawnPlayer() : this.updatePlayer(a), this.updateProjectiles(a), this.updateDelayed(), this.updatePendingBasic(), this.updateMonsters(a), this.updateLoot(), this.monsters = this.monsters.filter((n) => !(n.summoned && n.state === "dead" && this.time - n.diedAt > 3e3));
+      this.time += a, this.ps.playTimeMs += a, this.player.buffs = this.player.buffs.filter((n) => n.until > this.time), this.player.deadAt !== null ? this.time - this.player.deadAt >= pM && this.respawnPlayer() : this.updatePlayer(a), this.updateProjectiles(a), this.updateDelayed(), this.petBite(), this.updatePendingBasic(), this.updateMonsters(a), this.updateLoot(), this.monsters = this.monsters.filter((n) => !(n.summoned && n.state === "dead" && this.time - n.diedAt > 3e3));
     }
     buffSum(t) {
       let a = 0;
@@ -9601,6 +9601,12 @@ Error generating stack: ` + n.message + `
       this.delayed.push({ at: this.time + 450 + 5 * 380 + 300, x: a.pos.x, y: a.pos.y, radius: 520, mult: base * 3, magic: mg, stunMs: 2500, slowMs: 3000, light: U[1], style: "meteor" });
       if (this.ps.line === "escudeiro" || this.ps.line === "valquiria" || this.ps.line === "skald") { let d = this.derived(); this.ps.hp = Math.min(d.maxHp, this.ps.hp + d.maxHp * 0.5); }
       return true;
+    }
+    petBite() {
+      if (!this.ps.pet || this.player.deadAt !== null || this.time < (this._petAt ?? 0)) return;
+      this._petAt = this.time + 1800;
+      let m = this.nearestMonster(190);
+      m && m.state !== "dead" && !this.inSafeZone?.(this.player.pos) && this.hitMonster(m, this.playerPower(false), 0.3 + Math.min(0.5, this.ps.level / 200), 0, 0);
     }
     updateDelayed() {
       if (!this.delayed.length) return;
