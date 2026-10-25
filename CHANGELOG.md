@@ -179,3 +179,9 @@
 - Inventário: "Largar no chão" (itens caem à frente do personagem, sem recolher na hora); duplo clique equipa (inventário) e desequipa (Alt+Q).
 - Janelas Alt+Q/E/S/A/G reduzidas a 50%.
 - Sons por espécie de monstro (lobo, javali, goblin, morto-vivo, gigante, gelatina, lagarto, máquina, pedra, vazio, planta): voz ociosa, ao notar o jogador, ao ser atingido e ao morrer; volume por distância.
+
+## v117
+- Menu de pausa: teclado funcionando (↑/↓ + Enter, C continuar, S salvar, M voltar ao menu inicial); removido o popup de confirmação que bloqueava o botão.
+- Montaria: /montar exige linhagem Espadachim/Berserker.
+- Boss mundial Nidhwerikr refeito e 5× maior: massa de corpo com olhos que seguem o jogador, braços humanos, costelas/espinhos de osso, boca radial de lampreia com 3 anéis de dentes e tentáculos com olhos; arena ampliada (4000×3000) e câmera mais afastada na cratera.
+- Balanceamento: monstros comuns +55% vida / +30% ataque / +12% defesa; chefes +35% vida / +25% ataque; EXP −50% (chefes −55%); zens −45%; drops −45% (chefes −20%); chance de equipamento/cartas ~−45%. Alvo: luta comum 4–9 s com ~50% da vida perdida; chefes exigem poções e habilidades.
