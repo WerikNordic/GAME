@@ -14473,6 +14473,7 @@ void main() {
     else if (pose === "open") { arm(-1, 0, [-27, 76, 0], [-42, 77, 0]); arm(1, 0, [27, 76, 0], [42, 77, 0]); for (let u of side) limb([u * 10.8, 72, 0], [u * 40, 77.5, 0], 3.6, 5.2, cl, { seg: 12, mat: Re }); }
     else if (pose === "pray") { arm(-1, 0, [-12, 60, 3], [-1.4, 68, 8]); arm(1, 0, [12, 60, 3], [1.4, 68, 8]); }
     else if (pose === "raise") { arm(-1, 0, [-13, 58, 2], [-11, 47, 5]); arm(1, 0, [18, 80, 3], [20, 94, 3]); }
+    if (c.shield) { ball(-16, 56, 6, 2.2, 9.5, 9.5, c.shield, { mat: Ve }); ball(-18, 56, 6, 0.8, 3.4, 3.4, gdc, { mat: Ve }); F(n, P3(-17.6, 56, 6).mul(A.RZ(Math.PI / 2)), R(9.6), R(9.6), R(0.8), gdc, { seg: 18, mat: Ve }); }
     // capa
     if (cp) for (let u of side) { let p = (x, y, z) => [x * sc, by + y * sc, z * sc]; Ne(n, [p(u * 9, 76, -5), p(0, 76.5, -6), p(0, 6, -13), p(u * 15, 8, -10)], cp, { mat: Re }); }
     return n;
@@ -14506,19 +14507,17 @@ void main() {
       return n;
     }
     if (pm === 3) {
-      let vio = 12011263, crown = 12095743;
-      F(n, S(0, 22, 0), 16.5, 6.2, 82, dark, { seg: 18, mat: Q }), F(n, S(0, 22, 0), 17, 16, 3, Y(vio, 0.7), { seg: 18, mat: glow }), L(n, S(0, 98, 0), 9, 9, 7, Y(dark, 1.1), { seg: 12, ring: 8, mat: Q });
-      L(n, S(0, 108, 0), 6.8, 8, 6.8, Y(dark, 0.62), { seg: 12, ring: 8, mat: Q });
-      for (let k = -2; k <= 2; k++) F(n, S(k * 3.6, 114, 0).mul(A.RZ(-k * 0.28)), 1.6, 0, 13 - Math.abs(k) * 2, crown, { seg: 5, mat: Ve });
+      let vio = 12011263, dk2 = nn(o, 2756672, 0.55);
+      humFig(n, { sc: 1.04, by: 29, stone: dk2, cloth: Y(dk2, 0.78), robe: true, robeR: 14.5, pose: "raise", hairStyle: "long", hair: nn(o, 0, 0.5), beard: nn(o, 0, 0.5), cape: Y(dk2, 0.7), belt: vio });
+      for (let k = -2; k <= 2; k++) F(n, S(k * 2.8, 29 + 91 * 1.04, 0).mul(A.RZ(-k * 0.2)), 1.3, 0, 12 - Math.abs(k) * 2.4, vio, { seg: 5, mat: glow });
       for (let u of [-1, 1]) {
-        for (let i = 0; i < 11; i++) {
-          let t = i / 10, g = t * 4.4;
-          L(n, S(u * (9 + 11 * Math.sin(g)), 110 + 9 * (1 - Math.cos(g)) - t * 3, -1), 3.3 * (1 - t * 0.7), 3.3 * (1 - t * 0.7), 3.3 * (1 - t * 0.7), 15261896, { seg: 6, ring: 5, mat: Q });
-        }
-        F(n, S(u * 15, 92, 0).mul(A.RZ(-u * 1.15)), 3.2, 2.4, 24, dark, { seg: 8, mat: Q });
-        tri([u * 8, 94, -6], [u * 62, 148, -11], [u * 40, 82, -8], Y(dark, 0.9)), tri([u * 8, 94, -6], [u * 40, 82, -8], [u * 64, 70, -11], Y(dark, 0.8)), tri([u * 8, 84, -6], [u * 52, 48, -9], [u * 20, 38, -7], Y(dark, 0.7)), seg(u * 8, 94, u * 62, 148, -6, vio, 0.8);
+        L(n, S(u * 2.3, 29 + 87.4 * 1.04, 5.6), 1.1, 0.8, 0.8, 16722980, { seg: 5, ring: 4, mat: glow });
+        let rt = [u * 9, 29 + 76 * 1.04, -6], tp = [[u * 62, 148, -11], [u * 70, 108, -13], [u * 58, 74, -11], [u * 26, 66, -8]];
+        for (let k = 0; k < 3; k++) tri(rt, tp[k], tp[k + 1], Y(dk2, 0.8 + k * 0.1));
+        for (let q of tp) seg(rt[0], rt[1], q[0], q[1], rt[2], Y(dk2, 0.62), 1.1);
       }
-      return L(n, S(41, 98, 0), 8.4, 8.4, 8.4, vio, { seg: 12, ring: 8, mat: { shine: 0.5, glow: 1 } }), F(n, S(-30, 22, 5), 1.3, 1.3, 104, 4730000, { seg: 6, mat: Ve }), L(n, S(-30, 128, 5), 6, 6, 1.6, vio, { seg: 12, ring: 6, mat: glow }), eyes(109, 5.4, vio, 1.5), n;
+      F(n, S(21, 29 + 12, 3), 1.2, 1.2, 112, 4730000, { seg: 6, mat: Ve }), L(n, S(21, 29 + 128, 3), 6, 6, 6, vio, { seg: 12, ring: 8, mat: { shine: 0.5, glow: 1 } });
+      return n;
     }
     for (let i = 0; i < 46; i++) {
       let t = i / 45, g = t * 6.283 * 2.7, rad = 15 - 6 * t, c = i % 4 < 2 ? 2124360 : 3910732;
@@ -14735,10 +14734,8 @@ void main() {
       case "warrior": {
         let s = nn(o, 16777215, 0.22), l = 12093002;
         O(n, S(0, 4, 0), 56, 8, 48, Y(o, 0.86), Q), O(n, S(0, 14, 0), 44, 12, 38, Y(o, 0.94), Q), O(n, S(0, 29, 0), 34, 18, 30, o, Q), O(n, S(0, 22, 15.8), 22, 11, 1.8, l, Ve), O(n, S(0, 22, 16.8), 18, 8, 0.8, Y(l, 1.25), Ve);
-        for (let c of [-7, 7]) F(n, S(c, 38, 0), 5.2, 4.2, 26, s, { seg: 8, mat: Q });
-        L(n, S(0, 74, 0), 13, 16, 8.6, s, { seg: 12, ring: 8, mat: Q }), L(n, S(0, 66, 0), 14, 6, 9, Y(s, 0.9), { seg: 10, ring: 5 }), L(n, S(0, 96, 0), 7.2, 7.6, 7, s, { seg: 10, ring: 8, mat: Q }), L(n, S(0, 100, 0), 7.8, 5, 7.6, Y(s, 0.82), { seg: 10, ring: 5, mat: Q });
-        for (let c of [-1, 1]) F(n, S(c * 7.6, 101, 0).mul(A.RZ(-c * 0.9)), 2.2, 0.5, 11, 15261896, { seg: 6 });
-        return F(n, S(-13, 62, 3).mul(A.RZ(0.12)), 3, 2.6, 24, s, { seg: 8 }), F(n, S(15, 60, 2), 1.4, 1.4, 62, r, { seg: 6 }), F(n, S(15, 120, 2), 3, 0, 14, 14212840, { seg: 6, mat: Ve }), F(n, S(14, 76, 4).mul(A.RZ(-0.3)), 3, 2.6, 22, s, { seg: 8 }), L(n, S(-17, 74, 6), 12, 12, 2.4, Y(s, 0.9), { seg: 12, ring: 5, mat: Q }), L(n, S(-17, 74, 8.2), 4, 4, 1.2, l, { seg: 8, ring: 4, mat: Ve }), n;
+        humFig(n, { sc: 0.92, by: 38, stone: s, cloth: nn(o, 16777215, 0.18), armor: nn(o, 16777215, 0.12), pose: "spear", helm: nn(o, 16777215, 0.1), horns: true, beard: nn(o, 0, 0.1), shield: Y(l, 0.95), belt: nn(o, 0, 0.3), cape: Y(l, 0.8), metal: 14212840 });
+        return n;
       }
       case "brazier":
         return F(n, S(0, 0, 0), 5, 3, 22, 2762274, { seg: 8, mat: Ve }), F(n, S(0, 22, 0), 9, 12, 7, 3814444, { seg: 10, mat: Ve }), L(n, S(0, 30, 0), 8, 5, 8, 16742954, { seg: 8, ring: 5, mat: { shine: 0.3, glow: 0.8 } }), L(n, S(0, 36, 0), 4, 6, 4, 16765024, { seg: 6, ring: 4, mat: { shine: 0.3, glow: 0.9 } }), n;
@@ -16718,12 +16715,16 @@ function ROXQM(f, c, s, l, def) {
         let m = this.organic(i, o.facing, { moving: i.moving, atkT: this.clock - i.atkAt, atkImpact: i.atkImpact, atkDur: i.atkDur, breath: a.sitting ? 8e-3 : 0.011 });
         a.sitting && (m.dx = 0, m.dy = 0, m.rot *= 0.3), nt(n, u, r.x + m.dx, r.y + 6 + m.dy - (mnt ? 42 : 0) + jy2, l, $a * m.sx, $a * m.sy, m.rot);
         if (a.ps.equipment.headTop === "poring_saltitante" && !a.sitting) {
-          let tt = (this.clock / 640) % 1, hop = Math.abs(Math.sin(tt * Math.PI)), land = 1 - hop, wd = 1 + land * 0.2 - hop * 0.1, ht = 1 - land * 0.2 + hop * 0.12, py = r.y + 6 + m.dy - (mnt ? 42 : 0) - 60 - hop * 15;
-          n.save(), n.translate(r.x + m.dx, py + 2), n.scale(wd * 0.72, ht * 0.72);
+          let tt = (this.clock / 640) % 1, hop = Math.abs(Math.sin(tt * Math.PI)), land = 1 - hop, wd = 1 + land * 0.2 - hop * 0.1, ht = 1 - land * 0.2 + hop * 0.12, py = r.y + 6 + m.dy - (mnt ? 42 : 0) - 69 - hop * 15;
+          n.save(), n.translate(r.x + m.dx, py), n.scale(wd * 0.72 * (l ? -1 : 1), ht * 0.72);
           let gr = n.createRadialGradient(-3, -5, 1, 0, 0, 12); gr.addColorStop(0, "#ffd6e2"), gr.addColorStop(0.6, "#ff9cb8"), gr.addColorStop(1, "#e0688a");
           n.fillStyle = gr, n.strokeStyle = "#a83a60", n.lineWidth = 1.4, n.beginPath(), n.ellipse(0, 0, 11, 9, 0, 0, Math.PI * 2), n.fill(), n.stroke();
           n.fillStyle = "rgba(255,255,255,.7)", n.beginPath(), n.ellipse(-4, -4, 3, 1.8, -0.5, 0, Math.PI * 2), n.fill();
-          n.fillStyle = "#2a1a20", n.beginPath(), n.ellipse(-3.6, 0, 1.3, 2, 0, 0, Math.PI * 2), n.ellipse(3.6, 0, 1.3, 2, 0, 0, Math.PI * 2), n.fill(), n.beginPath(), n.arc(0, 3, 2, 0.2, Math.PI - 0.2), n.strokeStyle = "#2a1a20", n.lineWidth = 1, n.stroke(), n.restore();
+          let fx = s === "down" ? 0 : s === "dq" ? 4.5 : s === "side" ? 8 : 0;
+          if (s !== "up" && s !== "uq") {
+            n.fillStyle = "#2a1a20", n.beginPath(), n.ellipse(fx - 3.6, 0, 1.3, 2, 0, 0, Math.PI * 2), s !== "side" && n.ellipse(fx + 3.6, 0, 1.3, 2, 0, 0, Math.PI * 2), n.fill(), n.beginPath(), n.arc(fx, 3, 2, 0.2, Math.PI - 0.2), n.strokeStyle = "#2a1a20", n.lineWidth = 1, n.stroke();
+          }
+          n.restore();
         }
         if (mnt) {
           let mw = ROXQM("grifo", s, i.moving ? Math.floor(i.phase * ea) : -1, atkM ? 1 : 0, { id: "montaria", color: 13209406 }), lun = atkM ? Math.sin(Math.min(1, (this.clock - i.atkAt) / Math.max(260, i.atkDur || 0)) * Math.PI) : 0;

@@ -165,3 +165,4 @@
 - v110: Gelatina Saltitante agora pula continuamente na cabeça (animada).
 - v111: /montar, /desmontar e /pet; montaria e pet permanecem até o comando (inclusive após sair do jogo).
 - v112: Gelatina Saltitante 28% menor.
+- v113: gelatina no topo da cabeça e acompanha a câmera (frente/lado/costas); estátuas Morroc e guerreiro refeitas no mesmo estilo.
