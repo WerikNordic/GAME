@@ -44,7 +44,7 @@ var ROX = (() => {
     const RB = CP[e.cls] ? Math.max(0, (e.ti || 0) - 2) : 0;
     const ACC = { berserker: 0xff5a3a, escudeiro: 0xffc040, cacador: 0x4adf7a, volva: 0xb070ff, valquiria: 0x6ad0ff, skald: 0x9a7aff, thay: 0xff7a2a }[e.cls] || 0xffd860;
     const prof = CP[e.cls] || NP || { k: 1.3, wx: 1, tw: 1, lg: 1, hair: "", sit: "" };
-    const QK = { wolf: 1.6, frostwolf: 1.6, hati: 2.5, boar: 1.7, yeti: 1.6, blob: 2.0 };
+    const QK = { wolf: 1.6, frostwolf: 1.6, hati: 2.5, boar: 1.7, yeti: 1.6, blob: 2.0, goblin: 1.6, draugr: 1.5, cinder: 1.75, automaton: 1.65, sylvan: 1.6, prism: 1.7, sentinel: 1.65, voidling: 1.7, jotun: 2.1 };
     const SZ = .58, K = (e.quad ? (QK[e.quad] ?? 1.3) : prof.k) * SZ, WX = prof.wx, hsty = prof.hair;
     const yawT = { down: 0, dq: Math.PI / 4, side: Math.PI / 2, uq: Math.PI * 3 / 4, up: Math.PI };
     const th = yawT[dir] ?? 0, cth = Math.cos(th), sth = Math.sin(th);
@@ -137,6 +137,60 @@ var ROX = (() => {
         for (let i = 0; i < 7; i++) { const an = i / 7 * Math.PI * 2, bx = Math.cos(an) * 8, bz = Math.sin(an) * 8; POLY3([[bx - 2.4, 80, bz], [bx + 2.4, 80, bz], [bx * 1.2, 70 - (i % 2) * 3, bz * 1.2]], (x, y) => rampAt(furL, .8 - (y - sy(70)) * .04), .5); }
         for (const sd of [-1, 1]) { E3(sd * 5.4, 85, 13, 3.4, 3.8, 2.6, white); E3(sd * 5.4, 85.6, 14.8, 1.7, 2, 1.1, dark); }
         E3(0, 92, 14, 5, 1.2, 1.4, dark); if (atkq) E3(0, 93, 14.4, 4.2, 2.4, 1.4, dark);
+      } else {
+        const sg = (sd) => walking ? Math.sin(ph + (sd > 0 ? 0 : Math.PI)) : 0, lfg = (sd) => walking ? Math.max(0, -Math.cos(ph + (sd > 0 ? 0 : Math.PI))) * 4 : 0;
+        const legs2 = (lx, hip, th, c, ft) => { for (const sd of [-1, 1]) { C3(sd * lx, hip, 0, sd * lx, 96 - lfg(sd), sg(sd) * 6, th, th * .8, c); E3(sd * lx, 97 - lfg(sd), sg(sd) * 6 + 2, th * 1.1, 2, th * 1.6, ft ?? dark); } };
+        const arms2 = (sx0, shY, len, th, c, hand) => { for (const sd of [-1, 1]) { const az = atkq ? 11 : -sg(sd) * 6, ay = atkq ? shY + len * .5 : shY + len; C3(sd * sx0, shY, 0, sd * (sx0 + 2), ay, az, th, th * .8, c); E3(sd * (sx0 + 2), ay + 1, az + 1, th * .9, th * .9, th * .9, hand ?? furL); } };
+        const eyes2 = (y, z, sp, r) => { for (const sd of [-1, 1]) E3(sd * sp, y, z, r * 1.2, r, r * .8, eyeR, .1); };
+        const bd = -wob;
+        if (QD === "goblin") {
+          legs2(3.4, 82, 2.6, furD); E3(0, 72 + bd, 0, 6.4, 8.6, 5.6, fur); E3(0, 76 + bd, 3, 5, 6, 3, furL); arms2(7.4, 66, 12, 2, fur);
+          E3(0, 55 + bd, 2 + hz * .3, 7.6, 7, 7, fur); E3(0, 58 + bd, 8 + hz * .3, 3, 2.4, 2.6, furL); eyes2(54 + bd, 8.4 + hz * .3, 3.6, 1.5); E3(0, 62 + bd, 8.4, 3.4, .9, 1, dark);
+          for (const sd of [-1, 1]) { POLY3([[sd * 6, 53 + bd, 2], [sd * 6, 57 + bd, 2], [sd * 15, 48 + bd, 0]], (x, y) => rampAt(fur, .62 + BAY[y & 3][x & 3] * .1), .3); }
+          C3(7.4, 76, 11 + hz * .4, 7.4, 63, 15 + hz * .4, 1.7, 1.4, P(0x7a4e2c)); E3(7.4, 60.5, 15.6 + hz * .4, 2.8, 3.8, 2.8, P(0x6a4224));
+        } else if (QD === "draugr") {
+          const bn = P(0xcfd6c8); legs2(3.8, 76, 2.4, P(0x5a6a60)); E3(0, 64 + bd, 0, 8, 13, 5.6, P(0x4a5a5e)); for (let i = 0; i < 4; i++) E3(0, 56 + i * 4 + bd, 4.6, 6.2 - i * .4, .7, .8, bn);
+          E3(0, 70, 0, 9, 4, 6.4, P(0x3a4446)); arms2(9.8, 54, 18, 2, P(0x6a7a70), bn);
+          E3(0, 43 + bd, 3 + hz * .3, 5.6, 6.2, 5.8, bn); E3(0, 47 + bd, 7 + hz * .3, 3.4, 2.4, 2.6, bn); eyes2(42 + bd, 8.2 + hz * .3, 2.4, 1.4);
+          for (const sd of [-1, 1]) C3(sd * 5, 41 + bd, 2, sd * 9.4, 32 + bd, 2, 1.4, .6, bn); E3(0, 36 + bd, 3, 6.4, 2.4, 6, P(0x6a6a74));
+          C3(11, 68, 8 + hz * .6, 11, 42, 12 + hz * .8, 1.1, .9, P(0x8a8a96)); E3(11, 70, 8, 2.6, .8, 1.6, P(0x7a5a2a));
+        } else if (QD === "cinder") {
+          const hot = P(0xffa030), rock = P(0x3a2a28); legs2(5, 80, 4, rock, furD); E3(0, 64 + bd, 0, 12.6, 16, 9.6, rock); E3(0, 66 + bd, 5.6, 7, 9, 4, fur);
+          for (let i = 0; i < 5; i++) C3(-6 + i * 3, 52 + i % 2 * 5 + bd, 8.6, -4 + i * 3.2, 62 + i * 3 + bd, 9.4, .9, .6, hot);
+          arms2(14.2, 54, 24, 4.4, rock, fur); E3(0, 44 + bd, 2 + hz * .3, 7.4, 7, 7, rock); eyes2(43 + bd, 8 + hz * .3, 3.2, 1.5);
+          for (let i = -2; i <= 2; i++) POLY3([[i * 3 - 2, 39 + bd, 2], [i * 3 + 2, 39 + bd, 2], [i * 3.6, 24 - Math.abs(i) * 3 + bd - (walking ? Math.sin(ph * 2 + i) * 2 : 0), 2]], (x, y) => rampAt(hot, .9 - (y - sy(24)) * .02), .6);
+        } else if (QD === "automaton") {
+          const st2 = P(0x8a98a8), st3 = P(0x586470); legs2(5, 78, 4, st3, furD); E3(0, 62 + bd, 0, 11, 15, 8, st2); E3(0, 62 + bd, 7, 7, 6, 2.4, st3); E3(0, 62 + bd, 8.6, 2.6, 2.6, 1.2, eyeR);
+          for (const sd of [-1, 1]) { E3(sd * 13, 48 + bd, 0, 5.4, 4.4, 5.4, furD); POLY3([[sd * 6, 70, 8], [sd * 10, 70, 8], [sd * 8, 78, 8]], () => st3[1], .5); }
+          arms2(14.6, 50, 22, 3.6, st3, furD); E3(0, 41 + bd, 2 + hz * .3, 6.4, 5.8, 6, st2); E3(0, 41 + bd, 8 + hz * .3, 5, 1.4, .8, dark); E3(0, 41 + bd, 8.6 + hz * .3, 3.6, .9, .6, eyeR);
+          C3(0, 36 + bd, 2, 0, 28 + bd, 2, .7, .5, st3); E3(0, 27 + bd, 2, 1.6, 1.6, 1.6, eyeR);
+        } else if (QD === "sylvan") {
+          const bark = fur, lf = P(0x4ea84a), lf2 = P(0x86d060); legs2(4.6, 80, 3.8, furD); C3(0, 86, 0, 0, 52 + bd, 0, 10, 8, bark); for (let i = 0; i < 5; i++) C3(-6 + i * 3, 80 - i * 5, 8, -6 + i * 3 + 1, 74 - i * 5, 8.4, .6, .4, furD);
+          arms2(10, 56, 24, 3.2, bark, lf); for (const sd of [-1, 1]) { C3(sd * 8, 52, 0, sd * 16, 38 + bd, 2, 2, 1.2, bark); E3(sd * 16, 36 + bd, 2, 5, 3.4, 5, lf); }
+          E3(0, 46 + bd, 3 + hz * .3, 7, 7.4, 6.6, bark); eyes2(45 + bd, 8.8 + hz * .3, 2.8, 1.4);
+          E3(0, 36 + bd, 0, 13, 6, 12, lf); E3(0, 31 + bd, 0, 9, 5, 8.6, lf2); E3(-7, 34 + bd, 4, 4, 3, 4, lf2); E3(7, 35 + bd, -3, 4, 3, 4, lf2);
+        } else if (QD === "prism") {
+          const fl = walking ? Math.sin(ph * 2) * 2 : -1, c1 = P(col), c2 = P(lt(col, .55)), c3 = P(0xffffff);
+          const fac = (pts, k) => POLY3(pts, (x, y) => rampAt(k % 2 ? c2 : c1, .55 + ((x * 3 + y * 5 + k * 7) % 5) * .08), .2);
+          fac([[0, 36 + fl, 0], [-12, 62 + fl, 0], [0, 62 + fl, 10]], 0); fac([[0, 36 + fl, 0], [0, 62 + fl, 10], [12, 62 + fl, 0]], 1); fac([[0, 90 + fl, 0], [-12, 62 + fl, 0], [0, 62 + fl, 10]], 2); fac([[0, 90 + fl, 0], [0, 62 + fl, 10], [12, 62 + fl, 0]], 3);
+          fac([[0, 36 + fl, 0], [-12, 62 + fl, 0], [0, 62 + fl, -10]], 4); fac([[0, 36 + fl, 0], [0, 62 + fl, -10], [12, 62 + fl, 0]], 5);
+          E3(0, 62 + fl, 8, 2.8, 2.8, 1.6, eyeR); E3(-2, 52 + fl, 6, 1.2, 4, .8, c3);
+          for (let i = 0; i < 4; i++) { const an = ph + i * 1.6; E3(Math.cos(an) * 17, 62 + fl + Math.sin(an * 1.3) * 5, Math.sin(an) * 10, 2.2, 3, 2.2, i % 2 ? c2 : c1); }
+        } else if (QD === "sentinel") {
+          const st2 = P(0x9a9aa4), st3 = P(0x60606c), gl = P(0xffc860); legs2(5.2, 78, 4.4, st3); E3(0, 64 + bd, 0, 12, 16, 8.6, st2); E3(0, 60 + bd, 7, 5, 8, 2, st3); E3(0, 58 + bd, 8.6, 1.6, 4, 1, gl);
+          for (const sd of [-1, 1]) E3(sd * 13.6, 48 + bd, 0, 6, 5, 6, st3); arms2(15, 50, 22, 4, st2, st3);
+          E3(0, 40 + bd, 2 + hz * .3, 6, 6.6, 6, st2); E3(0, 38 + bd, 7.6 + hz * .3, 4, .9, .6, gl); E3(0, 33 + bd, 2, 2, 5, 2, st3);
+          E3(-15, 64, 6 + hz * .5, 2, 12, 9, st3); E3(-15.8, 64, 6 + hz * .5, 1, 8, 6, gl);
+        } else if (QD === "voidling") {
+          const fl = walking ? Math.sin(ph * 2) * 2 : Math.sin(0) , vd = P(col), vl = P(lt(col, .5));
+          E3(0, 60 + fl, 0, 12, 16, 11, vd); E3(0, 52 + fl, 3, 8, 8, 8, vl, .1);
+          for (let i = 0; i < 6; i++) { const an = i / 6 * 6.28 + ph * .5, bx = Math.cos(an) * 8, bz = Math.sin(an) * 7; C3(bx, 70 + fl, bz, bx * 1.6, 88 + Math.sin(an * 2 + ph) * 3, bz * 1.6, 3.2, .8, vd); }
+          for (const [ex, ey, er] of [[-4.6, 52, 2.8], [4.6, 52, 2.8], [0, 46, 2.2], [-7, 60, 1.6], [7, 60, 1.6]]) { E3(ex, ey + fl, 9.4, er, er, 1.4, white); E3(ex, ey + fl, 10.6, er * .5, er * .6, .8, eyeR); }
+        } else {
+          const ic = P(0xc8e4f4), hi = P(0xeef8ff); legs2(6.4, 76, 6, fur, furD); E3(0, 56 + bd, 0, 16, 21, 11, fur); E3(0, 52 + bd, 8.4, 10, 12, 3, furL); arms2(19.6, 44, 30, 5.6, fur, ic);
+          E3(0, 30 + bd, 3 + hz * .3, 9.4, 9, 8.6, fur); E3(0, 22 + bd, 4, 10.4, 5.8, 9, ic); for (const sd of [-1, 1]) { POLY3([[sd * 8, 24 + bd, 4], [sd * 10, 26 + bd, 4], [sd * 15, 8 + bd, 3]], () => hi[3], .4); }
+          E3(0, 30 + bd, 11 + hz * .3, 5.6, 4.6, 2.4, ic); eyes2(27 + bd, 12.6 + hz * .3, 3.2, 1.5); for (let i = -2; i <= 2; i++) E3(i * 3.2, 38 + bd, 10, 1.6, 2.4, 1.2, hi);
+        }
       }
       add = () => {};
     }

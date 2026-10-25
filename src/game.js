@@ -14690,7 +14690,7 @@ void main() {
 /*__ROX__*/
 var QCACHE = /* @__PURE__ */ new Map();
 function ROXQM(f, c, s, l, def) {
-  if (!["wolf", "frostwolf", "hati", "boar", "yeti", "blob"].includes(f) || typeof ROX === "undefined" || typeof location < "u" && /[?&]old\b/.test(location.search)) return null;
+  if (!["wolf", "frostwolf", "hati", "boar", "yeti", "blob", "goblin", "draugr", "cinder", "automaton", "sylvan", "prism", "sentinel", "voidling", "jotun"].includes(f) || typeof ROX === "undefined" || typeof location < "u" && /[?&]old\b/.test(location.search)) return null;
   let key = `${f}:${def.id}:${c}:${s}:${l}`, h = QCACHE.get(key);
   if (h) return h;
   let eyes = { wolf: 0xffc040, frostwolf: 0x80e0ff, hati: 0xe0f0ff, boar: 0xff5a4a, yeti: 0xff5050, blob: 0xffffff };
@@ -16296,7 +16296,7 @@ function ROXQM(f, c, s, l, def) {
       let n = this.store.world;
       if (!n) return;
       let o = this.ctx, r = ce(t.pos.x, t.pos.y), i = this.animOf(`m${t.id}`, t.pos.x, t.pos.y, a), s = i.moving ? Math.floor(i.phase * ea) : -1, l = t.state === "windup" ? 2 : t.state === "charge" ? 3 : 0, { dir: c, flip: d } = Kl(t.facing), f = t.def.shape, u, m = 1, p = d;
-      f === "goblin" || f === "draugr" || f === "cinder" || f === "automaton" || f === "sylvan" || f === "prism" || f === "sentinel" || f === "voidling" ? u = Xr(f, c, s, l) ?? fa(f, c, s, l) : (u = ROXQM(f, c, s, l, t.def) ?? Xr(f, c, s, l) ?? us(f, s, l, c), p = mo ? d : Xi(t.facing).x < 0);
+      f === "xx" ? u = Xr(f, c, s, l) ?? fa(f, c, s, l) : (u = ROXQM(f, c, s, l, t.def) ?? Xr(f, c, s, l) ?? us(f, s, l, c), p = mo ? d : Xi(t.facing).x < 0);
       let h = `${f}:${c}:${s}:${l}`;
       t.def.boss && f === "jotun" && t.def.id !== "hrimgar" && (u = ds(u, `bs${t.def.id}:${s}:${l}`, t.def.color, 0.78)), t.state === "windup" ? u = ds(u, h, 16724016, 0.5) : n.time < t.stunUntil ? u = ds(u, h, 16769126, 0.5) : n.time < t.slowUntil ? u = ds(u, h, 7321855, 0.45) : t.phase === 2 && (u = ds(u, h, 16736352, 0.28)), t.state === "charge" && (m *= 1.08);
       let x = this.hover?.kind === "monster" && this.hover.id === t.id;
