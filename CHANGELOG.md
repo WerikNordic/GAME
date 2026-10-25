@@ -123,3 +123,6 @@
 
 ## v80
 - Estilo antigo (v78) volta a ser o padrao. Toon GL fica opcional com ?t3.
+
+## v81
+- Modo realista 2.5D (iluminacao suave, sem faixas, contorno discreto) como padrao; ?old = v78, ?toon = desenho animado.

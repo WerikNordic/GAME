@@ -13376,7 +13376,7 @@ void main() {
     }
     return { w: t.w, h: t.h, data: ae };
   }
-  var T3 = (() => { try { return localStorage.getItem("eldvar.t3") === "1" || /[?&]t3\b/.test(location.search); } catch { return false; } })(), T3gl = null;
+  var T3 = (() => { try { return !/[?&]old\b/.test(location.search) && localStorage.getItem("eldvar.t3") !== "0"; } catch { return true; } })(), T3toon = /[?&]toon\b/.test(location.search), T3gl = null;
   function T3init() {
     if (T3gl !== null) return T3gl;
     try {
@@ -13396,7 +13396,7 @@ void main(){ vec3 v=uR*aP; vN=uR*aN; vC=aC; vM=aM; vZ=v.z;
       let FS = `#version 300 es
 precision highp float;
 in vec3 vN; in vec3 vC; in vec3 vM; in float vZ;
-uniform vec3 uL; uniform float uAmb; uniform float uRim;
+uniform vec3 uL; uniform float uAmb; uniform float uRim; uniform float uReal;
 layout(location=0) out vec4 o0; layout(location=1) out vec4 o1; layout(location=2) out vec4 o2;
 float bandf(float x,float a,float w){return smoothstep(a-w,a+w,x);}
 void main(){
@@ -13411,6 +13411,16 @@ void main(){
  float rim=pow(1.-max(N.z,0.),2.6); c+=vec3(1.,.93,.78)*rim*uRim*bandf(N.y*.5+.5,.55,.1)*.55;
  float sh=vM.x; if(sh>0.){ vec3 H=normalize(L+vec3(0.,0.,1.)); float sp=pow(max(dot(N,H),0.),30.+sh*40.); c+=vec3(1.)*bandf(sp,.55,.06)*sh*.55; }
  c+=vC*vM.y;
+ if(uReal>.5){
+  vec3 b0=vC; float lm=dot(b0,vec3(.299,.587,.114)); b0=mix(vec3(lm),b0,.86);
+  float dl=max(dot(N,L),0.); float wrap=clamp((dot(N,L)+.35)/1.35,0.,1.);
+  vec3 sunC=vec3(1.0,.93,.80), skyC=vec3(.52,.62,.80), gndC=vec3(.30,.27,.22);
+  vec3 amb=mix(gndC,skyC,N.y*.5+.5)*.62;
+  float ao=.72+.28*smoothstep(-.6,.8,N.y);
+  vec3 r=b0*(sunC*wrap*1.0+amb*1.5)*ao; r=pow(r,vec3(.82))*1.08;
+  float rm=pow(1.-max(N.z,0.),3.); r+=skyC*rm*.18;
+  if(vM.x>0.){ vec3 H=normalize(L+vec3(0.,0.,1.)); float sp=pow(max(dot(N,H),0.),20.+vM.x*60.); r+=vec3(1.,.96,.88)*sp*vM.x*.5; }
+  r+=b0*vM.y; c=r; }
  o0=vec4(min(c,vec3(1.3)),1.);
  float id=floor(vM.z+.5); o1=vec4(mod(id,256.)/255., floor(id/256.)/255., 0., 1.);
  float d=clamp(.5+vZ/24.,0.,1.); float d8=floor(d*255.)/255.; o2=vec4(d8, fract(d*255.), 0., 1.);
@@ -13463,13 +13473,13 @@ void main(){
     gl.useProgram(G.P1), gl.bindVertexArray(G.vao), gl.bindBuffer(gl.ARRAY_BUFFER, G.buf), gl.bufferData(gl.ARRAY_BUFFER, data, gl.STREAM_DRAW);
     for (let i = 0; i < 4; i++) gl.enableVertexAttribArray(i), gl.vertexAttribPointer(i, 3, gl.FLOAT, false, 48, i * 12);
     gl.uniformMatrix3fv(G.u1("uR"), true, new Float32Array(c)), gl.uniform2f(G.u1("uSz"), W, H), gl.uniform2f(G.u1("uOff"), t.ax * ss, t.ay * ss), gl.uniform1f(G.u1("uD"), t.pxu * ss);
-    gl.uniform3f(G.u1("uL"), lt[0], lt[1], lt[2]), gl.uniform1f(G.u1("uAmb"), t.ambient ?? 0.46), gl.uniform1f(G.u1("uRim"), t.rim ?? 0.22);
+    gl.uniform3f(G.u1("uL"), lt[0], lt[1], lt[2]), gl.uniform1f(G.u1("uAmb"), t.ambient ?? 0.46), gl.uniform1f(G.u1("uRim"), t.rim ?? 0.22), gl.uniform1f(G.u1("uReal"), T3toon ? 0 : 1);
     gl.drawArrays(gl.TRIANGLES, 0, nv);
     gl.bindFramebuffer(gl.FRAMEBUFFER, fb2), gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, t3, 0), gl.drawBuffers([gl.COLOR_ATTACHMENT0]);
     gl.disable(gl.DEPTH_TEST), gl.clear(gl.COLOR_BUFFER_BIT), gl.useProgram(G.P2);
     [t0, t1, t2].forEach((tx, i) => { gl.activeTexture(gl.TEXTURE0 + i), gl.bindTexture(gl.TEXTURE_2D, tx); });
-    gl.uniform1i(G.u2("tC"), 0), gl.uniform1i(G.u2("tI"), 1), gl.uniform1i(G.u2("tD"), 2), gl.uniform2f(G.u2("uPx"), 1 / W, 1 / H), gl.uniform1f(G.u2("uW"), (t.outline ?? 1.4) * ss * 0.9);
-    gl.uniform3f(G.u2("uK"), 0.08, 0.06, 0.12);
+    gl.uniform1i(G.u2("tC"), 0), gl.uniform1i(G.u2("tI"), 1), gl.uniform1i(G.u2("tD"), 2), gl.uniform2f(G.u2("uPx"), 1 / W, 1 / H), gl.uniform1f(G.u2("uW"), (t.outline ?? 1.4) * ss * (T3toon ? 0.9 : 0.45));
+    T3toon ? gl.uniform3f(G.u2("uK"), 0.08, 0.06, 0.12) : gl.uniform3f(G.u2("uK"), 0.10, 0.08, 0.07);
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
     let px = new Uint8Array(W * H * 4);
     gl.readPixels(0, 0, W, H, gl.RGBA, gl.UNSIGNED_BYTE, px);
@@ -15333,7 +15343,7 @@ void main(){
     constructor(t, a) {
       this.host = t;
       this.store = a;
-      this.canvas = document.createElement("canvas"), this.canvas.className = "game-canvas", this.canvas.style.cssText = "display:block;width:100%;height:100%;touch-action:none;outline:none", this.canvas.tabIndex = 0, T3 && (this.canvas.style.filter = "saturate(1.32) contrast(1.07) brightness(1.12)"), t.appendChild(this.canvas);
+      this.canvas = document.createElement("canvas"), this.canvas.className = "game-canvas", this.canvas.style.cssText = "display:block;width:100%;height:100%;touch-action:none;outline:none", this.canvas.tabIndex = 0, T3 && (this.canvas.style.filter = T3toon ? "saturate(1.32) contrast(1.07) brightness(1.12)" : "saturate(0.92) contrast(1.08) brightness(1.02)"), t.appendChild(this.canvas);
       let n = this.canvas.getContext("2d");
       if (!n) throw new Error("Canvas 2D indispon\xEDvel neste navegador.");
       this.ctx = n, this.resize(), this.ro = typeof ResizeObserver < "u" ? new ResizeObserver(() => this.resize()) : null, this.ro?.observe(t), window.addEventListener("keydown", this.onKeyDown), window.addEventListener("keyup", this.onKeyUp), window.addEventListener("blur", this.onBlur), this.canvas.addEventListener("pointerdown", this.onPointerDown), window.addEventListener("pointermove", this.onPointerMove), window.addEventListener("pointerup", this.onPointerUp), window.addEventListener("pointercancel", this.onPointerUp), this.canvas.addEventListener("contextmenu", (o) => o.preventDefault()), this.canvas.addEventListener("wheel", this.onWheel, { passive: false });
@@ -16036,7 +16046,7 @@ void main(){
       for (let q of this.anims.keys()) !z.has(q) && q !== "p" && !q.startsWith("n:") && this.anims.delete(q);
       n.city && this.cityAmbience(n, a.player.pos), this.drawTopFx(), this.drawParticles(), this.ambient(n), n.city && this.forgeFx(n, a.player.pos), this.applyLighting(a, n), i.setTransform(this.dpr, 0, 0, this.dpr, 0, 0), this.evView && (this.wfx.update(t, this.evView, n.theme, !!n.city, this.w, this.h), this.wfx.draw(i, this.evView, n.theme, this.w, this.h));
       let I = i.createRadialGradient(this.w / 2, this.h / 2, Math.min(this.w, this.h) * 0.36, this.w / 2, this.h / 2, Math.max(this.w, this.h) * 0.72);
-      I.addColorStop(0, "rgba(4,6,12,0)"), I.addColorStop(1, T3 ? "rgba(10,16,34,0.34)" : "rgba(4,6,12,0.66)"), i.fillStyle = I, i.fillRect(0, 0, this.w, this.h), this.drawMinimap(a, n), this.drawMapTitle(), this.drawAnnounce();
+      I.addColorStop(0, "rgba(4,6,12,0)"), I.addColorStop(1, T3 ? "rgba(6,10,20,0.5)" : "rgba(4,6,12,0.66)"), i.fillStyle = I, i.fillRect(0, 0, this.w, this.h), this.drawMinimap(a, n), this.drawMapTitle(), this.drawAnnounce();
       let J = this.fade, D = Math.min(1, (this.clock - J.t0) / J.dur), Z = J.from + (J.to - J.from) * D;
       Z > 3e-3 && (i.fillStyle = `rgba(${J.color},${Z})`, i.fillRect(0, 0, this.w, this.h)), this.clock < this.flash.until && (i.fillStyle = `rgba(255,255,255,${0.5 * (this.flash.until - this.clock) / 300})`, i.fillRect(0, 0, this.w, this.h)), this.dead && (i.fillStyle = "rgba(80,0,0,0.25)", i.fillRect(0, 0, this.w, this.h));
     }
