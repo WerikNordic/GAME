@@ -152,8 +152,17 @@ main.title .title-card .footer{color:#a9a38f}
 .pm-win .pm-log .me{color:#9fd8ff}.pm-win .pm-log .sys{color:#ffb8e6}
 .pm-win .pm-in{width:calc(100% - 12px);margin:0 6px 6px;background:#0007;border:1px solid #555;color:#fff;padding:4px 6px;border-radius:3px}
 .pm-win .pm-log .in{color:#ffd27a}
-.panel-float{transform:scale(.5);transform-origin:top left}
+.panel-float{transform-origin:top left}
 .sty-grid{max-height:190px;overflow:auto;display:flex;flex-wrap:wrap;gap:4px}.sty-grid .btn{min-height:28px;padding:3px 7px;font-size:11.5px}
+.panel-float{transform:scale(.85)}
+.bag .detail{display:none}
+body.armed canvas{cursor:crosshair!important}
+.skill-locked{filter:grayscale(1);opacity:.5}
+.slots-row{display:flex!important;flex-direction:row;flex-wrap:nowrap;gap:8px;overflow-x:auto;max-width:96vw;padding-bottom:8px}
+.slots-row .slot{flex:0 0 220px;flex-direction:column;align-items:stretch}
+.slots{grid-auto-flow:column;grid-auto-columns:minmax(200px,1fr);overflow-x:auto}
+.skill-row{display:flex!important;flex-direction:column;align-items:center;text-align:center;gap:4px}
+.skill-row .skill-bonus{width:100%;order:9}
 </style></head>
   <body>
     <div id="root"></div>
@@ -9027,6 +9036,14 @@ Error generating stack: ` + n.message + `
     for (let o of yn) a[o] = Math.floor((a[o] + t[o]) * (1 + (n[o] ?? 0)));
     return a;
   }
+  function skLocked(ps, o) {
+    let L = Ce[ps.line].skills, n = L[o];
+    if (!n) return true;
+    if (n.tier > ps.tier) return true;
+    let pv_ = L[o - 1];
+    if (!pv_ || pv_.tier !== n.tier) return false;
+    return (ps.skillLevels?.[o] ?? 1) <= 1 && (ps.skillLevels?.[o - 1] ?? 1) < 2;
+  }
   function Ua(e) {
     let t = Ce[e.line], a = Vu(e), n = tp(e), o = n[t.attackStat], r = [1, 1, 1.12, 1.22, 1.32, 1.45][Math.min(5, e.tier)] ?? 1, i = ey(e), s = (c, d) => c * (1 + (i[d] ?? 0)), l = (o * 2 + (t.attackStat === "dex" ? 0 : n.dex * 0.4) + e.level) * r + a.atk;
     return { maxHp: Math.round(s(Math.round((40 + n.vit * 10 + e.level * 12) * t.hpMult * r) + a.maxHp, "maxHp")), maxMp: Math.round(s(Math.round((15 + n.int * 5 + e.level * 3) * t.mpMult * r) + a.maxMp, "maxMp")), atk: Math.round(s(l, "atk")), matk: Math.round(s((n.int * 2 + n.dex * 0.3 + e.level) * r + a.matk, "matk")), def: Math.round(s(n.vit * 0.8 + e.level * 0.5 + a.def, "def")), crit: Math.min(0.5, s(n.luk * 4e-3 + a.crit, "crit")), dodge: Math.min(0.4, n.agi * 4e-3), speed: s(150 + Math.min(60, n.agi * 1.2) + a.speed, "speed"), attackCooldown: Math.max(300, Math.round(t.basic.cooldown * (1 - n.agi * 3e-3))) };
@@ -10096,8 +10113,14 @@ Error generating stack: ` + n.message + `
     spawnProjectile(t, a, n, o, r, i, s) {
       this.projectiles.push({ id: this.nextId++, pos: { x: this.player.pos.x, y: this.player.pos.y }, vx: Math.cos(t) * 460, vy: Math.sin(t) * 460, ttl: o / 460 * 1e3, mult: a, magic: n, stunMs: r, slowMs: i, element: s });
     }
+    castSkillAt(i, x, y, mid) {
+      let m = mid ? this.monsters.find((q) => q.id === mid) : null;
+      m && (this.currentTarget = m), this.aimAng = ao(this.player.pos, m ? m.pos : { x, y });
+      try { return this.castSkill(i); } finally { this.aimAng = void 0; }
+    }
     castSkill(t) {
       if (this.sitting) return false;
+      if (skLocked(this.ps, t)) return this.toast("Habilidade bloqueada: aumente a anterior primeiro.", "bad"), false;
       let a = this.player;
       if (a.deadAt !== null) return false;
       let n = Ce[this.ps.line].skills[t];
@@ -10117,7 +10140,7 @@ Error generating stack: ` + n.message + `
       let c = By(n.cooldown, r);
       a.skillReadyAt[t] = this.time + c, a.skillTotal[t] = c, a.lastCombatAt = this.time;
       let d = n.kind === "cone" ? n.range : n.range || 120, f = this.currentTarget, u = f && Be(f.pos, a.pos) - f.def.radius <= d ? f : this.nearestMonster(d);
-      u && (a.facing = ao(a.pos, u.pos)), a.lastCastAt = this.time;
+      u && (a.facing = ao(a.pos, u.pos)), this.aimAng !== void 0 && (a.facing = this.aimAng), a.lastCastAt = this.time;
       let m = !!n.magic;
       switch (n.kind) {
         case "cone":
@@ -10408,7 +10431,7 @@ Error generating stack: ` + n.message + `
       }
     }
     spawnLoot(t, a, n) {
-      $(t) && this.loot.push({ id: this.nextId++, itemId: t, qty: a, pos: { x: n.x + (this.rng() - 0.5) * 40, y: n.y + (this.rng() - 0.5) * 40 }, expiresAt: this.time + 6e4 });
+      $(t) && this.loot.push({ id: this.nextId++, itemId: t, qty: a, pos: { x: n.x + (this.rng() - 0.5) * 40, y: n.y + (this.rng() - 0.5) * 40 }, expiresAt: this.time + 2e4 });
     }
     updateLoot() {
       if (this.player.deadAt !== null) return;
@@ -10948,6 +10971,7 @@ Error generating stack: ` + n.message + `
     return !Fi(e.inventory, n, 5) || !Fi(e.inventory, "infusao_runica", 2) ? { ok: false, msg: "Mochila cheia: libere espa\xE7o para o presente." } : (He(e.inventory, n, 5), He(e.inventory, "infusao_runica", 2), e.silver += a, e.daily = iv(t), { ok: true, msg: `Presente do dia: ${a} Zens, 5 po\xE7\xF5es de vida e 2 de mana.` });
   }
   var HV50 = [{ n: "Curto Clássico", L: 0, F: 1, T: 1, X: "" }, { n: "Repicado", L: 0, F: 5, T: 1, X: "" }, { n: "Militar", L: 0, F: 7, T: 0, X: "" }, { n: "Topete", L: 0, F: 2, T: 2, X: "" }, { n: "Pompadour", L: 0, F: 4, T: 2, X: "" }, { n: "Franja Lateral Esq.", L: 1, F: 2, T: 1, X: "" }, { n: "Franja Lateral Dir.", L: 1, F: 3, T: 1, X: "" }, { n: "Partido ao Meio", L: 1, F: 4, T: 1, X: "" }, { n: "Cacheado Curto", L: 0, F: 1, T: 2, X: "curl" }, { n: "Black Power", L: 0, F: 0, T: 3, X: "" }, { n: "Moicano", L: 0, F: 0, T: 1, X: "mohawk" }, { n: "Espetado", L: 0, F: 5, T: 2, X: "spikes" }, { n: "Chanel Curto", L: 1, F: 1, T: 1, X: "bob" }, { n: "Pixie", L: 0, F: 2, T: 1, X: "" }, { n: "Coque Samurai", L: 0, F: 7, T: 1, X: "topknot" }, { n: "Cortina Curta", L: 1, F: 6, T: 1, X: "" }, { n: "Escovinha", L: 0, F: 7, T: 2, X: "" }, { n: "Ondulado Curto", L: 1, F: 1, T: 1, X: "wave" }, { n: "Tigela", L: 1, F: 7, T: 1, X: "bob" }, { n: "Undercut", L: 0, F: 2, T: 2, X: "" }, { n: "Longo Liso", L: 3, F: 1, T: 1, X: "" }, { n: "Longo Partido", L: 3, F: 4, T: 1, X: "" }, { n: "Longo Franja Lateral", L: 3, F: 2, T: 1, X: "" }, { n: "Longo Cortina", L: 3, F: 6, T: 1, X: "" }, { n: "Cacheado Longo", L: 3, F: 1, T: 1, X: "curl" }, { n: "Ondulado Longo", L: 3, F: 4, T: 1, X: "wave" }, { n: "Rabo de Cavalo", L: 1, F: 1, T: 1, X: "pony" }, { n: "Rabo Alto", L: 1, F: 4, T: 1, X: "ponyhigh" }, { n: "Maria-Chiquinha", L: 1, F: 1, T: 1, X: "twin" }, { n: "Tranças Duplas", L: 1, F: 4, T: 1, X: "dbraid" }, { n: "Trança Lateral", L: 1, F: 2, T: 1, X: "braid" }, { n: "Trança Nórdica", L: 1, F: 1, T: 1, X: "braidc" }, { n: "Coque Alto", L: 0, F: 4, T: 1, X: "bun" }, { n: "Dois Coques", L: 0, F: 1, T: 1, X: "buns" }, { n: "Coque Baixo", L: 1, F: 4, T: 1, X: "lowbun" }, { n: "Meio Preso", L: 3, F: 4, T: 1, X: "halfup" }, { n: "Crina de Guerra", L: 3, F: 0, T: 1, X: "mane" }, { n: "Valquíria", L: 2, F: 2, T: 1, X: "braid" }, { n: "Lisa até a Cintura", L: 4, F: 1, T: 1, X: "" }, { n: "Cintura Partida", L: 4, F: 4, T: 1, X: "" }, { n: "Hime", L: 4, F: 8, T: 1, X: "hime" }, { n: "Chanel Longo", L: 2, F: 1, T: 1, X: "bob" }, { n: "Volumoso", L: 3, F: 1, T: 3, X: "" }, { n: "Rainha do Gelo", L: 4, F: 2, T: 2, X: "wave" }, { n: "Tranças Baixas", L: 2, F: 4, T: 1, X: "lowtwin" }, { n: "Rabos Altos", L: 1, F: 1, T: 1, X: "twinhigh" }, { n: "Selvagem", L: 3, F: 5, T: 2, X: "spikes" }, { n: "Longo Repicado", L: 2, F: 5, T: 1, X: "" }, { n: "Coroa de Tranças", L: 0, F: 4, T: 1, X: "crown" }, { n: "Dreads", L: 3, F: 1, T: 1, X: "dread" }], zp = [{ id: "short", name: "Curto" }, { id: "long", name: "Longo" }, { id: "bald", name: "Raspado" }, ...HV50.map((h, i) => ({ id: "v" + (i + 1), name: h.n }))], Dp = [2763320, 5913122, 9058850, 10119738, 13146698, 14205050, 15263982, 6974066, 8006186, 13647962, 3820138, 3836554, 4889162, 9063096], Op = [0, 11545130, 13656106, 13146666, 3836474, 2787962, 2775728, 8010408, 13126282, 3158588, 15262940, 8018490, 6978186, 1718890], Np = { hairStyle: 60, hairColor: 80, cloth: 100 };
+  var HMALE_ = new Set([1,2,3,4,5,6,7,8,9,10,11,12,15,17,18,19,20,21,26,27,32,37,47,50]);
   function Hp(e, t) {
     let a = 1 + Math.floor(e.level / 10) * 0.5, n = 0;
     return t.hairStyle !== void 0 && t.hairStyle !== e.style?.hairStyle && (n += Np.hairStyle), t.hairColor !== void 0 && t.hairColor !== e.style?.hairColor && (n += Np.hairColor), t.dye !== void 0 && t.dye !== e.dye && (n += Np.cloth), Math.round(n * a);
@@ -11006,7 +11030,7 @@ Error generating stack: ` + n.message + `
     window.__acct = "", window.__tok = "";
   }
   AUTH_ON || (window.__acct = "", window.__tok = "");
-  var Gp = 1, jp = 3, dv = "eldvar.settings.v1", Bp = (e) => `eldvar.save.${window.__acct ? window.__acct + "." : ""}${e}`, Vt = (e) => typeof e == "object" && e !== null && !Array.isArray(e), Ut = (e, t, a, n) => {
+  var Gp = 1, jp = 10, dv = "eldvar.settings.v1", Bp = (e) => `eldvar.save.${window.__acct ? window.__acct + "." : ""}${e}`, Vt = (e) => typeof e == "object" && e !== null && !Array.isArray(e), Ut = (e, t, a, n) => {
     let o = typeof e == "number" && Number.isFinite(e) ? Math.floor(e) : n;
     return Math.max(t, Math.min(a, o));
   }, es = (e, t, a, n) => {
@@ -11355,6 +11379,16 @@ Error generating stack: ` + n.message + `
     cast(t) {
       this.paused || this.dialogue || this.world?.castSkill(t);
     }
+    armedSkill = null;
+    setArmed(i) {
+      this.armedSkill = i;
+      typeof document < "u" && document.body.classList.toggle("armed", i !== null);
+      if (i !== null) { let sk = Ce[this.ps.line].skills[i]; this.toast(`${sk?.name ?? "Habilidade"} pronta: clique no alvo ou no ch\u00E3o. (bot\u00E3o direito cancela)`, "info"); }
+      this.refresh();
+    }
+    castAt(i, x, y, mid) {
+      this.paused || this.dialogue || this.world?.castSkillAt(i, x, y, mid);
+    }
     dash() {
       this.paused || this.dialogue || this.world?.dash();
     }
@@ -11471,7 +11505,9 @@ Error generating stack: ` + n.message + `
       let a = this.hotkeys[t];
       if (!a) return;
       if (a.t === "skill") {
-        this.cast(a.i);
+        if (skLocked(this.ps, a.i)) { this.toast("Habilidade bloqueada: aumente a anterior primeiro.", "bad"); return; }
+        if (this.armedSkill === a.i) { this.setArmed(null); return; }
+        this.setArmed(a.i);
         return;
       }
       let n = this.ps.inventory.slots.findIndex((o) => o?.id === a.id);
@@ -11757,6 +11793,7 @@ Error generating stack: ` + n.message + `
       this.saveGame(), this.world = new nr(this.ps, n, void 0, n.spawn), this.panel = "none", this.warpMode = false, this.dialogue = null, this.pushLog(`Voc\xEA chegou a ${n.name}.`, "system"), this.saveGame(), this.refresh();
     }
     escape() {
+      if (this.screen === "playing" && this.armedSkill != null) { this.setArmed(null); return; }
       if (this.screen === "playing") {
         if (this.dialogue) {
           this.closeDialogue();
@@ -11864,7 +11901,7 @@ Error generating stack: ` + n.message + `
       let w = this.world, f = w.player.facing ?? 0, pos = { x: w.player.pos.x + Math.cos(f) * 62, y: w.player.pos.y + Math.sin(f) * 62 };
       w.spawnLoot(id, q, pos);
       let L = w.loot[w.loot.length - 1];
-      L && (L.holdUntil = w.time + 3500, L.expiresAt = w.time + 3e5);
+      L && (L.holdUntil = w.time + 3500, L.expiresAt = w.time + 2e4);
       this.toast(`${$(id)?.name ?? id} x${q} largado no ch\u00E3o.`, "info"), this.refresh();
     }
     discardAt(t, a) {
@@ -12221,7 +12258,7 @@ Error generating stack: ` + n.message + `
   }, 250);
   function cloudStore(ls) {
     if (!ls) return ls;
-    let timers = {}, re = () => new RegExp("^eldvar\\.save\\." + (window.__acct || "").replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "\\.(\\d)$");
+    let timers = {}, re = () => new RegExp("^eldvar\\.save\\." + (window.__acct || "").replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "\\.(\\d+)$");
     return {
       getItem: (k) => ls.getItem(k),
       key: (i) => ls.key(i),
@@ -12398,7 +12435,7 @@ Error generating stack: ` + n.message + `
       } catch {
       }
     }
-    if (!had) for (let k = 1; k <= 3; k++) {
+    if (!had) for (let k = 1; k <= 10; k++) {
       try {
         let old = window.localStorage.getItem("eldvar.save." + k) ?? window.localStorage.getItem("eldvar.save." + email + "." + k);
         old && (window.localStorage.setItem("eldvar.save." + email + "." + k, old), sbRpc("eld_put_save", { p_token: tok, p_slot: k, p_data: old }));
@@ -12473,7 +12510,7 @@ Error generating stack: ` + n.message + `
       } catch {
       }
       window.__acct = "", window.__tok = "", window.__admin = false, j.refresh(), setIsAdm(false), setAcct("");
-    }, children: "Sair" })] }), t === "menu" && (0, le.jsxs)("nav", { className: "menu", "aria-label": "Menu principal", children: [r && (0, le.jsxs)("button", { className: "btn btn-primary", onClick: () => i(r.slot), children: ["Continuar \xB7 ", r.name] }), (0, le.jsx)("button", { className: "btn", onClick: () => j.goCreate(), children: "Novo jogo" }), (0, le.jsx)("button", { className: "btn", onClick: () => a("online"), children: "Jogar online (multiplayer)" }), (0, le.jsx)("button", { className: "btn", onClick: () => a("load"), disabled: !r, children: "Carregar jogo" }), (0, le.jsx)("button", { className: "btn", onClick: () => j.openSettings("title"), children: "Configura\xE7\xF5es" }), (0, le.jsx)("button", { className: "btn", onClick: () => a("about"), children: "Sobre" }), isAdm && (0, le.jsx)("button", { className: "btn", onClick: () => a("admin"), children: "\u2605 Administra\xE7\xE3o (aprovar contas)" })] }), t === "admin" && (0, le.jsx)(AdminPanel, { onBack: () => a("menu") }), t === "online" && (0, le.jsx)(OM, { onBack: () => a("menu") }), t === "load" && (0, le.jsxs)("div", { className: "menu", children: [e.slots.map((s, l) => (0, le.jsxs)(l0, { slot: l + 1, info: s, children: [s && (0, le.jsx)("button", { className: "btn btn-small btn-primary", onClick: () => i(l + 1), children: "Jogar" }), s && (0, le.jsx)("button", { className: "btn btn-small", onClick: () => {
+    }, children: "Sair" })] }), t === "menu" && (0, le.jsxs)("nav", { className: "menu", "aria-label": "Menu principal", children: [r && (0, le.jsxs)("button", { className: "btn btn-primary", onClick: () => i(r.slot), children: ["Continuar \xB7 ", r.name] }), (0, le.jsx)("button", { className: "btn", onClick: () => j.goCreate(), children: "Novo jogo" }), (0, le.jsx)("button", { className: "btn", onClick: () => a("online"), children: "Jogar online (multiplayer)" }), (0, le.jsx)("button", { className: "btn", onClick: () => a("load"), disabled: !r, children: "Carregar jogo" }), (0, le.jsx)("button", { className: "btn", onClick: () => j.openSettings("title"), children: "Configura\xE7\xF5es" }), (0, le.jsx)("button", { className: "btn", onClick: () => a("about"), children: "Sobre" }), isAdm && (0, le.jsx)("button", { className: "btn", onClick: () => a("admin"), children: "\u2605 Administra\xE7\xE3o (aprovar contas)" })] }), t === "admin" && (0, le.jsx)(AdminPanel, { onBack: () => a("menu") }), t === "online" && (0, le.jsx)(OM, { onBack: () => a("menu") }), t === "load" && (0, le.jsxs)("div", { className: "menu slots-row", children: [e.slots.map((s, l) => (0, le.jsxs)(l0, { slot: l + 1, info: s, children: [s && (0, le.jsx)("button", { className: "btn btn-small btn-primary", onClick: () => i(l + 1), children: "Jogar" }), s && (0, le.jsx)("button", { className: "btn btn-small", onClick: () => {
       window.confirm(`Apagar o slot ${l + 1}? Isso n\xE3o pode ser desfeito.`) && j.removeSlot(l + 1);
     }, children: "Apagar" })] }, l)), (0, le.jsx)("button", { className: "btn", onClick: () => a("menu"), children: "Voltar" })] }), t === "about" && (0, le.jsxs)("div", { className: "about", children: [(0, le.jsx)("p", { children: Yp.context }), (0, le.jsx)("p", { children: Yp.premise }), (0, le.jsxs)("p", { className: "notice", children: [(0, le.jsx)("strong", { children: "Modo local" }), " \xE9 para um jogador: o progresso fica salvo apenas neste navegador. ", (0, le.jsx)("strong", { children: "Modo online" }), " \xE9 uma fatia vertical: exige um servidor Nidavellir em execu\xE7\xE3o (veja o README) e ainda n\xE3o tem NPCs, quests, itens nem habilidades."] }), (0, le.jsx)("button", { className: "btn", onClick: () => a("menu"), children: "Voltar" })] }), e.notice && (0, le.jsx)("p", { className: "error", role: "alert", children: e.notice }), n && (0, le.jsx)("p", { className: "error", role: "alert", children: n }), !yv && (0, le.jsx)("p", { className: "error", role: "alert", children: "Armazenamento do navegador indispon\xEDvel: o progresso n\xE3o poder\xE1 ser salvo." }), (0, le.jsx)("p", { className: "footer", children: "Prot\xF3tipo jog\xE1vel \xB7 modo local (1 jogador) ou servidor de teste online" })] }), e.panel === "settings" && (0, le.jsx)(c0, {})] });
   }
@@ -15219,7 +15256,7 @@ void main() {
         F(n, S(-34, 0, 0), 3, 2, 62, Y(o, 0.7), { seg: 8, mat: Ve }), F(n, S(-34, 60, 0), 4.4, 0, 6, gd, { seg: 8, mat: Ve }), O(n, S(-34, 2, 0), 14, 4, 14, Y(o, 0.8), Q);
         F(n, S(-34, 56, 0).mul(A.RZ(-1.15)), 0.7, 0.7, 24, Y(r, 0.7), { seg: 4 });
         L(n, S(4, 66, 0), 42, 15.5, 15.5, cl, { seg: 22, ring: 14, mat: Re });
-        for (let k = -3; k <= 3; k++) {
+        for (let k = -3; k <= 10; k++) {
           let x = k * 11, q = Math.sqrt(Math.max(0.02, 1 - Math.pow(x / 42, 2)));
           L(n, S(4 + x, 66, 0), 3.2, 15.5 * q + 0.5, 15.5 * q + 0.5, k % 2 ? cl2 : gd, { seg: 10, ring: 10, mat: Re });
         }
@@ -16878,6 +16915,7 @@ function ROXQM(f, c, s, l, def) {
           petMenu(t.clientX, t.clientY);
           return;
         }
+        this.store.armedSkill != null && this.store.setArmed(null);
         this.drag = { x: t.clientX, y: t.clientY };
         return;
       }
@@ -16888,6 +16926,11 @@ function ROXQM(f, c, s, l, def) {
       let n = this.toScreenPt(t.clientX, t.clientY), o = Gu(n.x, n.y);
       this.ptr = { x: t.clientX, y: t.clientY, inside: true, held: true, holdMove: false, nextHold: this.clock + 180 };
       let r = this.pick(n.x, n.y);
+      if (a.armedSkill != null) {
+        let sid = a.armedSkill;
+        a.setArmed(null), a.castAt(sid, o.x, o.y, r?.kind === "monster" ? r.id : null), this.ptr.held = false;
+        return;
+      }
       if (r?.kind === "monster") {
         a.commandTarget(r.id), this.ptr.held = false;
         return;
@@ -18355,6 +18398,7 @@ function ROXQM(f, c, s, l, def) {
     return ho.useEffect(() => {
       let o = (e) => setWins((w) => {
         let nm = e.detail?.name ?? "";
+        if (!nm && w.some((x) => !x.name)) return w.filter((x) => x.name);
         return nm && w.some((x) => x.name === nm) || w.length >= 4 ? w : [...w, { id: ++PMID, name: nm }];
       });
       let inc = (e) => setWins((w) => w.some((x) => x.name.toLowerCase() === e.detail.from.toLowerCase()) || w.length >= 4 ? w : [...w, { id: ++PMID, name: e.detail.from, init: [{ k: "in", t: `${e.detail.from}: ${e.detail.text}` }] }]);
@@ -18469,9 +18513,13 @@ function ROXQM(f, c, s, l, def) {
       return (0, X.jsxs)("div", { className: `weightbar${m > 1 ? " over" : m > 0.8 ? " warn" : ""}`, title: "Acima de 100% voc\xEA anda 25% mais devagar; acima de 125% n\xE3o pega mais itens.", children: [(0, X.jsxs)("span", { children: ["Peso ", Math.round(f), " / ", u] }), (0, X.jsx)("div", { children: (0, X.jsx)("i", { style: { width: `${Math.min(100, m * 100)}%` } }) }), (0, X.jsxs)("em", { children: [Math.round(m * 100), "%", m > 1 ? " \xB7 Sobrecarregado" : ""] })] });
     })(), a === "bag" && (0, X.jsxs)("div", { className: "bag", children: [(0, X.jsx)("div", { className: "grid", role: "list", children: i.inventory.slots.map((f, u) => {
       let m = f ? $(f.id) : void 0;
-      return (0, X.jsx)("button", { role: "listitem", className: `cell${o === u ? " sel" : ""}${f ? "" : " empty"}`, style: m ? { borderColor: so[m.rarity] } : void 0, draggable: m?.kind === "consumable" || m?.kind === "ammo", onDragStart: (p) => {
-        (m?.kind === "consumable" || m?.kind === "ammo") && (p.dataTransfer.setData(Qr, JSON.stringify({ t: "item", id: m.id })), p.dataTransfer.effectAllowed = "copy");
-      }, onClick: () => r(f ? u : null), onDoubleClick: () => { m && Pt(m.kind) && (j.equipAt(u), r(null)); }, "aria-label": m ? `${m.name} x${f?.qty}` : "Slot vazio", children: m && (0, X.jsxs)(X.Fragment, { children: [(0, X.jsx)(Aa, { id: m.id, size: 36 }), f.qty > 1 && (0, X.jsx)("i", { className: "qty", children: f.qty })] }) }, u);
+      return (0, X.jsx)("button", { role: "listitem", className: `cell${o === u ? " sel" : ""}${f ? "" : " empty"}`, style: m ? { borderColor: so[m.rarity] } : void 0, draggable: !!m, title: m ? m.name + " \u2014 " + Ev(m) + "\n" + m.desc : void 0, onDragStart: (p) => {
+        m && ((m.kind === "consumable" || m.kind === "ammo") && p.dataTransfer.setData(Qr, JSON.stringify({ t: "item", id: m.id })), p.dataTransfer.setData("text/plain", m.id), p.dataTransfer.effectAllowed = "copyMove");
+      }, onDragEnd: (p) => {
+        if (!m || m.kind === "quest" || p.dataTransfer.dropEffect !== "none") return;
+        let pr = p.currentTarget.closest(".panel")?.getBoundingClientRect();
+        pr && p.clientX >= pr.left && p.clientX <= pr.right && p.clientY >= pr.top && p.clientY <= pr.bottom || j.dropAt(u, f.qty);
+      }, onClick: () => {}, onDoubleClick: () => { m && (Pt(m.kind) ? j.equipAt(u) : (m.kind === "consumable" || m.kind === "ammo") && j.useItemAt(u)); }, "aria-label": m ? `${m.name} x${f?.qty}` : "Slot vazio", children: m && (0, X.jsxs)(X.Fragment, { children: [(0, X.jsx)(Aa, { id: m.id, size: 36 }), f.qty > 1 && (0, X.jsx)("i", { className: "qty", children: f.qty })] }) }, u);
     }) }), (0, X.jsx)("aside", { className: "detail", children: c && l && o !== null ? (0, X.jsxs)(X.Fragment, { children: [(0, X.jsxs)("h3", { style: { color: so[c.rarity] }, children: [(0, X.jsx)(Aa, { id: c.id, size: 40 }), " ", c.name] }), (0, X.jsx)("small", { children: Ev(c) }), (0, X.jsx)("p", { children: c.desc }), d && !Ml(i, c).ok && (0, X.jsx)("p", { className: "error", children: Ml(i, c).msg }), (0, X.jsxs)("div", { className: "row wrap", children: [c.kind === "consumable" && (0, X.jsx)("small", { className: "muted", children: "Arraste para a barra F1\u2013F12." }), c.kind === "consumable" && (0, X.jsx)("button", { className: "btn btn-primary btn-small", onClick: () => j.useItemAt(o), children: "Usar" }), c.kind === "ammo" && (0, X.jsx)("small", { className: "muted", children: "Arraste para a barra F1\u2013F12: a tecla troca a flecha da aljava." }), c.kind === "ammo" && (0, X.jsx)("button", { className: "btn btn-primary btn-small", onClick: () => j.useItemAt(o), children: i.ammo === c.id ? "Na aljava" : "Equipar na aljava" }), d && (0, X.jsx)("button", { className: "btn btn-primary btn-small", onClick: () => {
       j.equipAt(o), r(null);
     }, children: "Equipar" }), c.kind !== "quest" && (0, X.jsx)("button", { className: "btn btn-small", onClick: () => {
@@ -18630,8 +18678,8 @@ function ROXQM(f, c, s, l, def) {
     if (!t) return null;
     let a = Ce[t.line];
     return (0, ma.jsxs)(Yt, { id: "skills", title: "Habilidades", onClose: () => j.closePanel(), children: [(0, ma.jsxs)("div", { className: "attr-points", children: [(0, ma.jsx)("span", { children: "Pontos de habilidade" }), (0, ma.jsx)("b", { children: t.skillPoints })] }), a.skills.map((n, o) => {
-      let r = t.skillLevels[o] ?? 1, i = n.tier > t.tier;
-      return (0, ma.jsxs)("div", { className: "attr-row", style: { gridTemplateColumns: "auto 1fr auto auto" }, onContextMenu: (ev) => {
+      let r = t.skillLevels[o] ?? 1, i = skLocked(t, o);
+      return (0, ma.jsxs)("div", { className: "attr-row skill-row" + (i ? " skill-locked" : ""), style: { gridTemplateColumns: "auto 1fr auto auto" }, onContextMenu: (ev) => {
         ev.preventDefault(), setSelSk(selSk === o ? -1 : o);
       }, children: [selSk === o && (0, ma.jsxs)("div", { className: "skill-bonus", style: { gridColumn: "1 / -1", order: 9 }, onClick: () => setSelSk(-1), children: [(0, ma.jsx)("b", { children: n.name + " \u2014 Nv " + r + (r >= Ll(t.tier) ? " (m\xE1x.)" : "") }), skBonus(n, r).map(([k, v], q) => (0, ma.jsxs)("div", { className: "sb-row", children: [(0, ma.jsx)("span", { children: k }), (0, ma.jsx)("b", { children: v })] }, q)), r < Ll(t.tier) && n.mult ? (0, ma.jsx)("div", { className: "sb-row sb-next", children: (0, ma.jsx)("span", { children: "Nv " + (r + 1) + ": dano " + Math.round(n.mult * jy(r + 1) * 100) + "% \xB7 mana " + Ju(n.mp, r + 1) }) }) : null] }),(0, ma.jsx)("div", { className: "skill-ico", draggable: !i, onDragStart: (s) => {
         s.dataTransfer.setData(Qr, JSON.stringify({ t: "skill", i: o })), s.dataTransfer.effectAllowed = "copy";
@@ -18685,7 +18733,7 @@ function ROXQM(f, c, s, l, def) {
       return () => clearTimeout(b);
     }, [u, c]), !t || !f) return null;
     let m = Hp(t, { hairStyle: n, hairColor: r, dye: s }), p = { hs: t.style?.hairStyle, hc: t.style?.hairColor };
-    return (0, Ye.jsx)("div", { className: "overlay", role: "dialog", "aria-modal": "true", "aria-label": "Estilista", children: (0, Ye.jsxs)("div", { className: "panel stylist", children: [(0, Ye.jsxs)("header", { className: "panel-head", children: [(0, Ye.jsx)("h2", { children: "Espelho da Estilista" }), (0, Ye.jsx)("button", { className: "btn btn-small", onClick: () => j.closePanel(), "aria-label": "Fechar", children: "\u2715" })] }), (0, Ye.jsxs)("div", { className: "sty-body", children: [(0, Ye.jsxs)("div", { className: "sty-prev", children: [(0, Ye.jsx)("canvas", { ref: a, width: 220, height: 300, "aria-label": "Pr\xE9via" }), (0, Ye.jsx)("button", { className: "btn btn-small", onClick: () => d((h) => h === "down" ? "dq" : h === "dq" ? "side" : h === "side" ? "uq" : h === "uq" ? "up" : "down"), children: "\u27F3 Girar" })] }), (0, Ye.jsxs)("div", { className: "sty-opts", children: [(0, Ye.jsx)("h4", { children: "Corte" }), (0, Ye.jsx)("div", { className: "sty-row sty-grid", children: zp.filter((h) => h.id !== "short" && h.id !== "long").map((h) => (0, Ye.jsx)("button", { className: `btn btn-small${n === h.id || !n && h.id === "v1" && !p.hs ? " on" : ""}`, onClick: () => o(h.id), children: h.name }, h.id)) }), (0, Ye.jsx)("h4", { children: "Cor do cabelo" }), (0, Ye.jsx)("div", { className: "sty-sw", children: Dp.map((h) => (0, Ye.jsx)("button", { className: `sw${r === h ? " on" : ""}`, style: { background: Q0(h) }, onClick: () => i(h), "aria-label": `Cabelo ${Q0(h)}` }, h)) }), (0, Ye.jsx)("h4", { children: "Cor da roupa" }), (0, Ye.jsx)("div", { className: "sty-sw", children: Op.map((h) => (0, Ye.jsx)("button", { className: `sw${s === h ? " on" : ""}${h === 0 ? " orig" : ""}`, style: h ? { background: Q0(h) } : void 0, onClick: () => l(h), "aria-label": h ? `Roupa ${Q0(h)}` : "Cor original", children: h === 0 ? "\u2300" : "" }, h)) })] })] }), (0, Ye.jsxs)("footer", { className: "sty-foot", children: [(0, Ye.jsxs)("span", { children: ["Custo: ", (0, Ye.jsx)("b", { children: m }), " Zens \xB7 voc\xEA tem ", (0, Ye.jsx)("b", { children: t.silver })] }), (0, Ye.jsxs)("span", { children: [(0, Ye.jsx)("button", { className: "btn btn-small", onClick: () => {
+    return (0, Ye.jsx)("div", { className: "overlay", role: "dialog", "aria-modal": "true", "aria-label": "Estilista", children: (0, Ye.jsxs)("div", { className: "panel stylist", children: [(0, Ye.jsxs)("header", { className: "panel-head", children: [(0, Ye.jsx)("h2", { children: "Espelho da Estilista" }), (0, Ye.jsx)("button", { className: "btn btn-small", onClick: () => j.closePanel(), "aria-label": "Fechar", children: "\u2715" })] }), (0, Ye.jsxs)("div", { className: "sty-body", children: [(0, Ye.jsxs)("div", { className: "sty-prev", children: [(0, Ye.jsx)("canvas", { ref: a, width: 220, height: 300, "aria-label": "Pr\xE9via" }), (0, Ye.jsx)("button", { className: "btn btn-small", onClick: () => d((h) => h === "down" ? "dq" : h === "dq" ? "side" : h === "side" ? "uq" : h === "uq" ? "up" : "down"), children: "\u27F3 Girar" })] }), (0, Ye.jsxs)("div", { className: "sty-opts", children: [(0, Ye.jsx)("h4", { children: "Corte" }), (0, Ye.jsx)("div", { className: "sty-row sty-grid", children: zp.filter((h) => h.id !== "short" && h.id !== "long" && (h.id === "bald" || (HMALE_.has(Number(h.id.slice(1))) === (t.gender !== "f")))).map((h) => (0, Ye.jsx)("button", { className: `btn btn-small${n === h.id || !n && h.id === "v1" && !p.hs ? " on" : ""}`, onClick: () => o(h.id), children: h.name }, h.id)) }), (0, Ye.jsx)("h4", { children: "Cor do cabelo" }), (0, Ye.jsx)("div", { className: "sty-sw", children: Dp.map((h) => (0, Ye.jsx)("button", { className: `sw${r === h ? " on" : ""}`, style: { background: Q0(h) }, onClick: () => i(h), "aria-label": `Cabelo ${Q0(h)}` }, h)) }), (0, Ye.jsx)("h4", { children: "Cor da roupa" }), (0, Ye.jsx)("div", { className: "sty-sw", children: Op.map((h) => (0, Ye.jsx)("button", { className: `sw${s === h ? " on" : ""}${h === 0 ? " orig" : ""}`, style: h ? { background: Q0(h) } : void 0, onClick: () => l(h), "aria-label": h ? `Roupa ${Q0(h)}` : "Cor original", children: h === 0 ? "\u2300" : "" }, h)) })] })] }), (0, Ye.jsxs)("footer", { className: "sty-foot", children: [(0, Ye.jsxs)("span", { children: ["Custo: ", (0, Ye.jsx)("b", { children: m }), " Zens \xB7 voc\xEA tem ", (0, Ye.jsx)("b", { children: t.silver })] }), (0, Ye.jsxs)("span", { children: [(0, Ye.jsx)("button", { className: "btn btn-small", onClick: () => {
       o(t.style?.hairStyle), i(t.style?.hairColor), l(t.dye);
     }, children: "Desfazer" }), " ", (0, Ye.jsx)("button", { className: "btn btn-primary", disabled: m === 0 || t.silver < m, onClick: () => {
       j.applyStyleChange({ hairStyle: n, hairColor: r, dye: s }) && j.closePanel();
@@ -18772,8 +18820,9 @@ function ROXQM(f, c, s, l, def) {
     return (0, ps.useEffect)(() => {
       let a = (n) => {
         let o = n.target;
+        if (n.altKey && !n.ctrlKey && !n.repeat && (n.code === "KeyC") && o && o.closest && o.closest(".pm-win") && j.getSnapshot().screen === "playing") { n.preventDefault(), window.dispatchEvent(new CustomEvent("eldvar:pm-open", { detail: { name: "" } })), document.activeElement?.blur?.(); return; }
         if (!(o && (o.tagName === "INPUT" || o.tagName === "TEXTAREA" || o.tagName === "SELECT"))) {
-          if (n.altKey && !n.ctrlKey && !n.repeat && (n.code === "KeyC" || "cC".includes(n.key)) && j.getSnapshot().screen === "playing") n.preventDefault(), window.dispatchEvent(new CustomEvent("eldvar:pm-open", { detail: { name: "" } }));
+          if (n.altKey && !n.ctrlKey && !n.repeat && (n.code === "KeyC" || "cC".includes(n.key)) && j.getSnapshot().screen === "playing") n.preventDefault(), window.dispatchEvent(new CustomEvent("eldvar:pm-open", { detail: { name: "" } })), setTimeout(() => { let pm = document.querySelector(".pm-win"); !pm && document.activeElement?.blur?.(); }, 60);
           else if (n.key === "Escape") n.preventDefault(), j.escape();
           else if (n.key === "Insert" && !n.repeat) n.preventDefault(), j.toggleSit();
           else if (n.altKey && !n.repeat && "eE".includes(n.key)) n.preventDefault(), j.togglePanel("inventory");

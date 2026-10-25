@@ -180,6 +180,15 @@
 - Janelas Alt+Q/E/S/A/G reduzidas a 50%.
 - Sons por espécie de monstro (lobo, javali, goblin, morto-vivo, gigante, gelatina, lagarto, máquina, pedra, vazio, planta): voz ociosa, ao notar o jogador, ao ser atingido e ao morrer; volume por distância.
 
+## v119 — Interface
+- Cabelos masculinos/femininos separados no estilista.
+- Janelas Alt+Q/E/S/A/G 70% maiores.
+- Inventário: sem painel de info ao clicar (info ao passar o mouse); arraste qualquer item para fora da janela para largar; duplo clique equipa/usa.
+- Itens no chão somem em 20s.
+- Habilidades dependentes ficam cinzas até liberar; lista Alt+S vertical.
+- F1–F12 armam a habilidade; clique no alvo/chão conjura (botão direito/Esc cancela).
+- Alt+C abre e fecha. 10 slots de personagem na horizontal (nuvem também).
+
 ## v118 — Conteúdo nível 40–99
 - 4 reinos novos (20 mapas) depois do Coração da Ruptura: Jarnvid, Hvergelmir, Valhalla Caída e Vigrid.
 - 16 monstros novos (4 elites) e 4 chefes: Fenrir, Garm, Surtr e Loki.
