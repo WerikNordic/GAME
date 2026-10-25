@@ -154,3 +154,4 @@
 - v99: personagens sentam de verdade no chão (quadril no solo, pernas à frente, por classe).
 - v100: Ultimate de classe no nível 99 (tecla U / botão ★): 5 ondas de impacto + nova final, 90s de recarga, invulnerável 2,4s; nome próprio por classe.
 - v101: minigames nas cidades (/dados, /corrida, /pescar+/puxar), pet seguidor (/pet), montaria de lobo +40% velocidade (/montaria); ajuda atualizada.
+- v102: montaria visual (personagem montado no lobo, tecla V); serpente com espinhos dorsais; ultimate com padrão próprio por classe.

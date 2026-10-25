@@ -9588,13 +9588,16 @@ Error generating stack: ` + n.message + `
       this.toast(`\u2605 ${U[0]} \u2605`, "good");
       this.emit({ type: "fx", kind: "nova", x: a.pos.x, y: a.pos.y, angle: 0, range: 520, arc: 360, magic: !!U[2], fromPlayer: true, light: U[1] });
       let mg = !!U[2], base = this.ps.line === "escudeiro" ? 7 : 9;
-      for (let w = 0; w < 5; w++) {
-        let R = 120 + w * 90;
-        for (let k = 0; k < 8; k++) {
-          let an = k / 8 * Math.PI * 2 + w * 0.4;
-          this.delayed.push({ at: this.time + 450 + w * 380 + k * 40, x: a.pos.x + Math.cos(an) * R, y: a.pos.y + Math.sin(an) * R, radius: 130, mult: base * (this.ps.line === "escudeiro" ? 1 : 0.5), magic: mg, stunMs: w === 4 ? 1500 : 400, slowMs: 1200, light: U[1], style: U[3] === "nova" ? "meteor" : "meteor" });
-        }
-      }
+      let L = this.ps.line, fx0 = a.pos.x, fy0 = a.pos.y, fa0 = a.facing, pts = [];
+      if (L === "cacador") for (let q = 0; q < 36; q++) { let an = Math.random() * 6.283, R = 60 + Math.random() * 380; pts.push([fx0 + Math.cos(an) * R, fy0 + Math.sin(an) * R, q * 70]); }
+      else if (L === "volva") for (let q = 0; q < 40; q++) { let an = q * 0.55, R = 40 + q * 10; pts.push([fx0 + Math.cos(an) * R, fy0 + Math.sin(an) * R, q * 60]); }
+      else if (L === "valquiria") for (let q = 0; q < 30; q++) { let d = 70 + q * 22, sd = q % 2 ? 1 : -1; pts.push([fx0 + Math.cos(fa0) * d - Math.sin(fa0) * sd * 40, fy0 + Math.sin(fa0) * d + Math.cos(fa0) * sd * 40, q * 80]); }
+      else if (L === "skald") for (let w = 0; w < 5; w++) for (let k = 0; k < 10; k++) { let an = k / 10 * 6.283 + w * 0.3, R = 60 + w * 85; pts.push([fx0 + Math.cos(an) * R, fy0 + Math.sin(an) * R, w * 420 + k * 20]); }
+      else if (L === "thay") { let ms = this.monsters.filter((m2) => m2.state !== "dead" && Math.hypot(m2.pos.x - fx0, m2.pos.y - fy0) < 520).slice(0, 24); ms.forEach((m2, q) => pts.push([m2.pos.x, m2.pos.y, q * 110])); for (let q = 0; q < 14; q++) { let an = Math.random() * 6.283, R = 80 + Math.random() * 400; pts.push([fx0 + Math.cos(an) * R, fy0 + Math.sin(an) * R, q * 150]); } }
+      else if (L === "escudeiro") for (let w = 4; w >= 0; w--) for (let k = 0; k < 8; k++) { let an = k / 8 * 6.283 + w * 0.4, R = 120 + w * 90; pts.push([fx0 + Math.cos(an) * R, fy0 + Math.sin(an) * R, (4 - w) * 380 + k * 40]); }
+      else for (let w = 0; w < 5; w++) for (let k = 0; k < 8; k++) { let an = k / 8 * 6.283 + w * 0.4, R = 120 + w * 90; pts.push([fx0 + Math.cos(an) * R, fy0 + Math.sin(an) * R, w * 380 + k * 40]); }
+      let per = L === "cacador" || L === "valquiria" || L === "volva" ? base * 0.45 : L === "thay" ? base * 0.9 : base * 0.5;
+      for (let [px, py, dl] of pts) this.delayed.push({ at: this.time + 450 + dl, x: px, y: py, radius: L === "thay" ? 110 : 130, mult: L === "escudeiro" ? base : per, magic: mg, stunMs: 500, slowMs: 1200, light: U[1], style: "meteor" });
       this.delayed.push({ at: this.time + 450 + 5 * 380 + 300, x: a.pos.x, y: a.pos.y, radius: 520, mult: base * 3, magic: mg, stunMs: 2500, slowMs: 3000, light: U[1], style: "meteor" });
       if (this.ps.line === "escudeiro" || this.ps.line === "valquiria" || this.ps.line === "skald") { let d = this.derived(); this.ps.hp = Math.min(d.maxHp, this.ps.hp + d.maxHp * 0.5); }
       return true;
@@ -15556,6 +15559,9 @@ function ROXQM(f, c, s, l, def) {
         case "KeyU":
           this.store.ultimate();
           break;
+        case "KeyV":
+          this.store.sendChat("/montaria");
+          break;
         case "Home":
           this.yaw = 0, this.tilt = 0.5, this.zoomMul = 1;
           break;
@@ -16333,13 +16339,14 @@ function ROXQM(f, c, s, l, def) {
       let a = this.store.world;
       if (!a) return;
       let n = this.ctx, o = a.player, r = ce(o.pos.x, o.pos.y), i = this.animOf("p", o.pos.x, o.pos.y, t), { dir: s, flip: l } = Kl(o.facing), c = a.isDead(), d = Km(this.clock - i.atkAt, i.atkImpact, i.atkDur), f = a.sitting ? -2 : i.moving ? Math.floor(i.phase * ea) : -1, u = fa(po(cs(a.ps)), s, f, d, i.atkStyle);
+      a.ps.mount && !a.sitting && !c && !d && (u = fa(po(cs(a.ps)), s, -2, 0, i.atkStyle));
       if (n.save(), n.globalAlpha = c ? 0.3 : 1, c) n.translate(r.x, r.y), n.rotate(Math.PI / 2), N4(() => nt(n, u, 0, 0, l, $a, $a));
       else {
         this.blob(r.x, r.y + 4, 15), a.ps.level >= 99 && this.epicFx(r.x, r.y, 0);
         var mnt = a.ps.mount && !a.sitting;
-        if (mnt) { let mw = ROXQM("wolf", s, i.moving ? Math.floor(i.phase * ea) : -1, 0, { id: "montaria", color: 10125400 }); mw && nt(n, mw, r.x, r.y + 8, l, $a * 1.35, $a * 1.35); }
+        if (mnt) { let mw = ROXQM("wolf", s, i.moving ? Math.floor(i.phase * ea) : -1, 0, { id: "montaria", color: 10125400 }); mw && nt(n, mw, r.x, r.y + 10, l, $a * 2.1, $a * 2.1); }
         let m = this.organic(i, o.facing, { moving: i.moving, atkT: this.clock - i.atkAt, atkImpact: i.atkImpact, atkDur: i.atkDur, breath: a.sitting ? 8e-3 : 0.011 });
-        a.sitting && (m.dx = 0, m.dy = 0, m.rot *= 0.3), nt(n, u, r.x + m.dx, r.y + 6 + m.dy - (mnt ? 15 : 0), l, $a * m.sx, $a * m.sy, m.rot), a.ps.level >= 99 && this.epicFx(r.x, r.y, 1);
+        a.sitting && (m.dx = 0, m.dy = 0, m.rot *= 0.3), nt(n, u, r.x + m.dx, r.y + 6 + m.dy - (mnt ? 26 : 0), l, $a * m.sx, $a * m.sy, m.rot), a.ps.level >= 99 && this.epicFx(r.x, r.y, 1);
       }
       if (n.restore(), !c) {
         if (a.ps.pet) {
@@ -16393,6 +16400,11 @@ function ROXQM(f, c, s, l, def) {
         g.addColorStop(0, wind ? "#7fd0a0" : "#58b08c"), g.addColorStop(0.55, wind ? "#2c7a5a" : "#1f6a52"), g.addColorStop(1, "#0d2a24"), o.fillStyle = g, o.beginPath(), o.arc(p.x, p.y, p.w, 0, 7), o.fill();
         let k = Math.floor(p.s * N);
         k % 2 === 0 && (o.strokeStyle = "rgba(10,40,34,0.55)", o.lineWidth = 1.4, o.beginPath(), o.arc(p.x, p.y, p.w * 0.72, 3.6, 5.6), o.stroke(), o.beginPath(), o.arc(p.x, p.y, p.w * 0.42, 3.6, 5.6), o.stroke()), k % 3 === 0 && p.s > 0.06 && (o.save(), o.globalCompositeOperation = "lighter", o.fillStyle = `rgba(255,${110 + 60 * Math.sin(T * 3 + k) | 0},20,${(0.35 + 0.2 * Math.sin(T * 2 + k)).toFixed(3)})`, o.beginPath(), o.arc(p.x + 1, p.y - p.w * 0.45, Math.max(2, p.w * 0.26), 0, 7), o.fill(), o.restore());
+      }
+      for (let q = 3; q < N - 4; q += 3) {
+        let p = pts[q], sp = p.w * (wind ? 1.05 : 0.8);
+        o.fillStyle = wind ? "#ff7a40" : "#d8c890", o.beginPath(), o.moveTo(p.x - p.w * 0.35, p.y - p.w * 0.7), o.lineTo(p.x, p.y - p.w * 0.7 - sp), o.lineTo(p.x + p.w * 0.35, p.y - p.w * 0.7), o.closePath(), o.fill();
+        o.strokeStyle = "rgba(255,230,160,0.35)", o.lineWidth = 1, o.beginPath(), o.arc(p.x, p.y + p.w * 0.1, p.w * 0.55, 0.3, 2.8), o.stroke();
       }
       let h = pts[0], hx = h.x, hy = h.y;
       o.save(), o.translate(hx, hy - 4), o.scale(flip, 1);
