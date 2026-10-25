@@ -44,7 +44,7 @@ var ROX = (() => {
     const RB = CP[e.cls] ? Math.max(0, (e.ti || 0) - 2) : 0;
     const ACC = { berserker: 0xff5a3a, escudeiro: 0xffc040, cacador: 0x4adf7a, volva: 0xb070ff, valquiria: 0x6ad0ff, skald: 0x9a7aff, thay: 0xff7a2a }[e.cls] || 0xffd860;
     const prof = CP[e.cls] || NP || { k: 1.3, wx: 1, tw: 1, lg: 1, hair: "", sit: "" };
-    const QK = { wolf: 1.6, frostwolf: 1.6, hati: 2.5, boar: 1.7, yeti: 1.6, blob: 2.0, goblin: 1.6, draugr: 1.5, cinder: 1.75, automaton: 1.65, sylvan: 1.6, prism: 1.7, sentinel: 1.65, voidling: 1.7, jotun: 2.1, grifo: 2.0 };
+    const QK = { wolf: 1.6, frostwolf: 1.6, hati: 2.5, boar: 1.7, yeti: 1.6, blob: 2.0, goblin: 1.6, draugr: 1.5, cinder: 1.75, automaton: 1.65, sylvan: 1.6, prism: 1.7, sentinel: 1.65, voidling: 1.7, jotun: 2.1, grifo: 2.0, corvo: 2.3 };
     const SZ = .58, K = (e.quad ? (QK[e.quad] ?? 1.3) : prof.k) * SZ, WX = prof.wx, hsty = prof.hair;
     const yawT = { down: 0, dq: Math.PI / 4, side: Math.PI / 2, uq: Math.PI * 3 / 4, up: Math.PI };
     const th = yawT[dir] ?? 0, cth = Math.cos(th), sth = Math.sin(th);
@@ -137,6 +137,19 @@ var ROX = (() => {
         C3(0, 62, 24 + hz, 0, 64.5, 31 + hz, 3.6, 1.4, beak); E3(0, 66.2, 31.4 + hz, 1.3, 2.6, 1.7, beak, .2); if (atkq) C3(0, 66, 28 + hz, 0, 70, 31 + hz, 2, 1.2, dark);
         for (const sd of [-1, 1]) E3(sd * 3.8, 59.4, 23 + hz, 1.3, 1.3, 1.1, eyeR, .25);
         C3(0, 80, -15, wag * .5, 74, -27, 2.6, 1.8, gold); E3(wag * .8, 72, -29, 2.8, 3.8, 3.2, brn);
+      } else if (QD === "corvo") {
+        const plm = P(0x2b3446), plL = P(0x56688a), chs = P(0xb9c6da), bk = P(0x8d929e), bkD = P(0x4a4e58), rune = P(0x58e8d4), gl = P(0xd8b04a), lift = walking ? Math.abs(Math.sin(ph)) * 5 : 0, spread = atkq ? 9 : 0;
+        for (const sd of [-1, 1]) { const p2 = ph + (sd > 0 ? 0 : Math.PI), swq = walking ? Math.sin(p2) * 8 : 0, lf = walking ? Math.max(0, -Math.cos(p2)) * 6 : 0, x = sd * 5; E3(x, 70, 0, 4.2, 6, 6.5, plm); C3(x, 72, 1, x, 84, 2 + swq * .5, 2.2, 1.7, bk); C3(x, 84, 2 + swq * .5, x, 96 - lf, swq, 1.7, 1.5, bk); for (const t of [-2.2, 0, 2.2]) { C3(x, 97.4 - lf, swq, x + t, 98 - lf, swq + 5.5, 1.1, .5, bkD); } C3(x, 97 - lf, swq, x, 96 - lf, swq - 3.4, 1, .4, bkD); }
+        E3(0, 62 - lift * .4, -2, 9.4, 10.4, 15, plm); E3(0, 66 - lift * .4, 8, 8.2, 9.6, 7.5, chs, .05); E3(0, 55 - lift * .4, -3, 8, 3.4, 11, plL);
+        for (let i = 0; i < 4; i++) E3(0, 61 + i * 2.6 - lift * .4, 14.6 - i * .2, 5.6 - i * .5, 2.4, 2.8, i % 2 ? chs : P(0x8fa0bc), .1);
+        for (const sd of [-1, 1]) { const wy = 60 - lift * .4; E3(sd * 10.2, wy, -2, 2.6, 9.6, 14, plm); for (let i = 0; i < 5; i++) POLY3([[sd * 12, wy - 4 + i * 2.2, 6 - i * 4.6], [sd * (12.6 + spread * .35), wy + 4 + i * 2, -3 - i * 4.6], [sd * (11 + spread * .3), wy + 13 + i * 2.4, 2 - i * 4.8]], (x, y) => rampAt(i % 2 ? plL : plm, .55 + BAY[y & 3][x & 3] * .1), .2); }
+        C3(0, 58, 10, 0, 44, 17 + hz * .6, 6.4, 5, chs); E3(0, 50, 14, 5.4, 3, 3.4, chs);
+        E3(0, 40, 19 + hz, 4.8, 4.6, 5.6, plm); E3(0, 36, 17 + hz, 3.6, 2, 3.8, plL);
+        for (let i = 0; i < 3; i++) POLY3([[-2.4 + i * 2.4, 36, 15 + hz], [-2 + i * 2.4, 29 - (i % 2) * 2, 9 + hz - i], [-1 + i * 2.4, 36, 18 + hz]], (x, y) => rampAt(plL, .8 - (y & 3) * .05), .4);
+        C3(0, 41, 23 + hz, 0, 43.4, 34 + hz, 3, .9, bk); E3(0, 45, 34 + hz, 1, 2.2, 1.8, bkD, .25); if (atkq) C3(0, 43, 26 + hz, 0, 47, 33 + hz, 2, 1, bkD);
+        for (const sd of [-1, 1]) { E3(sd * 3.9, 38, 21.4 + hz, 1.3, 1.3, 1.1, gl, .25); E3(sd * 4.2, 38, 21.7 + hz, .5, .5, .4, dark, .25); }
+        for (let i = -2; i <= 2; i++) C3(0, 58, -13, i * 4.2, 66 - Math.abs(i) * 1.2, -32 - (2 - Math.abs(i)) * 2, 2.4, .6, i % 2 ? plL : plm);
+        add(dp(0, 0) + .55, () => { for (const sd of [-1, 1]) lineS(sx(sd * 10.8, 2), sy(58), sx(sd * 10.8, -6), sy(66), [88, 232, 212]); });
       } else if (QD === "boar") {
         E3(0, 78 - wob, 0, 10.6, 10.6, 14, fur); E3(0, 72 - wob, 6, 8.4, 6.2, 7.6, furD); E3(0, 86 - wob, 1, 6.4, 3.6, 10, furL);
         quadLegs(12, 4.2, [8, -8], 6.4);

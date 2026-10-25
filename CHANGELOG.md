@@ -166,3 +166,4 @@
 - v111: /montar, /desmontar e /pet; montaria e pet permanecem até o comando (inclusive após sair do jogo).
 - v112: Gelatina Saltitante 28% menor.
 - v113: gelatina no topo da cabeça e acompanha a câmera (frente/lado/costas); estátuas Morroc e guerreiro refeitas no mesmo estilo.
+- v114: montaria agora é o Corvo de Guerra (ave gigante nórdica, design original); gelatina ajustada.
