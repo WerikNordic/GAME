@@ -8390,6 +8390,28 @@ Error generating stack: ` + n.message + `
         else if (kd === "garden") s("well", jx, jy), s("planter", jx - 60, jy + 8), s("planter", jx + 60, jy + 8), s("bench", jx, jy + 48);
         else s("tent", jx - 46, jy), s("campfire", jx + 20, jy + 18), s("tent", jx + 70, jy - 6);
       }
+      {
+        let free = (x0, y0, w0, h0, mg) => x0 > c.x + 80 && x0 + w0 < c.x + c.w - 80 && y0 > c.y + 80 && y0 + h0 < c.y + c.h - 80 && !hit(x0, y0, w0, h0, mg), mk = 0;
+        let MON = ["monument", "colossus", "obelisk", "statue", "fountain", "monument", "colossus"];
+        for (let gy = c.y + 260, iy = 0; gy < c.y + c.h - 240; gy += 470, iy++) for (let gx = c.x + 300, ix2 = 0; gx < c.x + c.w - 280; gx += 560, ix2++) {
+          if (!free(gx - 120, gy - 100, 240, 200, 26)) continue;
+          let mt = MON[(ix2 + iy * 2) % MON.length];
+          s(mt, gx, gy), s("brazier", gx - 80, gy + 70), s("brazier", gx + 80, gy + 70), s("bench", gx - 90, gy - 66), s("bench", gx + 90, gy - 66), s("planter", gx - 140, gy + 6), s("planter", gx + 140, gy + 6), mk++;
+        }
+        for (let gy = c.y + 190, iy = 0; gy < c.y + c.h - 190; gy += 200, iy++) for (let gx = c.x + 180, ix2 = 0; gx < c.x + c.w - 180; gx += 250, ix2++) {
+          if (!free(gx - 100, gy - 60, 200, 120, 30)) continue;
+          s("longhouse", gx, gy), s("lamp", gx - 108, gy + 40), s("lamp", gx + 108, gy + 40), (ix2 + iy) % 2 ? s("planter", gx - 50, gy + 64) : s("bench", gx, gy + 66), (ix2 + iy) % 2 && s("planter", gx + 50, gy + 64);
+        }
+        for (let gy = c.y + 110, iy = 0; gy < c.y + c.h - 110; gy += 120, iy++) for (let gx = c.x + 110, ix2 = 0; gx < c.x + c.w - 110; gx += 125, ix2++) {
+          if (!free(gx - 34, gy - 28, 68, 56, 20)) continue;
+          let q = (ix2 * 3 + iy * 5) % 7;
+          if (q === 0) s("planter", gx, gy);
+          else if (q === 1) s("lamp", gx, gy);
+          else if (q === 2) s("bench", gx, gy);
+          else if (q === 3) (ix2 + iy) % 4 === 0 ? s("well", gx, gy) : s("lamp", gx, gy);
+          else if (q === 4 || q === 5) o.push({ kind: "tree", x: Math.round(gx - 11), y: Math.round(gy - 9), w: 22, h: 18 });
+        }
+      }
     }
     if (ST.mirror) {
       for (let _ of o) _.x = Math.round(t - (_.x + _.w));
@@ -14561,7 +14583,7 @@ var ROX = (() => {
     const ACC = { berserker: 0xff5a3a, escudeiro: 0xffc040, cacador: 0x4adf7a, volva: 0xb070ff, valquiria: 0x6ad0ff, skald: 0x9a7aff, thay: 0xff7a2a }[e.cls] || 0xffd860;
     const prof = CP[e.cls] || NP || { k: 1.3, wx: 1, tw: 1, lg: 1, hair: "", sit: "" };
     const QK = { wolf: 1.6, frostwolf: 1.6, hati: 2.5, boar: 1.7, yeti: 1.6, blob: 2.0 };
-    const K = e.quad ? (QK[e.quad] ?? 1.3) : prof.k, WX = prof.wx, hsty = prof.hair;
+    const SZ = .58, K = (e.quad ? (QK[e.quad] ?? 1.3) : prof.k) * SZ, WX = prof.wx, hsty = prof.hair;
     const yawT = { down: 0, dq: Math.PI / 4, side: Math.PI / 2, uq: Math.PI * 3 / 4, up: Math.PI };
     const th = yawT[dir] ?? 0, cth = Math.cos(th), sth = Math.sin(th);
     const walking = frame >= 0, sit = frame === -2;
@@ -14586,6 +14608,12 @@ var ROX = (() => {
       for (let y = Math.floor(cy - ry - 1); y <= cy + ry + 1; y++) for (let x = Math.floor(cx - rx - 1); x <= cx + rx + 1; x++) {
         const nx = (x + .5 - cx) / rx, ny = (y + .5 - cy) / ry, r2 = nx * nx + ny * ny; if (r2 > 1) continue;
         put(x, y, rm[shade(nx * sd, ny, Math.sqrt(1 - r2), x, y, bias)]);
+      }
+    }
+    function eggS(cx, cy, rx, ry, rm, bias = 0) {
+      for (let y = Math.floor(cy - ry - 1); y <= cy + ry + 1; y++) for (let x = Math.floor(cx - rx - 1); x <= cx + rx + 1; x++) {
+        const ny = (y + .5 - cy) / ry, nx = (x + .5 - cx) / (rx * (ny > 0 ? 1 - .3 * ny * ny - .1 * ny : 1)), r2 = nx * nx + ny * ny; if (r2 > 1) continue;
+        put(x, y, rm[shade(nx, ny, Math.sqrt(1 - r2), x, y, bias)]);
       }
     }
     function capS(x0, y0, x1, y1, r0, r1, rm, bias = 0) {
@@ -14761,14 +14789,14 @@ var ROX = (() => {
     const hdY = 24 - bob * .5;
     add(0.5, () => {
       // cabeça
-      const X = sx(0, 0), Y = sy(hdY), rx = bodyW(17.6, 15), ry = 16.2 * K; ellS(X, Y, rx, ry, skin, .16);
+      const X = sx(0, 0), Y = sy(hdY), rx = bodyW(14.6, 12.6), ry = 17.4 * K; eggS(X, Y, rx, ry, skin, .16);
       // orelhas
-      for (const side of [-1, 1]) { const ez = 0; const ex = sx(side * 17, ez); if (Math.abs(side * 17 * cth) > 4 || !front) ellS(ex, sy(hdY + 3), 2.2 * K + .4, 3 * K, skin); }
+      for (const side of [-1, 1]) { const ez = 0; const ex = sx(side * 14.6, ez); if (Math.abs(side * 14.6 * cth) > 4 || !front) ellS(ex, sy(hdY + 3), 2 * K + .4, 3 * K, skin); }
     });
     // cabelo traseiro / volume
     const hairBack = hairStyle !== "bald";
     if (hairBack) {
-      add(dp(0, -4) + .55, () => ellS(sx(0, -4), sy(hdY - 8), bodyW(18, 16), 11.5 * K, hair, .02));
+      add(dp(0, -4) + .55, () => ellS(sx(0, -4), sy(hdY - 8), bodyW(15, 13.4), 11.5 * K, hair, .02));
       if (hairStyle === "long") { add(dp(0, -9), () => { const X = sx(0, -9), Y = sy(hdY + 6); polyS([[X - bodyW(17, 9), Y - 6], [X + bodyW(17, 9), Y - 6], [X + bodyW(19, 10), Y + 34 * K], [X + bodyW(9, 5), Y + 40 * K + (walking ? Math.sin(ph) * 2 : 0)], [X, Y + 34 * K], [X - bodyW(9, 5), Y + 40 * K], [X - bodyW(19, 10), Y + 34 * K]], (x, y) => rampAt(hair, .46 + (x - X) * .01 * cth - (y - Y) * .004 + (BAY[y & 3][x & 3] * .1))); }); }
     }
     // rosto
@@ -14776,25 +14804,25 @@ var ROX = (() => {
       if (cth < -0.2) return;
       const eyeC = e.eye ? hexc(e.eye) : null;
       for (const side of [-1, 1]) {
-        const ex = sx(side * 7.4, 12), vis = dp(side * 7.4, 12) > 1; if (!vis) continue;
-        const w = Math.max(2, Math.round(4.6 * K * (.35 + .65 * Math.abs(cth)))), x0 = Math.round(ex - w / 2), y0 = Math.round(sy(hdY + 2));
+        const ex = sx(side * 6.2, 12), vis = dp(side * 6.2, 12) > 1; if (!vis) continue;
+        const w = Math.max(2, Math.round(4.6 * K * (.35 + .65 * Math.abs(cth)))), eh = Math.max(3, Math.round(5 * K)), x0 = Math.round(ex - w / 2), y0 = Math.round(sy(hdY + 2));
         const iris = eyeC ? [mixc(eyeC, [10, 10, 30], .6), mixc(eyeC, [10, 10, 30], .3), eyeC, mixc(eyeC, [255, 255, 255], .4), mixc(eyeC, [255, 255, 255], .7)] : [[40, 30, 70], [40, 74, 154], [74, 120, 208], [106, 168, 240], [154, 212, 255]];
-        for (let y = 0; y < 6; y++) for (let x = 0; x < w; x++) put(x0 + x, y0 + y, iris[Math.min(4, y)]);
+        for (let y = 0; y < eh; y++) for (let x = 0; x < w; x++) put(x0 + x, y0 + y, iris[Math.min(4, Math.floor(y * 5 / eh))]);
         put(x0, y0, [255, 255, 255]); if (w > 2) put(x0 + 1, y0, [255, 255, 255]); put(x0, y0 + 1, [225, 238, 255]);
         for (let x = -1; x <= w; x++) put(x0 + x, y0 - 1, [42, 28, 46]);
-        for (let x = 0; x < w; x++) put(x0 + x, y0 - 3, hair[1]);
-        put(x0 + w - 1, y0 + 4, [220, 244, 255]);
+        for (let x = 0; x < w; x++) put(x0 + x, y0 - 2, hair[1]);
+        put(x0 + w - 1, y0 + eh - 2, [220, 244, 255]);
       }
       const mx = sx(sth * 2, 15) , my = sy(hdY + 13);
       put(mx - 1, my, [168, 62, 72]); put(mx, my, [168, 62, 72]); put(mx + 1, my, [168, 62, 72]); put(mx, my + 1, [210, 110, 96]);
       put(sx(0, 16) + sth * 3, sy(hdY + 9), skin[1]);
-      for (const side of [-1, 1]) { if (dp(side * 11, 12) > 0) { const bx = sx(side * 11, 12); put(bx, sy(hdY + 8), [245, 154, 138]); put(bx + 1, sy(hdY + 8), [245, 154, 138]); } }
+      for (const side of [-1, 1]) { if (dp(side * 9.4, 12) > 0) { const bx = sx(side * 9.4, 12); put(bx, sy(hdY + 8), [245, 154, 138]); put(bx + 1, sy(hdY + 8), [245, 154, 138]); } }
     });
-    if (hairStyle !== "bald") add(0.715, () => { ellS(sx(0, -1), sy(hdY - 10.5), bodyW(19.6, 17.2), 11.4 * K, hair, .06); });
+    if (hairStyle !== "bald") add(0.715, () => { ellS(sx(0, -1), sy(hdY - 10.5), bodyW(15.6, 13.6), 11.2 * K, hair, .06); });
     if (hairStyle !== "bald") add(0.72, () => {
-      const Xc = sx(0, 0), Yc = sy(hdY), rx = bodyW(17.8, 15.4), ry = 16.4 * K;
+      const Xc = sx(0, 0), Yc = sy(hdY), rx = bodyW(14.8, 12.8), ry = 17.6 * K;
       for (let y = Math.floor(Yc - ry - 6); y <= Yc + ry + 2; y++) for (let x = Math.floor(Xc - rx - 2); x <= Xc + rx + 2; x++) {
-        const nx = (x + .5 - Xc) / (rx + .6), ny = (y + .5 - Yc) / (ry + .6), r2 = nx * nx + ny * ny; if (r2 > 1) continue;
+        const ny = (y + .5 - Yc) / (ry + .6), nx = (x + .5 - Xc) / ((rx + .6) * (ny > 0 ? 1 - .3 * ny * ny - .1 * ny : 1)), r2 = nx * nx + ny * ny; if (r2 > 1) continue;
         const wave = Math.sin((x - Xc) * .85) * 1.6 + Math.sin((x - Xc) * .37) * 1.4;
         let inside;
         if (cth < -0.2) inside = y < Yc + ry * .5 + wave * .5;
@@ -15945,6 +15973,7 @@ function ROXQM(f, c, s, l, def) {
       w.say = L[Math.floor(w.rnd() * L.length)], w.sayUntil = this.clock + 3800;
     }
     walkers(t) {
+      return [];
       let ps = (t.paved ?? []).slice(0, 5), ids = t.npcs.map((s) => s.id);
       if (!ps.length || !ids.length) return [];
       let now = this.clock;
@@ -16463,7 +16492,6 @@ function ROXQM(f, c, s, l, def) {
       }
       for (let l of t.others) n.fillStyle = "#6fd8ff", n.beginPath(), n.arc(o + l.x * i, r + l.y * s, 2.6, 0, Math.PI * 2), n.fill();
       n.fillStyle = "#ffffff", n.strokeStyle = "#111", n.lineWidth = 1.2, n.beginPath(), n.arc(o + t.player.pos.x * i, r + t.player.pos.y * s, 3.2, 0, Math.PI * 2), n.fill(), n.stroke(), n.restore(), n.strokeStyle = "#c9a23a", n.lineWidth = 1.6, n.beginPath(), n.roundRect(o - 5, r - 5, Cn + 10, $r + 10, 8), n.stroke(), n.fillStyle = "rgba(10,8,6,0.9)", n.beginPath(), n.arc(o + Cn - 6, r + 8, 9, 0, Math.PI * 2), n.fill(), n.stroke(), n.font = `bold 10px ${ms}`, n.textAlign = "center", n.textBaseline = "middle", n.fillStyle = "#f5e2a8", n.fillText("N", o + Cn - 6, r + 8);
-      if (this._mmLegend?.length) { let ly = r + $r + 20; n.font = `bold 10px ${ms}`, n.textAlign = "left", n.textBaseline = "middle"; for (let lg of this._mmLegend) n.fillStyle = "rgba(10,8,6,0.78)", n.fillRect(o - 5, ly - 7, 110, 14), n.fillStyle = lg[1], n.beginPath(), n.arc(o + 5, ly, 4.5, 0, Math.PI * 2), n.fill(), n.fillStyle = "#111", n.font = `bold 7px ${ms}`, n.textAlign = "center", n.fillText(lg[0], o + 5, ly + 0.5), n.font = `10px ${ms}`, n.textAlign = "left", n.fillStyle = "#f5e2a8", n.fillText(lg[2], o + 14, ly + 0.5), ly += 15; }
     }
     drawNpc(t, a, n, o) {
       let r = this.ctx, { x: i, y: s } = ce(a, n), l = this.animOf(`n:${t}`, a, n, o), c = this.store.world?.player.pos, d = l.seed ?? 0;

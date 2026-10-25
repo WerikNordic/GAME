@@ -148,3 +148,4 @@
 - v93: asas de pena no renascido; ciclo de andar corrigido; monstros (lobos, javali, yeti, gosma, Hati) em pixel art no mesmo estilo dos personagens.
 - v94: login desligado temporariamente (AUTH_ON=false) para testes.
 - v95: Aprendiz começa com Faca de Aprendiz + Camisa de Algodão; efeito de anjo abençoando + pop-up ao subir de nível (base e classe); ao morrer renasce no centro da cidade mais próxima (Check Point não define mais o respawn de morte).
+- v96: NPCs andantes removidos (só fixos); bonecos ~42% menores; cabeças em formato oval natural (nem redondas nem quadradas); cidades preenchidas com casas alinhadas, monumentos, estátuas, chafarizes, jardins, bancos, lampiões e árvores; legenda do minimapa removida (ícones dos NPCs ficam no mapa).

@@ -8231,6 +8231,28 @@ Error generating stack: ` + n.message + `
         else if (kd === "garden") s("well", jx, jy), s("planter", jx - 60, jy + 8), s("planter", jx + 60, jy + 8), s("bench", jx, jy + 48);
         else s("tent", jx - 46, jy), s("campfire", jx + 20, jy + 18), s("tent", jx + 70, jy - 6);
       }
+      {
+        let free = (x0, y0, w0, h0, mg) => x0 > c.x + 80 && x0 + w0 < c.x + c.w - 80 && y0 > c.y + 80 && y0 + h0 < c.y + c.h - 80 && !hit(x0, y0, w0, h0, mg), mk = 0;
+        let MON = ["monument", "colossus", "obelisk", "statue", "fountain", "monument", "colossus"];
+        for (let gy = c.y + 260, iy = 0; gy < c.y + c.h - 240; gy += 470, iy++) for (let gx = c.x + 300, ix2 = 0; gx < c.x + c.w - 280; gx += 560, ix2++) {
+          if (!free(gx - 120, gy - 100, 240, 200, 26)) continue;
+          let mt = MON[(ix2 + iy * 2) % MON.length];
+          s(mt, gx, gy), s("brazier", gx - 80, gy + 70), s("brazier", gx + 80, gy + 70), s("bench", gx - 90, gy - 66), s("bench", gx + 90, gy - 66), s("planter", gx - 140, gy + 6), s("planter", gx + 140, gy + 6), mk++;
+        }
+        for (let gy = c.y + 190, iy = 0; gy < c.y + c.h - 190; gy += 200, iy++) for (let gx = c.x + 180, ix2 = 0; gx < c.x + c.w - 180; gx += 250, ix2++) {
+          if (!free(gx - 100, gy - 60, 200, 120, 30)) continue;
+          s("longhouse", gx, gy), s("lamp", gx - 108, gy + 40), s("lamp", gx + 108, gy + 40), (ix2 + iy) % 2 ? s("planter", gx - 50, gy + 64) : s("bench", gx, gy + 66), (ix2 + iy) % 2 && s("planter", gx + 50, gy + 64);
+        }
+        for (let gy = c.y + 110, iy = 0; gy < c.y + c.h - 110; gy += 120, iy++) for (let gx = c.x + 110, ix2 = 0; gx < c.x + c.w - 110; gx += 125, ix2++) {
+          if (!free(gx - 34, gy - 28, 68, 56, 20)) continue;
+          let q = (ix2 * 3 + iy * 5) % 7;
+          if (q === 0) s("planter", gx, gy);
+          else if (q === 1) s("lamp", gx, gy);
+          else if (q === 2) s("bench", gx, gy);
+          else if (q === 3) (ix2 + iy) % 4 === 0 ? s("well", gx, gy) : s("lamp", gx, gy);
+          else if (q === 4 || q === 5) o.push({ kind: "tree", x: Math.round(gx - 11), y: Math.round(gy - 9), w: 22, h: 18 });
+        }
+      }
     }
     if (ST.mirror) {
       for (let _ of o) _.x = Math.round(t - (_.x + _.w));
@@ -15398,6 +15420,7 @@ function ROXQM(f, c, s, l, def) {
       w.say = L[Math.floor(w.rnd() * L.length)], w.sayUntil = this.clock + 3800;
     }
     walkers(t) {
+      return [];
       let ps = (t.paved ?? []).slice(0, 5), ids = t.npcs.map((s) => s.id);
       if (!ps.length || !ids.length) return [];
       let now = this.clock;
@@ -15916,7 +15939,6 @@ function ROXQM(f, c, s, l, def) {
       }
       for (let l of t.others) n.fillStyle = "#6fd8ff", n.beginPath(), n.arc(o + l.x * i, r + l.y * s, 2.6, 0, Math.PI * 2), n.fill();
       n.fillStyle = "#ffffff", n.strokeStyle = "#111", n.lineWidth = 1.2, n.beginPath(), n.arc(o + t.player.pos.x * i, r + t.player.pos.y * s, 3.2, 0, Math.PI * 2), n.fill(), n.stroke(), n.restore(), n.strokeStyle = "#c9a23a", n.lineWidth = 1.6, n.beginPath(), n.roundRect(o - 5, r - 5, Cn + 10, $r + 10, 8), n.stroke(), n.fillStyle = "rgba(10,8,6,0.9)", n.beginPath(), n.arc(o + Cn - 6, r + 8, 9, 0, Math.PI * 2), n.fill(), n.stroke(), n.font = `bold 10px ${ms}`, n.textAlign = "center", n.textBaseline = "middle", n.fillStyle = "#f5e2a8", n.fillText("N", o + Cn - 6, r + 8);
-      if (this._mmLegend?.length) { let ly = r + $r + 20; n.font = `bold 10px ${ms}`, n.textAlign = "left", n.textBaseline = "middle"; for (let lg of this._mmLegend) n.fillStyle = "rgba(10,8,6,0.78)", n.fillRect(o - 5, ly - 7, 110, 14), n.fillStyle = lg[1], n.beginPath(), n.arc(o + 5, ly, 4.5, 0, Math.PI * 2), n.fill(), n.fillStyle = "#111", n.font = `bold 7px ${ms}`, n.textAlign = "center", n.fillText(lg[0], o + 5, ly + 0.5), n.font = `10px ${ms}`, n.textAlign = "left", n.fillStyle = "#f5e2a8", n.fillText(lg[2], o + 14, ly + 0.5), ly += 15; }
     }
     drawNpc(t, a, n, o) {
       let r = this.ctx, { x: i, y: s } = ce(a, n), l = this.animOf(`n:${t}`, a, n, o), c = this.store.world?.player.pos, d = l.seed ?? 0;
