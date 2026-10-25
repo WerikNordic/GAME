@@ -180,6 +180,9 @@
 - Janelas Alt+Q/E/S/A/G reduzidas a 50%.
 - Sons por espécie de monstro (lobo, javali, goblin, morto-vivo, gigante, gelatina, lagarto, máquina, pedra, vazio, planta): voz ociosa, ao notar o jogador, ao ser atingido e ao morrer; volume por distância.
 
+## v128
+- Ícones: equipamentos de tier ganham cor própria por tier (aço, ciano, brasa, ouro, violeta...) e pontinhos de tier no canto; cartas têm 6 emblemas diferentes (olho, caveira, estrela, chama, gema, escudo) em cores variadas.
+
 ## v127
 - Dificuldade nível 25–99: monstros comuns perdem até ~70% de vida e ~22% de ataque em escala (antes ~16–28s por monstro; agora ~9–10s só com ataque básico); chefes aliviados de forma mais leve.
 

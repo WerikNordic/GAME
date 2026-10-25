@@ -12556,7 +12556,9 @@ Error generating stack: ` + n.message + `
     return s.putImageData(c, 0, 0), r;
   }
   var ir = 32, P = (e) => E(e), he = (e, ...t) => t.some((a) => e.includes(a));
+  var TIERCOL_ = { 16: 10132122, 24: 6591981, 32: 7554202, 40: 13223070, 48: 13660226, 56: 15228970, 64: 12522531, 72: 15254090, 80: 16774600, 88: 11230975, 96: 8978431 };
   function Mn(e) {
+    { let m_ = /_t(\d+)$/.exec(e); if (m_ && TIERCOL_[+m_[1]]) return TIERCOL_[+m_[1]]; }
     return he(e, "gelo", "gelid", "geada", "inverno", "yeti", "frost") ? 9425136 : he(e, "brasa", "magma", "fogo", "cinza", "salamandra") ? 15228970 : he(e, "ouro", "aurea", "coroa") ? 15254090 : he(e, "serpente", "verde", "floresta") ? 5812810 : he(e, "lunar", "umbra", "negra", "vazio") ? 8019136 : he(e, "runic", "runa", "ancestral", "arcano") ? 10516712 : he(e, "goblin") ? 9083450 : he(e, "carmesim", "vermelh") ? 14172204 : he(e, "azul") ? 3832024 : he(e, "roxa") ? 9062600 : he(e, "pedra") ? 10132122 : 11450050;
   }
   var Xp = 9067054, GM = 10119738;
@@ -12735,7 +12737,15 @@ Error generating stack: ` + n.message + `
   }
   function XM(e, t) {
     let a = Mn(t.id) === 11450050 ? 15228970 : Mn(t.id);
-    e.rect(6, 3, 20, 26, P(15260864), { sep: true }), e.rect(8, 5, 16, 22, P(2760760), { flat: "m" }), e.rect(8, 5, 16, 22, P(3812944), { sep: true }), e.ellipse(16, 14, 5, 5, P(a), { sep: true }), e.poly([[11, 24], [16, 17], [21, 24]], P(a), { sep: true }), e.dot(14, 12, 16777215);
+    let h_ = 0; for (let c_ of t.id) h_ = h_ * 31 + c_.charCodeAt(0) >>> 0; let em_ = h_ % 6, pal_ = [15228970, 5812810, 9425136, 8019136, 15254090, 12522531][(h_ >> 3) % 6]; { let c0_ = Mn(t.id); a = ye(c0_ === 11450050 || Math.max(c0_ >> 16 & 255, c0_ >> 8 & 255, c0_ & 255) - Math.min(c0_ >> 16 & 255, c0_ >> 8 & 255, c0_ & 255) < 60 ? pal_ : c0_, 16777215, 0.2); }
+    e.rect(6, 3, 20, 26, P(15260864), { sep: true }), e.rect(8, 5, 16, 22, P(2760760), { flat: "m" }), e.rect(8, 5, 16, 22, P(3812944), { sep: true });
+    if (em_ === 0) e.ellipse(16, 14, 5, 5, P(a), { sep: true }), e.poly([[11, 24], [16, 17], [21, 24]], P(a), { sep: true });
+    else if (em_ === 1) e.ellipse(16, 13, 6, 5.5, P(a), { sep: true }), e.rect(13, 17, 6, 5, P(a), { sep: true }), e.dot(13, 12, 2760760), e.dot(19, 12, 2760760), e.dot(14, 21, 2760760), e.dot(18, 21, 2760760);
+    else if (em_ === 2) e.poly([[16, 7], [18, 13], [24, 13], [19, 17], [21, 24], [16, 20], [11, 24], [13, 17], [8, 13], [14, 13]], P(a), { sep: true });
+    else if (em_ === 3) e.poly([[16, 6], [22, 15], [20, 24], [12, 24], [10, 15]], P(a), { sep: true }), e.poly([[16, 12], [19, 18], [16, 23], [13, 18]], P(16764030), { flat: "h" });
+    else if (em_ === 4) e.ellipse(16, 15, 8, 5, P(a), { sep: true }), e.ellipse(16, 15, 3.5, 3.5, P(2760760), { flat: "o" }), e.dot(15, 14, 16777215);
+    else e.poly([[16, 6], [24, 11], [22, 22], [16, 25], [10, 22], [8, 11]], P(a), { sep: true }), e.line(16, 9, 16, 22, 2760760), e.line(11, 14, 21, 14, 2760760);
+    e.dot(14, 12, 16777215);
     for (let [n, o] of [[9, 6], [22, 6], [9, 25], [22, 25]]) e.dot(n, o, 15254090);
   }
   function $M(e, t) {
@@ -12756,7 +12766,7 @@ Error generating stack: ` + n.message + `
     let t = Hv.get(e);
     if (t) return t;
     let a = new Me(ir, ir), n = $(e);
-    return n ? n.kind === "weapon" ? jM(a, n) : n.kind === "armor" ? BM(a, n) : n.kind === "accessory" ? IM(a, n) : n.kind === "back" ? BKI(a, n) : n.kind === "headTop" || n.kind === "headMid" || n.kind === "headLow" ? UM(a, n) : n.kind === "consumable" ? VM(a, n) : n.kind === "card" ? XM(a, n) : n.kind === "ammo" ? $M(a, n) : n.kind === "quest" ? Ov(a) : n.socket || he(n.id, "runa") ? QM(a, n) : YM(a, n) : Ov(a), a.outline(), t = a.toCanvas(), Hv.set(e, t), t;
+    return n ? n.kind === "weapon" ? jM(a, n) : n.kind === "armor" ? BM(a, n) : n.kind === "accessory" ? IM(a, n) : n.kind === "back" ? BKI(a, n) : n.kind === "headTop" || n.kind === "headMid" || n.kind === "headLow" ? UM(a, n) : n.kind === "consumable" ? VM(a, n) : n.kind === "card" ? XM(a, n) : n.kind === "ammo" ? $M(a, n) : n.kind === "quest" ? Ov(a) : n.socket || he(n.id, "runa") ? QM(a, n) : YM(a, n) : Ov(a), (() => { let m_ = /_t(\d+)$/.exec(e); if (!m_) return; let ti_ = (+m_[1] - 16) / 8, k_ = ti_ >= 9 ? 5 : ti_ >= 6 ? 4 : ti_ >= 3 ? 3 : ti_ >= 1 ? 2 : 1, pc_ = P(ti_ >= 6 ? 16777215 : 15254090); for (let q_ = 0; q_ < k_; q_++) a.dot(3 + q_ * 3, 29, pc_), a.dot(3 + q_ * 3, 30, pc_); })(), a.outline(), t = a.toCanvas(), Hv.set(e, t), t;
   }
   var KM = { golpe_runico: "slash", salto_trovao: "dash", redemoinho: "nova", furia_lobo: "wolf", golpe_escudo: "shield", investida_escudo: "dash", muralha: "shield", juramento_tyr: "nova", tiro_certeiro: "bolt", armadilha_skadi: "trap", chuva_flechas: "volley", flecha_perfurante: "pierce", lanca_gelo: "ice", raio_trovao: "lightning", tempestade_runas: "nova", meteoro_muspel: "meteor", lanca_divina: "spear", voo_valquiria: "wing", cura_valquirica: "heal", ressuscitar: "ankh", nota_dissonante: "resonance", balada_cura: "note", cancao_batalha: "buff", requiem: "lightning" }, FM = { cone: "slash", line: "dash", nova: "nova", buff: "buff", projectile: "bolt", meteor: "meteor", volley: "volley", chain: "lightning", heal: "heal", resurrect: "ankh" }, Bv = { slash: 15228970, shield: 4885224, wolf: 13148240, dash: 8050943, nova: 15254090, buff: 15900720, bolt: 8050776, trap: 10477823, volley: 8050776, pierce: 8050776, ice: 9425136, lightning: 16048202, meteor: 16742954, spear: 14673646, wing: 15265010, heal: 5824650, ankh: 15254090, note: 15900720, resonance: 12607720 }, ZM = { redemoinho: 15228970, juramento_tyr: 6992127, tempestade_runas: 10516712, salto_trovao: 15915082, investida_escudo: 8040703, voo_valquiria: 15265010, requiem: 15228970, golpe_runico: 16747066, lanca_divina: 16773296 };
   function Iv(e, t, a) {
