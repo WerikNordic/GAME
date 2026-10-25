@@ -13376,6 +13376,7 @@ void main() {
     }
     return { w: t.w, h: t.h, data: ae };
   }
+  typeof location < 'u' && location.search.includes('debug') && (window.__sprDbg = () => ({ hh, R4, ea }));
   var c4 = [1, -1, 0, 0, 1, -1, 1, -1], u4 = [0, 0, 1, -1, 1, -1, -1, 1];
   function d4(e, t, a, n) {
     let o = A.RX(a).mul(A.RY(t)), r = o.r, i = 1e9, s = -1e9, l = 1e9, c = -1e9;
@@ -13552,7 +13553,19 @@ void main() {
     let V = () => y[-1].mul(A.T(0, -0.22, 0.01)).mul(A.RX(b.psi + v[-1])), ae = () => y[1].mul(A.T(0, -0.22, 0.01)).mul(A.RX(g(1).psi + v[1])), K = (C, B, ee, ne = 14673650) => {
       L(a, C.mul(A.T(0, 0.14 + B / 2, 0)), ee, B / 2, 0.018, ne, { seg: 8, ring: 8, n: 1.2, mat: at }), F(a, C.mul(A.T(0, 0.14 + B, 0)), ee * 0.95, 0, 0.12, ne, { seg: 4, mat: at, sz: 0.2 }), L(a, C.mul(A.T(0, 0.1, 0)), 0.14, 0.03, 0.04, Xa, { seg: 10, n: 1.6, mat: at }), F(a, C.mul(A.T(0, -0.1, 0)), 0.03, 0.035, 0.2, f4, { seg: 8 }), L(a, C.mul(A.T(0, -0.12, 0)), 0.05, 0.05, 0.05, Xa, { seg: 8, mat: at });
     }, W = (C, B, ee, ne = 0.03, Te = jk) => F(a, C.mul(A.T(0, B, 0)), ne, ne, ee - B, Te, { seg: 8, mat: _n });
-    switch (e.gear) {
+    let atkNow = t.lvl > 0;
+    if (e.cls === "escudeiro") {
+      let BP = f.mul(A.T(0, 1.02, -0.38));
+      L(a, BP, 0.3, 0.34, 0.17, 9067050, { seg: 14, n: 2.2, mat: _n });
+      L(a, BP.mul(A.T(0, 0.2, 0.06)), 0.31, 0.16, 0.16, 11171894, { seg: 14, n: 2.2, mat: _n });
+      L(a, BP.mul(A.T(0, -0.05, -0.1)), 0.14, 0.12, 0.08, 6965802, { seg: 10, mat: _n });
+      for (let C of [-1, 1]) F(a, f.mul(A.T(C * 0.19, 1.3, 0.1)).mul(A.RX(-0.1)), 0.025, 0.025, 0.4, 5913124, { seg: 6, mat: _n });
+    }
+    if (e.gear === "bow" && !atkNow) {
+      let BB = f.mul(A.T(0.05, 1.02, -0.36)).mul(A.RZ(0.35));
+      Xt(a, BB.mul(A.RZ(Math.PI / 2)), 0.7, 0.026, 9067050, { seg: 20, ring: 6, arc: 2.2, start: Math.PI / 2 - 1.1, mat: _n });
+    }
+    switch (atkNow ? e.gear : "none") {
       case "mace": {
         let C = V();
         W(C, -0.25, 1, 0.034), L(a, C.mul(A.T(0.02, 1.08, 0)), 0.16, 0.16, 0.16, 12897496, { seg: 14, mat: at });
@@ -13606,7 +13619,7 @@ void main() {
         break;
       }
     }
-    if (R) {
+    if (R && atkNow) {
       let C = y[1].mul(A.T(0, -0.1, 0.17));
       L(a, C, 0.31, 0.36, 0.06, e.trim, { seg: 22, ring: 14, n: 2.2, mat: at }), L(a, C.mul(A.T(0, 0, 0.04)), 0.26, 0.31, 0.05, e.cape ?? e.tunic, { seg: 20, ring: 12, n: 2.2, mat: _n }), L(a, C.mul(A.T(0, 0, 0.1)), 0.09, 0.09, 0.06, Xa, { seg: 10, mat: at });
     }
@@ -14475,6 +14488,7 @@ void main() {
   };
   function R4(e) {
     let t = { ...I0[e.base] ?? I0.berserker };
+    t.cls = e.base;
     if (["berserker", "escudeiro", "cacador", "volva", "valquiria", "skald", "thay"].includes(e.base)) {
       t.head = "none", delete t.cape, delete t.quiver;
       let tp = TIERLOOK[e.base]?.[Math.min(2, e.ti || 0)];

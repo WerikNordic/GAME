@@ -132,3 +132,6 @@
 
 ## v83
 - Volta ao codigo da v72 (visual anterior aos filtros pixel/HD-2D). v82 guardada na tag v82-hd2d.
+
+## v84
+- Armas so aparecem ao atacar; arco fica nas costas do cacador; mercador usa mochila.
