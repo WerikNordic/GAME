@@ -11928,6 +11928,7 @@ Error generating stack: ` + n.message + `
       if (this.busy || document.hidden) return;
       let snap = j.getSnapshot();
       if (snap.screen !== "playing" || j.online || !j.world || !j.ps) return;
+      { let w_ = j.world; if (w_ && this.others.size === 0 && Math.hypot(w_.player.pos.x - this.lx, w_.player.pos.y - this.ly) <= 1.5 && Date.now() - (this.lastTick ?? 0) < 3600) return; this.lastTick = Date.now(); }
       let b = this.body(false);
       if (!b) return;
       this.busy = true;
@@ -12442,13 +12443,16 @@ Error generating stack: ` + n.message + `
     }, children: "Jogar offline (sem conta)" }), (0, le.jsx)("p", { className: "muted auth-note", children: "Seu progresso fica salvo na sua conta, em qualquer aparelho." })] })] })] });
   }
   function ModPanel() {
-    let [d, setD] = (0, lo.useState)(null), [nick, setNick] = (0, lo.useState)(""), [msg, setMsg] = (0, lo.useState)(""), load = async () => { let r = await sbRpc("mod_list", { p_token: window.__tok }); r && r.ok ? setD(r) : setMsg("N\u00E3o foi poss\u00EDvel carregar a modera\u00E7\u00E3o."); };
+    let [d, setD] = (0, lo.useState)(null), [nick, setNick] = (0, lo.useState)(""), [msg, setMsg] = (0, lo.useState)(""), [au, setAu] = (0, lo.useState)(null), load = async () => { let r = await sbRpc("mod_list", { p_token: window.__tok }); r && r.ok ? setD(r) : setMsg("N\u00E3o foi poss\u00EDvel carregar a modera\u00E7\u00E3o."); let q = await sbRpc("audit_list", { p_token: window.__tok }); q && q.ok && setAu(q); };
     (0, lo.useEffect)(() => { load(); }, []);
     let act = async (name, kind, mins, report) => { let r = await sbRpc("mod_set", { p_token: window.__tok, p_name: name, p_kind: kind, p_minutes: mins, p_reason: "Modera\u00E7\u00E3o", p_report: report ?? null }); setMsg(r && r.ok ? "Feito." : "Falhou."), load(); };
     return Hh("div", { className: "menu admin-list" }, Hh("h3", null, "Modera\u00E7\u00E3o"), msg && Hh("p", { className: "muted" }, msg),
       Hh("div", { className: "adm-row" }, Hh("input", { type: "text", value: nick, placeholder: "nick do jogador", onChange: (e) => setNick(e.target.value) }), Hh("div", { className: "adm-btns" }, Hh("button", { className: "btn btn-small", onClick: () => nick && act(nick, "mute", 60) }, "Silenciar 1h"), Hh("button", { className: "btn btn-small", onClick: () => nick && act(nick, "ban", 1440) }, "Banir 24h"), Hh("button", { className: "btn btn-small", onClick: () => nick && act(nick, "clear") }, "Liberar"))),
       Hh("h4", null, "Den\u00FAncias"), d && d.reports.length === 0 && Hh("p", { className: "muted" }, "Nenhuma den\u00FAncia pendente."),
       d && d.reports.map((x) => Hh("div", { key: x.id, className: "adm-row" }, Hh("div", { className: "adm-info" }, Hh("b", null, x.target), Hh("small", null, `${x.reporter}: ${x.reason}`)), Hh("div", { className: "adm-btns" }, Hh("button", { className: "btn btn-small", onClick: () => act(x.target, "mute", 60, x.id) }, "Silenciar"), Hh("button", { className: "btn btn-small", onClick: () => act(x.target, "ban", 1440, x.id) }, "Banir"), Hh("button", { className: "btn btn-small", onClick: () => act(x.target, "clear", 0, x.id) }, "Descartar")))),
+      Hh("h4", null, "Saves suspeitos"), au && au.sus.length === 0 && Hh("p", { className: "muted" }, "Nenhum save fora das regras."),
+      au && au.sus.map((x) => Hh("div", { key: x.email + x.slot, className: "adm-row" }, Hh("div", { className: "adm-info" }, Hh("b", null, `${x.email} \u00B7 slot ${x.slot}`), Hh("small", null, `Nv ${x.level} \u00B7 ${x.silver} Zens \u00B7 ${x.flags.join(", ")}`)))),
+      Hh("h4", null, "Registro recente"), au && au.log.slice(0, 15).map((x, i) => Hh("p", { key: i, className: "muted" }, `${new Date(x.at).toLocaleString("pt-BR")} \u00B7 ${x.email ?? "?"} s${x.slot} \u00B7 ${x.kind} ${JSON.stringify(x.detail)}`)),
       Hh("h4", null, "Ativos"), d && d.active.length === 0 && Hh("p", { className: "muted" }, "Nenhuma restri\u00E7\u00E3o ativa."),
       d && d.active.map((x) => Hh("div", { key: x.name_ci + x.kind, className: "adm-row" }, Hh("div", { className: "adm-info" }, Hh("b", null, x.name_ci), Hh("small", null, `${x.kind === "ban" ? "banido" : "silenciado"} at\u00E9 ${new Date(x.until).toLocaleString("pt-BR")}`)), Hh("div", { className: "adm-btns" }, Hh("button", { className: "btn btn-small", onClick: () => act(x.name_ci, "clear") }, "Liberar")))));
   }

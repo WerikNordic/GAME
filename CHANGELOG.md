@@ -180,6 +180,11 @@
 - Janelas Alt+Q/E/S/A/G reduzidas a 50%.
 - Sons por espécie de monstro (lobo, javali, goblin, morto-vivo, gigante, gelatina, lagarto, máquina, pedra, vazio, planta): voz ociosa, ao notar o jogador, ao ser atingido e ao morrer; volume por distância.
 
+## v132 (integridade)
+- Servidor valida cada save da nuvem: rejeita nível fora de 1–99, Zens negativos/absurdos e atributos fora de 0–99; marca como suspeito (sem perder o save) orçamento de atributos impossível, EXP fora da faixa, Zens > 50M, item de tier acima do nível equipado/na mochila e salto de nível > 20 em < 1h.
+- Registro de auditoria (marcos de nível, flags novas, saves rejeitados) e painel no menu de admin com saves suspeitos e últimos eventos.
+- Menos consultas: multiplayer reduz a frequência quando o personagem está parado e sozinho no mapa.
+
 ## v131 (servidor estilo RO)
 - Guildas e grupos agora vivem no servidor: criar, convidar, aceitar/recusar, sair, expulsar, dissolver; líder transferido ao sair; limites (guilda 30, grupo 12); chat privado /g e /p entre membros; lista com status online.
 - Bônus de grupo: +10% de EXP por membro do grupo no mesmo mapa/canal (até +50%).
