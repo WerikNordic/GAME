@@ -192,3 +192,6 @@ body.armed canvas{cursor:crosshair!important}
 .cs-bg::before{display:none}
 .cs-win{z-index:1}
 .cs-bg{background:#0d0b2a}
+.craft-list{max-height:min(55vh,420px);overflow:auto;display:grid;gap:4px;margin-top:6px}
+.craft-row{display:flex;align-items:center;gap:8px}
+.craft-ing{display:flex;flex-wrap:wrap;gap:6px;font-size:11px}.craft-ing .ok{color:#1c7a2c}.craft-ing .no{color:#b33a3a}
