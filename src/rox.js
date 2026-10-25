@@ -53,7 +53,7 @@ var ROX = (() => {
     const buf = new Array(SW * SH).fill(null);
     const put = (x, y, c) => { x |= 0; y |= 0; if (x < 0 || y < 0 || x >= SW || y >= SH) return; buf[y * SW + x] = c; };
     const sx = (x, z) => AX + (x * cth * WX + z * sth) * K;
-    const sy = (y) => AY + (y - 98) * K - (sit ? -6 : 0);
+    const sy = (y) => AY + (y - 98) * K + (sit ? 21 * K : 0);
     const dp = (x, z) => z * cth - x * sth;
     const parts = [];
     let add = (d, fn) => parts.push({ d, fn });
@@ -228,14 +228,14 @@ var ROX = (() => {
       const lift = walking ? Math.max(0, -Math.cos(ph + (side > 0 ? 0 : Math.PI))) * 5 : 0;
       let hipY = 68 - bob, kneeY = 80 - bob - lift * .4, footY = 94 - lift - bob * .2;
       if (sit) {
-        const ss = prof.sit; kneeY = 76; footY = 92; kz = 10; fz = 14;
-        if (ss === "spread") { kx = side * 12; fx = side * 15; kz = 12; fz = 8; }
-        else if (ss === "guard") { kx = side * 6; fx = side * 6; kz = 16; fz = 26; kneeY = 79; footY = 90; }
-        else if (ss === "cross") { kx = side * 11; fx = -side * 4; kz = 10; fz = 16; footY = 91; }
-        else if (ss === "kneel") { if (side > 0) { kx = 8; fx = 8; kz = 14; fz = 22; kneeY = 78; footY = 90; } else { kx = -9; fx = -9; kz = 10; fz = -8; kneeY = 90; footY = 94; } }
-        else if (ss === "perch") { if (side > 0) { kx = 8; fx = 8; kz = 15; fz = 6; kneeY = 66; footY = 92; } else { kx = -7; fx = -7; kz = 12; fz = 22; kneeY = 78; footY = 90; } }
-        else if (ss === "lean") { kx = side * 6; fx = side * 8; kz = 18; fz = 28; kneeY = 74; footY = 90; }
-        else if (ss === "perch2") { if (side < 0) { kx = -8; fx = -8; kz = 15; fz = 6; kneeY = 66; footY = 92; } else { kx = 7; fx = 7; kz = 12; fz = 22; kneeY = 78; footY = 90; } }
+        const ss = prof.sit; hipY = 70; kneeY = 62; footY = 75; kz = 13; fz = 22; kx = side * 6.4; fx = side * 6.4;
+        if (ss === "spread") { kx = side * 11; fx = side * 15; kz = 12; fz = 24; kneeY = 64; }
+        else if (ss === "guard") { kneeY = 58; fz = 16; kz = 14; kx = side * 6; fx = side * 6.6; }
+        else if (ss === "cross") { kx = side * 13; fx = -side * 4; kz = 8; fz = 14; kneeY = 70; footY = 75; }
+        else if (ss === "kneel") { if (side > 0) { kx = 8; fx = 8; kz = 15; fz = 20; kneeY = 61; footY = 75; } else { kx = -10; fx = -3; kz = 8; fz = 2; kneeY = 72; footY = 75; } }
+        else if (ss === "perch") { if (side > 0) { kx = 8; fx = 8; kz = 14; fz = 9; kneeY = 55; footY = 75; } else { kx = -9; fx = -7; kz = 10; fz = 18; kneeY = 70; footY = 75; } }
+        else if (ss === "lean") { kx = side * 6; fx = side * 8; kz = 18; fz = 30; kneeY = 66; footY = 75; }
+        else if (ss === "perch2") { if (side < 0) { kx = -8; fx = -8; kz = 14; fz = 9; kneeY = 55; footY = 75; } else { kx = 9; fx = 7; kz = 10; fz = 18; kneeY = 70; footY = 75; } }
       }
       C3(lx, hipY, 0, kx, kneeY, kz, 5.2 * lg, 4.7 * lg, pants);
       C3(kx, kneeY, kz, fx, footY - 3, fz, 4.8 * lg, 4.4 * lg, T >= 2 ? P(RB ? 0xf0d890 : 0x9aa4bc) : P(e.boots ?? 3876120), .04);
@@ -243,9 +243,9 @@ var ROX = (() => {
     }
     // ---------- TRONCO ----------
     if (robe) {
-      POLY3([[-12, 50, 0], [12, 50, 0], [20, 94, 0], [-20, 94, 0]], (x, y) => { let t = .55 - ((x - AX) * cth) * .014 + (((x - AX) + 99) % 7 < 1 ? -.14 : 0); return rampAt(tunic, t); }, 0.2);
+      POLY3([[-12, 50, 0], [12, 50, 0], [20, sit ? 75 : 94, 0], [-20, sit ? 75 : 94, 0]], (x, y) => { let t = .55 - ((x - AX) * cth) * .014 + (((x - AX) + 99) % 7 < 1 ? -.14 : 0); return rampAt(tunic, t); }, 0.2);
       E3(0, 52, 0, 13.4, 11.4, 8, tunic);
-      add(dp(0, 4) + .3, () => { for (let x = -20; x <= 20; x++) put(sx(x, 0), sy(93), trim[3]); });
+      add(dp(0, 4) + .3, () => { for (let x = -20; x <= 20; x++) put(sx(x, 0), sy(sit ? 74 : 93), trim[3]); });
     } else {
       for (let k = -4; k <= 4; k++) POLY3([[k * 3.4 - 1.9, 60, 0], [k * 3.4 + 1.9, 60, 0], [k * 3.9 + 1.6, 71 - bob * .5, 0], [k * 3.9 - 1.6, 71 - bob * .5, 0]], (x, y) => rampAt(leather, .5 - (y - sy(60)) * .03 + (k < 0 ? .04 : -.04)), 0.4);
       E3(0, 52, 0, 13.4 * prof.tw, 11.4, 8, T >= 1 ? P(e.tunic ?? 9054758) : tunic);
@@ -262,7 +262,7 @@ var ROX = (() => {
       let hz = sw2 * 8, hy = 69 - bob * .3, ez = hz * .5;
       const weaponHand = side === 1;
       if (atk && weaponHand) { const p = [0, -4, 12, 6][atk] ?? 0; hz = p; hy = [69, 52, 64, 68][atk]; ez = hz * .6; }
-      if (sit) { hz = 6; hy = 66; ez = 4; }
+      if (sit) { hz = 11; hy = 60; ez = 5; }
       C3(ax_, 47, 0, ax_ + side * 1.6, 58, ez, 4.6, 4.1, tunic);
       C3(ax_ + side * 1.6, 57, ez, ax_ + side * 1.8, hy - 4, hz, 4.8, 4.4, T >= 2 ? P(0xaab0c6) : tunic, .04);
       C3(ax_ + side * 1.7, hy - 12, hz * .8, ax_ + side * 1.8, hy - 4, hz, 4.9, 4.6, T >= 2 ? (pauld || P(0xa8b0c8)) : T === 1 ? leather : tunic, .06);
