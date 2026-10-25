@@ -129,3 +129,6 @@
 
 ## v82
 - Estilo HD-2D (Octopath): sprites pixel, desfoque tilt-shift, bloom, grade quente/frio. ?old = v78 puro.
+
+## v83
+- Volta ao codigo da v72 (visual anterior aos filtros pixel/HD-2D). v82 guardada na tag v82-hd2d.
