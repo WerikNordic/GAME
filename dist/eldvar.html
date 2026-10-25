@@ -9736,6 +9736,27 @@ Error generating stack: ` + n.message + `
       }
       return true;
     }
+    ultimate() {
+      let a = this.player;
+      if (this.sitting || a.deadAt !== null) return false;
+      if ((this.ps.level ?? 1) < 99) return this.toast("O Ultimate de classe desperta no n\xEDvel 99.", "info"), false;
+      if (this.time < (this.ultReadyAt ?? 0)) return this.toast(`Ultimate recarregando (${Math.ceil((this.ultReadyAt - this.time) / 1000)}s).`, "info"), false;
+      let U = { berserker: ["F\xDARIA DE RAGNAR\xD6K", 16729156, 0, "nova"], escudeiro: ["MURALHA DE ASGARD", 16761920, 0, "nova"], cacador: ["CHUVA DE FREYA", 5111674, 0, "meteor"], volva: ["PROFECIA DE URD", 11563263, 1, "meteor"], valquiria: ["JULGAMENTO DE VALHALLA", 6869247, 1, "nova"], skald: ["CANTO DO FIM", 10123007, 1, "nova"], thay: ["TROV\xC3O DE THOR", 16739370, 1, "meteor"] }[this.ps.line] ?? ["F\xDARIA", 16761920, 0, "nova"];
+      this.ultReadyAt = this.time + 90000, a.invulnUntil = Math.max(a.invulnUntil, this.time + 2400), a.lastCombatAt = this.time, this.clearOrders?.();
+      this.toast(`\u2605 ${U[0]} \u2605`, "good");
+      this.emit({ type: "fx", kind: "nova", x: a.pos.x, y: a.pos.y, angle: 0, range: 520, arc: 360, magic: !!U[2], fromPlayer: true, light: U[1] });
+      let mg = !!U[2], base = this.ps.line === "escudeiro" ? 7 : 9;
+      for (let w = 0; w < 5; w++) {
+        let R = 120 + w * 90;
+        for (let k = 0; k < 8; k++) {
+          let an = k / 8 * Math.PI * 2 + w * 0.4;
+          this.delayed.push({ at: this.time + 450 + w * 380 + k * 40, x: a.pos.x + Math.cos(an) * R, y: a.pos.y + Math.sin(an) * R, radius: 130, mult: base * (this.ps.line === "escudeiro" ? 1 : 0.5), magic: mg, stunMs: w === 4 ? 1500 : 400, slowMs: 1200, light: U[1], style: U[3] === "nova" ? "meteor" : "meteor" });
+        }
+      }
+      this.delayed.push({ at: this.time + 450 + 5 * 380 + 300, x: a.pos.x, y: a.pos.y, radius: 520, mult: base * 3, magic: mg, stunMs: 2500, slowMs: 3000, light: U[1], style: "meteor" });
+      if (this.ps.line === "escudeiro" || this.ps.line === "valquiria" || this.ps.line === "skald") { let d = this.derived(); this.ps.hp = Math.min(d.maxHp, this.ps.hp + d.maxHp * 0.5); }
+      return true;
+    }
     updateDelayed() {
       if (!this.delayed.length) return;
       let t = this.delayed.filter((a) => a.at <= this.time);
@@ -10862,6 +10883,9 @@ Error generating stack: ` + n.message + `
     }
     dash() {
       this.paused || this.world?.dash();
+    }
+    ultimate() {
+      this.paused || this.world?.ultimate?.();
     }
     potion(t) {
       this.paused || this.world?.usePotion(t);
@@ -16103,6 +16127,9 @@ function ROXQM(f, c, s, l, def) {
         case "KeyK":
           this.store.dash();
           break;
+        case "KeyU":
+          this.store.ultimate();
+          break;
         case "Home":
           this.yaw = 0, this.tilt = 0.5, this.zoomMul = 1;
           break;
@@ -17888,7 +17915,7 @@ function ROXQM(f, c, s, l, def) {
       j.touch.attack = false;
     }, onPointerCancel: () => {
       j.touch.attack = false;
-    }, "aria-label": "Atacar", children: "\u2694" }), [0, 1, 2, 3].map((r) => (0, aa.jsxs)("button", { className: `tbtn${a[r]?.locked ? " locked" : ""}`, onClick: () => j.cast(r), disabled: a[r]?.locked, "aria-label": `Habilidade ${r + 1}: ${a[r]?.name ?? ""}`, children: [r + 1, (0, aa.jsx)("i", { className: "cd", style: { height: `${(a[r]?.frac ?? 0) * 100}%` } })] }, r)), (0, aa.jsxs)("button", { className: "tbtn", onClick: () => j.potion("hp"), "aria-label": "Po\xE7\xE3o de vida", children: ["\u2665", (0, aa.jsx)("small", { className: "badge", children: n.hp })] }), (0, aa.jsxs)("button", { className: "tbtn", onClick: () => j.potion("mp"), "aria-label": "Po\xE7\xE3o de mana", children: ["\u2726", (0, aa.jsx)("small", { className: "badge", children: n.mp })] }), (0, aa.jsx)("button", { className: "tbtn", onClick: () => j.dash(), "aria-label": "Esquiva", children: "\u2933" }), (0, aa.jsx)("button", { className: "tbtn", onClick: () => j.interact(), "aria-label": "Interagir", children: "E" }), (0, aa.jsx)("button", { className: "tbtn", onClick: () => j.togglePanel("inventory"), "aria-label": "Invent\xE1rio", children: "\u{1F392}" })] }), (0, aa.jsx)("button", { className: "tbtn tbtn-menu", onClick: () => j.escape(), "aria-label": "Pausa", children: "\u2630" })] });
+    }, "aria-label": "Atacar", children: "\u2694" }), [0, 1, 2, 3].map((r) => (0, aa.jsxs)("button", { className: `tbtn${a[r]?.locked ? " locked" : ""}`, onClick: () => j.cast(r), disabled: a[r]?.locked, "aria-label": `Habilidade ${r + 1}: ${a[r]?.name ?? ""}`, children: [r + 1, (0, aa.jsx)("i", { className: "cd", style: { height: `${(a[r]?.frac ?? 0) * 100}%` } })] }, r)), (0, aa.jsxs)("button", { className: "tbtn", onClick: () => j.potion("hp"), "aria-label": "Po\xE7\xE3o de vida", children: ["\u2665", (0, aa.jsx)("small", { className: "badge", children: n.hp })] }), (0, aa.jsxs)("button", { className: "tbtn", onClick: () => j.potion("mp"), "aria-label": "Po\xE7\xE3o de mana", children: ["\u2726", (0, aa.jsx)("small", { className: "badge", children: n.mp })] }), (0, aa.jsx)("button", { className: "tbtn", onClick: () => j.dash(), "aria-label": "Esquiva", children: "\u2933" }), (0, aa.jsx)("button", { className: "tbtn", onClick: () => j.ultimate(), "aria-label": "Ultimate (U)", children: "\u2605" }), (0, aa.jsx)("button", { className: "tbtn", onClick: () => j.interact(), "aria-label": "Interagir", children: "E" }), (0, aa.jsx)("button", { className: "tbtn", onClick: () => j.togglePanel("inventory"), "aria-label": "Invent\xE1rio", children: "\u{1F392}" })] }), (0, aa.jsx)("button", { className: "tbtn tbtn-menu", onClick: () => j.escape(), "aria-label": "Pausa", children: "\u2630" })] });
   }
   var pt = oe(ue(), 1);
   function IS() {

@@ -152,3 +152,4 @@
 - v97: 11 cidades principais com identidade própria: Midgard (capital), Ravnhaven (porto + Arena), Gladsheim (Torre Arcana), Skogvik (vila das copas, pagodes), Eldvik (deserto: pirâmide e esfinge), Handelsvik (porto mercante, docas e navios), Kharnheim (relógio e canais), Solvik (praia tropical e festas), Freyrhain (selva tribal, totens e cabanas), Isenborg (vila de inverno, árvores de Natal e fábrica de brinquedos), Helvik (cidade dos mortos, criptas). 19 monumentos 3D novos, 4 temas novos (areia, tropical, madeira, mortos), 4 cidades novas ligadas aos mapas e ao teleporte.
 - v98: monstros humanoides/bosses (goblin, draugr, cinder, autômato, silvano, prisma, sentinela, voidling, jotun) redesenhados em pixel-art 3D.
 - v99: personagens sentam de verdade no chão (quadril no solo, pernas à frente, por classe).
+- v100: Ultimate de classe no nível 99 (tecla U / botão ★): 5 ondas de impacto + nova final, 90s de recarga, invulnerável 2,4s; nome próprio por classe.
