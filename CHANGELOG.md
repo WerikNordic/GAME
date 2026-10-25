@@ -180,6 +180,10 @@
 - Janelas Alt+Q/E/S/A/G reduzidas a 50%.
 - Sons por espécie de monstro (lobo, javali, goblin, morto-vivo, gigante, gelatina, lagarto, máquina, pedra, vazio, planta): voz ociosa, ao notar o jogador, ao ser atingido e ao morrer; volume por distância.
 
+## v120 — Seleção e criação de personagem
+- Tela de seleção estilo clássico: 3 molduras com setas (10 slots), aba "Selecionado", tabela de status, del/OK/cancelar (apagar sem popup).
+- Criação: prévia girando, nome, sexo, cabelo (por gênero) e cor, status iniciais.
+
 ## v119 — Interface
 - Cabelos masculinos/femininos separados no estilista.
 - Janelas Alt+Q/E/S/A/G 70% maiores.

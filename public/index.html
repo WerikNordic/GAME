@@ -163,6 +163,42 @@ body.armed canvas{cursor:crosshair!important}
 .slots{grid-auto-flow:column;grid-auto-columns:minmax(200px,1fr);overflow-x:auto}
 .skill-row{display:flex!important;flex-direction:column;align-items:center;text-align:center;gap:4px}
 .skill-row .skill-bonus{width:100%;order:9}
+.cs-bg{position:fixed;inset:0;z-index:60;display:grid;place-items:center;background:radial-gradient(ellipse at 30% 20%,#5a2a3a 0,#1b1426 45%,#07080e 100%);overflow:auto;padding:16px}
+.cs-bg::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(115deg,#ffffff06 0 2px,transparent 2px 22px);pointer-events:none}
+.cs-win{position:relative;width:min(640px,96vw);background:#e4ecf8;border:1px solid #5d78a8;border-radius:4px;box-shadow:0 8px 30px #000a;color:#1d2a44;font-family:var(--font)}
+.cs-title{background:linear-gradient(180deg,#5c8bd8,#2f5aa8);color:#fff;font-size:13px;padding:5px 10px;border-radius:3px 3px 0 0;text-shadow:0 1px #0006}
+.cs-body{position:relative;display:flex;align-items:center;justify-content:center;padding:14px 26px 6px;background:linear-gradient(180deg,#f4f8ff,#dbe5f4)}
+.cs-frames{display:flex;gap:14px;justify-content:center}
+.cs-frame{position:relative;width:min(170px,27vw);min-height:250px;display:grid;place-items:center;background:linear-gradient(180deg,#fff,#e9f0fb);border:2px solid #aebfdc;border-radius:3px;cursor:pointer;padding-top:14px}
+.cs-frame.sel{border-color:#3d6bc0;box-shadow:0 0 0 2px #3d6bc055}
+.cs-frame canvas{max-width:100%;height:auto}
+.cs-tab{position:absolute;top:-2px;left:-2px;background:linear-gradient(180deg,#5c8bd8,#2f5aa8);color:#fff;font-size:11px;font-weight:700;padding:2px 12px 2px 8px;border-radius:2px 0 8px 0}
+.cs-slotn{position:absolute;top:4px;right:6px;font-size:10px;color:#6f86ad}
+.cs-cap{position:absolute;bottom:4px;font-size:12px;font-weight:700}
+.cs-empty{display:grid;place-items:center;font-size:44px;color:#9fb2d3}
+.cs-empty small{font-size:12px}
+.cs-arrow{position:absolute;top:50%;transform:translateY(-50%);background:none;border:0;color:#3d6bc0;font-size:20px;cursor:pointer}
+.cs-arrow.l{left:4px}.cs-arrow.r{right:4px}.cs-arrow:disabled{opacity:.25;cursor:default}
+.cs-dots{display:flex;gap:5px;justify-content:center;padding:4px 0 8px;background:#dbe5f4}
+.cs-dots i{width:8px;height:8px;border-radius:50%;background:#b9c7e0;cursor:pointer}.cs-dots i.full{background:#7f98c4}.cs-dots i.on{outline:2px solid #3d6bc0}
+.cs-info{padding:8px 14px}
+.cs-info table{border-collapse:separate;border-spacing:2px;font-size:12px}
+.cs-info td.k{background:#c6d3e8;padding:2px 8px;min-width:46px}.cs-info td.v{background:#eef3fb;padding:2px 10px;min-width:96px}
+.cs-foot{display:flex;justify-content:space-between;align-items:center;padding:6px 10px 8px;gap:6px;flex-wrap:wrap}
+.cs-btn{background:linear-gradient(180deg,#fafcff,#cfdcf0);border:1px solid #6f86ad;border-radius:3px;color:#1d2a44;font-size:12px;padding:3px 14px;margin-left:6px;cursor:pointer}
+.cs-btn:hover:not(:disabled){background:linear-gradient(180deg,#fff,#dde8f8)}.cs-btn:disabled{opacity:.45}.cs-btn.on{background:#3d6bc0;color:#fff}
+.cs-q{font-size:12px;margin-right:6px}
+.cs-logo{position:fixed;right:5vw;bottom:5vh;font-size:clamp(28px,5vw,52px);font-weight:900;font-style:italic;line-height:1;color:#2f64c4;text-align:right;-webkit-text-stroke:2px #fff;paint-order:stroke fill;text-shadow:0 4px 10px #0008;pointer-events:none}
+.cc-body{display:flex;gap:16px;padding:14px;background:linear-gradient(180deg,#f4f8ff,#dbe5f4);flex-wrap:wrap;justify-content:center}
+.cc-prev{display:grid;gap:8px;justify-items:center}
+.cc-form{display:grid;gap:6px;align-content:start;flex:1;min-width:230px;font-size:12px}
+.cc-in{padding:4px 6px;border:1px solid #6f86ad;border-radius:3px;font-size:14px}
+.cc-row{display:flex;gap:4px;align-items:center}.cc-row .cs-btn{margin:0}
+.cc-hn{flex:1;text-align:center;font-weight:700}
+.cc-sw{display:flex;flex-wrap:wrap;gap:4px}.cc-sw .sw{width:22px;height:22px;border-radius:3px;border:2px solid #fff;outline:1px solid #6f86ad;cursor:pointer}.cc-sw .sw.on{outline:2px solid #3d6bc0}
+.cc-stats{border-collapse:separate;border-spacing:2px}.cc-stats td.k{background:#c6d3e8;padding:2px 8px}.cc-stats td.v{background:#eef3fb;padding:2px 12px}
+.cc-note{font-size:11px;color:#4a5a78;margin:2px 0}
+.cs-arrow,.cs-arrow.l,.cs-arrow.r{width:24px!important;height:44px!important;padding:0!important;line-height:1!important;background:none!important;border:0!important;position:absolute!important;top:50%!important;transform:translateY(-50%)!important}
 </style></head>
   <body>
     <div id="root"></div>
@@ -11226,10 +11262,10 @@ Error generating stack: ` + n.message + `
     closeSettings() {
       this.panel = this.screen === "playing" ? "pause" : "none", this.refresh();
     }
-    newGame(t, a, n, g) {
+    newGame(t, a, n, g, sty) {
       let o;
       try {
-        o = Wy(t, a), g === "f" && (o.gender = "f");
+        o = Wy(t, a), g === "f" && (o.gender = "f"), sty && (o.style = { hairStyle: sty.hairStyle, hairColor: sty.hairColor });
       } catch (r) {
         return { ok: false, error: r instanceof Error ? r.message : "Dados inv\xE1lidos." };
       }
@@ -12510,9 +12546,7 @@ Error generating stack: ` + n.message + `
       } catch {
       }
       window.__acct = "", window.__tok = "", window.__admin = false, j.refresh(), setIsAdm(false), setAcct("");
-    }, children: "Sair" })] }), t === "menu" && (0, le.jsxs)("nav", { className: "menu", "aria-label": "Menu principal", children: [r && (0, le.jsxs)("button", { className: "btn btn-primary", onClick: () => i(r.slot), children: ["Continuar \xB7 ", r.name] }), (0, le.jsx)("button", { className: "btn", onClick: () => j.goCreate(), children: "Novo jogo" }), (0, le.jsx)("button", { className: "btn", onClick: () => a("online"), children: "Jogar online (multiplayer)" }), (0, le.jsx)("button", { className: "btn", onClick: () => a("load"), disabled: !r, children: "Carregar jogo" }), (0, le.jsx)("button", { className: "btn", onClick: () => j.openSettings("title"), children: "Configura\xE7\xF5es" }), (0, le.jsx)("button", { className: "btn", onClick: () => a("about"), children: "Sobre" }), isAdm && (0, le.jsx)("button", { className: "btn", onClick: () => a("admin"), children: "\u2605 Administra\xE7\xE3o (aprovar contas)" })] }), t === "admin" && (0, le.jsx)(AdminPanel, { onBack: () => a("menu") }), t === "online" && (0, le.jsx)(OM, { onBack: () => a("menu") }), t === "load" && (0, le.jsxs)("div", { className: "menu slots-row", children: [e.slots.map((s, l) => (0, le.jsxs)(l0, { slot: l + 1, info: s, children: [s && (0, le.jsx)("button", { className: "btn btn-small btn-primary", onClick: () => i(l + 1), children: "Jogar" }), s && (0, le.jsx)("button", { className: "btn btn-small", onClick: () => {
-      window.confirm(`Apagar o slot ${l + 1}? Isso n\xE3o pode ser desfeito.`) && j.removeSlot(l + 1);
-    }, children: "Apagar" })] }, l)), (0, le.jsx)("button", { className: "btn", onClick: () => a("menu"), children: "Voltar" })] }), t === "about" && (0, le.jsxs)("div", { className: "about", children: [(0, le.jsx)("p", { children: Yp.context }), (0, le.jsx)("p", { children: Yp.premise }), (0, le.jsxs)("p", { className: "notice", children: [(0, le.jsx)("strong", { children: "Modo local" }), " \xE9 para um jogador: o progresso fica salvo apenas neste navegador. ", (0, le.jsx)("strong", { children: "Modo online" }), " \xE9 uma fatia vertical: exige um servidor Nidavellir em execu\xE7\xE3o (veja o README) e ainda n\xE3o tem NPCs, quests, itens nem habilidades."] }), (0, le.jsx)("button", { className: "btn", onClick: () => a("menu"), children: "Voltar" })] }), e.notice && (0, le.jsx)("p", { className: "error", role: "alert", children: e.notice }), n && (0, le.jsx)("p", { className: "error", role: "alert", children: n }), !yv && (0, le.jsx)("p", { className: "error", role: "alert", children: "Armazenamento do navegador indispon\xEDvel: o progresso n\xE3o poder\xE1 ser salvo." }), (0, le.jsx)("p", { className: "footer", children: "Prot\xF3tipo jog\xE1vel \xB7 modo local (1 jogador) ou servidor de teste online" })] }), e.panel === "settings" && (0, le.jsx)(c0, {})] });
+    }, children: "Sair" })] }), t === "menu" && (0, le.jsxs)("nav", { className: "menu", "aria-label": "Menu principal", children: [r && (0, le.jsxs)("button", { className: "btn btn-primary", onClick: () => i(r.slot), children: ["Continuar \xB7 ", r.name] }), (0, le.jsx)("button", { className: "btn", onClick: () => j.goCreate(), children: "Novo jogo" }), (0, le.jsx)("button", { className: "btn", onClick: () => a("online"), children: "Jogar online (multiplayer)" }), (0, le.jsx)("button", { className: "btn", onClick: () => a("load"), disabled: !r, children: "Carregar jogo" }), (0, le.jsx)("button", { className: "btn", onClick: () => j.openSettings("title"), children: "Configura\xE7\xF5es" }), (0, le.jsx)("button", { className: "btn", onClick: () => a("about"), children: "Sobre" }), isAdm && (0, le.jsx)("button", { className: "btn", onClick: () => a("admin"), children: "\u2605 Administra\xE7\xE3o (aprovar contas)" })] }), t === "admin" && (0, le.jsx)(AdminPanel, { onBack: () => a("menu") }), t === "online" && (0, le.jsx)(OM, { onBack: () => a("menu") }), t === "load" && (0, le.jsx)(CharSelect, { onBack: () => a("menu"), onPlay: (n) => i(n) }), t === "about" && (0, le.jsxs)("div", { className: "about", children: [(0, le.jsx)("p", { children: Yp.context }), (0, le.jsx)("p", { children: Yp.premise }), (0, le.jsxs)("p", { className: "notice", children: [(0, le.jsx)("strong", { children: "Modo local" }), " \xE9 para um jogador: o progresso fica salvo apenas neste navegador. ", (0, le.jsx)("strong", { children: "Modo online" }), " \xE9 uma fatia vertical: exige um servidor Nidavellir em execu\xE7\xE3o (veja o README) e ainda n\xE3o tem NPCs, quests, itens nem habilidades."] }), (0, le.jsx)("button", { className: "btn", onClick: () => a("menu"), children: "Voltar" })] }), e.notice && (0, le.jsx)("p", { className: "error", role: "alert", children: e.notice }), n && (0, le.jsx)("p", { className: "error", role: "alert", children: n }), !yv && (0, le.jsx)("p", { className: "error", role: "alert", children: "Armazenamento do navegador indispon\xEDvel: o progresso n\xE3o poder\xE1 ser salvo." }), (0, le.jsx)("p", { className: "footer", children: "Prot\xF3tipo jog\xE1vel \xB7 modo local (1 jogador) ou servidor de teste online" })] }), e.panel === "settings" && (0, le.jsx)(c0, {})] });
   }
   var Dl = (e, t) => e >> t & 255, ye = (e, t, a) => {
     let n = (o) => Math.round(Dl(e, o) * (1 - a) + Dl(t, o) * a);
@@ -13012,7 +13046,85 @@ Error generating stack: ` + n.message + `
   var Vv = oe(ue(), 1), p0 = (e, t, a) => (0, Vv.jsx)("img", { className: "pxi", src: e, width: t, height: t, alt: a, draggable: false }), Aa = ({ id: e, size: t = 36 }) => p0(Ol("i:" + e, () => os(e)), t, ""), h0 = ({ id: e, kind: t, size: a = 40 }) => p0(Ol(`s:${e}:${t}`, () => d0(e, t)), a, ""), sr = ({ name: e, size: t = 24 }) => p0(Ol("m:" + e, () => f0(e)), t, ""), Uv = ({ line: e, size: t = 40 }) => p0(Ol("c:" + e, () => m0(e)), t, "");
   var Hl = oe(St(), 1);
   var ke = oe(ue(), 1), JM = { str: "FOR", agi: "AGI", vit: "VIT", int: "INT", dex: "DES", luk: "SOR" };
+
+  var Hh = (tag, props, ...k) => (0, ke.jsx)(tag, { ...props, children: k.length < 2 ? k[0] : k });
+  function CsPortrait({ p, scale = 2.3, w = 150, h = 210, rot = "down" }) {
+    let ref = Hl.useRef(null), key = p ? JSON.stringify([p.name, p.line, p.gender, p.style, p.dye, p.equipment]) : "";
+    Hl.useEffect(() => {
+      let c = ref.current;
+      if (!c || !p) return;
+      let u = po(cs(p)), draw = () => {
+        let g = c.getContext("2d");
+        g.clearRect(0, 0, c.width, c.height), g.fillStyle = "rgba(0,0,0,.28)", g.beginPath(), g.ellipse(c.width / 2, c.height - 22, 34, 11, 0, 0, 7), g.fill(), g.imageSmoothingEnabled = true, g.imageSmoothingQuality = "high", nt(g, fa(u, rot, -1, 0), c.width / 2, c.height - 22, false, scale, scale);
+      };
+      draw();
+      let t1 = setTimeout(draw, 200), t2 = setTimeout(draw, 700);
+      return () => (clearTimeout(t1), clearTimeout(t2));
+    }, [key, rot]);
+    return Hh("canvas", { ref, width: w, height: h, "aria-label": "Personagem" });
+  }
+  function CharSelect({ onBack, onPlay }) {
+    let e = ge(), [sel, setSel] = Hl.useState(() => { let f = e.slots.findIndex((x) => x); return f < 0 ? 0 : f; }), [cf, setCf] = Hl.useState(false);
+    let N_ = e.slots.length, start = Math.max(0, Math.min(N_ - 3, sel - 1)), pls = e.slots.map((x, i) => x ? Ip(j.storage, i + 1)?.player : null), pl = pls[sel], d = pl ? Ua(pl) : null;
+    let create = (i) => { window.__newSlot = i + 1, j.goCreate(); }, ok = () => pl ? onPlay(sel + 1) : create(sel);
+    Hl.useEffect(() => {
+      let f = (ev) => {
+        ev.key === "ArrowLeft" ? (ev.preventDefault(), setSel((v) => Math.max(0, v - 1)), setCf(false)) : ev.key === "ArrowRight" ? (ev.preventDefault(), setSel((v) => Math.min(N_ - 1, v + 1)), setCf(false)) : ev.key === "Enter" ? (ev.preventDefault(), ok()) : ev.key === "Escape" ? (ev.preventDefault(), onBack()) : ev.key === "Delete" && pl && setCf(true);
+      };
+      return window.addEventListener("keydown", f), () => window.removeEventListener("keydown", f);
+    });
+    let row = (a, b) => [Hh("td", { className: "k", key: "k" + a }, a), Hh("td", { className: "v", key: "v" + a }, b)];
+    let st = pl?.stats ?? {};
+    return Hh("div", { className: "cs-bg" }, Hh("div", { className: "cs-win" },
+      Hh("div", { className: "cs-title" }, "Sele\u00e7\u00e3o de Personagens"),
+      Hh("div", { className: "cs-body" },
+        Hh("button", { className: "cs-arrow l", onClick: () => (setSel((v) => Math.max(0, v - 1)), setCf(false)), "aria-label": "Anterior", disabled: sel === 0 }, "\u25c0"),
+        Hh("div", { className: "cs-frames" }, [0, 1, 2].map((k) => { let i = start + k, x = pls[i]; return Hh("div", { key: i, className: `cs-frame${i === sel ? " sel" : ""}`, onClick: () => (setSel(i), setCf(false)), onDoubleClick: () => (x ? onPlay(i + 1) : create(i)) },
+          i === sel && Hh("div", { className: "cs-tab" }, "Selecionado"), Hh("div", { className: "cs-slotn" }, "Slot " + (i + 1)),
+          x ? Hh(CsPortrait, { p: x }) : Hh("div", { className: "cs-empty" }, "\uff0b", Hh("small", null, "Criar personagem")),
+          x && Hh("div", { className: "cs-cap" }, x.name)); })),
+        Hh("button", { className: "cs-arrow r", onClick: () => (setSel((v) => Math.min(N_ - 1, v + 1)), setCf(false)), "aria-label": "Pr\u00f3ximo", disabled: sel >= N_ - 1 })),
+      Hh("div", { className: "cs-dots" }, e.slots.map((x, i) => Hh("i", { key: i, className: (i === sel ? "on " : "") + (x ? "full" : ""), onClick: () => setSel(i) }))),
+      Hh("div", { className: "cs-info" },
+        Hh("table", null, Hh("tbody", null,
+          Hh("tr", null, ...row("Nome", pl?.name ?? "\u2014"), ...row("FOR", pl ? st.str : "")),
+          Hh("tr", null, ...row("Classe", pl ? Ce[pl.line].names[Math.min(pl.tier, 5)] : ""), ...row("AGI", pl ? st.agi : "")),
+          Hh("tr", null, ...row("Nv.", pl ? pl.level : ""), ...row("VIT", pl ? st.vit : "")),
+          Hh("tr", null, ...row("EXP", pl ? pl.exp : ""), ...row("INT", pl ? st.int : "")),
+          Hh("tr", null, ...row("HP", d ? d.maxHp : ""), ...row("DES", pl ? st.dex : "")),
+          Hh("tr", null, ...row("SP", d ? d.maxMp : ""), ...row("SOR", pl ? st.luk : ""))))),
+      Hh("div", { className: "cs-foot" },
+        Hh("div", null, pl && (cf ? [Hh("span", { key: "q", className: "cs-q" }, "Apagar " + pl.name + "?"), Hh("button", { key: "y", className: "cs-btn", onClick: () => (j.removeSlot(sel + 1), setCf(false)) }, "sim"), Hh("button", { key: "n", className: "cs-btn", onClick: () => setCf(false) }, "n\u00e3o")] : Hh("button", { className: "cs-btn", onClick: () => setCf(true) }, "del"))),
+        Hh("div", null, Hh("button", { className: "cs-btn", onClick: ok }, pl ? "OK" : "Criar"), Hh("button", { className: "cs-btn", onClick: onBack }, "cancelar")))),
+      Hh("div", { className: "cs-logo" }, "Selecione", Hh("br"), "o Personagem"));
+  }
+  function CharCreate() {
+    let e = ge(), free = e.slots.map((x, i) => x ? -1 : i).filter((i) => i >= 0), [slot, setSlot] = Hl.useState(() => { let w = window.__newSlot; window.__newSlot = void 0; return w && !e.slots[w - 1] ? w : free.length ? free[0] + 1 : 0; });
+    let [nm, setNm] = Hl.useState(""), [gd, setGd] = Hl.useState("m"), [hi, setHi] = Hl.useState(0), [hc, setHc] = Hl.useState(Dp[0]), [err, setErr] = Hl.useState(null), [rot, setRot] = Hl.useState("down");
+    let styles = zp.filter((h) => h.id !== "short" && h.id !== "long" && h.id !== "bald" && HMALE_.has(Number(h.id.slice(1))) === (gd === "m")), cur = styles[hi % styles.length];
+    let base = Hl.useMemo(() => { try { return Wy("Heroi", "aprendiz"); } catch { return null; } }, []);
+    let pv_ = base ? { ...base, name: nm || "Heroi", gender: gd === "f" ? "f" : void 0, style: { hairStyle: cur.id, hairColor: hc } } : null, valid = Nl(nm), b = Ce.aprendiz.base ?? {};
+    let go = () => { if (!slot) return setErr("Todos os 10 slots est\u00e3o ocupados. Apague um personagem."); let r = j.newGame(nm, "aprendiz", slot, gd, { hairStyle: cur.id, hairColor: hc }); r.ok || setErr(r.error ?? "N\u00e3o foi poss\u00edvel criar o personagem."); };
+    let row = (a, v) => [Hh("td", { className: "k", key: "k" + a }, a), Hh("td", { className: "v", key: "v" + a }, v)];
+    return Hh("div", { className: "cs-bg" }, Hh("div", { className: "cs-win" },
+      Hh("div", { className: "cs-title" }, "Cria\u00e7\u00e3o de Personagem"),
+      Hh("div", { className: "cc-body" },
+        Hh("div", { className: "cc-prev" }, Hh("div", { className: "cs-frame sel" }, Hh("div", { className: "cs-tab" }, "Slot " + (slot || "\u2014")), pv_ && Hh(CsPortrait, { p: pv_, scale: 2.7, w: 170, h: 240, rot })), Hh("button", { className: "cs-btn", onClick: () => setRot((r) => r === "down" ? "dq" : r === "dq" ? "side" : r === "side" ? "uq" : r === "uq" ? "up" : "down") }, "\u27f3 girar")),
+        Hh("div", { className: "cc-form" },
+          Hh("label", null, "Nome"), Hh("input", { className: "cc-in", value: nm, maxLength: 16, autoFocus: true, placeholder: "2 a 16 caracteres", onChange: (ev) => (setNm(ev.target.value), setErr(null)), onKeyDown: (ev) => ev.key === "Enter" && valid && go() }),
+          Hh("label", null, "Sexo"), Hh("div", { className: "cc-row" }, [["m", "\u2642 Masculino"], ["f", "\u2640 Feminino"]].map(([g, l]) => Hh("button", { key: g, className: "cs-btn" + (gd === g ? " on" : ""), onClick: () => (setGd(g), setHi(0)) }, l))),
+          Hh("label", null, "Cabelo"), Hh("div", { className: "cc-row" }, Hh("button", { className: "cs-btn", onClick: () => setHi((v) => (v + styles.length - 1) % styles.length) }, "\u25c0"), Hh("span", { className: "cc-hn" }, cur.name + " (" + (hi % styles.length + 1) + "/" + styles.length + ")"), Hh("button", { className: "cs-btn", onClick: () => setHi((v) => (v + 1) % styles.length) }, "\u25b6")),
+          Hh("label", null, "Cor"), Hh("div", { className: "cc-sw" }, Dp.map((c) => Hh("button", { key: c, className: "sw" + (hc === c ? " on" : ""), style: { background: Q0(c) }, onClick: () => setHc(c), "aria-label": "Cor " + Q0(c) }))),
+          Hh("table", { className: "cc-stats" }, Hh("tbody", null, Hh("tr", null, ...row("FOR", b.str ?? 5), ...row("INT", b.int ?? 5)), Hh("tr", null, ...row("AGI", b.agi ?? 5), ...row("DES", b.dex ?? 5)), Hh("tr", null, ...row("VIT", b.vit ?? 5), ...row("SOR", b.luk ?? 5)))),
+          Hh("p", { className: "cc-note" }, "Todo her\u00f3i come\u00e7a como Aprendiz. No n\u00edvel de classe 10, procure o L\u00edder de Classe em uma cidade principal e escolha entre sete caminhos."),
+          err && Hh("p", { className: "error", role: "alert" }, err))),
+      Hh("div", { className: "cs-foot" }, Hh("div", null), Hh("div", null, Hh("button", { className: "cs-btn", disabled: !valid || !slot, onClick: go }, "OK"), Hh("button", { className: "cs-btn", onClick: () => j.goTitle() }, "cancelar")))),
+      Hh("div", { className: "cs-logo" }, "Crie seu", Hh("br"), "Personagem"));
+  }
   function Yv() {
+    return Hh(CharCreate, {});
+  }
+  function Yv_old() {
     let e = ge(), [t, a] = (0, Hl.useState)(""), [n, o] = (0, Hl.useState)("aprendiz"), r = e.slots.findIndex((m) => m === null), [i, s] = (0, Hl.useState)(r >= 0 ? r + 1 : 1), [gd, setGd] = (0, Hl.useState)("m"), [l, c] = (0, Hl.useState)(null), d = Ce[n], f = Nl(t), u = () => {
       if (e.slots[i - 1] && !window.confirm(`O slot ${i} j\xE1 tem um personagem. Substituir?`)) return;
       let m = j.newGame(t, n, i, gd);
