@@ -1,3 +1,6 @@
+# v77
+- NOVO ESTILO: sprites de personagem desenhados em pixel-art 2D de verdade (proporcao chibi, cabeca grande, olhos, cabelo, equipamentos, 5 direcoes, caminhada, ataque, sentado). Desligar: localStorage eldvar.sp=0.
+
 # v76
 - Sombreamento em faixas (cel-shading) em sprites e cenario, personagens maiores, textura de grama pixelada no chao.
 
