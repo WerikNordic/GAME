@@ -13568,7 +13568,7 @@ void main() {
     }
   }
   function p4(e, t) {
-    let a = new ua(), n = e.pro !== false, o = (e.scale ?? 1) * (n ? 1.2 : 1), r = t.phase * Math.PI * 2, i = t.moving ? Math.sin(r) : 0, s = !!t.sit, l = t.moving ? Math.abs(Math.cos(r)) * 0.06 : 0, c = s ? { th: 0.32, psi: 0.35, elbow: 0.4, lean: -0.14, twist: 0 } : t.lvl > 0 ? m4(t.style, t.lvl, i, false) : m4(t.style, 0, i, t.moving), d = A.T(t.moving && !s ? Math.sin(r) * 0.03 : 0, s ? -0.66 : l, 0).mul(new A([o, 0, 0, 0, o, 0, 0, 0, o])), f = d.mul(A.RX(c.lean)).mul(A.RY(c.twist * 0.5)), u = e.skin, m = e.tunic, p = e.pants, h = e.boots, x = 0.78;
+    let a = new ua(), n = e.pro !== false, o = (e.scale ?? 1) * (n ? 1.45 : 1), r = t.phase * Math.PI * 2, i = t.moving ? Math.sin(r) : 0, s = !!t.sit, l = t.moving ? Math.abs(Math.cos(r)) * 0.06 : 0, c = s ? { th: 0.32, psi: 0.35, elbow: 0.4, lean: -0.14, twist: 0 } : t.lvl > 0 ? m4(t.style, t.lvl, i, false) : m4(t.style, 0, i, t.moving), d = A.T(t.moving && !s ? Math.sin(r) * 0.03 : 0, s ? -0.66 : l, 0).mul(new A([o, 0, 0, 0, o, 0, 0, 0, o])), f = d.mul(A.RX(c.lean)).mul(A.RY(c.twist * 0.5)), u = e.skin, m = e.tunic, p = e.pants, h = e.boots, x = 0.78;
     t.moving && !s && !(t.lvl > 0) && (c = { ...c, lean: (c.lean ?? 0) + 0.08, twist: (c.twist ?? 0) + i * 0.3 }, f = d.mul(A.RX(c.lean)).mul(A.RY(c.twist * 0.5)));
     for (let C of [-1, 1]) {
       let B = s ? 1.5 : t.moving ? i * 0.72 * C : t.lvl ? C * 0.18 : 0, ee = s ? 0.04 : t.moving ? Math.max(0, -B) * 0.9 + Math.max(0, B) * 0.1 : 0, ne = d.mul(A.T(C * 0.15, x, 0)).mul(A.RY(s ? C * 0.16 : 0)).mul(ls(B));
@@ -14450,6 +14450,24 @@ void main() {
     setTimeout(t, 0);
   }
   var uo = { lw: 80, lh: 112, lax: 40, lay: 100, pxu: 30 }, vE = { ax: uo.lax, ay: uo.lay };
+  function GT(cv, c, w, h, id) {
+    if (!PXON) return;
+    try {
+      let im = c.getImageData(0, 0, w, h), d = im.data, sd = 0;
+      for (let ch of String(id)) sd = sd * 31 + ch.charCodeAt(0) | 0;
+      let rnd = () => (sd = sd * 1664525 + 1013904223 | 0, (sd >>> 8) / 16777216);
+      let green = (k) => d[k + 1] > d[k] + 6 && d[k + 1] > d[k + 2] + 6;
+      let put = (x, y, f) => { if (x < 0 || y < 0 || x >= w || y >= h) return; let k = (y * w + x) * 4; if (!green(k)) return; d[k] = Math.min(255, d[k] * f), d[k + 1] = Math.min(255, d[k + 1] * f), d[k + 2] = Math.min(255, d[k + 2] * f); };
+      let n = w * h * 0.09 | 0;
+      for (let i = 0; i < n; i++) {
+        let x = rnd() * w | 0, y = rnd() * h | 0, t = rnd();
+        if (t < 0.5) put(x, y, 0.8), put(x, y - 1, 1.18);
+        else if (t < 0.85) put(x, y, 1.22), put(x + 1, y, 1.12);
+        else put(x, y, 0.72), put(x - 1, y - 1, 1.25), put(x + 1, y - 1, 1.25), put(x, y - 1, 1.25);
+      }
+      c.putImageData(im, 0, 0);
+    } catch {}
+  }
   var PXON = (() => { try { return localStorage.getItem("eldvar.px") !== "0"; } catch { return true; } })();
   function PX(o) {
     if (!PXON || !o || !o.cv) return o;
@@ -14466,7 +14484,8 @@ void main() {
       let edge = !(x > 0 && m[i - 1]) || !(x < sw - 1 && m[i + 1]) || !(y > 0 && m[i - sw]) || !(y < sh - 1 && m[i + sw]);
       let q = (v) => Math.min(255, Math.round(v / 10) * 10);
       let lu = d[k] * 0.3 + d[k + 1] * 0.59 + d[k + 2] * 0.11, sat = (v) => Math.max(0, Math.min(255, (lu + (v - lu) * 1.22 - 128) * 1.1 + 128));
-      d[k] = q(sat(d[k])), d[k + 1] = q(sat(d[k + 1])), d[k + 2] = q(sat(d[k + 2])), d[k + 3] = 255;
+      let r0 = sat(d[k]), g0 = sat(d[k + 1]), b0 = sat(d[k + 2]), l0 = Math.max(1, r0 * 0.3 + g0 * 0.59 + b0 * 0.11), lb = Math.max(14, Math.round(l0 / 255 * 6) / 6 * 255), fct = lb / l0;
+      d[k] = q(Math.min(255, r0 * fct)), d[k + 1] = q(Math.min(255, g0 * fct)), d[k + 2] = q(Math.min(255, b0 * fct)), d[k + 3] = 255;
       edge && (d[k] = d[k] * 0.45 + 12, d[k + 1] = d[k + 1] * 0.4 + 8, d[k + 2] = d[k + 2] * 0.42 + 10);
     }
     c.putImageData(im, 0, 0);
@@ -15874,7 +15893,7 @@ void main() {
       let n = e.FSTEP;
       if (a.flat) return a.flat;
       let o = Math.ceil(t.width / n), r = Math.ceil(t.height / n), [i, s] = Kv(o, r);
-      return s.imageSmoothingEnabled = true, s.imageSmoothingQuality = "high", s.drawImage(a.ground, 0, 0, o, r), Fp(i, { dither: 16, sat: 0.84, alphaCut: true }), i;
+      return s.imageSmoothingEnabled = true, s.imageSmoothingQuality = "high", s.drawImage(a.ground, 0, 0, o, r), Fp(i, { dither: 16, sat: 0.84, alphaCut: true }), GT(i, s, o, r, t.id), i;
     }
     drawGroundPlane(t) {
       let a = this.ctx, n = t.width, o = t.height, r = [ce(0, 0), ce(n, 0), ce(n, o), ce(0, o)];

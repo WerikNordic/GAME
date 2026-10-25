@@ -1,3 +1,6 @@
+# v76
+- Sombreamento em faixas (cel-shading) em sprites e cenario, personagens maiores, textura de grama pixelada no chao.
+
 # v75
 - Pixel-art tambem em arvores, casas e objetos (visual consistente).
 
