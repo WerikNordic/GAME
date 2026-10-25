@@ -12842,6 +12842,46 @@ Error generating stack: ` + n.message + `
   var ke = oe(ue(), 1), JM = { str: "FOR", agi: "AGI", vit: "VIT", int: "INT", dex: "DES", luk: "SOR" };
 
   var Hh = (tag, props, ...k) => (0, ke.jsx)(tag, { ...props, children: k.length < 2 ? k[0] : k });
+
+  function CsBackdrop() {
+    let ref = Hl.useRef(null);
+    Hl.useEffect(() => {
+      let c = ref.current, g = c.getContext("2d"), raf = 0, W = 0, H = 0, t0 = performance.now();
+      let rnd = (() => { let a = 12345; return () => (a = (a * 1664525 + 1013904223) >>> 0) / 4294967296; })();
+      let stars = Array.from({ length: 140 }, () => ({ x: rnd(), y: rnd() * 0.55, r: rnd() * 1.4 + 0.3, p: rnd() * 6.28 }));
+      let motes = Array.from({ length: 46 }, () => ({ x: rnd(), y: rnd(), r: rnd() * 2.2 + 0.8, sp: rnd() * 0.04 + 0.01, p: rnd() * 6.28 }));
+      let ridge = (seed, base, amp, rough) => { let pts = [], o = seed; for (let i = 0; i <= 60; i++) { o = (o * 9301 + 49297) % 233280; pts.push(base + Math.sin(i * rough + seed) * amp + (o / 233280 - 0.5) * amp * 0.9); } return pts; };
+      let R = [ridge(3, 0.62, 0.07, 0.35), ridge(7, 0.7, 0.06, 0.5), ridge(11, 0.79, 0.045, 0.7)];
+      let resize = () => { W = c.width = Math.ceil(c.clientWidth / 2); H = c.height = Math.ceil(c.clientHeight / 2); };
+      resize(); window.addEventListener("resize", resize);
+      let tree = (x, y, h, col) => { g.fillStyle = col; g.beginPath(); g.moveTo(x, y - h); for (let k = 1; k <= 4; k++) { let w = h * 0.12 * k; g.lineTo(x + w, y - h + (h / 4) * k * 0.9); g.lineTo(x + w * 0.4, y - h + (h / 4) * k * 0.9); } g.lineTo(x + h * 0.06, y); g.lineTo(x - h * 0.06, y); for (let k = 4; k >= 1; k--) { let w = h * 0.12 * k; g.lineTo(x - w * 0.4, y - h + (h / 4) * k * 0.9); g.lineTo(x - w, y - h + (h / 4) * k * 0.9); } g.closePath(); g.fill(); };
+      let draw = (now) => {
+        let t = (now - t0) / 1000, sk = g.createLinearGradient(0, 0, 0, H);
+        sk.addColorStop(0, "#0d0b2a"), sk.addColorStop(0.35, "#2b1a5c"), sk.addColorStop(0.62, "#8a3a7a"), sk.addColorStop(0.8, "#f08a6a"), sk.addColorStop(1, "#ffd7a0");
+        g.fillStyle = sk, g.fillRect(0, 0, W, H);
+        for (let q of stars) { let a = 0.45 + 0.55 * Math.sin(t * 1.3 + q.p); g.fillStyle = `rgba(255,255,255,${(a * 0.8).toFixed(2)})`, g.fillRect(q.x * W, q.y * H, q.r, q.r); }
+        for (let k = 0; k < 3; k++) { let gr = g.createLinearGradient(0, H * 0.1, 0, H * 0.5), hue = [150, 190, 285][k]; gr.addColorStop(0, `hsla(${hue},90%,65%,0)`), gr.addColorStop(0.5, `hsla(${hue},90%,65%,.22)`), gr.addColorStop(1, `hsla(${hue},90%,65%,0)`); g.fillStyle = gr, g.beginPath(), g.moveTo(0, H * 0.3); for (let x = 0; x <= W; x += 8) g.lineTo(x, H * (0.2 + k * 0.06) + Math.sin(x * 0.012 + t * 0.4 + k * 2) * H * 0.05 + Math.sin(x * 0.03 - t * 0.3) * H * 0.02); g.lineTo(W, H * 0.55), g.lineTo(0, H * 0.55), g.closePath(), g.fill(); }
+        let mx = W * 0.74, my = H * 0.3, mr = Math.min(W, H) * 0.14, halo = g.createRadialGradient(mx, my, mr * 0.6, mx, my, mr * 3.4);
+        halo.addColorStop(0, "rgba(255,230,200,.55)"), halo.addColorStop(1, "rgba(255,200,180,0)"), g.fillStyle = halo, g.fillRect(0, 0, W, H);
+        let mg = g.createRadialGradient(mx - mr * 0.3, my - mr * 0.3, mr * 0.1, mx, my, mr); mg.addColorStop(0, "#fffaf0"), mg.addColorStop(1, "#ffd9b8"), g.fillStyle = mg, g.beginPath(), g.arc(mx, my, mr, 0, 7), g.fill();
+        g.fillStyle = "rgba(210,150,130,.28)"; for (let [dx, dy, dr] of [[-0.3, -0.1, 0.18], [0.25, 0.2, 0.22], [0.05, -0.4, 0.12]]) g.beginPath(), g.arc(mx + dx * mr, my + dy * mr, dr * mr, 0, 7), g.fill();
+        g.strokeStyle = "rgba(255,230,210,.35)", g.lineWidth = 1.5, g.beginPath(), g.ellipse(mx, my, mr * 1.9, mr * 0.5, -0.35, 0, 7), g.stroke();
+        for (let k = 0; k < 4; k++) { let cy = H * (0.4 + k * 0.07), off = (t * (3 + k * 2) + k * 90) % (W + 300); g.fillStyle = `rgba(255,${190 + k * 15},${200 - k * 10},${0.16 + k * 0.03})`; for (let n = 0; n < 3; n++) { let cx = ((off + n * W / 2.4) % (W + 300)) - 150; g.beginPath(), g.ellipse(cx, cy, 90 + k * 20, 9 + k * 2, 0, 0, 7), g.ellipse(cx + 40, cy - 6, 60, 8, 0, 0, 7), g.fill(); } }
+        let cols = ["#4b2a6a", "#32204f", "#1b1233"];
+        R.forEach((pts, li) => { g.fillStyle = cols[li], g.beginPath(), g.moveTo(0, H); for (let i = 0; i < pts.length; i++) g.lineTo(i / (pts.length - 1) * W, pts[i] * H + Math.sin(t * 0.2 + li) * 0.6); g.lineTo(W, H), g.closePath(), g.fill(); });
+        let yx = W * 0.2, yy = H * 0.74; g.fillStyle = "#150d28"; g.beginPath(); g.moveTo(yx - H * 0.05, yy); g.quadraticCurveTo(yx - H * 0.012, yy - H * 0.12, yx - H * 0.025, yy - H * 0.3); g.lineTo(yx + H * 0.025, yy - H * 0.3); g.quadraticCurveTo(yx + H * 0.012, yy - H * 0.12, yx + H * 0.05, yy); g.fill();
+        for (let k = 0; k < 9; k++) { let a = k / 8 * Math.PI, cx = yx + Math.cos(a + Math.PI) * H * 0.2, cy = yy - H * 0.33 - Math.sin(a) * H * 0.1; g.beginPath(), g.ellipse(cx, cy, H * 0.07, H * 0.05, 0, 0, 7), g.fill(); }
+        let lg = g.createRadialGradient(yx, yy - H * 0.36, 2, yx, yy - H * 0.36, H * 0.28); lg.addColorStop(0, "rgba(255,210,140,.28)"), lg.addColorStop(1, "rgba(255,210,140,0)"), g.fillStyle = lg, g.fillRect(0, 0, W, H);
+        for (let x = 0; x < W; x += 13) tree(x + (x % 7), H * 0.9 + Math.sin(x * 0.05) * 3, H * (0.1 + (x * 37 % 11) / 130), "#0d0820");
+        g.fillStyle = "#0a0618", g.fillRect(0, H * 0.93, W, H * 0.07);
+        for (let q of motes) { let x = ((q.x + t * q.sp) % 1) * W, y = ((q.y - t * q.sp * 0.7) % 1 + 1) % 1 * H, a = 0.4 + 0.6 * Math.sin(t * 2 + q.p); g.fillStyle = `rgba(255,225,170,${(a * 0.75).toFixed(2)})`, g.beginPath(), g.arc(x, y, q.r, 0, 7), g.fill(); }
+        raf = requestAnimationFrame(draw);
+      };
+      raf = requestAnimationFrame(draw);
+      return () => (cancelAnimationFrame(raf), window.removeEventListener("resize", resize));
+    }, []);
+    return Hh("canvas", { ref, className: "cs-canvas", "aria-hidden": true });
+  }
   function CsPortrait({ p, scale = 2.3, w = 150, h = 210, rot = "down" }) {
     let ref = Hl.useRef(null), key = p ? JSON.stringify([p.name, p.line, p.gender, p.style, p.dye, p.equipment]) : "";
     Hl.useEffect(() => {
@@ -12869,7 +12909,7 @@ Error generating stack: ` + n.message + `
     });
     let row = (a, b) => [Hh("td", { className: "k", key: "k" + a }, a), Hh("td", { className: "v", key: "v" + a }, b)];
     let st = pl?.stats ?? {};
-    return Hh("div", { className: "cs-bg" }, Hh("div", { className: "cs-win" },
+    return Hh("div", { className: "cs-bg" }, Hh(CsBackdrop, {}), Hh("div", { className: "cs-win" },
       Hh("div", { className: "cs-title" }, "Sele\u00e7\u00e3o de Personagens"),
       Hh("div", { className: "cs-body" },
         Hh("button", { className: "cs-arrow l", onClick: () => (setSel((v) => Math.max(0, v - 1)), setCf(false)), "aria-label": "Anterior", disabled: sel === 0 }, "\u25c0"),
@@ -12877,7 +12917,7 @@ Error generating stack: ` + n.message + `
           i === sel && Hh("div", { className: "cs-tab" }, "Selecionado"), Hh("div", { className: "cs-slotn" }, "Slot " + (i + 1)),
           x ? Hh(CsPortrait, { p: x }) : Hh("div", { className: "cs-empty" }, "\uff0b", Hh("small", null, "Criar personagem")),
           x && Hh("div", { className: "cs-cap" }, x.name)); })),
-        Hh("button", { className: "cs-arrow r", onClick: () => (setSel((v) => Math.min(N_ - 1, v + 1)), setCf(false)), "aria-label": "Pr\u00f3ximo", disabled: sel >= N_ - 1 })),
+        Hh("button", { className: "cs-arrow r", onClick: () => (setSel((v) => Math.min(N_ - 1, v + 1)), setCf(false)), "aria-label": "Pr\u00f3ximo", disabled: sel >= N_ - 1 }, "\u25B6")),
       Hh("div", { className: "cs-dots" }, e.slots.map((x, i) => Hh("i", { key: i, className: (i === sel ? "on " : "") + (x ? "full" : ""), onClick: () => setSel(i) }))),
       Hh("div", { className: "cs-info" },
         Hh("table", null, Hh("tbody", null,
@@ -12900,7 +12940,7 @@ Error generating stack: ` + n.message + `
     let pv_ = base ? { ...base, name: nm || "Heroi", gender: gd === "f" ? "f" : void 0, style: { hairStyle: cur.id, hairColor: hc } } : null, valid = Nl(nm), b = Ce.aprendiz.base ?? {};
     let go = () => { if (!slot) return setErr("Todos os 10 slots est\u00e3o ocupados. Apague um personagem."); let r = j.newGame(nm, "aprendiz", slot, gd, { hairStyle: cur.id, hairColor: hc }); r.ok || setErr(r.error ?? "N\u00e3o foi poss\u00edvel criar o personagem."); };
     let row = (a, v) => [Hh("td", { className: "k", key: "k" + a }, a), Hh("td", { className: "v", key: "v" + a }, v)];
-    return Hh("div", { className: "cs-bg" }, Hh("div", { className: "cs-win" },
+    return Hh("div", { className: "cs-bg" }, Hh(CsBackdrop, {}), Hh("div", { className: "cs-win" },
       Hh("div", { className: "cs-title" }, "Cria\u00e7\u00e3o de Personagem"),
       Hh("div", { className: "cc-body" },
         Hh("div", { className: "cc-prev" }, Hh("div", { className: "cs-frame sel" }, Hh("div", { className: "cs-tab" }, "Slot " + (slot || "\u2014")), pv_ && Hh(CsPortrait, { p: pv_, scale: 2.7, w: 170, h: 240, rot })), Hh("button", { className: "cs-btn", onClick: () => setRot((r) => r === "down" ? "dq" : r === "dq" ? "side" : r === "side" ? "uq" : r === "uq" ? "up" : "down") }, "\u27f3 girar")),
