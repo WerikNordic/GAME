@@ -1,3 +1,6 @@
+# v71
+- Login/contas na nuvem reativados (saves da conta, inclusive WERIK).
+
 # v70
 - Multiplayer real: jogadores de outros navegadores aparecem no mapa, chat geral do mapa com balão, mensagem privada (/w nome msg) com janela, AFK visível a todos.
 
