@@ -13298,7 +13298,7 @@ void main() {
     let o = w0(a), r = n.id ?? e.group(), i = n.mat ?? _0, s = [t[1][0] - t[0][0], t[1][1] - t[0][1], t[1][2] - t[0][2]], l = [t[3][0] - t[0][0], t[3][1] - t[0][1], t[3][2] - t[0][2]], c = n.n ?? E0([s[1] * l[2] - s[2] * l[1], s[2] * l[0] - s[0] * l[2], s[0] * l[1] - s[1] * l[0]]);
     e.add({ p: [t[0], t[1], t[2]], n: [c, c, c], col: o, mat: i, id: r }), e.add({ p: [t[0], t[2], t[3]], n: [c, c, c], col: o, mat: i, id: r });
   }
-  function A0(e, t) {
+  function A0sw(e, t) {
     let a = t.ss ?? 3, n = t.w * a, o = t.h * a, r = new Float32Array(n * o).fill(-1e9), i = new Int32Array(n * o), s = new Float32Array(n * o * 3), c = A.RX(t.pitch).mul(A.RY(t.yaw)).r, d = t.pxu * a, f = t.ax * a, u = t.ay * a, m = E0(t.light ?? [-0.5, 0.62, 0.6]), p = t.ambient ?? 0.46, h = t.rim ?? 0.22, x = m[0], b = m[1], g = m[2], y = Math.hypot(x, b, g + 1), v = x / y, k = b / y, R = (g + 1) / y, w = new Float32Array(257);
     for (let _ = 0; _ <= 256; _++) w[_] = Math.pow(_ / 256, 1.35);
     let M = n, T = o, z = -1, I = -1, J = [0, 0, 0], D = [0, 0, 0], Z = [0, 0, 0], q = [0, 0, 0], H = [0, 0, 0], V = [0, 0, 0];
@@ -13376,6 +13376,117 @@ void main() {
     }
     return { w: t.w, h: t.h, data: ae };
   }
+  var T3 = (() => { try { return localStorage.getItem("eldvar.t3") !== "0" && !/[?&]old\b/.test(location.search); } catch { return true; } })(), T3gl = null;
+  function T3init() {
+    if (T3gl !== null) return T3gl;
+    try {
+      let cv = document.createElement("canvas");
+      cv.width = cv.height = 8;
+      let gl = cv.getContext("webgl2", { antialias: false, alpha: true, premultipliedAlpha: false, preserveDrawingBuffer: true });
+      if (!gl) return T3gl = false;
+      let sh = (ty, src) => { let s = gl.createShader(ty); gl.shaderSource(s, src); gl.compileShader(s); if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(s)); return s; };
+      let pr = (vs, fs) => { let p = gl.createProgram(); gl.attachShader(p, sh(gl.VERTEX_SHADER, vs)); gl.attachShader(p, sh(gl.FRAGMENT_SHADER, fs)); gl.linkProgram(p); if (!gl.getProgramParameter(p, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(p)); return p; };
+      let VS = `#version 300 es
+layout(location=0) in vec3 aP; layout(location=1) in vec3 aN; layout(location=2) in vec3 aC; layout(location=3) in vec3 aM;
+uniform mat3 uR; uniform vec2 uSz; uniform vec2 uOff; uniform float uD;
+out vec3 vN; out vec3 vC; out vec3 vM; out float vZ;
+void main(){ vec3 v=uR*aP; vN=uR*aN; vC=aC; vM=aM; vZ=v.z;
+ vec2 s=vec2(uOff.x+v.x*uD, uOff.y-v.y*uD);
+ gl_Position=vec4(s.x/uSz.x*2.-1., 1.-s.y/uSz.y*2., -v.z/24., 1.); }`;
+      let FS = `#version 300 es
+precision highp float;
+in vec3 vN; in vec3 vC; in vec3 vM; in float vZ;
+uniform vec3 uL; uniform float uAmb; uniform float uRim;
+layout(location=0) out vec4 o0; layout(location=1) out vec4 o1; layout(location=2) out vec4 o2;
+float bandf(float x,float a,float w){return smoothstep(a-w,a+w,x);}
+void main(){
+ vec3 N=normalize(vN); if(N.z<0.) N=-N;
+ vec3 L=normalize(uL); float hl=dot(N,L)*.5+.5;
+ float b=.60+.22*bandf(hl,.40,.035)+.18*bandf(hl,.64,.035);
+ float sky=N.y*.5+.5;
+ vec3 c=vC; float lum=dot(c,vec3(.299,.587,.114));
+ c=mix(vec3(lum),c,1.32); c*=1.10;
+ vec3 shade=mix(vec3(.74,.80,1.0),vec3(1.0,.97,.90),bandf(hl,.40,.035));
+ c=c*b*shade*(.90+.14*sky);
+ float rim=pow(1.-max(N.z,0.),2.6); c+=vec3(1.,.93,.78)*rim*uRim*bandf(N.y*.5+.5,.55,.1)*.55;
+ float sh=vM.x; if(sh>0.){ vec3 H=normalize(L+vec3(0.,0.,1.)); float sp=pow(max(dot(N,H),0.),30.+sh*40.); c+=vec3(1.)*bandf(sp,.55,.06)*sh*.55; }
+ c+=vC*vM.y;
+ o0=vec4(min(c,vec3(1.3)),1.);
+ float id=floor(vM.z+.5); o1=vec4(mod(id,256.)/255., floor(id/256.)/255., 0., 1.);
+ float d=clamp(.5+vZ/24.,0.,1.); float d8=floor(d*255.)/255.; o2=vec4(d8, fract(d*255.), 0., 1.);
+}`;
+      let VS2 = `#version 300 es
+out vec2 uv; void main(){ vec2 p=vec2(float(gl_VertexID&1),float((gl_VertexID>>1)&1)); uv=p; gl_Position=vec4(p*2.-1.,0.,1.); }`;
+      let FS2 = `#version 300 es
+precision highp float;
+in vec2 uv; uniform sampler2D tC; uniform sampler2D tI; uniform sampler2D tD; uniform vec2 uPx; uniform float uW; uniform vec3 uK;
+out vec4 o;
+float dep(vec2 q){ vec4 t=texture(tD,q); return t.r+t.g/255.; }
+float idf(vec2 q){ vec4 t=texture(tI,q); return t.a<.5?-1.:t.r*255.+t.g*65280.; }
+void main(){
+ float i0=idf(uv); vec4 c=texture(tC,uv);
+ vec2 dirs[8]=vec2[8](vec2(1,0),vec2(-1,0),vec2(0,1),vec2(0,-1),vec2(.7,.7),vec2(-.7,-.7),vec2(.7,-.7),vec2(-.7,.7));
+ if(i0<0.){ float hit=0.; for(int k=0;k<8;k++){ vec2 q=uv+dirs[k]*uPx*uW; if(idf(q)>=0.) hit=1.; } o = hit>.5? vec4(uK,1.) : vec4(0.); return; }
+ float d0=dep(uv); float e=0.;
+ for(int k=0;k<4;k++){ vec2 q=uv+dirs[k]*uPx*uW*.8; float i1=idf(q); if(i1<0.) continue; float dd=dep(q)-d0;
+   if(dd>.012) e=max(e,min(1.,dd/.05)*.9); else if(i1!=i0 && dd>-.012) e=max(e,.30); }
+ vec3 col=mix(c.rgb, uK, e); o=vec4(col,1.);
+}`;
+      let P1 = pr(VS, FS), P2 = pr(VS2, FS2);
+      T3gl = { cv, gl, P1, P2, u1: (n) => gl.getUniformLocation(P1, n), u2: (n) => gl.getUniformLocation(P2, n), max: Math.min(4096, gl.getParameter(gl.MAX_TEXTURE_SIZE)), vao: gl.createVertexArray(), buf: gl.createBuffer() };
+      if (!gl.getExtension("EXT_color_buffer_float")) { }
+      cv.addEventListener("webglcontextlost", () => { T3gl = false; });
+    } catch (err) { console.warn("T3 GL falhou", err); T3gl = false; }
+    return T3gl;
+  }
+  function A0gl(e, t) {
+    let G = T3init();
+    if (!G) return A0sw(e, t);
+    let { gl } = G, ss = Math.max(2, t.ss ?? 2), W = t.w * ss, H = t.h * ss;
+    if (W > G.max || H > G.max) ss = Math.max(1, Math.floor(Math.min(G.max / t.w, G.max / t.h))), W = t.w * ss, H = t.h * ss;
+    let tris = e.tris, nv = tris.length * 3, data = new Float32Array(nv * 12), o = 0;
+    for (let tr of tris) for (let k = 0; k < 3; k++) {
+      let p = tr.p[k], n = tr.n[k];
+      data[o++] = p[0], data[o++] = p[1], data[o++] = p[2], data[o++] = n[0], data[o++] = n[1], data[o++] = n[2], data[o++] = tr.col[0], data[o++] = tr.col[1], data[o++] = tr.col[2], data[o++] = tr.mat.shine, data[o++] = tr.mat.glow, data[o++] = tr.id;
+    }
+    // mat attr: (shine, glow, id)
+    let c = A.RX(t.pitch).mul(A.RY(t.yaw)).r, lt = E0(t.light ?? [-0.5, 0.62, 0.6]);
+    if (G.cv.width !== W || G.cv.height !== H) G.cv.width = W, G.cv.height = H;
+    let mk = (f) => { let tx = gl.createTexture(); gl.bindTexture(gl.TEXTURE_2D, tx); gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, W, H, 0, gl.RGBA, gl.UNSIGNED_BYTE, null); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE); return tx; };
+    let t0 = mk(), t1 = mk(), t2 = mk(), t3 = mk(), fb = gl.createFramebuffer(), rb = gl.createRenderbuffer(), fb2 = gl.createFramebuffer();
+    gl.bindRenderbuffer(gl.RENDERBUFFER, rb), gl.renderbufferStorage(gl.RENDERBUFFER, gl.DEPTH_COMPONENT24, W, H);
+    gl.bindFramebuffer(gl.FRAMEBUFFER, fb);
+    [t0, t1, t2].forEach((tx, i) => gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0 + i, gl.TEXTURE_2D, tx, 0));
+    gl.framebufferRenderbuffer(gl.FRAMEBUFFER, gl.DEPTH_ATTACHMENT, gl.RENDERBUFFER, rb);
+    gl.drawBuffers([gl.COLOR_ATTACHMENT0, gl.COLOR_ATTACHMENT1, gl.COLOR_ATTACHMENT2]);
+    gl.viewport(0, 0, W, H), gl.disable(gl.BLEND), gl.enable(gl.DEPTH_TEST), gl.depthFunc(gl.LESS), gl.depthMask(true), gl.clearColor(0, 0, 0, 0), gl.clearDepth(1), gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+    gl.useProgram(G.P1), gl.bindVertexArray(G.vao), gl.bindBuffer(gl.ARRAY_BUFFER, G.buf), gl.bufferData(gl.ARRAY_BUFFER, data, gl.STREAM_DRAW);
+    for (let i = 0; i < 4; i++) gl.enableVertexAttribArray(i), gl.vertexAttribPointer(i, 3, gl.FLOAT, false, 48, i * 12);
+    gl.uniformMatrix3fv(G.u1("uR"), true, new Float32Array(c)), gl.uniform2f(G.u1("uSz"), W, H), gl.uniform2f(G.u1("uOff"), t.ax * ss, t.ay * ss), gl.uniform1f(G.u1("uD"), t.pxu * ss);
+    gl.uniform3f(G.u1("uL"), lt[0], lt[1], lt[2]), gl.uniform1f(G.u1("uAmb"), t.ambient ?? 0.46), gl.uniform1f(G.u1("uRim"), t.rim ?? 0.22);
+    gl.drawArrays(gl.TRIANGLES, 0, nv);
+    gl.bindFramebuffer(gl.FRAMEBUFFER, fb2), gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, t3, 0), gl.drawBuffers([gl.COLOR_ATTACHMENT0]);
+    gl.disable(gl.DEPTH_TEST), gl.clear(gl.COLOR_BUFFER_BIT), gl.useProgram(G.P2);
+    [t0, t1, t2].forEach((tx, i) => { gl.activeTexture(gl.TEXTURE0 + i), gl.bindTexture(gl.TEXTURE_2D, tx); });
+    gl.uniform1i(G.u2("tC"), 0), gl.uniform1i(G.u2("tI"), 1), gl.uniform1i(G.u2("tD"), 2), gl.uniform2f(G.u2("uPx"), 1 / W, 1 / H), gl.uniform1f(G.u2("uW"), (t.outline ?? 1.4) * ss * 0.9);
+    gl.uniform3f(G.u2("uK"), 0.08, 0.06, 0.12);
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    let px = new Uint8Array(W * H * 4);
+    gl.readPixels(0, 0, W, H, gl.RGBA, gl.UNSIGNED_BYTE, px);
+    [t0, t1, t2, t3].forEach((tx) => gl.deleteTexture(tx)), gl.deleteFramebuffer(fb), gl.deleteFramebuffer(fb2), gl.deleteRenderbuffer(rb);
+    let out = new Uint8ClampedArray(t.w * t.h * 4), inv = 1 / (ss * ss);
+    for (let y = 0; y < t.h; y++) for (let x = 0; x < t.w; x++) {
+      let r = 0, g = 0, b = 0, al = 0;
+      for (let sy = 0; sy < ss; sy++) for (let sx = 0; sx < ss; sx++) {
+        let k = ((H - 1 - (y * ss + sy)) * W + x * ss + sx) * 4;
+        if (px[k + 3]) r += px[k], g += px[k + 1], b += px[k + 2], al++;
+      }
+      if (al) { let q = (y * t.w + x) * 4; out[q] = r / al, out[q + 1] = g / al, out[q + 2] = b / al, out[q + 3] = Math.min(255, al * inv * 255); }
+    }
+    return { w: t.w, h: t.h, data: out };
+  }
+  function A0(e, t) { if (!T3) return A0sw(e, t); let t0 = performance.now(), r = A0gl(e, t); window.__t3 = window.__t3 || { n: 0, ms: 0, max: 0 }; let d = performance.now() - t0; window.__t3.n++, window.__t3.ms += d, d > window.__t3.max && (window.__t3.max = d); return r; }
+  window.__sprDbg = () => ({ hh, w4, _4, I0, R4, Yl, ea });
   var c4 = [1, -1, 0, 0, 1, -1, 1, -1], u4 = [0, 0, 1, -1, 1, -1, -1, 1];
   function d4(e, t, a, n) {
     let o = A.RX(a).mul(A.RY(t)), r = o.r, i = 1e9, s = -1e9, l = 1e9, c = -1e9;
@@ -14309,7 +14420,7 @@ void main() {
       c.putImageData(im, 0, 0);
     } catch {}
   }
-  var PXON = (() => { try { return localStorage.getItem("eldvar.px") !== "0"; } catch { return true; } })();
+  var PXON = (() => { try { return localStorage.getItem("eldvar.px") !== "0" && !T3; } catch { return !T3; } })();
   function PX(o) {
     if (!PXON || !o || !o.cv) return o;
     let f = Math.max(2, Math.round(1.5 / o.k)), W = o.cv.width, H = o.cv.height, sw = Math.ceil(W / f), sh = Math.ceil(H / f);
@@ -14335,7 +14446,7 @@ void main() {
     let oc = out.getContext("2d");
     return oc.imageSmoothingEnabled = false, oc.drawImage(sc, 0, 0, sw * f, sh * f), { cv: out, ax: o.ax, ay: o.ay, k: o.k };
   }
-  var SPON = (() => { try { return localStorage.getItem("eldvar.sp") !== "0"; } catch { return true; } })();
+  var SPON = (() => { try { return localStorage.getItem("eldvar.sp") !== "0" && !T3; } catch { return !T3; } })();
   var SPK = 2;
   window.__dbgspr = () => ({ SPR, R4, ea });
   function SPR(e, dir, a, n, st) {
@@ -14537,7 +14648,7 @@ void main() {
   function hh(e, t, a, n, o) {
     if (SPON && e.pro !== false) return SPR(e, t, a, n, o);
     let r = p4(e, { phase: a < 0 ? 0 : a / ea, moving: a >= 0, lvl: n, style: o, sit: a === -2 }), i = A0(r, { w: uo.lw * Rt, h: uo.lh * Rt, ax: uo.lax * Rt, ay: uo.lay * Rt, pxu: uo.pxu * Rt, yaw: rh[t], pitch: S4, ss: e.pro === false ? fh : 1, outline: e.pro === false ? 1.1 : 1.6, inner: e.pro === false ? void 0 : 0.55 });
-    return e.pro !== false && tS(i, 7), PX({ cv: mh(i), ax: uo.lax, ay: uo.lay, k: 1 / Rt });
+    return e.pro !== false && !T3 && tS(i, 7), PX({ cv: mh(i), ax: uo.lax, ay: uo.lay, k: 1 / Rt });
   }
   function w4(e, t, a, n) {
     let o = g4[e], r = h4(e, { phase: a < 0 ? 0 : a / ea, moving: a >= 0, atk: n }), i = o.w / 2, s = o.h - 14, l = A0(r, { w: o.w * Rt, h: o.h * Rt, ax: i * Rt, ay: s * Rt, pxu: o.pxu * Rt, yaw: rh[t], pitch: S4, ss: fh, outline: 1.1 });
@@ -15222,7 +15333,7 @@ void main() {
     constructor(t, a) {
       this.host = t;
       this.store = a;
-      this.canvas = document.createElement("canvas"), this.canvas.className = "game-canvas", this.canvas.style.cssText = "display:block;width:100%;height:100%;touch-action:none;outline:none", this.canvas.tabIndex = 0, t.appendChild(this.canvas);
+      this.canvas = document.createElement("canvas"), this.canvas.className = "game-canvas", this.canvas.style.cssText = "display:block;width:100%;height:100%;touch-action:none;outline:none", this.canvas.tabIndex = 0, T3 && (this.canvas.style.filter = "saturate(1.32) contrast(1.07) brightness(1.12)"), t.appendChild(this.canvas);
       let n = this.canvas.getContext("2d");
       if (!n) throw new Error("Canvas 2D indispon\xEDvel neste navegador.");
       this.ctx = n, this.resize(), this.ro = typeof ResizeObserver < "u" ? new ResizeObserver(() => this.resize()) : null, this.ro?.observe(t), window.addEventListener("keydown", this.onKeyDown), window.addEventListener("keyup", this.onKeyUp), window.addEventListener("blur", this.onBlur), this.canvas.addEventListener("pointerdown", this.onPointerDown), window.addEventListener("pointermove", this.onPointerMove), window.addEventListener("pointerup", this.onPointerUp), window.addEventListener("pointercancel", this.onPointerUp), this.canvas.addEventListener("contextmenu", (o) => o.preventDefault()), this.canvas.addEventListener("wheel", this.onWheel, { passive: false });
@@ -15925,7 +16036,7 @@ void main() {
       for (let q of this.anims.keys()) !z.has(q) && q !== "p" && !q.startsWith("n:") && this.anims.delete(q);
       n.city && this.cityAmbience(n, a.player.pos), this.drawTopFx(), this.drawParticles(), this.ambient(n), n.city && this.forgeFx(n, a.player.pos), this.applyLighting(a, n), i.setTransform(this.dpr, 0, 0, this.dpr, 0, 0), this.evView && (this.wfx.update(t, this.evView, n.theme, !!n.city, this.w, this.h), this.wfx.draw(i, this.evView, n.theme, this.w, this.h));
       let I = i.createRadialGradient(this.w / 2, this.h / 2, Math.min(this.w, this.h) * 0.36, this.w / 2, this.h / 2, Math.max(this.w, this.h) * 0.72);
-      I.addColorStop(0, "rgba(4,6,12,0)"), I.addColorStop(1, "rgba(4,6,12,0.66)"), i.fillStyle = I, i.fillRect(0, 0, this.w, this.h), this.drawMinimap(a, n), this.drawMapTitle(), this.drawAnnounce();
+      I.addColorStop(0, "rgba(4,6,12,0)"), I.addColorStop(1, T3 ? "rgba(10,16,34,0.34)" : "rgba(4,6,12,0.66)"), i.fillStyle = I, i.fillRect(0, 0, this.w, this.h), this.drawMinimap(a, n), this.drawMapTitle(), this.drawAnnounce();
       let J = this.fade, D = Math.min(1, (this.clock - J.t0) / J.dur), Z = J.from + (J.to - J.from) * D;
       Z > 3e-3 && (i.fillStyle = `rgba(${J.color},${Z})`, i.fillRect(0, 0, this.w, this.h)), this.clock < this.flash.until && (i.fillStyle = `rgba(255,255,255,${0.5 * (this.flash.until - this.clock) / 300})`, i.fillRect(0, 0, this.w, this.h)), this.dead && (i.fillStyle = "rgba(80,0,0,0.25)", i.fillRect(0, 0, this.w, this.h));
     }

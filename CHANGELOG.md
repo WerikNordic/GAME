@@ -116,3 +116,7 @@
 - Estátuas variadas (anjo, Bafomé, Morroc, serpente) espalhadas nas cidades com lore
 - Mercador com maça/martelo próprios
 - Ferreiros com brasas e faíscas, moradores comentam clima e hora
+
+## v79 (teste 3D toon)
+- Sprites agora renderizados em GL com sombra em faixas, contorno limpo, cores vivas e sem filtro pixel.
+- Voltar ao estilo anterior: abra com ?old ou localStorage eldvar.t3=0.
