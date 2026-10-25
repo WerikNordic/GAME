@@ -153,3 +153,4 @@
 - v98: monstros humanoides/bosses (goblin, draugr, cinder, autômato, silvano, prisma, sentinela, voidling, jotun) redesenhados em pixel-art 3D.
 - v99: personagens sentam de verdade no chão (quadril no solo, pernas à frente, por classe).
 - v100: Ultimate de classe no nível 99 (tecla U / botão ★): 5 ondas de impacto + nova final, 90s de recarga, invulnerável 2,4s; nome próprio por classe.
+- v101: minigames nas cidades (/dados, /corrida, /pescar+/puxar), pet seguidor (/pet), montaria de lobo +40% velocidade (/montaria); ajuda atualizada.

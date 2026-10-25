@@ -7435,7 +7435,7 @@ Error generating stack: ` + n.message + `
     let a = [...e];
     return t >= 0 && t < Ui && (a[t] = null), a;
   }
-  var Hu = { ok: "OK", lv: "\u2665", love: "\u2665", gg: "GG", heh: "^^", hmm: "...", swt: "'-'", sob: "T_T", no: "X", thx: "Obg", hi: "Oi", zz: "Zzz", "!": "!", "?": "?", omg: "O_O", grr: ">:(", lol: "XD", bye: "Tchau", gl: "GL" }, S8 = ["Comandos: /sentar (/sit) \xB7 /levantar (/stand) \xB7 /onde (/where) \xB7 /quem (/who) \xB7 /exp \xB7 /hora (/time)", "@afk (nas cidades principais): sai do jogo e deixa o personagem na cidade \xB7 /boss: testa o boss mundial", "/nomes (/showname) liga/desliga nomes \xB7 /efeitos (/effect) liga/desliga n\xFAmeros de dano \xB7 /refresh \xB7 /criar", "Chat: /w nome msg \xB7 /p msg (grupo) \xB7 /g msg (guilda) \xB7 Ctrl+C: mensagem privada em janela", "Emotes: " + Object.keys(Hu).filter((e) => e !== "love").map((e) => "/" + e).join(" ") + " \xB7 /rps (pedra, papel ou tesoura)", "Teclas: Insert senta \xB7 Alt+E mochila \xB7 Alt+S habilidades \xB7 Alt+A atributos \xB7 F1\u2013F12 habilidades e atalhos"], w8 = 200;
+  var Hu = { ok: "OK", lv: "\u2665", love: "\u2665", gg: "GG", heh: "^^", hmm: "...", swt: "'-'", sob: "T_T", no: "X", thx: "Obg", hi: "Oi", zz: "Zzz", "!": "!", "?": "?", omg: "O_O", grr: ">:(", lol: "XD", bye: "Tchau", gl: "GL" }, S8 = ["Minigames (nas cidades): /dados aposta \xB7 /corrida barco(1-3) aposta \xB7 /pescar + /puxar \xB7 /pet \xB7 /montaria (+40% velocidade) \xB7 N\xEDvel 99: tecla U = Ultimate", "Comandos: /sentar (/sit) \xB7 /levantar (/stand) \xB7 /onde (/where) \xB7 /quem (/who) \xB7 /exp \xB7 /hora (/time)", "@afk (nas cidades principais): sai do jogo e deixa o personagem na cidade \xB7 /boss: testa o boss mundial", "/nomes (/showname) liga/desliga nomes \xB7 /efeitos (/effect) liga/desliga n\xFAmeros de dano \xB7 /refresh \xB7 /criar", "Chat: /w nome msg \xB7 /p msg (grupo) \xB7 /g msg (guilda) \xB7 Ctrl+C: mensagem privada em janela", "Emotes: " + Object.keys(Hu).filter((e) => e !== "love").map((e) => "/" + e).join(" ") + " \xB7 /rps (pedra, papel ou tesoura)", "Teclas: Insert senta \xB7 Alt+E mochila \xB7 Alt+S habilidades \xB7 Alt+A atributos \xB7 F1\u2013F12 habilidades e atalhos"], w8 = 200;
   function zx(e, t) {
     let a = e.trim().slice(0, w8);
     if (!a) return [];
@@ -7445,6 +7445,7 @@ Error generating stack: ` + n.message + `
     if (r === "sit" || r === "sentar") return s("sit");
     if (r === "stand" || r === "levantar") return s("stand");
     if (r === "boss" || r === "jormungandr") return WB.forceIn(25), [{ channel: "sistema", text: "Nidhwerikr desperta em 25 segundos... (modo teste)" }];
+    if (["dados", "pescar", "puxar", "corrida", "pet", "montaria"].includes(r)) return s("mini", "", `${r} ${i}`);
     if (r === "where" || r === "onde") return s("where");
     if (r === "who" || r === "quem") return s("who");
     if (r === "exp" || r === "xp") return s("exp");
@@ -9380,7 +9381,7 @@ Error generating stack: ` + n.message + `
       return a;
     }
     updatePlayer(t) {
-      let a = this.player, n = t / 1e3, o = ((dd) => ({ ...dd, speed: dd.speed * (1 + this.buffSum("spd")) }))(this.derived()), r = this.overloaded() ? { ...o, speed: o.speed * Ly } : o, i = Math.hypot(this.move.x, this.move.y);
+      let a = this.player, n = t / 1e3, o = ((dd) => ({ ...dd, speed: dd.speed * (1 + this.buffSum("spd") + (this.ps.mount ? 0.4 : 0)) }))(this.derived()), r = this.overloaded() ? { ...o, speed: o.speed * Ly } : o, i = Math.hypot(this.move.x, this.move.y);
       if (this.moved = false, this.sitting && (a.deadAt !== null ? this.sitting = false : (this.clearOrders(), this.move.x = 0, this.move.y = 0, this.attackQueued = false, this.attackHeld = false, i = 0)), this.time < a.flinchUntil) return;
       if (i > 0.01) {
         this.clearOrders();
@@ -10960,6 +10961,38 @@ Error generating stack: ` + n.message + `
         case "effects": {
           let i = !this.settings.damageNumbers;
           return this.updateSettings({ damageNumbers: i }), r(i ? "N\xFAmeros de dano ligados." : "N\xFAmeros de dano desligados."), true;
+        }
+        case "mini": {
+          let [i, ...b] = String(a ?? "").split(" "), c = parseInt(b[b.length - 1]) || 0, cty = !!n.map.city, rnd = (q) => 1 + Math.floor(Math.random() * q);
+          if (i === "pet") return o.pet = !o.pet, r(o.pet ? "Um filhote de lobo passa a te seguir. /pet para dispensar." : "Filhote dispensado."), true;
+          if (i === "montaria") return o.mount = !o.mount, r(o.mount ? "Voc\xEA montou um lobo: +40% de velocidade. /montaria para desmontar." : "Voc\xEA desmontou."), true;
+          if (!cty) return r("Minigames s\xF3 funcionam dentro das cidades."), true;
+          if (i === "dados") {
+            if (c < 10 || c > 5e4) return r("Uso: /dados aposta (10 a 50000 zens). Soma maior que a da casa dobra a aposta."), true;
+            if (o.silver < c) return r("Zens insuficientes."), true;
+            let x = rnd(6) + rnd(6), y = rnd(6) + rnd(6);
+            return x > y ? (o.silver += c, r(`\u2684 Voc\xEA tirou ${x} contra ${y} da casa: ganhou ${c} zens!`)) : x < y ? (o.silver -= c, r(`\u2684 Voc\xEA tirou ${x} contra ${y} da casa: perdeu ${c} zens.`)) : r(`\u2684 Empate (${x} a ${x}). Aposta devolvida.`), this.refresh?.(), true;
+          }
+          if (i === "corrida") {
+            let bt = parseInt(b[0]);
+            if (!(bt >= 1 && bt <= 3) || c < 10 || c > 5e4 || b.length < 2) return r("Uso: /corrida barco(1-3) aposta. Acertar o vencedor paga 2,7x."), true;
+            if (o.silver < c) return r("Zens insuficientes."), true;
+            let w = rnd(3), nm = ["Drakkar Vermelho", "Drakkar Azul", "Drakkar Dourado"];
+            return w === bt ? (o.silver += Math.round(c * 1.7), r(`\u26F5 ${nm[w - 1]} cruzou a linha primeiro! Voc\xEA ganhou ${Math.round(c * 1.7)} zens.`)) : (o.silver -= c, r(`\u26F5 Venceu o ${nm[w - 1]}. Voc\xEA perdeu ${c} zens.`)), true;
+          }
+          if (i === "pescar") {
+            if (this._fish) return r("A linha j\xE1 est\xE1 na \xE1gua. Aguarde a fisgada e use /puxar."), true;
+            let t0 = Date.now() + 2e3 + Math.random() * 4e3;
+            return this._fish = { t0 }, r("\u{1F3A3} Voc\xEA lan\xE7ou a linha... aguarde a fisgada e digite /puxar."), setTimeout(() => { this._fish && (this._fish.bite = Date.now(), this.toast("\u{1F41F} Fisgou! /puxar j\xE1!", "good"), r("\u{1F41F} Fisgou! Digite /puxar!"), setTimeout(() => { this._fish && this._fish.bite && (this._fish = null, r("O peixe escapou...")); }, 2200)); }, t0 - Date.now()), true;
+          }
+          if (i === "puxar") {
+            if (!this._fish) return r("Voc\xEA n\xE3o est\xE1 pescando. Use /pescar."), true;
+            if (!this._fish.bite) return this._fish = null, r("Puxou cedo demais; o peixe fugiu."), true;
+            this._fish = null;
+            let big = Math.random() < 0.12, g = Math.round((40 + o.level * 9) * (big ? 6 : 1) * (0.6 + Math.random() * 0.8));
+            return o.silver += g, r(big ? `\u{1F3C6} Um salm\xE3o gigante! Vendido por ${g} zens.` : `Voc\xEA pescou um peixe e vendeu por ${g} zens.`), this.refresh?.(), true;
+          }
+          return false;
         }
         case "emote": {
           let i = a === "rps" ? ["Pedra!", "Papel!", "Tesoura!"][Math.floor(Math.random() * 3)] : Hu[a ?? ""];
@@ -16303,10 +16336,18 @@ function ROXQM(f, c, s, l, def) {
       if (n.save(), n.globalAlpha = c ? 0.3 : 1, c) n.translate(r.x, r.y), n.rotate(Math.PI / 2), N4(() => nt(n, u, 0, 0, l, $a, $a));
       else {
         this.blob(r.x, r.y + 4, 15), a.ps.level >= 99 && this.epicFx(r.x, r.y, 0);
+        var mnt = a.ps.mount && !a.sitting;
+        if (mnt) { let mw = ROXQM("wolf", s, i.moving ? Math.floor(i.phase * ea) : -1, 0, { id: "montaria", color: 10125400 }); mw && nt(n, mw, r.x, r.y + 8, l, $a * 1.35, $a * 1.35); }
         let m = this.organic(i, o.facing, { moving: i.moving, atkT: this.clock - i.atkAt, atkImpact: i.atkImpact, atkDur: i.atkDur, breath: a.sitting ? 8e-3 : 0.011 });
-        a.sitting && (m.dx = 0, m.dy = 0, m.rot *= 0.3), nt(n, u, r.x + m.dx, r.y + 6 + m.dy, l, $a * m.sx, $a * m.sy, m.rot), a.ps.level >= 99 && this.epicFx(r.x, r.y, 1);
+        a.sitting && (m.dx = 0, m.dy = 0, m.rot *= 0.3), nt(n, u, r.x + m.dx, r.y + 6 + m.dy - (mnt ? 15 : 0), l, $a * m.sx, $a * m.sy, m.rot), a.ps.level >= 99 && this.epicFx(r.x, r.y, 1);
       }
       if (n.restore(), !c) {
+        if (a.ps.pet) {
+          let pt = this._pet || (this._pet = { x: o.pos.x - 30, y: o.pos.y + 20, f: 0 }), tx = o.pos.x - Math.cos(o.facing) * 34 + 14, ty = o.pos.y - Math.sin(o.facing) * 34 + 18, dx = tx - pt.x, dy = ty - pt.y, dd = Math.hypot(dx, dy);
+          if (dd > 400) pt.x = tx, pt.y = ty; else if (dd > 6) pt.x += dx * 0.09, pt.y += dy * 0.09, pt.f = Math.atan2(dy, dx);
+          let pm = dd > 12, pr = ce(pt.x, pt.y), { dir: pd, flip: pf } = Kl(pt.f), ps2 = ROXQM("wolf", pd, pm ? Math.floor(this.clock / 90 % ea) : -1, 0, { id: "filhote", color: 13026744 });
+          ps2 && (this.blob(pr.x, pr.y + 3, 7), nt(n, ps2, pr.x, pr.y + 4, pf, $a * 0.6, $a * 0.6), this.text("Filhote", pr.x, pr.y - 22, 10, "#ffe9a8"));
+        }
         let m = a.sitting ? -14 : 0;
         this.nameOn("p") && this.text(a.ps.name, r.x, r.y + 16, 12, "#ffffff");
         let p = a.derived();
