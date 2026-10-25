@@ -180,6 +180,13 @@
 - Janelas Alt+Q/E/S/A/G reduzidas a 50%.
 - Sons por espécie de monstro (lobo, javali, goblin, morto-vivo, gigante, gelatina, lagarto, máquina, pedra, vazio, planta): voz ociosa, ao notar o jogador, ao ser atingido e ao morrer; volume por distância.
 
+## v131 (servidor estilo RO)
+- Guildas e grupos agora vivem no servidor: criar, convidar, aceitar/recusar, sair, expulsar, dissolver; líder transferido ao sair; limites (guilda 30, grupo 12); chat privado /g e /p entre membros; lista com status online.
+- Bônus de grupo: +10% de EXP por membro do grupo no mesmo mapa/canal (até +50%).
+- Canais por mapa: até 30 jogadores por canal, divisão automática (Canal 2, 3...).
+- /quem mostra jogadores online; /denunciar NOME motivo envia à moderação.
+- Painel de moderação no menu de admin: denúncias, silenciar, banir, liberar; silenciados/banidos barrados no chat e presença.
+
 ## v130 (servidor)
 - Multiplayer: presença e chat só aceitam o dono do nick (anti-personificação); limite de 1 atualização por 0,6s, coordenadas validadas, mensagens repetidas bloqueadas.
 - Boss mundial: dano por chamada limitado a 0,25% da vida, 1 chamada de dano a cada 3s por jogador, janela de tempo e vida máxima validadas, simulação limitada (corrige brecha que permitia matar o boss de uma vez).

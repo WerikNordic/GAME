@@ -7571,7 +7571,7 @@ Error generating stack: ` + n.message + `
   }
   function emoCanvas(k) { return EMO_CACHE[k] ?? (EMO_CACHE[k] = emoMake(k)); }
   var EMO_CMD = { feliz: "feliz", rir: "rir", haha: "rir", kkk: "joy", joy: "joy", amor: "amor", coracao: "coracao", piscar: "piscar", legal: "legal", cool: "legal", triste: "triste", chorar: "chorar", bravo: "bravo", surpreso: "surpreso", dormir: "dormir", pensar: "pensar", suor: "suor", timido: "timido", abraco: "abraco", estrela: "estrela", joia: "joia", ola: "ola", palmas: "palmas", paz: "paz", forca: "forca", oracao: "oracao", fogo: "fogo", musica: "musica", brindar2: "brindar", duvida: "duvida", exclama: "exclama", caveira: "caveira", nao: "nao", danca2: "danca" };
-  var Hu = { ok: "OK", lv: "\u2665", love: "\u2665", gg: "GG", heh: "^^", hmm: "...", swt: "'-'", sob: "T_T", no: "X", thx: "Obg", hi: "Oi", zz: "Zzz", "!": "!", "?": "?", omg: "O_O", grr: ">:(", lol: "XD", bye: "Tchau", gl: "GL" }, S8 = ["Montaria/pet: /montar \xB7 /desmontar (voc\u00EA s\u00F3 desce com este comando, mesmo ap\u00F3s sair do jogo) \xB7 /pet (chama ou guarda o lobo)", "Social: /amigo add NOME \xB7 /amigos \xB7 /casar nome \xB7 /abracar \xB7 /brindar \xB7 /danca \xB7 /caminho (n\xEDvel 70) \xB7 /cozinhar \xB7 /jogos (janela dos minigames)", "Minigames (nas cidades): /dados aposta \xB7 /corrida barco(1-3) aposta \xB7 /pescar + /puxar \xB7 N\xEDvel 99: tecla U = Ultimate", "Comandos: /sentar (/sit) \xB7 /levantar (/stand) \xB7 /onde (/where) \xB7 /quem (/who) \xB7 /exp \xB7 /hora (/time)", "@afk (nas cidades principais): sai do jogo e deixa o personagem na cidade \xB7 /boss: testa o boss mundial", "/nomes (/showname) liga/desliga nomes \xB7 /efeitos (/effect) liga/desliga n\xFAmeros de dano \xB7 /refresh \xB7 /criar", "Chat: /w nome msg \xB7 /p msg (grupo) \xB7 /g msg (guilda) \xB7 Alt+C: mensagem privada em janela", "Emotes: " + Object.keys(Hu).filter((e) => e !== "love").map((e) => "/" + e).join(" ") + " \xB7 /rps (pedra, papel ou tesoura) \xB7 /emotes (\xEDcones)", "Teclas: Insert senta \xB7 Alt+E mochila \xB7 Alt+S habilidades \xB7 Alt+A atributos \xB7 F1\u2013F12 habilidades e atalhos"], w8 = 200;
+  var Hu = { ok: "OK", lv: "\u2665", love: "\u2665", gg: "GG", heh: "^^", hmm: "...", swt: "'-'", sob: "T_T", no: "X", thx: "Obg", hi: "Oi", zz: "Zzz", "!": "!", "?": "?", omg: "O_O", grr: ">:(", lol: "XD", bye: "Tchau", gl: "GL" }, S8 = ["Servidor: /quem (jogadores online) \u00B7 /guilda criar|convidar NOME|aceitar|recusar|sair|expulsar NOME|dissolver \u00B7 /grupo criar|convidar|aceitar|sair|expulsar \u00B7 /g msg (guilda) \u00B7 /p msg (grupo) \u00B7 /denunciar NOME motivo \u00B7 grupo d\u00E1 +10% EXP por membro perto (at\u00E9 +50%)", "Montaria/pet: /montar \xB7 /desmontar (voc\u00EA s\u00F3 desce com este comando, mesmo ap\u00F3s sair do jogo) \xB7 /pet (chama ou guarda o lobo)", "Social: /amigo add NOME \xB7 /amigos \xB7 /casar nome \xB7 /abracar \xB7 /brindar \xB7 /danca \xB7 /caminho (n\xEDvel 70) \xB7 /cozinhar \xB7 /jogos (janela dos minigames)", "Minigames (nas cidades): /dados aposta \xB7 /corrida barco(1-3) aposta \xB7 /pescar + /puxar \xB7 N\xEDvel 99: tecla U = Ultimate", "Comandos: /sentar (/sit) \xB7 /levantar (/stand) \xB7 /onde (/where) \xB7 /quem (/who) \xB7 /exp \xB7 /hora (/time)", "@afk (nas cidades principais): sai do jogo e deixa o personagem na cidade \xB7 /boss: testa o boss mundial", "/nomes (/showname) liga/desliga nomes \xB7 /efeitos (/effect) liga/desliga n\xFAmeros de dano \xB7 /refresh \xB7 /criar", "Chat: /w nome msg \xB7 /p msg (grupo) \xB7 /g msg (guilda) \xB7 Alt+C: mensagem privada em janela", "Emotes: " + Object.keys(Hu).filter((e) => e !== "love").map((e) => "/" + e).join(" ") + " \xB7 /rps (pedra, papel ou tesoura) \xB7 /emotes (\xEDcones)", "Teclas: Insert senta \xB7 Alt+E mochila \xB7 Alt+S habilidades \xB7 Alt+A atributos \xB7 F1\u2013F12 habilidades e atalhos"], w8 = 200;
   var __petPlayAt = 0;
   function petNew() { return { name: "Filhote", renamed: false, level: 1, exp: 0, joy: 60, plays: 0, bites: 0, since: Date.now() }; }
   function petNeed(L) { return Math.round(40 * Math.pow(L, 1.55)); }
@@ -10276,7 +10276,7 @@ Error generating stack: ` + n.message + `
       let n = this.ps;
       n.kills[a.id] = (n.kills[a.id] ?? 0) + 1;
       { let kk = n.kills[a.id], ms = { 10: 1, 50: 3, 100: 8, 500: 25 }[kk]; if (ms && !a.boss) { let gz = ms * 12 * Math.max(1, a.level ?? 1); n.silver += gz, this.logc(`\u{1F4D6} Cat\xE1logo: ${a.name} \xD7${kk}! +${gz} zens${kk === 100 ? " e +5% de dano contra eles" : ""}.`, "good"); } }
-      let o = Math.max(1, Math.round(a.exp * this.mods.exp * (t.golden ? ql.exp : 1) * (n.spouse ? 1.03 : 1))), r = Yu(n, o);
+      let o = Math.max(1, Math.round(a.exp * this.mods.exp * (t.golden ? ql.exp : 1) * (n.spouse ? 1.03 : 1) * (window.__mp?.partyBonus?.() ?? 1))), r = Yu(n, o);
       this.emit({ type: "expGain", amount: o }), n.petData && n.pet && petGain(n, Math.max(1, Math.round(o * 0.3)), (x) => this.logc(x, "good")), r.levels > 0 && (this.emit({ type: "levelUp", level: n.level }), this.toast(`N\xEDvel ${n.level}! Pontos de atributo dispon\xEDveis.`, "good")), r.jobLevels > 0 && (this.emit({ type: "jobLevelUp", level: n.jobLevel }), this.toast(`N\xEDvel de classe ${n.jobLevel}!`, "good"));
       let i = Vm(this.rng, a.silver[0], a.silver[1]) * (t.golden ? 3 : 1);
       n.silver += i, this.emit({ type: "silver", amount: i });
@@ -11385,6 +11385,7 @@ Error generating stack: ` + n.message + `
     }
     socialCmd(t, a) {
       let n = this.ps, o = (r, i = "info") => this.pushLog(r, "system", i), l = a.split(/\s+/), c = (l[0] ?? "").toLowerCase(), d = l.slice(1).join(" ").trim();
+      if ((t === "guilda" || t === "guild" || t === "grupo" || t === "party") && MP.ok && !this.online) { this.serverSocial(t === "guilda" || t === "guild" ? "guild" : "party", c, d); return; }
       if (t === "guilda" || t === "guild") {
         if (c === "criar" || c === "create") {
           if (n.guild) return o(`Voc\xEA j\xE1 est\xE1 na guilda ${n.guild}. Use /guilda sair antes.`, "bad");
@@ -11407,8 +11408,29 @@ Error generating stack: ` + n.message + `
         c === "criar" || c === "create" ? this.party ? o("Voc\xEA j\xE1 est\xE1 num grupo.", "bad") : (this.party = { name: d || `Grupo de ${n.name}` }, this.pushLog(`Grupo "${this.party.name}" criado. Use /p mensagem para falar.`, "grupo", "good")) : c === "sair" || c === "leave" ? this.party ? (this.pushLog("Voc\xEA saiu do grupo.", "grupo"), this.party = null) : o("Voc\xEA n\xE3o est\xE1 num grupo.", "bad") : o(this.party ? `Grupo: ${this.party.name}. Comandos: /p msg, /grupo sair` : "Sem grupo. Use /grupo criar [nome].");
       }
     }
+    async serverSocial(kind, c, d) {
+      let map = { criar: "create", create: "create", convidar: "invite", invite: "invite", add: "invite", aceitar: "accept", accept: "accept", recusar: "decline", decline: "decline", sair: "leave", leave: "leave", expulsar: "kick", kick: "kick", dissolver: "disband", disband: "disband" }, cmd = map[c], n = this.ps, ch = kind === "guild" ? "guilda" : "grupo", pid = MP.pid + ":" + (this.activeSlot ?? 0);
+      if (!cmd) {
+        await MP.refreshSoc();
+        let g = MP.soc?.[kind];
+        if (!g) return this.pushLog(kind === "guild" ? "Voc\u00EA n\u00E3o tem guilda. Use /guilda criar NOME (n\u00EDvel 10, 500 Zens)." : "Voc\u00EA n\u00E3o est\u00E1 em um grupo. Use /grupo criar.", "system", "info"), this.refresh();
+        this.pushLog(`${kind === "guild" ? "Guilda" : "Grupo"} ${g.name} \u2014 ${g.members.filter((x) => x.on).length}/${g.members.length} online:`, ch, "info");
+        for (let x of g.members) this.pushLog(`${x.role === "leader" ? "\u2605 " : "\u00B7 "}${x.n}${x.on ? ` (Nv ${x.lv}, ${x.map})` : " (offline)"}`, ch, "info");
+        return this.refresh();
+      }
+      if (kind === "guild" && cmd === "create") {
+        if (n.silver < 500) return this.pushLog("Criar uma guilda custa 500 Zens.", "system", "bad"), this.refresh();
+      }
+      let r = await sbRpc(kind === "guild" ? "guild_cmd" : "party_cmd", { p_id: pid, p_name: n.name, p_cmd: cmd, p_arg: d || null });
+      if (!r || r.ok === void 0 && !r.msg) r = { ok: false, msg: "Sem conex\u00E3o com o servidor." };
+      this.pushLog(r.msg ?? "", ch, r.ok ? "good" : "bad");
+      if (r.ok && kind === "guild" && cmd === "create") n.silver -= 500, this.announce(`[Global] ${n.name} fundou a guilda ${d}!`), this.saveGameQuiet();
+      await MP.refreshSoc();
+      this.refresh();
+    }
     sendChat(t) {
       if (!this.ps) return;
+      { let dm = t.trim().match(/^\/(denunciar|report)\s+(\S+)\s+([\s\S]{3,})$/i); if (dm) { sbRpc("mp_report", { p_id: MP.pid + ":" + (this.activeSlot ?? 0), p_name: this.ps.name, p_target: dm[2], p_reason: dm[3] }).then((r) => { this.pushLog(r?.ok ? `Den\u00FAncia sobre ${dm[2]} enviada \u00E0 modera\u00E7\u00E3o.` : r?.error ?? "Sem conex\u00E3o com o servidor.", "system", r?.ok ? "good" : "bad"), this.refresh(); }); return; } if (/^\/(denunciar|report)\b/i.test(t.trim())) { this.pushLog("Uso: /denunciar nome motivo", "system", "info"), this.refresh(); return; } }
       if (/^[@\/]afk\b/i.test(t.trim())) {
         this.goAfk();
         return;
@@ -11427,6 +11449,7 @@ Error generating stack: ` + n.message + `
         return;
       }
       let a = zx(t, { self: this.ps.name, players: [...this.world?.others.map((n) => n.name) ?? [], ...MP.names()], inParty: !!this.party, inGuild: !!this.ps.guild });
+      { let srv = a.filter((n) => (n.channel === "grupo" || n.channel === "guilda") && MP.ok && !this.online); if (srv.length) { a = a.filter((n) => !srv.includes(n)); for (let n of srv) MP.say(n.text.replace(/^[^:]*:\s*/, ""), null, n.channel === "grupo" ? "p" : "g").then((r) => { this.pushLog(r.ok ? n.text : r.error, r.ok ? n.channel : "system", r.ok ? "info" : "bad"), this.refresh(); }); } }
       for (let n of a) n.channel === "geral" && MP.ok && !this.online && MP.say(n.text.replace(/^[^:]*:\s*/, ""), null);
       for (let n of a) !n.command && n.channel !== "sistema" && n.channel !== "sussurro" && this.world?.setSpeech(n.text.replace(/^[^:]*:\s*/, ""));
       for (let n of a) n.command && this.runChatCommand(n.command, n.arg) || (n.command === "craft" ? (this.pushLog(n.text, "system", "info"), n.arg && (this.world?.craftPotion(n.arg), this.saveGameQuiet())) : n.command === "refresh" ? (this.pushLog(n.text, "system", "info"), this.pushLog(this.world?.refresh() ?? "", "system", "info")) : this.pushLog(n.text, n.channel === "sistema" ? "system" : n.channel, n.channel === "sistema" ? "bad" : "info"));
@@ -11483,6 +11506,7 @@ Error generating stack: ` + n.message + `
           return r(`${n.map.name} (${i.col}, ${i.row})`), true;
         }
         case "who":
+          if (MP.ok && !this.online) { sbRpc("mp_online", {}).then((w) => { if (!w || !w.list) return; r(`Online agora: ${w.n} jogador(es).`); r(w.list.slice(0, 12).map((x) => `${x.name} (Nv ${x.level})`).join(", ") + (w.n > 12 ? ", \u2026" : "")), this.refresh(); }); return true; }
           return r(this.online ? `${n.others.length + 1} jogador(es) vis\xEDvel(is) neste mapa.` : "Modo local: s\xF3 voc\xEA neste mundo."), true;
         case "exp": {
           let i = this.derivedHud();
@@ -11910,10 +11934,13 @@ Error generating stack: ` + n.message + `
       try {
         if (this.claimed !== b.p_name) { this.claimed = b.p_name; let c = await sbRpc("claim_nick", { p_name: b.p_name, p_pid: this.pid }); c && c.ok === false && c.error && !/conex/i.test(c.error) && j.toast("Aten\u00E7\u00E3o: o nick \u201C" + b.p_name + "\u201D j\u00E1 pertence a outro jogador.", "bad"); }
         let r = await sbRpc("mp_sync", b);
+        if (r && r.ok === false && r.error === "banned") { this.okAt = 0, this.others.clear(), this.warned !== "ban" && (this.warned = "ban", j.toast("Voc\u00EA foi banido do multiplayer pela modera\u00E7\u00E3o.", "bad")); return; }
         if (r && r.ok === false && r.error === "nick_taken") { this.okAt = 0, this.others.clear(), this.warned !== b.p_name && (this.warned = b.p_name, j.toast("O nick \u201C" + b.p_name + "\u201D pertence a outro jogador: voc\u00EA est\u00E1 invis\u00EDvel no multiplayer. Crie outro personagem com nick livre.", "bad")); return; }
         if (!r || !r.ok) return;
         if (r.throttled) { this.okAt = Date.now(); return; }
         this.okAt = Date.now(), this.since = r.last;
+        if (r.ch && r.ch !== this.ch) { this.ch !== void 0 && j.pushLog(`Voc\u00EA est\u00E1 no canal ${r.ch} deste mapa (lota\u00E7\u00E3o de 30 jogadores por canal).`, "system", "info"); this.ch = r.ch; }
+        if (Date.now() - (this.socAt ?? 0) > 15000) { this.socAt = Date.now(), this.refreshSoc(); }
         let seen = /* @__PURE__ */ new Set();
         for (let o of r.others) {
           seen.add(o.id);
@@ -11924,6 +11951,8 @@ Error generating stack: ` + n.message + `
         for (let m of r.msgs) {
           if (m.t) {
             j.pushLog(`De ${m.f}: ${m.b}`, "sussurro", "info"), j.toast(`${m.f}: ${m.b}`, "info"), window.dispatchEvent(new CustomEvent("eldvar:pm-in", { detail: { from: m.f, text: m.b } }));
+          } else if (m.c) {
+            j.pushLog(`${m.f}: ${m.b}`, m.c === "g" ? "guilda" : "grupo", "info");
           } else {
             j.pushLog(`${m.f}: ${m.b}`, "geral", "info");
             let o = [...this.others.values()].find((q) => q.name === m.f);
@@ -11935,6 +11964,26 @@ Error generating stack: ` + n.message + `
         this.busy = false;
       }
     },
+    soc: null, socAt: 0,
+    async refreshSoc() {
+      if (!j.ps || j.activeSlot === null) return;
+      let s = await sbRpc("social_state", { p_id: this.pid + ":" + j.activeSlot, p_name: j.ps.name });
+      if (!s || !s.ok) return;
+      let prev = this.soc;
+      this.soc = s;
+      s.guild ? j.ps.guild = s.guild.name : delete j.ps.guild;
+      j.party = s.party ? { name: s.party.name } : null;
+      s.ginv && (!prev?.ginv || prev.ginv.name !== s.ginv.name) && (j.toast(`${s.ginv.from} convidou voc\u00EA para a guilda ${s.ginv.name}: /guilda aceitar`, "info"), j.pushLog(`Convite de guilda: ${s.ginv.name} (de ${s.ginv.from}). Use /guilda aceitar ou /guilda recusar.`, "guilda", "good"));
+      s.pinv && (!prev?.pinv || prev.pinv.from !== s.pinv.from) && (j.toast(`${s.pinv.from} convidou voc\u00EA para o grupo ${s.pinv.name}: /grupo aceitar`, "info"), j.pushLog(`Convite de grupo: ${s.pinv.name} (de ${s.pinv.from}). Use /grupo aceitar ou /grupo recusar.`, "grupo", "good"));
+      j.refresh();
+    },
+    partyBonus() {
+      let p = this.soc?.party;
+      if (!p || !this.ok) return 1;
+      let names = new Set(p.members.map((x) => x.n.toLowerCase())), c = 0;
+      for (let o of this.others.values()) names.has(String(o.name).toLowerCase()) && c++;
+      return 1 + 0.1 * Math.min(5, c);
+    },
     list(mapId) {
       let l = [];
       for (let o of this.others.values()) {
@@ -11944,8 +11993,8 @@ Error generating stack: ` + n.message + `
       }
       return l;
     },
-    async say(text, to) {
-      let r = await sbRpc("mp_say", { p_id: this.pid + ":" + (j.activeSlot ?? 0), p_name: j.ps?.name ?? "", p_map: j.world?.map.id ?? "", p_text: text, p_to: to ?? null });
+    async say(text, to, chan) {
+      let r = await sbRpc("mp_say", { p_id: this.pid + ":" + (j.activeSlot ?? 0), p_name: j.ps?.name ?? "", p_map: j.world?.map.id ?? "", p_text: text, p_to: to ?? null, p_chan: chan ?? null });
       return r && r.ok ? { ok: true } : { ok: false, error: r?.error ?? "Sem conex\xE3o com o servidor." };
     }
   };
@@ -12392,7 +12441,21 @@ Error generating stack: ` + n.message + `
       window.__acct = "offline", window.__tok = "", window.__admin = false, onDone("offline", false);
     }, children: "Jogar offline (sem conta)" }), (0, le.jsx)("p", { className: "muted auth-note", children: "Seu progresso fica salvo na sua conta, em qualquer aparelho." })] })] })] });
   }
+  function ModPanel() {
+    let [d, setD] = (0, lo.useState)(null), [nick, setNick] = (0, lo.useState)(""), [msg, setMsg] = (0, lo.useState)(""), load = async () => { let r = await sbRpc("mod_list", { p_token: window.__tok }); r && r.ok ? setD(r) : setMsg("N\u00E3o foi poss\u00EDvel carregar a modera\u00E7\u00E3o."); };
+    (0, lo.useEffect)(() => { load(); }, []);
+    let act = async (name, kind, mins, report) => { let r = await sbRpc("mod_set", { p_token: window.__tok, p_name: name, p_kind: kind, p_minutes: mins, p_reason: "Modera\u00E7\u00E3o", p_report: report ?? null }); setMsg(r && r.ok ? "Feito." : "Falhou."), load(); };
+    return Hh("div", { className: "menu admin-list" }, Hh("h3", null, "Modera\u00E7\u00E3o"), msg && Hh("p", { className: "muted" }, msg),
+      Hh("div", { className: "adm-row" }, Hh("input", { type: "text", value: nick, placeholder: "nick do jogador", onChange: (e) => setNick(e.target.value) }), Hh("div", { className: "adm-btns" }, Hh("button", { className: "btn btn-small", onClick: () => nick && act(nick, "mute", 60) }, "Silenciar 1h"), Hh("button", { className: "btn btn-small", onClick: () => nick && act(nick, "ban", 1440) }, "Banir 24h"), Hh("button", { className: "btn btn-small", onClick: () => nick && act(nick, "clear") }, "Liberar"))),
+      Hh("h4", null, "Den\u00FAncias"), d && d.reports.length === 0 && Hh("p", { className: "muted" }, "Nenhuma den\u00FAncia pendente."),
+      d && d.reports.map((x) => Hh("div", { key: x.id, className: "adm-row" }, Hh("div", { className: "adm-info" }, Hh("b", null, x.target), Hh("small", null, `${x.reporter}: ${x.reason}`)), Hh("div", { className: "adm-btns" }, Hh("button", { className: "btn btn-small", onClick: () => act(x.target, "mute", 60, x.id) }, "Silenciar"), Hh("button", { className: "btn btn-small", onClick: () => act(x.target, "ban", 1440, x.id) }, "Banir"), Hh("button", { className: "btn btn-small", onClick: () => act(x.target, "clear", 0, x.id) }, "Descartar")))),
+      Hh("h4", null, "Ativos"), d && d.active.length === 0 && Hh("p", { className: "muted" }, "Nenhuma restri\u00E7\u00E3o ativa."),
+      d && d.active.map((x) => Hh("div", { key: x.name_ci + x.kind, className: "adm-row" }, Hh("div", { className: "adm-info" }, Hh("b", null, x.name_ci), Hh("small", null, `${x.kind === "ban" ? "banido" : "silenciado"} at\u00E9 ${new Date(x.until).toLocaleString("pt-BR")}`)), Hh("div", { className: "adm-btns" }, Hh("button", { className: "btn btn-small", onClick: () => act(x.name_ci, "clear") }, "Liberar")))));
+  }
   function AdminPanel({ onBack }) {
+    return Hh("div", null, Hh(AdminAccounts, { onBack }), Hh(ModPanel, {}));
+  }
+  function AdminAccounts({ onBack }) {
     let [rows, setRows] = (0, lo.useState)(null), [msg, setMsg] = (0, lo.useState)(null), load = async () => {
       let r = await sbRpc("eld_admin_list", { p_token: window.__tok });
       r && r.ok ? setRows(r.accounts) : setMsg("N\xE3o foi poss\xEDvel carregar as contas.");
