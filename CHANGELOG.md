@@ -157,3 +157,4 @@
 - v102: montaria visual (personagem montado no lobo, tecla V); serpente com espinhos dorsais; ultimate com padrão próprio por classe.
 - v103: pet ataca monstros próximos (a cada 1,8s); juba do Berserker com mechas e topo arredondado; mapa-múndi conferido.
 - v104: catálogo de monstros (/catalogo, marcos 10/50/100/500, +5% dano aos 100); eventos Yule (dezembro) e Caçada Selvagem (noite); clima com efeito (neblina +5% EXP, chuva +5% drops); tutorial inicial em 4 passos (/tutorial); cães, gatos e corvos nas cidades; som de ultimate.
+- v105: janela dos minigames (/jogos: dados, corrida animada, pesca, cozinha); pesca dá peixes e /cozinhar faz pratos de cura; /casar (+3% EXP), /abracar /brindar /danca; /caminho (nível 70, 2 especializações por classe); 12 monstros novos espalhados pelos mapas de caça.
