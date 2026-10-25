@@ -19,14 +19,25 @@ var ROX = (() => {
     return Math.max(0, Math.min(4, Math.floor(t * 4.6)));
   }
   function hashn(x, y, s = 0) { let n = (x * 374761393 + y * 668265263 + s * 2147483647) | 0; n = (n ^ (n >>> 13)) * 1274126177 | 0; return ((n ^ (n >>> 16)) >>> 0) / 4294967296; }
+  const CP = {
+    berserker: { k: 1.36, wx: 1.12, tw: 1.14, lg: 1.12, hair: "mane", sit: "spread" },
+    escudeiro: { k: 1.4, wx: 1.18, tw: 1.24, lg: 1.2, hair: "crop", sit: "guard" },
+    cacador: { k: 1.26, wx: .94, tw: .9, lg: .92, hair: "ponytail", sit: "perch" },
+    volva: { k: 1.2, wx: .88, tw: .84, lg: .88, hair: "long", sit: "cross" },
+    valquiria: { k: 1.32, wx: .96, tw: .94, lg: .96, hair: "braid", sit: "kneel" },
+    skald: { k: 1.24, wx: .9, tw: .88, lg: .86, hair: "fringe", sit: "lean" },
+    thay: { k: 1.3, wx: 1, tw: 1.02, lg: 1, hair: "topknot", sit: "perch2" }
+  };
   return function ROX(e, dir, frame, lvl, style) {
+    const prof = CP[e.cls] || { k: 1.3, wx: 1, tw: 1, lg: 1, hair: "", sit: "" };
+    const K = prof.k, WX = prof.wx, hsty = prof.hair;
     const yawT = { down: 0, dq: Math.PI / 4, side: Math.PI / 2, uq: Math.PI * 3 / 4, up: Math.PI };
     const th = yawT[dir] ?? 0, cth = Math.cos(th), sth = Math.sin(th);
     const walking = frame >= 0, sit = frame === -2;
     const ph = walking ? (frame / 12) * Math.PI * 2 : 0;
     const buf = new Array(SW * SH).fill(null);
     const put = (x, y, c) => { x |= 0; y |= 0; if (x < 0 || y < 0 || x >= SW || y >= SH) return; buf[y * SW + x] = c; };
-    const sx = (x, z) => AX + (x * cth + z * sth) * K;
+    const sx = (x, z) => AX + (x * cth * WX + z * sth) * K;
     const sy = (y) => AY + (y - 98) * K - (sit ? -6 : 0);
     const dp = (x, z) => z * cth - x * sth;
     const parts = [];
@@ -79,12 +90,23 @@ var ROX = (() => {
     // ---------- PERNAS ----------
     const robe = !!e.robe;
     for (const side of [-1, 1]) {
-      const lx = side * 7, st = walking ? Math.sin(ph + (side > 0 ? 0 : Math.PI)) : 0;
-      const fz = sit ? 14 : st * 9, lift = walking ? Math.max(0, -Math.cos(ph + (side > 0 ? 0 : Math.PI))) * 5 : 0;
-      const hipY = 68 - bob, kneeY = sit ? 76 : 80 - bob - lift * .4, footY = sit ? 92 : 94 - lift - bob * .2;
-      C3(lx, hipY, 0, lx, kneeY, fz * .5 + (sit ? 10 : 0), 5.2, 4.7, pants);
-      C3(lx, kneeY, fz * .5 + (sit ? 10 : 0), lx, footY - 3, fz, 4.8, 4.4, pauld || (e.ti || 0) >= 1 ? P(0x9aa4bc) : P(e.boots ?? 3876120), .04);
-      add(dp(lx, fz + 2) + .1, () => { const X = sx(lx, fz), Y = sy(footY); capS(X, Y - 5 * K, X, Y - 1.5 * K, 5.2 * K, 5 * K, boots); ellS(X + sth * 2.2 * K, Y + 1.6 * K, bodyW(6.2, 8.4) + .8, 3.6 * K, boots); lineS(X - 3, Y - 4 * K, X + 3, Y - 4 * K, trim[3]); });
+      const st = walking ? Math.sin(ph + (side > 0 ? 0 : Math.PI)) : 0, lg = prof.lg;
+      let lx = side * 7, kx = lx, fx = lx, kz = 0, fz = st * 9;
+      const lift = walking ? Math.max(0, -Math.cos(ph + (side > 0 ? 0 : Math.PI))) * 5 : 0;
+      let hipY = 68 - bob, kneeY = 80 - bob - lift * .4, footY = 94 - lift - bob * .2;
+      if (sit) {
+        const ss = prof.sit; kneeY = 76; footY = 92; kz = 10; fz = 14;
+        if (ss === "spread") { kx = side * 12; fx = side * 15; kz = 12; fz = 8; }
+        else if (ss === "guard") { kx = side * 6; fx = side * 6; kz = 16; fz = 26; kneeY = 79; footY = 90; }
+        else if (ss === "cross") { kx = side * 11; fx = -side * 4; kz = 10; fz = 16; footY = 91; }
+        else if (ss === "kneel") { if (side > 0) { kx = 8; fx = 8; kz = 14; fz = 22; kneeY = 78; footY = 90; } else { kx = -9; fx = -9; kz = 10; fz = -8; kneeY = 90; footY = 94; } }
+        else if (ss === "perch") { if (side > 0) { kx = 8; fx = 8; kz = 15; fz = 6; kneeY = 66; footY = 92; } else { kx = -7; fx = -7; kz = 12; fz = 22; kneeY = 78; footY = 90; } }
+        else if (ss === "lean") { kx = side * 6; fx = side * 8; kz = 18; fz = 28; kneeY = 74; footY = 90; }
+        else if (ss === "perch2") { if (side < 0) { kx = -8; fx = -8; kz = 15; fz = 6; kneeY = 66; footY = 92; } else { kx = 7; fx = 7; kz = 12; fz = 22; kneeY = 78; footY = 90; } }
+      }
+      C3(lx, hipY, 0, kx, kneeY, kz, 5.2 * lg, 4.7 * lg, pants);
+      C3(kx, kneeY, kz, fx, footY - 3, fz, 4.8 * lg, 4.4 * lg, pauld || (e.ti || 0) >= 1 ? P(0x9aa4bc) : P(e.boots ?? 3876120), .04);
+      add(dp(fx, fz + 2) + .1, () => { const X = sx(fx, fz), Y = sy(footY); capS(X, Y - 5 * K, X, Y - 1.5 * K, 5.2 * K * lg, 5 * K * lg, boots); ellS(X + sth * 2.2 * K, Y + 1.6 * K, bodyW(6.2 * lg, 8.4) + .8, 3.6 * K, boots); lineS(X - 3, Y - 4 * K, X + 3, Y - 4 * K, trim[3]); });
     }
     // ---------- TRONCO ----------
     if (robe) {
@@ -93,9 +115,9 @@ var ROX = (() => {
       add(dp(0, 4) + .3, () => { for (let x = -20; x <= 20; x++) put(sx(x, 0), sy(93), trim[3]); });
     } else {
       for (let k = -4; k <= 4; k++) POLY3([[k * 3.4 - 1.9, 60, 0], [k * 3.4 + 1.9, 60, 0], [k * 3.9 + 1.6, 71 - bob * .5, 0], [k * 3.9 - 1.6, 71 - bob * .5, 0]], (x, y) => rampAt(leather, .5 - (y - sy(60)) * .03 + (k < 0 ? .04 : -.04)), 0.4);
-      E3(0, 52, 0, 13.4, 11.4, 8, (e.ti || 0) >= 1 || pauld ? P(e.tunic ?? 9054758) : tunic);
+      E3(0, 52, 0, 13.4 * prof.tw, 11.4, 8, (e.ti || 0) >= 1 || pauld ? P(e.tunic ?? 9054758) : tunic);
       // peitoral
-      E3(0, 52, 5.5, 9.6, 9.8, 3.6, P(0xbcc6e0), .12);
+      E3(0, 52, 5.5, 9.6 * prof.tw, 9.8, 3.6, P(0xbcc6e0), .12);
       add(dp(0, 8) + .5, () => { if (!front) return; const cx = sx(0, 8), pm = P(0xbcc6e0); lineS(cx, sy(45), cx, sy(61), pm[1]); lineS(cx - 9 * K * cth, sy(45), cx - 8 * K * cth, sy(60), pm[4]); for (const [yy, w] of [[48, 6], [53, 6.4], [58, 5.4]]) lineS(cx - w * K * cth, sy(yy), cx + w * K * cth, sy(yy), pm[2]); ellS(cx, sy(51), 2.6 * K * Math.abs(cth) + .6, 2.8 * K, gold); put(cx, sy(51), gold[4]); for (const [x, y] of [[-7, 46], [7, 46], [-6, 58], [6, 58]]) put(cx + x * K * cth, sy(y), gold[4]); });
     }
     // cinto
@@ -198,21 +220,22 @@ var ROX = (() => {
     });
     // franja + mechas (anel de espetos em 3D)
     if (hairStyle !== "bald") {
-      const long = hairStyle === "long", nsp = long ? 5 : 6;
-      add(0.74, () => {
-        const Xc = sx(0, -1), Yc = sy(hdY), rx = bodyW(19, 16.6) + 1, ry = 16.4 * K;
-        for (let i = 0; i < nsp; i++) {
-          const u = -1 + 2 * (i + .5) / nsp, d = Math.abs(u), sd = u < 0 ? -1 : 1;
-          const bx = Xc + u * rx * .86, by = Yc - ry * Math.sqrt(Math.max(0, 1 - u * u * .8)) * .96 + 7;
-          const L = (long ? 10 : 18 + (1 - d) * 9) * K * (.8 + hashn(i, 4) * .4), tx = bx + u * rx * .42 + (hashn(i, 2) - .5) * 4, ty = by - L;
-          const hw = rx * 2 / nsp * .95;
-          polyS([[bx - hw, by + 5], [bx + hw, by + 5], [tx, ty]], (x, y) => rampAt(hair, .66 + (by - y) / L * .26 + (sd * (tx - x) / hw) * .06 - .05 + (hashn(x, y, 3) - .5) * .08));
-          lineS(bx - hw * .2, by, tx - sd * .6, ty + 4, hair[4]);
-          lineS(bx + hw * .5, by + 3, tx + 1, ty + 6, hair[1]);
-        }
-      });
+      const sw3 = walking ? Math.sin(ph) * 3 : 0;
+      if (hsty === "mane") {
+        add(dp(0, -9) + .05, () => { const X = sx(0, -9), Y = sy(hdY - 2); polyS([[X - bodyW(21, 15), Y - 12 * K], [X + bodyW(21, 15), Y - 12 * K], [X + bodyW(24, 16), Y + 20 * K], [X + bodyW(15, 9), Y + 30 * K + sw3], [X + bodyW(8, 5), Y + 24 * K], [X, Y + 34 * K - sw3], [X - bodyW(8, 5), Y + 25 * K], [X - bodyW(15, 9), Y + 30 * K + sw3], [X - bodyW(24, 16), Y + 20 * K]], (x, y) => rampAt(hair, .56 + (y - Y) * .003 + (BAY[y & 3][x & 3] * .12) + (hashn(x >> 1, y >> 2, 4) - .5) * .16)); });
+        for (const side of [-1, 1]) add(dp(side * 16, 6) + .3, () => { if (Math.abs(cth) < .15 && side * sth < 0) return; const X = sx(side * 16.5, 6), Y = sy(hdY + 2); capS(X, Y, X + side * 1.5, Y + 16 * K, 3.8 * K, 2 * K, hair, .08); });
+      } else if (hsty === "ponytail") {
+        add(dp(0, -13) + .02, () => { const X = sx(0, -13), Y = sy(hdY - 6); capS(X, Y, X + sw3 * .6 + sth * -4, Y + 14 * K, 4.8 * K, 3.8 * K, hair, .04); capS(X + sw3 * .6 - sth * 4, Y + 13 * K, X + sw3 - sth * 6, Y + 30 * K, 3.8 * K, 1.4 * K, hair, .1); ellS(X, Y + 1, 3.4 * K, 2.2 * K, gold, 0); });
+      } else if (hsty === "braid") {
+        add(dp(-12, 8) + .4, () => { const side = -1; for (let i = 0; i < 7; i++) { const X = sx(side * 13.5 + (i % 2 ? 1.2 : -1.2), 7), Y = sy(hdY + 10 + i * 5.6); ellS(X, Y, 3.2 * K, 3.4 * K, hair, i % 2 ? .1 : -.05); } ellS(sx(-13.5, 7), sy(hdY + 10 + 7 * 5.6), 2.4 * K, 2 * K, gold, 0); });
+        add(dp(0, -13) + .02, () => { const X = sx(0, -13), Y = sy(hdY - 4); capS(X, Y, X + sw3 * .5, Y + 26 * K, 4.4 * K, 2 * K, hair, .04); });
+      } else if (hsty === "topknot") {
+        add(dp(0, 0) + .93, () => { const X = sx(0, -2), Y = sy(hdY - 21); ellS(X, Y, 6.4 * K, 5.8 * K, hair, .1); lineS(X - 5 * K, Y + 5 * K, X + 5 * K, Y + 5 * K, gold[3]); lineS(X - 4 * K, Y + 6 * K, X + 4 * K, Y + 6 * K, gold[2]); });
+      } else if (hsty === "fringe") {
+        add(dp(0, 14) + .78, () => { if (cth < -.1) return; const f = sth >= 0 ? 1 : -1; polyS([[sx(-14, 10), sy(hdY - 11)], [sx(14, 10), sy(hdY - 11)], [sx(15, 10) + f * 1, sy(hdY + 3)], [sx(9 * f, 14), sy(hdY + 9 * K / K)], [sx(3 * f, 14), sy(hdY + 2)], [sx(-6 * f, 12), sy(hdY - 3)]], (x, y) => rampAt(hair, .66 - (y - sy(hdY - 11)) * .02 + (BAY[y & 3][x & 3] * .1) + (hashn(x, y >> 1, 6) - .5) * .12)); });
+      }
       // mechas da franja caindo sobre a testa
-      [-12, -6, 0, 6, 12].forEach((x0, i) => { const z0 = 12.4 - Math.abs(x0) * .3, y0 = hdY - 10, len = hairStyle === "long" ? 12 : 9 + hashn(i, 7) * 3;
+      [-12, -6, 0, 6, 12].forEach((x0, i) => { const z0 = 12.4 - Math.abs(x0) * .3, y0 = hdY - 10, len = hsty === "crop" ? 5 : hsty === "fringe" ? 4 : hairStyle === "long" ? 12 : 8 + hashn(i, 7) * 3;
         const pts = [[x0 - 4.6, y0, z0], [x0 + 4.6, y0, z0], [x0 + (x0 < 0 ? -1.4 : 1.4) * (i == 2 ? 0 : 1) + (i == 2 ? 1.2 : 0), y0 + len, z0 + 1]];
         add(dp(x0, z0) + .75, () => { if (cth < -0.1) return; polyS(pts.map((p) => [sx(p[0], p[2]), sy(p[1])]), (x, y) => rampAt(hair, .78 - (y - sy(y0)) * .03 + (hashn(x, y, 5) - .5) * .06)); lineS(sx(x0, z0), sy(y0 + 1), sx(pts[2][0], pts[2][2]), sy(y0 + len - 2), hair[1]); lineS(sx(x0 - 1.4, z0), sy(y0 + 2), sx(pts[2][0] - .6, pts[2][2]), sy(y0 + len - 4), hair[4]); }); });
       add(dp(0, 14) + .8, () => { if (cth < -.1) return; for (const [x0, y0, x1, y1] of [[-9, 4, -6, 9], [0, 3, 2, 8], [8, 4, 10, 9]]) lineS(sx(x0, 12), sy(hdY - y0 - 4), sx(x1, 12), sy(hdY - y1 - 4), hair[4]); });
