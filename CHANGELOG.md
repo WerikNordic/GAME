@@ -180,6 +180,9 @@
 - Janelas Alt+Q/E/S/A/G reduzidas a 50%.
 - Sons por espécie de monstro (lobo, javali, goblin, morto-vivo, gigante, gelatina, lagarto, máquina, pedra, vazio, planta): voz ociosa, ao notar o jogador, ao ser atingido e ao morrer; volume por distância.
 
+## v127
+- Dificuldade nível 25–99: monstros comuns perdem até ~70% de vida e ~22% de ataque em escala (antes ~16–28s por monstro; agora ~9–10s só com ataque básico); chefes aliviados de forma mais leve.
+
 ## v123–v126
 - Ofício (Alt+F): profissões de forja/alquimia/culinária com receitas e nível de ofício.
 - Crônicas dos Reinos: missões encadeadas por reino, visíveis só no Alt+G.
