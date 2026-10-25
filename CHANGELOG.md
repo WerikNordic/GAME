@@ -81,3 +81,8 @@
 ## v68
 - Câmera (giro, inclinação e zoom) lembrada ao sair e voltar
 - Nível 99: aura ÉPICA (anéis, pilares de luz, orbes, halo, asas de luz, brilho dourado e faíscas)
+
+## v69
+- Estátuas variadas (anjo, Bafomé, Morroc, serpente) espalhadas nas cidades com lore
+- Mercador com maça/martelo próprios
+- Ferreiros com brasas e faíscas, moradores comentam clima e hora
