@@ -143,3 +143,4 @@
 - v88: sem espetos; cada classe com penteado, porte e jeito de sentar proprios.
 - v89: visual evolui por classe: novato simples, 2a classe com couro/ombreiras, final com placa de aco, dourado e capa.
 - v90: NPCs com visual proprio: ferreiros (avental, barba, martelo), mercadora (saco, avental, lenco), Munin (orbe e corvo), guardas (lanca e escudo), cronista, arauto, questora, estilista, Sigrun.
+- v91: Aprendiz sem classe; Lider de Classe nas 7 cidades (escolha de classe no job 10, evolucao no job 50); renascimento no nivel 99 (volta ao 1, tiers 3-5, job 10 e 50 de novo). Barba do ferreiro menor.

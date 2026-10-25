@@ -26,7 +26,8 @@ var ROX = (() => {
     volva: { k: 1.2, wx: .88, tw: .84, lg: .88, hair: "long", sit: "cross" },
     valquiria: { k: 1.32, wx: .96, tw: .94, lg: .96, hair: "braid", sit: "kneel" },
     skald: { k: 1.24, wx: .9, tw: .88, lg: .86, hair: "fringe", sit: "lean" },
-    thay: { k: 1.3, wx: 1, tw: 1.02, lg: 1, hair: "topknot", sit: "perch2" }
+    thay: { k: 1.3, wx: 1, tw: 1.02, lg: 1, hair: "topknot", sit: "perch2" },
+    aprendiz: { k: 1.26, wx: .98, tw: .96, lg: .96, hair: "", sit: "" }
   };
   const NPP = {
     brokk: { t: 0, k: 1.4, wx: 1.2, tw: 1.26, lg: 1.2 }, torvald: { t: 0, k: 1.38, wx: 1.18, tw: 1.22, lg: 1.18 },
@@ -35,7 +36,7 @@ var ROX = (() => {
     arauto: { t: 1, k: 1.34, wx: 1.04, tw: 1.04, lg: 1 }, questor: { t: 0, k: 1.28, wx: .96, tw: .94, lg: .94 },
     ottar: { t: 1, k: 1.4, wx: 1.16, tw: 1.2, lg: 1.14 }, checkpoint: { t: 2, k: 1.42, wx: 1.18, tw: 1.24, lg: 1.16 },
     eira: { t: 1, k: 1.3, wx: .96, tw: .94, lg: .96 }, ylva: { t: 0, k: 1.26, wx: .94, tw: .9, lg: .92 },
-    estilista: { t: 0, k: 1.26, wx: .9, tw: .86, lg: .9 }
+    lider: { t: 2, k: 1.4, wx: 1.1, tw: 1.1, lg: 1.06 }, estilista: { t: 0, k: 1.26, wx: .9, tw: .86, lg: .9 }
   };
   return function ROX(e, dir, frame, lvl, style) {
     const NP = NPP[e.cls];
@@ -284,6 +285,9 @@ var ROX = (() => {
         add(dp(19.3, 3) + .5, () => { const [X, Y] = hand(1); capS(X, Y + 24 * K, X + 1.4 * K, Y - 56 * K, 1.5 * K, 1.4 * K, wd); polyS([[X + 1.4 * K - 3.4 * K, Y - 54 * K], [X + 1.4 * K + 3.4 * K, Y - 54 * K], [X + 1.4 * K, Y - 70 * K]], (x, y) => rampAt(steelP, .8 - (y - (Y - 70 * K)) * .01)); lineS(X + 1.4 * K - 4 * K, Y - 52 * K, X + 1.4 * K + 4 * K, Y - 52 * K, gold[3]); });
         if (id !== "eira") add(dp(-23, 4) + .55, () => { const X = sx(-22, 4), Y = sy(62); ellS(X, Y, 8.5 * K * (.5 + .5 * Math.abs(cth)) + 1, 12 * K, steelP, -.05); ellS(X, Y, 3 * K, 3 * K, gold); });
         if (id === "checkpoint") add(dp(0, 2) + .97, () => { ellS(sx(0, 0), sy(hdY - 8), bodyW(19, 17), 10.6 * K, steelP, .04); lineS(sx(-18, 0), sy(hdY - 2), sx(18, 0), sy(hdY - 2), steelP[1]); if (front) capS(sx(0, 16), sy(hdY - 7), sx(0, 16), sy(hdY + 6), 1.6, 1.6, steelP); });
+      } else if (id === "lider") {
+        add(dp(0, -16) + .1, () => { const X = sx(0, -16), Y = sy(40); const cols = [0xc0392b, 0x8a6a30, 0x3a8a3a, 0x6a3aaa, 0xe8e0f0, 0x3a3a46, 0xd0701a]; for (let i = 0; i < 7; i++) { const cx = X + (i - 3) * 5.4 * K * Math.max(.4, Math.abs(cth)); polyS([[cx - 2.7 * K, Y], [cx + 2.7 * K, Y], [cx + 2.7 * K, Y + 26 * K], [cx, Y + 31 * K], [cx - 2.7 * K, Y + 26 * K]], (x, y) => rampAt(P(cols[i]), .55 - (y - Y) * .004 + BAY[y & 3][x & 3] * .1)); } lineS(X - 20 * K, Y, X + 20 * K, Y, gold[3]); });
+        add(dp(19.3, 3) + .5, () => { const [X, Y] = hand(1); capS(X, Y + 22 * K, X + 1.2 * K, Y - 60 * K, 1.6 * K, 1.5 * K, gold); ellS(X + 1.2 * K, Y - 64 * K, 5 * K, 5 * K, P(0xb890ff), .2); ellS(X + 1.2 * K, Y - 64 * K, 2.6 * K, 2.6 * K, P(0xffffff), .3); });
       } else if (id === "estilista") {
         add(dp(8, 4) + .98, () => { const X = sx(11, 2), Y = sy(hdY - 15), pk = P(0xf070a8); ellS(X - 5 * K, Y, 5.6 * K, 4 * K, pk, .04); ellS(X + 5 * K, Y, 5.6 * K, 4 * K, pk, .04); ellS(X, Y, 2.4 * K, 2.4 * K, P(0xc84a84), 0); });
         add(dp(19.3, 3) + .5, () => { const [X, Y] = hand(1), sv = P(0xd4dae8); lineS(X, Y - 3 * K, X - 5 * K, Y - 17 * K, sv[4]); lineS(X + 1, Y - 3 * K, X + 6 * K, Y - 17 * K, sv[3]); ellS(X - 2 * K, Y - 2 * K, 2.2 * K, 2.2 * K, gold); ellS(X + 3 * K, Y - 2 * K, 2.2 * K, 2.2 * K, gold); });
