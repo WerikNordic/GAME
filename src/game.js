@@ -13409,7 +13409,8 @@ void main() {
     }
   }
   function p4(e, t) {
-    let a = new ua(), n = e.pro !== false, o = (e.scale ?? 1) * (n ? 1.2 : 1), r = t.phase * Math.PI * 2, i = t.moving ? Math.sin(r) : 0, s = !!t.sit, l = t.moving ? Math.abs(Math.cos(r)) * 0.06 : 0, c = s ? { th: 0.32, psi: 0.35, elbow: 0.4, lean: -0.14, twist: 0 } : t.lvl > 0 ? m4(t.style, t.lvl, i, false) : m4(t.style, 0, i, t.moving), d = A.T(0, s ? -0.66 : l, 0).mul(new A([o, 0, 0, 0, o, 0, 0, 0, o])), f = d.mul(A.RX(c.lean)).mul(A.RY(c.twist * 0.5)), u = e.skin, m = e.tunic, p = e.pants, h = e.boots, x = 0.78;
+    let a = new ua(), n = e.pro !== false, o = (e.scale ?? 1) * (n ? 1.2 : 1), r = t.phase * Math.PI * 2, i = t.moving ? Math.sin(r) : 0, s = !!t.sit, l = t.moving ? Math.abs(Math.cos(r)) * 0.06 : 0, c = s ? { th: 0.32, psi: 0.35, elbow: 0.4, lean: -0.14, twist: 0 } : t.lvl > 0 ? m4(t.style, t.lvl, i, false) : m4(t.style, 0, i, t.moving), d = A.T(t.moving && !s ? Math.sin(r) * 0.03 : 0, s ? -0.66 : l, 0).mul(new A([o, 0, 0, 0, o, 0, 0, 0, o])), f = d.mul(A.RX(c.lean)).mul(A.RY(c.twist * 0.5)), u = e.skin, m = e.tunic, p = e.pants, h = e.boots, x = 0.78;
+    t.moving && !s && !(t.lvl > 0) && (c = { ...c, lean: (c.lean ?? 0) + 0.08, twist: (c.twist ?? 0) + i * 0.3 }, f = d.mul(A.RX(c.lean)).mul(A.RY(c.twist * 0.5)));
     for (let C of [-1, 1]) {
       let B = s ? 1.5 : t.moving ? i * 0.72 * C : t.lvl ? C * 0.18 : 0, ee = s ? 0.04 : t.moving ? Math.max(0, -B) * 0.9 + Math.max(0, B) * 0.1 : 0, ne = d.mul(A.T(C * 0.15, x, 0)).mul(A.RY(s ? C * 0.16 : 0)).mul(ls(B));
       L(a, ne, 0.115, 0.1, 0.115, p, { seg: 10 }), F(a, T0(ne), 0.115, 0.1, 0.34, p, { seg: 8, caps: false });
@@ -14316,11 +14317,11 @@ void main() {
     return oc.imageSmoothingEnabled = false, oc.drawImage(sc, 0, 0, sw * f, sh * f), { cv: out, ax: o.ax, ay: o.ay, k: o.k };
   }
   function hh(e, t, a, n, o) {
-    let r = p4(e, { phase: a < 0 ? 0 : a / 8, moving: a >= 0, lvl: n, style: o, sit: a === -2 }), i = A0(r, { w: uo.lw * Rt, h: uo.lh * Rt, ax: uo.lax * Rt, ay: uo.lay * Rt, pxu: uo.pxu * Rt, yaw: rh[t], pitch: S4, ss: e.pro === false ? fh : 1, outline: e.pro === false ? 1.1 : 1.6, inner: e.pro === false ? void 0 : 0.55 });
+    let r = p4(e, { phase: a < 0 ? 0 : a / ea, moving: a >= 0, lvl: n, style: o, sit: a === -2 }), i = A0(r, { w: uo.lw * Rt, h: uo.lh * Rt, ax: uo.lax * Rt, ay: uo.lay * Rt, pxu: uo.pxu * Rt, yaw: rh[t], pitch: S4, ss: e.pro === false ? fh : 1, outline: e.pro === false ? 1.1 : 1.6, inner: e.pro === false ? void 0 : 0.55 });
     return e.pro !== false && tS(i, 7), PX({ cv: mh(i), ax: uo.lax, ay: uo.lay, k: 1 / Rt });
   }
   function w4(e, t, a, n) {
-    let o = g4[e], r = h4(e, { phase: a < 0 ? 0 : a / 8, moving: a >= 0, atk: n }), i = o.w / 2, s = o.h - 14, l = A0(r, { w: o.w * Rt, h: o.h * Rt, ax: i * Rt, ay: s * Rt, pxu: o.pxu * Rt, yaw: rh[t], pitch: S4, ss: fh, outline: 1.1 });
+    let o = g4[e], r = h4(e, { phase: a < 0 ? 0 : a / ea, moving: a >= 0, atk: n }), i = o.w / 2, s = o.h - 14, l = A0(r, { w: o.w * Rt, h: o.h * Rt, ax: i * Rt, ay: s * Rt, pxu: o.pxu * Rt, yaw: rh[t], pitch: S4, ss: fh, outline: 1.1 });
     return PX({ cv: mh(l), ax: i, ay: s, k: 1 / Rt });
   }
   var M4 = 1.131, k4 = /* @__PURE__ */ new Map(), gh = (e) => `${e.kind}:${e.theme}:${e.variant}:${e.deco ?? ""}`;
@@ -14469,7 +14470,7 @@ void main() {
     }
     return r.restore(), { w: i, h: s, ax: l, ay: c };
   }
-  var da = /* @__PURE__ */ new Map(), ea = 8, cS = { mace: "mace", axe: "axe", sword: "sword", bow: "bow", staff: "staff", spear: "spear", dagger: "dagger" };
+  var da = /* @__PURE__ */ new Map(), ea = 12, cS = { mace: "mace", axe: "axe", sword: "sword", bow: "bow", staff: "staff", spear: "spear", dagger: "dagger" };
   function po(e) {
     return `${e.base}@${e.hair ?? ""}|g:${e.gear ?? ""}|t:${e.top ?? ""}|m:${e.mid ?? ""}|l:${e.low ?? ""}|b:${e.bk ?? ""}${e.sx ? "|x:f" : ""}|d:${e.dye ?? 0}${e.hs ? `|s:${e.hs}` : ""}${e.hc !== void 0 ? `|c:${e.hc}` : ""}${e.ti ? `|j:${e.ti}` : ""}${e.ep ? "|e:1" : ""}`;
   }
@@ -16055,6 +16056,15 @@ void main() {
           a.globalAlpha = 1 - r * r, o.bad ? (a.strokeStyle = "#ff6a5a", a.lineWidth = 2.4, a.beginPath(), a.moveTo(s.x - 7, s.y - 5), a.lineTo(s.x + 7, s.y + 5), a.moveTo(s.x + 7, s.y - 5), a.lineTo(s.x - 7, s.y + 5), a.stroke()) : (this.onGround(o.x, o.y, 0, () => {
             a.strokeStyle = "#f5e2a8", a.lineWidth = 2.2, a.beginPath(), a.arc(0, 0, 5 + 11 * i, 0, Math.PI * 2), a.stroke();
           }), a.fillStyle = "#f5e2a8", a.beginPath(), a.arc(s.x, s.y, 2, 0, Math.PI * 2), a.fill()), a.globalAlpha = 1;
+        } else if (o.k === "stars") {
+          let sp = ce(o.x, o.y), nn = 9;
+          a.save(), a.globalCompositeOperation = "lighter";
+          for (let z = 0; z < nn; z++) {
+            let ph = (r * 1.3 + z / nn) % 1, an = (z * 2.399 + o.seed) % 6.283, rad = (0.25 + 0.75 * ((z * 0.37 + o.seed) % 1)) * Math.min(o.r, 90) * 0.7, px = sp.x + Math.cos(an) * rad, py = sp.y + Math.sin(an) * rad * 0.5 - ph * 70 - 8, sz = (3 + (z % 3) * 2) * Math.sin(ph * Math.PI) * (1 - r * 0.6), tw = 0.6 + 0.4 * Math.sin(this.clock / 90 + z * 2);
+            if (sz <= 0.3) continue;
+            a.globalAlpha = tw, a.fillStyle = z % 3 ? "#fff4c8" : `rgb(${o.color})`, a.beginPath(), a.moveTo(px, py - sz * 2), a.lineTo(px + sz * 0.45, py - sz * 0.45), a.lineTo(px + sz * 2, py), a.lineTo(px + sz * 0.45, py + sz * 0.45), a.lineTo(px, py + sz * 2), a.lineTo(px - sz * 0.45, py + sz * 0.45), a.lineTo(px - sz * 2, py), a.lineTo(px - sz * 0.45, py - sz * 0.45), a.closePath(), a.fill();
+          }
+          a.restore();
         } else if (o.k === "circle") {
           let i = Math.min(1, r * 4), s = r < 0.65 ? 1 : 1 - (r - 0.65) / 0.35;
           this.onGround(o.x, o.y, 0, () => {
@@ -16244,7 +16254,7 @@ void main() {
     }
     later = [];
     add(t) {
-      this.fx.length < 200 && this.fx.push(t);
+      this.fx.length < 200 && this.fx.push(t), t.k === "circle" && this.fx.length < 190 && this.fx.push({ k: "stars", x: t.x, y: t.y, r: t.r, color: t.color, t0: t.t0, dur: Math.max(900, t.dur), seed: Math.random() * 100 });
     }
     floatText(t, a, n, o, r, i = 0, s = false) {
       this.add({ k: "text", x: t, y: a, lift: i, text: n, color: o, size: r, t0: this.clock, dur: s ? 1100 : 850, crit: s, blink: s, jx: (Math.random() - 0.5) * 22 });

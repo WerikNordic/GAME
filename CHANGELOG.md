@@ -1,3 +1,7 @@
+# v74
+- Caminhada mais natural: 12 quadros por ciclo, inclinacao do tronco, torcao ombros/quadril, balanco lateral.
+- Estrelinhas brilhantes nos efeitos de habilidade (nova, cura, buff).
+
 # v73
 - Visual pixel-art estilo Ragnarok: personagens, NPCs e monstros agora em pixels nitidos com contorno escuro, cores mais vivas (desligar: localStorage eldvar.px=0).
 
