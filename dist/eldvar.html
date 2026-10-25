@@ -7604,7 +7604,7 @@ Error generating stack: ` + n.message + `
     if (r === "sit" || r === "sentar") return s("sit");
     if (r === "stand" || r === "levantar") return s("stand");
     if (r === "boss" || r === "jormungandr") return WB.forceIn(25), [{ channel: "sistema", text: "Nidhwerikr desperta em 25 segundos... (modo teste)" }];
-    if (["dados", "pescar", "puxar", "corrida", "pet", "montaria"].includes(r)) return s("mini", "", `${r} ${i}`);
+    if (["dados", "pescar", "puxar", "corrida", "pet", "montaria", "catalogo", "tutorial"].includes(r)) return s("mini", "", `${r} ${i}`);
     if (r === "where" || r === "onde") return s("where");
     if (r === "who" || r === "quem") return s("who");
     if (r === "exp" || r === "xp") return s("exp");
@@ -8506,12 +8506,22 @@ Error generating stack: ` + n.message + `
         }
       }
     }
+    let crit = [];
+    {
+      let cr = Oe(e.id.length * 7919 + e.id.charCodeAt(0) * 131), kinds = ["cao", "gato", "corvo", "gato", "cao", "corvo"], tries = 0;
+      for (; crit.length < 12 && tries < 400; tries++) {
+        let x0 = c.x + 100 + cr() * (c.w - 200), y0 = c.y + 100 + cr() * (c.h - 200);
+        if (o.some((q) => x0 + 22 > q.x && x0 - 22 < q.x + q.w && y0 + 20 > q.y && y0 - 20 < q.y + q.h)) continue;
+        crit.push({ kind: kinds[crit.length % 6], x: Math.round(x0), y: Math.round(y0), seed: crit.length * 1.7 });
+      }
+    }
     if (ST.mirror) {
+      for (let _ of crit) _.x = t - _.x;
       for (let _ of o) _.x = Math.round(t - (_.x + _.w));
       for (let _ of M) _.x = t - _.x;
       for (let _ of r) _.x = t - _.x;
     }
-    return { id: e.id, name: e.name, width: t, height: a, spawn: { x: d, y: a - 420 }, safeZone: { x: c.x, y: c.y, w: c.w, h: c.h }, obstacles: o, spawns: [], maxMonsters: 0, npcs: M, pois: r, portals: [{ x: f.from, y: a - 60, w: f.to - f.from, h: 60, label: "Sa\xEDda da cidade", locked: false, toMap: e.from, toSpawn: { x: 130, y: 630 } }], bossDen: { x: t / 2, y: a / 2 + 600, r: 10 }, theme: e.theme, safeLabel: e.safeLabel, scars: [], mood: e.mood, city: true, paved: p };
+    return { id: e.id, name: e.name, width: t, height: a, spawn: { x: d, y: a - 420 }, safeZone: { x: c.x, y: c.y, w: c.w, h: c.h }, obstacles: o, critters: crit, spawns: [], maxMonsters: 0, npcs: M, pois: r, portals: [{ x: f.from, y: a - 60, w: f.to - f.from, h: 60, label: "Sa\xEDda da cidade", locked: false, toMap: e.from, toSpawn: { x: 130, y: 630 } }], bossDen: { x: t / 2, y: a / 2 + 600, r: 10 }, theme: e.theme, safeLabel: e.safeLabel, scars: [], mood: e.mood, city: true, paved: p };
   }
   var Hr = (...e) => ["arauto", "ottar", "bruna", "brokk", "munin", "sigrun", "estilista", "cronista", "checkpoint", "questor", "lider", ...e].map((t) => ({ id: t, x: 0, y: 0 })), D8 = [{ id: "cidade_midgard", name: "Cidade de Midgard", seed: 7e3, theme: "grass", from: "campos_midgard", safeLabel: "Pra\xE7a de Midgard", npcs: Hr("eira"), grand: "palace", grandName: "Sal\xE3o do Jarl" }, { id: "cidade_ravnhaven", name: "Cidade de Ravnhaven", seed: 7101, theme: "grass", from: "midgard_brumaforte", safeLabel: "Pra\xE7a do Corvo", npcs: Hr(), grand: "castle", grandName: "Fortaleza do Corvo" }, { id: "cidade_isenborg", name: "Cidade de Isenborg", seed: 7202, theme: "snow", from: "jotunheim_aldeia", safeLabel: "Pra\xE7a da Geada", npcs: Hr("ylva", "torvald"), grand: "castle", grandName: "Cidadela de Gelo", mood: [0.92, 0.96, 1] }, { id: "cidade_eldvik", name: "Cidade de Eldvik", seed: 7303, theme: "sand", from: "muspel_cinzas", safeLabel: "Pra\xE7a das Brasas", npcs: Hr(), grand: "none", mood: [1.04, 0.96, 0.84] }, { id: "cidade_kharnheim", name: "Cidade de Kharnheim", seed: 7404, theme: "forge", from: "svart_mercado", safeLabel: "Pra\xE7a da Bigorna", npcs: Hr(), grand: "palace", grandName: "Grande Sal\xE3o da Bigorna", mood: [1, 0.9, 0.85] }, { id: "cidade_freyrhain", name: "Cidade de Freyrhain", seed: 7505, theme: "lush", from: "vana_santuario", safeLabel: "Pra\xE7a das Ra\xEDzes", npcs: Hr(), grand: "palace", grandName: "Pal\xE1cio das Ra\xEDzes" }, { id: "cidade_gladsheim", name: "Cidade de Gladsheim", seed: 7606, theme: "marble", from: "asg_praca", safeLabel: "Pra\xE7a dos Aesir", npcs: Hr(), grand: "both", grandName: "Sal\xE3o dos Aesir" }, { id: "cidade_skogvik", name: "Cidade de Skogvik", seed: 7707, theme: "wood", from: "midgard_bosque", safeLabel: "Pra\xE7a das Copas", npcs: Hr(), grand: "palace", grandName: "Pagode do Conselho", mood: [0.96, 1, 0.94] }, { id: "cidade_handelsvik", name: "Cidade de Handelsvik", seed: 7808, theme: "grass", from: "midgard_lago", safeLabel: "Cais dos Mercadores", npcs: Hr(), grand: "castle", grandName: "Sal\xE3o da Guilda", mood: [1, 1, 1.04] }, { id: "cidade_solvik", name: "Cidade de Solvik", seed: 7909, theme: "tropic", from: "vana_pantano", safeLabel: "Praia das Festas", npcs: Hr(), grand: "none", mood: [1.05, 1.02, 0.96] }, { id: "cidade_helvik", name: "Cidade de Helvik", seed: 8010, theme: "dead", from: "niflheim_catacumbas", safeLabel: "Pra\xE7a dos Sussurros", npcs: Hr(), grand: "palace", grandName: "Mausol\xE9u de Hel", mood: [0.7, 0.8, 0.86] }];
   function O8(e, t, a) {
@@ -9320,10 +9330,10 @@ Error generating stack: ` + n.message + `
     let a = Wu(t);
     return e === "storm" ? a === "snow" ? "Nevasca" : a === "ash" ? "Tempestade de cinzas" : a === "spores" ? "Tempestade de eco" : "Tempestade" : a === "snow" ? "Neve" : a === "ash" ? "Chuva de cinzas" : a === "spores" ? "Esporos \xE0 deriva" : "Chuva";
   }
-  var kp = { lua_sangue: { id: "lua_sangue", name: "Lua de Sangue", desc: "Os monstros ficam mais fortes (+25% de dano), mas d\xE3o +50% de EXP e +30% de drops.", when: "night", weight: 2, mods: { exp: 1.5, drop: 1.3, mobAtk: 1.25 }, field: true, color: "#e0405a" }, chuva_estrelas: { id: "chuva_estrelas", name: "Chuva de Estrelas", desc: "Estrelas cadentes cruzam o c\xE9u. +25% de EXP.", when: "night", weight: 2, mods: { exp: 1.25, drop: 1, mobAtk: 1 }, field: true, color: "#bcd8ff" }, aurora: { id: "aurora", name: "Aurora Boreal", desc: "Fitas de luz no c\xE9u da noite. +15% de EXP e +10% de drops.", when: "night", weight: 1, mods: { exp: 1.15, drop: 1.1, mobAtk: 1 }, field: true, color: "#7dffc8" }, bencao_freyja: { id: "bencao_freyja", name: "B\xEAn\xE7\xE3o de Freyja", desc: "P\xF3len dourado no ar. +15% de EXP, +10% de drops e monstros 10% mais fracos.", when: "day", weight: 2, mods: { exp: 1.15, drop: 1.1, mobAtk: 0.9 }, field: true, color: "#ffd86b" }, monstro_dourado: { id: "monstro_dourado", name: "Monstro Dourado", desc: "Um monstro do mapa brilha em ouro: mais resistente, vale 5\xD7 EXP e 3\xD7 drops.", when: "any", weight: 3, mods: { exp: 1, drop: 1, mobAtk: 1 }, field: true, color: "#ffc83a" }, festival: { id: "festival", name: "Festival do Hidromel", desc: "Fogos nas cidades e brindes por todo lado. +10% de EXP em qualquer mapa.", when: "day", weight: 2, mods: { exp: 1.1, drop: 1, mobAtk: 1 }, field: false, color: "#ff9a4a" } };
+  var kp = { lua_sangue: { id: "lua_sangue", name: "Lua de Sangue", desc: "Os monstros ficam mais fortes (+25% de dano), mas d\xE3o +50% de EXP e +30% de drops.", when: "night", weight: 2, mods: { exp: 1.5, drop: 1.3, mobAtk: 1.25 }, field: true, color: "#e0405a" }, chuva_estrelas: { id: "chuva_estrelas", name: "Chuva de Estrelas", desc: "Estrelas cadentes cruzam o c\xE9u. +25% de EXP.", when: "night", weight: 2, mods: { exp: 1.25, drop: 1, mobAtk: 1 }, field: true, color: "#bcd8ff" }, aurora: { id: "aurora", name: "Aurora Boreal", desc: "Fitas de luz no c\xE9u da noite. +15% de EXP e +10% de drops.", when: "night", weight: 1, mods: { exp: 1.15, drop: 1.1, mobAtk: 1 }, field: true, color: "#7dffc8" }, bencao_freyja: { id: "bencao_freyja", name: "B\xEAn\xE7\xE3o de Freyja", desc: "P\xF3len dourado no ar. +15% de EXP, +10% de drops e monstros 10% mais fracos.", when: "day", weight: 2, mods: { exp: 1.15, drop: 1.1, mobAtk: 0.9 }, field: true, color: "#ffd86b" }, monstro_dourado: { id: "monstro_dourado", name: "Monstro Dourado", desc: "Um monstro do mapa brilha em ouro: mais resistente, vale 5\xD7 EXP e 3\xD7 drops.", when: "any", weight: 3, mods: { exp: 1, drop: 1, mobAtk: 1 }, field: true, color: "#ffc83a" }, yule: { id: "yule", name: "Yule em Lutie", desc: "Luzes e presentes no inverno. +25% de EXP e +25% de drops.", when: "any", weight: 6, month: 11, mods: { exp: 1.25, drop: 1.25, mobAtk: 1 }, field: true, color: "#ff5a5a" }, cacada_selvagem: { id: "cacada_selvagem", name: "Ca\xE7ada Selvagem de Odin", desc: "A horda espectral cruza a noite. +40% de EXP, +20% de drops e monstros 20% mais fortes.", when: "night", weight: 2, mods: { exp: 1.4, drop: 1.2, mobAtk: 1.2 }, field: true, color: "#9db4ff" }, festival: { id: "festival", name: "Festival do Hidromel", desc: "Fogos nas cidades e brindes por todo lado. +10% de EXP em qualquer mapa.", when: "day", weight: 2, mods: { exp: 1.1, drop: 1, mobAtk: 1 }, field: false, color: "#ff9a4a" } };
   function sM(e) {
     let t = Oe(e * 1597334677 + 7);
-    let a = e * Oy + Math.floor(t() * (Oy - 11 * 6e4)), n = a + Math.floor((6 + t() * 4) * 6e4), o = oM(a), r = Object.values(kp).filter((l) => l.when === "any" || l.when === "night" === o), i = r.reduce((l, c) => l + c.weight, 0), s = t() * i;
+    let a = e * Oy + Math.floor(t() * (Oy - 11 * 6e4)), n = a + Math.floor((6 + t() * 4) * 6e4), o = oM(a), r = Object.values(kp).filter((l) => (l.when === "any" || l.when === "night" === o) && (l.month === void 0 || l.month === new Date(a).getMonth())), i = r.reduce((l, c) => l + c.weight, 0), s = t() * i;
     for (let l of r) if (s -= l.weight, s <= 0) return { def: l, startsAt: a, endsAt: n };
     return { def: r[0], startsAt: a, endsAt: n };
   }
@@ -9342,7 +9352,7 @@ Error generating stack: ` + n.message + `
   function Gy(e, t) {
     if (t) return { exp: e.special?.def.id === "festival" ? kp.festival.mods.exp : 1, drop: 1, mobAtk: 1 };
     let a = e.night ? 1.1 : 1, n = 1, o = 1;
-    e.weather.kind === "storm" && (a *= 1.1, o *= 1.1);
+    e.weather.kind === "storm" && (a *= 1.1, o *= 1.1), e.weather.kind === "fog" && (a *= 1.05), e.weather.kind === "precip" && (n *= 1.05);
     let r = e.special?.def;
     return r && (r.field || r.id === "festival") && (a *= r.mods.exp, n *= r.mods.drop, o *= r.mods.mobAtk), { exp: +a.toFixed(3), drop: +n.toFixed(3), mobAtk: +o.toFixed(3) };
   }
@@ -9532,7 +9542,7 @@ Error generating stack: ` + n.message + `
     }
     step(t) {
       let a = Math.max(0, Math.min(t, hM));
-      this.time += a, this.ps.playTimeMs += a, this.player.buffs = this.player.buffs.filter((n) => n.until > this.time), this.player.deadAt !== null ? this.time - this.player.deadAt >= pM && this.respawnPlayer() : this.updatePlayer(a), this.updateProjectiles(a), this.updateDelayed(), this.petBite(), this.updatePendingBasic(), this.updateMonsters(a), this.updateLoot(), this.monsters = this.monsters.filter((n) => !(n.summoned && n.state === "dead" && this.time - n.diedAt > 3e3));
+      this.time += a, this.ps.playTimeMs += a, this.player.buffs = this.player.buffs.filter((n) => n.until > this.time), this.player.deadAt !== null ? this.time - this.player.deadAt >= pM && this.respawnPlayer() : this.updatePlayer(a), this.updateProjectiles(a), this.updateDelayed(), this.petBite(), this.tutorial(), this.updatePendingBasic(), this.updateMonsters(a), this.updateLoot(), this.monsters = this.monsters.filter((n) => !(n.summoned && n.state === "dead" && this.time - n.diedAt > 3e3));
     }
     buffSum(t) {
       let a = 0;
@@ -9745,6 +9755,7 @@ Error generating stack: ` + n.message + `
       let U = { berserker: ["F\xDARIA DE RAGNAR\xD6K", 16729156, 0, "nova"], escudeiro: ["MURALHA DE ASGARD", 16761920, 0, "nova"], cacador: ["CHUVA DE FREYA", 5111674, 0, "meteor"], volva: ["PROFECIA DE URD", 11563263, 1, "meteor"], valquiria: ["JULGAMENTO DE VALHALLA", 6869247, 1, "nova"], skald: ["CANTO DO FIM", 10123007, 1, "nova"], thay: ["TROV\xC3O DE THOR", 16739370, 1, "meteor"] }[this.ps.line] ?? ["F\xDARIA", 16761920, 0, "nova"];
       this.ultReadyAt = this.time + 90000, a.invulnUntil = Math.max(a.invulnUntil, this.time + 2400), a.lastCombatAt = this.time, this.clearOrders?.();
       this.toast(`\u2605 ${U[0]} \u2605`, "good");
+      this.emit({ type: "ultimate", x: a.pos.x, y: a.pos.y, color: "#" + U[1].toString(16).padStart(6, "0") });
       this.emit({ type: "fx", kind: "nova", x: a.pos.x, y: a.pos.y, angle: 0, range: 520, arc: 360, magic: !!U[2], fromPlayer: true, light: U[1] });
       let mg = !!U[2], base = this.ps.line === "escudeiro" ? 7 : 9;
       let L = this.ps.line, fx0 = a.pos.x, fy0 = a.pos.y, fa0 = a.facing, pts = [];
@@ -9760,6 +9771,18 @@ Error generating stack: ` + n.message + `
       this.delayed.push({ at: this.time + 450 + 5 * 380 + 300, x: a.pos.x, y: a.pos.y, radius: 520, mult: base * 3, magic: mg, stunMs: 2500, slowMs: 3000, light: U[1], style: "meteor" });
       if (this.ps.line === "escudeiro" || this.ps.line === "valquiria" || this.ps.line === "skald") { let d = this.derived(); this.ps.hp = Math.min(d.maxHp, this.ps.hp + d.maxHp * 0.5); }
       return true;
+    }
+    tutorial() {
+      let st = this.ps.tutStep;
+      if (st === void 0 || st >= 4) return;
+      let say = (x) => this.toast(x, "info");
+      if (this._tutShown !== st) {
+        this._tutShown = st, this._tutP0 = { x: this.player.pos.x, y: this.player.pos.y };
+        say(["\u{1F4DC} Bem-vindo a Eldvar! Ande com WASD/setas ou toque na tela.", "\u{1F6AA} Muito bem! Siga at\xE9 os portais brilhantes nas bordas da cidade (ou use o Teleporte) e v\xE1 \xE0 ca\xE7a.", "\u2694 Clique num monstro (ou \u2694 / Espa\xE7o) para atacar. Teclas 1-4: habilidades \xB7 K: esquiva \xB7 V: montaria.", "\u{1F3C6} Primeira vit\xF3ria! Volte \xE0 cidade para vender itens. /ajuda lista os comandos, /catalogo mostra seus abates."][st]);
+        return;
+      }
+      let adv = st === 0 ? Math.hypot(this.player.pos.x - this._tutP0.x, this.player.pos.y - this._tutP0.y) > 140 : st === 1 ? !this.map.city : st === 2 ? Object.values(this.ps.kills ?? {}).some((v) => v > 0) : this.time > (this._tutT ??= this.time + 9e3);
+      adv && (this.ps.tutStep = st + 1, this._tutT = void 0);
     }
     petBite() {
       if (!this.ps.pet || this.player.deadAt !== null || this.time < (this._petAt ?? 0)) return;
@@ -9857,6 +9880,7 @@ Error generating stack: ` + n.message + `
     hitMonster(t, a, n, o, r, i) {
       if (t.state === "dead") return;
       let s = this.derived(), l = ap(a, n, t.def.def, this.rng, s.crit + this.buffSum("crit")), c = Uu(t.def.id, t.def.shape), d = Zx(gy(this.ps), c);
+      (this.ps.kills?.[t.def.id] ?? 0) >= 100 && (l.amount = Math.max(1, Math.round(l.amount * 1.05)));
       if (d !== 1 && (l.amount = Math.max(1, Math.round(l.amount * d))), i && i !== "neutro") {
         let u = Ku(i, c.element);
         u !== 1 && (l.amount = Math.max(1, Math.round(l.amount * u)));
@@ -9926,6 +9950,7 @@ Error generating stack: ` + n.message + `
       t.carried = [], this.emit({ type: "kill", monsterId: a.id, name: a.name, x: t.pos.x, y: t.pos.y });
       let n = this.ps;
       n.kills[a.id] = (n.kills[a.id] ?? 0) + 1;
+      { let kk = n.kills[a.id], ms = { 10: 1, 50: 3, 100: 8, 500: 25 }[kk]; if (ms && !a.boss) { let gz = ms * 12 * Math.max(1, a.level ?? 1); n.silver += gz, this.toast(`\u{1F4D6} Cat\xE1logo: ${a.name} \xD7${kk}! +${gz} zens${kk === 100 ? " e +5% de dano contra eles" : ""}.`, "good"); } }
       let o = Math.max(1, Math.round(a.exp * this.mods.exp * (t.golden ? ql.exp : 1))), r = Yu(n, o);
       this.emit({ type: "expGain", amount: o }), r.levels > 0 && (this.emit({ type: "levelUp", level: n.level }), this.toast(`N\xEDvel ${n.level}! Pontos de atributo dispon\xEDveis.`, "good")), r.jobLevels > 0 && (this.emit({ type: "jobLevelUp", level: n.jobLevel }), this.toast(`N\xEDvel de classe ${n.jobLevel}!`, "good"));
       let i = Vm(this.rng, a.silver[0], a.silver[1]) * (t.golden ? 3 : 1);
@@ -10412,7 +10437,7 @@ Error generating stack: ` + n.message + `
     let a = Nl(e);
     if (!a) throw new Error("Nome inv\xE1lido (2 a 16 caracteres).");
     if (!wp(t)) throw new Error("Classe inv\xE1lida.");
-    let n = Ce[t], o = { name: a, line: t, tier: 0, level: 1, exp: 0, jobLevel: 1, jobExp: 0, statPoints: 0, stats: { ...n.base }, hp: 1, mp: 1, silver: 0, inventory: sy(), equipment: { weapon: n.startWeapon, armor: t === "aprendiz" ? "camisa_algodao" : "tunica_la" }, quests: { active: {}, done: [] }, kills: {}, playTimeMs: 0, refine: {}, visited: ["campos_midgard"], found: [], skillPoints: 0, skillLevels: [1, 1, 1, 1], sockets: {}, cards: {}, dye: 0 };
+    let n = Ce[t], o = { tutStep: 0, name: a, line: t, tier: 0, level: 1, exp: 0, jobLevel: 1, jobExp: 0, statPoints: 0, stats: { ...n.base }, hp: 1, mp: 1, silver: 0, inventory: sy(), equipment: { weapon: n.startWeapon, armor: t === "aprendiz" ? "camisa_algodao" : "tunica_la" }, quests: { active: {}, done: [] }, kills: {}, playTimeMs: 0, refine: {}, visited: ["campos_midgard"], found: [], skillPoints: 0, skillLevels: [1, 1, 1, 1], sockets: {}, cards: {}, dye: 0 };
     He(o.inventory, "hidromel_curativo", 3), He(o.inventory, "infusao_runica", 2), He(o.inventory, "tintura_azul", 1), t === "volva" && (He(o.inventory, "vasilha_mistura", 8), He(o.inventory, "erva_vermelha", 5), He(o.inventory, "erva_azul", 3), He(o.inventory, "erva_espinhosa", 4)), t === "cacador" && (He(o.inventory, "flecha_ferro", 200), He(o.inventory, "flecha_brasa", 30), He(o.inventory, "flecha_geada", 30), o.ammo = "flecha_ferro", o.ammoGift = true), t === "valquiria" && He(o.inventory, "gema_azul", 3), He(o.inventory, "cachecol_de_la", 1), He(o.inventory, "tapa_olho", 1);
     let r = Ua(o);
     return o.hp = r.maxHp, o.mp = r.maxMp, o;
@@ -11134,6 +11159,14 @@ Error generating stack: ` + n.message + `
           let [i, ...b] = String(a ?? "").split(" "), c = parseInt(b[b.length - 1]) || 0, cty = !!n.map.city, rnd = (q) => 1 + Math.floor(Math.random() * q);
           if (i === "pet") return o.pet = !o.pet, r(o.pet ? "Um filhote de lobo passa a te seguir. /pet para dispensar." : "Filhote dispensado."), true;
           if (i === "montaria") return o.mount = !o.mount, r(o.mount ? "Voc\xEA montou um lobo: +40% de velocidade. /montaria para desmontar." : "Voc\xEA desmontou."), true;
+          if (i === "catalogo") {
+            let ks = Object.entries(o.kills ?? {}).filter(([, v]) => v > 0).sort((x, y) => y[1] - x[1]);
+            if (!ks.length) return r("Cat\xE1logo vazio. Derrote monstros para registr\xE1-los."), true;
+            r(`\u{1F4D6} Cat\xE1logo (${ks.length} esp\xE9cies): marcos em 10/50/100/500 abates; 100+ d\xE1 +5% de dano.`);
+            for (let [id, v] of ks.slice(0, 14)) r(`${oo(id)?.name ?? id}: ${v}${v >= 100 ? " \u2605" : ""}`);
+            return ks.length > 14 && r(`...e mais ${ks.length - 14}.`), true;
+          }
+          if (i === "tutorial") return o.tutStep = 0, r("Tutorial reiniciado."), true;
           if (!cty) return r("Minigames s\xF3 funcionam dentro das cidades."), true;
           if (i === "dados") {
             if (c < 10 || c > 5e4) return r("Uso: /dados aposta (10 a 50000 zens). Soma maior que a da casa dobra a aposta."), true;
@@ -12478,6 +12511,7 @@ Error generating stack: ` + n.message + `
     buff: [{ f: 392, d: 0.5, t: "sine", g: 0.16, w: 1 }, { f: 523, d: 0.5, t: "sine", g: 0.16, at: 0.1, w: 1 }, { f: 784, d: 0.7, t: "triangle", g: 0.14, at: 0.2, w: 1 }],
     heal: [{ f: 523, d: 0.4, t: "sine", g: 0.17, w: 1 }, { f: 659, d: 0.4, t: "sine", g: 0.17, at: 0.1, w: 1 }, { f: 784, d: 0.4, t: "sine", g: 0.17, at: 0.2, w: 1 }, { f: 1047, d: 0.7, t: "sine", g: 0.15, at: 0.3, w: 1 }],
     shot: [{ n: 1, fl: "bandpass", ff: 1400, fto: 3200, fq: 2, d: 0.12, g: 0.25, att: 0.03 }, { f: 240, d: 0.12, t: "triangle", g: 0.3, to: 90 }],
+    ultimate: [{ n: 1, fl: "lowpass", ff: 2400, fto: 100, d: 1.6, g: 0.6, att: 0.2 }, { f: 55, d: 1.6, t: "sawtooth", g: 0.35, to: 28, at: 0.1 }, { f: 392, d: 0.9, t: "sine", g: 0.2, w: 1, at: 0.1 }, { f: 523, d: 0.9, t: "sine", g: 0.2, at: 0.3, w: 1 }, { f: 784, d: 1.4, t: "sine", g: 0.22, at: 0.5, w: 1 }],
     meteor: [{ n: 1, fl: "lowpass", ff: 1800, fto: 120, d: 1.1, g: 0.55, att: 0.25 }, { f: 70, d: 1.1, t: "sawtooth", g: 0.3, to: 30, at: 0.2 }]
   }, b0 = class {
     ctx = null;
@@ -16708,6 +16742,7 @@ function ROXQM(f, c, s, l, def) {
         let H = ce(q.x, q.y);
         M(H.x, H.y) && (z.add(`o${q.id}`), T.push({ depth: Ja(q.x, q.y), draw: () => this.drawOther(q, t) }));
       }
+      for (let q of n.critters ?? []) { let H = ce(q.x, q.y); M(H.x, H.y) && T.push({ depth: Ja(q.x, q.y), draw: () => this.drawCritter(q) }); }
       T.push({ depth: m, draw: () => this.drawPlayer(t) }), this.store.fx && Date.now() - this.store.fx.t0 < 3800 && T.push({ depth: m + 9, draw: () => this.drawBlessing(a.player.pos) });
       if (n.obstacles.some((q) => q.deco === "airship")) {
         let A2 = this.air;
@@ -16994,6 +17029,11 @@ function ROXQM(f, c, s, l, def) {
       nt(o, u, r.x + b.dx, r.y + 4 + b.dy, p, m * b.sx, m * b.sy, p ? -b.rot : b.rot), x && o.restore();
       let g = Math.max(0, t.hp / t.maxHp), v = n.targetId === t.id || x || g < 1 || t.state === "chase" || t.state === "windup" || t.state === "charge" || t.state === "recover", k = r.y - (t.def.boss ? t.def.radius * 3.4 : f === "goblin" || f === "draugr" || f === "cinder" || f === "automaton" || f === "sylvan" || f === "prism" || f === "sentinel" || f === "voidling" ? 56 : t.def.radius * 2.6 + 8);
       v && this.bar(r.x, k + 8, Math.max(34, t.def.radius * 2.4), g, t.def.boss ? "#c77dff" : "#e0483e"), (t.golden || this.nameOn(`m${t.id}`)) && this.text(t.golden ? `\u2726 ${t.def.name} dourado` : t.def.name, r.x, k - 4, t.def.boss ? 14 : 11, t.golden ? "#ffd24a" : t.def.boss ? "#ffe9a8" : "#ffffff", t.def.boss || !!t.golden);
+    }
+    drawCritter(q) {
+      let o = this.ctx, T = this.clock / 1e3 + q.seed, ph = Math.sin(T * 0.35 + q.seed) , wx = q.x + ph * 9, moving = Math.cos(T * 0.35 + q.seed) * (q.kind === "corvo" ? 0.3 : 1) > 0.5, face = Math.cos(T * 0.35 + q.seed) >= 0 ? 0 : Math.PI, r = ce(wx, q.y), { dir: d, flip: f } = Kl(face);
+      let col = { cao: 12099720, gato: 14530688, corvo: 1710624 }[q.kind], sc = { cao: 0.5, gato: 0.36, corvo: 0.26 }[q.kind], sp = ROXQM("wolf", d, moving ? Math.floor(this.clock / 110 % ea) : -1, 0, { id: "c_" + q.kind, color: col });
+      sp && (this.blob(r.x, r.y + 2, q.kind === "corvo" ? 4 : 7), nt(o, sp, r.x, r.y + 3 - (q.kind === "corvo" && !moving ? Math.max(0, Math.sin(T * 3)) * 2 : 0), f, $a * sc, $a * sc));
     }
     drawSerpent(t, a) {
       let n = this.store.world;
@@ -17394,6 +17434,9 @@ function ROXQM(f, c, s, l, def) {
           break;
         case "telegraph":
           this.add({ k: "telegraph", x: i.x, y: i.y, r: i.radius, t0: this.clock, dur: i.ms }), this.sfx.play("boss");
+          break;
+        case "ultimate":
+          this.ring(o, r, i.color, 140), this.ring(o, r, "#ffffff", 80), this.sfx.play("ultimate"), this.burst(o, r, 40, [i.color, "#ffffff", "#ffd34d"]);
           break;
         case "levelUp":
           this.ring(o, r, "#ffd34d", 90), this.floatText(o, r, "N\xCDVEL!", "#ffd34d", 24, 60), this.sfx.play("levelup"), this.burst(o, r, 26, ["#ffd34d", "#fff2a8", "#ffffff"], 150, 2.6, 900, -60, 20), this.add({ k: "pillar", x: o, y: r, color: "255,220,120", h: 420, t0: this.clock, dur: 1100 });

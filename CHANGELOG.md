@@ -156,3 +156,4 @@
 - v101: minigames nas cidades (/dados, /corrida, /pescar+/puxar), pet seguidor (/pet), montaria de lobo +40% velocidade (/montaria); ajuda atualizada.
 - v102: montaria visual (personagem montado no lobo, tecla V); serpente com espinhos dorsais; ultimate com padrão próprio por classe.
 - v103: pet ataca monstros próximos (a cada 1,8s); juba do Berserker com mechas e topo arredondado; mapa-múndi conferido.
+- v104: catálogo de monstros (/catalogo, marcos 10/50/100/500, +5% dano aos 100); eventos Yule (dezembro) e Caçada Selvagem (noite); clima com efeito (neblina +5% EXP, chuva +5% drops); tutorial inicial em 4 passos (/tutorial); cães, gatos e corvos nas cidades; som de ultimate.
