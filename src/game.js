@@ -14333,6 +14333,7 @@ void main() {
     let w = R.getContext("2d"), M = w.createRadialGradient(-h, -b, 0, -h, -b, u);
     M.addColorStop(0, "rgba(10,14,8,0.42)"), M.addColorStop(0.6, "rgba(10,14,8,0.24)"), M.addColorStop(1, "rgba(10,14,8,0)"), w.save(), w.translate(-h, -b), w.scale(1, a), w.translate(h, b), w.fillStyle = M, w.fillRect(-h - u, -b - u, u * 2, u * 2), w.restore();
     let T = mh(k);
+    if (PXON) { let pq = PX({ cv: T, ax: 0, ay: 0, k: 1 / Rt }); pq && pq.cv && (T = pq.cv); }
     return w.drawImage(T, 0, 0), { cv: R, ax: -h / Rt, ay: -b / Rt, k: 1 / Rt };
   }
   var Yr = 2, mo = true;

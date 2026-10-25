@@ -1,3 +1,6 @@
+# v75
+- Pixel-art tambem em arvores, casas e objetos (visual consistente).
+
 # v74
 - Caminhada mais natural: 12 quadros por ciclo, inclinacao do tronco, torcao ombros/quadril, balanco lateral.
 - Estrelinhas brilhantes nos efeitos de habilidade (nova, cura, buff).
