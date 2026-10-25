@@ -126,3 +126,6 @@
 
 ## v81
 - Modo realista 2.5D (iluminacao suave, sem faixas, contorno discreto) como padrao; ?old = v78, ?toon = desenho animado.
+
+## v82
+- Estilo HD-2D (Octopath): sprites pixel, desfoque tilt-shift, bloom, grade quente/frio. ?old = v78 puro.

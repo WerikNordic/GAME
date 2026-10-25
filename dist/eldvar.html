@@ -13576,7 +13576,7 @@ void main(){
   vec3 sunC=vec3(1.0,.93,.80), skyC=vec3(.52,.62,.80), gndC=vec3(.30,.27,.22);
   vec3 amb=mix(gndC,skyC,N.y*.5+.5)*.62;
   float ao=.72+.28*smoothstep(-.6,.8,N.y);
-  vec3 r=b0*(sunC*wrap*1.0+amb*1.5)*ao; r=pow(r,vec3(.82))*1.08;
+  vec3 r=b0*(sunC*wrap*1.0+amb*1.5)*ao; r=pow(r,vec3(.9))*.92;
   float rm=pow(1.-max(N.z,0.),3.); r+=skyC*rm*.18;
   if(vM.x>0.){ vec3 H=normalize(L+vec3(0.,0.,1.)); float sp=pow(max(dot(N,H),0.),20.+vM.x*60.); r+=vec3(1.,.96,.88)*sp*vM.x*.5; }
   r+=b0*vM.y; c=r; }
@@ -14589,7 +14589,7 @@ void main(){
       c.putImageData(im, 0, 0);
     } catch {}
   }
-  var PXON = (() => { try { return localStorage.getItem("eldvar.px") !== "0" && !T3; } catch { return !T3; } })();
+  var PXON = (() => { try { return localStorage.getItem("eldvar.px") !== "0"; } catch { return true; } })();
   function PX(o) {
     if (!PXON || !o || !o.cv) return o;
     let f = Math.max(2, Math.round(1.5 / o.k)), W = o.cv.width, H = o.cv.height, sw = Math.ceil(W / f), sh = Math.ceil(H / f);
@@ -14615,7 +14615,7 @@ void main(){
     let oc = out.getContext("2d");
     return oc.imageSmoothingEnabled = false, oc.drawImage(sc, 0, 0, sw * f, sh * f), { cv: out, ax: o.ax, ay: o.ay, k: o.k };
   }
-  var SPON = (() => { try { return localStorage.getItem("eldvar.sp") !== "0" && !T3; } catch { return !T3; } })();
+  var SPON = (() => { try { return localStorage.getItem("eldvar.sp") !== "0"; } catch { return true; } })();
   var SPK = 2;
   window.__dbgspr = () => ({ SPR, R4, ea });
   function SPR(e, dir, a, n, st) {
@@ -14817,7 +14817,7 @@ void main(){
   function hh(e, t, a, n, o) {
     if (SPON && e.pro !== false) return SPR(e, t, a, n, o);
     let r = p4(e, { phase: a < 0 ? 0 : a / ea, moving: a >= 0, lvl: n, style: o, sit: a === -2 }), i = A0(r, { w: uo.lw * Rt, h: uo.lh * Rt, ax: uo.lax * Rt, ay: uo.lay * Rt, pxu: uo.pxu * Rt, yaw: rh[t], pitch: S4, ss: e.pro === false ? fh : 1, outline: e.pro === false ? 1.1 : 1.6, inner: e.pro === false ? void 0 : 0.55 });
-    return e.pro !== false && !T3 && tS(i, 7), PX({ cv: mh(i), ax: uo.lax, ay: uo.lay, k: 1 / Rt });
+    return e.pro !== false && tS(i, 7), PX({ cv: mh(i), ax: uo.lax, ay: uo.lay, k: 1 / Rt });
   }
   function w4(e, t, a, n) {
     let o = g4[e], r = h4(e, { phase: a < 0 ? 0 : a / ea, moving: a >= 0, atk: n }), i = o.w / 2, s = o.h - 14, l = A0(r, { w: o.w * Rt, h: o.h * Rt, ax: i * Rt, ay: s * Rt, pxu: o.pxu * Rt, yaw: rh[t], pitch: S4, ss: fh, outline: 1.1 });
@@ -15502,7 +15502,7 @@ void main(){
     constructor(t, a) {
       this.host = t;
       this.store = a;
-      this.canvas = document.createElement("canvas"), this.canvas.className = "game-canvas", this.canvas.style.cssText = "display:block;width:100%;height:100%;touch-action:none;outline:none", this.canvas.tabIndex = 0, T3 && (this.canvas.style.filter = T3toon ? "saturate(1.32) contrast(1.07) brightness(1.12)" : "saturate(0.92) contrast(1.08) brightness(1.02)"), t.appendChild(this.canvas);
+      this.canvas = document.createElement("canvas"), this.canvas.className = "game-canvas", this.canvas.style.cssText = "display:block;width:100%;height:100%;touch-action:none;outline:none", this.canvas.tabIndex = 0, T3 && (this.canvas.style.filter = "saturate(1.12) contrast(1.06)"), t.appendChild(this.canvas);
       let n = this.canvas.getContext("2d");
       if (!n) throw new Error("Canvas 2D indispon\xEDvel neste navegador.");
       this.ctx = n, this.resize(), this.ro = typeof ResizeObserver < "u" ? new ResizeObserver(() => this.resize()) : null, this.ro?.observe(t), window.addEventListener("keydown", this.onKeyDown), window.addEventListener("keyup", this.onKeyUp), window.addEventListener("blur", this.onBlur), this.canvas.addEventListener("pointerdown", this.onPointerDown), window.addEventListener("pointermove", this.onPointerMove), window.addEventListener("pointerup", this.onPointerUp), window.addEventListener("pointercancel", this.onPointerUp), this.canvas.addEventListener("contextmenu", (o) => o.preventDefault()), this.canvas.addEventListener("wheel", this.onWheel, { passive: false });
@@ -16204,10 +16204,29 @@ void main(){
       Ca.on = false;
       for (let q of this.anims.keys()) !z.has(q) && q !== "p" && !q.startsWith("n:") && this.anims.delete(q);
       n.city && this.cityAmbience(n, a.player.pos), this.drawTopFx(), this.drawParticles(), this.ambient(n), n.city && this.forgeFx(n, a.player.pos), this.applyLighting(a, n), i.setTransform(this.dpr, 0, 0, this.dpr, 0, 0), this.evView && (this.wfx.update(t, this.evView, n.theme, !!n.city, this.w, this.h), this.wfx.draw(i, this.evView, n.theme, this.w, this.h));
+      T3 && this.hd2d(i);
       let I = i.createRadialGradient(this.w / 2, this.h / 2, Math.min(this.w, this.h) * 0.36, this.w / 2, this.h / 2, Math.max(this.w, this.h) * 0.72);
       I.addColorStop(0, "rgba(4,6,12,0)"), I.addColorStop(1, T3 ? "rgba(6,10,20,0.5)" : "rgba(4,6,12,0.66)"), i.fillStyle = I, i.fillRect(0, 0, this.w, this.h), this.drawMinimap(a, n), this.drawMapTitle(), this.drawAnnounce();
       let J = this.fade, D = Math.min(1, (this.clock - J.t0) / J.dur), Z = J.from + (J.to - J.from) * D;
       Z > 3e-3 && (i.fillStyle = `rgba(${J.color},${Z})`, i.fillRect(0, 0, this.w, this.h)), this.clock < this.flash.until && (i.fillStyle = `rgba(255,255,255,${0.5 * (this.flash.until - this.clock) / 300})`, i.fillRect(0, 0, this.w, this.h)), this.dead && (i.fillStyle = "rgba(80,0,0,0.25)", i.fillRect(0, 0, this.w, this.h));
+    }
+    hd2d(c) {
+      let cv = this.canvas, W = cv.width, H = cv.height;
+      if (!this.hdA) { this.hdA = document.createElement("canvas"), this.hdB = document.createElement("canvas"); }
+      let a = this.hdA, b = this.hdB, aw = Math.max(2, W >> 1), ah = Math.max(2, H >> 1), bw = Math.max(2, W >> 2), bh = Math.max(2, H >> 2);
+      a.width !== aw && (a.width = aw, a.height = ah), b.width !== bw && (b.width = bw, b.height = bh);
+      let x = a.getContext("2d"), y = b.getContext("2d");
+      c.save(), c.setTransform(1, 0, 0, 1, 0, 0);
+      x.globalCompositeOperation = "source-over", x.filter = "blur(" + Math.max(2, H / 150) + "px)", x.clearRect(0, 0, aw, ah), x.drawImage(cv, 0, 0, aw, ah), x.filter = "none";
+      let g = x.createLinearGradient(0, 0, 0, ah);
+      g.addColorStop(0, "rgba(0,0,0,1)"), g.addColorStop(0.2, "rgba(0,0,0,0.85)"), g.addColorStop(0.4, "rgba(0,0,0,0)"), g.addColorStop(0.62, "rgba(0,0,0,0)"), g.addColorStop(0.84, "rgba(0,0,0,0.9)"), g.addColorStop(1, "rgba(0,0,0,1)");
+      x.globalCompositeOperation = "destination-in", x.fillStyle = g, x.fillRect(0, 0, aw, ah), x.globalCompositeOperation = "source-over";
+      c.drawImage(a, 0, 0, W, H);
+      y.filter = "brightness(0.8) contrast(2.6) saturate(1.2) blur(" + Math.max(3, H / 110) + "px)", y.clearRect(0, 0, bw, bh), y.drawImage(cv, 0, 0, bw, bh), y.filter = "none";
+      c.globalCompositeOperation = "lighter", c.globalAlpha = 0.3, c.drawImage(b, 0, 0, W, H), c.globalAlpha = 1;
+      let w = c.createLinearGradient(W, 0, 0, H);
+      w.addColorStop(0, "rgba(255,170,80,0.16)"), w.addColorStop(0.5, "rgba(255,255,255,0)"), w.addColorStop(1, "rgba(60,90,200,0.16)");
+      c.globalCompositeOperation = "soft-light", c.fillStyle = w, c.fillRect(0, 0, W, H), c.globalCompositeOperation = "source-over", c.restore();
     }
     static FSTEP = 2.4;
     bakeFlatGround(t, a) {
