@@ -41,6 +41,8 @@ var ROX = (() => {
   return function ROX(e, dir, frame, lvl, style) {
     const NP = NPP[e.cls];
     const T = CP[e.cls] ? (e.ti || 0) : NP ? NP.t : 1;
+    const RB = CP[e.cls] ? Math.max(0, (e.ti || 0) - 2) : 0;
+    const ACC = { berserker: 0xff5a3a, escudeiro: 0xffc040, cacador: 0x4adf7a, volva: 0xb070ff, valquiria: 0x6ad0ff, skald: 0x9a7aff, thay: 0xff7a2a }[e.cls] || 0xffd860;
     const prof = CP[e.cls] || NP || { k: 1.3, wx: 1, tw: 1, lg: 1, hair: "", sit: "" };
     const K = prof.k, WX = prof.wx, hsty = prof.hair;
     const yawT = { down: 0, dq: Math.PI / 4, side: Math.PI / 2, uq: Math.PI * 3 / 4, up: Math.PI };
@@ -57,8 +59,9 @@ var ROX = (() => {
     const cls = e.cls;
     const P = (h) => ramp(h);
     const hairR = (h) => { const b = hexc(h), lum = (b[0] * .3 + b[1] * .59 + b[2] * .11) / 255, s2 = lum < .3 ? 1.6 : 1.22; const bb = b.map((v) => Math.min(255, v * s2)); return [mixc(bb, [60, 20, 40], .5), mixc(bb, [60, 20, 40], .26), bb, mixc(bb, [255, 236, 170], .3), mixc(bb, [255, 250, 210], .6)]; }, skinR = (h) => { const b = hexc(h), sh = [150, 70, 80], hi = [255, 240, 220]; return [mixc(b, sh, .42), mixc(b, sh, .2), mixc(b, [255,220,200], .06), mixc(b, hi, .35), mixc(b, hi, .6)]; }, skin = skinR(e.skin ?? 15780008), hair = hairR(e.hair ?? 9058850), tunic = P(e.tunic ?? 9054758), trim = P(e.trim ?? 15254090), pants = P(((e.pants ?? 5914414) & 0xfefefe) / 2 + 0x606060 | 0), boots = P(e.boots ?? 3876120);
-    const cape = e.cape ? P(e.cape) : null, metal = P(0xaab4c8), gold = P(0xe8b43a), leather = P(0x7a4e2c);
-    const pauld = e.pauld ? P(e.pauld) : null, hairStyle = e.hairStyle ?? "short";
+    const accR = (() => { const a = hexc(ACC); return [mixc(a, [20, 10, 50], .55), mixc(a, [20, 10, 50], .25), a, mixc(a, [255, 255, 255], .45), mixc(a, [255, 255, 255], .85)]; })();
+    const cape = RB ? accR : e.cape ? P(e.cape) : null, metal = P(0xaab4c8), gold = P(0xe8b43a), leather = P(0x7a4e2c);
+    const pauld = RB ? P(0xffd860) : e.pauld ? P(e.pauld) : null, hairStyle = e.hairStyle ?? "short";
     const bodyW = (rx, rz) => Math.hypot(rx * cth, rz * sth) * K;
     // primitivas em pixels (espaço tela)
     function ellS(cx, cy, rx, ry, rm, bias = 0, sd = 1) {
@@ -94,6 +97,17 @@ var ROX = (() => {
     const front = cth > 0.12, back = cth < -0.12;
     const sw = walking ? Math.sin(ph) : 0, bob = walking ? Math.abs(Math.cos(ph)) * 1.2 : 0;
     const atk = lvl > 0 ? lvl : 0;
+    // ---------- RENASCIDO: asas, auréola, brilho ----------
+    if (RB) {
+      const wn = RB >= 3 ? 5 : RB === 2 ? 4 : 3, wsw = walking ? Math.sin(ph) * 1.5 : 0;
+      if (RB >= 2) for (const side of [-1, 1]) for (let i = 0; i < wn; i++) {
+        const rm = i === wn - 1 ? accR : i % 2 ? P(0xfff0c0) : P(0xffffff), len = 14 + i * 8 + RB * 3;
+        add(dp(side * 7, -13) - 4 + i * .01, () => { const X0 = sx(side * 7, -13), Y0 = sy(46 - i * 1.4), X1 = sx(side * (14 + len * .8), -17), Y1 = sy(40 - i * 8 - RB * 3 - wsw); capS(X0, Y0, X1, Y1, 6.4 * K, 1.8 * K, rm, .06); lineS(X0, Y0, X1, Y1, rm[4]); });
+      }
+      add(dp(0, 0) + .995, () => { const X = sx(0, -1), Y = sy(hdY - 25), rx = 12.5 * K * (.55 + .45 * Math.abs(cth)), ry = 3.4 * K; for (let a = 0; a < 90; a++) { const an = a / 90 * Math.PI * 2, c = Math.cos(an), sn = Math.sin(an); put(X + c * rx, Y + sn * ry, gold[3]); put(X + c * (rx - 1), Y + sn * (ry - .7), gold[4]); put(X + c * (rx + 1), Y + sn * (ry + .7), gold[1]); } if (RB >= 3) for (let a = 0; a < 90; a++) { const an = a / 90 * Math.PI * 2; put(X + Math.cos(an) * (rx + 4), Y + Math.sin(an) * (ry + 2) - 2, accR[3]); } });
+      add(dp(0, 8) + .57, () => { if (!front) return; const X = sx(0, 8), Y = sy(51); ellS(X, Y, 3.6 * K * Math.abs(cth) + 1, 3.8 * K, accR, .1); put(X - 1, Y - 2, [255, 255, 255]); if (RB >= 2) { lineS(X - 8 * K * cth, sy(46), X - 2 * K, sy(52), gold[4]); lineS(X + 8 * K * cth, sy(46), X + 2 * K, sy(52), gold[4]); } });
+      add(1.5, () => { const sp = [[-30, 20], [32, 34], [-26, 70], [30, 60], [0, -6], [-40, 48], [40, 10]]; for (let k = 0; k < (RB >= 3 ? 7 : RB === 2 ? 5 : 3); k++) { const X = Math.round(AX + sp[k][0] * K * .8), Y = Math.round(AY - 100 * K + 20 + sp[k][1] * K * .9), c = k % 2 ? [255, 255, 255] : [255, 236, 150]; put(X, Y, c); put(X - 1, Y, c); put(X + 1, Y, c); put(X, Y - 1, c); put(X, Y + 1, c); put(X, Y - 2, c); put(X, Y + 2, c); } });
+    }
     // ---------- CAPA ----------
     if (cape) {
       const sway = walking ? Math.sin(ph + 1) * 3 : 0;
@@ -117,7 +131,7 @@ var ROX = (() => {
         else if (ss === "perch2") { if (side < 0) { kx = -8; fx = -8; kz = 15; fz = 6; kneeY = 66; footY = 92; } else { kx = 7; fx = 7; kz = 12; fz = 22; kneeY = 78; footY = 90; } }
       }
       C3(lx, hipY, 0, kx, kneeY, kz, 5.2 * lg, 4.7 * lg, pants);
-      C3(kx, kneeY, kz, fx, footY - 3, fz, 4.8 * lg, 4.4 * lg, T >= 2 ? P(0x9aa4bc) : P(e.boots ?? 3876120), .04);
+      C3(kx, kneeY, kz, fx, footY - 3, fz, 4.8 * lg, 4.4 * lg, T >= 2 ? P(RB ? 0xf0d890 : 0x9aa4bc) : P(e.boots ?? 3876120), .04);
       add(dp(fx, fz + 2) + .1, () => { const X = sx(fx, fz), Y = sy(footY); capS(X, Y - 5 * K, X, Y - 1.5 * K, 5.2 * K * lg, 5 * K * lg, boots); ellS(X + sth * 2.2 * K, Y + 1.6 * K, bodyW(6.2 * lg, 8.4) + .8, 3.6 * K, boots); if (T >= 1) lineS(X - 3, Y - 4 * K, X + 3, Y - 4 * K, trim[3]); });
     }
     // ---------- TRONCO ----------
@@ -129,8 +143,8 @@ var ROX = (() => {
       for (let k = -4; k <= 4; k++) POLY3([[k * 3.4 - 1.9, 60, 0], [k * 3.4 + 1.9, 60, 0], [k * 3.9 + 1.6, 71 - bob * .5, 0], [k * 3.9 - 1.6, 71 - bob * .5, 0]], (x, y) => rampAt(leather, .5 - (y - sy(60)) * .03 + (k < 0 ? .04 : -.04)), 0.4);
       E3(0, 52, 0, 13.4 * prof.tw, 11.4, 8, T >= 1 ? P(e.tunic ?? 9054758) : tunic);
       // peitoral
-      if (T >= 1) E3(0, 52, 5.5, 9.6 * prof.tw, 9.8, 3.6, T >= 2 ? P(0xbcc6e0) : P((e.tunic ?? 9054758) & 0xfefefe | 0x202020), .12);
-      if (T >= 2) add(dp(0, 8) + .5, () => { if (!front) return; const cx = sx(0, 8), pm = P(0xbcc6e0); lineS(cx, sy(45), cx, sy(61), pm[1]); lineS(cx - 9 * K * cth, sy(45), cx - 8 * K * cth, sy(60), pm[4]); for (const [yy, w] of [[48, 6], [53, 6.4], [58, 5.4]]) lineS(cx - w * K * cth, sy(yy), cx + w * K * cth, sy(yy), pm[2]); ellS(cx, sy(51), 2.6 * K * Math.abs(cth) + .6, 2.8 * K, gold); put(cx, sy(51), gold[4]); for (const [x, y] of [[-7, 46], [7, 46], [-6, 58], [6, 58]]) put(cx + x * K * cth, sy(y), gold[4]); });
+      if (T >= 1) E3(0, 52, 5.5, 9.6 * prof.tw, 9.8, 3.6, T >= 2 ? P(RB ? 0xfff0d0 : 0xbcc6e0) : P((e.tunic ?? 9054758) & 0xfefefe | 0x202020), .12);
+      if (T >= 2) add(dp(0, 8) + .5, () => { if (!front) return; const cx = sx(0, 8), pm = P(RB ? 0xfff0d0 : 0xbcc6e0); lineS(cx, sy(45), cx, sy(61), pm[1]); lineS(cx - 9 * K * cth, sy(45), cx - 8 * K * cth, sy(60), pm[4]); for (const [yy, w] of [[48, 6], [53, 6.4], [58, 5.4]]) lineS(cx - w * K * cth, sy(yy), cx + w * K * cth, sy(yy), pm[2]); ellS(cx, sy(51), 2.6 * K * Math.abs(cth) + .6, 2.8 * K, gold); put(cx, sy(51), gold[4]); for (const [x, y] of [[-7, 46], [7, 46], [-6, 58], [6, 58]]) put(cx + x * K * cth, sy(y), gold[4]); });
     }
     // cinto
     add(dp(0, 6) + .6, () => { polyS([[sx(-11, 0) - 0, sy(60)], [sx(11, 0), sy(60)], [sx(11, 0), sy(64)], [sx(-11, 0), sy(64)]], (x, y) => rampAt(leather, .5 - (y - sy(60)) * .08)); if (front && T >= 1) ellS(sx(0, 8), sy(62), 2.6 * K, 2.4 * K, gold); });
