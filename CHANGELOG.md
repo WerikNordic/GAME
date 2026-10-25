@@ -180,6 +180,12 @@
 - Janelas Alt+Q/E/S/A/G reduzidas a 50%.
 - Sons por espécie de monstro (lobo, javali, goblin, morto-vivo, gigante, gelatina, lagarto, máquina, pedra, vazio, planta): voz ociosa, ao notar o jogador, ao ser atingido e ao morrer; volume por distância.
 
+## v130 (servidor)
+- Multiplayer: presença e chat só aceitam o dono do nick (anti-personificação); limite de 1 atualização por 0,6s, coordenadas validadas, mensagens repetidas bloqueadas.
+- Boss mundial: dano por chamada limitado a 0,25% da vida, 1 chamada de dano a cada 3s por jogador, janela de tempo e vida máxima validadas, simulação limitada (corrige brecha que permitia matar o boss de uma vez).
+- Saves na nuvem: backup automático dos 5 últimos estados por slot (1 a cada 5 min) e validação de slot/formato.
+- Aviso quando o nick do personagem já pertence a outro jogador.
+
 ## v129
 - Removida a mensagem "habilidade pronta" ao armar uma skill.
 - Novo NPC "Teste de Visuais" (todas as cidades): provador de cortes, cores, chapéus, rosto, boca, costas, armas e cor da roupa — só prévia, nada é equipado nem gasto.

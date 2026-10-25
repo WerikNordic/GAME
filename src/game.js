@@ -11910,7 +11910,9 @@ Error generating stack: ` + n.message + `
       try {
         if (this.claimed !== b.p_name) { this.claimed = b.p_name; let c = await sbRpc("claim_nick", { p_name: b.p_name, p_pid: this.pid }); c && c.ok === false && c.error && !/conex/i.test(c.error) && j.toast("Aten\u00E7\u00E3o: o nick \u201C" + b.p_name + "\u201D j\u00E1 pertence a outro jogador.", "bad"); }
         let r = await sbRpc("mp_sync", b);
+        if (r && r.ok === false && r.error === "nick_taken") { this.okAt = 0, this.others.clear(), this.warned !== b.p_name && (this.warned = b.p_name, j.toast("O nick \u201C" + b.p_name + "\u201D pertence a outro jogador: voc\u00EA est\u00E1 invis\u00EDvel no multiplayer. Crie outro personagem com nick livre.", "bad")); return; }
         if (!r || !r.ok) return;
+        if (r.throttled) { this.okAt = Date.now(); return; }
         this.okAt = Date.now(), this.since = r.last;
         let seen = /* @__PURE__ */ new Set();
         for (let o of r.others) {
@@ -11990,7 +11992,7 @@ Error generating stack: ` + n.message + `
       this.lastSync = now;
       let dmg = Math.floor(this.pend);
       this.pend -= dmg;
-      let r = await sbRpc("wb_sync", { p_key: p.s.key, p_max: this.maxHp, p_dmg: dmg, p_sim: this.simDps, p_start: p.s.start, p_end: p.s.start + this.durMs });
+      let r = await sbRpc("wb_sync", { p_key: p.s.key, p_max: this.maxHp, p_dmg: dmg, p_sim: this.simDps, p_start: p.s.start, p_end: p.s.start + this.durMs, p_pid: window.__mp?.pid });
       r && r.ok && typeof r.hp == "number" ? (this.online = true, this.hp = r.hp) : (this.online = false, this.pend += dmg);
     },
     syncBoss(w) {
