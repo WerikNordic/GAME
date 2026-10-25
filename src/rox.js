@@ -33,7 +33,7 @@ var ROX = (() => {
     const add = (d, fn) => parts.push({ d, fn });
     const cls = e.cls;
     const P = (h) => ramp(h);
-    const hairR = (h) => { const b = hexc(h), lum = (b[0] * .3 + b[1] * .59 + b[2] * .11) / 255, s2 = lum < .3 ? 1.35 : 1; const bb = b.map((v) => Math.min(255, v * s2)); return [mixc(bb, [60, 20, 40], .5), mixc(bb, [60, 20, 40], .26), bb, mixc(bb, [255, 236, 170], .3), mixc(bb, [255, 250, 210], .6)]; }, skinR = (h) => { const b = hexc(h), sh = [150, 70, 80], hi = [255, 240, 220]; return [mixc(b, sh, .42), mixc(b, sh, .2), mixc(b, [255,220,200], .06), mixc(b, hi, .35), mixc(b, hi, .6)]; }, skin = skinR(e.skin ?? 15780008), hair = hairR(e.hair ?? 9058850), tunic = P(e.tunic ?? 9054758), trim = P(e.trim ?? 15254090), pants = P(e.pants ?? 5914414), boots = P(e.boots ?? 3876120);
+    const hairR = (h) => { const b = hexc(h), lum = (b[0] * .3 + b[1] * .59 + b[2] * .11) / 255, s2 = lum < .3 ? 1.6 : 1.22; const bb = b.map((v) => Math.min(255, v * s2)); return [mixc(bb, [60, 20, 40], .5), mixc(bb, [60, 20, 40], .26), bb, mixc(bb, [255, 236, 170], .3), mixc(bb, [255, 250, 210], .6)]; }, skinR = (h) => { const b = hexc(h), sh = [150, 70, 80], hi = [255, 240, 220]; return [mixc(b, sh, .42), mixc(b, sh, .2), mixc(b, [255,220,200], .06), mixc(b, hi, .35), mixc(b, hi, .6)]; }, skin = skinR(e.skin ?? 15780008), hair = hairR(e.hair ?? 9058850), tunic = P(e.tunic ?? 9054758), trim = P(e.trim ?? 15254090), pants = P(((e.pants ?? 5914414) & 0xfefefe) / 2 + 0x606060 | 0), boots = P(e.boots ?? 3876120);
     const cape = e.cape ? P(e.cape) : null, metal = P(0xaab4c8), gold = P(0xe8b43a), leather = P(0x7a4e2c);
     const pauld = e.pauld ? P(e.pauld) : null, hairStyle = e.hairStyle ?? "short";
     const bodyW = (rx, rz) => Math.hypot(rx * cth, rz * sth) * K;
@@ -95,8 +95,8 @@ var ROX = (() => {
       for (let k = -4; k <= 4; k++) POLY3([[k * 3.4 - 1.9, 60, 0], [k * 3.4 + 1.9, 60, 0], [k * 3.9 + 1.6, 71 - bob * .5, 0], [k * 3.9 - 1.6, 71 - bob * .5, 0]], (x, y) => rampAt(leather, .5 - (y - sy(60)) * .03 + (k < 0 ? .04 : -.04)), 0.4);
       E3(0, 52, 0, 13.4, 11.4, 8, (e.ti || 0) >= 1 || pauld ? P(e.tunic ?? 9054758) : tunic);
       // peitoral
-      E3(0, 52, 5.5, 9.6, 9.8, 3.6, pauld || ((e.ti || 0) >= 1 ? P(0xb0b8cc) : leather), .12);
-      add(dp(0, 8) + .5, () => { if (!front) return; const cx = sx(0, 8), pm = pauld || ((e.ti || 0) >= 1 ? metal : leather); lineS(cx, sy(45), cx, sy(61), pm[1]); lineS(cx - 9 * K * cth, sy(45), cx - 8 * K * cth, sy(60), pm[4]); for (const [yy, w] of [[48, 6], [53, 6.4], [58, 5.4]]) lineS(cx - w * K * cth, sy(yy), cx + w * K * cth, sy(yy), pm[2]); ellS(cx, sy(51), 2.6 * K * Math.abs(cth) + .6, 2.8 * K, gold); put(cx, sy(51), gold[4]); for (const [x, y] of [[-7, 46], [7, 46], [-6, 58], [6, 58]]) put(cx + x * K * cth, sy(y), gold[4]); });
+      E3(0, 52, 5.5, 9.6, 9.8, 3.6, P(0xbcc6e0), .12);
+      add(dp(0, 8) + .5, () => { if (!front) return; const cx = sx(0, 8), pm = P(0xbcc6e0); lineS(cx, sy(45), cx, sy(61), pm[1]); lineS(cx - 9 * K * cth, sy(45), cx - 8 * K * cth, sy(60), pm[4]); for (const [yy, w] of [[48, 6], [53, 6.4], [58, 5.4]]) lineS(cx - w * K * cth, sy(yy), cx + w * K * cth, sy(yy), pm[2]); ellS(cx, sy(51), 2.6 * K * Math.abs(cth) + .6, 2.8 * K, gold); put(cx, sy(51), gold[4]); for (const [x, y] of [[-7, 46], [7, 46], [-6, 58], [6, 58]]) put(cx + x * K * cth, sy(y), gold[4]); });
     }
     // cinto
     add(dp(0, 6) + .6, () => { polyS([[sx(-11, 0) - 0, sy(60)], [sx(11, 0), sy(60)], [sx(11, 0), sy(64)], [sx(-11, 0), sy(64)]], (x, y) => rampAt(leather, .5 - (y - sy(60)) * .08)); if (front) ellS(sx(0, 8), sy(62), 2.6 * K, 2.4 * K, gold); });
@@ -198,14 +198,14 @@ var ROX = (() => {
     });
     // franja + mechas (anel de espetos em 3D)
     if (hairStyle !== "bald") {
-      const long = hairStyle === "long", nsp = long ? 5 : 7;
+      const long = hairStyle === "long", nsp = long ? 5 : 6;
       add(0.74, () => {
         const Xc = sx(0, -1), Yc = sy(hdY), rx = bodyW(19, 16.6) + 1, ry = 16.4 * K;
         for (let i = 0; i < nsp; i++) {
           const u = -1 + 2 * (i + .5) / nsp, d = Math.abs(u), sd = u < 0 ? -1 : 1;
           const bx = Xc + u * rx * .86, by = Yc - ry * Math.sqrt(Math.max(0, 1 - u * u * .8)) * .96 + 7;
-          const L = (long ? 10 : 15 + (1 - d) * 9) * K * (.8 + hashn(i, 4) * .4), tx = bx + u * rx * .42 + (hashn(i, 2) - .5) * 4, ty = by - L;
-          const hw = rx * 2 / nsp * 1.05;
+          const L = (long ? 10 : 18 + (1 - d) * 9) * K * (.8 + hashn(i, 4) * .4), tx = bx + u * rx * .42 + (hashn(i, 2) - .5) * 4, ty = by - L;
+          const hw = rx * 2 / nsp * .95;
           polyS([[bx - hw, by + 5], [bx + hw, by + 5], [tx, ty]], (x, y) => rampAt(hair, .66 + (by - y) / L * .26 + (sd * (tx - x) / hw) * .06 - .05 + (hashn(x, y, 3) - .5) * .08));
           lineS(bx - hw * .2, by, tx - sd * .6, ty + 4, hair[4]);
           lineS(bx + hw * .5, by + 3, tx + 1, ty + 6, hair[1]);

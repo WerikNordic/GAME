@@ -139,3 +139,4 @@
 ## v85
 - Novo desenhista de personagens pixel-art detalhado (5 direcoes, andar, ataque). ?old = sprites antigos.
 - v86: teletransporte gratuito e apenas para cidades.
+- v87: cabelo espetado largo, placa de aco no peito, cores mais vivas nos sprites.
