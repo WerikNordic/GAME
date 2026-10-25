@@ -8440,6 +8440,20 @@ Error generating stack: ` + n.message + `
     let t = Jt[e.city.id];
     if (t) for (let a of t.portals) a.toMap === e.id && (a.toSpawn = { x: 130, y: Xx / 2 });
   }
+  function nearestCity(id) {
+    let m = en(id);
+    if (m?.city) return id;
+    let i = Qm.findIndex((x) => x.id === id), best = "cidade_midgard", bd = 1e9;
+    if (i < 0) return best;
+    for (let c of D8) { let ci = Qm.findIndex((x) => x.id === c.from), d = ci < 0 ? 1e8 : Math.abs(ci - i) + (ci > i ? 0.01 : 0); d < bd && (bd = d, best = c.id); }
+    return best;
+  }
+  function cityCenter(map) {
+    let z = map.safeZone, x = z ? z.x + z.w / 2 : map.width / 2, y = z ? z.y + z.h / 2 : map.height / 2, hit = (px, py) => map.obstacles.some((o) => px > o.x - 26 && px < o.x + o.w + 26 && py > o.y - 26 && py < o.y + o.h + 26);
+    if (!hit(x, y)) return { x, y };
+    for (let r = 40; r < 700; r += 40) for (let a = 0; a < 16; a++) { let px = x + Math.cos(a / 16 * 6.283) * r, py = y + Math.sin(a / 16 * 6.283) * r; if (!hit(px, py)) return { x: px, y: py }; }
+    return { ...map.spawn };
+  }
   function en(e) {
     return Object.prototype.hasOwnProperty.call(Jt, e) ? Jt[e] : void 0;
   }
@@ -8512,7 +8526,8 @@ Error generating stack: ` + n.message + `
     return a;
   }
   (() => {
-    Ce.aprendiz = { id: "aprendiz", names: ["Aprendiz", "Aprendiz", "Aprendiz", "Aprendiz", "Aprendiz", "Aprendiz"], role: "Sem classe", color: 12632256, desc: "Todo heroi come\xE7a aqui. No n\xEDvel de classe 10, procure o L\xEDder de Classe em uma cidade principal.", base: { str: 5, agi: 5, vit: 5, int: 3, dex: 4, luk: 3 }, hpMult: 1, mpMult: 0.9, attackStat: "str", weapons: ["axe", "sword", "dagger", "club", "staff", "spear", "bow", "fist", "mace"], startWeapon: Ce.skald.startWeapon, basic: { range: 52, cooldown: 700, magic: false, ranged: false, arc: 110 }, skills: [{ id: "golpe_firme", name: "Golpe Firme", tier: 0, kind: "cone", mp: 4, cooldown: 2200, mult: 1.6, range: 62, radius: 0, arc: 110, light: 16766080, desc: "Golpe forte \xE0 frente." }, { id: "folego", name: "F\xF4lego", tier: 0, kind: "buff", mp: 8, cooldown: 16e3, mult: 0, range: 0, radius: 0, buff: { atk: 0.2, ms: 8e3 }, light: 16777152, desc: "+20% de ataque por 8s." }] };
+    Wa.faca_aprendiz = { id: "faca_aprendiz", name: "Faca de Aprendiz", kind: "weapon", weaponType: "dagger", rarity: "common", reqLevel: 1, stack: 1, sell: 2, weight: 10, desc: "Uma faca simples. Todo aprendiz come\xE7a com uma.", bonus: { atk: 2 } }, Wa.camisa_algodao = { id: "camisa_algodao", name: "Camisa de Algod\xE3o", kind: "armor", rarity: "common", reqLevel: 1, stack: 1, sell: 2, desc: "Camisa leve de algod\xE3o.", bonus: { def: 1, maxHp: 6 } };
+    Ce.aprendiz = { id: "aprendiz", names: ["Aprendiz", "Aprendiz", "Aprendiz", "Aprendiz", "Aprendiz", "Aprendiz"], role: "Sem classe", color: 12632256, desc: "Todo heroi come\xE7a aqui. No n\xEDvel de classe 10, procure o L\xEDder de Classe em uma cidade principal.", base: { str: 5, agi: 5, vit: 5, int: 3, dex: 4, luk: 3 }, hpMult: 1, mpMult: 0.9, attackStat: "str", weapons: ["axe", "sword", "dagger", "club", "staff", "spear", "bow", "fist", "mace"], startWeapon: "faca_aprendiz", basic: { range: 52, cooldown: 560, magic: false, ranged: false, arc: 110 }, skills: [{ id: "golpe_firme", name: "Golpe Firme", tier: 0, kind: "cone", mp: 4, cooldown: 2200, mult: 1.6, range: 62, radius: 0, arc: 110, light: 16766080, desc: "Golpe forte \xE0 frente." }, { id: "folego", name: "F\xF4lego", tier: 0, kind: "buff", mp: 8, cooldown: 16e3, mult: 0, range: 0, radius: 0, buff: { atk: 0.2, ms: 8e3 }, light: 16777152, desc: "+20% de ataque por 8s." }] };
     for (let k of CLS7) { let n = Ce[k].names, b = n[2]; Ce[k].names = [n[0], n[1], b, b + " Renascido", "Lorde " + b, b + " Transcendente"]; }
   })();
   var Gr = 99, Jx = 0.01, Jm = 0.75, tr = (e) => Math.floor(18 * Math.pow(e, 1.85)), Ki = (e) => Math.floor(12 * Math.pow(e, 1.6)), I8 = (e) => 6 + Math.floor(e / 10), ep = (e) => 2 + Math.floor((e - 1) / 10);
@@ -9662,12 +9677,12 @@ Error generating stack: ` + n.message + `
     }
     respawnPlayer() {
       let t = this.derived();
-      let cp = this.ps.checkpoint;
+      let cp = nearestCity(this.map.id);
       if (cp && cp !== this.map.id && en(cp)) {
         this.ps.hp = Math.ceil(t.maxHp * 0.5), this.ps.mp = Math.ceil(t.maxMp * 0.5), this.player.deadAt = null, this.emit({ type: "respawnWarp", map: cp });
         return;
       }
-      this.player.pos = { ...this.map.spawn }, this.player.deadAt = null, this.player.invulnUntil = this.time + 3e3, this.ps.hp = Math.ceil(t.maxHp * 0.5), this.ps.mp = Math.ceil(t.maxMp * 0.5), this.emit({ type: "respawned" });
+      this.player.pos = cityCenter(this.map), this.player.deadAt = null, this.player.invulnUntil = this.time + 3e3, this.ps.hp = Math.ceil(t.maxHp * 0.5), this.ps.mp = Math.ceil(t.maxMp * 0.5), this.emit({ type: "respawned" });
     }
     makeMonster(t, a, n, o) {
       return { id: this.nextId++, def: t, pos: { ...a }, home: { ...a }, hp: t.hp, maxHp: t.hp, state: "idle", facing: this.rng() * Math.PI * 2, phase: 1, slot: n, summoned: o, stateUntil: 0, windupKind: "bite", windupStart: 0, dir: { x: 1, y: 0 }, slamCenter: { x: 0, y: 0 }, nextSlamAt: 0, stunUntil: 0, slowUntil: 0, speedMul: 1, atkMul: 1, nextWanderAt: 0, wander: { ...a }, respawnAt: 0, diedAt: 0, stuck: 0, detourUntil: 0, detour: 0, chargeHit: false, engagedAnnounced: false, provoked: false, carried: [], lowHp: { fired: false }, fleeUntil: 0, slamR: ar.radius, slamM: ar.mult };
@@ -10252,7 +10267,7 @@ Error generating stack: ` + n.message + `
     let a = Nl(e);
     if (!a) throw new Error("Nome inv\xE1lido (2 a 16 caracteres).");
     if (!wp(t)) throw new Error("Classe inv\xE1lida.");
-    let n = Ce[t], o = { name: a, line: t, tier: 0, level: 1, exp: 0, jobLevel: 1, jobExp: 0, statPoints: 0, stats: { ...n.base }, hp: 1, mp: 1, silver: 0, inventory: sy(), equipment: { weapon: n.startWeapon, armor: "tunica_la" }, quests: { active: {}, done: [] }, kills: {}, playTimeMs: 0, refine: {}, visited: ["campos_midgard"], found: [], skillPoints: 0, skillLevels: [1, 1, 1, 1], sockets: {}, cards: {}, dye: 0 };
+    let n = Ce[t], o = { name: a, line: t, tier: 0, level: 1, exp: 0, jobLevel: 1, jobExp: 0, statPoints: 0, stats: { ...n.base }, hp: 1, mp: 1, silver: 0, inventory: sy(), equipment: { weapon: n.startWeapon, armor: t === "aprendiz" ? "camisa_algodao" : "tunica_la" }, quests: { active: {}, done: [] }, kills: {}, playTimeMs: 0, refine: {}, visited: ["campos_midgard"], found: [], skillPoints: 0, skillLevels: [1, 1, 1, 1], sockets: {}, cards: {}, dye: 0 };
     He(o.inventory, "hidromel_curativo", 3), He(o.inventory, "infusao_runica", 2), He(o.inventory, "tintura_azul", 1), t === "volva" && (He(o.inventory, "vasilha_mistura", 8), He(o.inventory, "erva_vermelha", 5), He(o.inventory, "erva_azul", 3), He(o.inventory, "erva_espinhosa", 4)), t === "cacador" && (He(o.inventory, "flecha_ferro", 200), He(o.inventory, "flecha_brasa", 30), He(o.inventory, "flecha_geada", 30), o.ammo = "flecha_ferro", o.ammoGift = true), t === "valquiria" && He(o.inventory, "gema_azul", 3), He(o.inventory, "cachecol_de_la", 1), He(o.inventory, "tapa_olho", 1);
     let r = Ua(o);
     return o.hp = r.maxHp, o.mp = r.maxMp, o;
@@ -10712,7 +10727,7 @@ Error generating stack: ` + n.message + `
           let o = $(n.itemId), i = `[Global] ${this.ps?.name ?? "Um aventureiro"} obteve ${o?.name ?? n.itemId} de ${n.monster}${n.mvp ? " (MVP)" : ""}!`;
           this.pushLog(i, "geral", "good"), this.announce(i);
         } else n.type === "silver" ? this.pushLog(`Voc\xEA recebeu ${n.amount} Zens.`, "loot") : n.type === "questProgress" ? (this.toast(`Quest atualizada: ${n.names.join(", ")}`, "info"), this.pushLog(`Quest atualizada: ${n.names.join(", ")}`, "system")) : n.type === "bossEngaged" ? (this.toast(`${n.name} despertou!`, "bad"), this.pushLog(`${n.name} despertou!`, "combat", "bad")) : n.type === "bossDefeated" && (this.toast(`${n.name} foi derrotado!`, "good"), this.pushLog(`${n.name} foi derrotado!`, "combat", "good"), a = true);
-        n.type === "levelUp" && this.pushLog(`Voc\xEA alcan\xE7ou o n\xEDvel ${n.level}.`, "system", "good"), n.type === "jobLevelUp" && this.pushLog(`N\xEDvel de classe ${n.level}.`, "system", "good"), (n.type === "levelUp" || n.type === "jobLevelUp" || n.type === "playerDied") && (a = true);
+        (n.type === "levelUp" || n.type === "jobLevelUp") && (this.fx = { t0: Date.now(), kind: n.type === "levelUp" ? "level" : "job", level: n.level }), n.type === "levelUp" && this.pushLog(`Voc\xEA alcan\xE7ou o n\xEDvel ${n.level}.`, "system", "good"), n.type === "jobLevelUp" && this.pushLog(`N\xEDvel de classe ${n.level}.`, "system", "good"), (n.type === "levelUp" || n.type === "jobLevelUp" || n.type === "playerDied") && (a = true);
       }
       this.fxListeners.forEach((n) => n(t)), a && this.saveGameQuiet();
     }
@@ -10790,7 +10805,7 @@ Error generating stack: ` + n.message + `
     warpRespawn(t) {
       let a = en(t);
       if (!a || !this.ps || this.online) return;
-      this.world = new nr(this.ps, a, void 0, a.spawn), this.ps.visited.includes(a.id) || this.ps.visited.push(a.id), this.dialogue = null, this.pushLog(`Voc\xEA ressuscitou no seu Check Point: ${a.name}.`, "system", "good"), this.toast(`${a.name}`, "info"), this.saveGame(), this.refresh();
+      this.world = new nr(this.ps, a, void 0, cityCenter(a)), this.ps.visited.includes(a.id) || this.ps.visited.push(a.id), this.dialogue = null, this.pushLog(`Voc\xEA ressuscitou em ${a.name}.`, "system", "good"), this.toast(`${a.name}`, "info"), this.saveGame(), this.refresh();
     }
     usePortal(t) {
       if (!this.ps || !this.world) return;
@@ -16227,7 +16242,7 @@ function ROXQM(f, c, s, l, def) {
         let H = ce(q.x, q.y);
         M(H.x, H.y) && (z.add(`o${q.id}`), T.push({ depth: Ja(q.x, q.y), draw: () => this.drawOther(q, t) }));
       }
-      T.push({ depth: m, draw: () => this.drawPlayer(t) });
+      T.push({ depth: m, draw: () => this.drawPlayer(t) }), this.store.fx && Date.now() - this.store.fx.t0 < 3800 && T.push({ depth: m + 9, draw: () => this.drawBlessing(a.player.pos) });
       if (n.obstacles.some((q) => q.deco === "airship")) {
         let A2 = this.air;
         (!A2 || A2.map !== n) && (A2 = this.air = { map: n, x: n.width * (0.2 + Math.random() * 0.6), y: n.height * (0.2 + Math.random() * 0.6), tx: 0, ty: 0, hd: 1, last: this.clock, pick: true });
@@ -16287,7 +16302,7 @@ function ROXQM(f, c, s, l, def) {
       for (let q of T) q.tall && q.sx !== void 0 && q.sy !== void 0 && q.depth > m && q.sy > u.y && q.sy - u.y < 120 && Math.abs(q.sx - u.x) < 46 ? (i.globalAlpha = 0.7, q.draw(), i.globalAlpha = 1) : q.draw();
       Ca.on = false;
       for (let q of this.anims.keys()) !z.has(q) && q !== "p" && !q.startsWith("n:") && this.anims.delete(q);
-      n.city && this.cityAmbience(n, a.player.pos), this.drawTopFx(), this.drawParticles(), this.ambient(n), n.city && this.forgeFx(n, a.player.pos), this.applyLighting(a, n), i.setTransform(this.dpr, 0, 0, this.dpr, 0, 0), this.evView && (this.wfx.update(t, this.evView, n.theme, !!n.city, this.w, this.h), this.wfx.draw(i, this.evView, n.theme, this.w, this.h));
+      n.city && this.cityAmbience(n, a.player.pos), this.drawTopFx(), this.drawParticles(), this.ambient(n), n.city && this.forgeFx(n, a.player.pos), this.applyLighting(a, n), i.setTransform(this.dpr, 0, 0, this.dpr, 0, 0), this.drawLevelBanner(i), this.evView && (this.wfx.update(t, this.evView, n.theme, !!n.city, this.w, this.h), this.wfx.draw(i, this.evView, n.theme, this.w, this.h));
       let I = i.createRadialGradient(this.w / 2, this.h / 2, Math.min(this.w, this.h) * 0.36, this.w / 2, this.h / 2, Math.max(this.w, this.h) * 0.72);
       I.addColorStop(0, "rgba(4,6,12,0)"), I.addColorStop(1, "rgba(4,6,12,0.66)"), i.fillStyle = I, i.fillRect(0, 0, this.w, this.h), this.drawMinimap(a, n), this.drawMapTitle(), this.drawAnnounce();
       let J = this.fade, D = Math.min(1, (this.clock - J.t0) / J.dur), Z = J.from + (J.to - J.from) * D;
@@ -16389,6 +16404,43 @@ function ROXQM(f, c, s, l, def) {
         }
         c += s[u];
       }), n.filter = "none", n.globalAlpha = 1, n.restore();
+    }
+    drawBlessing(pos) {
+      let f = this.store.fx, c = this.ctx, p = (Date.now() - f.t0) / 3600;
+      if (p >= 1) return;
+      let { x: X, y: Y } = ce(pos.x, pos.y), fade = Math.min(1, p * 6) * Math.min(1, (1 - p) * 4), T = Date.now() / 1e3;
+      c.save();
+      c.globalCompositeOperation = "lighter";
+      let g = c.createLinearGradient(0, Y - 330, 0, Y + 10);
+      g.addColorStop(0, "rgba(255,244,190,0)"), g.addColorStop(0.5, `rgba(255,236,160,${0.34 * fade})`), g.addColorStop(1, `rgba(255,250,220,${0.6 * fade})`), c.fillStyle = g, c.beginPath(), c.moveTo(X - 18, Y - 330), c.lineTo(X + 18, Y - 330), c.lineTo(X + 46, Y + 8), c.lineTo(X - 46, Y + 8), c.closePath(), c.fill();
+      let rr = 18 + p * 70; c.strokeStyle = `rgba(255,236,160,${0.8 * (1 - p)})`, c.lineWidth = 3, c.beginPath(), c.ellipse(X, Y + 4, rr, rr * 0.42, 0, 0, Math.PI * 2), c.stroke();
+      c.globalCompositeOperation = "source-over";
+      let ease = (u) => 1 - Math.pow(1 - u, 3), ay = Y - 250 + 112 * ease(Math.min(1, p / 0.28)) - (p > 0.75 ? (p - 0.75) * 4 * 120 : 0) + Math.sin(T * 3) * 3, al = fade;
+      c.globalAlpha = al;
+      for (let sd of [-1, 1]) for (let row = 0; row < 2; row++) for (let i = 0; i < 5; i++) {
+        let ang = (-8 + i * 24 + Math.sin(T * 4) * 3) * Math.PI / 180, L = (row ? 36 : 50) + Math.sin(i * 1.3) * 6, W = row ? 9 : 11, cx = Math.cos(ang) * sd, cy = -Math.sin(ang), nx = -cy, ny = cx, x0 = X + sd * 8, y0 = ay - 18 + row * 4;
+        c.fillStyle = row ? "#fff3c8" : i % 2 ? "#ffffff" : "#eef2ff", c.strokeStyle = "rgba(210,170,70,.9)", c.lineWidth = 1, c.beginPath(), c.moveTo(x0 + nx * -W * 0.3, y0 + ny * -W * 0.3), c.quadraticCurveTo(x0 + cx * L * 0.4 + nx * -W, y0 + cy * L * 0.4 + ny * -W, x0 + cx * L, y0 + cy * L), c.quadraticCurveTo(x0 + cx * L * 0.4 + nx * W, y0 + cy * L * 0.4 + ny * W, x0 + nx * W * 0.3, y0 + ny * W * 0.3), c.closePath(), c.fill(), c.stroke();
+      }
+      let rg = c.createLinearGradient(0, ay - 20, 0, ay + 42); rg.addColorStop(0, "#ffffff"), rg.addColorStop(1, "#cfe0ff"), c.fillStyle = rg, c.strokeStyle = "rgba(160,170,210,.9)", c.beginPath(), c.moveTo(X - 9, ay - 12), c.lineTo(X + 9, ay - 12), c.lineTo(X + 17, ay + 42), c.lineTo(X - 17, ay + 42), c.closePath(), c.fill(), c.stroke();
+      c.strokeStyle = "#ffd860", c.lineWidth = 2, c.beginPath(), c.moveTo(X - 9, ay - 2), c.lineTo(X + 9, ay - 2), c.stroke();
+      for (let sd of [-1, 1]) c.fillStyle = "#ffffff", c.beginPath(), c.moveTo(X + sd * 9, ay - 10), c.quadraticCurveTo(X + sd * 26, ay + 6, X + sd * 20, ay + 26), c.lineTo(X + sd * 14, ay + 22), c.quadraticCurveTo(X + sd * 18, ay + 6, X + sd * 7, ay - 4), c.closePath(), c.fill(), c.stroke(), c.fillStyle = "#f5c9a0", c.beginPath(), c.arc(X + sd * 19, ay + 27, 4, 0, Math.PI * 2), c.fill();
+      c.fillStyle = "#f5c9a0", c.beginPath(), c.arc(X, ay - 22, 9, 0, Math.PI * 2), c.fill(), c.fillStyle = "#ffe08a", c.beginPath(), c.arc(X, ay - 26, 9.6, Math.PI, 0), c.fill(), c.beginPath(), c.ellipse(X - 8, ay - 20, 4, 8, 0.2, 0, Math.PI * 2), c.ellipse(X + 8, ay - 20, 4, 8, -0.2, 0, Math.PI * 2), c.fill(), c.fillStyle = "#3a5a9a", c.fillRect(X - 5, ay - 22, 2.4, 3), c.fillRect(X + 2.6, ay - 22, 2.4, 3);
+      c.strokeStyle = "#ffd860", c.lineWidth = 2.4, c.beginPath(), c.ellipse(X, ay - 40, 12, 3.6, 0, 0, Math.PI * 2), c.stroke();
+      c.globalAlpha = 1, c.globalCompositeOperation = "lighter";
+      for (let i = 0; i < 22; i++) { let sd = (i * 7919 % 100) / 100, sx = X + (sd - 0.5) * 120 + Math.sin(T * 2 + i) * 8, sy = Y - 260 + ((p * 260 * (0.6 + sd) + i * 37) % 280), a2 = fade * (0.5 + 0.5 * Math.sin(T * 8 + i)); c.fillStyle = i % 3 ? `rgba(255,255,255,${a2})` : `rgba(255,224,120,${a2})`, c.beginPath(), i % 2 ? c.ellipse(sx, sy, 2.4, 5, Math.sin(T + i), 0, Math.PI * 2) : c.arc(sx, sy, 2, 0, Math.PI * 2), c.fill(); }
+      c.restore();
+    }
+    drawLevelBanner(c) {
+      let f = this.store.fx;
+      if (!f) return;
+      let p = (Date.now() - f.t0) / 3600;
+      if (p >= 1) return;
+      let k = Math.min(1, p / 0.12), sc = 0.6 + 0.4 * (1 - Math.pow(1 - k, 3)) + (p < 0.2 ? Math.sin(p / 0.2 * Math.PI) * 0.06 : 0), al = Math.min(1, p * 8) * Math.min(1, (1 - p) * 5), cx = this.w / 2, cy = Math.max(110, this.h * 0.2), job = f.kind === "job";
+      c.save(), c.globalAlpha = al, c.translate(cx, cy), c.scale(sc, sc);
+      let g = c.createLinearGradient(-230, 0, 230, 0); g.addColorStop(0, "rgba(40,28,8,0)"), g.addColorStop(0.2, "rgba(60,40,10,.88)"), g.addColorStop(0.8, "rgba(60,40,10,.88)"), g.addColorStop(1, "rgba(40,28,8,0)"), c.fillStyle = g, c.fillRect(-230, -46, 460, 92);
+      c.strokeStyle = "#e8c050", c.lineWidth = 2, c.beginPath(), c.moveTo(-200, -46), c.lineTo(200, -46), c.moveTo(-200, 46), c.lineTo(200, 46), c.stroke();
+      c.textAlign = "center", c.textBaseline = "middle", c.font = `bold 40px ${B4}`, c.shadowColor = "#ffb020", c.shadowBlur = 18, c.fillStyle = "#fff4c0", c.fillText(job ? `CLASSE ${f.level}` : `N\xCDVEL ${f.level}`, 0, -8), c.shadowBlur = 0, c.font = `bold 15px ${ms}`, c.fillStyle = "#ffe9a8", c.fillText(job ? "Seu treino rendeu frutos!" : "Voc\xEA subiu de n\xEDvel! Um anjo o aben\xE7oou.", 0, 28);
+      c.restore();
     }
     drawMinimap(t, a) {
       if (!this.mini || this.w < 520) return;

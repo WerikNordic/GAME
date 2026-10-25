@@ -147,3 +147,4 @@
 - v92: NPCs com nome da funcao; minimapa com icones e legenda por funcao; Teletransportador gratis com lista das 7 cidades; visual especial do renascido (aureola, gema, asas, brilho).
 - v93: asas de pena no renascido; ciclo de andar corrigido; monstros (lobos, javali, yeti, gosma, Hati) em pixel art no mesmo estilo dos personagens.
 - v94: login desligado temporariamente (AUTH_ON=false) para testes.
+- v95: Aprendiz começa com Faca de Aprendiz + Camisa de Algodão; efeito de anjo abençoando + pop-up ao subir de nível (base e classe); ao morrer renasce no centro da cidade mais próxima (Check Point não define mais o respawn de morte).
