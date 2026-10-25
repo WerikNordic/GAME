@@ -167,3 +167,8 @@
 - v112: Gelatina Saltitante 28% menor.
 - v113: gelatina no topo da cabeça e acompanha a câmera (frente/lado/costas); estátuas Morroc e guerreiro refeitas no mesmo estilo.
 - v114: montaria agora é o Corvo de Guerra (ave gigante nórdica, design original); gelatina ajustada.
+
+## v115
+- Montaria: senta junto com o personagem; exige a habilidade Montaria (NPC Montaria); portal de saída devolve ao mesmo portal de entrada.
+- Estátuas só em algumas cidades; visual aparece no inventário e no Alt+Q; quests só no Alt+G; Alt+C substitui Ctrl+C.
+- Cada cidade ganhou traçado e marcos próprios (anel, porto, zigue-zague, dunas, forja, espiral, colunata, jardim, feira, sol, cemitério).
