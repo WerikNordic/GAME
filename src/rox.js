@@ -45,6 +45,7 @@ var ROX = (() => {
     const ACC = { berserker: 0xff5a3a, escudeiro: 0xffc040, cacador: 0x4adf7a, volva: 0xb070ff, valquiria: 0x6ad0ff, skald: 0x9a7aff, thay: 0xff7a2a }[e.cls] || 0xffd860;
     const prof = CP[e.cls] || NP || { k: 1.3, wx: 1, tw: 1, lg: 1, hair: "", sit: "" };
     const QK = { wolf: 1.6, frostwolf: 1.6, hati: 2.5, boar: 1.7, yeti: 1.6, blob: 2.0, goblin: 1.6, draugr: 1.5, cinder: 1.75, automaton: 1.65, sylvan: 1.6, prism: 1.7, sentinel: 1.65, voidling: 1.7, jotun: 2.1, grifo: 2.0, corvo: 2.3 };
+    const FEM = !!e.slim && !e.quad, TW = prof.tw * (FEM ? .84 : 1), AR = FEM ? .86 : 1;
     const SZ = .58, K = (e.quad ? (QK[e.quad] ?? 1.3) : prof.k) * SZ, WX = prof.wx, hsty = prof.hair;
     const yawT = { down: 0, dq: Math.PI / 4, side: Math.PI / 2, uq: Math.PI * 3 / 4, up: Math.PI };
     const th = yawT[dir] ?? 0, cth = Math.cos(th), sth = Math.sin(th);
@@ -269,7 +270,7 @@ var ROX = (() => {
         else if (ss === "lean") { kx = side * 6; fx = side * 8; kz = 18; fz = 30; kneeY = 66; footY = 75; }
         else if (ss === "perch2") { if (side < 0) { kx = -8; fx = -8; kz = 14; fz = 9; kneeY = 55; footY = 75; } else { kx = 9; fx = 7; kz = 10; fz = 18; kneeY = 70; footY = 75; } }
       }
-      C3(lx, hipY, 0, kx, kneeY, kz, 5.2 * lg, 4.7 * lg, pants);
+      C3(lx, hipY, 0, kx, kneeY, kz, 5.2 * lg * (FEM ? .92 : 1), 4.7 * lg * (FEM ? .9 : 1), pants);
       C3(kx, kneeY, kz, fx, footY - 3, fz, 4.8 * lg, 4.4 * lg, T >= 2 ? P(RB ? 0xf0d890 : 0x9aa4bc) : P(e.boots ?? 3876120), .04);
       add(dp(fx, fz + 2) + .1, () => { const X = sx(fx, fz), Y = sy(footY); capS(X, Y - 5 * K, X, Y - 1.5 * K, 5.2 * K * lg, 5 * K * lg, boots); ellS(X + sth * 2.2 * K, Y + 1.6 * K, bodyW(6.2 * lg, 8.4) + .8, 3.6 * K, boots); if (T >= 1) lineS(X - 3, Y - 4 * K, X + 3, Y - 4 * K, trim[3]); });
     }
@@ -280,24 +281,33 @@ var ROX = (() => {
       add(dp(0, 4) + .3, () => { for (let x = -20; x <= 20; x++) put(sx(x, 0), sy(sit ? 74 : 93), trim[3]); });
     } else {
       for (let k = -4; k <= 4; k++) POLY3([[k * 3.4 - 1.9, 60, 0], [k * 3.4 + 1.9, 60, 0], [k * 3.9 + 1.6, 71 - bob * .5, 0], [k * 3.9 - 1.6, 71 - bob * .5, 0]], (x, y) => rampAt(leather, .5 - (y - sy(60)) * .03 + (k < 0 ? .04 : -.04)), 0.4);
-      E3(0, 52, 0, 13.4 * prof.tw, 11.4, 8, T >= 1 ? P(e.tunic ?? 9054758) : tunic);
+      E3(0, 52, 0, 13.4 * TW, 11.4 * (FEM ? .96 : 1), 8, T >= 1 ? P(e.tunic ?? 9054758) : tunic);
+      if (FEM) {
+        // cintura marcada, quadril e saia
+        E3(0, 63, 0, 11.2, 5, 7.4, tunic);
+        const sk = T >= 1 ? P(e.tunic ?? 9054758) : tunic, hemC = T >= 2 ? P(0xf0e0a0) : P(0xe46a96);
+        POLY3([[-9.5, 62, 0], [9.5, 62, 0], [T >= 1 ? 19 : 16.5, T >= 1 ? 86 : 79, 0], [T >= 1 ? -19 : -16.5, T >= 1 ? 86 : 79, 0]], (x, y) => rampAt(sk, .55 - ((x - AX) * cth) * .012 + ((((x - AX) + 99) % 5 < 1) ? -.12 : 0) - (y - sy(62)) * .004), 0.3);
+        add(dp(0, 6) + .55, () => { const yb = sy(T >= 1 ? 85.5 : 78.5), hw = (T >= 1 ? 19 : 16.5) * K * Math.abs(cth) + (T >= 1 ? 19 : 16.5) * K * Math.abs(sth) * .4; for (let x = -Math.round(hw); x <= Math.round(hw); x++) { put(Math.round(sx(0, 0)) + x, Math.round(yb), hemC[3]); put(Math.round(sx(0, 0)) + x, Math.round(yb) - 1, hemC[2]); } });
+        // busto discreto
+        if (cth > -.2) for (const sd of [-1, 1]) E3(sd * 4.6, 49.5, 5.4, 4.4, 4.0, 3.2, tunic, .1);
+      }
       // peitoral
       if (T >= 1) E3(0, 52, 5.5, 9.6 * prof.tw, 9.8, 3.6, T >= 2 ? P(RB ? 0xfff0d0 : 0xbcc6e0) : P((e.tunic ?? 9054758) & 0xfefefe | 0x202020), .12);
       if (T >= 2) add(dp(0, 8) + .5, () => { if (!front) return; const cx = sx(0, 8), pm = P(RB ? 0xfff0d0 : 0xbcc6e0); lineS(cx, sy(45), cx, sy(61), pm[1]); lineS(cx - 9 * K * cth, sy(45), cx - 8 * K * cth, sy(60), pm[4]); for (const [yy, w] of [[48, 6], [53, 6.4], [58, 5.4]]) lineS(cx - w * K * cth, sy(yy), cx + w * K * cth, sy(yy), pm[2]); ellS(cx, sy(51), 2.6 * K * Math.abs(cth) + .6, 2.8 * K, gold); put(cx, sy(51), gold[4]); for (const [x, y] of [[-7, 46], [7, 46], [-6, 58], [6, 58]]) put(cx + x * K * cth, sy(y), gold[4]); });
     }
     // cinto
-    add(dp(0, 6) + .6, () => { polyS([[sx(-11, 0) - 0, sy(60)], [sx(11, 0), sy(60)], [sx(11, 0), sy(64)], [sx(-11, 0), sy(64)]], (x, y) => rampAt(leather, .5 - (y - sy(60)) * .08)); if (front && T >= 1) ellS(sx(0, 8), sy(62), 2.6 * K, 2.4 * K, gold); });
+    add(dp(0, 6) + .6, () => { polyS([[sx(FEM ? -9 : -11, 0) - 0, sy(60)], [sx(FEM ? 9 : 11, 0), sy(60)], [sx(FEM ? 9 : 11, 0), sy(FEM ? 63 : 64)], [sx(FEM ? -9 : -11, 0), sy(FEM ? 63 : 64)]], (x, y) => rampAt(leather, .5 - (y - sy(60)) * .08)); if (front && T >= 1) ellS(sx(0, 8), sy(62), 2.6 * K, 2.4 * K, gold); });
     if (T >= 1) add(dp(11, 3) + .62, () => { if (cth < -.3) return; const X = sx(11, 3), Y = sy(67); ellS(X, Y, 3.4 * K, 4 * K, leather); lineS(X - 3 * K, Y - 3 * K, X + 3 * K, Y - 3 * K, gold[3]); });
     // ---------- BRAÇOS ----------
     for (const side of [-1, 1]) {
-      const ax_ = side * 17.5, sw2 = walking ? Math.sin(ph + (side > 0 ? Math.PI : 0)) : 0;
+      const ax_ = side * (FEM ? 15.2 : 17.5), sw2 = walking ? Math.sin(ph + (side > 0 ? Math.PI : 0)) : 0;
       let hz = sw2 * 8, hy = 69 - bob * .3, ez = hz * .5;
       const weaponHand = side === 1;
       if (atk && weaponHand) { const p = [0, -4, 12, 6][atk] ?? 0; hz = p; hy = [69, 52, 64, 68][atk]; ez = hz * .6; }
       if (sit) { hz = 11; hy = 60; ez = 5; }
-      C3(ax_, 47, 0, ax_ + side * 1.6, 58, ez, 4.6, 4.1, tunic);
-      C3(ax_ + side * 1.6, 57, ez, ax_ + side * 1.8, hy - 4, hz, 4.8, 4.4, T >= 2 ? P(0xaab0c6) : tunic, .04);
-      C3(ax_ + side * 1.7, hy - 12, hz * .8, ax_ + side * 1.8, hy - 4, hz, 4.9, 4.6, T >= 2 ? (pauld || P(0xa8b0c8)) : T === 1 ? leather : tunic, .06);
+      C3(ax_, 47, 0, ax_ + side * 1.6, 58, ez, 4.6 * AR, 4.1 * AR, tunic);
+      C3(ax_ + side * 1.6, 57, ez, ax_ + side * 1.8, hy - 4, hz, 4.8 * AR, 4.4 * AR, T >= 2 ? P(0xaab0c6) : tunic, .04);
+      C3(ax_ + side * 1.7, hy - 12, hz * .8, ax_ + side * 1.8, hy - 4, hz, 4.9 * AR, 4.6 * AR, T >= 2 ? (pauld || P(0xa8b0c8)) : T === 1 ? leather : tunic, .06);
       add(dp(ax_ + side * 1.8, hz) + .15, () => { const X = sx(ax_ + side * 1.8, hz), Y = sy(hy); if (T >= 1) ellS(X, Y, 4.5 * K, 4.1 * K, leather); ellS(X, Y + 2.6 * K, 3.2 * K, 2.6 * K, skin); });
       // ombreira
       add(dp(ax_, 1) + .2, () => { const X = sx(ax_, 0), Y = sy(43), W = (.55 + .45 * Math.abs(cth)), pm = T >= 2 ? (pauld || metal) : T === 1 ? P(e.tunic ?? 9054758) : tunic; if (T === 0) { ellS(X, Y + K, 5.6 * K * W + 1, 4.8 * K, pm); return; } ellS(X, Y, 7.8 * K * W + 1, 6.6 * K, pm); if (T === 1) { ellS(X + side * .4, Y + 3 * K, 6.8 * K * W, 3.6 * K, pm, -.08); return; } ellS(X + side * .4, Y + 2.6 * K, 7.2 * K * W + .6, 4.6 * K, pm, -.04); ellS(X + side * .8, Y + 5 * K, 6.4 * K * W, 3 * K, pm, -.1); for (let i = -5; i <= 5; i++) { put(X + i * W, Y + 2.2 * K, pm[1]); put(X + i * W, Y + 4.6 * K, pm[1]); } put(X - side * 2 * W, Y - 3 * K, pm[4]); put(X - side * 1 * W, Y - 3.6 * K, pm[4]); if (front) put(X + side * 3 * W, Y + K, gold[4]); for (let i = -6; i <= 6; i++) put(X + i * W, Y + 6.6 * K, gold[3]); });
@@ -337,7 +347,7 @@ var ROX = (() => {
     const hdY = 24 - bob * .5;
     add(0.5, () => {
       // cabeça
-      const X = sx(0, 0), Y = sy(hdY), rx = bodyW(14.6, 12.6), ry = 17.4 * K; eggS(X, Y, rx, ry, skin, .16);
+      const X = sx(0, 0), Y = sy(hdY), rx = bodyW(FEM ? 13.4 : 14.6, FEM ? 11.8 : 12.6), ry = (FEM ? 16.8 : 17.4) * K; eggS(X, Y, rx, ry, skin, .16);
       // orelhas
       for (const side of [-1, 1]) { const ez = 0; const ex = sx(side * 14.6, ez); if (Math.abs(side * 14.6 * cth) > 4 || !front) ellS(ex, sy(hdY + 3), 2 * K + .4, 3 * K, skin); }
     });
@@ -355,16 +365,17 @@ var ROX = (() => {
       const eyeC = e.eye ? hexc(e.eye) : null;
       for (const side of [-1, 1]) {
         const ex = sx(side * 6.2, 12), vis = dp(side * 6.2, 12) > 1; if (!vis) continue;
-        const w = Math.max(2, Math.round(4.6 * K * (.35 + .65 * Math.abs(cth)))), eh = Math.max(3, Math.round(5 * K)), x0 = Math.round(ex - w / 2), y0 = Math.round(sy(hdY + 2));
+        const w = Math.max(2, Math.round(4.6 * K * (.35 + .65 * Math.abs(cth)))), eh = Math.max(3, Math.round((FEM ? 5.8 : 5) * K)), x0 = Math.round(ex - w / 2), y0 = Math.round(sy(hdY + 2));
         const iris = eyeC ? [mixc(eyeC, [10, 10, 30], .6), mixc(eyeC, [10, 10, 30], .3), eyeC, mixc(eyeC, [255, 255, 255], .4), mixc(eyeC, [255, 255, 255], .7)] : [[40, 30, 70], [40, 74, 154], [74, 120, 208], [106, 168, 240], [154, 212, 255]];
         for (let y = 0; y < eh; y++) for (let x = 0; x < w; x++) put(x0 + x, y0 + y, iris[Math.min(4, Math.floor(y * 5 / eh))]);
         put(x0, y0, [255, 255, 255]); if (w > 2) put(x0 + 1, y0, [255, 255, 255]); put(x0, y0 + 1, [225, 238, 255]);
         for (let x = -1; x <= w; x++) put(x0 + x, y0 - 1, [42, 28, 46]);
         for (let x = 0; x < w; x++) { put(x0 + x, y0 - 2, hair[1]); put(x0 + x, y0 - 3, hair[2]); } put(x0 - 1, y0 - 2, hair[1]); put(x0 + w, y0 - 2, hair[1]);
         put(x0 + w - 1, y0 + eh - 2, [220, 244, 255]);
+        if (FEM) { const ox = side > 0 ? x0 + w : x0 - 1; put(ox, y0 - 2, [42, 28, 46]); put(ox + (side > 0 ? 1 : -1), y0 - 3, [42, 28, 46]); put(ox, y0 - 3, [42, 28, 46]); }
       }
       const mx = sx(sth * 2, 15) , my = sy(hdY + 13);
-      put(mx - 1, my, [168, 62, 72]); put(mx, my, [168, 62, 72]); put(mx + 1, my, [168, 62, 72]); put(mx, my + 1, [210, 110, 96]);
+      const lipC = FEM ? [206, 70, 100] : [168, 62, 72]; put(mx - 1, my, lipC); put(mx, my, lipC); put(mx + 1, my, lipC); put(mx, my + 1, FEM ? [236, 120, 134] : [210, 110, 96]);
       put(sx(0, 16) + sth * 3, sy(hdY + 9), skin[1]);
       for (const side of [-1, 1]) { if (dp(side * 9.4, 12) > 0) { const bx = sx(side * 9.4, 12); put(bx, sy(hdY + 8), [245, 154, 138]); put(bx + 1, sy(hdY + 8), [245, 154, 138]); } }
     });

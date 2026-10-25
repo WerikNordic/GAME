@@ -180,6 +180,11 @@
 - Janelas Alt+Q/E/S/A/G reduzidas a 50%.
 - Sons por espécie de monstro (lobo, javali, goblin, morto-vivo, gigante, gelatina, lagarto, máquina, pedra, vazio, planta): voz ociosa, ao notar o jogador, ao ser atingido e ao morrer; volume por distância.
 
+## v122 — Fisionomia feminina
+- Personagens femininas: tronco e ombros mais estreitos, cintura marcada, saia com barra rosa, busto discreto, rosto mais fino com cílios e lábios.
+- NPCs femininas (Eira, Ylva, Estilista, Bruna, Sigrún) usam o corpo feminino.
+- "Novato" virou "Aprendiz".
+
 ## v120 — Seleção e criação de personagem
 - Tela de seleção estilo clássico: 3 molduras com setas (10 slots), aba "Selecionado", tabela de status, del/OK/cancelar (apagar sem popup).
 - Criação: prévia girando, nome, sexo, cabelo (por gênero) e cor, status iniciais.
