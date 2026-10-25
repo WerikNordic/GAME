@@ -120,3 +120,6 @@
 ## v79 (teste 3D toon)
 - Sprites agora renderizados em GL com sombra em faixas, contorno limpo, cores vivas e sem filtro pixel.
 - Voltar ao estilo anterior: abra com ?old ou localStorage eldvar.t3=0.
+
+## v80
+- Estilo antigo (v78) volta a ser o padrao. Toon GL fica opcional com ?t3.

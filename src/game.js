@@ -13376,7 +13376,7 @@ void main() {
     }
     return { w: t.w, h: t.h, data: ae };
   }
-  var T3 = (() => { try { return localStorage.getItem("eldvar.t3") !== "0" && !/[?&]old\b/.test(location.search); } catch { return true; } })(), T3gl = null;
+  var T3 = (() => { try { return localStorage.getItem("eldvar.t3") === "1" || /[?&]t3\b/.test(location.search); } catch { return false; } })(), T3gl = null;
   function T3init() {
     if (T3gl !== null) return T3gl;
     try {
