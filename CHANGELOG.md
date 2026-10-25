@@ -1,3 +1,8 @@
+# v72
+- Mensagens globais agora aparecem como faixa de texto (igual a entrada em cidades), sem pop-up.
+- Dirigivel voa pelo mapa todo em rota aleatoria, com sombra no chao.
+- Munin (teletransporte) e Sigrun (troca de classe) fixos ao lado da fonte em todas as cidades.
+
 # v71
 - Login/contas na nuvem reativados (saves da conta, inclusive WERIK).
 

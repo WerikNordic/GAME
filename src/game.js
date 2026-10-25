@@ -7995,9 +7995,9 @@ Error generating stack: ` + n.message + `
         case "brokk":
           return { x: 3800 + x() * 500, y: k + 60 };
         case "munin":
-          return { x: g.x, y: g.y + 90 };
+          return { x: d - 115, y: k + 175 };
         case "sigrun":
-          return { x: y.x, y: y.y + 130 };
+          return { x: d + 115, y: k + 175 };
         case "ylva":
           return { x: v.x - 80, y: v.y };
         case "torvald":
@@ -10952,7 +10952,7 @@ Error generating stack: ` + n.message + `
       this.settings = { ...this.settings, ...t }, gv(this.storage, this.settings), this.refresh();
     }
     announce(t) {
-      this.toasts.push({ id: this.toastId++, text: t, tone: "global", until: this.now() + 7e3 }), this.toasts.length > 5 && this.toasts.shift();
+      this.banner = { seq: this.banner.seq + 1, text: t, color: "#ffd27a" }, this.refresh();
     }
     toast(t, a = "info") {
       this.toasts.push({ id: this.toastId++, text: t, tone: a, until: this.now() + 3500 }), this.toasts.length > 5 && this.toasts.shift();
@@ -14253,7 +14253,7 @@ void main() {
       case "portal":
         return [34, 16];
       default:
-        return e.deco === "wall" ? [34, 12] : e.deco === "wall_v" ? [12, 34] : e.deco === "tent" ? [32, 24] : e.deco === "altar" ? [26, 18] : e.deco === "arch" ? [38, 12] : e.deco === "fountain" ? [38, 30] : e.deco === "tower" ? [34, 28] : e.deco === "longhouse" ? [74, 36] : e.deco === "keep" ? [96, 96] : e.deco === "palace" ? [140, 64] : e.deco === "hof" ? [120, 74] : e.deco === "warrior" ? [30, 26] : e.deco === "forge" ? [48, 30] : e.deco === "stall" ? [44, 22] : e.deco === "church" ? [120, 62] : e.deco === "castle" ? [140, 100] : e.deco === "monument" ? [48, 48] : e.deco === "bigforge" ? [100, 58] : e.deco === "colossus" ? [54, 54] : e.deco === "airship" ? [100, 40] : [20, 16];
+        return e.deco === "wall" ? [34, 12] : e.deco === "wall_v" ? [12, 34] : e.deco === "tent" ? [32, 24] : e.deco === "altar" ? [26, 18] : e.deco === "arch" ? [38, 12] : e.deco === "fountain" ? [38, 30] : e.deco === "tower" ? [34, 28] : e.deco === "longhouse" ? [74, 36] : e.deco === "keep" ? [96, 96] : e.deco === "palace" ? [140, 64] : e.deco === "hof" ? [120, 74] : e.deco === "warrior" ? [30, 26] : e.deco === "forge" ? [48, 30] : e.deco === "stall" ? [44, 22] : e.deco === "church" ? [120, 62] : e.deco === "castle" ? [140, 100] : e.deco === "monument" ? [48, 48] : e.deco === "bigforge" ? [100, 58] : e.deco === "colossus" ? [54, 54] : e.deco === "airship" ? [1, 1] : [20, 16];
     }
   }
   var Rt = 2, S4 = 0.38, fh = 2;
@@ -15288,6 +15288,7 @@ void main() {
               }
             } else nt(a, n.house, m, p), this.smoke(m + 93, p - 96);
           } });
+        } else if (r.kind === "deco" && r.deco === "airship") {
         } else if (r.kind === "deco") {
           let m = n.decos[r.deco ?? ""];
           (m || mo) && o.push({ depth: l, sx: s.x, sy: s.y, tall: r.deco === "tower" || r.deco === "statue" || r.deco === "keep" || r.deco === "palace" || r.deco === "hof" || r.deco === "warrior" || r.deco === "longhouse" || r.deco === "banner" || r.deco === "lamp" || r.deco === "church" || r.deco === "castle" || r.deco === "monument" || r.deco === "bigforge" || r.deco === "colossus" || r.deco === "airship", draw: () => {
@@ -15617,6 +15618,21 @@ void main() {
         M(H.x, H.y) && (z.add(`o${q.id}`), T.push({ depth: Ja(q.x, q.y), draw: () => this.drawOther(q, t) }));
       }
       T.push({ depth: m, draw: () => this.drawPlayer(t) });
+      if (n.obstacles.some((q) => q.deco === "airship")) {
+        let A2 = this.air;
+        (!A2 || A2.map !== n) && (A2 = this.air = { map: n, x: n.width * (0.2 + Math.random() * 0.6), y: n.height * (0.2 + Math.random() * 0.6), tx: 0, ty: 0, hd: 1, last: this.clock, pick: true });
+        let dt2 = Math.min(0.1, (this.clock - A2.last) / 1e3);
+        A2.last = this.clock;
+        if (A2.pick || Math.hypot(A2.tx - A2.x, A2.ty - A2.y) < 120) A2.pick = false, A2.tx = 250 + Math.random() * (n.width - 500), A2.ty = 250 + Math.random() * (n.height - 500);
+        let ang = Math.atan2(A2.ty - A2.y, A2.tx - A2.x), spd = 70;
+        A2.x += Math.cos(ang) * spd * dt2, A2.y += Math.sin(ang) * spd * dt2;
+        Math.abs(Math.cos(ang)) > 0.2 && (A2.hd = Math.cos(ang) > 0 ? 1 : -1);
+        let gp = ce(A2.x, A2.y), bob = Math.sin(this.clock / 900) * 6, mdl = mo ? O4({ kind: "deco", theme: n.theme ?? "grass", variant: 0, deco: "airship" }, this.yawNow, this.tilt) : null;
+        M(gp.x, gp.y - 200) && T.push({ depth: 1e9, draw: () => {
+          i.save(), i.globalAlpha = 0.22, i.fillStyle = "#000", i.beginPath(), i.ellipse(gp.x, gp.y, 70, 24, 0, 0, 6.283), i.fill(), i.globalAlpha = 1;
+          mdl && (i.translate(gp.x, gp.y - 70 + bob), i.scale(A2.hd, 1), i.drawImage(mdl.cv, -mdl.ax * mdl.k, -mdl.ay * mdl.k, mdl.cv.width * mdl.k, mdl.cv.height * mdl.k)), i.restore();
+        } });
+      }
       {
         let q = Fv(a.ps);
         for (let H of n.scars) {
