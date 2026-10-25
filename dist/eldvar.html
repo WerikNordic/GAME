@@ -8119,9 +8119,9 @@ Error generating stack: ` + n.message + `
   };
   function z8(e) {
     let ST = CSTY[e.id] ?? CSTY.cidade_midgard, rs = Oe(e.seed + 55), tt2 = Object.assign({}, tt, ST.tt ?? {});
-    let { w: t, h: a } = Wo.city, n = Oe(e.seed), o = [], r = [], i = 0, s = (_, G, re) => {
-      let ie = $m[_];
-      o.push({ kind: "deco", deco: _, x: Math.round(G - ie.w / 2), y: Math.round(re - ie.h / 2), w: ie.w, h: ie.h });
+    let { w: t, h: a } = Wo.city, n = Oe(e.seed), o = [], r = [], i = 0, svc = Math.floor(Oe(e.seed + 9)() * 5), s = (_, G, re) => {
+      let ie = $m[_], q = { kind: "deco", deco: _, x: Math.round(G - ie.w / 2), y: Math.round(re - ie.h / 2), w: ie.w, h: ie.h };
+      _ === "colossus" && (q.sv = svc++ % 5), o.push(q);
     }, l = (_, G) => {
       o.push({ kind: "crate", x: _ - 15, y: G - 15, w: 30, h: 30 });
     }, { wall: c, CX: d, gate: f } = tt2, u = [], m = (_, G, re, ie) => {
@@ -8369,15 +8369,19 @@ Error generating stack: ` + n.message + `
       }
       for (let gi = o.length - 1; gi >= 0; gi--) o[gi].kind === "deco" && o[gi].deco === "stall" && n() < 0.55 && o.splice(gi, 1);
       let streets = p.filter((q) => Math.min(q.w, q.h) >= 60), hit = (x0, y0, w0, h0, mg) => o.some((q) => q.kind !== "tree" && q.kind !== "rock" && x0 < q.x + q.w + mg && x0 + w0 + mg > q.x && y0 < q.y + q.h + mg && y0 + h0 + mg > q.y) || u.some((q) => x0 < q.x + q.w + 20 && x0 + w0 + 20 > q.x && y0 < q.y + q.h + 20 && y0 + h0 + 20 > q.y) || streets.some((q) => x0 < q.x + q.w + 36 && x0 + w0 + 36 > q.x && y0 < q.y + q.h + 36 && y0 + h0 + 36 > q.y) || M.some((q) => q.x > x0 - 90 && q.x < x0 + w0 + 90 && q.y > y0 - 90 && q.y < y0 + h0 + 90) || r.some((q) => q.x > x0 - 70 && q.x < x0 + w0 + 70 && q.y > y0 - 70 && q.y < y0 + h0 + 70) || x0 + w0 > f.from - 260 && x0 < f.to + 260 && y0 + h0 > a - 900;
-      let kinds = ["longhouse", "longhouse", "smith", "longhouse", "garden", "longhouse", "longhouse", "bigsmith"], pl = 0, ix = 0;
+      let kinds = ["longhouse", "longhouse", "smith", "longhouse", "garden", "longhouse", "statue", "bigsmith"], pl = 0, ix = 0;
       for (let gy = c.y + 140, iy = 0; gy < c.y + c.h - 160; gy += 230, iy++) for (let gx = c.x + 150, ix2 = 0; gx < c.x + c.w - 150; gx += 290, ix2++) {
         let jx = gx, jy = gy, kd = kinds[(ix2 + iy * 3) % kinds.length];
-        let fp = kd === "smith" ? [150, 120] : kd === "market" ? [200, 110] : kd === "garden" ? [150, 110] : kd === "camp" ? [150, 100] : kd === "bigsmith" ? [230, 150] : [$m.longhouse.w, $m.longhouse.h + 20];
+        let fp = kd === "smith" ? [150, 120] : kd === "market" ? [200, 110] : kd === "garden" ? [150, 110] : kd === "camp" ? [150, 100] : kd === "bigsmith" ? [230, 150] : kd === "statue" ? [170, 150] : [$m.longhouse.w, $m.longhouse.h + 20];
         if (hit(jx - fp[0] / 2, jy - fp[1] / 2, fp[0], fp[1], 70)) continue;
         pl++;
         if (kd === "longhouse") s("longhouse", jx, jy), s("lamp", jx + $m.longhouse.w / 2 + 14, jy + 30), s("lamp", jx - $m.longhouse.w / 2 - 14, jy + 30);
         else if (kd === "smith") s("forge", jx, jy - 10), s("brazier", jx - 85, jy + 36), s("brazier", jx + 85, jy + 36), s("hay", jx - 60, jy + 50);
-        else if (kd === "bigsmith") s("bigforge", jx, jy - 6), s("brazier", jx - 125, jy + 50), s("brazier", jx + 125, jy + 50), s("cart", jx + 100, jy + 62);
+        else if (kd === "statue") {
+          s("colossus", jx, jy - 6), s("brazier", jx - 95, jy + 50), s("brazier", jx + 95, jy + 50);
+          let q = o.find((z) => z.deco === "colossus" && Math.abs(z.x + z.w / 2 - jx) < 2), L2 = [["Colosso de Pedra", "Um gigante sem nome, esculpido por quem nunca viu os deuses. Dizem que dorme em pé."], ["Anjo Caído", "As asas quebradas apontam para o céu que o expulsou. Quem reza aos seus pés ouve, ao longe, um coro sem voz."], ["Bafom\xE9", "O guardião de duas faces: uma julga os vivos, a outra os mortos. Nenhuma delas pisca."], ["Morroc", "O senhor das areias e das cinzas. A estátua é quente ao toque, mesmo no inverno."], ["Nidh-WERIK-r", "A serpente que roe a raiz do mundo. Nas escamas, runas que ninguém lê em voz alta."]][q?.sv ?? 0];
+          r.push({ id: `${e.id}:${i++}`, kind: "lore", x: jx, y: jy + 62, label: `Estátua: ${L2[0]}`, text: L2[1] });
+        } else if (kd === "bigsmith") s("bigforge", jx, jy - 6), s("brazier", jx - 125, jy + 50), s("brazier", jx + 125, jy + 50), s("cart", jx + 100, jy + 62);
         else if (kd === "market") s("stall", jx, jy), s("cart", jx + 70, jy + 30);
         else if (kd === "garden") s("well", jx, jy), s("planter", jx - 60, jy + 8), s("planter", jx + 60, jy + 8), s("bench", jx, jy + 48);
         else s("tent", jx - 46, jy), s("campfire", jx + 20, jy + 18), s("tent", jx + 70, jy - 6);
@@ -15347,7 +15351,7 @@ void main() {
         } else if (r.kind === "deco") {
           let m = n.decos[r.deco ?? ""];
           (m || mo) && o.push({ depth: l, sx: s.x, sy: s.y, tall: r.deco === "tower" || r.deco === "statue" || r.deco === "keep" || r.deco === "palace" || r.deco === "hof" || r.deco === "warrior" || r.deco === "longhouse" || r.deco === "banner" || r.deco === "lamp" || r.deco === "church" || r.deco === "castle" || r.deco === "monument" || r.deco === "bigforge" || r.deco === "colossus" || r.deco === "airship", draw: () => {
-            let p = u({ kind: "deco", theme: d, variant: r.deco === "longhouse" ? Math.abs(Math.round(r.x / 10) + Math.round(r.y / 10) * 3) % 6 : r.deco === "colossus" ? Math.abs(Math.round(r.x / 7) * 5 + Math.round(r.y / 11) * 3) % 5 : 0, deco: r.deco });
+            let p = u({ kind: "deco", theme: d, variant: r.deco === "longhouse" ? Math.abs(Math.round(r.x / 10) + Math.round(r.y / 10) * 3) % 6 : r.deco === "colossus" ? r.sv ?? Math.abs(Math.round(r.x / 7) * 5 + Math.round(r.y / 11) * 3) % 5 : 0, deco: r.deco });
             p ? nt(a, p, f.x, f.y) : m && nt(a, m, s.x, s.y + 4), r.deco === "bench" && this.benchMark(f.x, f.y - 16);
           } });
         } else if (r.kind === "crate") o.push({ depth: l, sx: s.x, sy: s.y, draw: () => {
