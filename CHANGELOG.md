@@ -180,6 +180,12 @@
 - Janelas Alt+Q/E/S/A/G reduzidas a 50%.
 - Sons por espécie de monstro (lobo, javali, goblin, morto-vivo, gigante, gelatina, lagarto, máquina, pedra, vazio, planta): voz ociosa, ao notar o jogador, ao ser atingido e ao morrer; volume por distância.
 
+## v129
+- Removida a mensagem "habilidade pronta" ao armar uma skill.
+- Novo NPC "Teste de Visuais" (todas as cidades): provador de cortes, cores, chapéus, rosto, boca, costas, armas e cor da roupa — só prévia, nada é equipado nem gasto.
+- Nicks únicos: reservados no servidor (tabela nicks + claim_nick/release_nick); nick repetido é recusado na criação; apagar o personagem libera o nick. Offline permite criar e reserva ao reconectar.
+- IA: ~30% dos monstros são agressivos e o resto passivo (só reage se atacado); ajuda em grupo agora é rara (20%) e só para o tipo "assist".
+
 ## v128
 - Ícones: equipamentos de tier ganham cor própria por tier (aço, ciano, brasa, ouro, violeta...) e pontinhos de tier no canto; cartas têm 6 emblemas diferentes (olho, caveira, estrela, chama, gema, escudo) em cores variadas.
 

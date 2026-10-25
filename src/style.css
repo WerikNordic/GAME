@@ -196,3 +196,4 @@ body.armed canvas{cursor:crosshair!important}
 .craft-row{display:flex;align-items:center;gap:8px}
 .craft-ing{display:flex;flex-wrap:wrap;gap:6px;font-size:11px}.craft-ing .ok{color:#1c7a2c}.craft-ing .no{color:#b33a3a}
 .rq-row,.rq-done{display:flex!important;gap:8px;align-items:center}.rq-row small{display:block}.rq-row button{min-width:84px}
+.panel.stylist{max-height:92vh;overflow:auto}
