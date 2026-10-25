@@ -14483,7 +14483,7 @@ void main() {
       if (!m[i]) { d[k + 3] = 0; continue; }
       let edge = !(x > 0 && m[i - 1]) || !(x < sw - 1 && m[i + 1]) || !(y > 0 && m[i - sw]) || !(y < sh - 1 && m[i + sw]);
       let q = (v) => Math.min(255, Math.round(v / 10) * 10);
-      let lu = d[k] * 0.3 + d[k + 1] * 0.59 + d[k + 2] * 0.11, sat = (v) => Math.max(0, Math.min(255, (lu + (v - lu) * 1.22 - 128) * 1.1 + 128));
+      let lu = d[k] * 0.3 + d[k + 1] * 0.59 + d[k + 2] * 0.11, sat = (v) => Math.max(0, Math.min(255, (lu + (v - lu) * 0.92 - 128) * 1.06 + 128));
       let r0 = sat(d[k]), g0 = sat(d[k + 1]), b0 = sat(d[k + 2]), l0 = Math.max(1, r0 * 0.3 + g0 * 0.59 + b0 * 0.11), lb = Math.max(14, Math.round(l0 / 255 * 6) / 6 * 255), fct = lb / l0;
       d[k] = q(Math.min(255, r0 * fct)), d[k + 1] = q(Math.min(255, g0 * fct)), d[k + 2] = q(Math.min(255, b0 * fct)), d[k + 3] = 255;
       edge && (d[k] = d[k] * 0.45 + 12, d[k + 1] = d[k + 1] * 0.4 + 8, d[k + 2] = d[k + 2] * 0.42 + 10);
@@ -14503,7 +14503,7 @@ void main() {
     cv.width = W, cv.height = H;
     const g = cv.getContext("2d", { willReadFrequently: true });
     const cc = {};
-    const css = (c) => cc[c] || (cc[c] = "#" + (c >>> 0).toString(16).padStart(6, "0"));
+    const css = (c) => cc[c] || (cc[c] = (() => { c = c >>> 0; let r = c >> 16 & 255, gg = c >> 8 & 255, b = c & 255, lu = r * 0.3 + gg * 0.59 + b * 0.11, f = 0.74; r = Math.min(255, (lu + (r - lu) * f) * 0.97 + 6), gg = Math.min(255, (lu + (gg - lu) * f) * 0.97 + 2), b = Math.min(255, (lu + (b - lu) * f) * 0.97 - 2); return "#" + [r, gg, b].map((v) => Math.max(0, Math.round(v)).toString(16).padStart(2, "0")).join(""); })());
     const sh = (c, f) => { c = c >>> 0; let r = Math.min(255, Math.round((c >> 16 & 255) * f)), gg = Math.min(255, Math.round((c >> 8 & 255) * f)), b = Math.min(255, Math.round((c & 255) * f)); return r << 16 | gg << 8 | b; };
     const P = (x, y, c) => { g.fillStyle = css(c), g.fillRect(Math.round(x), Math.round(y), 1, 1); };
     const R = (x, y, w, h, c) => { g.fillStyle = css(c), g.fillRect(Math.round(x), Math.round(y), w, h); };
@@ -14513,7 +14513,7 @@ void main() {
         const nx = (x + 0.5 - cx) / rx, ny = (y + 0.5 - cy) / ry;
         if (nx * nx + ny * ny > 1) continue;
         if (o.clip && !o.clip(x, y)) continue;
-        const l = -0.55 * nx - 0.8 * ny;
+        const l = -0.55 * nx - 0.8 * ny + ((x + y & 1) ? 0.09 : -0.09);
         P(x, y, l > 0.55 ? sh(c, hi) : l < -0.6 ? sh(c, lo * 0.84) : l < -0.15 ? sh(c, lo) : c);
       }
     };
@@ -14536,7 +14536,7 @@ void main() {
     const skin = e.skin ?? 14725256, hairC = e.hair ?? 9058850, tun = e.tunic ?? 9054758, pan = e.pants ?? 5914414, boo = e.boots ?? 3876120;
     const trim = e.trim ?? sh(tun, 1.45), gold = 15118410, steel = 13555426;
     const bob = moving ? -Math.round(Math.abs(cp) * 1.6) : 0, sd = sit ? 6 : 0;
-    const hy = 29 + bob + sd, ty = 37 + bob + sd, legY = 51 + sd, hx = view === "side" ? CX + 1 : CX + qx;
+    const hy = 31 + bob + sd, ty = 39 + bob + sd, legY = 52 + sd, hx = view === "side" ? CX + 1 : CX + qx;
     const gear = e.gear ?? "none", hairStyle = e.hairStyle ?? "short", eyeC = e.eye ?? 3824296;
     const hash = (i) => ((i * 7919 + 13) * 2654435761 >>> 0) % 997 / 997;
     // aura / epic ring (ground)
@@ -14560,32 +14560,33 @@ void main() {
     if (longH && view === "front") E(CX + qx, hy + 7, 11.5, 10.5, hairC, { clip: (x, y) => y > hy });
     if (longH && view === "side") B(CX - 11, hy - 2, 8, 18, hairC);
     // legs
+    const hgt = sit ? 4 : 9, bt = 3;
     const legs = () => {
-      if (e.robe) { B(CX - 8, ty + 9, 16, 15 - (sit ? 3 : 0), tun); R(CX - 8, ty + 22 - (sit ? 3 : 0), 16, 1, trim); }
-      const hgt = sit ? 3 : 8;
+      if (e.robe) { B(CX - 6, ty + 9, 12, 16 - (sit ? 4 : 0), tun); R(CX - 6, ty + 23 - (sit ? 4 : 0), 12, 1, trim); }
       if (view === "side") {
         for (const o of [-1, 1]) {
           const x = CX - 2 + Math.round(moving ? o * s * 5 : o * 1), lift = moving ? Math.round(Math.max(0, o * cp) * 3) : 0, back = o === -1;
-          const pc = back ? sh(pan, 0.8) : pan, bc = back ? sh(boo, 0.8) : boo;
-          B(x, legY - lift, 5, hgt, pc), B(x - 1 + (o === 1 ? 1 : 0), legY + hgt - lift, 7, 4, bc);
+          const pc = back ? sh(pan, 0.78) : pan, bc = back ? sh(boo, 0.78) : boo;
+          B(x, legY - lift, 4, hgt, pc), R(x + 1, legY - lift + 1, 1, hgt - 2, sh(pc, 0.86)), B(x - 1 + (o === 1 ? 2 : 0), legY + hgt - lift, 6, bt + 1, bc);
         }
       } else {
         for (const o of [-1, 1]) {
-          const x = o === -1 ? CX - 6 : CX + 2, lift = moving ? Math.round(Math.max(0, -o * s) * 3) : 0;
-          if (!e.robe) B(x, legY - lift, 4, hgt, pan);
-          B(x - 1, legY + hgt - lift, 6, 4, boo);
+          const x = o === -1 ? CX - 5 : CX + 1, lift = moving ? Math.round(Math.max(0, -o * s) * 3) : 0;
+          if (!e.robe) B(x, legY - lift, 4, hgt, pan), R(x + (o === -1 ? 2 : 1), legY - lift + 1, 1, hgt - 2, sh(pan, 0.84));
+          B(x - 1, legY + hgt - lift, 6, bt + 1, boo);
         }
       }
     };
     legs();
     // torso
     if (view === "side") {
-      B(CX - 5, ty, 11, 14, tun), R(CX - 5, ty + 10, 11, 2, sh(boo, 0.95)), R(CX - 5, ty + 13, 11, 1, trim);
+      B(CX - 4, ty, 9, 13, tun), R(CX - 4, ty + 9, 9, 2, sh(boo, 0.95)), R(CX - 4, ty + 12, 9, 1, trim), R(CX - 1, ty + 3, 1, 5, sh(tun, 0.82));
     } else {
-      B(CX - 7, ty, 14, 14, tun), R(CX - 7, ty + 10, 14, 2, sh(boo, 0.95)), R(CX - 7, ty + 13, 14, 1, trim);
-      if (view === "front") { R(CX - 3, ty, 6, 1, trim), R(CX - 2, ty + 1, 4, 1, trim), R(CX - 1, ty + 2, 2, 1, trim), R(CX - 1, ty + 10, 3, 2, gold); }
+      B(CX - 6, ty, 12, 13, tun), R(CX - 6, ty + 9, 12, 2, sh(boo, 0.95)), R(CX - 6, ty + 12, 12, 1, trim);
+      R(CX - 3, ty + 3, 1, 5, sh(tun, 0.82)), R(CX + 2, ty + 4, 1, 4, sh(tun, 0.82)), R(CX - 4, ty + 2, 2, 1, sh(tun, 1.15));
+      if (view === "front") { R(CX - 2, ty, 4, 1, trim), R(CX - 1, ty + 1, 2, 1, trim), R(CX - 1, ty + 9, 3, 2, gold); }
     }
-    if (view === "back") cape(0), e.quiver && (L(CX + 4, ty + 1, CX + 6, ty + 13, 4, 6967340), L(CX + 5, ty + 1, CX + 4, ty - 5, 1, 15790320), L(CX + 7, ty + 1, CX + 8, ty - 4, 1, 15790320));
+    if (view === "back") cape(0), e.quiver && (L(CX + 3, ty + 1, CX + 5, ty + 12, 4, 6967340), L(CX + 4, ty + 1, CX + 3, ty - 5, 1, 15790320), L(CX + 6, ty + 1, CX + 7, ty - 4, 1, 15790320));
     // arms + weapon
     const wClass = gear;
     const aimOf = () => wClass === "staff" || wClass === "spear" ? -1.72 : -2.05;
@@ -14599,81 +14600,84 @@ void main() {
         case "dagger": { const [x1, y1] = at(9), [gx, gy] = at(2); L(hx2, hy2, x1, y1, 2, steel), L(gx - dy * 2, gy + dx * 2, gx + dy * 2, gy - dx * 2, 1, gold); break; }
         case "club": { const [x1, y1] = at(11), [cx, cy] = at(12); L(hx2, hy2, x1, y1, 3, wood), E(cx, cy, 3.4, 3.8, sh(wood, 0.85)); break; }
         case "mace": { const [x1, y1] = at(12), [cx, cy] = at(13); L(hx2, hy2, x1, y1, 2, wood), E(cx, cy, 3.4, 3.4, steel), P(cx - 4, cy, steel), P(cx + 4, cy, steel), P(cx, cy - 4, steel); break; }
-        case "bow": { for (let u = -11; u <= 11; u++) P(hx2 + 4 * (1 - u * u / 121) * (view === "side" ? 1 : -1), hy2 + u, wood); R(hx2 + (view === "side" ? 0 : 0), hy2 - 11, 1, 22, 15790320); break; }
+        case "bow": { for (let u = -11; u <= 11; u++) P(hx2 + 4 * (1 - u * u / 121) * (view === "side" ? 1 : -1), hy2 + u, wood); R(hx2, hy2 - 11, 1, 22, 15790320); break; }
         default: break;
       }
     };
-    const arm = (sx, sy, hxx, hyy, c) => { L(sx, sy, hxx, hyy, 3, c), E(hxx, hyy + 1, 1.9, 1.9, skin); };
+    const arm = (sx, sy, hxx, hyy, c) => { L(sx, sy, hxx, hyy, 2, c), E(hxx, hyy + 1, 1.5, 1.6, skin); };
     const atkHand = (sx, sy) => atk === 1 ? [sx - 4, sy - 3, -2.4] : atk === 2 ? [sx - 7, sy + 2, 3.14] : [sx - 2, sy - 9, -1.6];
+    const sy0 = ty + 2;
     if (view === "front") {
-      const sy = ty + 3;
-      // off-hand arm (viewer right)
       const sw1 = moving ? Math.round(s * 3) : 0;
-      arm(CX + 8, sy, CX + 9, sy + 9 + sw1, tun);
-      if (wClass === "swordshield") E(CX + 11, sy + 9 + sw1, 5, 6.2, 7829367), E(CX + 11, sy + 9 + sw1, 2, 3, gold, { hi: 1.1 });
-      // weapon arm (viewer left)
+      arm(CX + 7, sy0, CX + 8, sy0 + 9 + sw1, tun);
+      if (wClass === "swordshield") E(CX + 10, sy0 + 9 + sw1, 4.5, 6, 7829367), E(CX + 10, sy0 + 9 + sw1, 1.8, 3, gold, { hi: 1.1 });
       let hh1, hv1, ang;
-      if (atk) [hh1, hv1, ang] = atkHand(CX - 8, sy);
-      else hh1 = CX - 9, hv1 = sy + 9 - sw1, ang = aimOf();
-      if (wClass === "bow") { arm(CX - 8, sy, CX - 10, sy + 6, tun); weapon(CX - 12, sy + 6, 0); } else { weapon(hh1, hv1 - 1, ang); arm(CX - 8, sy, hh1, hv1, tun); }
+      if (atk) [hh1, hv1, ang] = atkHand(CX - 7, sy0);
+      else hh1 = CX - 8, hv1 = sy0 + 9 - sw1, ang = aimOf();
+      if (wClass === "bow") { arm(CX - 7, sy0, CX - 9, sy0 + 6, tun); weapon(CX - 11, sy0 + 6, 0); } else { weapon(hh1, hv1 - 1, ang); arm(CX - 7, sy0, hh1, hv1, tun); }
     } else if (view === "side") {
-      const sy = ty + 3, sw1 = moving ? Math.round(s * 4) : 0;
-      arm(CX - 1 - sw1, sy, CX - 1 - sw1 * 1.2, sy + 9, sh(tun, 0.8));
+      const sw1 = moving ? Math.round(s * 4) : 0;
+      arm(CX - 1 - sw1, sy0, CX - 1 - sw1 * 1.2, sy0 + 9, sh(tun, 0.8));
       let hh1, hv1, ang;
-      if (atk) { hh1 = CX + 6 + (atk === 2 ? 3 : 0), hv1 = sy + (atk === 1 ? 1 : atk === 2 ? 4 : -8), ang = atk === 1 ? -0.5 : atk === 2 ? 0.1 : -1.3; }
-      else hh1 = CX + 4 + sw1 * 0.6, hv1 = sy + 8, ang = wClass === "staff" || wClass === "spear" ? -1.45 : -0.85;
-      weapon(hh1, hv1 - 1, ang), arm(CX, sy, hh1, hv1, tun);
+      if (atk) { hh1 = CX + 6 + (atk === 2 ? 3 : 0), hv1 = sy0 + (atk === 1 ? 1 : atk === 2 ? 4 : -8), ang = atk === 1 ? -0.5 : atk === 2 ? 0.1 : -1.3; }
+      else hh1 = CX + 4 + sw1 * 0.6, hv1 = sy0 + 8, ang = wClass === "staff" || wClass === "spear" ? -1.45 : -0.85;
+      weapon(hh1, hv1 - 1, ang), arm(CX, sy0, hh1, hv1, tun);
     } else {
-      const sy = ty + 3, sw1 = moving ? Math.round(s * 3) : 0;
-      arm(CX - 8, sy, CX - 9, sy + 9 - sw1, sh(tun, 0.85));
-      let hh1 = CX + 9, hv1 = sy + 9 + sw1, ang = wClass === "staff" || wClass === "spear" ? -1.45 : -1.1;
-      if (atk) hh1 = CX + 8, hv1 = sy - (atk === 3 ? 8 : 2), ang = -1.3;
-      weapon(hh1, hv1 - 1, ang), arm(CX + 8, sy, hh1, hv1, tun);
+      const sw1 = moving ? Math.round(s * 3) : 0;
+      arm(CX - 7, sy0, CX - 8, sy0 + 9 - sw1, sh(tun, 0.85));
+      let hh1 = CX + 8, hv1 = sy0 + 9 + sw1, ang = wClass === "staff" || wClass === "spear" ? -1.45 : -1.1;
+      if (atk) hh1 = CX + 7, hv1 = sy0 - (atk === 3 ? 8 : 2), ang = -1.3;
+      weapon(hh1, hv1 - 1, ang), arm(CX + 7, sy0, hh1, hv1, tun);
     }
-    if (e.pauld) for (const sg of [-1, 1]) E(CX + sg * (view === "side" ? 2 : 8), ty + 2, view === "side" ? 4 : 4.4, 3.4, e.pauld);
+    if (e.pauld) for (const sg of [-1, 1]) E(CX + sg * (view === "side" ? 2 : 7), ty + 2, view === "side" ? 3.6 : 3.8, 3, e.pauld);
     // head
-    const faceR = view === "side" ? 9.5 : 10;
-    E(hx, hy, faceR, 9, skin);
-    if (view === "side") E(CX - 1, hy + 1, 2, 2.6, sh(skin, 0.88));
-    else if (view === "front") P(hx - 11, hy + 2, sh(skin, 0.85)), P(hx + 10, hy + 2, sh(skin, 0.85));
+    const faceR = view === "side" ? 8.4 : 8.8, HY = 8;
+    E(hx, hy, faceR, HY, skin);
+    if (view === "side") E(CX - 1, hy + 1, 1.8, 2.4, sh(skin, 0.86));
+    else if (view === "front") P(hx - 9, hy + 1, sh(skin, 0.84)), P(hx + 8, hy + 1, sh(skin, 0.84));
+    const eyeDark = 3151390;
     if (view === "front") {
-      for (const ex of [hx - 6, hx + 3]) {
-        R(ex, hy + 1, 3, 4, 2764856), R(ex, hy + 2, 3, 2, eyeC), P(ex, hy + 1, 16777215), R(ex, hy, 3, 1, 1710618);
-      }
-      R(hx - 8, hy + 5, 2, 1, 15238778), R(hx + 6, hy + 5, 2, 1, 15238778), R(hx - 1, hy + 6, 2, 1, 10502216);
+      for (const ex of [hx - 5, hx + 3]) { R(ex, hy + 1, 2, 2, eyeDark), P(ex, hy + 2, sh(eyeC, 1.0)), P(ex + 1, hy + 1, 16316664); R(ex - 1, hy, 4, 1, sh(hairC, 0.6)); }
+      P(hx, hy + 3, sh(skin, 0.78)), R(hx - 1, hy + 5, 2, 1, 10502216), P(hx - 7, hy + 3, 14507130), P(hx + 6, hy + 3, 14507130);
     } else if (view === "side") {
-      R(hx + 3, hy + 1, 3, 4, 2764856), R(hx + 3, hy + 2, 3, 2, eyeC), P(hx + 3, hy + 1, 16777215), R(hx + 3, hy, 3, 1, 1710618);
-      R(hx + 1, hy + 5, 2, 1, 15238778), P(hx + 9, hy + 3, sh(skin, 0.82)), P(hx + 6, hy + 6, 10502216);
+      R(hx + 3, hy + 1, 2, 2, eyeDark), P(hx + 3, hy + 2, eyeC), P(hx + 4, hy + 1, 16316664), R(hx + 2, hy, 4, 1, sh(hairC, 0.6));
+      P(hx + 8, hy + 3, sh(skin, 0.78)), P(hx + 6, hy + 5, 10502216), P(hx + 4, hy + 3, 14507130);
     }
     // hair
     if (hairStyle !== "bald") {
       const hc = hairC;
+      const strand = (x0, y0, x1, y1, c) => L(x0, y0, x1, y1, 2, c);
       if (view === "back") {
-        E(hx, hy, 10.8, 9.8, hc), longH && B(CX - 10, hy + 2, 20, 15, hc), R(hx - 4, hy - 8, 6, 1, sh(hc, 1.4));
+        E(hx, hy, 9.6, 9, hc);
+        for (let k = -7; k <= 7; k += 3) strand(hx + k, hy - 7, hx + k * 1.4, hy - 10 - hash(k + 20) * 3, k % 2 ? sh(hc, 0.9) : sh(hc, 1.15));
+        if (longH) { B(CX - 9, hy + 1, 18, 14, hc); for (let k = -7; k <= 7; k += 3) R(CX + k, hy + 3, 1, 11, sh(hc, k % 2 ? 0.8 : 1.15)); }
+        R(hx - 4, hy - 7, 5, 1, sh(hc, 1.4)); R(hx - 6, hy - 5, 2, 1, sh(hc, 1.3));
       } else if (view === "side") {
-        E(CX - 1, hy - 1, 11, 10, hc, { clip: (x, y) => x < CX || y < hy - 4 });
-        for (let i = 0; i < 7; i++) R(CX + i, hy - 5, 1, 2 + (i * 3 % 4), i % 2 ? sh(hc, 0.9) : sh(hc, 1.1));
-        R(CX - 5, hy - 9, 7, 1, sh(hc, 1.4));
+        E(CX - 1, hy - 1, 10, 9.4, hc, { clip: (x, y) => x < CX || y < hy - 4 });
+        for (let i = -6; i <= 6; i += 3) strand(CX + i, hy - 8, CX + i - 2, hy - 11 - hash(i + 30) * 3, i % 2 ? sh(hc, 0.9) : sh(hc, 1.15));
+        for (let i = 0; i < 6; i++) R(CX + i, hy - 5, 1, 2 + (i * 3 % 3), i % 2 ? sh(hc, 0.9) : sh(hc, 1.1));
+        R(CX - 5, hy - 8, 6, 1, sh(hc, 1.4)); if (longH) { B(CX - 9, hy - 2, 7, 16, hc), R(CX - 6, hy + 1, 1, 11, sh(hc, 0.8)); }
       } else {
-        E(hx, hy - 1, 11, 9.8, hc, { clip: (x, y) => y < hy - 2 || Math.abs(x - hx) > 8 && y < hy + 4 });
-        for (let dx = -8; dx <= 8; dx++) { const ln = 2 + Math.round(hash(dx + 40 + (hc & 255)) * 3) + (Math.abs(dx) > 5 ? 1 : 0); R(hx + dx, hy - 3, 1, ln, dx % 2 ? sh(hc, 0.88) : sh(hc, 1.1)); }
-        if (longH) B(hx - 11, hy - 2, 3, 15, hc), B(hx + 8, hy - 2, 3, 15, hc);
-        R(hx - 6, hy - 9, 6, 1, sh(hc, 1.4));
+        E(hx, hy - 1, 9.8, 9, hc, { clip: (x, y) => y < hy - 2 || Math.abs(x - hx) > 7 && y < hy + 3 });
+        for (const k of [-8, 8]) strand(hx + k, hy - 3, hx + k * 1.08, hy + 4, sh(hc, 0.92));
+        for (let dx = -7; dx <= 7; dx++) { const ln = 2 + Math.round(hash(dx + 40 + (hc & 255)) * 3); R(hx + dx, hy - 3, 1, ln, dx % 2 ? sh(hc, 0.86) : sh(hc, 1.1)); }
+        if (longH) { B(hx - 10, hy - 2, 3, 15, hc), B(hx + 7, hy - 2, 3, 15, hc); R(hx - 9, hy + 2, 1, 10, sh(hc, 0.8)); R(hx + 8, hy + 2, 1, 10, sh(hc, 0.8)); }
+        R(hx - 5, hy - 8, 5, 1, sh(hc, 1.4)); R(hx - 7, hy - 6, 2, 1, sh(hc, 1.3));
       }
     }
     // headgear
     const hd = e.head ?? "none", cloth = e.cape ?? sh(tun, 0.8);
     const hy2 = hy;
     if (hd === "helm" || hd === "horns") {
-      E(hx, hy2 - 3, 10.8, 8.8, 10135220, { clip: (x, y) => y < hy2 - 1 }), R(hx - 10, hy2 - 2, 21, 1, 7106176);
-      view === "front" && R(hx - 1, hy2 - 2, 2, 6, 10135220);
+      E(hx, hy2 - 3, 9.8, 8, 10135220, { clip: (x, y) => y < hy2 - 1 }), R(hx - 9, hy2 - 2, 19, 1, 7106176);
+      view === "front" && R(hx - 1, hy2 - 2, 2, 5, 10135220);
     }
-    if (hd === "horns") for (const sg of [-1, 1]) { L(hx + sg * 9, hy2 - 5, hx + sg * 14, hy2 - 11, 3, 15722188), L(hx + sg * 14, hy2 - 11, hx + sg * 13, hy2 - 17, 2, 15722188); }
-    if (hd === "hood") E(hx, hy2 - 1, 11.8, 10.4, cloth, { clip: (x, y) => view !== "front" || Math.abs(x - hx) > 7 || y < hy2 - 4 });
-    if (hd === "circlet" || hd === "crown" || hd === "wreath") { R(hx - 9, hy2 - 5, 19, 1, hd === "wreath" ? 4890698 : gold); P(hx, hy2 - 6, e.aura ?? 16746200); if (hd === "crown") for (let k = -8; k <= 8; k += 4) R(hx + k, hy2 - 8, 2, 3, gold); }
-    if (hd === "wings") for (const sg of [-1, 1]) for (let k = 0; k < 3; k++) L(hx + sg * 10, hy2 - 3 + k, hx + sg * (17 + k), hy2 - 11 + k * 3, 2, 16777215);
-    if (hd === "goblincap" || hd === "feathercap" || hd === "beanie") { E(hx, hy2 - 4, 10.6, 6.6, hd === "beanie" ? 9058858 : 5934650, { clip: (x, y) => y < hy2 - 2 }), L(hx + 2, hy2 - 9, hx + 8, hy2 - 13, 3, hd === "beanie" ? 9058858 : 5934650), hd === "feathercap" && L(hx + 8, hy2 - 12, hx + 11, hy2 - 20, 1, 15790320); }
-    if (hd === "bandana") R(hx - 10, hy2 - 5, 21, 2, 12595248);
+    if (hd === "horns") for (const sg of [-1, 1]) { L(hx + sg * 8, hy2 - 5, hx + sg * 13, hy2 - 11, 3, 15722188), L(hx + sg * 13, hy2 - 11, hx + sg * 12, hy2 - 17, 2, 15722188); }
+    if (hd === "hood") E(hx, hy2 - 1, 10.8, 9.6, cloth, { clip: (x, y) => view !== "front" || Math.abs(x - hx) > 6 || y < hy2 - 4 });
+    if (hd === "circlet" || hd === "crown" || hd === "wreath") { R(hx - 8, hy2 - 5, 17, 1, hd === "wreath" ? 4890698 : gold); P(hx, hy2 - 6, e.aura ?? 16746200); if (hd === "crown") for (let k = -7; k <= 7; k += 4) R(hx + k, hy2 - 8, 2, 3, gold); }
+    if (hd === "wings") for (const sg of [-1, 1]) for (let k = 0; k < 3; k++) L(hx + sg * 9, hy2 - 3 + k, hx + sg * (16 + k), hy2 - 11 + k * 3, 2, 16777215);
+    if (hd === "goblincap" || hd === "feathercap" || hd === "beanie") { E(hx, hy2 - 4, 9.6, 6.4, hd === "beanie" ? 9058858 : 5934650, { clip: (x, y) => y < hy2 - 2 }), L(hx + 2, hy2 - 9, hx + 8, hy2 - 13, 3, hd === "beanie" ? 9058858 : 5934650), hd === "feathercap" && L(hx + 8, hy2 - 12, hx + 11, hy2 - 20, 1, 15790320); }
+    if (hd === "bandana") R(hx - 9, hy2 - 5, 19, 2, 12595248);
     if (e.epic) { for (let i = 0; i < 40; i++) { const an = i / 40 * 6.283; P(hx + Math.cos(an) * 9, hy2 - 15 + Math.sin(an) * 2.6, i % 4 ? gold : 16777215); } }
     // outline
     const im = g.getImageData(0, 0, W, H), d = im.data, out = new Uint8ClampedArray(d.length);

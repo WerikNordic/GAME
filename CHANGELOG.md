@@ -1,3 +1,6 @@
+# v78
+- Sprites no estilo Ragnarok: proporcao mais realista, paleta terrosa/apagada, dithering, cabelo e rosto menores e detalhados; cenario menos saturado.
+
 # v77
 - NOVO ESTILO: sprites de personagem desenhados em pixel-art 2D de verdade (proporcao chibi, cabeca grande, olhos, cabelo, equipamentos, 5 direcoes, caminhada, ataque, sentado). Desligar: localStorage eldvar.sp=0.
 
