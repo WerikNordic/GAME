@@ -8722,7 +8722,7 @@ Error generating stack: ` + n.message + `
   }
   function my(e, t) {
     let a = en(t);
-    return a ? e.visited.includes(t) ? e.silver < wl ? { ok: false, msg: `Zens insuficientes (${wl}).` } : (e.silver -= wl, { ok: true, msg: `O corvo o leva a ${a.name}.` }) : { ok: false, msg: "Voc\xEA ainda n\xE3o conhece este lugar." } : { ok: false, msg: "Destino desconhecido." };
+    return a ? a.city ? e.visited.includes(t) ? { ok: true, msg: `O corvo o leva a ${a.name}.` } : { ok: false, msg: "Voc\xEA ainda n\xE3o conhece este lugar." } : { ok: false, msg: "O teletransporte s\xF3 leva a cidades." } : { ok: false, msg: "Destino desconhecido." };
   }
   function py(e, t, a) {
     let n = $(t), o = $(a);
@@ -14464,7 +14464,7 @@ void main() {
   var uo = { lw: 80, lh: 112, lax: 40, lay: 100, pxu: 30 }, vE = { ax: uo.lax, ay: uo.lay };
 // ===== ROX: sprites pixel-art chibi detalhados (rig 3D -> pixels) =====
 var ROX = (() => {
-  const SW = 128, SH = 136, AX = 64, AY = 122, K = 0.96;
+  const SW = 184, SH = 184, AX = 92, AY = 166, K = 1.3;
   const hexc = (h) => [(h >> 16) & 255, (h >> 8) & 255, h & 255];
   const mixc = (a, b, t) => [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t, a[2] + (b[2] - a[2]) * t];
   const rcache = new Map();
@@ -14497,7 +14497,7 @@ var ROX = (() => {
     const add = (d, fn) => parts.push({ d, fn });
     const cls = e.cls;
     const P = (h) => ramp(h);
-    const skinR = (h) => { const b = hexc(h), sh = [150, 70, 80], hi = [255, 240, 220]; return [mixc(b, sh, .42), mixc(b, sh, .2), mixc(b, [255,220,200], .06), mixc(b, hi, .35), mixc(b, hi, .6)]; }, skin = skinR(e.skin ?? 15780008), hair = P(e.hair ?? 9058850), tunic = P(e.tunic ?? 9054758), trim = P(e.trim ?? 15254090), pants = P(e.pants ?? 5914414), boots = P(e.boots ?? 3876120);
+    const hairR = (h) => { const b = hexc(h), lum = (b[0] * .3 + b[1] * .59 + b[2] * .11) / 255, s2 = lum < .3 ? 1.35 : 1; const bb = b.map((v) => Math.min(255, v * s2)); return [mixc(bb, [60, 20, 40], .5), mixc(bb, [60, 20, 40], .26), bb, mixc(bb, [255, 236, 170], .3), mixc(bb, [255, 250, 210], .6)]; }, skinR = (h) => { const b = hexc(h), sh = [150, 70, 80], hi = [255, 240, 220]; return [mixc(b, sh, .42), mixc(b, sh, .2), mixc(b, [255,220,200], .06), mixc(b, hi, .35), mixc(b, hi, .6)]; }, skin = skinR(e.skin ?? 15780008), hair = hairR(e.hair ?? 9058850), tunic = P(e.tunic ?? 9054758), trim = P(e.trim ?? 15254090), pants = P(e.pants ?? 5914414), boots = P(e.boots ?? 3876120);
     const cape = e.cape ? P(e.cape) : null, metal = P(0xaab4c8), gold = P(0xe8b43a), leather = P(0x7a4e2c);
     const pauld = e.pauld ? P(e.pauld) : null, hairStyle = e.hairStyle ?? "short";
     const bodyW = (rx, rz) => Math.hypot(rx * cth, rz * sth) * K;
@@ -14547,7 +14547,7 @@ var ROX = (() => {
       const fz = sit ? 14 : st * 9, lift = walking ? Math.max(0, -Math.cos(ph + (side > 0 ? 0 : Math.PI))) * 5 : 0;
       const hipY = 68 - bob, kneeY = sit ? 76 : 80 - bob - lift * .4, footY = sit ? 92 : 94 - lift - bob * .2;
       C3(lx, hipY, 0, lx, kneeY, fz * .5 + (sit ? 10 : 0), 5.2, 4.7, pants);
-      C3(lx, kneeY, fz * .5 + (sit ? 10 : 0), lx, footY - 3, fz, 4.8, 4.4, pauld ? P(0x9aa4bc) : pants, ((e.ti || 0) >= 1 ? .08 : 0));
+      C3(lx, kneeY, fz * .5 + (sit ? 10 : 0), lx, footY - 3, fz, 4.8, 4.4, pauld || (e.ti || 0) >= 1 ? P(0x9aa4bc) : P(e.boots ?? 3876120), .04);
       add(dp(lx, fz + 2) + .1, () => { const X = sx(lx, fz), Y = sy(footY); capS(X, Y - 5 * K, X, Y - 1.5 * K, 5.2 * K, 5 * K, boots); ellS(X + sth * 2.2 * K, Y + 1.6 * K, bodyW(6.2, 8.4) + .8, 3.6 * K, boots); lineS(X - 3, Y - 4 * K, X + 3, Y - 4 * K, trim[3]); });
     }
     // ---------- TRONCO ----------
@@ -14559,12 +14559,12 @@ var ROX = (() => {
       for (let k = -4; k <= 4; k++) POLY3([[k * 3.4 - 1.9, 60, 0], [k * 3.4 + 1.9, 60, 0], [k * 3.9 + 1.6, 71 - bob * .5, 0], [k * 3.9 - 1.6, 71 - bob * .5, 0]], (x, y) => rampAt(leather, .5 - (y - sy(60)) * .03 + (k < 0 ? .04 : -.04)), 0.4);
       E3(0, 52, 0, 13.4, 11.4, 8, (e.ti || 0) >= 1 || pauld ? P(e.tunic ?? 9054758) : tunic);
       // peitoral
-      if (pauld || (e.ti || 0) >= 1) E3(0, 52, 5.5, 9.4, 9.6, 3.4, pauld || P(0xb0b8cc), .12);
-      else { E3(0, 54, 6, 9.2, 8, 3, tunic, .1); }
-      add(dp(0, 8) + .5, () => { if (!front) return; const cx = sx(0, 8); if (pauld || (e.ti || 0) >= 1) { lineS(cx, sy(45), cx, sy(61), pauld ? pauld[1] : metal[1]); for (const [yy, w] of [[48, 6], [53, 6.4], [58, 5.4]]) lineS(cx - w * K * cth, sy(yy), cx + w * K * cth, sy(yy), pauld ? pauld[2] : metal[2]); ellS(cx, sy(51), 2.4 * K * Math.abs(cth), 2.6 * K, gold); } });
+      E3(0, 52, 5.5, 9.6, 9.8, 3.6, pauld || ((e.ti || 0) >= 1 ? P(0xb0b8cc) : leather), .12);
+      add(dp(0, 8) + .5, () => { if (!front) return; const cx = sx(0, 8), pm = pauld || ((e.ti || 0) >= 1 ? metal : leather); lineS(cx, sy(45), cx, sy(61), pm[1]); lineS(cx - 9 * K * cth, sy(45), cx - 8 * K * cth, sy(60), pm[4]); for (const [yy, w] of [[48, 6], [53, 6.4], [58, 5.4]]) lineS(cx - w * K * cth, sy(yy), cx + w * K * cth, sy(yy), pm[2]); ellS(cx, sy(51), 2.6 * K * Math.abs(cth) + .6, 2.8 * K, gold); put(cx, sy(51), gold[4]); for (const [x, y] of [[-7, 46], [7, 46], [-6, 58], [6, 58]]) put(cx + x * K * cth, sy(y), gold[4]); });
     }
     // cinto
     add(dp(0, 6) + .6, () => { polyS([[sx(-11, 0) - 0, sy(60)], [sx(11, 0), sy(60)], [sx(11, 0), sy(64)], [sx(-11, 0), sy(64)]], (x, y) => rampAt(leather, .5 - (y - sy(60)) * .08)); if (front) ellS(sx(0, 8), sy(62), 2.6 * K, 2.4 * K, gold); });
+    add(dp(11, 3) + .62, () => { if (cth < -.3) return; const X = sx(11, 3), Y = sy(67); ellS(X, Y, 3.4 * K, 4 * K, leather); lineS(X - 3 * K, Y - 3 * K, X + 3 * K, Y - 3 * K, gold[3]); });
     // ---------- BRAÇOS ----------
     for (const side of [-1, 1]) {
       const ax_ = side * 17.5, sw2 = walking ? Math.sin(ph + (side > 0 ? Math.PI : 0)) : 0;
@@ -14574,9 +14574,10 @@ var ROX = (() => {
       if (sit) { hz = 6; hy = 66; ez = 4; }
       C3(ax_, 47, 0, ax_ + side * 1.6, 58, ez, 4.6, 4.1, tunic);
       C3(ax_ + side * 1.6, 57, ez, ax_ + side * 1.8, hy - 4, hz, 4.8, 4.4, pauld ? P(0xaab0c6) : tunic, .04);
+      C3(ax_ + side * 1.7, hy - 12, hz * .8, ax_ + side * 1.8, hy - 4, hz, 4.9, 4.6, pauld ? pauld : P(0xa8a8b8), .06);
       add(dp(ax_ + side * 1.8, hz) + .15, () => { const X = sx(ax_ + side * 1.8, hz), Y = sy(hy); ellS(X, Y, 4.5 * K, 4.1 * K, leather); ellS(X, Y + 2.6 * K, 3.2 * K, 2.6 * K, skin); });
       // ombreira
-      add(dp(ax_, 1) + .2, () => { const X = sx(ax_, 0), Y = sy(43); ellS(X, Y, 7.4 * K * (.55 + .45 * Math.abs(cth)) + 1, 6.2 * K, pauld || tunic); if (pauld || (e.ti || 0) >= 1) { ellS(X, Y + 2.4 * K, 6.6 * K * (.55 + .45 * Math.abs(cth)), 3.8 * K, pauld || metal, -.1); } });
+      add(dp(ax_, 1) + .2, () => { const X = sx(ax_, 0), Y = sy(43), W = (.55 + .45 * Math.abs(cth)), pm = pauld || (e.ti >= 1 ? metal : P(e.tunic ?? 9054758)); ellS(X, Y, 7.8 * K * W + 1, 6.6 * K, pm); ellS(X + side * .4, Y + 2.6 * K, 7.2 * K * W + .6, 4.6 * K, pm, -.04); ellS(X + side * .8, Y + 5 * K, 6.4 * K * W, 3 * K, pm, -.1); for (let i = -5; i <= 5; i++) { put(X + i * W, Y + 2.2 * K, pm[1]); put(X + i * W, Y + 4.6 * K, pm[1]); } put(X - side * 2 * W, Y - 3 * K, pm[4]); put(X - side * 1 * W, Y - 3.6 * K, pm[4]); if (front) put(X + side * 3 * W, Y + K, gold[4]); });
     }
     // ---------- ARMA (so no ataque) ----------
     const gear = e.gear;
@@ -14631,7 +14632,7 @@ var ROX = (() => {
         const ex = sx(side * 7.4, 12), vis = dp(side * 7.4, 12) > 1; if (!vis) continue;
         const w = Math.max(2, Math.round(4.6 * K * (.35 + .65 * Math.abs(cth)))), x0 = Math.round(ex - w / 2), y0 = Math.round(sy(hdY + 2));
         const iris = eyeC ? [mixc(eyeC, [10, 10, 30], .6), mixc(eyeC, [10, 10, 30], .3), eyeC, mixc(eyeC, [255, 255, 255], .4), mixc(eyeC, [255, 255, 255], .7)] : [[40, 30, 70], [40, 74, 154], [74, 120, 208], [106, 168, 240], [154, 212, 255]];
-        for (let y = 0; y < 5; y++) for (let x = 0; x < w; x++) put(x0 + x, y0 + y, iris[Math.min(4, y)]);
+        for (let y = 0; y < 6; y++) for (let x = 0; x < w; x++) put(x0 + x, y0 + y, iris[Math.min(4, y)]);
         put(x0, y0, [255, 255, 255]); if (w > 2) put(x0 + 1, y0, [255, 255, 255]); put(x0, y0 + 1, [225, 238, 255]);
         for (let x = -1; x <= w; x++) put(x0 + x, y0 - 1, [42, 28, 46]);
         for (let x = 0; x < w; x++) put(x0 + x, y0 - 3, hair[1]);
@@ -14642,6 +14643,7 @@ var ROX = (() => {
       put(sx(0, 16) + sth * 3, sy(hdY + 9), skin[1]);
       for (const side of [-1, 1]) { if (dp(side * 11, 12) > 0) { const bx = sx(side * 11, 12); put(bx, sy(hdY + 8), [245, 154, 138]); put(bx + 1, sy(hdY + 8), [245, 154, 138]); } }
     });
+    if (hairStyle !== "bald") add(0.715, () => { ellS(sx(0, -1), sy(hdY - 10.5), bodyW(19.6, 17.2), 11.4 * K, hair, .06); });
     if (hairStyle !== "bald") add(0.72, () => {
       const Xc = sx(0, 0), Yc = sy(hdY), rx = bodyW(17.8, 15.4), ry = 16.4 * K;
       for (let y = Math.floor(Yc - ry - 6); y <= Yc + ry + 2; y++) for (let x = Math.floor(Xc - rx - 2); x <= Xc + rx + 2; x++) {
@@ -14660,20 +14662,23 @@ var ROX = (() => {
     });
     // franja + mechas (anel de espetos em 3D)
     if (hairStyle !== "bald") {
-      const nsp = hairStyle === "long" ? 9 : 11;
-      for (let i = 0; i < nsp; i++) {
-        const phi = (-1 + 2 * i / (nsp - 1)) * (hairStyle === "long" ? 2.3 : 2.9) , rr = 14;
-        const bx = rr * Math.sin(phi), bz = rr * Math.cos(phi) * .95, by = hdY - 11;
-        const tl = (hairStyle === "long" ? 5 : 9) + hashn(i, 4) * 6, out = 1.35;
-        const tx = bx * out + Math.sin(phi) * 2, tz = bz * out, ty = by - tl * (.5 + Math.cos(phi) * .5) - 2;
-        const tang = [Math.cos(phi), -Math.sin(phi)], wdt = 4.6;
-        const pts = [[bx - tang[0] * wdt, by + 2, bz - tang[1] * wdt * .9], [bx + tang[0] * wdt, by + 2, bz + tang[1] * wdt * .9], [tx, ty, tz]];
-        add(dp(bx, bz) + .7, () => polyS(pts.map((p) => [sx(p[0], p[2]), sy(p[1])]), (x, y) => rampAt(hair, .66 - (y - sy(ty)) * .05 + (Math.cos(phi) > 0 ? .06 : -.06) - (x - sx(tx, tz)) * .01 * (x < sx(tx, tz) ? -1 : 1) + (hashn(x, y, 3) - .5) * .06)));
-      }
+      const long = hairStyle === "long", nsp = long ? 5 : 7;
+      add(0.74, () => {
+        const Xc = sx(0, -1), Yc = sy(hdY), rx = bodyW(19, 16.6) + 1, ry = 16.4 * K;
+        for (let i = 0; i < nsp; i++) {
+          const u = -1 + 2 * (i + .5) / nsp, d = Math.abs(u), sd = u < 0 ? -1 : 1;
+          const bx = Xc + u * rx * .86, by = Yc - ry * Math.sqrt(Math.max(0, 1 - u * u * .8)) * .96 + 7;
+          const L = (long ? 10 : 15 + (1 - d) * 9) * K * (.8 + hashn(i, 4) * .4), tx = bx + u * rx * .42 + (hashn(i, 2) - .5) * 4, ty = by - L;
+          const hw = rx * 2 / nsp * 1.05;
+          polyS([[bx - hw, by + 5], [bx + hw, by + 5], [tx, ty]], (x, y) => rampAt(hair, .66 + (by - y) / L * .26 + (sd * (tx - x) / hw) * .06 - .05 + (hashn(x, y, 3) - .5) * .08));
+          lineS(bx - hw * .2, by, tx - sd * .6, ty + 4, hair[4]);
+          lineS(bx + hw * .5, by + 3, tx + 1, ty + 6, hair[1]);
+        }
+      });
       // mechas da franja caindo sobre a testa
-      [-12, -6, 0, 6, 12].forEach((x0, i) => { const z0 = 12.4 - Math.abs(x0) * .3, y0 = hdY - 9, len = hairStyle === "long" ? 12 : 9 + hashn(i, 7) * 3;
-        const pts = [[x0 - 3.4, y0, z0], [x0 + 3.4, y0, z0], [x0 + (x0 < 0 ? -1.4 : 1.4) * (i == 2 ? 0 : 1) + (i == 2 ? 1.2 : 0), y0 + len, z0 + 1]];
-        add(dp(x0, z0) + .75, () => { if (cth < -0.1) return; polyS(pts.map((p) => [sx(p[0], p[2]), sy(p[1])]), (x, y) => rampAt(hair, .7 - (y - sy(y0)) * .045 + (hashn(x, y, 5) - .5) * .06)); lineS(sx(x0, z0), sy(y0 + 1), sx(pts[2][0], pts[2][2]), sy(y0 + len - 2), hair[1]); }); });
+      [-12, -6, 0, 6, 12].forEach((x0, i) => { const z0 = 12.4 - Math.abs(x0) * .3, y0 = hdY - 10, len = hairStyle === "long" ? 12 : 9 + hashn(i, 7) * 3;
+        const pts = [[x0 - 4.6, y0, z0], [x0 + 4.6, y0, z0], [x0 + (x0 < 0 ? -1.4 : 1.4) * (i == 2 ? 0 : 1) + (i == 2 ? 1.2 : 0), y0 + len, z0 + 1]];
+        add(dp(x0, z0) + .75, () => { if (cth < -0.1) return; polyS(pts.map((p) => [sx(p[0], p[2]), sy(p[1])]), (x, y) => rampAt(hair, .78 - (y - sy(y0)) * .03 + (hashn(x, y, 5) - .5) * .06)); lineS(sx(x0, z0), sy(y0 + 1), sx(pts[2][0], pts[2][2]), sy(y0 + len - 2), hair[1]); lineS(sx(x0 - 1.4, z0), sy(y0 + 2), sx(pts[2][0] - .6, pts[2][2]), sy(y0 + len - 4), hair[4]); }); });
       add(dp(0, 14) + .8, () => { if (cth < -.1) return; for (const [x0, y0, x1, y1] of [[-9, 4, -6, 9], [0, 3, 2, 8], [8, 4, 10, 9]]) lineS(sx(x0, 12), sy(hdY - y0 - 4), sx(x1, 12), sy(hdY - y1 - 4), hair[4]); });
     }
     // acessórios de cabeça
@@ -17061,7 +17066,7 @@ var ROX = (() => {
     return (0, qt.jsx)("div", { className: "overlay", role: "dialog", "aria-modal": "true", "aria-label": "Mapa-m\xFAndi", children: (0, qt.jsxs)("div", { className: "panel worldmap", children: [(0, qt.jsxs)("header", { className: "panel-head", children: [(0, qt.jsx)("h2", { children: "Orbis dos Nove Reinos" }), (0, qt.jsx)("button", { className: "btn btn-small", onClick: () => j.closePanel(), "aria-label": "Fechar", children: "\u2715" })] }), (0, qt.jsxs)("div", { className: "wm-stage", children: [(0, qt.jsx)("canvas", { ref: t, width: bo, height: qn, className: "wm-canvas" }), $0.map((c) => (0, qt.jsx)("span", { className: "wm-label", style: { left: `${c.x / bo * 100}%`, top: `${(c.y - c.ry - 14) / qn * 100}%` }, children: c.label }, c.world)), o.map((c) => (0, qt.jsx)("span", { className: "wm-dot", style: { left: `${c.x / bo * 100}%`, top: `${c.y / qn * 100}%` }, title: c.entry.name }, c.entry.id)), Th.map((c) => {
       let d = r.visited.includes(c.id), f = c.id === i;
       return (0, qt.jsxs)("button", { className: `wm-city${d ? " seen" : ""}${f ? " here" : ""}`, style: { left: `${c.x / bo * 100}%`, top: `${c.y / qn * 100}%` }, onMouseEnter: () => n(c.id), onMouseLeave: () => n(null), onFocus: () => n(c.id), disabled: !s || !d || f, onClick: () => j.warpToMap(c.id), "aria-label": `${Jt[c.id]?.name ?? c.label}${d ? "" : " (ainda n\xE3o visitada)"}`, children: [(0, qt.jsx)("i", { children: f ? "\u25C6" : d ? "\u2726" : "\u2727" }), (0, qt.jsx)("span", { children: c.label })] }, c.id);
-    })] }), (0, qt.jsx)("footer", { className: "wm-foot", children: l ? (0, qt.jsxs)("span", { children: [(0, qt.jsx)("b", { children: Jt[l.id]?.name ?? l.label }), r.visited.includes(l.id) ? " \xB7 visitada" : " \xB7 ainda n\xE3o visitada: chegue l\xE1 a p\xE9 uma vez"] }) : (0, qt.jsx)("span", { className: "muted", children: s ? `Escolha uma cidade j\xE1 visitada (${wl} Zens). \u25C6 voc\xEA est\xE1 aqui \xB7 \u2726 cidade conhecida \xB7 \u2727 desconhecida` : "\u2726 cidades principais \xB7 pontos pequenos: terras selvagens. Fale com Munin, o corvo, para viajar." }) })] }) });
+    })] }), (0, qt.jsx)("footer", { className: "wm-foot", children: l ? (0, qt.jsxs)("span", { children: [(0, qt.jsx)("b", { children: Jt[l.id]?.name ?? l.label }), r.visited.includes(l.id) ? " \xB7 visitada" : " \xB7 ainda n\xE3o visitada: chegue l\xE1 a p\xE9 uma vez"] }) : (0, qt.jsx)("span", { className: "muted", children: s ? `Escolha uma cidade j\xE1 visitada (gr\xE1tis). \u25C6 voc\xEA est\xE1 aqui \xB7 \u2726 cidade conhecida \xB7 \u2727 desconhecida` : "\u2726 cidades principais \xB7 pontos pequenos: terras selvagens. Fale com Munin, o corvo, para viajar." }) })] }) });
   }
   var De = oe(ue(), 1), t5 = { str: "For\xE7a", agi: "Agilidade", vit: "Vitalidade", int: "Intelig\xEAncia", dex: "Destreza", luk: "Sorte" }, OS = { str: "Ataque f\xEDsico (berserker/escudeiro)", agi: "Esquiva, velocidade de ataque e de movimento", vit: "Vida m\xE1xima e defesa", int: "Mana m\xE1xima e ataque m\xE1gico", dex: "Precis\xE3o e ataque \xE0 dist\xE2ncia", luk: "Chance de cr\xEDtico" };
   function a5() {
