@@ -15702,7 +15702,7 @@ var ROX = (() => {
     if (hd === "hood") add(dp(0, -2) + .9, () => { const X = sx(0, 0), Y = sy(hdY - 3); ellS(X, Y, bodyW(19.4, 17), 15 * K, tunic, .0); if (front) ellS(sx(0, 14), sy(hdY + 3), bodyW(10.5, 5), 8 * K, skin); });
     if (hd === "circlet") add(dp(0, 14) + .95, () => { lineS(sx(-15, 8), sy(hdY - 5), sx(15, 8), sy(hdY - 5), gold[3]); lineS(sx(-15, 8), sy(hdY - 4), sx(15, 8), sy(hdY - 4), gold[2]); if (front) ellS(sx(0, 15), sy(hdY - 5), 2, 2.2, P(0xbff0ff)); });
     if (hd === "wings") for (const side of [-1, 1]) add(dp(side * 16, 0) + .9, () => { const X = sx(side * 16, 0), Y = sy(hdY - 3); for (let i = 0; i < 4; i++) capS(X, Y - i * 1.2, X + side * (6 + i * 3) * K * (.5 + .5 * Math.abs(cth)), Y - (10 - i * 1.5) * K, 2.1, 0.8, i % 2 ? P(0xf8f4ff) : P(0xe0e8ff)); });
-    if (hd === "poring") add(dp(0, 0) + .97, () => { const bn = walking ? Math.abs(Math.sin(ph)) * 4 : 0, sq = walking ? 1 - bn * .02 : 1, X = sx(0, 0), Y = sy(hdY - 23) - bn * K, rx = bodyW(11.5, 10) * (2 - sq), ry = 9.2 * K * sq, jel = P(0xff9cb8), jl2 = P(0xffd0dc); ellS(X, Y, rx, ry, jel, .02); ellS(X - rx * .35, Y - ry * .35, rx * .3, ry * .24, jl2, 0); if (front) { const dk = P(0x2a2028); ellS(X - rx * .38, Y + ry * .1, 1.6, 2.2, dk); ellS(X + rx * .38, Y + ry * .1, 1.6, 2.2, dk); lineS(X - 2, Y + ry * .55, X + 2, Y + ry * .55, dk[1]); } });
+    if (hd === "poringX") add(dp(0, 0) + .97, () => { const bn = walking ? Math.abs(Math.sin(ph)) * 4 : 0, sq = walking ? 1 - bn * .02 : 1, X = sx(0, 0), Y = sy(hdY - 23) - bn * K, rx = bodyW(11.5, 10) * (2 - sq), ry = 9.2 * K * sq, jel = P(0xff9cb8), jl2 = P(0xffd0dc); ellS(X, Y, rx, ry, jel, .02); ellS(X - rx * .35, Y - ry * .35, rx * .3, ry * .24, jl2, 0); if (front) { const dk = P(0x2a2028); ellS(X - rx * .38, Y + ry * .1, 1.6, 2.2, dk); ellS(X + rx * .38, Y + ry * .1, 1.6, 2.2, dk); lineS(X - 2, Y + ry * .55, X + 2, Y + ry * .55, dk[1]); } });
     // bandana padrao (trim) para classes sem head e com cabelo — pano na testa
     if (!hd || hd === "none") add(dp(0, 14) + .96, () => { if (e.hairStyle === "bald") return; polyS([[sx(-17, 0) - 1, sy(hdY - 6)], [sx(17, 0) + 1, sy(hdY - 6)], [sx(17, 0) + 1, sy(hdY - 3)], [sx(-17, 0) - 1, sy(hdY - 3)]], (x, y) => rampAt(P(e.trim ?? 15254090), .6 - (y - sy(hdY - 6)) * .12)); });
     // ---------- desenha em ordem ----------
@@ -17337,6 +17337,14 @@ function ROXQM(f, c, s, l, def) {
         var mnt = a.ps.mount && a.ps.mountOwned && !a.sitting, atkM = this.clock - i.atkAt < Math.max(260, i.atkDur || 0), pl2 = 0, play2 = false, jy2 = 0;
         let m = this.organic(i, o.facing, { moving: i.moving, atkT: this.clock - i.atkAt, atkImpact: i.atkImpact, atkDur: i.atkDur, breath: a.sitting ? 8e-3 : 0.011 });
         a.sitting && (m.dx = 0, m.dy = 0, m.rot *= 0.3), nt(n, u, r.x + m.dx, r.y + 6 + m.dy - (mnt ? 42 : 0) + jy2, l, $a * m.sx, $a * m.sy, m.rot);
+        if (a.ps.equipment.headTop === "poring_saltitante" && !a.sitting) {
+          let tt = (this.clock / 640) % 1, hop = Math.abs(Math.sin(tt * Math.PI)), land = 1 - hop, wd = 1 + land * 0.2 - hop * 0.1, ht = 1 - land * 0.2 + hop * 0.12, py = r.y + 6 + m.dy - (mnt ? 42 : 0) - 60 - hop * 15;
+          n.save(), n.translate(r.x + m.dx, py), n.scale(wd, ht);
+          let gr = n.createRadialGradient(-3, -5, 1, 0, 0, 12); gr.addColorStop(0, "#ffd6e2"), gr.addColorStop(0.6, "#ff9cb8"), gr.addColorStop(1, "#e0688a");
+          n.fillStyle = gr, n.strokeStyle = "#a83a60", n.lineWidth = 1.4, n.beginPath(), n.ellipse(0, 0, 11, 9, 0, 0, Math.PI * 2), n.fill(), n.stroke();
+          n.fillStyle = "rgba(255,255,255,.7)", n.beginPath(), n.ellipse(-4, -4, 3, 1.8, -0.5, 0, Math.PI * 2), n.fill();
+          n.fillStyle = "#2a1a20", n.beginPath(), n.ellipse(-3.6, 0, 1.3, 2, 0, 0, Math.PI * 2), n.ellipse(3.6, 0, 1.3, 2, 0, 0, Math.PI * 2), n.fill(), n.beginPath(), n.arc(0, 3, 2, 0.2, Math.PI - 0.2), n.strokeStyle = "#2a1a20", n.lineWidth = 1, n.stroke(), n.restore();
+        }
         if (mnt) {
           let mw = ROXQM("grifo", s, i.moving ? Math.floor(i.phase * ea) : -1, atkM ? 1 : 0, { id: "montaria", color: 13209406 }), lun = atkM ? Math.sin(Math.min(1, (this.clock - i.atkAt) / Math.max(260, i.atkDur || 0)) * Math.PI) : 0;
           mw && nt(n, mw, r.x, r.y + 10 - lun * 4, l, $a * 1.55 * (1 + lun * 0.08), $a * 1.55 * (1 - lun * 0.04));

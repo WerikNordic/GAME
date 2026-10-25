@@ -162,3 +162,4 @@
 - v107: emotes viram ícones pixel-art (37, /emotes); montaria agora é um GRIFO (asas, bico, garras); estátuas de Bafomé trocadas por Jesus Cristo (braços abertos, auréola).
 - v108: nome do pet só ao passar o mouse (sem nível); telhados na cor da casa; NPC Montaria entrega a montaria (grifo); visual inicial Gelatina Saltitante (não descartável/vendável); clicar no NPC abre o diálogo de qualquer distância; estátuas refeitas (figuras humanas: guerreiro, rei nórdico, anjo, Cristo).
 - v109: pet (lobo, NPC Mestre dos Jogos) e montaria (grifo, NPC Montaria, só Berserker) separados; montaria ataca junto (dano só do personagem); cenário dos mapas de caça alinhado em pomares com corredores; aviso de item (ícone + nome) no topo da tela.
+- v110: Gelatina Saltitante agora pula continuamente na cabeça (animada).
