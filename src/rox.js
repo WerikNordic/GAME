@@ -250,7 +250,7 @@ var ROX = (() => {
     }
     // ---------- CAPA ----------
     if (cape) {
-      const sway = walking ? Math.sin(ph + 1) * 3 : 0;
+      const sway = (walking ? Math.sin(ph + 1) * 3 : 0) + (e.cw || 0) * 4;
       POLY3([[-17, 46, -9], [17, 46, -9], [22 + sway, 88, -12 - sway * .5], [10, 92, -12], [0, 87, -11], [-10, 92, -12], [-22 + sway, 88, -12 - sway * .5]], (x, y) => { let t = .34 + (Math.sin((x - AX) * .62) * .1) + (BAY[y & 3][x & 3] * .1) - (y - sy(46)) * .002; return rampAt(cape, t); }, -3);
     }
     // ---------- PERNAS ----------

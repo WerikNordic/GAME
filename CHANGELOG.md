@@ -1,3 +1,6 @@
+# v172
+- Capa com fisica propria: a barra da capa agora balanca separada do corpo (mola amortecida: puxa para tras ao correr e oscila ao parar, mais brisa leve parado). O corpo quase nao inclina mais quando ha capa equipada.
+
 # v171
 - HP do grupo: cada jogador publica sua vida (novo campo hpf em mp_presence + RPCs mp_hp e mp_hps no Supabase). Barra de vida real acima dos outros jogadores (vermelha abaixo de 30%) e porcentagem de vida de cada membro no painel do Grupo (Alt+Z).
 - Casamento: Vestido de Noiva deixa o personagem de branco; Smoking do Noivo, de preto.
