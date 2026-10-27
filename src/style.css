@@ -212,3 +212,8 @@ body.armed canvas{cursor:crosshair!important}
 .party{min-width:460px}
 .party-row{background:#eaf1fb!important;border-color:#9fb3d3!important;color:#1d2a44}.party-row .muted{color:#5a6a88}.party h3{color:#7a5a10}.party-row.off{opacity:.6}.party-empty .row{display:flex;gap:6px}
 [data-window="party"] .panel{width:min(560px,94vw)!important}.party{min-width:0!important}.party-row{grid-template-columns:16px minmax(0,1fr) auto minmax(70px,120px) auto!important}
+
+.wm-dot::after{content:"";position:absolute;inset:-6px;border-radius:50%}.wm-dot:hover{transform:scale(1.7);background:#fff3b0}
+.wm-foot{min-height:44px;line-height:1.35}
+.wm-dot{pointer-events:auto;cursor:help;width:8px;height:8px;margin:-4px 0 0 -4px;background:#2c1a08;border:1px solid #f3e2b0}
+.panel.worldmap{width:min(96vw,1040px)!important;max-height:94vh}

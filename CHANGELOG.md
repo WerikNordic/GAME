@@ -37,6 +37,9 @@
 - /guilda, /g, /grupo, /p, /amigo (locais; sem servidor de jogo ainda).
 - ESC nao pausa; tela de entrada nordica; novos efeitos sonoros; sem visual inicial de classe.
 
+## v149
+- Mapa-múndi (M): janela grande; 70 pontos para os mapas reais de caça, agrupados por reino. Passar o mouse mostra nome do mapa, nível recomendado e os monstros (com nível e ★ para boss).
+
 ## v148
 - Pesos lógicos por item (automáticos por tipo/material: ferro/aço pesado, algodão/seda leve, poções e flechas quase nada; peso sobe um pouco com o nível). Capacidade de carga ajustada (300 + FOR*25 + nível*8).
 - Conferido: aprendiz que muda de classe já recebe a arma inicial da classe; itens exigem nível e tipo de arma da classe.
