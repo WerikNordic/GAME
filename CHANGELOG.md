@@ -1,3 +1,6 @@
+# v160
+- Mercador: Carrinho (Alt+W, +1500 de peso, 10 cores e 7 enfeites) e Loja pessoal /trade com balao sobre a cabeca; clientes NPC compram enquanto voce fica parado numa cidade.
+
 # v159
 - Armaduras geradas agora tem requisito de classe (ex.: Placas so Espadachim/Mercador; Tunica e Manto para Mago/Novico) e um atributo da funcao da peca.
 

@@ -10057,7 +10057,7 @@ Error generating stack: ` + n.message + `
     return Math.round(t * 10) / 10;
   }
   function Rl(e) {
-    return Math.round(300 + tp(e).str * 25 + e.level * 8);
+    return Math.round(300 + tp(e).str * 25 + e.level * 8 + (e.cart?.on && e.line === "escudeiro" ? 1500 : 0));
   }
   function Ny(e, t, a) {
     let n = Wa[t];
@@ -11955,6 +11955,7 @@ Error generating stack: ` + n.message + `
         this.goAfk();
         return;
       }
+      if (/^[@\/]trade\b/i.test(t.trim())) { this.vendOpenPanel(t.trim().replace(/^[@\/]trade\s*/i, "")); return; }
       if (/^@\S/.test(t.trim()) && this.admCmd(t.trim())) return;
       let wm = t.trim().match(/^\/(w|whisper|sussurro)\s+(\S+)\s+([\s\S]+)$/i);
       if (wm && MP.ok && !this.online) {
@@ -12188,6 +12189,49 @@ Error generating stack: ` + n.message + `
       let n = hy(this.ps, t, a);
       this.toast(n.msg, n.ok ? "good" : "bad"), n.ok && (this.pushLog(n.msg, "system"), this.saveGameQuiet()), this.refresh();
     }
+    isMerchant() { return this.ps && this.ps.line === "escudeiro" && this.ps.tier >= 1; }
+    cartToggle() {
+      if (!this.ps) return;
+      if (!this.isMerchant()) return this.toast("Só Mercadores usam o carrinho.", "bad"), void this.refresh();
+      this.ps.cart = this.ps.cart || { on: false, color: 9066026, deco: "none" };
+      this.ps.cart.on = !this.ps.cart.on, this.toast(this.ps.cart.on ? "Carrinho chamado (+1500 de peso)." : "Carrinho guardado.", "good"), this.saveGameQuiet(), this.refresh();
+    }
+    cartSet(k, v) { if (!this.ps || !this.isMerchant()) return; this.ps.cart = this.ps.cart || { on: false, color: 9066026, deco: "none" }, this.ps.cart[k] = v, this.saveGameQuiet(), this.refresh(); }
+    vendOpenPanel(title) {
+      if (!this.ps) return;
+      if (!this.isMerchant()) return this.pushLog("Só Mercadores podem abrir uma loja (/trade).", "system", "bad"), void this.refresh();
+      let v = this.ps.vend = this.ps.vend || { title: `Loja de ${this.ps.name}`, items: {}, open: false, earned: 0 };
+      title && (v.title = title.slice(0, 30)), this.panel = "vendor", this.refresh();
+    }
+    vendSet(id, price, qty) {
+      let v = this.ps?.vend; if (!v || !this.isMerchant()) return;
+      let it = $(id); if (!it || it.bound) return this.toast("Este item não pode ser vendido.", "bad"), void this.refresh();
+      price = Math.max(1, Math.min(9999999, Math.floor(price) || 0)), qty = Math.max(0, Math.min(It(this.ps.inventory, id), Math.floor(qty) || 0));
+      qty ? (Object.keys(v.items).length < 12 || v.items[id]) ? v.items[id] = { price, qty } : this.toast("Máximo de 12 itens.", "bad") : delete v.items[id];
+      this.saveGameQuiet(), this.refresh();
+    }
+    vendTitle(t) { let v = this.ps?.vend; v && (v.title = String(t).slice(0, 30), this.refresh()); }
+    vendToggle() {
+      let v = this.ps?.vend, w = this.world; if (!v || !w || !this.isMerchant()) return;
+      if (v.open) v.open = false, this.toast("Loja fechada.", "info");
+      else if (!Object.keys(v.items).length) return this.toast("Coloque itens à venda primeiro.", "bad"), void this.refresh();
+      else if (!w.map.city) return this.toast("Só é possível abrir loja em cidades.", "bad"), void this.refresh();
+      else v.open = true, v.pos = { x: w.player.pos.x, y: w.player.pos.y }, v.map = w.map.id, this.toast("Loja aberta! Fique parado: os clientes virão.", "good"), this.pushLog(`Loja "${v.title}" aberta.`, "system", "good"), this.panel = "none";
+      this.saveGameQuiet(), this.refresh();
+    }
+    vendTick() {
+      let v = this.ps?.vend, w = this.world; if (!v?.open || !w || this.screen !== "playing") return;
+      if (v.map !== w.map.id || Math.hypot(w.player.pos.x - v.pos.x, w.player.pos.y - v.pos.y) > 40) return v.open = false, this.toast("Você se afastou: loja fechada.", "info"), this.pushLog(`Loja fechada${v.earned ? ` (ganhou ${v.earned} Zens no total)` : ""}.`, "system", "info"), void this.refresh();
+      let ids = Object.keys(v.items); if (!ids.length) return v.open = false, void this.refresh();
+      let id = ids[Math.floor(Math.random() * ids.length)], e = v.items[id], it = $(id), ref = Math.max(8, Cp(id) * 1.25), ratio = e.price / ref;
+      if (ratio > 2.2) return;
+      let chance = ratio <= 1 ? 0.7 : 0.7 * (2.2 - ratio) / 1.2; if (Math.random() > chance) return;
+      let have = It(this.ps.inventory, id), q = Math.min(e.qty, have, 1 + Math.floor(Math.random() * 3)); if (q < 1) return delete v.items[id], void this.refresh();
+      Ea(this.ps.inventory, id, q), e.qty -= q, e.qty <= 0 && delete v.items[id];
+      let tot = e.price * q; this.ps.silver += tot, v.earned = (v.earned || 0) + tot;
+      let who = ["Hild", "Orm", "Sigrun", "Bjorn", "Astrid", "Leif", "Ragna", "Torsten", "Freya", "Gunnar"][Math.floor(Math.random() * 10)];
+      this.pushLog(`${who} comprou ${q}× ${it?.name ?? id} por ${tot} Zens.`, "loot", "good"), this.toast(`+${tot} Zens (${who})`, "good"), this.saveGameQuiet(), this.refresh();
+    }
     tradeSend(cmd, ...args) {
       let tr = this.trade; if (!tr) return;
       tr.q || (tr.q = []);
@@ -12395,7 +12439,7 @@ Error generating stack: ` + n.message + `
           this.closeSettings();
           return;
         }
-        if (this.panel === "inventory" || this.panel === "questlog" || this.panel === "stats" || this.panel === "skills" || this.panel === "bestiary" || this.panel === "worldmap" || this.panel === "refine" || this.panel === "craft" || this.panel === "shop" || this.panel === "stylist" || this.panel === "provador" || this.panel === "party" || this.panel === "utilshop" || this.panel === "vipshop" || this.panel === "viproom" || this.panel === "airship" || this.panel === "boat" || this.panel === "trade" || this.panel === "quests" || this.panel === "feitos") {
+        if (this.panel === "inventory" || this.panel === "questlog" || this.panel === "stats" || this.panel === "skills" || this.panel === "bestiary" || this.panel === "worldmap" || this.panel === "refine" || this.panel === "craft" || this.panel === "shop" || this.panel === "stylist" || this.panel === "provador" || this.panel === "party" || this.panel === "utilshop" || this.panel === "vipshop" || this.panel === "viproom" || this.panel === "airship" || this.panel === "vendor" || this.panel === "cartcfg" || this.panel === "boat" || this.panel === "trade" || this.panel === "quests" || this.panel === "feitos") {
           this.closePanel();
           return;
         }
@@ -12697,6 +12741,7 @@ Error generating stack: ` + n.message + `
   setInterval(() => {
     MP.tick();
   }, 1200);
+  setInterval(() => { try { j.vendTick(); } catch (e) {} }, 6e3);
   var WB = {
     maxHp: 4e6, simDps: 4e6 / (8 * 3600), durMs: 5 * 3600 * 1e3, force: null, hp: 4e6, pend: 0, localDmg: 0, online: false, lastSync: 0, rock: null, ac: null, announced: "", impacted: "", ui: null, fx: null, raf: 0, shakeOn: false,
     sched(now) {
@@ -18438,7 +18483,7 @@ function ROXQM(f, c, s, l, def) {
         M(H.x, H.y) && (z.add(`o${q.id}`), T.push({ depth: Ja(q.x, q.y), draw: () => this.drawOther(q, t) }));
       }
       for (let q of n.critters ?? []) { let H = ce(q.x, q.y); M(H.x, H.y) && T.push({ depth: Ja(q.x, q.y), draw: () => this.drawCritter(q) }); }
-      T.push({ depth: m, draw: () => this.drawPlayer(t) }), a.ps.pet && a.ps.petData && T.push({ depth: this._pet ? Ja(this._pet.x, this._pet.y) : m + 1, draw: () => this.drawPet() }), this.store.fx && Date.now() - this.store.fx.t0 < 3800 && T.push({ depth: m + 9, draw: () => this.drawBlessing(a.player.pos) });
+      T.push({ depth: m, draw: () => this.drawPlayer(t) }), a.ps.cart?.on && a.ps.line === "escudeiro" ? T.push({ depth: this._cart ? Ja(this._cart.x, this._cart.y) : m + 1, draw: () => this.drawCart() }) : this._cart = null, a.ps.vend?.open && T.push({ depth: m + 3, draw: () => this.drawVend() }), a.ps.pet && a.ps.petData && T.push({ depth: this._pet ? Ja(this._pet.x, this._pet.y) : m + 1, draw: () => this.drawPet() }), this.store.fx && Date.now() - this.store.fx.t0 < 3800 && T.push({ depth: m + 9, draw: () => this.drawBlessing(a.player.pos) });
       if (n.obstacles.some((q) => q.deco === "airship")) {
         let A2 = this.air;
         (!A2 || A2.map !== n) && (A2 = this.air = { map: n, x: n.width * (0.2 + Math.random() * 0.6), y: n.height * (0.2 + Math.random() * 0.6), tx: 0, ty: 0, hd: 1, last: this.clock, pick: true });
@@ -18722,6 +18767,34 @@ function ROXQM(f, c, s, l, def) {
       o.restore();
       let b = Math.sin(T * 2.2) * 2;
       o.save(), o.font = "bold 16px serif", o.textAlign = "center", o.fillStyle = "#ffd34d", o.strokeStyle = "#5a3a00", o.lineWidth = 3, o.strokeText("\u265B", r.x, r.y - 86 + b), o.fillText("\u265B", r.x, r.y - 86 + b), o.restore();
+    }
+    drawVend() {
+      let w = this.store.world; if (!w || !w.ps.vend?.open) return;
+      let p = ce(w.player.pos.x, w.player.pos.y);
+      this.speechBalloon("\uD83D\uDED2 " + w.ps.vend.title, p.x, p.y - 96, 1);
+    }
+    drawCart() {
+      let w = this.store.world, ps = w?.ps; if (!w || !ps.cart?.on || w.isDead()) return;
+      let o = w.player, n = this.ctx, c = this._cart || (this._cart = { x: o.pos.x - 40, y: o.pos.y + 10, dx: 0, dy: 1 });
+      let l0 = this._cartLast, vx = o.pos.x - (l0?.x ?? o.pos.x), vy = o.pos.y - (l0?.y ?? o.pos.y); this._cartLast = { x: o.pos.x, y: o.pos.y };
+      if (Math.hypot(vx, vy) > 0.3) { let l = Math.hypot(vx, vy); c.dx = vx / l, c.dy = vy / l; }
+      let tx = o.pos.x - c.dx * 52, ty = o.pos.y - c.dy * 52, dd = Math.hypot(tx - c.x, ty - c.y);
+      dd > 400 ? (c.x = tx, c.y = ty) : dd > 2 && (c.x += (tx - c.x) * 0.14, c.y += (ty - c.y) * 0.14);
+      let p = ce(c.x, c.y), col = ps.cart.color ?? 9066026, hx = (v) => "#" + (v >>> 0).toString(16).padStart(6, "0"), dk = (v, f) => hx(((v >> 16 & 255) * f | 0) << 16 | ((v >> 8 & 255) * f | 0) << 8 | (v & 255) * f | 0);
+      this.blob(p.x, p.y + 4, 22);
+      n.save(), n.translate(p.x, p.y);
+      n.fillStyle = dk(col, 0.7), n.fillRect(-20, -26, 40, 18), n.fillStyle = hx(col), n.fillRect(-20, -26, 40, 12), n.strokeStyle = dk(col, 0.5), n.lineWidth = 1;
+      for (let i = -12; i <= 12; i += 12) n.beginPath(), n.moveTo(i, -26), n.lineTo(i, -8), n.stroke();
+      n.fillStyle = "#3a2a18", n.fillRect(-22, -28, 44, 3);
+      for (let sx of [-13, 13]) n.fillStyle = "#2a1c10", n.beginPath(), n.arc(sx, -4, 8, 0, 7), n.fill(), n.fillStyle = "#9a7a48", n.beginPath(), n.arc(sx, -4, 5, 0, 7), n.fill(), n.fillStyle = "#2a1c10", n.beginPath(), n.arc(sx, -4, 1.6, 0, 7), n.fill();
+      let d = ps.cart.deco;
+      if (d === "flag") n.fillStyle = "#4a3a28", n.fillRect(14, -58, 2, 32), n.fillStyle = "#e04848", n.beginPath(), n.moveTo(16, -58), n.lineTo(32, -52), n.lineTo(16, -46), n.fill();
+      else if (d === "lantern") n.fillStyle = "#4a3a28", n.fillRect(14, -48, 2, 22), n.fillStyle = "rgba(255,220,120,0.35)", n.beginPath(), n.arc(15, -52, 14, 0, 7), n.fill(), n.fillStyle = "#ffd34d", n.fillRect(11, -57, 8, 9);
+      else if (d === "sacks") for (let q of [-9, 6]) n.fillStyle = "#d8c08a", n.beginPath(), n.ellipse(q, -32, 9, 8, 0, 0, 7), n.fill(), n.fillStyle = "#a89058", n.fillRect(q - 3, -41, 6, 3);
+      else if (d === "barrel") n.fillStyle = "#7a4e1a", n.fillRect(-8, -46, 16, 20), n.fillStyle = "#3a2a18", n.fillRect(-8, -42, 16, 2), n.fillRect(-8, -32, 16, 2);
+      else if (d === "parasol") n.fillStyle = "#4a3a28", n.fillRect(-1, -64, 2, 38), n.fillStyle = "#4aa8e8", n.beginPath(), n.arc(0, -62, 22, Math.PI, 0), n.fill(), n.fillStyle = "#fff", n.beginPath(), n.arc(0, -62, 22, Math.PI * 1.35, Math.PI * 1.65), n.lineTo(0, -62), n.fill();
+      else if (d === "chest") n.fillStyle = "#b8872a", n.fillRect(-10, -42, 20, 16), n.fillStyle = "#ffd34d", n.fillRect(-2, -38, 4, 5);
+      n.restore();
     }
     drawPet() {
       let a = this.store.world;
@@ -19717,7 +19790,7 @@ function ROXQM(f, c, s, l, def) {
       }, children: [selSk === o && (0, ma.jsxs)("div", { className: "skill-bonus", style: { gridColumn: "1 / -1", order: 9 }, onClick: () => setSelSk(-1), children: [(0, ma.jsx)("b", { children: n.name + " \u2014 Nv " + r + (r >= Ll(t.tier) ? " (m\xE1x.)" : "") }), skBonus(n, r).map(([k, v], q) => (0, ma.jsxs)("div", { className: "sb-row", children: [(0, ma.jsx)("span", { children: k }), (0, ma.jsx)("b", { children: v })] }, q)), r < Ll(t.tier) && n.mult ? (0, ma.jsx)("div", { className: "sb-row sb-next", children: (0, ma.jsx)("span", { children: "Nv " + (r + 1) + ": dano " + Math.round(n.mult * jy(r + 1) * 100) + "% \xB7 mana " + Ju(n.mp, r + 1) }) }) : null] }),(0, ma.jsx)("div", { className: "skill-ico", draggable: !i, onDragStart: (s) => {
         s.dataTransfer.setData(Qr, JSON.stringify({ t: "skill", i: o })), s.dataTransfer.effectAllowed = "copy";
       }, title: "Arraste para a barra de atalhos \u00B7 bot\xE3o direito: ver b\xF4nus", children: (0, ma.jsx)(h0, { id: n.id, kind: n.kind, size: 36 }) }), (0, ma.jsxs)("span", { title: n.desc, children: [n.name, i ? " \u{1F512}" : "", (0, ma.jsx)("br", {}), (0, ma.jsx)("small", { className: "muted", children: n.desc })] }), (0, ma.jsxs)("b", { children: ["Nv ", r] }), (0, ma.jsx)("button", { className: "btn btn-small", disabled: t.skillPoints < 1 || i || r >= Ll(t.tier), onClick: () => j.upgradeSkillAt(o), "aria-label": `Aumentar ${n.name}`, children: "+" })] }, n.id);
-    })), t.line === "berserker" && Hh("div", { className: "attr-row skill-row" + (j.ps.tier >= 1 ? "" : " skill-locked"), style: { gridTemplateColumns: "1fr auto" } }, Hh("span", { title: "Habilidade passiva dos Espadachins: monte numa montaria para andar mais r\u00E1pido." }, "Montaria (passiva)", Hh("br", {}), Hh("small", { className: "muted" }, j.ps.tier < 1 ? "Dispon\u00EDvel ao virar Espadachim" : j.ps.mountOwned ? "+40% de velocidade \u00B7 tecla V" : "Fale com o NPC Montaria para receber sua montaria")), j.ps.tier >= 1 && j.ps.mountOwned && Hh("button", { className: "btn", onClick: () => { j.ps.mount = !j.ps.mount, j.refresh(); } }, j.ps.mount ? "Desmontar" : "Montar"))] });
+    })), t.line === "berserker" && Hh("div", { className: "attr-row skill-row" + (j.ps.tier >= 1 ? "" : " skill-locked"), style: { gridTemplateColumns: "1fr auto" } }, Hh("span", { title: "Habilidade passiva dos Espadachins: monte numa montaria para andar mais r\u00E1pido." }, "Montaria (passiva)", Hh("br", {}), Hh("small", { className: "muted" }, j.ps.tier < 1 ? "Dispon\u00EDvel ao virar Espadachim" : j.ps.mountOwned ? "+40% de velocidade \u00B7 tecla V" : "Fale com o NPC Montaria para receber sua montaria")), j.ps.tier >= 1 && j.ps.mountOwned && Hh("button", { className: "btn", onClick: () => { j.ps.mount = !j.ps.mount, j.refresh(); } }, j.ps.mount ? "Desmontar" : "Montar")), t.line === "escudeiro" && Hh("div", { className: "attr-row skill-row" + (j.ps.tier >= 1 ? "" : " skill-locked"), style: { gridTemplateColumns: "1fr auto" } }, Hh("span", { title: "Habilidades do Mercador." }, "Carrinho e Loja (passivas)", Hh("br", {}), Hh("small", { className: "muted" }, j.ps.tier < 1 ? "Dispon\u00EDvel ao virar Mercador" : "Carrinho: Alt+W (+1500 peso) \u00B7 Loja: /trade em cidades")), j.ps.tier >= 1 && Hh("div", { className: "row" }, Hh("button", { className: "btn", onClick: () => { j.panel = "cartcfg", j.refresh(); } }, "Carrinho"), Hh("button", { className: "btn", onClick: () => { j.vendOpenPanel(""); } }, "Loja")))] });
   }
   var Mt = oe(ue(), 1);
 
@@ -19828,6 +19901,28 @@ function ROXQM(f, c, s, l, def) {
       Hh("small", { className: "muted" }, "Clique nos itens da mochila para oferecer (+1) ou use \u00D7todos."),
       Hh("div", { className: "refine-list", style: { maxHeight: 180, overflow: "auto" } }, ...list.map(([i, q]) => { let it = $(i); return Hh("div", { key: i, className: "eq-row" }, Hh(Aa, { id: i, size: 28 }), Hh("div", null, Hh("b", { style: { color: so[it.rarity] } }, it.name, " \u00D7", q), Hh("small", null, "Oferecendo: ", tr.mine.items[i] ?? 0)), Hh("div", { className: "row wrap" }, Hh("button", { className: "btn btn-small", onClick: () => j.tradeSet(i, (tr.mine.items[i] ?? 0) + 1) }, "+1"), Hh("button", { className: "btn btn-small", onClick: () => j.tradeSet(i, q) }, "todos"))); })),
       Hh("div", { className: "row wrap" }, Hh("button", { className: "btn btn-primary", disabled: tr.mine.ok || tr.dirty, onClick: () => j.tradeOk() }, tr.mine.ok ? "Aguardando o outro\u2026" : "Confirmar troca"), Hh("button", { className: "btn", onClick: close }, "Cancelar")));
+  }
+  var CART_COLS = [9066026, 12603178, 14711832, 5921370, 3828314, 3304384, 7152336, 12599360, 15245546, 2967224], CART_DECO = [["none", "Nenhuma"], ["flag", "Bandeira"], ["lantern", "Lanterna"], ["sacks", "Sacos"], ["barrel", "Barril"], ["parasol", "Sombrinha"], ["chest", "Baú"]];
+  function CartPanel() {
+    let t = ge().player; if (!t) return null;
+    let c = t.cart || { on: false, color: 9066026, deco: "none" };
+    return Hh(Yt, { id: "cartcfg", title: "\uD83D\uDED2 Carrinho do Mercador", onClose: () => j.closePanel() },
+      Hh("div", { className: "row wrap" }, Hh("button", { className: "btn btn-primary", onClick: () => j.cartToggle() }, c.on ? "Guardar carrinho" : "Chamar carrinho (Alt+W)"), Hh("small", { className: "muted" }, "+1500 de capacidade de peso")),
+      Hh("h4", null, "Cor"), Hh("div", { className: "sty-sw" }, ...CART_COLS.map((h) => Hh("button", { key: h, className: `sw${c.color === h ? " on" : ""}`, style: { background: Q0(h) }, onClick: () => j.cartSet("color", h) }))),
+      Hh("h4", null, "Enfeite"), Hh("div", { className: "sty-row sty-grid" }, ...CART_DECO.map(([k, n]) => Hh("button", { key: k, className: `btn btn-small${c.deco === k ? " on" : ""}`, onClick: () => j.cartSet("deco", k) }, n))));
+  }
+  function VendorPanel() {
+    let t = ge().player, [pr, setPr] = (0, xo.useState)({}), [qt, setQt] = (0, xo.useState)({});
+    if (!t) return null;
+    let v = t.vend || { title: "", items: {}, open: false, earned: 0 };
+    let inv = /* @__PURE__ */ new Map();
+    for (let i of t.inventory.slots) i && inv.set(i.id, (inv.get(i.id) ?? 0) + i.qty);
+    let list = [...inv.entries()].filter(([i]) => $(i) && !$(i).bound);
+    return Hh(Yt, { id: "vendor", title: "\uD83D\uDED2 Loja do Mercador (/trade)", onClose: () => j.closePanel(), wide: true },
+      Hh("div", { className: "row wrap" }, Hh("span", null, "T\u00EDtulo:"), Hh("input", { value: v.title, maxLength: 30, onChange: (e) => j.vendTitle(e.target.value), style: { width: 220 } }), Hh("button", { className: "btn btn-primary", onClick: () => j.vendToggle() }, v.open ? "Fechar loja" : "Abrir loja"), Hh("small", { className: "muted" }, "Ganhos: ", v.earned ?? 0, " Zens")),
+      Hh("small", { className: "muted" }, "Clientes aparecem enquanto você fica parado numa cidade. Pre\u00E7os justos (at\u00E9 ~2× o valor) vendem mais r\u00E1pido."),
+      Hh("h4", null, "\u00C0 venda"), Hh("div", { className: "refine-list" }, ...Object.keys(v.items).map((k) => { let it = $(k); return it && Hh("div", { key: k, className: "eq-row" }, Hh(Aa, { id: k, size: 28 }), Hh("div", null, Hh("b", null, it.name, " \u00D7", v.items[k].qty), Hh("small", null, v.items[k].price, " Zens cada")), Hh("button", { className: "btn btn-small", onClick: () => j.vendSet(k, 1, 0) }, "Retirar")); })),
+      Hh("h4", null, "Mochila"), Hh("div", { className: "refine-list", style: { maxHeight: 220, overflow: "auto" } }, ...list.map(([i, q]) => { let it = $(i), dp = Math.max(1, Math.round(Math.max(8, Cp(i) * 1.25))); return Hh("div", { key: i, className: "eq-row" }, Hh(Aa, { id: i, size: 28 }), Hh("div", null, Hh("b", { style: { color: so[it.rarity] } }, it.name, " \u00D7", q), Hh("small", null, "Valor ref.: ", dp)), Hh("div", { className: "row wrap" }, Hh("input", { type: "number", min: 1, placeholder: String(dp), value: pr[i] ?? "", style: { width: 80 }, onChange: (e) => setPr({ ...pr, [i]: e.target.value }) }), Hh("input", { type: "number", min: 1, max: q, placeholder: "qtd", value: qt[i] ?? "", style: { width: 60 }, onChange: (e) => setQt({ ...qt, [i]: e.target.value }) }), Hh("button", { className: "btn btn-small", onClick: () => j.vendSet(i, +(pr[i] || dp), +(qt[i] || q)) }, "Listar"))); })));
   }
   function AirshipPanel({ boat }) {
     let t = ge().player;
@@ -19994,6 +20089,7 @@ function ROXQM(f, c, s, l, def) {
     return (0, ps.useEffect)(() => {
       let a = (n) => {
         let o = n.target;
+        if (n.altKey && !n.ctrlKey && !n.repeat && n.code === "KeyW" && j.getSnapshot().screen === "playing") { n.preventDefault(), j.cartToggle(); return; }
         if (n.altKey && !n.ctrlKey && !n.repeat && (n.code === "KeyC") && o && o.closest && o.closest(".pm-win") && j.getSnapshot().screen === "playing") { n.preventDefault(), window.dispatchEvent(new CustomEvent("eldvar:pm-open", { detail: { name: "" } })), document.activeElement?.blur?.(); return; }
         if (!(o && (o.tagName === "INPUT" || o.tagName === "TEXTAREA" || o.tagName === "SELECT"))) {
           if (n.altKey && !n.ctrlKey && !n.repeat && (n.code === "KeyC" || "cC".includes(n.key)) && j.getSnapshot().screen === "playing") n.preventDefault(), window.dispatchEvent(new CustomEvent("eldvar:pm-open", { detail: { name: "" } })), setTimeout(() => { let pm = document.querySelector(".pm-win"); !pm && document.activeElement?.blur?.(); }, 60);
@@ -20031,7 +20127,7 @@ function ROXQM(f, c, s, l, def) {
         j.setMove(0, 0), j.setAttackHeld(false);
       };
       return window.addEventListener("blur", a), () => window.removeEventListener("blur", a);
-    }, []), (0, pt.jsxs)("div", { className: `game${t ? " has-touch" : ""}`, children: [(0, pt.jsx)(IS, {}), (0, pt.jsx)(Q4, {}), (0, pt.jsx)(K4, {}), (0, pt.jsx)(p5, {}), (0, pt.jsx)(F4, {}), e.panel === "inventory" && (0, pt.jsx)(Ch, { mode: "bag" }), e.panel === "equip" && (0, pt.jsx)(Ch, { mode: "equip" }), e.panel === "questlog" && (0, pt.jsx)(Ch, { mode: "quests" }), e.panel === "stats" && (0, pt.jsx)(a5, {}), e.panel === "skills" && (0, pt.jsx)(l5, {}), e.panel === "bestiary" && (0, pt.jsx)(s5, {}), e.panel === "worldmap" && (0, pt.jsx)(e5, {}), e.panel === "refine" && (0, pt.jsx)(c5, {}), e.panel === "craft" && Hh(CraftPanel, {}), e.panel === "shop" && (0, pt.jsx)(m5, {}), e.panel === "provador" && Hh(PV_, {}), e.panel === "party" && Hh(PartyPanel, {}), (e.panel === "utilshop" || e.panel === "vipshop") && Hh(UtilShop, { vip: e.panel === "vipshop" }), e.panel === "viproom" && Hh(VipRoom, {}), e.panel === "airship" && Hh(AirshipPanel, {}), e.panel === "boat" && Hh(AirshipPanel, { boat: true }), e.panel === "trade" && Hh(TradePanel, {}), e.panel === "stylist" && (0, pt.jsx)(u5, {}), e.panel === "quests" && (0, pt.jsx)(QuestsPanel, {}), e.panel === "feitos" && (0, pt.jsx)(d5, {}), e.panel === "pause" && (0, pt.jsx)(Z4, {}), e.panel === "settings" && (0, pt.jsx)(c0, {})] });
+    }, []), (0, pt.jsxs)("div", { className: `game${t ? " has-touch" : ""}`, children: [(0, pt.jsx)(IS, {}), (0, pt.jsx)(Q4, {}), (0, pt.jsx)(K4, {}), (0, pt.jsx)(p5, {}), (0, pt.jsx)(F4, {}), e.panel === "inventory" && (0, pt.jsx)(Ch, { mode: "bag" }), e.panel === "equip" && (0, pt.jsx)(Ch, { mode: "equip" }), e.panel === "questlog" && (0, pt.jsx)(Ch, { mode: "quests" }), e.panel === "stats" && (0, pt.jsx)(a5, {}), e.panel === "skills" && (0, pt.jsx)(l5, {}), e.panel === "bestiary" && (0, pt.jsx)(s5, {}), e.panel === "worldmap" && (0, pt.jsx)(e5, {}), e.panel === "refine" && (0, pt.jsx)(c5, {}), e.panel === "craft" && Hh(CraftPanel, {}), e.panel === "shop" && (0, pt.jsx)(m5, {}), e.panel === "provador" && Hh(PV_, {}), e.panel === "party" && Hh(PartyPanel, {}), (e.panel === "utilshop" || e.panel === "vipshop") && Hh(UtilShop, { vip: e.panel === "vipshop" }), e.panel === "viproom" && Hh(VipRoom, {}), e.panel === "airship" && Hh(AirshipPanel, {}), e.panel === "vendor" && Hh(VendorPanel, {}), e.panel === "cartcfg" && Hh(CartPanel, {}), e.panel === "boat" && Hh(AirshipPanel, { boat: true }), e.panel === "trade" && Hh(TradePanel, {}), e.panel === "stylist" && (0, pt.jsx)(u5, {}), e.panel === "quests" && (0, pt.jsx)(QuestsPanel, {}), e.panel === "feitos" && (0, pt.jsx)(d5, {}), e.panel === "pause" && (0, pt.jsx)(Z4, {}), e.panel === "settings" && (0, pt.jsx)(c0, {})] });
   }
   var rn = oe(ue(), 1), zh = class extends g5.Component {
     state = { error: null };
