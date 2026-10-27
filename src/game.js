@@ -8179,8 +8179,8 @@ Error generating stack: ` + n.message + `
     for (; r.length < a; ) r.push(T8(t, o));
     return r;
   }
-  var $m = { fountain: { w: 64, h: 48 }, dryfountain: { w: 64, h: 48 }, giftpile: { w: 26, h: 20 }, well: { w: 36, h: 30 }, stall: { w: 72, h: 36 }, lamp: { w: 12, h: 12 }, banner: { w: 12, h: 12 }, statue: { w: 40, h: 36 }, post: { w: 22, h: 18 }, tower: { w: 52, h: 44 }, bench: { w: 44, h: 16 }, cart: { w: 56, h: 32 }, hay: { w: 40, h: 28 }, planter: { w: 34, h: 22 }, pillar: { w: 20, h: 20 }, pillar_broken: { w: 22, h: 20 }, wall: { w: 56, h: 26 }, wall_v: { w: 26, h: 56 }, arch: { w: 64, h: 16 }, tent: { w: 52, h: 38 }, campfire: { w: 24, h: 22 }, runestone: { w: 20, h: 14 }, gravestone: { w: 16, h: 10 }, altar: { w: 42, h: 28 }, obelisk: { w: 20, h: 20 }, longhouse: { w: 120, h: 50 }, magetower: { w: 72, h: 66 }, clocktower: { w: 56, h: 48 }, pyramid: { w: 120, h: 100 }, sphinx: { w: 100, h: 40 }, arena: { w: 190, h: 150 }, lighthouse: { w: 44, h: 40 }, ship: { w: 100, h: 34 }, dock: { w: 124, h: 40 }, totem: { w: 40, h: 30 }, hut: { w: 52, h: 44 }, pagoda: { w: 74, h: 60 }, frosttree: { w: 56, h: 44 }, wbstatue: { w: 56, h: 56 }, sleigh: { w: 50, h: 26 }, reindeer: { w: 32, h: 16 }, xmastree: { w: 56, h: 44 }, snowman: { w: 28, h: 24 }, toyfactory: { w: 154, h: 100 }, crypt: { w: 78, h: 60 }, palm: { w: 24, h: 20 }, cactus: { w: 26, h: 20 }, parasol: { w: 60, h: 50 }, spiritlamp: { w: 12, h: 12 }, keep: { w: 170, h: 150 }, palace: { w: 250, h: 100 }, hof: { w: 230, h: 120 }, warrior: { w: 52, h: 44 }, brazier: { w: 18, h: 18 }, forge: { w: 92, h: 36 }, church: { w: 110, h: 70 }, castle: { w: 150, h: 110 }, monument: { w: 44, h: 44 }, bigforge: { w: 120, h: 70 }, colossus: { w: 56, h: 56 }, airship: { w: 84, h: 44 } };
-  var DSC = { palace: 2.3, keep: 2.1, hof: 1.8, longhouse: 1.85, warrior: 1.9, statue: 1.9, fountain: 3.6, dryfountain: 3.6, giftpile: 1.5, tower: 1.7, forge: 1.5, stall: 1.3, tent: 1.5, well: 1.4, cart: 1.2, obelisk: 1.6, altar: 1.4, brazier: 1.3, lamp: 1.15, banner: 1.4, church: 1.7, castle: 2, monument: 2.2, bigforge: 1.8, colossus: 2.4, airship: 1.6, xmastree: 3.4, wbstatue: 1.7, sleigh: 1.7, reindeer: 1.7, lighthouse: 3.2, clocktower: 2.6, totem: 3.2, magetower: 1.9, pagoda: 2.6, parasol: 3.2, crypt: 2.2, bench: 1.15, runestone: 1.5 };
+  var $m = { fountain: { w: 64, h: 48 }, dryfountain: { w: 64, h: 48 }, giftpile: { w: 26, h: 20 }, well: { w: 36, h: 30 }, stall: { w: 72, h: 36 }, lamp: { w: 12, h: 12 }, banner: { w: 12, h: 12 }, statue: { w: 40, h: 36 }, post: { w: 22, h: 18 }, tower: { w: 52, h: 44 }, bench: { w: 44, h: 16 }, cart: { w: 56, h: 32 }, hay: { w: 40, h: 28 }, planter: { w: 34, h: 22 }, pillar: { w: 20, h: 20 }, pillar_broken: { w: 22, h: 20 }, wall: { w: 56, h: 26 }, wall_v: { w: 26, h: 56 }, arch: { w: 64, h: 16 }, tent: { w: 52, h: 38 }, campfire: { w: 24, h: 22 }, runestone: { w: 20, h: 14 }, gravestone: { w: 16, h: 10 }, altar: { w: 42, h: 28 }, obelisk: { w: 20, h: 20 }, longhouse: { w: 120, h: 50 }, magetower: { w: 72, h: 66 }, clocktower: { w: 56, h: 48 }, pyramid: { w: 120, h: 100 }, sphinx: { w: 100, h: 40 }, arena: { w: 190, h: 150 }, lighthouse: { w: 44, h: 40 }, ship: { w: 100, h: 34 }, dock: { w: 124, h: 40 }, totem: { w: 40, h: 30 }, hut: { w: 52, h: 44 }, pagoda: { w: 74, h: 60 }, frosttree: { w: 56, h: 44 }, wbstatue: { w: 56, h: 56 }, sleigh: { w: 50, h: 26 }, reindeer: { w: 32, h: 16 }, xmastree: { w: 56, h: 44 }, snowman: { w: 28, h: 24 }, toyfactory: { w: 154, h: 100 }, santahouse: { w: 230, h: 150 }, crypt: { w: 78, h: 60 }, palm: { w: 24, h: 20 }, cactus: { w: 26, h: 20 }, parasol: { w: 60, h: 50 }, spiritlamp: { w: 12, h: 12 }, keep: { w: 170, h: 150 }, palace: { w: 250, h: 100 }, hof: { w: 230, h: 120 }, warrior: { w: 52, h: 44 }, brazier: { w: 18, h: 18 }, forge: { w: 92, h: 36 }, church: { w: 110, h: 70 }, castle: { w: 150, h: 110 }, monument: { w: 44, h: 44 }, bigforge: { w: 120, h: 70 }, colossus: { w: 56, h: 56 }, airship: { w: 84, h: 44 } };
+  var DSC = { palace: 2.3, keep: 2.1, hof: 1.8, longhouse: 1.85, warrior: 1.9, statue: 1.9, fountain: 3.6, dryfountain: 3.6, giftpile: 1.5, tower: 1.7, forge: 1.5, stall: 1.3, tent: 1.5, well: 1.4, cart: 1.2, obelisk: 1.6, altar: 1.4, brazier: 1.3, lamp: 1.15, banner: 1.4, church: 1.7, castle: 2, monument: 2.2, bigforge: 1.8, colossus: 2.4, airship: 1.6, xmastree: 3.4, santahouse: 2.4, wbstatue: 1.7, sleigh: 1.7, reindeer: 1.7, lighthouse: 3.2, clocktower: 2.6, totem: 3.2, magetower: 1.9, pagoda: 2.6, parasol: 3.2, crypt: 2.2, bench: 1.15, runestone: 1.5 };
   for (let e of Object.keys(DSC)) $m[e] && ($m[e].w = Math.round($m[e].w * DSC[e]), $m[e].h = Math.round($m[e].h * DSC[e]));
   function groves(W, H, rng, budget, rockFrac, ok, rockOnly) {
     let PX = 4, PY = 3, GP = 78, BW = (PX - 1) * GP + 60, BH = (PY - 1) * GP + 60, LX = 150, LY = 130, cols = Math.max(1, Math.floor((W - 120) / (BW + LX))), rows = Math.max(1, Math.floor((H - 120) / (BH + LY))), blocks = [], out = [];
@@ -8237,7 +8237,7 @@ Error generating stack: ` + n.message + `
   var pRect = (sd, a, n) => sd === "top" ? { x: a / 2 - 70, y: 0, w: 140, h: 50 } : sd === "bottom" ? { x: a / 2 - 70, y: n - 50, w: 140, h: 50 } : { x: a - 50, y: n / 2 - 70, w: 50, h: 140 };
   var pSpawn = (sd, a, n) => sd === "top" ? { x: a / 2, y: 130 } : sd === "bottom" ? { x: a / 2, y: n - 130 } : { x: a - 130, y: n / 2 };
   var TC_SMALL = new Set(["lamp", "brazier", "bench", "hay", "cart", "banner", "planter", "runestone", "gravestone", "campfire", "post", "snowman", "spiritlamp", "palm", "cactus", "frosttree", "giftpile"]);
-  var TC_BIG = new Set(["longhouse", "bigforge", "church", "castle", "hof", "keep", "palace", "warrior", "statue", "monument", "colossus", "wbstatue", "magetower", "clocktower", "pyramid", "sphinx", "arena", "crypt", "pagoda", "toyfactory", "hut", "tent", "stall", "forge", "tower", "fountain"]);
+  var TC_BIG = new Set(["longhouse", "bigforge", "church", "castle", "hof", "keep", "palace", "warrior", "statue", "monument", "colossus", "wbstatue", "magetower", "clocktower", "pyramid", "sphinx", "arena", "crypt", "pagoda", "toyfactory", "santahouse", "hut", "tent", "stall", "forge", "tower", "fountain"]);
   function tidyCity(list, npcs) {
     let hit = (a, b, m) => a.x < b.x + b.w + m && a.x + a.w + m > b.x && a.y < b.y + b.h + m && a.y + a.h + m > b.y;
     let big = list.filter((q) => q.kind === "house" || q.kind === "deco" && TC_BIG.has(q.deco));
@@ -8642,7 +8642,7 @@ Error generating stack: ` + n.message + `
         for (let q = 0; q < 8; q++) { let g = q / 8 * 6.283 + 0.4; s("lamp", cx + Math.cos(g) * 230, cy + Math.sin(g) * 170); }
         l(cx - 60, cy + 80), l(cx + 20, cy + 95), l(cx + 70, cy + 70), s("sleigh", cx - 150, cy + 60), s("reindeer", cx - 60, cy + 40), s("reindeer", cx - 10, cy + 70), s("reindeer", cx + 120, cy + 90);
       } else if (kd === "toy") {
-        s("toyfactory", cx, cy - 30);
+        s("santahouse", cx, cy - 30);
         for (let [dx, dy] of [[-110, 100], [-60, 120], [70, 118], [118, 98], [-190, 20], [190, 20]]) s("giftpile", cx + dx, cy + dy);
         s("snowman", cx - 260, cy + 150), s("snowman", cx + 260, cy + 150), s("snowman", cx - 140, cy + 170), s("snowman", cx + 140, cy + 170), s("sleigh", cx + 330, cy + 80), s("reindeer", cx + 400, cy + 60), s("reindeer", cx + 450, cy + 90);
         for (let q = -3; q <= 3; q++) s("lamp", cx + q * 100, cy + 235);
@@ -8712,7 +8712,7 @@ Error generating stack: ` + n.message + `
     }
     cityX(e.id, { s, p, px, m, o, t, tt2 });
     {
-      let BIG = ["longhouse", "keep", "palace", "hof", "castle", "church", "forge", "bigforge", "colossus", "monument", "airship", "magetower", "clocktower", "pyramid", "sphinx", "arena", "lighthouse", "ship", "dock", "totem", "hut", "pagoda", "frosttree", "toyfactory", "crypt"], SMALL = ["stall", "cart", "hay", "planter", "bench", "lamp", "brazier", "post", "tent", "campfire", "well", "runestone", "gravestone", "banner"];
+      let BIG = ["longhouse", "keep", "palace", "hof", "castle", "church", "forge", "bigforge", "colossus", "monument", "airship", "magetower", "clocktower", "pyramid", "sphinx", "arena", "lighthouse", "ship", "dock", "totem", "hut", "pagoda", "frosttree", "toyfactory", "santahouse", "crypt"], SMALL = ["stall", "cart", "hay", "planter", "bench", "lamp", "brazier", "post", "tent", "campfire", "well", "runestone", "gravestone", "banner"];
       let bigs = o.filter((q) => q.kind === "deco" && BIG.includes(q.deco)).map((q) => ({ x: q.x - 6, y: q.y - 6, w: q.w + 12, h: q.h + 12 }));
       for (let gi = o.length - 1; gi >= 0; gi--) {
         let q = o[gi];
@@ -16494,6 +16494,25 @@ void main() {
         for (let [x, z, c] of [[60, 50, 12597547], [74, 56, 4235184], [48, 60, 16765040]]) O(n, S(x, 7, z), 12, 12, 12, c, Q), O(n, S(x, 7, z), 12.6, 12.6, 2, 16777215), O(n, S(x, 7, z), 2, 12.6, 12.6, 16777215);
         return n;
       }
+      case "santahouse": {
+        let gd = a.gold, wood = 9066036, dw = Y(wood, 0.72), red = 12400940, wh = 16316664;
+        O(n, S(0, 3, 0), 150, 6, 100, Y(o, 0.8), Q), O(n, S(0, 38, 0), 134, 64, 84, wood, Re);
+        for (let y = 12; y <= 64; y += 8) O(n, S(0, y, 42.7), 134, 1.6, 1.2, dw), O(n, S(0, y, -42.7), 134, 1.6, 1.2, dw);
+        for (let y = 12; y <= 64; y += 8) O(n, S(67.7, y, 0), 1.2, 1.6, 84, dw), O(n, S(-67.7, y, 0), 1.2, 1.6, 84, dw);
+        O(n, S(0, 74, 0), 142, 6, 92, Y(wood, 0.6), Q);
+        Ne(n, [[-76, 76, 50], [76, 76, 50], [76, 114, 0], [-76, 114, 0]], red, { mat: Re }), Ne(n, [[-76, 76, -50], [-76, 114, 0], [76, 114, 0], [76, 76, -50]], Y(red, 0.8), { mat: Re });
+        Ne(n, [[76, 76, 50], [76, 76, -50], [76, 114, 0], [76, 76, 50]], Y(wood, 0.85)), Ne(n, [[-76, 76, 50], [-76, 114, 0], [-76, 76, -50], [-76, 76, 50]], Y(wood, 0.95));
+        Ne(n, [[-77, 96, 22], [77, 96, 22], [77, 115, 0], [-77, 115, 0]], wh, { mat: Re }), Ne(n, [[-77, 96, -22], [-77, 115, 0], [77, 115, 0], [77, 96, -22]], Y(wh, 0.86), { mat: Re });
+        O(n, S(42, 116, -22), 16, 42, 16, 8421504, Q), O(n, S(42, 139, -22), 19, 5, 19, wh, Q), L(n, S(44, 152, -22), 8, 10, 8, 15790320, { seg: 8, ring: 5 }), L(n, S(48, 168, -22), 11, 13, 11, 14737632, { seg: 8, ring: 5 });
+        for (let x of [-44, 44]) O(n, S(x, 46, 43), 16, 18, 1.4, 1315343), O(n, S(x, 46, 43.7), 13, 15, 1, 16762992, { shine: 0.5, glow: 0.95 }), O(n, S(x, 46, 44.4), 1.2, 15, 0.8, 1315343), O(n, S(x, 46, 44.4), 13, 1.2, 0.8, 1315343);
+        O(n, S(0, 27, 43), 28, 46, 2, 7479328), O(n, S(0, 52, 44), 34, 4, 2.4, gd, Ve), O(n, S(0, 27, 44.4), 1.4, 46, 1, gd, Ve), L(n, S(0, 64, 44.6), 9, 3, 9, 3037230, { seg: 12, ring: 6 });
+        for (let g = 0; g < 6; g++) { let q = g / 6 * 6.283; O(n, S(Math.cos(q) * 8, 64 + Math.sin(q) * 8, 46), 2.4, 2.4, 2, red, { shine: 0.5, glow: 0.6 }); }
+        for (let sd of [-1, 1]) { F(n, S(sd * 26, 6, 48), 2.6, 2.6, 42, wh, { seg: 8, mat: Q }); for (let k = 0; k < 5; k++) O(n, S(sd * 26, 12 + k * 8, 48), 5.4, 3.2, 5.4, red, Q); L(n, S(sd * 26, 48, 48), 3, 2.6, 3, red, { seg: 8, ring: 4 }); }
+        for (let x = -70, i = 0; x <= 70; x += 10, i++) O(n, S(x, 77, 51), 3, 3, 3, [16729156, 4235184, 16765040, 4235519][i % 4], { shine: 0.5, glow: 0.95 });
+        for (let [x, z, c] of [[62, 54, 12597547], [76, 60, 4235184], [50, 62, 16765040], [-60, 56, 4235519], [-74, 60, 16729156]]) O(n, S(x, 7, z), 12, 12, 12, c, Q), O(n, S(x, 7, z), 12.6, 12.6, 2, 16777215), O(n, S(x, 7, z), 2, 12.6, 12.6, 16777215);
+        O(n, S(0, 92, 51), 40, 9, 2, Y(wood, 0.55), Q), O(n, S(0, 92, 52.2), 34, 5, 1, gd, Ve);
+        return n;
+      }
       case "crypt": {
         let gl = 10551256, dk = Y(o, 0.78);
         O(n, S(0, 4, 0), 76, 8, 58, dk, Q), O(n, S(0, 32, 0), 60, 48, 42, o, Q), O(n, S(0, 60, 0), 66, 8, 48, Y(o, 0.86), Q);
@@ -16573,7 +16592,7 @@ void main() {
       case "portal":
         return [34, 16];
       default:
-        return e.deco === "wall" ? [34, 12] : e.deco === "wall_v" ? [12, 34] : e.deco === "tent" ? [32, 24] : e.deco === "altar" ? [26, 18] : e.deco === "arch" ? [38, 12] : e.deco === "fountain" || e.deco === "dryfountain" ? [38, 30] : e.deco === "giftpile" ? [14, 10] : e.deco === "tower" ? [34, 28] : e.deco === "longhouse" ? [74, 36] : e.deco === "keep" ? [96, 96] : e.deco === "palace" ? [140, 64] : e.deco === "hof" ? [120, 74] : e.deco === "warrior" ? [30, 26] : e.deco === "forge" ? [48, 30] : e.deco === "stall" ? [44, 22] : e.deco === "church" ? [120, 62] : e.deco === "castle" ? [140, 100] : e.deco === "monument" ? [48, 48] : e.deco === "bigforge" ? [100, 58] : e.deco === "colossus" ? [54, 54] : e.deco === "airship" ? [1, 1] : e.deco === "magetower" ? [60, 50] : e.deco === "clocktower" ? [46, 40] : e.deco === "pyramid" ? [100, 80] : e.deco === "sphinx" ? [80, 34] : e.deco === "arena" ? [150, 110] : e.deco === "toyfactory" ? [120, 80] : e.deco === "pagoda" ? [60, 50] : e.deco === "crypt" ? [64, 50] : e.deco === "ship" || e.deco === "dock" ? [90, 34] : [20, 16];
+        return e.deco === "wall" ? [34, 12] : e.deco === "wall_v" ? [12, 34] : e.deco === "tent" ? [32, 24] : e.deco === "altar" ? [26, 18] : e.deco === "arch" ? [38, 12] : e.deco === "fountain" || e.deco === "dryfountain" ? [38, 30] : e.deco === "giftpile" ? [14, 10] : e.deco === "santahouse" ? [150, 66] : e.deco === "tower" ? [34, 28] : e.deco === "longhouse" ? [74, 36] : e.deco === "keep" ? [96, 96] : e.deco === "palace" ? [140, 64] : e.deco === "hof" ? [120, 74] : e.deco === "warrior" ? [30, 26] : e.deco === "forge" ? [48, 30] : e.deco === "stall" ? [44, 22] : e.deco === "church" ? [120, 62] : e.deco === "castle" ? [140, 100] : e.deco === "monument" ? [48, 48] : e.deco === "bigforge" ? [100, 58] : e.deco === "colossus" ? [54, 54] : e.deco === "airship" ? [1, 1] : e.deco === "magetower" ? [60, 50] : e.deco === "clocktower" ? [46, 40] : e.deco === "pyramid" ? [100, 80] : e.deco === "sphinx" ? [80, 34] : e.deco === "arena" ? [150, 110] : e.deco === "toyfactory" ? [120, 80] : e.deco === "pagoda" ? [60, 50] : e.deco === "crypt" ? [64, 50] : e.deco === "ship" || e.deco === "dock" ? [90, 34] : [20, 16];
     }
   }
   var Rt = 2, S4 = 0.38, fh = 2;
@@ -16831,6 +16850,18 @@ function ROXQM(f, c, s, l, def) {
         const hit = (x, y) => (d.obstacles || []).some((o) => o.kind !== "tree" && o.kind !== "rock" && x > o.x - 14 && x < o.x + o.w + 14 && y > o.y - 14 && y < o.y + o.h + 14);
         if (!hit(sp.x, sp.y)) continue;
         out: for (let r = 30; r <= 600; r += 30) for (let k = 0; k < 16; k++) { const ag = k / 16 * 6.283, x = Math.round(sp.x + Math.cos(ag) * r), y = Math.round(sp.y + Math.sin(ag) * r); if (x > 60 && y > 60 && x < d.width - 60 && y < d.height - 60 && !hit(x, y)) { q.toSpawn = { x, y }; break out; } }
+      }
+    }
+    {
+      const RUNE_OK = new Set(["midgard_ruinas", "midgard_cemiterio", "niflheim_catacumbas", "vana_santuario", "alf_observatorio", "alf_catedral", "asg_idavoll", "jotunheim_trono", "lim_fenda", "cidade_gladsheim"]);
+      for (const m of Object.values(Jt)) {
+        const isDeco = (o, k) => o.kind === "deco" && o.deco === k;
+        if (m.id !== "cidade_midgard") m.obstacles = m.obstacles.filter((o) => !isDeco(o, "fountain") && !isDeco(o, "dryfountain"));
+        if (RUNE_OK.has(m.id) || String(m.id).startsWith("segredo_")) continue;
+        const gone = m.obstacles.filter((o) => isDeco(o, "runestone"));
+        if (!gone.length) continue;
+        m.obstacles = m.obstacles.filter((o) => !isDeco(o, "runestone"));
+        m.pois && (m.pois = m.pois.filter((q) => !(q.kind === "lore" && gone.some((o) => Math.abs(o.x + o.w / 2 - q.x) < 40 && Math.abs(o.y + o.h / 2 - q.y) < 40))));
       }
     }
     for (const m of Object.values(Jt)) {

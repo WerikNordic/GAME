@@ -1,3 +1,8 @@
+# v180
+- Fontes removidas de todos os mapas; só Cidade de Midgard mantém as suas (inclui as fontes secas de Kharnheim e Eldvik).
+- Pedras rúnicas só em locais com sentido (ruínas, cemitério, catacumbas, santuário, observatório, catedral, Idavoll, trono de Jotunheim, fenda do Limbo, Gladsheim e mapas secretos).
+- Nova Casa do Papai Noel gigante em Isenborg (cabana de toras, telhado vermelho com neve, chaminé, porta com guirlanda, bengalas de doce, luzes e presentes), no lugar da fábrica pequena.
+
 # v179
 - Cidades: removidas árvores e postes nas ruas pavimentadas (paralelepípedos) e junto às bordas das ruas.
 - Árvores e postes restantes alinhados numa grade regular (sem posição aleatória); duplicatas removidas. Árvore de Natal central de Isenborg intacta.
