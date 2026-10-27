@@ -9487,6 +9487,10 @@ Error generating stack: ` + n.message + `
       return { ...x, chance: Math.min(0.9, c) };
     });
   }
+  for (const id of ["yeti_ancestral", "golem_obsidiana", "ent_sombrio", "sentinela_aurea", "voidling_abissal", "ulfhednar", "chama_viva", "campeao_esquecido", "arauto_fim"]) {
+    const d = Qu[id];
+    if (d && !d.boss) { d.mini = true; d.respawnMs = 18e5; d.name.startsWith("[Mini]") || (d.name = "[Mini] " + d.name); }
+  }
   for (let id_ of Object.keys(Qu)) {
     let d_ = Qu[id_];
     if (d_.boss || d_.ai?.behavior || id_ === "jormungandr") continue;
@@ -9765,7 +9769,7 @@ Error generating stack: ` + n.message + `
     o;
     due = /* @__PURE__ */ new Map();
     static policyFor(t, a) {
-      return t || (a.boss ? { mode: "timed", delayMs: 72e5, varianceMs: 36e5 } : { mode: "timed", delayMs: a.respawnMs, varianceMs: 0 });
+      return a.mini ? { mode: "timed", delayMs: 18e5, varianceMs: 0 } : t || (a.boss ? { mode: "timed", delayMs: 54e5, varianceMs: 18e5 } : { mode: "timed", delayMs: a.respawnMs, varianceMs: 0 });
     }
     schedule(t, a, n) {
       let o = this.o.now(), r;
@@ -10011,6 +10015,8 @@ Error generating stack: ` + n.message + `
     pendingNpc = null;
     pendingSit = null;
     pendingLoot = null;
+    mvpUntil = 0;
+    _hitSrc = null;
     pickAt = null;
     pickId = null;
     get crouching() { return this.pickAt !== null; }
@@ -10447,7 +10453,7 @@ Error generating stack: ` + n.message + `
       if (!this.ps.pet || !this.ps.petData || this.player.deadAt !== null || this.time < (this._petAt ?? 0)) return;
       this._petAt = this.time + 1800;
       let m = this.nearestMonster(190);
-      m && m.state !== "dead" && !this.inSafeZone?.(this.player.pos) && this.hitMonster(m, petStats(this.ps).atk, 1, 0, 0);
+      m && m.state !== "dead" && !this.inSafeZone?.(this.player.pos) && (this._hitSrc = "pet", this.hitMonster(m, petStats(this.ps).atk, 1, 0, 0), this._hitSrc = null);
     }
     updateDelayed() {
       if (!this.delayed.length) return;
@@ -10494,7 +10500,7 @@ Error generating stack: ` + n.message + `
         return;
       }
       let r = ap(t.def.atk * t.atkMul * this.mods.mobAtk * (t.golden ? ql.atk : 1), a, o.def * (1 + this.buffSum("def")), this.rng, 0);
-      this.ps.hp = Math.max(0, this.ps.hp - r.amount), n.lastCombatAt = this.time, n.lastHurtAt = this.time, n.flinchUntil = this.time + Cy(180 + Math.min(420, 1500 * r.amount / Math.max(1, o.maxHp))), this.emit({ type: "damage", target: "player", id: 0, amount: r.amount, crit: false, miss: false, x: n.pos.x, y: n.pos.y }), this.ps.hp <= 0 && this.killPlayer();
+      t.def.boss && (t.mv || (t.mv = { d: {}, tk: 0, f: null, l: null }), t.mv.tk += r.amount), this.ps.hp = Math.max(0, this.ps.hp - r.amount), n.lastCombatAt = this.time, n.lastHurtAt = this.time, n.flinchUntil = this.time + Cy(180 + Math.min(420, 1500 * r.amount / Math.max(1, o.maxHp))), this.emit({ type: "damage", target: "player", id: 0, amount: r.amount, crit: false, miss: false, x: n.pos.x, y: n.pos.y }), this.ps.hp <= 0 && this.killPlayer();
     }
     killPlayer() {
       this.ps.hp = 0, this.player.deadAt = this.time, this.player.buffs = [], this.clearOrders(), this.move.x = 0, this.move.y = 0, this.attackHeld = false, this.attackQueued = false;
@@ -10548,7 +10554,7 @@ Error generating stack: ` + n.message + `
         let u = Ku(i, c.element);
         u !== 1 && (l.amount = Math.max(1, Math.round(l.amount * u)));
       }
-      if (t.hp = Math.max(0, t.hp - l.amount), this.player.lastCombatAt = this.time, this.emit({ type: "damage", target: "monster", id: t.id, amount: l.amount, crit: l.crit, miss: false, x: t.pos.x, y: t.pos.y - t.def.radius }), !t.def.boss && o > 0 && (t.stunUntil = Math.max(t.stunUntil, this.time + o), (t.state === "windup" || t.state === "charge") && (t.state = "recover"), t.stateUntil = t.stunUntil), r > 0 && (t.slowUntil = Math.max(t.slowUntil, this.time + (t.def.boss ? r / 2 : r))), t.hp <= 0) {
+      if (this.mvTrack(t, l.amount), t.hp = Math.max(0, t.hp - l.amount), this.player.lastCombatAt = this.time, this.emit({ type: "damage", target: "monster", id: t.id, amount: l.amount, crit: l.crit, miss: false, x: t.pos.x, y: t.pos.y - t.def.radius }), !t.def.boss && o > 0 && (t.stunUntil = Math.max(t.stunUntil, this.time + o), (t.state === "windup" || t.state === "charge") && (t.state = "recover"), t.stateUntil = t.stunUntil), r > 0 && (t.slowUntil = Math.max(t.slowUntil, this.time + (t.def.boss ? r / 2 : r))), t.hp <= 0) {
         this.killMonster(t);
         return;
       }
@@ -10628,8 +10634,89 @@ Error generating stack: ` + n.message + `
       }
       let s = _y(n, a.id);
       if (s.length && this.emit({ type: "questProgress", names: s }), a.boss) {
-        this.emit({ type: "bossDefeated", name: a.name });
+        this.emit({ type: "bossDefeated", name: a.name }), this.mvpResolve(t, n, a);
         for (let l of this.monsters) l.summoned && l.state !== "dead" && (l.state = "dead", l.diedAt = this.time);
+      }
+    }
+    mvTrack(t, amt) {
+      if (!t.def.boss) return;
+      let m = t.mv || (t.mv = { d: {}, tk: 0, f: null, l: null }), src = this._hitSrc || "you";
+      m.d[src] = (m.d[src] || 0) + amt, m.f === null && (m.f = src), m.l = src;
+      src === "you" && (t.lastHitAt = this.time, t.lastHitDist = Be(t.pos, this.player.pos));
+    }
+    mvpResolve(t, n, a) {
+      let m = t.mv || { d: {}, tk: 0, f: "you", l: "you" }, keys = [...new Set([...Object.keys(m.d), "you"])], tot = Object.values(m.d).reduce((x, y) => x + y, 0) || 1, sc = {}, nm = (k) => k === "you" ? n.name ?? "Você" : "Seu pet";
+      for (let k of keys) { let dm = (m.d[k] || 0) / tot * 50, tk = k === "you" && m.tk > 0 ? 30 : 0, fi = m.f === k ? 10 : 0, la = m.l === k ? 10 : 0; sc[k] = { dm, tk, fi, la, tot: dm + tk + fi + la }; }
+      keys.sort((x, y) => sc[y].tot - sc[x].tot);
+      let win = keys[0], nome = a.name.replace("[MVP] ", "");
+      this.logc(`\u{1F3C6} Placar de MVP — ${nome}`, "system");
+      for (let k of keys) { let q = sc[k]; this.logc(`${k === win ? "\u{1F451}" : "•"} ${nm(k)}: ${Math.round(q.tot)} pts (dano ${Math.round(q.dm)} · tank ${Math.round(q.tk)} · 1º golpe ${q.fi} · último golpe ${q.la})`, k === win ? "good" : "system"); }
+      n.tombs = n.tombs || {};
+      let key = this.map.id + ":" + a.id + ":" + t.slot;
+      n.tombs[key] = { key, map: this.map.id, id: a.id, slot: t.slot, name: nome, x: Math.round(t.pos.x), y: Math.round(t.pos.y), at: Date.now(), by: nm(win), mvp: win === "you" };
+      if (win !== "you") { this.toast(`${nm(win)} levou o título de MVP.`, "info"); return; }
+      this.mvpUntil = this.time + 12e3;
+      let bx = Math.max(1, Math.round(a.exp * this.mods.exp)), r = Yu(n, bx);
+      this.emit({ type: "expGain", amount: bx }), r.levels > 0 && (this.emit({ type: "levelUp", level: n.level }), this.toast(`Nível ${n.level}! Pontos de atributo disponíveis.`, "good")), r.jobLevels > 0 && (this.emit({ type: "jobLevelUp", level: n.jobLevel }), this.toast(`Nível de classe ${n.jobLevel}!`, "good"));
+      let pool = a.drops.filter((d) => { let k = $(d.item)?.kind; return k && k !== "card" && k !== "quest"; }), pk = pool.length ? pool[Math.floor(this.rng() * pool.length)].item : null, got = "";
+      if (pk) {
+        let q = Ny(n, pk, 1);
+        if (q > 0 && He(n.inventory, pk, 1) <= 0) got = ` e ${$(pk).name} no inventário`;
+        else this.spawnLoot(pk, 1, t.pos), got = ` e ${$(pk).name} (caído no chão: peso/inventário cheio)`;
+      }
+      this.toast(`\u{1F451} MVP! +${bx} EXP${got}.`, "good"), this.logc(`\u{1F451} Você é o MVP de ${nome}! Bônus de ${bx} EXP${got}.`, "good");
+    }
+    tombList() { let o = this.ps.tombs; return o ? Object.values(o).filter((q) => q.map === this.map.id && !this.monsters.some((m) => m.slot === q.slot && m.def.id === q.id && m.state !== "dead")) : []; }
+    readTomb(key) {
+      let q = this.ps.tombs?.[key]; if (!q) return false;
+      let f = (ms) => new Date(ms).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit", second: "2-digit" }), g = (ms) => new Date(ms).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
+      this.logc(`\u{1FAA6} Túmulo de ${q.name}: morto às ${f(q.at)} por ${q.by}${q.mvp ? " (MVP)" : ""}.`, "system"), this.logc(`⏳ Próximo renascimento entre ${g(q.at + 36e5)} e ${g(q.at + 72e5)}.`, "system"), this.toast(`Túmulo de ${q.name} — morto às ${f(q.at)} por ${q.by}`, "info");
+      return true;
+    }
+    miniTeleport(t) {
+      for (let k = 0; k < 40; k++) {
+        let p = { x: 80 + this.rng() * (this.map.width - 160), y: 80 + this.rng() * (this.map.height - 160) };
+        if (Be(p, this.player.pos) < 500 || this.inSafeZone(p) || !Ia(p.x, p.y, t.def.radius + 4, this.map.obstacles, this.map.width, this.map.height)) continue;
+        this.emit({ type: "fx", kind: "impact", x: t.pos.x, y: t.pos.y, angle: 0, range: 60, arc: 0, magic: true, fromPlayer: false, light: 11832575, ms: 450 });
+        t.pos = { ...p }, t.home = { ...p }, t.wander = { ...p }, t.hp = t.maxHp, t.state = "idle", t.provoked = false, t.stunUntil = 0;
+        this.emit({ type: "fx", kind: "impact", x: p.x, y: p.y, angle: 0, range: 60, arc: 0, magic: true, fromPlayer: false, light: 11832575, ms: 450 });
+        return true;
+      }
+      return false;
+    }
+    bossTeleportCheck(t, s, dt, spd, sec) {
+      let n = t.def;
+      if (this.map.id === "wb_cratera" || this.time < (t.tpAt ?? 0)) return false;
+      let moved = t._px === void 0 ? 1e9 : Math.hypot(t.pos.x - t._px, t.pos.y - t._py);
+      t._px = t.pos.x, t._py = t.pos.y;
+      let far = s > n.attackRange + 80, stalled = moved < spd * sec * 0.3, harass = this.time - (t.lastHitAt ?? -1e9) < 3e3 && (t.lastHitDist ?? 0) > n.attackRange + 140;
+      t.noReach = far && (stalled || harass) ? (t.noReach ?? 0) + dt : Math.max(0, (t.noReach ?? 0) - dt * 2);
+      if (t.noReach < 3500) return false;
+      t.noReach = 0, t.tpAt = this.time + 9e3;
+      for (let k = 0; k < 24; k++) {
+        let g = this.rng() * Math.PI * 2, d = n.attackRange * 0.7 + n.radius, p = { x: this.player.pos.x + Math.cos(g) * d, y: this.player.pos.y + Math.sin(g) * d };
+        if (!Ia(p.x, p.y, n.radius + 4, this.map.obstacles, this.map.width, this.map.height)) continue;
+        this.emit({ type: "fx", kind: "impact", x: t.pos.x, y: t.pos.y, angle: 0, range: 80, arc: 0, magic: true, fromPlayer: false, light: 11832575, ms: 500 });
+        t.pos = p, this.emit({ type: "fx", kind: "impact", x: p.x, y: p.y, angle: 0, range: 80, arc: 0, magic: true, fromPlayer: false, light: 11832575, ms: 500 });
+        this.toast(`${n.name.replace("[MVP] ", "")} usa Teletransportar!`, "bad");
+        return true;
+      }
+      return false;
+    }
+    tickEscort() {
+      if (this.map.id === "wb_cratera") return;
+      for (let b of this.monsters) {
+        if (!b.def.boss || b.state === "dead" || b.summoned || Be(b.pos, this.player.pos) > 2200) continue;
+        let ad = b.def.adds ?? ky, ch = oo(ad.monster); if (!ch) continue;
+        let esc = this.monsters.filter((m) => m.escortOf === b.id && m.state !== "dead"), spawn = (k) => {
+          let g = Math.PI * 2 * k / ad.count + this.rng(), p = { x: b.pos.x + Math.cos(g) * (b.def.radius + 50), y: b.pos.y + Math.sin(g) * (b.def.radius + 50) };
+          Ia(p.x, p.y, ch.radius + 4, this.map.obstacles, this.map.width, this.map.height) || (p = { ...b.pos });
+          let c = this.makeMonster(ch, p, -1, true); c.escortOf = b.id, c.home = { ...b.pos }, this.monsters.push(c);
+        };
+        if (!b.escInit) { b.escInit = true; for (let k = 0; k < ad.count; k++) spawn(k); continue; }
+        for (let m of esc) m.state === "idle" && (m.home = { x: b.pos.x, y: b.pos.y });
+        if (esc.length >= ad.count) { b.escNext = 0; continue; }
+        b.escNext ? this.time >= b.escNext && (spawn(esc.length), b.escNext = 0) : b.escNext = this.time + 7e3;
       }
     }
     spawnLoot(t, a, n) {
@@ -10683,7 +10770,7 @@ Error generating stack: ` + n.message + `
         }
         this.updateMonster(n, t);
       }
-      this.map.id === "wb_cratera" && WB.syncBoss(this);
+      this.map.id === "wb_cratera" && WB.syncBoss(this), this.tickEscort();
     }
     respawnSlot(t) {
       let a = this.groupOfSlot(t.slot);
@@ -10697,7 +10784,7 @@ Error generating stack: ` + n.message + `
         }
       }
       for (let o = 0; o < 6 && Be(n, this.player.pos) < 160; o++) n = this.pickSpawnPos(a, t.def);
-      t.pos = { ...n }, t.home = { ...n }, t.wander = { ...n }, t.golden = false, t.maxHp = t.def.hp, t.hp = t.maxHp, t.state = "idle", t.phase = 1, t.speedMul = 1, t.atkMul = 1, t.stunUntil = 0, t.slowUntil = 0, t.engagedAnnounced = false, t.provoked = false, t.carried = [], t.lowHp = { fired: false }, t.fleeUntil = 0;
+      t.def.boss && this.ps.tombs && delete this.ps.tombs[this.map.id + ":" + t.def.id + ":" + t.slot], t.escInit = false, t.escNext = 0, t.mv = null, t.noReach = 0, t.pos = { ...n }, t.home = { ...n }, t.wander = { ...n }, t.golden = false, t.maxHp = t.def.hp, t.hp = t.maxHp, t.state = "idle", t.phase = 1, t.speedMul = 1, t.atkMul = 1, t.stunUntil = 0, t.slowUntil = 0, t.engagedAnnounced = false, t.provoked = false, t.carried = [], t.lowHp = { fired: false }, t.fleeUntil = 0;
     }
     steer(t, a, n, o, r) {
       let i = ao(t.pos, a);
@@ -10750,6 +10837,7 @@ Error generating stack: ` + n.message + `
         case "chase": {
           let f = Al("chasing", d, n.ai);
           if (f === "resting") {
+            if (n.mini && this.miniTeleport(t)) break;
             t.state = "return";
             break;
           }
@@ -10765,6 +10853,7 @@ Error generating stack: ` + n.message + `
             this.beginWindup(t, "slam");
             break;
           }
+          if (n.boss && this.bossTeleportCheck(t, s, a, l, o)) break;
           if (n.archetype === "charger") {
             if (s <= n.attackRange && s > 70) {
               this.beginWindup(t, "charge");
@@ -17911,6 +18000,11 @@ function ROXQM(f, c, s, l, def) {
         l <= 20 && l < r && (r = l, o = { kind: "loot", id: i.id });
       }
       if (o) return o;
+      for (let i of n.tombList()) {
+        let s = ce(i.x, i.y), l = Math.hypot(s.x - t, s.y - 20 - a);
+        l <= 26 && l < r && (r = l, o = { kind: "tomb", id: i.key });
+      }
+      if (o) return o;
       for (let i of n.map.npcs) {
         let s = ce(i.x, i.y), l = i.id === "papainoel" ? Math.hypot(s.x + 14 - t, s.y - 58 - a) * 0.62 : Math.hypot(s.x - t, s.y - 24 - a);
         l <= 30 && l < r && (r = l, o = { kind: "npc", id: i.id });
@@ -17951,6 +18045,10 @@ function ROXQM(f, c, s, l, def) {
       }
       if (r?.kind === "monster") {
         a.commandTarget(r.id), this.ptr.held = false;
+        return;
+      }
+      if (r?.kind === "tomb") {
+        a.readTomb(r.id), this.ptr.held = false;
         return;
       }
       if (r?.kind === "loot") {
@@ -18464,6 +18562,7 @@ function ROXQM(f, c, s, l, def) {
         M(H.x, H.y) && T.push({ depth: Ja(q.x, q.y), draw: () => this.drawWalker(q) });
       }
       for (let q of a.loot) T.push({ depth: Ja(q.pos.x, q.pos.y), draw: () => this.drawLoot(q.itemId, q.pos.x, q.pos.y, q.id, q.qty) });
+      for (let q of a.tombList()) T.push({ depth: Ja(q.x, q.y), draw: () => this.drawTomb(q) });
       let z = /* @__PURE__ */ new Set(["p"]);
       for (let q of a.monsters) {
         if (q.state === "dead") continue;
@@ -18475,7 +18574,7 @@ function ROXQM(f, c, s, l, def) {
         M(H.x, H.y) && (z.add(`o${q.id}`), T.push({ depth: Ja(q.x, q.y), draw: () => this.drawOther(q, t) }));
       }
       for (let q of n.critters ?? []) { let H = ce(q.x, q.y); M(H.x, H.y) && T.push({ depth: Ja(q.x, q.y), draw: () => this.drawCritter(q) }); }
-      T.push({ depth: m, draw: () => this.drawPlayer(t) }), a.ps.cart?.on && a.ps.line === "escudeiro" ? T.push({ depth: this._cart ? Ja(this._cart.x, this._cart.y) : m + 1, draw: () => this.drawCart() }) : this._cart = null, a.ps.vend?.open && T.push({ depth: m + 3, draw: () => this.drawVend() }), a.ps.baby && T.push({ depth: this._bb ? Ja(this._bb.x, this._bb.y) : m + 1, draw: () => this.drawBaby() }), falconOk(a.ps) && T.push({ depth: m + 40, draw: () => this.drawFalcon() }), homunOk(a.ps) && a.ps.homun.on ? T.push({ depth: this._hm ? Ja(this._hm.x, this._hm.y) : m + 1, draw: () => this.drawHomun() }) : this._hm = null, a.ps.pet && a.ps.petData && T.push({ depth: this._pet ? Ja(this._pet.x, this._pet.y) : m + 1, draw: () => this.drawPet() }), this.store.fx && Date.now() - this.store.fx.t0 < 3800 && T.push({ depth: m + 9, draw: () => this.drawBlessing(a.player.pos) });
+      T.push({ depth: m, draw: () => this.drawPlayer(t) }), a.mvpUntil > a.time && T.push({ depth: m + 4e3, draw: () => this.drawMvpPlate(a.player.pos, a.mvpUntil - a.time) }), a.ps.cart?.on && a.ps.line === "escudeiro" ? T.push({ depth: this._cart ? Ja(this._cart.x, this._cart.y) : m + 1, draw: () => this.drawCart() }) : this._cart = null, a.ps.vend?.open && T.push({ depth: m + 3, draw: () => this.drawVend() }), a.ps.baby && T.push({ depth: this._bb ? Ja(this._bb.x, this._bb.y) : m + 1, draw: () => this.drawBaby() }), falconOk(a.ps) && T.push({ depth: m + 40, draw: () => this.drawFalcon() }), homunOk(a.ps) && a.ps.homun.on ? T.push({ depth: this._hm ? Ja(this._hm.x, this._hm.y) : m + 1, draw: () => this.drawHomun() }) : this._hm = null, a.ps.pet && a.ps.petData && T.push({ depth: this._pet ? Ja(this._pet.x, this._pet.y) : m + 1, draw: () => this.drawPet() }), this.store.fx && Date.now() - this.store.fx.t0 < 3800 && T.push({ depth: m + 9, draw: () => this.drawBlessing(a.player.pos) });
       if (n.obstacles.some((q) => q.deco === "airship")) {
         let A2 = this.air;
         (!A2 || A2.map !== n) && (A2 = this.air = { map: n, x: n.width * (0.2 + Math.random() * 0.6), y: n.height * (0.2 + Math.random() * 0.6), tx: 0, ty: 0, hd: 1, last: this.clock, pick: true });
@@ -18688,7 +18787,7 @@ function ROXQM(f, c, s, l, def) {
       n.font = `bold 8px ${ms}`, n.textAlign = "center", n.textBaseline = "middle";
       for (let l of a.npcs) { let nr_ = NR[l.id] ?? ["?", "#ffd34d", l.id], px = o + l.x * i, py = r + l.y * s; seenR.set(nr_[2], nr_), n.fillStyle = nr_[1], n.strokeStyle = "#111", n.lineWidth = 1, n.beginPath(), n.arc(px, py, 5, 0, Math.PI * 2), n.fill(), n.stroke(), n.fillStyle = "#111", n.fillText(nr_[0], px, py + 0.5); }
       this._mmLegend = [...seenR.values()];
-      for (let l of t.monsters) l.state !== "dead" && (n.fillStyle = l.def.boss ? "#c77dff" : "#ff5a4a", n.beginPath(), n.arc(o + l.pos.x * i, r + l.pos.y * s, l.def.boss ? 3.6 : 1.8, 0, Math.PI * 2), n.fill());
+      for (let l of t.monsters) l.state !== "dead" && (n.fillStyle = l.def.boss ? "#c77dff" : l.def.mini ? "#ffb347" : "#ff5a4a", n.beginPath(), n.arc(o + l.pos.x * i, r + l.pos.y * s, l.def.boss ? 3.6 : 1.8, 0, Math.PI * 2), n.fill());
       for (let l of a.portals) {
         if (en(l.toMap)?.hidden && !t.ps.visited.includes(l.toMap)) continue;
         let c = Math.max(o + 9, Math.min(o + Cn - 9, o + (l.x + l.w / 2) * i)), d = Math.max(r + 9, Math.min(r + $r - 9, r + (l.y + l.h / 2) * s)), f = 0.5 + 0.5 * Math.sin(this.clock / 260), u = l.locked ? "#9a9a9a" : "#c9a0ff";
@@ -18706,6 +18805,24 @@ function ROXQM(f, c, s, l, def) {
       t === "papainoel" ? i += 9 : 0, t !== "papainoel" && (this.blob(i, s + 4, 15), nt(r, p, i + h.dx, s + 6 + h.dy - (t === "papainoel" ? 6 : 0) + sk, m, $a * h.sx * (t === "papainoel" ? 1.38 : 1), $a * h.sy * sq * (t === "papainoel" ? 1.38 : 1), h.rot)), this.nameOn(`n${t}`) && this.text(n0(t)?.name ?? t, i, s + 16, 12, "#ffffff");
       let x = this.marks.get(t);
       x && this.text(x, i, s - 76 + Math.sin(this.clock / 190) * 3, 24, x === "?" ? "#7dff9a" : "#ffd34d", true);
+    }
+    drawTomb(q) {
+      let o = this.ctx, { x: r, y: i } = ce(q.x, q.y), hov = this.hover?.kind === "tomb" && this.hover.id === q.key;
+      o.save(), o.fillStyle = "rgba(0,0,0,0.3)", o.beginPath(), o.ellipse(r, i + 2, 17, 6, 0, 0, Math.PI * 2), o.fill();
+      let g = o.createLinearGradient(r - 14, 0, r + 14, 0); g.addColorStop(0, "#9aa0aa"), g.addColorStop(0.5, "#c9ced6"), g.addColorStop(1, "#7d838f");
+      o.fillStyle = g, o.strokeStyle = hov ? "#ffe08a" : "#4a4f5a", o.lineWidth = hov ? 2.5 : 1.5, o.beginPath(), o.moveTo(r - 14, i), o.lineTo(r - 14, i - 30), o.arc(r, i - 30, 14, Math.PI, 0), o.lineTo(r + 14, i), o.closePath(), o.fill(), o.stroke();
+      o.fillStyle = "#4a4f5a", o.fillRect(r - 2, i - 40, 4, 22), o.fillRect(r - 8, i - 34, 16, 4);
+      o.fillStyle = "#5c7a3a", o.beginPath(), o.ellipse(r - 12, i, 7, 3, 0, 0, Math.PI * 2), o.ellipse(r + 11, i + 1, 6, 3, 0, 0, Math.PI * 2), o.fill();
+      o.restore(), this.text("☠ " + q.name, r, i - 56, 12, hov ? "#ffe08a" : "#d8dce6", true);
+    }
+    drawMvpPlate(p, left) {
+      let o = this.ctx, { x: r, y: i } = ce(p.x, p.y), bob = Math.sin(this.clock / 260) * 3, al = Math.min(1, left / 1500), y = i - 118 + bob;
+      o.save(), o.globalAlpha = al, o.shadowColor = "#ffcc33", o.shadowBlur = 18;
+      let g = o.createLinearGradient(0, y - 16, 0, y + 16); g.addColorStop(0, "#fff2a8"), g.addColorStop(0.5, "#ffc928"), g.addColorStop(1, "#c98a0a");
+      o.fillStyle = g, o.strokeStyle = "#6b4300", o.lineWidth = 2.5, o.beginPath(), o.roundRect ? o.roundRect(r - 36, y - 15, 72, 30, 7) : o.rect(r - 36, y - 15, 72, 30), o.fill(), o.shadowBlur = 0, o.stroke();
+      o.font = "900 22px Georgia, serif", o.textAlign = "center", o.textBaseline = "middle", o.fillStyle = "#5a3500", o.fillText("MVP", r + 1, y + 2), o.fillStyle = "#fffbe0", o.fillText("MVP", r, y + 1);
+      for (let k = 0; k < 4; k++) { let a = this.clock / 400 + k * 1.6, sx = r + Math.cos(a) * 44, sy = y + Math.sin(a * 1.3) * 16; o.fillStyle = "#fff6b0", o.fillRect(sx - 1.5, sy - 1.5, 3, 3); }
+      o.restore();
     }
     drawLoot(t, a, n, lid, lq) {
       let o = this.ctx, { x: r, y: i } = ce(a, n), s = $(t), l = CS[s?.rarity ?? "common"] ?? "#d9d9d9", c = this.clock, d = Math.round(Math.sin(c / 260 + r) * 2), f = s && s.rarity !== "common";

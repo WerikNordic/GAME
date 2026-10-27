@@ -1,3 +1,11 @@
+## v197 - MVPs e Mini Bosses
+- MVP: placar por pontos (dano 50, tank 30, 1o golpe 10, ultimo golpe 10; seu pet tambem pontua). Quem vence ganha a placa dourada "MVP" sobre a cabeca por 12s, bonus de EXP igual ao do chefe e 1 item direto no inventario (cai no chao se pesado/cheio). Placar no chat.
+- Escolta: cada MVP nasce com a escolta ao redor, anda com ele e renasce 7s apos cada morte. Morre junto com o MVP.
+- Teletransporte do MVP: se nao alcanca o alvo (travado/ataques a distancia por 3,5s) usa Teletransportar ate perto de voce (recarga 9s).
+- Tumulos: ao morrer o MVP deixa um tumulo no local; clicar mostra a hora da morte, quem levou o MVP e a janela de renascimento. Some quando ele renasce.
+- Respawn do MVP: 1h30 +/- 30min.
+- Mini Bosses ([Mini], 9 monstros): sem placa, sem bonus, loot normal, podem ser empurrados; respawn exato de 30 min; se perdem o alvo teleportam para outro ponto do mapa com HP cheio. Pontinho laranja no minimapa.
+
 ## v196
 - Boss mundial renomeado para Werikr (WERIK em nordico): banner de despertar com runas ᚹᛖᚱᛁᚲᚱ + WERIKR DESPERTOU; nome atualizado no mapa Cratera, painel, logs, comando de teste e skill Terremoto de Werikr.
 
