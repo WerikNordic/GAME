@@ -1,3 +1,6 @@
+# v164
+- Fisica basica: mola amortecida no personagem (inclina com a inercia ao andar/parar; capa balanca mais e com brisa leve parado). Sem efeito sentado.
+
 # v163
 - Trilha de Quests: encomendas de Zeny repetiveis (20 materiais), 9 Grandes Expedicoes unicas (3 materiais -> EXP + Zeny + equipamento raro) e 14 Trofeus de MVP unicos (drops do chefe -> EXP + Zeny + equipamento raro). Painel de Quests com abas EXP / Zeny / Dificeis / MVP / Visual.
 

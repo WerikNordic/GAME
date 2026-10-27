@@ -18861,7 +18861,11 @@ function ROXQM(f, c, s, l, def) {
         this.blob(r.x, r.y + 4, 15), a.ps.level >= 99 && this.epicFx(r.x, r.y, 0);
         var mnt = a.ps.mount && a.ps.mountOwned, moff = mnt ? (a.sitting ? 34 : 46) : 0, atkM = this.clock - i.atkAt < Math.max(260, i.atkDur || 0), pl2 = 0, play2 = false, jy2 = 0;
         let m = this.organic(i, o.facing, { moving: i.moving, atkT: this.clock - i.atkAt, atkImpact: i.atkImpact, atkDur: i.atkDur, breath: a.sitting ? 8e-3 : 0.011 });
-        a.sitting && (m.dx = 0, m.dy = 0, m.rot *= 0.3), nt(n, u, r.x + m.dx, r.y + 6 + m.dy - moff + jy2, l, $a * m.sx, $a * m.sy, m.rot);
+        a.sitting && (m.dx = 0, m.dy = 0, m.rot *= 0.3);
+        { let cp = this._cap || (this._cap = { x: r.x, a: 0, v: 0, t: this.clock }), dt = Math.min(0.05, Math.max(0.001, (this.clock - cp.t) / 1e3)), vx = (r.x - cp.x) / dt; cp.x = r.x, cp.t = this.clock;
+          let capeOn = !!a.ps.equipment.back, k = capeOn ? 1 : 0.35, tg = -Math.max(-260, Math.min(260, vx)) / 260 * 0.09 * k + (capeOn && !a.sitting ? Math.sin(this.clock / 700) * 0.012 : 0);
+          cp.v += ((tg - cp.a) * 90 - cp.v * 7) * dt, cp.a += cp.v * dt, cp.a = Math.max(-0.16, Math.min(0.16, cp.a)), a.sitting || (m.rot += cp.a); }
+        nt(n, u, r.x + m.dx, r.y + 6 + m.dy - moff + jy2, l, $a * m.sx, $a * m.sy, m.rot);
         a.ps.equipment.headTop === "poring_saltitante" && drawPoring(n, r.x + m.dx, r.y + 6 + m.dy - moff + (a.sitting ? 13 : 0), 1, this.clock, s, l);
         if (mnt) {
           let mw = ROXQM("corvo", s, i.moving ? Math.floor(i.phase * ea) : -1, atkM ? 1 : 0, { id: "montaria" + (a.ps.dye || 0), color: a.ps.dye || 13209406 }), lun = atkM ? Math.sin(Math.min(1, (this.clock - i.atkAt) / Math.max(260, i.atkDur || 0)) * Math.PI) : 0;
