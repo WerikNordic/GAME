@@ -37,6 +37,9 @@
 - /guilda, /g, /grupo, /p, /amigo (locais; sem servidor de jogo ainda).
 - ESC nao pausa; tela de entrada nordica; novos efeitos sonoros; sem visual inicial de classe.
 
+## v139
+- Portais de mapas de caça: lado de retorno (topo/direita) e de seguir viagem (baixo/direita) variam por mapa, com chegada alinhada ao portal do mapa vizinho. Corrigida a chegada em Brumaforte/Passo de Jötunheim (x errado).
+
 ## v138
 - Mapas de monstros: sem estátuas/monumentos/colossos/castelos/igrejas/casas (segredos e mundial intactos); árvores 1,15–1,65x com variação por posição.
 
