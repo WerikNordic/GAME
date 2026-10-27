@@ -1,3 +1,7 @@
+## v192
+- Asas (Corvo, Luz, Brasa) voltaram a aparecer nas costas do personagem (o renderizador novo não as desenhava), com leve bater de asas ao andar.
+- Armas não aparecem mais na mão do personagem (sem visual de arma); dano, alcance e efeitos de ataque continuam iguais.
+
 ## v191
 - Isenborg: um único trenó com 2 renas, ao lado do Papai Noel (os outros 4 trenós e 11 renas espalhados saíram); presentes só embaixo das árvores (cada árvore tem 1–2 pilhas no chão, a árvore central tem anel de presentes); removidos presentes soltos nas ruas e os da varanda da casa; removida a segunda casa do Papai Noel duplicada.
 

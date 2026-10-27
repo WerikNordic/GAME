@@ -16894,7 +16894,7 @@ function ROXQM(f, c, s, l, def) {
   }
   function cs(e) {
     let t = e.equipment.weapon ? $(e.equipment.weapon)?.weaponType : void 0, a = (n) => n ? $(n)?.headStyle : void 0;
-    return { base: e.line, hair: kh(e.name), gear: t ? cS[t] ?? "none" : "none", top: a(e.equipment.headTop), mid: a(e.equipment.headMid), low: a(e.equipment.headLow), bk: e.equipment.back ? $(e.equipment.back)?.backStyle : void 0, sx: e.gender === "f" ? "f" : void 0, dye: e.equipment.armor === "vestido_noiva" ? 16316664 : e.equipment.armor === "smoking_noivo" ? 2236962 : e.dye ?? 0, hs: e.style?.hairStyle, hc: e.style?.hairColor, ti: e.tier || 0, ep: e.level >= 99 ? 1 : 0 };
+    return { base: e.line, hair: kh(e.name), gear: "none", top: a(e.equipment.headTop), mid: a(e.equipment.headMid), low: a(e.equipment.headLow), bk: e.equipment.back ? $(e.equipment.back)?.backStyle : void 0, sx: e.gender === "f" ? "f" : void 0, dye: e.equipment.armor === "vestido_noiva" ? 16316664 : e.equipment.armor === "smoking_noivo" ? 2236962 : e.dye ?? 0, hs: e.style?.hairStyle, hc: e.style?.hairColor, ti: e.tier || 0, ep: e.level >= 99 ? 1 : 0 };
   }
   var FIXYAW = Math.PI / 4, CAM0 = (() => {
     try {
