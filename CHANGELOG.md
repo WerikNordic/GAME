@@ -1,3 +1,12 @@
+## v208 — Lote D
+- Cidades ~5x e mapas de monstros ~10x maiores (em área).
+- Ilhas cercadas por mar de verdade (fim em água, praia e espuma); cada ilha com formato próprio.
+- Física na água: personagens e monstros entram; água até o pescoço, ondulação.
+- Mapas submersos (Recife, Naufrágio, Kraken) com monstros aquáticos novos (peixe, medusa, polvo, tubarão, Leviatã).
+- Ao morrer numa ilha, renasce na própria ilha.
+- Bestiário: miniaturas animadas com os mesmos sprites do jogo.
+- Equilíbrio de nível: já escalonado por profundidade; sem mudança de stats nesta rodada.
+
 ## v207 — Lote C
 - Curandeira: buff instantâneo ao clicar, no centro de cada cidade; montaria só em Midgard.
 - NPCs aleatórios por mapa, NPCs de história escondidos, sem barracas na rua (só canteiros).

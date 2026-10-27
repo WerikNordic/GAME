@@ -8084,11 +8084,39 @@ Error generating stack: ` + n.message + `
     return e >= a.x && e <= a.x + a.w && t >= a.y && t <= a.y + a.h;
   }
   var jx = (e, t, a) => !a.walk && e.x + t > a.x && e.x - t < a.x + a.w && e.y + t > a.y && e.y - t < a.y + a.h;
+  function makeSea(seed, W, H, c) {
+    const r = Oe(seed), P = Array.from({ length: 5 }, () => r() * 6.283);
+    return { cx: W * (c.cx ?? 0.5), cy: H * (c.cy ?? 0.5), rx: W * (c.rx ?? 0.36), ry: H * (c.ry ?? 0.34), p: P, a: c.a ?? [0.1, 0.08, 0.05, 0.03, 0.02], k: c.k ?? [2, 3, 5, 7, 11], lakes: (c.lakes || []).map((l) => ({ x: W * l.x, y: H * l.y, rx: W * l.rx, ry: H * l.ry })), all: !!c.all };
+  }
+  function seaSD(s, x, y) {
+    if (s.all) return 600;
+    const dx = (x - s.cx) / s.rx, dy = (y - s.cy) / s.ry, d = Math.hypot(dx, dy), th = Math.atan2(dy, dx);
+    let R = 1;
+    for (let i = 0; i < 5; i++) R += s.a[i] * Math.sin(th * s.k[i] + s.p[i]);
+    let sd = (d - R) * Math.min(s.rx, s.ry) * 0.9;
+    for (const l of s.lakes) { const q = (1 - Math.hypot((x - l.x) / l.rx, (y - l.y) / l.ry)) * Math.min(l.rx, l.ry); if (q > sd) sd = q; }
+    return sd;
+  }
+  var _og = /* @__PURE__ */ new WeakMap();
+  function nearObs(o, x, y, r) {
+    if (o.length < 160) return o;
+    let g = _og.get(o);
+    if (!g || g.n !== o.length) {
+      g = { n: o.length, c: 256, m: new Map() };
+      for (const q of o) { const x0 = Math.floor(q.x / 256), x1 = Math.floor((q.x + q.w) / 256), y0 = Math.floor(q.y / 256), y1 = Math.floor((q.y + q.h) / 256); for (let a = x0; a <= x1; a++) for (let b = y0; b <= y1; b++) { const k = a * 100003 + b; let l = g.m.get(k); l || g.m.set(k, l = []), l.push(q); } }
+      _og.set(o, g);
+    }
+    const x0 = Math.floor((x - r - 4) / 256), x1 = Math.floor((x + r + 4) / 256), y0 = Math.floor((y - r - 4) / 256), y1 = Math.floor((y + r + 4) / 256);
+    if (x0 === x1 && y0 === y1) return g.m.get(x0 * 100003 + y0) || [];
+    const out = [], seen = new Set();
+    for (let a = x0; a <= x1; a++) for (let b = y0; b <= y1; b++) { const l = g.m.get(a * 100003 + b); if (l) for (const q of l) seen.has(q) || (seen.add(q), out.push(q)); }
+    return out;
+  }
   function Zo(e, t, a, n, o, r, i) {
     e.x += t;
-    for (let s of o) jx(e, n, s) && (t > 0 ? e.x = s.x - n : t < 0 ? e.x = s.x + s.w + n : Bx(e, n, s));
+    for (let s of nearObs(o, e.x, e.y, n + Math.abs(t) + 2)) jx(e, n, s) && (t > 0 ? e.x = s.x - n : t < 0 ? e.x = s.x + s.w + n : Bx(e, n, s));
     e.x = Math.max(n, Math.min(r - n, e.x)), e.y += a;
-    for (let s of o) jx(e, n, s) && (a > 0 ? e.y = s.y - n : a < 0 ? e.y = s.y + s.h + n : Bx(e, n, s));
+    for (let s of nearObs(o, e.x, e.y, n + Math.abs(a) + 2)) jx(e, n, s) && (a > 0 ? e.y = s.y - n : a < 0 ? e.y = s.y + s.h + n : Bx(e, n, s));
     e.y = Math.max(n, Math.min(i - n, e.y));
   }
   function Bx(e, t, a) {
@@ -8276,26 +8304,42 @@ Error generating stack: ` + n.message + `
   }
   var NOBIG = new Set(["statue", "monument", "colossus", "church", "castle", "bigforge", "airship", "warrior", "keep", "palace", "hof", "tower", "longhouse", "magetower", "clocktower"]);
   function N8(e, t) {
-    let a = L8, n = Xx, o = a / 1920, r = n / 1280, i = (a - 1920) / 2, s = Oe(e.seed), l = [], c = [], d = { x: a / 2, y: 130 }, f = e.village ? { x: 740 + i, y: 70, w: 460, h: 420 } : { x: 860 + i, y: 60, w: 220, h: 200 }, u = (e.npcs ?? []).map((D) => ({ id: D.id, x: D.x + i, y: D.y }));
+    const sea = e.isle ? makeSea(e.seed, L8, Xx, e.isle) : null;
+    let dock = null;
+    if (sea && !sea.all) {
+      const sc = (fx, fy, dx2, dy2, st) => { let q = 0; for (let k = 0; k < 900; k++) { const px = fx + dx2 * st * k, py = fy + dy2 * st * k; if (seaSD(sea, px, py) < -40) { q = k * st; break; } } return q; };
+      const yN = sc(sea.cx, 0, 0, 1, 20), yS2 = Xx - sc(sea.cx, Xx, 0, -1, 20), xE = L8 - sc(L8, sea.cy, -1, 0, 20);
+      dock = { yN, yS: yS2, xE, d: { x: Math.round(sea.cx), y: yN + 170 }, f: { x: Math.round(sea.cx - 150), y: yN + 40, w: 300, h: 260 } };
+      e = { ...e, npcs: (e.npcs ?? []).map((q, ix) => ({ id: q.id, x: Math.round(sea.cx + 90 + ix * 70), y: yN + 120, _abs: true })) };
+    }
+    const land = (x, y) => { for (let r = 0; r < 4000; r += 80) for (let k = 0; k < 16; k++) { const px = x + Math.cos(k / 16 * 6.283) * r, py = y + Math.sin(k / 16 * 6.283) * r; if (px > 400 && py > 400 && px < L8 - 400 && py < Xx - 400 && seaSD(sea, px, py) < -260) return { x: Math.round(px), y: Math.round(py) }; } return { x, y }; };
+    const wat = (x, y) => { for (let r = 0; r < 5000; r += 100) for (let k = 0; k < 16; k++) { const px = x + Math.cos(k / 16 * 6.283) * r, py = y + Math.sin(k / 16 * 6.283) * r; if (px > 500 && py > 500 && px < L8 - 500 && py < Xx - 500 && seaSD(sea, px, py) > 140) return { x: Math.round(px), y: Math.round(py) }; } return { x, y }; };
+    const place = (g) => { if (!sea || sea.all) return g; const aq = Qu[g.monster]?.aquatic, sd = seaSD(sea, g.x, g.y); if (aq ? sd > 160 : sd < -260) return g; return { ...g, ...(aq ? wat(g.x, g.y) : land(g.x, g.y)) }; };
+    let a = L8, n = Xx, o = a / 1920, r = n / 1280, i = (a - 1920) / 2, s = Oe(e.seed), l = [], c = [], d = dock ? dock.d : { x: a / 2, y: 130 }, f = dock ? dock.f : e.village ? { x: 740 + i, y: 70, w: 460, h: 420 } : { x: 860 + i, y: 60, w: 220, h: 200 }, u = (e.npcs ?? []).map((D) => D._abs ? { id: D.id, x: D.x, y: D.y } : { id: D.id, x: D.x + i, y: D.y });
     for (let [D, Z] of e.houses ?? []) l.push({ kind: "house", x: D + i, y: Z, w: 138, h: 104 });
     let m = e.lakes.map((D) => ({ x: Math.round(D.x * o), y: Math.round(D.y * r), w: Math.round(D.w * o), h: Math.round(D.h * r) }));
     for (let D of m) l.push({ kind: "water", ...D });
-    for (let [D, Z] of e.crates ?? []) l.push({ kind: "crate", x: Math.round(Z < 480 ? D + i : D * o), y: Math.round(Z < 480 ? Z : Z * r), w: 30, h: 30 });
-    let p = e.spawns.map((D) => D.radius === 0 ? { ...D, x: a / 2, y: n / 2 } : { ...D, x: Math.round(D.x * o), y: Math.round(D.y * r), radius: Math.round(D.radius * 1.7), count: Math.ceil(D.count * 1.9) }), h0 = null, h = [{ x: d.x, y: d.y, r: 110 }, { x: a / 2, y: n - 130, r: 110 }, { x: a - 130, y: n / 2, r: 110 }, ...e.city ? [{ x: 60, y: n / 2, r: 120 }] : [], { x: a / 2, y: n / 2, r: 60 }, ...u.map((D) => ({ x: D.x, y: D.y, r: 50 })), ...p.map((D) => ({ x: D.x, y: D.y, r: 40 })), ...Array.from({ length: 14 }, (D, Z) => ({ x: a / 2, y: n * (0.12 + Z * 0.058), r: 80 }))], x = (D, Z) => D > f.x - 10 && D < f.x + f.w + 10 && Z > f.y - 10 && Z < f.y + f.h + 10, b = (D, Z) => l.some((q) => q.x < D.x + D.w + Z && q.x + q.w + Z > D.x && q.y < D.y + D.h + Z && q.y + q.h + Z > D.y), g = $x[e.id], y = e.village ? 4 : 14, v = { rng: s, theme: e.theme ?? "grass", tier: t, mapId: e.id, sizes: $m, obstacles: l, pois: c, n: 0 }, k = (LMK[e.id] ? [LMK[e.id]] : []).concat(Vx(v.theme, s, y, !!g)), R = [], SD = pSides(e.id, e.prev), w = [{ ...pRect(SD.pr, a, n), label: "Retorno", locked: false, toMap: e.prev, toSpawn: e.prev === "campos_midgard" ? { x: 1570, y: 1150 } : e.prev === "planicies_jotunheim" ? { x: 970, y: 1150 } : pSpawn(pSides(e.prev, "").nx, a, n) }];
+    for (let [D, Z] of e.crates ?? []) { const cx0 = Math.round(Z < 480 ? D + i : D * o), cy0 = Math.round(Z < 480 ? Z : Z * r); if (sea && seaSD(sea, cx0, cy0) > -140) continue; l.push({ kind: "crate", x: cx0, y: cy0, w: 30, h: 30 }); }
+    let p = e.spawns.map((D) => place(D.radius === 0 ? { ...D, x: a / 2, y: n / 2 } : { ...D, x: Math.round(D.x * o), y: Math.round(D.y * r), radius: Math.round(D.radius * 1.7), count: Math.ceil(D.count * 1.9) })), h0 = null, h = [{ x: d.x, y: d.y, r: 110 }, { x: a / 2, y: n - 130, r: 110 }, { x: a - 130, y: n / 2, r: 110 }, ...e.city ? [{ x: 60, y: n / 2, r: 120 }] : [], { x: a / 2, y: n / 2, r: 60 }, ...u.map((D) => ({ x: D.x, y: D.y, r: 50 })), ...p.map((D) => ({ x: D.x, y: D.y, r: 40 })), ...Array.from({ length: 14 }, (D, Z) => ({ x: a / 2, y: n * (0.12 + Z * 0.058), r: 80 }))], x = (D, Z) => D > f.x - 10 && D < f.x + f.w + 10 && Z > f.y - 10 && Z < f.y + f.h + 10, b = (D, Z) => l.some((q) => q.x < D.x + D.w + Z && q.x + q.w + Z > D.x && q.y < D.y + D.h + Z && q.y + q.h + Z > D.y), g = $x[e.id], y = e.village ? 4 : 14, v = { rng: s, theme: e.theme ?? "grass", tier: t, mapId: e.id, sizes: $m, obstacles: l, pois: c, n: 0 }, k = (LMK[e.id] ? [LMK[e.id]] : []).concat(Vx(v.theme, s, y, !!g)), R = [], SD = pSides(e.id, e.prev), w = [{ ...pRect(SD.pr, a, n), label: "Retorno", locked: false, toMap: e.prev, toSpawn: e.prev === "campos_midgard" ? { x: 1570, y: 1150 } : e.prev === "planicies_jotunheim" ? { x: 970, y: 1150 } : pSpawn(pSides(e.prev, "").nx, a, n) }];
     {
       const base = p.filter((D) => D.radius > 0 && D.count > 1), ex = [];
       for (const D of base) for (let c2 = 0; c2 < 2; c2++) for (let tr = 0; tr < 40; tr++) {
         const X = 400 + s() * (a - 800), Y = 400 + s() * (n - 800);
         if (x(X, Y) || Math.hypot(X - d.x, Y - d.y) < 900 || w.some((q) => Math.hypot(q.x + q.w / 2 - X, q.y + q.h / 2 - Y) < 700)) continue;
-        ex.push({ ...D, x: Math.round(X), y: Math.round(Y) }); break;
+        ex.push(place({ ...D, x: Math.round(X), y: Math.round(Y) })); break;
       }
       p.push(...ex);
     }
+    if (sea && !sea.all) {
+      w[0] = { x: Math.round(sea.cx - 70), y: Math.max(60, dock.yN - 330), w: 140, h: 50, label: "Retorno", locked: false, toMap: e.prev };
+      sea.nx = { x: Math.round(sea.cx - 70), y: Math.min(n - 110, dock.yS + 300), w: 140, h: 50 };
+      sea.dv = { x: Math.min(a - 110, dock.xE + 320), y: Math.round(sea.cy - 70), w: 50, h: 140 };
+    } else if (sea) w[0] = { x: Math.round(a / 2 - 70), y: 0, w: 140, h: 50, label: "Emergir", locked: false, toMap: e.prev };
     for (let D of k) {
       let Z = Ux[D];
       for (let q = 0; q < 400; q++) {
         let H = Z + 120 + s() * (a - 2 * (Z + 120)), V = Z + 120 + s() * (n - 2 * (Z + 120));
-        if (Math.abs(H - a / 2) < Z + 140 || h.some((K) => Math.hypot(K.x - H, K.y - V) < K.r + Z) || R.some((K) => Math.hypot(K.x - H, K.y - V) < K.r + Z + 60) || H > f.x - Z && H < f.x + f.w + Z && V > f.y - Z && V < f.y + f.h + Z || m.some((K) => H > K.x - Z - 30 && H < K.x + K.w + Z + 30 && V > K.y - Z - 30 && V < K.y + K.h + Z + 30)) continue;
+        if (Math.abs(H - a / 2) < Z + 140 || h.some((K) => Math.hypot(K.x - H, K.y - V) < K.r + Z) || R.some((K) => Math.hypot(K.x - H, K.y - V) < K.r + Z + 60) || H > f.x - Z && H < f.x + f.w + Z && V > f.y - Z && V < f.y + f.h + Z || sea && seaSD(sea, H, V) > -Z - 140 || m.some((K) => H > K.x - Z - 30 && H < K.x + K.w + Z + 30 && V > K.y - Z - 30 && V < K.y + K.h + Z + 30)) continue;
         let ae = Jo(D, Math.round(H), Math.round(V), v);
         R.push({ x: H, y: V, r: Z }), g && D === "shrine" && !w.some((K) => K.toMap === g.id) && (w.push({ x: Math.round(ae.x - 34), y: Math.round(ae.y - 22), w: 68, h: 44, label: g.label, locked: false, toMap: g.id, toSpawn: { x: 800, y: 150 } }), h.push({ x: ae.x, y: ae.y + 30, r: 100 }), Qx[g.id] = { map: e.id, x: Math.round(ae.x), y: Math.round(ae.y + 80) });
         break;
@@ -8313,14 +8357,14 @@ Error generating stack: ` + n.message + `
         for (let ii = 0; ii < PX; ii++) for (let jj = 0; jj < PY; jj++) {
           if (rockB && (ii + jj) % 2) continue;
           let D = x0 + 30 + ii * GP, Z = y0 + 30 + jj * GP;
-          if (D < 30 || Z < 30 || D > a - 30 || Z > n - 30 || x(D, Z)) continue;
+          if (D < 30 || Z < 30 || D > a - 30 || Z > n - 30 || x(D, Z) || sea && seaSD(sea, D, Z) > -90) continue;
           let q = { x: D - 11, y: Z - 9, w: 22, h: 18 };
           if (h.some((V) => $i(V.x, V.y, V.r, q)) || b(q, 24)) continue;
           l.push(rockB ? { kind: "rock", x: Math.round(D - 16), y: Math.round(Z - 14), w: 32, h: 28 } : { kind: "tree", x: Math.round(q.x), y: Math.round(q.y), w: 22, h: 18 }), z++;
         }
       }
     }
-    return e.next && w.push({ ...pRect(SD.nx, a, n), label: "Seguir viagem", locked: false, toMap: e.next, toSpawn: pSpawn(pSides(e.next, e.id).pr, a, n) }), e.city && w.push({ x: 0, y: n / 2 - 70, w: 50, h: 140, label: e.city.label, locked: false, toMap: e.city.id, toSpawn: { x: 2200, y: 330 } }), { id: e.id, name: e.name, width: a, height: n, spawn: d, safeZone: f, obstacles: l.filter((q) => !(q.kind === "deco" && NOBIG.has(q.deco)) && !(q.kind === "house" && !e.village)), spawns: p, npcs: u, portals: w, pois: c, bossDen: { x: a / 2, y: n / 2, r: 10 }, theme: e.theme ?? "grass", safeLabel: e.safeLabel, scars: [], mood: e.mood };
+    return e.next && w.push(sea && sea.nx ? { ...sea.nx, label: "Seguir viagem", locked: false, toMap: e.next } : { ...pRect(SD.nx, a, n), label: "Seguir viagem", locked: false, toMap: e.next, toSpawn: pSpawn(pSides(e.next, e.id).pr, a, n) }), e.dive && sea && sea.dv && w.push({ ...sea.dv, label: "Mergulhar: " + e.diveName, locked: false, toMap: e.dive, pbOff: { x: -140, y: 0 } }), e.city && w.push({ x: 0, y: n / 2 - 70, w: 50, h: 140, label: e.city.label, locked: false, toMap: e.city.id, toSpawn: { x: 2200, y: 330 } }), { id: e.id, name: e.name, width: a, height: n, spawn: d, safeZone: f, obstacles: l.filter((q) => !(q.kind === "deco" && NOBIG.has(q.deco)) && !(q.kind === "house" && !e.village)), spawns: p, npcs: u, portals: w, pois: c, bossDen: { x: a / 2, y: n / 2, r: 10 }, theme: e.theme ?? "grass", safeLabel: e.safeLabel, scars: [], mood: e.mood, sea: sea || void 0 };
   }
   var Qx = {}, N = (e, t, a, n, o) => ({ monster: e, x: t, y: a, radius: n, count: o }), Qm = [{ id: "midgard_brumaforte", name: "Estrada de Brumaforte", seed: 201, trees: 60, rocks: 8, lakes: [], crates: [[900, 420]], spawns: [N("lobo_faminto", 450, 820, 200, 6), N("javali", 1450, 760, 180, 5), N("lobo_faminto", 1500, 330, 160, 4)], city: { id: "cidade_ravnhaven", label: "Cidade de Ravnhaven" }, safeLabel: "Estrada de Brumaforte", prev: "campos_midgard", next: "midgard_bosque", mood: [1, 0.98, 0.94] }, { id: "midgard_bosque", name: "Bosque dos Sussurros", seed: 302, trees: 300, rocks: 12, lakes: [{ x: 1350, y: 700, w: 260, h: 170 }], spawns: [N("lobo_faminto", 500, 520, 230, 8), N("javali", 1400, 400, 200, 6), N("goblin_saqueador", 520, 980, 190, 5)], city: { id: "cidade_skogvik", label: "Cidade de Skogvik" }, safeLabel: "Clareira de Entrada", prev: "midgard_brumaforte", next: "midgard_estrada", mood: [0.8, 0.95, 0.85] }, { id: "midgard_estrada", name: "Estrada dos Mercadores", seed: 403, trees: 70, rocks: 14, lakes: [], crates: [[500, 600], [540, 640], [1350, 880], [1400, 920]], spawns: [N("goblin_saqueador", 520, 560, 200, 8), N("goblin_saqueador", 1400, 900, 190, 7), N("javali", 1450, 380, 170, 5)], safeLabel: "Posto da Estrada", prev: "midgard_bosque", next: "midgard_ruinas", mood: [1, 0.95, 0.85] }, { id: "midgard_ruinas", name: "Ru\xEDnas de Vargheim", seed: 504, trees: 70, rocks: 110, lakes: [], crates: [[600, 700], [1300, 600]], spawns: [N("goblin_saqueador", 560, 640, 210, 9), N("lobo_faminto", 1380, 520, 200, 8), N("goblin_saqueador", 1300, 1e3, 190, 7)], safeLabel: "Acampamento nas Ru\xEDnas", prev: "midgard_estrada", next: "midgard_minas", mood: [0.92, 0.92, 1] }, { id: "midgard_minas", name: "Minas de Ferro Negro", seed: 605, trees: 20, rocks: 150, lakes: [], crates: [[450, 600], [500, 640], [1420, 700], [1380, 760], [900, 900]], spawns: [N("goblin_saqueador", 500, 520, 200, 10), N("goblin_saqueador", 1400, 560, 200, 10), N("javali", 950, 980, 190, 6)], safeLabel: "Entrada das Minas", prev: "midgard_ruinas", next: "midgard_lago", mood: [0.78, 0.78, 0.84] }, { id: "midgard_lago", name: "Lago das Mil Luas", seed: 706, trees: 110, rocks: 10, lakes: [{ x: 400, y: 520, w: 420, h: 300 }, { x: 1150, y: 640, w: 440, h: 330 }], spawns: [N("javali", 1e3, 480, 200, 7), N("lobo_faminto", 400, 980, 200, 8), N("goblin_saqueador", 1500, 300, 160, 5)], city: { id: "cidade_handelsvik", label: "Cidade de Handelsvik" }, safeLabel: "Margem do Lago", prev: "midgard_minas", next: "midgard_cemiterio", mood: [0.8, 0.9, 1.05] }, { id: "midgard_cemiterio", name: "Cemit\xE9rio dos Juramentos", seed: 807, trees: 50, rocks: 130, lakes: [], crates: [], spawns: [N("lobo_faminto", 520, 560, 220, 10), N("goblin_saqueador", 1400, 640, 220, 10), N("javali", 960, 1e3, 200, 6)], safeLabel: "Port\xE3o do Cemit\xE9rio", prev: "midgard_lago", next: "muspel_cinzas", mood: [0.72, 0.78, 0.98] }, { id: "jotunheim_passo", name: "Passo do Gigante Adormecido", seed: 911, theme: "snow", trees: 90, rocks: 120, lakes: [], spawns: [N("lobo_gelo", 520, 560, 220, 8), N("yeti_nevasca", 1400, 640, 200, 5), N("draugr", 960, 1e3, 200, 5)], safeLabel: "Abrigo da Passagem", prev: "planicies_jotunheim", next: "jotunheim_glaciar", mood: [0.9, 0.95, 1.05] }, { id: "jotunheim_glaciar", name: "Glaciar dos Ecos", seed: 922, theme: "snow", trees: 30, rocks: 60, lakes: [{ x: 420, y: 560, w: 380, h: 260 }, { x: 1150, y: 500, w: 400, h: 300 }], spawns: [N("lobo_gelo", 500, 980, 220, 9), N("yeti_nevasca", 1350, 960, 200, 6), N("draugr", 950, 300, 180, 5)], safeLabel: "Borda do Glaciar", prev: "jotunheim_passo", next: "jotunheim_aldeia", mood: [0.85, 0.98, 1.1] }, { id: "jotunheim_aldeia", name: "Ermo dos Exilados", seed: 933, theme: "snow", trees: 70, rocks: 20, lakes: [], spawns: [N("lobo_gelo", 450, 820, 200, 7), N("draugr", 1450, 760, 180, 6), N("yeti_nevasca", 1500, 330, 160, 4)], city: { id: "cidade_isenborg", label: "Cidade de Isenborg" }, safeLabel: "Ermo dos Exilados", prev: "jotunheim_glaciar", next: "jotunheim_trono", mood: [1, 0.95, 0.92] }, { id: "jotunheim_trono", name: "Trono da Geada Eterna", seed: 944, theme: "snow", trees: 40, rocks: 130, lakes: [], spawns: [N("draugr", 520, 560, 220, 10), N("yeti_nevasca", 1400, 600, 200, 8), N("lobo_gelo", 960, 1e3, 200, 8)], safeLabel: "Port\xF5es do Trono", prev: "jotunheim_aldeia", next: "niflheim_nevoa", mood: [0.75, 0.85, 1.05] }, { id: "niflheim_nevoa", name: "Plan\xEDcie da N\xE9voa", seed: 955, theme: "snow", trees: 60, rocks: 40, lakes: [], spawns: [N("draugr", 520, 520, 230, 10), N("lobo_gelo", 1400, 560, 200, 8), N("draugr", 950, 1e3, 200, 8)], safeLabel: "Marco da N\xE9voa", prev: "jotunheim_trono", next: "niflheim_floresta", mood: [0.7, 0.78, 0.95] }, { id: "niflheim_floresta", name: "Floresta do Gelo Negro", seed: 966, theme: "snow", trees: 280, rocks: 20, lakes: [], spawns: [N("draugr", 480, 560, 220, 10), N("yeti_nevasca", 1420, 480, 200, 7), N("draugr", 560, 1e3, 200, 8)], safeLabel: "Clareira Congelada", prev: "niflheim_nevoa", next: "niflheim_rio", mood: [0.62, 0.68, 0.85] }, { id: "niflheim_rio", name: "Rio das Almas Silenciosas", seed: 977, theme: "snow", trees: 70, rocks: 30, lakes: [{ x: 380, y: 560, w: 520, h: 150 }, { x: 1020, y: 700, w: 560, h: 160 }], spawns: [N("draugr", 520, 980, 230, 10), N("draugr", 1400, 360, 200, 9), N("lobo_gelo", 1450, 1e3, 180, 6)], safeLabel: "Margem Silenciosa", prev: "niflheim_floresta", next: "niflheim_catacumbas", mood: [0.6, 0.72, 0.95] }, { id: "niflheim_catacumbas", name: "Catacumbas de Hel", seed: 988, theme: "snow", trees: 20, rocks: 160, lakes: [], crates: [[500, 600], [1400, 700]], spawns: [N("draugr", 520, 540, 220, 12), N("draugr", 1400, 620, 220, 12), N("yeti_nevasca", 960, 1e3, 180, 5)], city: { id: "cidade_helvik", label: "Cidade de Helvik" }, safeLabel: "Entrada das Catacumbas", prev: "niflheim_rio", next: "niflheim_palacio", mood: [0.5, 0.55, 0.78] }, { id: "muspel_cinzas", name: "Fronteira das Cinzas", seed: 1011, theme: "fire", trees: 70, rocks: 90, lakes: [], spawns: [N("salamandra_brasa", 520, 560, 220, 9), N("cao_magma", 1400, 640, 200, 6), N("salamandra_brasa", 960, 1e3, 200, 7)], city: { id: "cidade_eldvik", label: "Cidade de Eldvik" }, safeLabel: "Marco das Cinzas", prev: "midgard_cemiterio", next: "muspel_magma", mood: [1, 0.9, 0.85] }, { id: "muspel_magma", name: "Rio de Magma", seed: 1022, theme: "fire", trees: 20, rocks: 80, lakes: [{ x: 360, y: 520, w: 520, h: 140 }, { x: 1040, y: 700, w: 560, h: 150 }], spawns: [N("cao_magma", 520, 980, 230, 8), N("salamandra_brasa", 1400, 360, 200, 9), N("cao_magma", 1450, 1e3, 180, 6)], safeLabel: "Margem Quente", prev: "muspel_cinzas", next: "muspel_floresta", mood: [1, 0.85, 0.8] }, { id: "muspel_floresta", name: "Floresta Carbonizada", seed: 1033, theme: "fire", trees: 260, rocks: 30, lakes: [], spawns: [N("salamandra_brasa", 480, 560, 220, 10), N("cao_magma", 1420, 480, 200, 8), N("salamandra_brasa", 560, 1e3, 200, 8)], safeLabel: "Clareira Queimada", prev: "muspel_magma", next: "muspel_cidadela", mood: [0.9, 0.78, 0.74] }, { id: "muspel_cidadela", name: "Cidadela do Fogo Antigo", seed: 1044, theme: "fire", trees: 20, rocks: 150, lakes: [], crates: [[500, 600], [1400, 700]], spawns: [N("salamandra_brasa", 520, 540, 220, 12), N("cao_magma", 1400, 620, 220, 10), N("salamandra_brasa", 960, 1e3, 180, 8)], safeLabel: "Port\xE3o da Cidadela", prev: "muspel_floresta", next: "muspel_caldeira", mood: [0.85, 0.7, 0.68] }, { id: "muspel_caldeira", name: "Caldeira de Surtr", seed: 1055, theme: "fire", trees: 10, rocks: 160, lakes: [{ x: 380, y: 780, w: 340, h: 200 }, { x: 1240, y: 360, w: 340, h: 200 }], spawns: [N("salamandra_brasa", 500, 520, 230, 12), N("cao_magma", 1420, 560, 230, 12), N("salamandra_brasa", 960, 1050, 190, 8), { monster: "arauto_surtr", x: 960, y: 640, radius: 0, count: 1 }], safeLabel: "Borda da Caldeira", prev: "muspel_cidadela", mood: [0.8, 0.62, 0.6] }, { id: "niflheim_palacio", name: "Pal\xE1cio de Hel", seed: 999, theme: "snow", trees: 30, rocks: 150, lakes: [], spawns: [N("draugr", 500, 520, 230, 12), N("draugr", 1420, 560, 230, 12), N("yeti_nevasca", 960, 980, 190, 6), { monster: "hel_rainha", x: 960, y: 640, radius: 0, count: 1 }], safeLabel: "P\xE1tio de Hel", prev: "niflheim_catacumbas", next: "svart_nidavellir", mood: [0.45, 0.5, 0.74] }, { id: "svart_nidavellir", name: "Entrada de Nidavellir", seed: 1111, theme: "forge", trees: 0, rocks: 110, lakes: [], crates: [[520, 600], [1380, 640]], spawns: [N("automato_ferro", 520, 560, 220, 8), N("cao_magma", 1400, 640, 200, 5), N("automato_ferro", 960, 1e3, 200, 7)], safeLabel: "Port\xE3o An\xE3o", prev: "niflheim_palacio", next: "svart_mercado", mood: [0.8, 0.78, 0.82] }, { id: "svart_mercado", name: "Trilha dos Ferreiros", seed: 1122, theme: "forge", trees: 0, rocks: 40, lakes: [], spawns: [N("automato_ferro", 450, 820, 200, 7), N("salamandra_brasa", 1450, 760, 180, 6), N("automato_ferro", 1500, 330, 160, 4)], city: { id: "cidade_kharnheim", label: "Cidade de Kharnheim" }, safeLabel: "Trilha dos Ferreiros", prev: "svart_nidavellir", next: "svart_forja", mood: [0.95, 0.82, 0.78] }, { id: "svart_forja", name: "Forja do Cora\xE7\xE3o Ardente", seed: 1133, theme: "forge", trees: 0, rocks: 130, lakes: [{ x: 380, y: 560, w: 440, h: 200 }, { x: 1100, y: 760, w: 440, h: 200 }], spawns: [N("automato_ferro", 520, 980, 230, 10), N("salamandra_brasa", 1400, 360, 200, 9), N("cao_magma", 1450, 1e3, 180, 6)], safeLabel: "Entrada da Forja", prev: "svart_mercado", next: "svart_trilhos", mood: [0.9, 0.7, 0.62] }, { id: "svart_trilhos", name: "Trilhos do Abismo", seed: 1144, theme: "forge", trees: 0, rocks: 150, lakes: [], spawns: [N("automato_ferro", 500, 540, 220, 12), N("automato_ferro", 1400, 620, 220, 12), N("cao_magma", 960, 1e3, 180, 6)], safeLabel: "Plataforma dos Trilhos", prev: "svart_forja", next: "svart_cofre", mood: [0.65, 0.65, 0.78] }, { id: "svart_cofre", name: "Cofre dos Reis An\xF5es", seed: 1155, theme: "forge", trees: 0, rocks: 160, lakes: [], crates: [[500, 600], [540, 640], [1400, 700], [1440, 740], [960, 900]], spawns: [N("automato_ferro", 500, 520, 230, 12), N("automato_ferro", 1420, 560, 230, 12), N("salamandra_brasa", 960, 1050, 190, 8), { monster: "rei_automato", x: 960, y: 640, radius: 0, count: 1 }], safeLabel: "Antec\xE2mara do Cofre", prev: "svart_trilhos", next: "vana_freyra", mood: [0.6, 0.58, 0.72] }, { id: "vana_freyra", name: "Floresta de Freyra", seed: 1211, theme: "lush", trees: 300, rocks: 10, lakes: [], spawns: [N("guardiao_raiz", 520, 560, 220, 8), N("javali_vana", 1400, 640, 200, 6), N("guardiao_raiz", 960, 1e3, 200, 7), N("broto_espinhoso", 960, 640, 260, 6)], safeLabel: "Clareira de Freyra", prev: "svart_cofre", next: "vana_santuario", mood: [1, 1.04, 0.96] }, { id: "vana_santuario", name: "Santu\xE1rio das Ra\xEDzes", seed: 1222, theme: "lush", trees: 160, rocks: 12, lakes: [], spawns: [N("guardiao_raiz", 450, 820, 200, 7), N("lobo_faminto", 1450, 760, 180, 6), N("guardiao_raiz", 1500, 330, 160, 4)], city: { id: "cidade_freyrhain", label: "Cidade de Freyrhain" }, safeLabel: "Santu\xE1rio das Ra\xEDzes", prev: "vana_freyra", next: "vana_pantano", mood: [1, 1.02, 0.94] }, { id: "vana_pantano", name: "P\xE2ntano das Vozes", seed: 1233, theme: "lush", trees: 120, rocks: 8, lakes: [{ x: 380, y: 520, w: 480, h: 200 }, { x: 1060, y: 680, w: 500, h: 220 }, { x: 600, y: 940, w: 340, h: 150 }], spawns: [N("guardiao_raiz", 520, 980, 230, 9), N("guardiao_raiz", 1400, 360, 200, 9), N("lobo_faminto", 1450, 1e3, 180, 6), N("broto_espinhoso", 960, 640, 260, 6)], city: { id: "cidade_solvik", label: "Cidade de Solvik" }, safeLabel: "Margem do P\xE2ntano", prev: "vana_santuario", next: "vana_jardim", mood: [0.78, 0.96, 0.84] }, { id: "vana_jardim", name: "Jardim das Esta\xE7\xF5es", seed: 1244, theme: "lush", trees: 90, rocks: 40, lakes: [], crates: [[500, 600], [1400, 700]], spawns: [N("guardiao_raiz", 520, 540, 220, 10), N("javali_vana", 1400, 620, 220, 9), N("guardiao_raiz", 960, 1e3, 180, 7)], safeLabel: "Port\xE3o do Jardim", prev: "vana_pantano", next: "vana_coracao", mood: [1.02, 1, 0.9] }, { id: "vana_coracao", name: "Clareira do Cora\xE7\xE3o Verde", seed: 1255, theme: "lush", trees: 200, rocks: 20, lakes: [], spawns: [N("guardiao_raiz", 500, 520, 230, 12), N("guardiao_raiz", 1420, 560, 230, 12), N("javali_vana", 960, 1050, 190, 8), { monster: "coracao_verde", x: 960, y: 640, radius: 0, count: 1 }], safeLabel: "Orla do Cora\xE7\xE3o Verde", prev: "vana_jardim", next: "alf_campos", mood: [0.9, 1.05, 0.88] }, { id: "alf_campos", name: "Campos de Cristal", seed: 1311, theme: "crystal", trees: 70, rocks: 90, lakes: [], spawns: [N("construto_prisma", 520, 560, 220, 9), N("lobo_gelo", 1400, 640, 200, 6), N("construto_prisma", 960, 1e3, 200, 7)], safeLabel: "Marco de Cristal", prev: "vana_coracao", next: "alf_lumen", mood: [1, 0.98, 1.08] }, { id: "alf_lumen", name: "Cidade de L\xFAmen", seed: 1322, theme: "crystal", trees: 40, rocks: 30, lakes: [], spawns: [N("construto_prisma", 450, 820, 200, 7), N("construto_prisma", 1450, 760, 180, 6), N("lobo_gelo", 1500, 330, 160, 4)], safeLabel: "Cidade de L\xFAmen", prev: "alf_campos", next: "alf_observatorio", mood: [1.02, 0.98, 1.1] }, { id: "alf_observatorio", name: "Observat\xF3rio das Estrelas", seed: 1333, theme: "crystal", trees: 20, rocks: 110, lakes: [], spawns: [N("construto_prisma", 520, 980, 230, 10), N("construto_prisma", 1400, 360, 200, 9), N("lobo_gelo", 1450, 1e3, 180, 6)], safeLabel: "Terra\xE7o do Observat\xF3rio", prev: "alf_lumen", next: "alf_caverna", mood: [0.75, 0.8, 1.08] }, { id: "alf_caverna", name: "Caverna Prism\xE1tica", seed: 1344, theme: "crystal", trees: 0, rocks: 160, lakes: [], spawns: [N("construto_prisma", 500, 540, 220, 12), N("construto_prisma", 1400, 620, 220, 12), N("lobo_gelo", 960, 1e3, 180, 6)], safeLabel: "Boca da Caverna", prev: "alf_observatorio", next: "alf_catedral", mood: [0.7, 0.72, 1] }, { id: "alf_catedral", name: "Catedral da Aurora", seed: 1355, theme: "crystal", trees: 10, rocks: 140, lakes: [{ x: 780, y: 880, w: 360, h: 180 }], spawns: [N("construto_prisma", 500, 520, 230, 12), N("construto_prisma", 1420, 560, 230, 12), N("construto_prisma", 960, 1170, 190, 8), { monster: "guardiao_prismatico", x: 960, y: 640, radius: 0, count: 1 }], safeLabel: "\xC1trio da Aurora", prev: "alf_caverna", next: "asg_ponte", mood: [0.8, 0.78, 1.1] }, { id: "asg_ponte", name: "Ponte do Trov\xE3o", seed: 1411, theme: "marble", trees: 0, rocks: 60, lakes: [], spawns: [N("sentinela_pedra", 520, 560, 220, 9), N("sentinela_pedra", 1400, 640, 200, 8), N("sentinela_pedra", 960, 1e3, 200, 7)], safeLabel: "Cabeceira da Ponte", prev: "alf_catedral", next: "asg_praca", mood: [0.9, 0.92, 1.08] }, { id: "asg_praca", name: "Terra\xE7o das Valqu\xEDrias", seed: 1422, theme: "marble", trees: 20, rocks: 30, lakes: [], spawns: [N("sentinela_pedra", 520, 560, 220, 9), N("sentinela_pedra", 1400, 640, 200, 8), N("sentinela_pedra", 960, 1e3, 200, 7)], city: { id: "cidade_gladsheim", label: "Cidade de Gladsheim" }, safeLabel: "Terra\xE7o das Valqu\xEDrias", prev: "asg_ponte", next: "asg_idavoll", mood: [1.05, 1.02, 1] }, { id: "asg_idavoll", name: "Jardins de Idavoll", seed: 1433, theme: "marble", trees: 90, rocks: 20, lakes: [{ x: 420, y: 560, w: 360, h: 200 }], spawns: [N("sentinela_pedra", 520, 560, 220, 9), N("sentinela_pedra", 1400, 640, 200, 8), N("sentinela_pedra", 960, 1e3, 200, 7)], safeLabel: "Port\xE3o dos Jardins", prev: "asg_praca", next: "asg_arquivo", mood: [1.02, 1.04, 0.98] }, { id: "asg_arquivo", name: "Arquivo das Runas Eternas", seed: 1444, theme: "marble", trees: 0, rocks: 130, lakes: [], crates: [[500, 600], [1400, 700]], spawns: [N("sentinela_pedra", 520, 560, 220, 9), N("sentinela_pedra", 1400, 640, 200, 8), N("sentinela_pedra", 960, 1e3, 200, 7)], safeLabel: "\xC1trio do Arquivo", prev: "asg_idavoll", next: "asg_fortaleza", mood: [0.85, 0.85, 1] }, { id: "asg_fortaleza", name: "Fortaleza do Sol Partido", seed: 1455, theme: "marble", trees: 0, rocks: 150, lakes: [], spawns: [N("sentinela_pedra", 520, 560, 220, 9), N("sentinela_pedra", 1400, 640, 200, 8), N("sentinela_pedra", 960, 1e3, 200, 7), { monster: "campeao_sol_partido", x: 960, y: 640, radius: 0, count: 1 }], safeLabel: "Muralha do Sol Partido", prev: "asg_arquivo", next: "lim_fenda", mood: [0.95, 0.85, 0.7] }, { id: "lim_fenda", name: "Fenda de Yggdrasil", seed: 1511, theme: "void", trees: 40, rocks: 90, lakes: [], spawns: [N("eco_vazio", 520, 560, 220, 10), N("eco_vazio", 1400, 640, 200, 9), N("eco_vazio", 960, 1e3, 200, 8)], safeLabel: "Borda da Fenda", prev: "asg_fortaleza", next: "lim_deserto", mood: [0.7, 0.62, 0.95] }, { id: "lim_deserto", name: "Deserto das Estrelas Mortas", seed: 1522, theme: "void", trees: 0, rocks: 70, lakes: [], spawns: [N("eco_vazio", 520, 560, 220, 10), N("eco_vazio", 1400, 640, 200, 9), N("eco_vazio", 960, 1e3, 200, 8)], safeLabel: "Marco Estelar", prev: "lim_fenda", next: "lim_mar", mood: [0.62, 0.6, 0.9] }, { id: "lim_mar", name: "Mar Suspenso", seed: 1533, theme: "void", trees: 0, rocks: 40, lakes: [{ x: 380, y: 520, w: 480, h: 200 }, { x: 1060, y: 680, w: 500, h: 220 }], spawns: [N("eco_vazio", 520, 980, 200, 10), N("eco_vazio", 1400, 360, 200, 9), N("eco_vazio", 960, 1120, 100, 8)], safeLabel: "Plataforma Inicial", prev: "lim_deserto", next: "lim_cidade", mood: [0.6, 0.7, 1] }, { id: "lim_cidade", name: "Ru\xEDnas Invertidas", seed: 1544, theme: "void", trees: 0, rocks: 150, lakes: [], spawns: [N("eco_vazio", 520, 560, 220, 10), N("eco_vazio", 1400, 640, 200, 9), N("eco_vazio", 960, 1e3, 200, 8)], safeLabel: "Pra\xE7a Invertida", prev: "lim_mar", next: "lim_jardim", mood: [0.66, 0.56, 0.9] }, { id: "lim_jardim", name: "Jardim das Coisas Esquecidas", seed: 1555, theme: "void", trees: 120, rocks: 30, lakes: [], spawns: [N("eco_vazio", 520, 560, 220, 10), N("eco_vazio", 1400, 640, 200, 9), N("eco_vazio", 960, 1e3, 200, 8)], safeLabel: "Entrada do Jardim", prev: "lim_cidade", next: "lim_camara", mood: [0.55, 0.62, 0.85] }, { id: "lim_camara", name: "C\xE2mara dos Nove Ecos", seed: 1566, theme: "void", trees: 0, rocks: 160, lakes: [], crates: [[500, 600], [1400, 700]], spawns: [N("eco_vazio", 520, 560, 220, 10), N("eco_vazio", 1400, 640, 200, 9), N("eco_vazio", 960, 1e3, 200, 8)], safeLabel: "Antec\xE2mara dos Ecos", prev: "lim_jardim", next: "lim_coracao", mood: [0.5, 0.48, 0.82] }, { id: "lim_coracao", name: "O Cora\xE7\xE3o da Ruptura", seed: 1577, theme: "void", trees: 0, rocks: 170, lakes: [{ x: 780, y: 860, w: 360, h: 180 }], spawns: [N("eco_vazio", 520, 560, 220, 10), N("eco_vazio", 1400, 640, 200, 9), N("eco_vazio", 400, 1e3, 160, 8), { monster: "devorador_ruptura", x: 960, y: 640, radius: 0, count: 1 }], safeLabel: "Orla da Ruptura", prev: "lim_camara", mood: [0.42, 0.36, 0.74] }], Ym = [{ name: "Hallvard", epithet: "o Escudo de Midgard", story: "Segurou a Ponte Longa por tr\xEAs noites contra a matilha de Hati, sozinho, at\xE9 o gelo rachar sob seus p\xE9s. Dizem que o escudo dele ainda boia no rio, com o nome gravado do lado de dentro." }, { name: "Sigrid Corvo-Branco", epithet: "Rainha das Tempestades", story: "Navegou at\xE9 o fim do mar de Ran e voltou com uma runa que acalma tormentas. Recusou o trono e pediu apenas que o porto nunca fechasse as portas \xE0 noite." }, { name: "Ragnvald", epithet: "o Martelo Lento", story: "Demorou vinte anos para forjar uma \xFAnica l\xE2mina, e foi a \xFAnica que cortou a corrente de Fenrir. Quando perguntaram por que a pressa n\xE3o lhe servia, respondeu: o ferro escuta." }, { name: "Ylva P\xE9-de-Neve", epithet: "Guia dos Exilados", story: "Atravessou a nevasca de J\xF6tunheim com quarenta crian\xE7as nas costas, uma a uma, em quarenta viagens. Nenhuma se perdeu. Ela perdeu os dedos dos p\xE9s e nunca contou isso a ningu\xE9m." }, { name: "Torgeir", epithet: "o Sem-Medo", story: "Entrou na caverna de Nidhogg para provar que tinha medo como todos. Saiu tr\xEAs dias depois, rindo, e jamais disse o que viu l\xE1 dentro." }, { name: "Astrid M\xE3o-de-Runa", epithet: "Mestra do Primeiro C\xEDrculo", story: "Ensinou as primeiras runas de cura a quem n\xE3o sabia ler. Em seu funeral, as pedras da cidade acenderam sozinhas, uma por uma, at\xE9 o amanhecer." }, { name: "Eirik Duas-Lan\xE7as", epithet: "Guardi\xE3o do Port\xE3o Leste", story: "Perdeu o bra\xE7o esquerdo defendendo o port\xE3o e continuou lutando com duas lan\xE7as amarradas ao tronco. O port\xE3o nunca caiu; o nome dele ficou no ferro." }, { name: "Brunhild", epithet: "a Valqu\xEDria Ca\xEDda", story: "Escolheu descer do sal\xE3o dos deuses para morrer ao lado de quem n\xE3o tinha ningu\xE9m. Os corvos de Odin ainda pousam aqui, em sil\xEAncio, no anivers\xE1rio da queda." }, { name: "Gunnar Barba-de-Cinza", epithet: "o \xDAltimo Jarl de Muspel", story: "Apagou o pr\xF3prio forno para impedir que a lava alcan\xE7asse a vila vizinha. Ardeu junto com ele o \xFAnico mapa do caminho de volta; por isso se diz que seu povo nunca mais voltou." }, { name: "Freyja Folha-Viva", epithet: "a que Fez Florir o P\xE2ntano", story: "Plantou uma semente em cada po\xE7a de Vanaheim e cantou at\xE9 que brotassem. Hoje o p\xE2ntano canta de volta, mas s\xF3 para quem chega em paz." }, { name: "Dagfinn", epithet: "o Cart\xF3grafo de Sombras", story: "Mapeou o Limiar sem nunca sair do lugar: bastava fechar os olhos. Seus mapas est\xE3o certos, e \xE9 isso que os torna perigosos." }, { name: "Hjalmar Mil-Cicatrizes", epithet: "o Que Voltou de Hel", story: "Barganhou com a rainha dos mortos um ano de vida em troca de uma resposta. Nunca disse qual era a pergunta, apenas que valeu o pre\xE7o." }, { name: "Ingrid Olho-de-Gelo", epithet: "Arqueira de \xC1lfheim", story: "Acertou a estrela da manh\xE3 com uma flecha de prata para mostrar que o c\xE9u tamb\xE9m tem alvo. A flecha ainda brilha, cravada no teto do arquivo das runas." }, { name: "Orm", epithet: "o Construtor do Sal\xE3o Eterno", story: "Ergueu o sal\xE3o de Gladsheim sem usar um \xFAnico prego, s\xF3 encaixes e paci\xEAncia. Prometeu que enquanto uma viga cantasse ao vento, a cidade resistiria. Ela canta." }], tt = (() => {
     let { w: e, h: t } = Wo.city, a = e / 2;
@@ -8993,7 +9037,7 @@ Error generating stack: ` + n.message + `
     if (t) for (let a of t.portals) a.toMap === e.id && (a.toSpawn = { x: 130, y: Xx / 2 });
   }
   function nearestCity(id) {
-    if (String(id).startsWith("ilha_")) return id;
+    if (/^(ilha_|mar_)/.test(String(id))) return id;
     let m = en(id);
     if (m?.city) return id;
     let i = Qm.findIndex((x) => x.id === id), best = "cidade_midgard", bd = 1e9;
@@ -9426,6 +9470,22 @@ Error generating stack: ` + n.message + `
     mk("goblin_brutamontes", "devorador_ruptura", "tritao_corrompido", "Tritão Corrompido", 40, 3395740, 19, [{ item: "escama_marinha", chance: 0.25, min: 1, max: 3 }, { item: "perola_negra", chance: 0.035, min: 1, max: 1 }, { item: "casaco_capitao", chance: 0.012, min: 1, max: 1 }]);
     mk("rei_automato", "devorador_ruptura", "hvalgrim", "Capitão Hvalgrim, Senhor das Marés", 42, 3356416, 40, [{ item: "mapa_tesouro", chance: 0.6, min: 1, max: 1 }, { item: "colar_perola", chance: 0.3, min: 1, max: 1 }, { item: "perola_negra", chance: 1, min: 2, max: 4 }, { item: "sabre_pirata", chance: 0.5, min: 1, max: 1 }, { item: "casaco_capitao", chance: 0.5, min: 1, max: 1 }]);
     Qu.hvalgrim && (Qu.hvalgrim.boss = true, Qu.hvalgrim.hp = Math.round(Qu.devorador_ruptura.hp * 0.9));
+    {
+      const AD = [{ item: "concha_coral", chance: 0.35, min: 1, max: 2 }, { item: "escama_marinha", chance: 0.18, min: 1, max: 2 }];
+      mk("lobo_faminto", "construto_prisma", "piranha_recife", "Piranha de Recife", 17, 13650490, 13, AD);
+      mk("lobo_faminto", "automato_cobre", "peixe_lanterna", "Peixe-Lanterna", 19, 16768320, 14, AD.concat([{ item: "perola_negra", chance: 0.01, min: 1, max: 1 }]));
+      mk("broto_espinhoso", "prisma_rubi", "polvo_recife", "Polvo do Recife", 21, 10570378, 17, AD);
+      mk("lobo_faminto", "marujo_afogado", "tubarao_cinza", "Tubar\u00E3o Cinzento", 29, 8031908, 20, AD.concat([{ item: "ancora_enferrujada", chance: 0.08, min: 1, max: 1 }]));
+      mk("lobo_faminto", "voidling_abissal", "peixe_abissal", "Peixe Abissal", 30, 4881560, 15, AD.concat([{ item: "perola_negra", chance: 0.02, min: 1, max: 1 }]));
+      mk("broto_espinhoso", "voidling_abissal", "medusa_negra", "Medusa Negra", 31, 5260693, 15, AD.concat([{ item: "perola_negra", chance: 0.02, min: 1, max: 1 }]));
+      mk("lobo_faminto", "sentinela_coral", "tubarao_martelo", "Tubar\u00E3o-Martelo", 40, 5589406, 22, AD.concat([{ item: "perola_negra", chance: 0.03, min: 1, max: 1 }]));
+      mk("goblin_brutamontes", "tritao_corrompido", "kraken_menor", "Kraken Menor", 39, 8978312, 24, AD.concat([{ item: "perola_negra", chance: 0.04, min: 1, max: 2 }]));
+      mk("rei_automato", "devorador_ruptura", "leviata", "Leviat\u00E3 das Profundezas", 45, 2970690, 44, [{ item: "perola_negra", chance: 1, min: 3, max: 5 }, { item: "colar_perola", chance: 0.4, min: 1, max: 1 }, { item: "mapa_tesouro", chance: 0.5, min: 1, max: 1 }]);
+      Qu.leviata && (Qu.leviata.boss = true, Qu.leviata.hp = Math.round(Qu.devorador_ruptura.hp * 1.1));
+      const SH = { piranha_recife: "peixe", peixe_lanterna: "peixe", polvo_recife: "polvo", tubarao_cinza: "tubarao", peixe_abissal: "peixe", medusa_negra: "medusa", tubarao_martelo: "tubarao", kraken_menor: "polvo", leviata: "tubarao", agua_viva: "medusa" };
+      for (const [id, sh] of Object.entries(SH)) Qu[id] && (Qu[id].shape = sh, Qu[id].aquatic = true);
+      Qu.tritao_corrompido && (Qu.tritao_corrompido.aquatic = true);
+    }
     E8.ilha = E8.tropic = E8.tropic ?? ["O mar devolve o que os homens esquecem: cascos, ossos e promessas.", "Uma bússola presa na areia aponta sempre para o covil de Hvalgrim.", "Quem enterra tesouro nesta praia jamais volta para buscá-lo.", "As ondas escrevem nomes na areia e os apagam antes do fim da maré."];
     Wa.pedra_evolucao = te({ id: "pedra_evolucao", name: "Pedra de Evolu\u00E7\u00E3o", kind: "material", rarity: "epic", reqLevel: 1, stack: 10, sell: 900, desc: "Alma cristalizada de um MVP. Evolui o Hom\u00FAnculo de um Alquimista." });
     for (const d of Object.values(Qu)) d.boss && d.id !== "jormungandr" && d.drops && !d.drops.some((x) => x.item === "pedra_evolucao") && d.drops.push({ item: "pedra_evolucao", chance: 0.12, min: 1, max: 1 });
@@ -9436,11 +9496,17 @@ Error generating stack: ` + n.message + `
       buque_flores: te({ id: "buque_flores", name: "Buqu\u00EA de Flores", kind: "consumable", rarity: "uncommon", reqLevel: 1, stack: 10, sell: 30, desc: "Restaura 80 de vida e perfuma o ar.", use: { hp: 80 } })
     });
     const ISL = [
-      { id: "ilha_coral", name: "Ilha dos Corais", seed: 6101, theme: "ilha", trees: 90, rocks: 30, lakes: [{ x: 1300, y: 820, w: 420, h: 220 }], npcs: [{ id: "barqueiro", x: 1010, y: 190 }], spawns: [N("caranguejo_coral", 520, 560, 220, 10), N("agua_viva", 1400, 640, 200, 9), N("pirata_naufrago", 960, 1e3, 200, 8), N("caranguejo_coral", 400, 1e3, 160, 6)], safeLabel: "Cais da Ilha", prev: "cidade_midgard", next: "ilha_naufragio", mood: [1.08, 1.02, 0.92], depth: 18 },
-      { id: "ilha_naufragio", name: "Costa dos Naufrágios", seed: 6202, theme: "ilha", trees: 40, rocks: 90, lakes: [{ x: 600, y: 760, w: 520, h: 240 }], npcs: [{ id: "barqueiro", x: 1010, y: 190 }], spawns: [N("marujo_afogado", 520, 560, 220, 11), N("lobo_do_mar", 1400, 640, 200, 9), N("espectro_pirata", 960, 1e3, 200, 6), N("marujo_afogado", 1500, 1050, 170, 6)], safeLabel: "Praia do Naufrágio", prev: "ilha_coral", next: "ilha_kraken", mood: [0.9, 0.95, 1.02], depth: 28, crates: [[500, 600], [1400, 700]] },
-      { id: "ilha_kraken", name: "Ilha do Kraken", seed: 6303, theme: "ilha", trees: 60, rocks: 120, lakes: [{ x: 1000, y: 700, w: 600, h: 300 }], npcs: [{ id: "barqueiro", x: 1010, y: 190 }], spawns: [N("sentinela_coral", 520, 560, 220, 11), N("tritao_corrompido", 1400, 640, 200, 10), N("sentinela_coral", 400, 1e3, 170, 6), { monster: "hvalgrim", x: 960, y: 640, radius: 0, count: 1 }], safeLabel: "Enseada Final", prev: "ilha_naufragio", mood: [0.82, 0.92, 1.05], depth: 38, crates: [[600, 700], [1300, 600]] }
+      { id: "ilha_coral", name: "Ilha dos Corais", seed: 6101, theme: "ilha", trees: 90, rocks: 30, lakes: [], isle: { cx: 0.5, cy: 0.54, rx: 0.36, ry: 0.32, a: [0.08, 0.07, 0.04, 0.03, 0.02], lakes: [{ x: 0.58, y: 0.62, rx: 0.08, ry: 0.065 }, { x: 0.36, y: 0.46, rx: 0.035, ry: 0.03 }] }, dive: "mar_recife", diveName: "Recife Submerso", npcs: [{ id: "barqueiro", x: 1010, y: 190 }], spawns: [N("caranguejo_coral", 520, 560, 220, 10), N("agua_viva", 1400, 640, 200, 9), N("pirata_naufrago", 960, 1e3, 200, 8), N("caranguejo_coral", 400, 1e3, 160, 6)], safeLabel: "Cais da Ilha", prev: "cidade_midgard", next: "ilha_naufragio", mood: [1.08, 1.02, 0.92], depth: 18 },
+      { id: "ilha_naufragio", name: "Costa dos Naufrágios", seed: 6202, theme: "ilha", trees: 40, rocks: 90, lakes: [], isle: { cx: 0.5, cy: 0.56, rx: 0.41, ry: 0.27, a: [0.2, 0.12, 0.07, 0.04, 0.03], k: [2, 3, 4, 7, 9], lakes: [{ x: 0.66, y: 0.36, rx: 0.15, ry: 0.1 }, { x: 0.3, y: 0.64, rx: 0.05, ry: 0.04 }] }, dive: "mar_naufragio", diveName: "Cemit\u00E9rio de Navios", npcs: [{ id: "barqueiro", x: 1010, y: 190 }], spawns: [N("marujo_afogado", 520, 560, 220, 11), N("lobo_do_mar", 1400, 640, 200, 9), N("espectro_pirata", 960, 1e3, 200, 6), N("marujo_afogado", 1500, 1050, 170, 6)], safeLabel: "Praia do Naufrágio", prev: "ilha_coral", next: "ilha_kraken", mood: [0.9, 0.95, 1.02], depth: 28, crates: [[500, 600], [1400, 700]] },
+      { id: "ilha_kraken", name: "Ilha do Kraken", seed: 6303, theme: "ilha", trees: 60, rocks: 120, lakes: [], isle: { cx: 0.5, cy: 0.53, rx: 0.38, ry: 0.35, a: [0.05, 0.1, 0.06, 0.05, 0.03], k: [3, 4, 6, 8, 10], lakes: [{ x: 0.5, y: 0.54, rx: 0.17, ry: 0.14 }] }, dive: "mar_kraken", diveName: "Abismo do Kraken", npcs: [{ id: "barqueiro", x: 1010, y: 190 }], spawns: [N("sentinela_coral", 520, 560, 220, 11), N("tritao_corrompido", 1400, 640, 200, 10), N("sentinela_coral", 400, 1e3, 170, 6), { monster: "hvalgrim", x: 960, y: 640, radius: 0, count: 1 }], safeLabel: "Enseada Final", prev: "ilha_naufragio", mood: [0.82, 0.92, 1.05], depth: 38, crates: [[600, 700], [1300, 600]] }
     ];
     ISL.forEach((e, i) => { Jt[e.id] = N8(e, 200 + i), Jt[e.id].depth = e.depth; });
+    const AQ = [
+      { id: "mar_recife", name: "Recife Submerso", seed: 7101, theme: "ilha", trees: 0, rocks: 150, lakes: [], isle: { all: true }, npcs: [], spawns: [N("piranha_recife", 500, 500, 240, 11), N("agua_viva", 1400, 560, 220, 10), N("polvo_recife", 960, 900, 220, 8), N("piranha_recife", 400, 1000, 200, 9), N("agua_viva", 1500, 1050, 200, 8)], safeLabel: "Superf\u00EDcie", prev: "ilha_coral", mood: [0.62, 0.9, 1.1], depth: 20, hidden: true },
+      { id: "mar_naufragio", name: "Cemit\u00E9rio de Navios", seed: 7202, theme: "ilha", trees: 0, rocks: 120, lakes: [], isle: { all: true }, npcs: [], spawns: [N("tubarao_cinza", 520, 560, 230, 8), N("peixe_abissal", 1400, 640, 220, 10), N("medusa_negra", 960, 1000, 220, 8), N("tubarao_cinza", 400, 1000, 200, 6), N("peixe_abissal", 1500, 1050, 200, 8)], safeLabel: "Superf\u00EDcie", prev: "ilha_naufragio", mood: [0.5, 0.78, 1.0], depth: 30, hidden: true },
+      { id: "mar_kraken", name: "Abismo do Kraken", seed: 7303, theme: "ilha", trees: 0, rocks: 160, lakes: [], isle: { all: true }, npcs: [], spawns: [N("tubarao_martelo", 520, 560, 230, 9), N("kraken_menor", 1400, 640, 220, 7), N("tritao_corrompido", 400, 1000, 200, 7), N("tubarao_martelo", 1500, 1050, 200, 8), { monster: "leviata", x: 960, y: 640, radius: 0, count: 1 }], safeLabel: "Superf\u00EDcie", prev: "ilha_kraken", mood: [0.38, 0.62, 0.92], depth: 40, hidden: true }
+    ];
+    AQ.forEach((e, i) => { Jt[e.id] = N8(e, 300 + i), Jt[e.id].depth = e.depth, Jt[e.id].hidden = true, Jt[e.id].aquatic = true; });
     Jt.ilha_coral.portals = Jt.ilha_coral.portals.filter((q) => q.toMap !== "cidade_midgard");
   }
 
@@ -9758,7 +9824,12 @@ Error generating stack: ` + n.message + `
     let r = `${e}:${a}x${n}`, i = o.get(r);
     if (i) return i;
     let s = Math.ceil(a / vn), l = Math.ceil(n / vn), c = new Uint8Array(s * l);
-    for (let f = 0; f < l; f++) for (let u = 0; u < s; u++) c[f * s + u] = Ia((u + 0.5) * vn, (f + 0.5) * vn, e, t, a, n) ? 1 : 0;
+    c.fill(1);
+    for (let f = 0; f < l; f++) for (let u = 0; u < s; u++) { const cx = (u + 0.5) * vn, cy = (f + 0.5) * vn; if (cx < e || cy < e || cx > a - e || cy > n - e) c[f * s + u] = 0; }
+    for (const ob of t) {
+      const u0 = Math.max(0, Math.floor((ob.x - e - 2) / vn)), u1 = Math.min(s - 1, Math.floor((ob.x + ob.w + e + 2) / vn)), f0 = Math.max(0, Math.floor((ob.y - e - 2) / vn)), f1 = Math.min(l - 1, Math.floor((ob.y + ob.h + e + 2) / vn));
+      for (let f = f0; f <= f1; f++) for (let u = u0; u <= u1; u++) if (c[f * s + u] && $i((u + 0.5) * vn, (f + 0.5) * vn, e, ob)) c[f * s + u] = 0;
+    }
     let d = { cols: s, rows: l, walk: c };
     return o.set(r, d), d;
   }
@@ -10273,6 +10344,25 @@ Error generating stack: ` + n.message + `
     isDead() {
       return this.player.deadAt !== null;
     }
+    waterDepth(x, y) {
+      const sea = this.map.sea; if (!sea) return 0;
+      if (sea.all) return 1;
+      const sd = seaSD(sea, x, y); return sd <= 0 ? 0 : Math.min(1, sd / 260);
+    }
+    waterMul(p) { const sea = this.map.sea; return !sea ? 1 : sea.all ? 0.82 : 1 - 0.42 * this.waterDepth(p.x, p.y); }
+    seaOk(x, y, def) {
+      const sea = this.map.sea; if (!sea || sea.all) return true;
+      const sd = seaSD(sea, x, y); return def?.aquatic ? sd > 160 : sd < -200;
+    }
+    seaGuard(t, old) {
+      const sea = this.map.sea; if (!sea || sea.all) return;
+      const aq = t.def.aquatic, bad = (x, y) => { const sd = seaSD(sea, x, y); return aq ? sd < 30 : sd > 70; };
+      if (!bad(t.pos.x, t.pos.y)) return;
+      const nx = t.pos.x, ny = t.pos.y;
+      if (!bad(nx, old.y)) { t.pos.y = old.y; return; }
+      if (!bad(old.x, ny)) { t.pos.x = old.x; return; }
+      t.pos.x = old.x, t.pos.y = old.y;
+    }
     inSafeZone(t) {
       return Bu(t.x, t.y, this.map.safeZone);
     }
@@ -10313,7 +10403,7 @@ Error generating stack: ` + n.message + `
       return a;
     }
     updatePlayer(t) {
-      let a = this.player, n = t / 1e3, o = ((dd) => ({ ...dd, speed: dd.speed * (1 + this.buffSum("spd") + (this.ps.mount ? petMountBonus(this.ps) : 0)) }))(this.derived()), r = this.overloaded() ? { ...o, speed: o.speed * Ly } : o, i = Math.hypot(this.move.x, this.move.y);
+      let a = this.player, n = t / 1e3, o = ((dd) => ({ ...dd, speed: dd.speed * (1 + this.buffSum("spd") + (this.ps.mount ? petMountBonus(this.ps) : 0)) }))(this.derived()), r = this.overloaded() ? { ...o, speed: o.speed * Ly } : o, i = Math.hypot(this.move.x, this.move.y); r = { ...r, speed: r.speed * this.waterMul(a.pos) };
       if (this.moved = false, this.sitting && (a.deadAt !== null ? this.sitting = false : (this.clearOrders(), this.move.x = 0, this.move.y = 0, this.attackQueued = false, this.attackHeld = false, i = 0)), this.pickAt !== null && (this.path = [], this.move.x = 0, this.move.y = 0, this.attackQueued = false, this.attackHeld = false, i = 0), this.time < a.flinchUntil) return;
       if (i > 0.01) {
         this.clearOrders();
@@ -10638,7 +10728,7 @@ Error generating stack: ` + n.message + `
         this.ps.hp = Math.ceil(t.maxHp * 0.5), this.ps.mp = Math.ceil(t.maxMp * 0.5), this.player.deadAt = null, this.emit({ type: "respawnWarp", map: cp });
         return;
       }
-      this.player.pos = String(this.map.id).startsWith("ilha_") ? { ...this.map.spawn } : cityCenter(this.map), this.player.deadAt = null, this.player.invulnUntil = this.time + 3e3, this.ps.hp = Math.ceil(t.maxHp * 0.5), this.ps.mp = Math.ceil(t.maxMp * 0.5), this.emit({ type: "respawned" });
+      this.player.pos = /^(ilha_|mar_)/.test(String(this.map.id)) ? { ...this.map.spawn } : cityCenter(this.map), this.player.deadAt = null, this.player.invulnUntil = this.time + 3e3, this.ps.hp = Math.ceil(t.maxHp * 0.5), this.ps.mp = Math.ceil(t.maxMp * 0.5), this.emit({ type: "respawned" });
     }
     makeMonster(t, a, n, o) {
       return { id: this.nextId++, def: t, pos: { ...a }, home: { ...a }, hp: t.hp, maxHp: t.hp, state: "idle", facing: this.rng() * Math.PI * 2, phase: 1, slot: n, summoned: o, stateUntil: 0, windupKind: "bite", windupStart: 0, dir: { x: 1, y: 0 }, slamCenter: { x: 0, y: 0 }, nextSlamAt: 0, stunUntil: 0, slowUntil: 0, speedMul: 1, atkMul: 1, nextWanderAt: 0, wander: { ...a }, respawnAt: 0, diedAt: 0, stuck: 0, detourUntil: 0, detour: 0, chargeHit: false, engagedAnnounced: false, provoked: false, carried: [], lowHp: { fired: false }, fleeUntil: 0, slamR: ar.radius, slamM: ar.mult };
@@ -10646,12 +10736,16 @@ Error generating stack: ` + n.message + `
     pickSpawnPos(t, a) {
       if (a.boss && this.map.id !== "wb_cratera" && !this.map.hidden) for (let n = 0; n < 80; n++) {
         let i = 120 + this.rng() * (this.map.width - 240), s = 120 + this.rng() * (this.map.height - 240);
-        if (Ia(i, s, a.radius + 6, this.map.obstacles, this.map.width, this.map.height) && !Bu(i, s, this.map.safeZone) && Be({ x: i, y: s }, this.map.spawn) > 700) return { x: i, y: s };
+        if (Ia(i, s, a.radius + 6, this.map.obstacles, this.map.width, this.map.height) && !Bu(i, s, this.map.safeZone) && this.seaOk(i, s, a) && Be({ x: i, y: s }, this.map.spawn) > 700) return { x: i, y: s };
       }
       if (t.radius <= 0) return { x: t.x, y: t.y };
       for (let n = 0; n < 40; n++) {
         let o = this.rng() * Math.PI * 2, r = Math.sqrt(this.rng()) * Math.max(t.radius * 3.2, 700), i = t.x + Math.cos(o) * r, s = t.y + Math.sin(o) * r;
-        if (Ia(i, s, a.radius + 6, this.map.obstacles, this.map.width, this.map.height) && !Bu(i, s, this.map.safeZone)) return { x: i, y: s };
+        if (Ia(i, s, a.radius + 6, this.map.obstacles, this.map.width, this.map.height) && !Bu(i, s, this.map.safeZone) && this.seaOk(i, s, a)) return { x: i, y: s };
+      }
+      if (this.map.sea && !this.seaOk(t.x, t.y, a)) for (let n = 0; n < 400; n++) {
+        let i = 300 + this.rng() * (this.map.width - 600), s = 300 + this.rng() * (this.map.height - 600);
+        if (Ia(i, s, a.radius + 6, this.map.obstacles, this.map.width, this.map.height) && !Bu(i, s, this.map.safeZone) && this.seaOk(i, s, a)) return { x: i, y: s };
       }
       return { x: t.x, y: t.y };
     }
@@ -10900,7 +10994,7 @@ Error generating stack: ` + n.message + `
       let n = this.pickSpawnPos(a, t.def);
       if (a.respawn?.mode === "instant" && a.respawn.anywhere) for (let o = 0; o < 40; o++) {
         let r = { x: 40 + this.rng() * (this.map.width - 80), y: 40 + this.rng() * (this.map.height - 80) };
-        if (Ia(r.x, r.y, t.def.radius + 4, this.map.obstacles, this.map.width, this.map.height) && Be(r, this.player.pos) > 300 && !this.inSafeZone(r)) {
+        if (Ia(r.x, r.y, t.def.radius + 4, this.map.obstacles, this.map.width, this.map.height) && Be(r, this.player.pos) > 300 && !this.inSafeZone(r) && this.seaOk(r.x, r.y, t.def)) {
           n = r;
           break;
         }
@@ -10912,7 +11006,7 @@ Error generating stack: ` + n.message + `
       let i = ao(t.pos, a);
       this.time < t.detourUntil && (i += t.detour), t.facing = i;
       let s = { x: t.pos.x, y: t.pos.y }, l = n * o;
-      Zo(t.pos, Math.cos(i) * l, Math.sin(i) * l, t.def.radius * 0.8, this.map.obstacles, this.map.width, this.map.height);
+      Zo(t.pos, Math.cos(i) * l, Math.sin(i) * l, t.def.radius * 0.8, this.map.obstacles, this.map.width, this.map.height), this.map.sea && this.seaGuard(t, s);
       let c = Be(s, t.pos);
       l > 0 && c < l * 0.3 ? (t.stuck += r, t.stuck > 250 && (t.detour = (this.rng() < 0.5 ? 1 : -1) * 1.1, t.detourUntil = this.time + 500, t.stuck = 0)) : t.stuck = 0;
       for (let d of this.monsters) {
@@ -11797,7 +11891,7 @@ Error generating stack: ` + n.message + `
     banner = { seq: 0, text: "", color: "#f5e2a8" };
     eventView() {
       let v = Py(this.now(), this.forced);
-      return this.world?.map.indoor ? { ...v, weather: { kind: "clear", intensity: 1, endsAt: v.weather.endsAt }, daylight: 1, night: false } : v;
+      return this.world?.map.indoor || this.world?.map.aquatic ? { ...v, weather: { kind: "clear", intensity: 1, endsAt: v.weather.endsAt }, daylight: 1, night: false } : v;
     }
     forceEvent(t) {
       this.forced = t, this.evSince = 1e3, this.evKey = "", this.refresh();
@@ -11991,7 +12085,7 @@ Error generating stack: ` + n.message + `
         this.toast(`${t.label}: a passagem est\xE1 selada. Complete a quest de Eira para abri-la.`, "info");
         return;
       }
-      let cm = this.world.map, cx = t.x + t.w / 2, cy = t.y + t.h / 2, ex = t.x < 60 ? cx + 90 : t.x + t.w > cm.width - 60 ? cx - 90 : cx, ey = t.y < 60 ? cy + 90 : t.y + t.h > cm.height - 60 ? cy - 90 : cy, back = this.ps.pback?.[cm.id], dest = back && back.map === n.id ? { x: back.x, y: back.y } : t.toSpawn && n.shift ? { x: t.toSpawn.x + n.shift.dx, y: t.toSpawn.y + n.shift.dy } : t.toSpawn ?? n.spawn;
+      let cm = this.world.map, cx = t.x + t.w / 2, cy = t.y + t.h / 2, ex = t.pbOff ? cx + t.pbOff.x : t.x < 60 ? cx + 90 : t.x + t.w > cm.width - 60 ? cx - 90 : cx, ey = t.pbOff ? cy + t.pbOff.y : t.y < 60 ? cy + 90 : t.y + t.h > cm.height - 60 ? cy - 90 : cy, back = this.ps.pback?.[cm.id], dest = back && back.map === n.id ? { x: back.x, y: back.y } : t.toSpawn && n.shift ? { x: t.toSpawn.x + n.shift.dx, y: t.toSpawn.y + n.shift.dy } : t.toSpawn ?? n.spawn;
       this.ps.pback || (this.ps.pback = {}), this.ps.pback[n.id] = { map: cm.id, x: Math.round(ex), y: Math.round(ey) };
       this.online || (this.saveGame(), this.world = new nr(this.ps, n, void 0, dest), (this.ps.visited.includes(n.id) ? 0 : (this.ps.visited.push(n.id), this.pushLog(`Voc\xEA chegou a ${n.name}.`, "system"), this.toast(`${n.name}`, "info"))), this.dialogue = null, this.saveGame(), this.refresh());
     }
@@ -14817,7 +14911,9 @@ void main() {
   function xk(e, t, a) {
     let n = 1 / 0, o = a.pts;
     for (let r = 0; r < o.length - 2; r += 2) {
-      let i = o[r], s = o[r + 1], l = o[r + 2], c = o[r + 3], d = l - i, f = c - s, u = d * d + f * f || 1, m = Math.max(0, Math.min(1, ((e - i) * d + (t - s) * f) / u));
+      let i = o[r], s = o[r + 1], l = o[r + 2], c = o[r + 3];
+      if (e < (i < l ? i : l) - 140 || e > (i > l ? i : l) + 140 || t < (s < c ? s : c) - 140 || t > (s > c ? s : c) + 140) continue;
+      let d = l - i, f = c - s, u = d * d + f * f || 1, m = Math.max(0, Math.min(1, ((e - i) * d + (t - s) * f) / u));
       n = Math.min(n, Math.hypot(e - (i + d * m), t - (s + f * m)));
     }
     return n;
@@ -14851,8 +14947,9 @@ void main() {
         D = c.t[1 + Math.floor(Te * 3)], ee === 0 || ne === 0 ? D = c.t[0] : ee === 1 || ne === 1 ? D = c.t[Math.min(4, 2 + Math.floor(Te * 3))] : lt(M, w, 33) < 0.07 && (D = c.t[Math.max(0, 1 + Math.floor(Te * 3) - 1)]), l === "marble" && Ya(T + C * 9, z, 26, 7) > 0.74 && Ya(T, z, 9, 8) > 0.5 && (D = c.t[0]), l === "forge" && ee === 2 && ne === 2 && (D = c.accent[3]);
       } else D = c.t[R(J, I, M, w)];
       let Z = 0, q = 1e9, H = 16;
+      let wbx = f.length ? (Ya(T, z, 24, 6) - 0.5) * 12 : 0, wby = f.length ? (Ya(T, z, 24, 7) - 0.5) * 12 : 0;
       for (let W of f) {
-        let C = xk(T + (Ya(T, z, 24, 6) - 0.5) * 12, z + (Ya(T, z, 24, 7) - 0.5) * 12, W);
+        let C = xk(T + wbx, z + wby, W);
         C - W.w < q - H && (q = C, H = W.w);
       }
       if (q < H + t * 2.4) {
@@ -14880,6 +14977,22 @@ void main() {
           Te > 0.93 ? D = c.water[3] : Te < -0.95 && (D = c.water[0]), B < t * 1.3 ? D = c.water[3] : B < t * 2.6 && I < 0.5 && (D = c.water[2]), Z = 1;
         }
       }
+      if (e.sea) {
+        const sd = e.sea.all ? 600 : seaSD(e.sea, T, z);
+        if (e.sea.all) {
+          D = ye(c.shore, c.water[0], 0.5 + J * 0.3 + (I - 0.5) * 0.1);
+          Ya(T, z, 240, 19) > 0.64 && (D = ye(D, c.water[1], 0.5));
+          (Math.abs(Ya(T, z, 38, 17) - 0.5) < 0.035 || Math.abs(Ya(T + 90, z - 40, 26, 18) - 0.5) < 0.03) && (D = ye(D, 12582911, 0.38));
+          Z = 1;
+        } else if (sd > 0) {
+          const dp = Math.min(1, sd / 320);
+          let ix = Math.max(0, Math.min(3, Math.floor(3 - dp * 2.4 + (J - 0.5) * 0.8 + (I - 0.5) * 0.4)));
+          D = c.water[ix];
+          const Te = Math.sin(T * 0.085 + z * 0.045 + Ya(T, z, 40, 9) * 6);
+          Te > 0.93 ? D = c.water[3] : Te < -0.95 && (D = c.water[0]);
+          sd < t * 6 && I < 1.1 - sd / (t * 6) && (D = ye(c.water[3], 16777215, 0.55 * (1 - sd / (t * 6)))), Z = 1;
+        } else if (sd > -70) { D = ye(D, c.shore, 0.78 * Math.min(1, (sd + 70) / 40)), Z = 1; }
+      }
       if (b) {
         let W = Math.hypot(T - x.x, z - x.y);
         if (W < x.r + 44) {
@@ -14890,7 +15003,7 @@ void main() {
         }
       }
       let ae = Math.min(T, z, e.width - T, e.height - z);
-      if (ae < 96) {
+      if (ae < 96 && !e.sea) {
         let W = 1 - ae / 96;
         I < W * 0.95 && (D = ye(D, l === "snow" ? 1714768 : 529420, 0.5));
       }
@@ -17248,7 +17361,7 @@ void main() {
       RQ.push({ id: "vx_" + c.id, kind: "look", name: w.name, desc: "", need: big ? [[a, 6 + r * 2], [b2, 3 + r], [MT[3][k % 5], 1 + (r > 2 ? 1 : 0)]] : [[a, 8 + r * 6], [b2, 4 + r * 4]], reward: iid }); } }
 var QCACHE = /* @__PURE__ */ new Map();
 function ROXQM(f, c, s, l, def, ex) {
-  if (!["wolf", "frostwolf", "hati", "boar", "horse", "cao", "gato", "raposa", "coelho", "yeti", "blob", "goblin", "draugr", "cinder", "automaton", "sylvan", "prism", "sentinel", "voidling", "jotun", "grifo", "corvo"].includes(f) || typeof ROX === "undefined" || typeof location < "u" && /[?&]old\b/.test(location.search)) return null;
+  if (!["wolf", "frostwolf", "hati", "boar", "horse", "cao", "gato", "raposa", "coelho", "yeti", "blob", "goblin", "draugr", "cinder", "automaton", "sylvan", "prism", "sentinel", "voidling", "jotun", "grifo", "corvo", "peixe", "medusa", "polvo", "tubarao"].includes(f) || typeof ROX === "undefined" || typeof location < "u" && /[?&]old\b/.test(location.search)) return null;
   if (typeof ROX2M !== "undefined" && !(typeof location < "u" && /[?&]old2\b/.test(location.search))) { try { const r2 = ROX2M.mon(f, c, s, l, def, ex); if (r2) return r2; } catch (err) { if (!window.__rox2merr) { window.__rox2merr = 1; console.warn("ROX2M", err); } } }
   let key = `${f}:${def.id}:${c}:${s}:${l}`, h = QCACHE.get(key);
   if (h) return h;
@@ -18835,6 +18948,13 @@ function ROXQM(f, c, s, l, def, ex) {
       this.clock < this.shake.until && (v = (Math.random() - 0.5) * this.shake.mag, k = (Math.random() - 0.5) * this.shake.mag);
       let R = Math.round((this.cam.x + v) * s) / s, w = Math.round((this.cam.y + k) * s) / s;
       this.camX = R, this.camY = w, i.setTransform(this.dpr, 0, 0, this.dpr, 0, 0), ((c2, W, H, cx, cy2) => {
+        if (n.sea) {
+          const pal = gk[n.theme ?? "grass"]?.water ?? [1717108, 2381964, 3568028, 4885960], hx2 = (v) => "#" + v.toString(16).padStart(6, "0"), gs = c2.createLinearGradient(0, 0, 0, H);
+          gs.addColorStop(0, hx2(pal[n.sea.all ? 0 : 1])), gs.addColorStop(1, hx2(pal[0])), c2.fillStyle = gs, c2.fillRect(0, 0, W, H);
+          c2.strokeStyle = "rgba(200,240,255,0.10)", c2.lineWidth = 1.5;
+          for (let j = 0; j < 14; j++) { c2.beginPath(); for (let x3 = -10; x3 <= W + 10; x3 += 16) { const y3 = H * (0.03 + j * 0.07) + Math.sin(x3 * 0.02 + j * 1.7 + cx * 0.004 * (1 + j * 0.1)) * 4; x3 < 0 ? c2.moveTo(x3, y3) : c2.lineTo(x3, y3); } c2.stroke(); }
+          return;
+        }
         let g2 = c2.createLinearGradient(0, 0, 0, H);
         g2.addColorStop(0, "#16283a"), g2.addColorStop(0.55, "#142a22"), g2.addColorStop(1, "#0c1812"), c2.fillStyle = g2, c2.fillRect(0, 0, W, H);
         for (let L2 = 0; L2 < 3; L2++) {
@@ -18940,7 +19060,7 @@ function ROXQM(f, c, s, l, def, ex) {
       for (let q of T) q.tall && q.sx !== void 0 && q.sy !== void 0 && q.depth > m && q.sy > u.y && q.sy - u.y < 120 && Math.abs(q.sx - u.x) < 46 ? (i.globalAlpha = 0.7, q.draw(), i.globalAlpha = 1) : q.draw();
       Ca.on = false;
       for (let q of this.anims.keys()) !z.has(q) && q !== "p" && !q.startsWith("n:") && this.anims.delete(q);
-      n.city && this.cityAmbience(n, a.player.pos), this.drawTopFx(), this.drawParticles(), this.ambient(n), n.city && this.forgeFx(n, a.player.pos), this.applyLighting(a, n), i.setTransform(this.dpr, 0, 0, this.dpr, 0, 0), this.drawLevelBanner(i), this.evView && (this.wfx.update(t, this.evView, n.theme, !!n.city, this.w, this.h), this.wfx.draw(i, this.evView, n.theme, this.w, this.h));
+      n.city && this.cityAmbience(n, a.player.pos), this.drawTopFx(), this.drawParticles(), n.sea && n.sea.all && this.underwaterFx(), this.ambient(n), n.city && this.forgeFx(n, a.player.pos), this.applyLighting(a, n), i.setTransform(this.dpr, 0, 0, this.dpr, 0, 0), this.drawLevelBanner(i), this.evView && (this.wfx.update(t, this.evView, n.theme, !!n.city, this.w, this.h), this.wfx.draw(i, this.evView, n.theme, this.w, this.h));
       let I = i.createRadialGradient(this.w / 2, this.h / 2, Math.min(this.w, this.h) * 0.36, this.w / 2, this.h / 2, Math.max(this.w, this.h) * 0.72);
       I.addColorStop(0, "rgba(4,6,12,0)"), I.addColorStop(1, "rgba(4,6,12,0.66)"), i.fillStyle = I, i.fillRect(0, 0, this.w, this.h), this.drawMinimap(a, n), this.drawMapTitle(), this.drawAnnounce();
       let J = this.fade, D = Math.min(1, (this.clock - J.t0) / J.dur), Z = J.from + (J.to - J.from) * D;
@@ -19162,6 +19282,7 @@ function ROXQM(f, c, s, l, def, ex) {
       window.__admin === true && !c && this.admAura(r);
       if (n.save(), n.globalAlpha = c ? 0.3 : 1, c) n.translate(r.x, r.y), n.rotate(Math.PI / 2), N4(() => nt(n, u, 0, 0, l, $a, $a));
       else {
+        const wd0 = a.waterDepth(o.pos.x, o.pos.y), __body = () => {
         this.blob(r.x, r.y + 4, 15), a.ps.level >= 99 && this.epicFx(r.x, r.y, 0);
         var mnt = a.ps.mount && a.ps.mountOwned, moff = mnt ? (a.sitting ? 30 : 38) : 0, atkM = this.clock - i.atkAt < Math.max(260, i.atkDur || 0), pl2 = 0, play2 = false, jy2 = 0;
         let m = this.organic(i, o.facing, { moving: i.moving, atkT: this.clock - i.atkAt, atkImpact: i.atkImpact, atkDur: i.atkDur, breath: a.sitting ? 8e-3 : 0.011 });
@@ -19175,6 +19296,8 @@ function ROXQM(f, c, s, l, def, ex) {
         a.ps.equipment.headTop === "poring_saltitante" && drawPoring(n, r.x + m.dx, r.y + 6 + m.dy - moff + (a.sitting ? 13 : 0), 1, this.clock, s, l);
         if (mnt && !d) { const sd = { down: [0, -58, -9, -50], dq: [l ? -34 : 34, -62, l ? 8 : -8, -52], side: [l ? -44 : 44, -68, l ? -7 : 7, -50], uq: [l ? -18 : 18, -70, l ? 5 : -5, -54], up: [0, -72, 0, -56] }[s] || [0, -60, 0, -50], bob = i.moving ? Math.sin(i.phase * 6.283) * 1.6 : Math.sin(this.clock / 600) * 0.6; n.save(); n.lineCap = "round"; for (const hs of s === "down" || s === "up" ? [-1, 1] : [1]) { const hxp = r.x + sd[2] * (s === "down" || s === "up" ? -hs * 0.8 : 1) , hyp = r.y + sd[3] + bob, mxp = r.x + sd[0] + (s === "down" || s === "up" ? hs * 4 : 0), myp = r.y + sd[1] + 21; n.strokeStyle = "#3a1e0e"; n.lineWidth = 2.6; n.beginPath(); n.moveTo(hxp, hyp); n.quadraticCurveTo((hxp + mxp) / 2, Math.max(hyp, myp) + 6 + bob, mxp, myp); n.stroke(); n.strokeStyle = "#a8683a"; n.lineWidth = 1.2; n.stroke(); n.fillStyle = "#e8d49a"; n.fillRect(mxp - 1.5, myp - 1.5, 3, 3); n.fillStyle = "#f2d6b0"; n.beginPath(); n.arc(hxp, hyp, 2.4, 0, 6.283); n.fill(); } n.restore(); }
         a.ps.level >= 99 && this.epicFx(r.x, r.y, 1);
+        };
+        this.waterPass(n, r.x, r.y + 6, wd0, 42, __body);
       }
       if (n.restore(), !c) {
         a.ps.pet && a.ps.petData || (window.__petHit = null);
@@ -19183,6 +19306,25 @@ function ROXQM(f, c, s, l, def, ex) {
         let p = a.derived();
         this.bar(r.x, r.y - 52 + m, 38, Math.max(0, a.ps.hp / p.maxHp), "#58d468"), a.speech && a.time < a.speech.until ? this.speechBalloon(a.speech.text, r.x, r.y - 70 + m, Math.min(1, (a.speech.until - a.time) / 500)) : a.emote && a.time < a.emote.until && (emoKind(a.emote.text) ? this.emoBubble(emoKind(a.emote.text), r.x, r.y - 82 + m - Math.sin(this.clock / 260) * 2, Math.min(1, (a.emote.until - a.time) / 400), a.emote.until - a.time) : this.balloon(a.emote.text, r.x, r.y - 82 + m - Math.sin(this.clock / 260) * 2, Math.min(1, (a.emote.until - a.time) / 400)));
       }
+    }
+    waterPass(ctx, x, yFeet, depth, subMax, fn) {
+      if (depth <= 0.03) return fn();
+      const sub = depth * subMax, yw = yFeet - sub, t = this.clock;
+      ctx.save(), ctx.beginPath(), ctx.rect(x - 260, yFeet - 700, 520, yw - (yFeet - 700)), ctx.clip(), fn(), ctx.restore();
+      ctx.save(), ctx.beginPath(), ctx.rect(x - 260, yw, 520, 400), ctx.clip(), ctx.globalAlpha *= 0.2, fn(), ctx.restore();
+      ctx.save(), ctx.fillStyle = "rgba(70,170,220,0.30)", ctx.beginPath(), ctx.ellipse(x, yw + 2, 24, 8, 0, 0, 6.283), ctx.fill(), ctx.strokeStyle = "rgba(225,247,255,0.9)", ctx.lineWidth = 1.4;
+      for (let k = 0; k < 2; k++) { const ph = (t / 900 + k * 0.5) % 1; ctx.globalAlpha = 0.8 * (1 - ph), ctx.beginPath(), ctx.ellipse(x, yw + 2, 19 + ph * 16, 6.5 + ph * 5.5, 0, 0, 6.283), ctx.stroke(); }
+      ctx.restore();
+    }
+    underwaterFx() {
+      const i = this.ctx, W = this.w, H = this.h, t = this.clock / 1e3;
+      i.save(), i.setTransform(this.dpr, 0, 0, this.dpr, 0, 0), i.fillStyle = "rgba(10,92,150,0.24)", i.fillRect(0, 0, W, H);
+      const g = i.createLinearGradient(0, 0, 0, H); g.addColorStop(0, "rgba(120,220,255,0.10)"), g.addColorStop(1, "rgba(0,20,60,0.26)"), i.fillStyle = g, i.fillRect(0, 0, W, H);
+      i.globalCompositeOperation = "lighter";
+      for (let k = 0; k < 6; k++) { const x0 = (k * 0.19 + 0.05) * W + Math.sin(t * 0.3 + k) * 30; i.fillStyle = `rgba(150,230,255,${(0.03 + 0.014 * Math.sin(t + k)).toFixed(3)})`, i.beginPath(), i.moveTo(x0, 0), i.lineTo(x0 + 70, 0), i.lineTo(x0 + 70 - W * 0.25, H), i.lineTo(x0 - W * 0.25, H), i.fill(); }
+      i.globalCompositeOperation = "source-over", i.strokeStyle = "rgba(205,242,255,0.5)", i.lineWidth = 1;
+      for (let k = 0; k < 26; k++) { const bx = (k * 137.5) % W + Math.sin(t * 0.8 + k) * 8, by = H - (t * (18 + k % 7 * 6) + k * 61) % (H + 40), r = 1.5 + k % 4; i.beginPath(), i.arc(bx, by, r, 0, 6.283), i.stroke(); }
+      i.restore();
     }
     admAura(r) {
       let o = this.ctx, T = this.clock / 1e3;
@@ -19309,7 +19451,7 @@ function ROXQM(f, c, s, l, def, ex) {
       let x = this.hover?.kind === "monster" && this.hover.id === t.id;
       x && (o.save(), o.shadowColor = "#ffd34d", o.shadowBlur = 14), t.state !== "dead" && this.blob(r.x, r.y + 3, Math.max(11, t.def.radius * 1.15));
       let b = t.state === "dead" ? { dx: 0, dy: 0, rot: 0, sx: 1, sy: 1 } : this.organic(i, t.facing, { moving: i.moving, breath: f === "goblin" || f === "draugr" ? 0.014 : 0.02, windup: t.state === "windup", charge: t.state === "charge", atkT: t.state === "recover" ? 1 : void 0 });
-      nt(o, u, r.x + b.dx, r.y + 4 + b.dy, p, m * b.sx, m * b.sy, p ? -b.rot : b.rot), x && o.restore();
+      { const wdM = n.map.sea && t.state !== "dead" ? n.waterDepth(t.pos.x, t.pos.y) * (t.def.aquatic ? 0.4 : 1) : 0, __m = () => nt(o, u, r.x + b.dx, r.y + 4 + b.dy, p, m * b.sx, m * b.sy, p ? -b.rot : b.rot); this.waterPass(o, r.x, r.y + 4, wdM, t.def.radius * 2.3 + 8, __m); } x && o.restore();
       let g = Math.max(0, t.hp / t.maxHp), v = n.targetId === t.id || x || g < 1 || t.state === "chase" || t.state === "windup" || t.state === "charge" || t.state === "recover", k = r.y - (t.def.boss ? t.def.radius * 3.4 : f === "goblin" || f === "draugr" || f === "cinder" || f === "automaton" || f === "sylvan" || f === "prism" || f === "sentinel" || f === "voidling" ? 56 : t.def.radius * 2.6 + 8);
       v && this.monBar(r.x, r.y + (t.def.boss ? 14 : 10), t.def.boss ? Math.max(70, t.def.radius * 2.8) : Math.max(46, t.def.radius * 2.4), g, Math.max(0, Math.ceil(t.hp))), (t.golden || this.nameOn(`m${t.id}`)) && this.text(t.golden ? `\u2726 ${t.def.name} dourado` : t.def.name, r.x, k - 4, t.def.boss ? 14 : 11, t.golden ? "#ffd24a" : t.def.boss ? "#ffe9a8" : "#ffffff", t.def.boss || !!t.golden);
     }
@@ -20262,15 +20404,22 @@ function ROXQM(f, c, s, l, def, ex) {
       let a = t.current;
       if (!a) return;
       let n = a.getContext("2d");
-      if (n) {
+      if (!n) return;
+      const draw = () => {
         n.clearRect(0, 0, a.width, a.height), n.imageSmoothingEnabled = false;
         try {
-          let o = Xr(e.shape, i5.has(e.shape) ? "down" : "side", -1, 0) ?? (i5.has(e.shape) ? fa(e.shape, "down", -1, 0) : us(e.shape, -1, 0)), r = Math.max(1, Math.min(3, Math.floor(Math.min(a.width / o.cv.width, a.height / o.cv.height)))), i = o.cv.width * r, s = o.cv.height * r;
-          n.drawImage(o.cv, Math.round((a.width - i) / 2), Math.round(a.height - s - 4), i, s);
+          const def = Qu[e.id] || { id: e.id, color: e.color }, clk = Date.now();
+          let o = ROXQM(e.shape, "dq", -1, 0, def, { clk, seed: String(e.id).length * 7 % 90 }) ?? Xr(e.shape, i5.has(e.shape) ? "down" : "side", -1, 0) ?? (i5.has(e.shape) ? fa(e.shape, "down", -1, 0) : us(e.shape, -1, 0));
+          const r = Math.max(1, Math.min(3, Math.floor(Math.min(a.width / o.cv.width, a.height / o.cv.height)))), i = o.cv.width * r, s2 = o.cv.height * r;
+          n.fillStyle = "rgba(0,0,0,0.22)", n.beginPath(), n.ellipse(a.width / 2, a.height - 8, Math.min(46, i * 0.28), 7, 0, 0, 6.283), n.fill();
+          n.drawImage(o.cv, Math.round((a.width - i) / 2), Math.round(a.height - s2 - 8), i, s2);
         } catch {
         }
-      }
-    }, [e.shape]), (0, se.jsx)("canvas", { ref: t, width: 144, height: 128, className: "bestiary-thumb", "aria-label": `Sprite de ${e.name}` });
+      };
+      draw();
+      const iv = setInterval(draw, 160);
+      return () => clearInterval(iv);
+    }, [e.id, e.shape]), (0, se.jsx)("canvas", { ref: t, width: 144, height: 128, className: "bestiary-thumb", "aria-label": `Sprite de ${e.name}` });
   }
   function s5() {
     ge();

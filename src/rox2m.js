@@ -230,6 +230,62 @@ const PETSCH=[['stand',2.6,6],['sniff',2,8],['stand',1.6,5],['sit',3.4,6],['look
   E({x:0,y:y0-17-(b==='wail'?w*2:0),z:o.sh,rx:7.4,ry:3,rz:6.6,p:3.4,col:c,tex:(mx,my,mz)=>mz>0.3&&my>.2?null:0});
   for(const sx of[-1,1]){const a=Math.max(sx>0?k:0,b==='wail'?w:0);S({pts:[[sx*7,y0-6,o.sh],[sx*13,y0-3-a*7,o.sh+2+a*5],[sx*14,y0+3-a*14,o.sh+1+a*8]],w:[3.2,1],col:c2})}
   for(let i=0;i<4;i++){const u=(o.t*.6+i*.25)%1;E({x:Math.sin(i*4+o.t)*14,y:o.g-u*50,z:Math.cos(i*3)*5,rx:.9,ry:.9,rz:.7,p:4,col:hx(0x9ae8ff),bias:1})}}});
+
+ // ---------- aquaticos ----------
+ reg('peixe',{name:'Peixe',w:72,h:60,gy:50,sched:[['swim',2.6,8],['gape',1.2,6],['swim',2,6]],build:(E,S,o)=>{
+  const T=o.t,k=Math.max(0,o.k||0),b=o.beh||'',w=o.bw||0,mv=o.ph?1:0;
+  const c=hx(0x5a8ab8),c2=hx(0xc8e0f0),fin=hx(0x3a6a98);
+  const y0=o.g-26-Math.sin(T*2.4)*1.6-(mv?Math.sin(o.ph)*1.2:0),z0=o.sh+k*3,sw=Math.sin(T*(mv?9:4.4)+(o.ph||0))*(mv?5:2.6);
+  E({x:0,y:y0,z:z0,rx:5.4,ry:7.6,rz:12.5,p:3,col:c,tex:(mx,my,mz)=>Math.sin(mz*14+mx*3)>.8?c2:0});
+  E({x:0,y:y0+3.4,z:z0+1,rx:3.8,ry:4.6,rz:10.5,p:3,col:c2});
+  S({pts:[[0,y0,z0-9],[sw*.5,y0,z0-14],[sw,y0,z0-19]],w:[6.4,2.4],col:c});
+  S({pts:[[sw,y0-.6,z0-18],[sw*1.4,y0-9,z0-27]],w:[1.8,.4],col:fin});S({pts:[[sw,y0+.6,z0-18],[sw*1.4,y0+9,z0-27]],w:[1.8,.4],col:fin});
+  S({pts:[[0,y0-6.5,z0+4],[0,y0-14,z0-3],[0,y0-6.5,z0-9]],w:[1.4,1.4],col:fin});
+  for(const sx of[-1,1]){S({pts:[[sx*4.4,y0+3,z0+4],[sx*10.5,y0+7+Math.sin(T*5+sx)*1.3,z0-1]],w:[2.6,.6],col:fin});
+   E({x:sx*4.2,y:y0-2,z:z0+8,rx:1.6,ry:1.9,rz:1.3,p:3,col:hx(0xfff4c8),bias:1});E({x:sx*4.7,y:y0-2,z:z0+8.8,rx:.8,ry:1,rz:.7,p:3,col:hx(0x101018),bias:1});}
+  const gp=(b==='gape'?w:0)+k;
+  S({pts:[[0,y0+2.2,z0+10],[0,y0+3.6+gp*3.2,z0+13.6]],w:[4.2,2.4],col:dk(c,.7)});
+  for(const sx of[-1,1]){S({pts:[[sx*1.8,y0+1.6,z0+12],[sx*1.8,y0+3.2+gp*1.8,z0+12.6]],w:[.9,.2],col:hx(0xf4f4e8)});S({pts:[[sx*1.8,y0+4+gp*3,z0+13],[sx*1.8,y0+2.6+gp*1.4,z0+13.2]],w:[.9,.2],col:hx(0xf4f4e8)})}
+  for(let i=0;i<3;i++){const u=(T*.5+i*.33)%1;E({x:Math.sin(i*4+1)*7,y:y0-8-u*18,z:z0+4,rx:1*(1-u*.5),ry:1*(1-u*.5),rz:.8,p:4,col:hx(0xd0f4ff),bias:.8})}}});
+ reg('medusa',{name:'Agua-viva',w:64,h:84,gy:74,sched:[['pulse',2.4,8],['drift',2,6]],build:(E,S,o)=>{
+  const T=o.t,k=Math.max(0,o.k||0),mv=o.ph?1:0;
+  const pul=Math.sin(T*3.2+(o.ph||0))*.5+.5,y0=o.g-40-Math.sin(T*1.6)*2-(mv?Math.abs(Math.sin(o.ph))*3:0)-k*3;
+  const c=hx(0xa8d8ff),c2=hx(0xf0b8ff);
+  E({x:0,y:y0,z:o.sh,rx:11+pul*1.8,ry:7.6-pul*1.3,rz:11+pul*1.8,p:2.6,col:c,tex:(mx,my,mz)=>Math.sin(Math.atan2(mx,mz)*8)>.62?c2:0});
+  E({x:0,y:y0-.8,z:o.sh,rx:6,ry:4,rz:6,p:3,col:hx(0xfff0ff),bias:.8});
+  for(const sx of[-1,1])E({x:sx*3,y:y0+1,z:o.sh+9,rx:1.1,ry:1.3,rz:.7,p:3,col:hx(0x30204a),bias:1});
+  for(let i=0;i<7;i++){const a=i/7*TAU,bx=Math.cos(a)*7*(1+pul*.15),bz=Math.sin(a)*7*(1+pul*.15),ph=T*3+i*1.3;
+   S({pts:[[bx,y0+3,o.sh+bz],[bx*1.1+Math.sin(ph)*2,y0+13,o.sh+bz*1.1],[bx*1.2+Math.sin(ph+1)*3,y0+25+Math.sin(ph)*2,o.sh+bz*1.2]],w:[1.9,.5],col:i%2?c2:c})}
+  for(let i=0;i<3;i++)S({pts:[[(i-1)*3,y0+3,o.sh],[(i-1)*3+Math.sin(T*2+i)*2,y0+15,o.sh],[(i-1)*4,y0+27,o.sh+Math.sin(T*2+i)*2]],w:[3.2,1.2],col:hx(0xe8a8f8)});
+  for(let i=0;i<3;i++){const u=(T*.4+i*.33)%1;E({x:Math.sin(i*5)*9,y:y0-6-u*20,z:o.sh,rx:.9,ry:.9,rz:.7,p:4,col:hx(0xd8f8ff),bias:.8})}}});
+ reg('polvo',{name:'Polvo',w:84,h:84,gy:72,sched:[['float',2.6,8],['wave',1.8,8]],build:(E,S,o)=>{
+  const T=o.t,k=Math.max(0,o.k||0),b=o.beh||'',w=o.bw||0,mv=o.ph?1:0;
+  const c=hx(0x9a4a8a),c2=hx(0xd88ac0);
+  const y0=o.g-34-Math.sin(T*1.8)*2-(mv?Math.abs(Math.sin(o.ph))*4:0)-k*2;
+  E({x:0,y:y0-10,z:o.sh-1,rx:8.4,ry:11.5,rz:8.4,p:3,col:c,tex:(mx,my,mz)=>Math.sin(mx*14+my*9+mz*11)>.8?c2:0});
+  E({x:0,y:y0,z:o.sh,rx:9,ry:6.8,rz:9,p:3,col:c});
+  for(const sx of[-1,1]){E({x:sx*4.2,y:y0-1.4,z:o.sh+7,rx:2,ry:2.3,rz:1.4,p:3,col:hx(0xfff0b0),bias:1});E({x:sx*4.4,y:y0-1.4,z:o.sh+8,rx:.5,ry:1.8,rz:.6,p:3,col:hx(0x101018),bias:1});}
+  for(let i=0;i<8;i++){const a=i/8*TAU+.4,bx=Math.cos(a)*5,bz=Math.sin(a)*5,ph=T*2.2+i*.8+(mv?o.ph:0),ext=(b==='wave'&&i<2?w*10:0)+k*5;
+   S({pts:[[bx,y0+4,o.sh+bz],[bx*2+Math.sin(ph)*2,y0+10,o.sh+bz*2],[bx*3.1+Math.sin(ph+1.2)*3,y0+17+Math.cos(ph)*2-ext*.6,o.sh+bz*3.1+ext*.5],[bx*3.7+Math.sin(ph+2)*4,y0+22+Math.cos(ph+1)*1.5-ext,o.sh+bz*3.7+ext*.6]],w:[3.4,.6],col:i%2?c:c2})}
+  for(let i=0;i<3;i++){const u=(T*.45+i*.33)%1;E({x:Math.sin(i*4)*8,y:y0-14-u*16,z:o.sh,rx:.9,ry:.9,rz:.7,p:4,col:hx(0xd8f0ff),bias:.8})}}});
+ reg('tubarao',{name:'Tubarao',w:104,h:76,gy:62,sched:[['patrol',3,8],['bite',1.1,6],['patrol',2,6]],build:(E,S,o)=>{
+  const T=o.t,k=Math.max(0,o.k||0),b=o.beh||'',w=o.bw||0,mv=o.ph?1:0;
+  const c=hx(0x6a7e94),belly=hx(0xe4ecf4),fin=hx(0x4e6078);
+  const y0=o.g-32-Math.sin(T*1.5)*1.6,sw=Math.sin(T*(mv?7:3.2)+(o.ph||0))*(mv?5.5:3);
+  E({x:0,y:y0,z:o.sh+6+k*3,rx:7.6,ry:8.8,rz:13,p:3,col:c});
+  E({x:sw*.15,y:y0+.4,z:o.sh-8,rx:6.2,ry:7.2,rz:12,p:3,col:c});
+  E({x:0,y:y0+3.6,z:o.sh+4,rx:5.6,ry:5.4,rz:15,p:3,col:belly});
+  E({x:0,y:y0+.6,z:o.sh+18+k*3,rx:5.6,ry:5.8,rz:9,p:3,col:c});
+  S({pts:[[sw*.3,y0,o.sh-16],[sw*.8,y0,o.sh-24],[sw*1.6,y0-1,o.sh-31]],w:[6.2,1.6],col:c});
+  S({pts:[[sw*1.6,y0-2,o.sh-30],[sw*2.1,y0-13,o.sh-39]],w:[3.2,.6],col:fin});S({pts:[[sw*1.6,y0+1,o.sh-30],[sw*2,y0+8,o.sh-37]],w:[2.6,.5],col:fin});
+  S({pts:[[0,y0-7.8,o.sh+5],[0,y0-20,o.sh-3],[0,y0-8,o.sh-11]],w:[2.6,2.6],col:fin});
+  for(const sx of[-1,1]){S({pts:[[sx*6,y0+5,o.sh+9],[sx*17,y0+11+Math.sin(T*3)*1.2,o.sh-1]],w:[3.6,.6],col:fin});
+   E({x:sx*5.2,y:y0-1.2,z:o.sh+19,rx:1.2,ry:1.4,rz:1,p:3,col:hx(0x0a0a10),bias:1});
+   for(let g=0;g<3;g++)S({pts:[[sx*7.4,y0-2+g*2,o.sh+10-g*1.4],[sx*7.6,y0+1+g*2,o.sh+10-g*1.4]],w:[.5,.5],col:dk(c,.55)});}
+  const gp=(b==='bite'?w:0)+k;
+  S({pts:[[0,y0+3.8,o.sh+16],[0,y0+5+gp*4.2,o.sh+24]],w:[5,3],col:belly});
+  if(gp>.1)for(const sx of[-1,1])S({pts:[[sx*2,y0+4,o.sh+22],[sx*2,y0+6+gp*2,o.sh+22.6]],w:[1,.2],col:hx(0xffffff)});
+  for(let i=0;i<3;i++){const u=(T*.4+i*.33)%1;E({x:Math.sin(i*4)*9,y:y0-12-u*20,z:o.sh+8,rx:1,ry:1,rz:.8,p:4,col:hx(0xd0f4ff),bias:.8})}}});
  // corvo / falcao
  reg('corvo',{name:'Corvo de Odin',w:96,h:76,gy:66,sched:[['fly',.9,8]],build:(E,S,o)=>{const st=o.st||0;const c=hx(0x1e1a2c),c2=hx([0x4a4a8a,0x4a7aca,0xc8a038,0xffe8a0][st]);
   const fl=o.beh==='fly'?Math.sin((o.bt||0)*TAU):Math.sin(o.t*(o.ph||o.k>0?16:5));const hov=o.g-22-Math.sin(o.t*2)*2;const y0=hov+(o.k>0?-o.k*4:0),z0=o.sh,kk=o.k>0?o.k:0;
@@ -241,7 +297,7 @@ const PETSCH=[['stand',2.6,6],['sniff',2,8],['stand',1.6,5],['sit',3.4,6],['look
   for(const sx of[-1,1])S({pts:[[sx*2,y0+6,z0],[sx*2,y0+10,z0+2+(kk>0?2:0)],[sx*2.4,y0+12,z0+3]],w:[1.4,1],col:hx(0xe0a838)});
   for(let i=0;i<3;i++){const u=(o.t*.8+i*.33)%1;E({x:Math.sin(i*5)*12,y:o.g-u*20,z:-5,rx:.8,ry:.8,rz:.8,p:4,col:hx(0x9a8aff),bias:1})}}});
  // ---------- mapeamento shape -> especie ----------
- const SHAPES={wolf:['lobo',.5,1.9],frostwolf:['lobogelo',.6,1.9],hati:['warg',.35,2],boar:['javali',.5,2.0],horse:['cavalo',.25,1.7],cao:['cao',.45,1.9],gato:['gato',.5,1.9],raposa:['raposa',.35,1.9],coelho:['coelho',.4,1.9],yeti:['yeti',.7,1.35],blob:['gosma',.85,1.9],goblin:['goblin',.3,2],draugr:['draugr',.3,1.75],cinder:['imp',.55,1.7],automaton:['golemmetal',.75,1.2],sylvan:['sylvan',.7,1.3],prism:['golemprisma',.8,1.1],sentinel:['golempedra',.6,1.2],voidling:['espectro',.85,1.1],jotun:['troll',.5,1.5],grifo:['corvo',.35,1.8],corvo:['corvo',0,1.6]};
+ const SHAPES={wolf:['lobo',.5,1.9],frostwolf:['lobogelo',.6,1.9],hati:['warg',.35,2],boar:['javali',.5,2.0],horse:['cavalo',.25,1.7],cao:['cao',.45,1.9],gato:['gato',.5,1.9],raposa:['raposa',.35,1.9],coelho:['coelho',.4,1.9],yeti:['yeti',.7,1.35],blob:['gosma',.85,1.9],goblin:['goblin',.3,2],draugr:['draugr',.3,1.75],cinder:['imp',.55,1.7],automaton:['golemmetal',.75,1.2],sylvan:['sylvan',.7,1.3],prism:['golemprisma',.8,1.1],sentinel:['golempedra',.6,1.2],voidling:['espectro',.85,1.1],jotun:['troll',.5,1.5],grifo:['corvo',.35,1.8],corvo:['corvo',0,1.6],peixe:['peixe',.55,2.5],medusa:['medusa',.5,1.9],polvo:['polvo',.55,1.9],tubarao:['tubarao',.5,2.3]};
  const DIRS={down:0,dq:1,side:2,uq:3,up:4};
  const lumOf=(c)=>(c[0]+c[1]+c[2])/765;
  function mkTint(rgb,k){const tl=lumOf(rgb)||.5;return (c)=>{if(!Array.isArray(c))return c;const s=lumOf(c)/tl;return mix(c,[Math.min(255,rgb[0]*s),Math.min(255,rgb[1]*s),Math.min(255,rgb[2]*s)],k)}}
