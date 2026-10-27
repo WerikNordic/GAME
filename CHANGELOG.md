@@ -1,3 +1,6 @@
+## v211 — Cabeça nova em personagens antigos
+- Personagens já criados (cabelo antigo curto/longo/vN) passam a usar a cabeça nova automaticamente; só "Raspado" e os novos estilos são mantidos.
+
 ## v210 — Penteados originais
 - 45 penteados masculinos + 45 femininos (frente e costas), recortados das tabelas enviadas, com cores e desenho originais. Escolha na criação (por sexo), no provador e no estilista. "Original Eldvar" segue como padrão masculino; padrão feminino = Fem. 1.
 
