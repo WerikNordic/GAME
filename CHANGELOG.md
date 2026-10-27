@@ -1,3 +1,6 @@
+## v209 — Cabeça original
+- Nova cabeça (a imagem enviada pelo Werik, sem alterações) como visual padrão dos jogadores; opção "Original Eldvar" na criação e no cabeleireiro. Vista de frente/lado e versão de costas. Com chapéu/máscara equipada, volta ao cabelo normal.
+
 ## v208 — Lote D
 - Cidades ~5x e mapas de monstros ~10x maiores (em área).
 - Ilhas cercadas por mar de verdade (fim em água, praia e espuma); cada ilha com formato próprio.

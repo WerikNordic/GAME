@@ -147,10 +147,13 @@
     }
     if (cfg.wpn) cfg.wpn(E, S, { R: hands[1], L: hands[0], P, t, tz, bob, unarmed: !P.armed });
     const hy = 22 + bob, hz = tz;
+    if (cfg.headImg) { E({ x: 0, y: hy, z: hz, rx: 7.4, ry: 10, rz: 7.9, hm: 1, col: sk, tex: () => null }); E({ x: 0, y: hy + 6.4, z: hz - .6, rx: 3.2, ry: 4, rz: 3.2, col: sk, soft: 1 }); }
+    else {
     E({ x: 0, y: hy, z: hz, rx: 7.4, ry: 10, rz: 7.9, p: 4.8, col: sk, soft: 1, tex: FEATURES(cfg) });
     for (const sg of [-1, 1]) E({ x: sg * 8.2, y: hy + 1.5, z: hz, rx: 1.6, ry: 2.6, rz: 1.8, col: sk });
     E({ x: 0, y: hy + 4.6, z: hz - .6, rx: 5.8, ry: 6.2, rz: 6.6, p: 3.8, col: sk, soft: 1 });
     if (cfg.hairFn) cfg.hairFn(E, S, { hy, hz, bob, tz, t, P });
+    }
     if (cfg.deco) cfg.deco(E, S, { hy, hz, bob, tz, t, P });
   }
   //__RENDER__

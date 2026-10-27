@@ -1,4 +1,5 @@
   // ---------- render ----------
+  let HEADM = null;
   function render(cfg, kdir, anim, t, kind, fam, o) {
     const SC = o.S, w = o.w, h = o.h, gy = o.gy; const K = Ctx(kdir * Math.PI / 4);
     const mk = (a2, t2) => { const P_ = pose(a2, t2, fam, kind); if (cfg.tweak) cfg.tweak(P_, a2, t2, kind); return P_; };
@@ -10,7 +11,7 @@
       P_.mk = P_.marks.map((q) => ({ n: q.n, col: q.col, a: mp(q.a), b: mp(q.b) })); return out;
     };
     const I = new Img(w, h); const P = mk(anim, t); const out = prep(P, t);
-    for (const [k2, q] of out) { if (k2 === "e") ellipsoid(I, K, q); else strip(I, K, q); }
+    HEADM = null; for (const [k2, q] of out) { if (k2 === "e") { if (q.hm) HEADM = { x: K.P(q.x, q.z) + w / 2, y: q.y, ry: q.ry, rx: q.rx }; ellipsoid(I, K, q); } else strip(I, K, q); }
     outline(I, 200);
     const px = (x, y, c) => { x = Math.round(x); y = Math.round(y); put(I, x, y, 1e9, c, 255); };
     if (P.armed) {
