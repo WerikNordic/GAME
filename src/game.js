@@ -16895,6 +16895,10 @@ function ROXQM(f, c, s, l, def) {
       placeNear(m, id, an.x - 380, an.y + 150, 120);
     }
   }
+  if (typeof window < "u") {
+    const fitUi = () => { const r = document.documentElement.style, w = window.innerWidth, h = window.innerHeight; r.setProperty("--csz", String(Math.max(1, Math.min(w / 780, h / 560, 2.6)).toFixed(3))), r.setProperty("--tsz", String(Math.max(1, Math.min(w / 640, h / 760, 1.9)).toFixed(3))); };
+    fitUi(), window.addEventListener("resize", fitUi);
+  }
   var z0 = /* @__PURE__ */ new Map(), D0 = /* @__PURE__ */ new Map(), Xl = class {
     constructor(t) {
       this.app = t;

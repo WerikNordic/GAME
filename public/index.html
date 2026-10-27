@@ -228,6 +228,13 @@ body.armed canvas{cursor:crosshair!important}
 .wm-foot{min-height:44px;line-height:1.35}
 .wm-dot{pointer-events:auto;cursor:help;width:8px;height:8px;margin:-4px 0 0 -4px;background:#2c1a08;border:1px solid #f3e2b0}
 .panel.worldmap{width:min(96vw,1040px)!important;max-height:94vh}
+
+/* escala responsiva das telas iniciais */
+.cs-win{zoom:var(--csz,1);width:min(640px,calc(96vw / var(--csz,1)))}
+.title-card{zoom:var(--tsz,1);width:min(470px,calc(96vw / var(--tsz,1)))}
+.cs-bg{overflow:auto}
+.title-card{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+.title-card .cs-bg{zoom:calc(1 / var(--tsz,1))}
 </style></head>
   <body>
     <div id="root"></div>
@@ -17654,6 +17661,10 @@ function ROXQM(f, c, s, l, def) {
       const an = m.npcs.find((q) => q.id === "arauto") || { x: m.width / 2, y: m.height / 2 };
       placeNear(m, id, an.x - 380, an.y + 150, 120);
     }
+  }
+  if (typeof window < "u") {
+    const fitUi = () => { const r = document.documentElement.style, w = window.innerWidth, h = window.innerHeight; r.setProperty("--csz", String(Math.max(1, Math.min(w / 780, h / 560, 2.6)).toFixed(3))), r.setProperty("--tsz", String(Math.max(1, Math.min(w / 640, h / 760, 1.9)).toFixed(3))); };
+    fitUi(), window.addEventListener("resize", fitUi);
   }
   var z0 = /* @__PURE__ */ new Map(), D0 = /* @__PURE__ */ new Map(), Xl = class {
     constructor(t) {

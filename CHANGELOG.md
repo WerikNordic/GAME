@@ -1,3 +1,8 @@
+# v178
+- Telas iniciais: criação e seleção de personagem agora escalam com o tamanho da janela (antes ficavam minúsculas em tela grande).
+- Corrigido: a seleção de personagem ficava presa e cortada dentro do cartão do menu (o efeito de desfoque do cartão prendia a tela).
+- Menu inicial também escala em telas grandes.
+
 # v177
 - Auditoria geral. Corrigido: habilidade lançada com clique em um monstro lançava erro (alvo era somente-leitura) e falhava.
 - Corrigido: restrição de armas por classe agora segue exatamente as armas que cada classe pode usar (antes a dica mostrava classes que não podiam equipar).
