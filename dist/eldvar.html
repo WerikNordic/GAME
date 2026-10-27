@@ -8639,7 +8639,11 @@ Error generating stack: ` + n.message + `
     let CTRK = { cidade_midgard: "fountain", cidade_ravnhaven: "lighthouse", cidade_isenborg: "xmastree", cidade_eldvik: "monument", cidade_kharnheim: "clocktower", cidade_freyrhain: "totem", cidade_gladsheim: "magetower", cidade_skogvik: "pagoda", cidade_handelsvik: "obelisk", cidade_solvik: "parasol", cidade_helvik: "crypt" }[e.id] ?? "fountain", CHW = ($m[CTRK]?.w ?? 64) / 2, CHH = ($m[CTRK]?.h ?? 48) / 2;
     s(CTRK, d, H);
     if (CTRK === "fountain") for (let [_, G] of [[-150, -110], [150, -110], [-150, 110], [150, 110]]) s("brazier", d + _, H + G);
-    for (let [_, G] of [[-1, 0], [1, 0], [0, -1], [0, 1]]) s("bench", d + _ * Math.max(260, CHW + 90), H + G * Math.max(230, CHH + 90));
+    for (let [_, G] of [[-1, 0], [1, 0], [0, -1], [0, 1]]) {
+      let bx = d + _ * Math.max(260, CHW + 90), by = H + G * Math.max(230, CHH + 90);
+      if (_) for (let k = -1; k <= 1; k++) s("bench", bx, by + k * 30);
+      else for (let k = -1; k <= 1; k += 2) s("bench", bx + k * 32, by);
+    }
     if (ST.plaza === "radial") for (let [_, G] of [[-480, -330], [480, -330], [-480, 330], [480, 330]]) s("planter", d + _, H + G);
     else if (ST.plaza === "colonnade") for (let _ = 0; _ < 14; _++) {
       let G = _ / 14 * Math.PI * 2;
@@ -8946,11 +8950,11 @@ Error generating stack: ` + n.message + `
     }
     let crit = [];
     {
-      let cr = Oe(e.id.length * 7919 + e.id.charCodeAt(0) * 131), kinds = ["cao", "gato", "corvo", "gato", "cao", "corvo"], tries = 0;
-      for (; crit.length < 12 && tries < 400; tries++) {
+      let cr = Oe(e.id.length * 7919 + e.id.charCodeAt(0) * 131), kinds = ({ cidade_midgard: ["cao", "gato"], cidade_ravnhaven: ["corvo", "gato"], cidade_isenborg: ["gato"], cidade_eldvik: ["abutre"], cidade_kharnheim: ["cao"], cidade_freyrhain: ["cao"], cidade_gladsheim: ["gato"], cidade_skogvik: ["gato"], cidade_handelsvik: ["cao", "corvo"], cidade_solvik: ["gato", "cao"], cidade_helvik: ["corvo", "abutre"] })[e.id] ?? ["cao", "gato"], tries = 0;
+      for (; crit.length < 6 && tries < 400; tries++) {
         let x0 = c.x + 100 + cr() * (c.w - 200), y0 = c.y + 100 + cr() * (c.h - 200);
         if (o.some((q) => x0 + 22 > q.x && x0 - 22 < q.x + q.w && y0 + 20 > q.y && y0 - 20 < q.y + q.h)) continue;
-        crit.push({ kind: kinds[crit.length % 6], x: Math.round(x0), y: Math.round(y0), seed: crit.length * 1.7 });
+        crit.push({ kind: kinds[crit.length % kinds.length], x: Math.round(x0), y: Math.round(y0), seed: crit.length * 1.7 });
       }
     }
     if (ST.mirror) {
@@ -17871,6 +17875,7 @@ function ROXQM(f, c, s, l, def) {
       for (let b = 0; b < 3; b++) {
         let per = 26 + b * 5, ph = ((t + b * 9) % per) / per, bx, by, drink = 0, flap = Math.sin(t * 22 + b) , dir = 1;
         let ca = t * 0.5 + b * 2.1;
+        if (Math.abs(Math.sin(Math.floor((t + b * 9) / per) * 12.9898 + b * 78.233) * 43758.5453) % 1 > (b === 0 ? 0.3 : 0.12)) continue;
         if (ph < 0.38) {
           let r2 = rimR * (2.6 - ph * 2.2), a = ca + ph * 5;
           bx = c.x + Math.cos(a) * r2, by = c.y - R * 1.5 + Math.sin(a) * r2 * 0.4 - (0.38 - ph) * 40 * R / 40 * 0.4, dir = Math.sin(a) > 0 ? -1 : 1;
@@ -18350,8 +18355,8 @@ function ROXQM(f, c, s, l, def) {
       v && this.monBar(r.x, r.y + (t.def.boss ? 14 : 10), t.def.boss ? Math.max(70, t.def.radius * 2.8) : Math.max(46, t.def.radius * 2.4), g, Math.max(0, Math.ceil(t.hp))), (t.golden || this.nameOn(`m${t.id}`)) && this.text(t.golden ? `\u2726 ${t.def.name} dourado` : t.def.name, r.x, k - 4, t.def.boss ? 14 : 11, t.golden ? "#ffd24a" : t.def.boss ? "#ffe9a8" : "#ffffff", t.def.boss || !!t.golden);
     }
     drawCritter(q) {
-      let o = this.ctx, T = this.clock / 1e3 + q.seed, ph = Math.sin(T * 0.35 + q.seed) , wx = q.x + ph * 9, moving = Math.cos(T * 0.35 + q.seed) * (q.kind === "corvo" ? 0.3 : 1) > 0.5, face = Math.cos(T * 0.35 + q.seed) >= 0 ? 0 : Math.PI, r = ce(wx, q.y), { dir: d, flip: f } = Kl(face);
-      let col = { cao: 12099720, gato: 14530688, corvo: 1710624 }[q.kind], sc = { cao: 0.5, gato: 0.36, corvo: 0.26 }[q.kind], sp = ROXQM("wolf", d, moving ? Math.floor(this.clock / 110 % ea) : -1, 0, { id: "c_" + q.kind, color: col });
+      let o = this.ctx, T = this.clock / 1e3 + q.seed, ph = Math.sin(T * 0.35 + q.seed) , wx = q.x + ph * 9, moving = Math.cos(T * 0.35 + q.seed) * (q.kind === "corvo" || q.kind === "abutre" ? 0.3 : 1) > 0.5, face = Math.cos(T * 0.35 + q.seed) >= 0 ? 0 : Math.PI, r = ce(wx, q.y), { dir: d, flip: f } = Kl(face);
+      let col = { cao: 12099720, gato: 14530688, corvo: 1710624, abutre: 3680544 }[q.kind], sc = { cao: 1.1, gato: 0.78, corvo: 0.5, abutre: 0.95 }[q.kind], sp = ROXQM("wolf", d, moving ? Math.floor(this.clock / 110 % ea) : -1, 0, { id: "c_" + q.kind, color: col });
       sp && (this.blob(r.x, r.y + 2, q.kind === "corvo" ? 4 : 7), nt(o, sp, r.x, r.y + 3 - (q.kind === "corvo" && !moving ? Math.max(0, Math.sin(T * 3)) * 2 : 0), f, $a * sc, $a * sc));
     }
     drawSerpent(t, a) {

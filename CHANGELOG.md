@@ -37,6 +37,9 @@
 - /guilda, /g, /grupo, /p, /amigo (locais; sem servidor de jogo ainda).
 - ESC nao pausa; tela de entrada nordica; novos efeitos sonoros; sem visual inicial de classe.
 
+## v145
+- Animais das cidades maiores e só em algumas (cães/gatos/corvos/abutres por cidade, 6 por cidade); abutre novo (Eldvik/Helvik). Pássaros da fonte raros e aleatórios. Bancos em grupos de 2–3 ao redor do centro.
+
 ## v144
 - Montaria agora é habilidade passiva na janela de Habilidades (Alt+S), concedida automaticamente a Espadachins; botão Montar/Desmontar ali. NPC Montaria só entrega a montaria (sem gastar ponto).
 
