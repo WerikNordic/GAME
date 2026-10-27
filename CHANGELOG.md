@@ -37,6 +37,9 @@
 - /guilda, /g, /grupo, /p, /amigo (locais; sem servidor de jogo ainda).
 - ESC nao pausa; tela de entrada nordica; novos efeitos sonoros; sem visual inicial de classe.
 
+## v146
+- Pet: menor (80%), agora entra na ordenação de profundidade (fica atrás do personagem quando está atrás) e Shift+botão direito no chão manda o pet para lá (ele fica até você se afastar).
+
 ## v145
 - Animais das cidades maiores e só em algumas (cães/gatos/corvos/abutres por cidade, 6 por cidade); abutre novo (Eldvik/Helvik). Pássaros da fonte raros e aleatórios. Bancos em grupos de 2–3 ao redor do centro.
 

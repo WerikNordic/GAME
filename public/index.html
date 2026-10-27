@@ -17515,6 +17515,7 @@ function ROXQM(f, c, s, l, def) {
     }
     onPointerDown = (t) => {
       if (t.button === 2 && t.pointerType === "mouse") {
+        if (t.shiftKey && this.store.ps?.petData && this._pet) { let sp = this.toScreenPt(t.clientX, t.clientY), wp = Gu(sp.x, sp.y); this._petHold = { x: wp.x, y: wp.y }; return; }
         let hp = window.__petHit, np = hp && this.toScreenPt(t.clientX, t.clientY);
         if (hp && this.store.ps?.petData && Math.hypot(np.x - hp.x, np.y - hp.y) <= hp.r) {
           petMenu(t.clientX, t.clientY);
@@ -18058,7 +18059,7 @@ function ROXQM(f, c, s, l, def) {
         M(H.x, H.y) && (z.add(`o${q.id}`), T.push({ depth: Ja(q.x, q.y), draw: () => this.drawOther(q, t) }));
       }
       for (let q of n.critters ?? []) { let H = ce(q.x, q.y); M(H.x, H.y) && T.push({ depth: Ja(q.x, q.y), draw: () => this.drawCritter(q) }); }
-      T.push({ depth: m, draw: () => this.drawPlayer(t) }), this.store.fx && Date.now() - this.store.fx.t0 < 3800 && T.push({ depth: m + 9, draw: () => this.drawBlessing(a.player.pos) });
+      T.push({ depth: m, draw: () => this.drawPlayer(t) }), a.ps.pet && a.ps.petData && T.push({ depth: this._pet ? Ja(this._pet.x, this._pet.y) : m + 1, draw: () => this.drawPet() }), this.store.fx && Date.now() - this.store.fx.t0 < 3800 && T.push({ depth: m + 9, draw: () => this.drawBlessing(a.player.pos) });
       if (n.obstacles.some((q) => q.deco === "airship")) {
         let A2 = this.air;
         (!A2 || A2.map !== n) && (A2 = this.air = { map: n, x: n.width * (0.2 + Math.random() * 0.6), y: n.height * (0.2 + Math.random() * 0.6), tx: 0, ty: 0, hd: 1, last: this.clock, pick: true });
@@ -18318,20 +18319,26 @@ function ROXQM(f, c, s, l, def) {
         a.ps.level >= 99 && this.epicFx(r.x, r.y, 1);
       }
       if (n.restore(), !c) {
-        if (a.ps.pet && a.ps.petData) {
-          let pd = a.ps.petData, pt = this._pet || (this._pet = { x: o.pos.x - 30, y: o.pos.y + 20, f: 0 }), tx = o.pos.x - Math.cos(o.facing) * 34 + 14, ty = o.pos.y - Math.sin(o.facing) * 34 + 18, dx = tx - pt.x, dy = ty - pt.y, dd = Math.hypot(dx, dy);
-          if (dd > 400) pt.x = tx, pt.y = ty; else if (dd > 6) pt.x += dx * 0.09, pt.y += dy * 0.09, pt.f = Math.atan2(dy, dx);
-          let pl = Date.now() - __petPlayAt, play = pl >= 0 && pl < 2600, pm = dd > 12 && !play, pr = ce(pt.x, pt.y), face = play ? [0, 0.8, 1.57, 2.4, 3.14, 2.4, 1.57, 0.8][Math.floor(pl / 170) % 8] : pt.f, { dir: pd2, flip: pf } = Kl(face), ps2 = ROXQM("wolf", pd2, pm ? Math.floor(this.clock / 90 % ea) : -1, 0, { id: "filhote", color: 13026744 }), jy = play ? -Math.abs(Math.sin(pl / 130)) * 16 : 0;
-          if (ps2) {
-            this.blob(pr.x, pr.y + 3, 7 + (play ? jy * 0.1 : 0)), nt(n, ps2, pr.x, pr.y + 4 + jy, pf, $a * 0.6, $a * 0.6), (() => { let np = this.toScreenPt(this.ptr.x, this.ptr.y); Math.hypot(np.x - pr.x, np.y - (pr.y - 8)) < 26 && this.text(pd.name, pr.x, pr.y - 24, 11, "#ffe9a8"); })()
-            if (play) for (let q = 0; q < 3; q++) { let tt = (pl / 900 + q / 3) % 1; this.text("\u2665", pr.x + Math.sin(q * 2.1 + pl / 300) * 12, pr.y - 26 - tt * 30, 12, `rgba(255,120,160,${1 - tt})`); }
-            window.__petHit = { x: pr.x, y: pr.y - 8, r: 24 };
-          }
-        } else window.__petHit = null;
+        a.ps.pet && a.ps.petData || (window.__petHit = null);
         let m = a.sitting ? -14 : 0;
         this.nameOn("p") && this.text(a.ps.name, r.x, r.y + 16, 12, "#ffffff");
         let p = a.derived();
         this.bar(r.x, r.y - 52 + m, 38, Math.max(0, a.ps.hp / p.maxHp), "#58d468"), a.speech && a.time < a.speech.until ? this.speechBalloon(a.speech.text, r.x, r.y - 70 + m, Math.min(1, (a.speech.until - a.time) / 500)) : a.emote && a.time < a.emote.until && (emoKind(a.emote.text) ? this.emoBubble(emoKind(a.emote.text), r.x, r.y - 82 + m - Math.sin(this.clock / 260) * 2, Math.min(1, (a.emote.until - a.time) / 400), a.emote.until - a.time) : this.balloon(a.emote.text, r.x, r.y - 82 + m - Math.sin(this.clock / 260) * 2, Math.min(1, (a.emote.until - a.time) / 400)));
+      }
+    }
+    drawPet() {
+      let a = this.store.world;
+      if (!a || !a.ps.pet || !a.ps.petData || a.isDead()) return;
+      let n = this.ctx, o = a.player;
+      {
+          let pd = a.ps.petData, pt = this._pet || (this._pet = { x: o.pos.x - 30, y: o.pos.y + 20, f: 0 }), hd = this._petHold && Math.hypot(o.pos.x - this._petHold.x, o.pos.y - this._petHold.y) < 380 ? this._petHold : (this._petHold = null), tx = hd ? hd.x : o.pos.x - Math.cos(o.facing) * 34 + 14, ty = hd ? hd.y : o.pos.y - Math.sin(o.facing) * 34 + 18, dx = tx - pt.x, dy = ty - pt.y, dd = Math.hypot(dx, dy);
+          if (dd > 400) pt.x = tx, pt.y = ty; else if (dd > 6) pt.x += dx * 0.09, pt.y += dy * 0.09, pt.f = Math.atan2(dy, dx);
+          let pl = Date.now() - __petPlayAt, play = pl >= 0 && pl < 2600, pm = dd > 12 && !play, pr = ce(pt.x, pt.y), face = play ? [0, 0.8, 1.57, 2.4, 3.14, 2.4, 1.57, 0.8][Math.floor(pl / 170) % 8] : pt.f, { dir: pd2, flip: pf } = Kl(face), ps2 = ROXQM("wolf", pd2, pm ? Math.floor(this.clock / 90 % ea) : -1, 0, { id: "filhote", color: 13026744 }), jy = play ? -Math.abs(Math.sin(pl / 130)) * 16 : 0;
+          if (ps2) {
+            this.blob(pr.x, pr.y + 3, 7 + (play ? jy * 0.1 : 0)), nt(n, ps2, pr.x, pr.y + 4 + jy, pf, $a * 0.48, $a * 0.48), (() => { let np = this.toScreenPt(this.ptr.x, this.ptr.y); Math.hypot(np.x - pr.x, np.y - (pr.y - 8)) < 26 && this.text(pd.name, pr.x, pr.y - 24, 11, "#ffe9a8"); })()
+            if (play) for (let q = 0; q < 3; q++) { let tt = (pl / 900 + q / 3) % 1; this.text("\u2665", pr.x + Math.sin(q * 2.1 + pl / 300) * 12, pr.y - 26 - tt * 30, 12, `rgba(255,120,160,${1 - tt})`); }
+            window.__petHit = { x: pr.x, y: pr.y - 8, r: 24 };
+          }
       }
     }
     drawOther(t, a) {
