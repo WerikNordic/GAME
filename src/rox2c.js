@@ -46,13 +46,14 @@
   }
   function hairFn(e, hc, cover) {
     const hs = hairSpec(e); if (hs.bald) return () => { };
+    const htex = tileTex(e.htile);
     return (E, S, o) => {
       const { hy, hz } = o, tt = o.t, L = hs.L, X = hs.X; const T = [.92, 1, 1.07, 1.2][clamp(hs.T, 0, 3)];
       const hc2 = hc, hl = mix(hc, [255, 236, 190], .22), hd = dk(hc, .8);
       const sw = (i, a = 1) => Math.sin(tt * 2.4 + i) * .5 * a;
       if (!cover) {
         const mo = X === "mohawk";
-        E({ x: 0, y: hy - 1.6, z: hz - .8, rx: 8.5 * T, ry: 10.3, rz: 8.7 * T, p: 4.2, col: hc, tex: hairCap({ hair: hc }, { bangs: mo ? () => -.5 : FRINGE[clamp(hs.F, 0, 8)], side: mo ? -.2 : L >= 1 ? .62 : .32, back: mo ? .45 : L >= 1 ? .95 : .82 }) });
+        if (htex) E({ x: 0, y: hy - .5, z: hz - .8, rx: 10.2, ry: 11.4, rz: 9.6, p: 3.2, col: hc, tex: htex }); else E({ x: 0, y: hy - 1.6, z: hz - .8, rx: 8.5 * T, ry: 10.3, rz: 8.7 * T, p: 4.2, col: hc, tex: hairCap({ hair: hc }, { bangs: mo ? () => -.5 : FRINGE[clamp(hs.F, 0, 8)], side: mo ? -.2 : L >= 1 ? .62 : .32, back: mo ? .45 : L >= 1 ? .95 : .82 }) });
         if (X === "curl" || hs.T === 3) for (let i = 0; i < 9; i++) { const a = i / 9 * TAU; E({ x: Math.cos(a) * 9, y: hy - 6 + (i % 3), z: hz - 1 + Math.sin(a) * 8.4, rx: 2.8, ry: 2.8, rz: 2.8, col: i % 2 ? hc : hl }); }
       }
       if (L >= 1 && X !== "bob") { // massa de cabelo atrás
