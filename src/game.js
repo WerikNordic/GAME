@@ -8248,7 +8248,7 @@ Error generating stack: ` + n.message + `
     n.push(...groves(1920, 1280, a, 170, 0.25, (p, h, x) => !f(p, h) && !d.some((b) => $i(b.x, b.y, b.r, x)) && !n.some((b) => b.x < x.x + x.w + 24 && b.x + b.w + 24 > x.x && b.y < x.y + x.h + 24 && b.y + b.h + 24 > x.y)));
     return { id: "planicies_jotunheim", name: "Plan\xEDcies de J\xF6tunheim", width: 1920, height: 1280, spawn: r, safeZone: o, obstacles: n, spawns: l, npcs: i, portals: [{ x: 0, y: 580, w: 50, h: 120, label: "Retorno a Midgard", locked: false, toMap: "campos_midgard", toSpawn: { x: 1760, y: 660 } }, { x: 900, y: 1230, w: 140, h: 50, label: "Passo do Gigante", locked: false, toMap: "jotunheim_passo", toSpawn: { x: 1680, y: 130 } }], bossDen: s, theme: "snow", safeLabel: "Plan\xEDcies de J\xF6tunheim", scars: [{ id: "cristais_do_covil", flag: "hrimgar_derrotado", kind: "crystals", at: "bossDen", label: "Cristais de gelo cresceram no covil de Hr\xEDmgar" }] };
   }
-  var L8 = 4200, Xx = 2800, $x = { midgard_ruinas: { id: "segredo_vargheim", name: "Cripta Esquecida de Vargheim", label: "Passagem sob o altar" }, midgard_cemiterio: { id: "segredo_juramento", name: "C\xE2mara dos Juramentos", label: "Laje solta" }, jotunheim_glaciar: { id: "segredo_gelo", name: "Gruta do Gigante Esquecido", label: "Fenda no gelo" }, niflheim_floresta: { id: "segredo_niflheim", name: "Clareira Sem Nome", label: "N\xE9voa que n\xE3o se move" }, muspel_floresta: { id: "segredo_brasa", name: "Forno Abandonado de Surtr", label: "Fuma\xE7a subindo do ch\xE3o" }, svart_forja: { id: "segredo_forja", name: "Oficina Perdida dos An\xF5es", label: "Al\xE7ap\xE3o de ferro" }, vana_pantano: { id: "segredo_vozes", name: "Ninho das Vozes", label: "Ra\xEDzes que se abrem" }, alf_caverna: { id: "segredo_prisma", name: "Galeria do Eco Claro", label: "Prisma rachado" }, asg_arquivo: { id: "segredo_arquivo", name: "Biblioteca Sem P\xE1ginas", label: "Estante girat\xF3ria" }, lim_jardim: { id: "segredo_limiar", name: "Quarto Fora do Tempo", label: "Porta que n\xE3o estava l\xE1" } };
+  var L8 = 13280, Xx = 8850, $x = { midgard_ruinas: { id: "segredo_vargheim", name: "Cripta Esquecida de Vargheim", label: "Passagem sob o altar" }, midgard_cemiterio: { id: "segredo_juramento", name: "C\xE2mara dos Juramentos", label: "Laje solta" }, jotunheim_glaciar: { id: "segredo_gelo", name: "Gruta do Gigante Esquecido", label: "Fenda no gelo" }, niflheim_floresta: { id: "segredo_niflheim", name: "Clareira Sem Nome", label: "N\xE9voa que n\xE3o se move" }, muspel_floresta: { id: "segredo_brasa", name: "Forno Abandonado de Surtr", label: "Fuma\xE7a subindo do ch\xE3o" }, svart_forja: { id: "segredo_forja", name: "Oficina Perdida dos An\xF5es", label: "Al\xE7ap\xE3o de ferro" }, vana_pantano: { id: "segredo_vozes", name: "Ninho das Vozes", label: "Ra\xEDzes que se abrem" }, alf_caverna: { id: "segredo_prisma", name: "Galeria do Eco Claro", label: "Prisma rachado" }, asg_arquivo: { id: "segredo_arquivo", name: "Biblioteca Sem P\xE1ginas", label: "Estante girat\xF3ria" }, lim_jardim: { id: "segredo_limiar", name: "Quarto Fora do Tempo", label: "Porta que n\xE3o estava l\xE1" } };
   var pHash = (id) => { let h = 7; for (let i = 0; i < id.length; i++) h = h * 31 + id.charCodeAt(i) >>> 0; return h; };
   var pSides = (id, prev) => { let h = pHash(id), fieldPrev = prev === "campos_midgard" || prev === "planicies_jotunheim", raw = h % 2 ? "top" : "right", nx = h >> 1 & 1 || raw === "right" ? "bottom" : "right"; return { pr: fieldPrev ? "top" : raw, nx }; };
   var pRect = (sd, a, n) => sd === "top" ? { x: a / 2 - 70, y: 0, w: 140, h: 50 } : sd === "bottom" ? { x: a / 2 - 70, y: n - 50, w: 140, h: 50 } : { x: a - 50, y: n / 2 - 70, w: 50, h: 140 };
@@ -8281,7 +8281,16 @@ Error generating stack: ` + n.message + `
     let m = e.lakes.map((D) => ({ x: Math.round(D.x * o), y: Math.round(D.y * r), w: Math.round(D.w * o), h: Math.round(D.h * r) }));
     for (let D of m) l.push({ kind: "water", ...D });
     for (let [D, Z] of e.crates ?? []) l.push({ kind: "crate", x: Math.round(Z < 480 ? D + i : D * o), y: Math.round(Z < 480 ? Z : Z * r), w: 30, h: 30 });
-    let p = e.spawns.map((D) => D.radius === 0 ? { ...D, x: a / 2, y: n / 2 } : { ...D, x: Math.round(D.x * o), y: Math.round(D.y * r), radius: Math.round(D.radius * 1.25), count: Math.ceil(D.count * 1.9) }), h = [{ x: d.x, y: d.y, r: 110 }, { x: a / 2, y: n - 130, r: 110 }, { x: a - 130, y: n / 2, r: 110 }, ...e.city ? [{ x: 60, y: n / 2, r: 120 }] : [], { x: a / 2, y: n / 2, r: 60 }, ...u.map((D) => ({ x: D.x, y: D.y, r: 50 })), ...p.map((D) => ({ x: D.x, y: D.y, r: 40 })), ...Array.from({ length: 14 }, (D, Z) => ({ x: a / 2, y: n * (0.12 + Z * 0.058), r: 80 }))], x = (D, Z) => D > f.x - 10 && D < f.x + f.w + 10 && Z > f.y - 10 && Z < f.y + f.h + 10, b = (D, Z) => l.some((q) => q.x < D.x + D.w + Z && q.x + q.w + Z > D.x && q.y < D.y + D.h + Z && q.y + q.h + Z > D.y), g = $x[e.id], y = e.village ? 3 : 5, v = { rng: s, theme: e.theme ?? "grass", tier: t, mapId: e.id, sizes: $m, obstacles: l, pois: c, n: 0 }, k = (LMK[e.id] ? [LMK[e.id]] : []).concat(Vx(v.theme, s, y, !!g)), R = [], SD = pSides(e.id, e.prev), w = [{ ...pRect(SD.pr, a, n), label: "Retorno", locked: false, toMap: e.prev, toSpawn: e.prev === "campos_midgard" ? { x: 1570, y: 1150 } : e.prev === "planicies_jotunheim" ? { x: 970, y: 1150 } : pSpawn(pSides(e.prev, "").nx, a, n) }];
+    let p = e.spawns.map((D) => D.radius === 0 ? { ...D, x: a / 2, y: n / 2 } : { ...D, x: Math.round(D.x * o), y: Math.round(D.y * r), radius: Math.round(D.radius * 1.7), count: Math.ceil(D.count * 1.9) }), h0 = null, h = [{ x: d.x, y: d.y, r: 110 }, { x: a / 2, y: n - 130, r: 110 }, { x: a - 130, y: n / 2, r: 110 }, ...e.city ? [{ x: 60, y: n / 2, r: 120 }] : [], { x: a / 2, y: n / 2, r: 60 }, ...u.map((D) => ({ x: D.x, y: D.y, r: 50 })), ...p.map((D) => ({ x: D.x, y: D.y, r: 40 })), ...Array.from({ length: 14 }, (D, Z) => ({ x: a / 2, y: n * (0.12 + Z * 0.058), r: 80 }))], x = (D, Z) => D > f.x - 10 && D < f.x + f.w + 10 && Z > f.y - 10 && Z < f.y + f.h + 10, b = (D, Z) => l.some((q) => q.x < D.x + D.w + Z && q.x + q.w + Z > D.x && q.y < D.y + D.h + Z && q.y + q.h + Z > D.y), g = $x[e.id], y = e.village ? 4 : 14, v = { rng: s, theme: e.theme ?? "grass", tier: t, mapId: e.id, sizes: $m, obstacles: l, pois: c, n: 0 }, k = (LMK[e.id] ? [LMK[e.id]] : []).concat(Vx(v.theme, s, y, !!g)), R = [], SD = pSides(e.id, e.prev), w = [{ ...pRect(SD.pr, a, n), label: "Retorno", locked: false, toMap: e.prev, toSpawn: e.prev === "campos_midgard" ? { x: 1570, y: 1150 } : e.prev === "planicies_jotunheim" ? { x: 970, y: 1150 } : pSpawn(pSides(e.prev, "").nx, a, n) }];
+    {
+      const base = p.filter((D) => D.radius > 0 && D.count > 1), ex = [];
+      for (const D of base) for (let c2 = 0; c2 < 2; c2++) for (let tr = 0; tr < 40; tr++) {
+        const X = 400 + s() * (a - 800), Y = 400 + s() * (n - 800);
+        if (x(X, Y) || Math.hypot(X - d.x, Y - d.y) < 900 || w.some((q) => Math.hypot(q.x + q.w / 2 - X, q.y + q.h / 2 - Y) < 700)) continue;
+        ex.push({ ...D, x: Math.round(X), y: Math.round(Y) }); break;
+      }
+      p.push(...ex);
+    }
     for (let D of k) {
       let Z = Ux[D];
       for (let q = 0; q < 400; q++) {
@@ -8292,7 +8301,7 @@ Error generating stack: ` + n.message + `
         break;
       }
     }
-    let M = Array.from({ length: 16 }, () => ({ x: 120 + s() * (a - 240), y: 120 + s() * (n - 240), r: 160 + s() * 260 })), T = 0, z = 0, I = Math.round((e.trees + e.rocks) * 2.1), J = e.trees / Math.max(1, e.trees + e.rocks);
+    let M = Array.from({ length: 16 }, () => ({ x: 120 + s() * (a - 240), y: 120 + s() * (n - 240), r: 160 + s() * 260 })), T = 0, z = 0, I = Math.round((e.trees + e.rocks) * 2.1 * 4), J = e.trees / Math.max(1, e.trees + e.rocks);
     {
       let PX = 4, PY = 3, GP = 78, BW = (PX - 1) * GP + 60, BH = (PY - 1) * GP + 60, LX = 150, LY = 130, cols = Math.floor((a - 120) / (BW + LX)), rows = Math.floor((n - 120) / (BH + LY)), blocks = [];
       for (let bx = 0; bx < cols; bx++) for (let by = 0; by < rows; by++) blocks.push([bx, by]);
@@ -8846,6 +8855,34 @@ Error generating stack: ` + n.message + `
     for (const [x, y] of [[190, 140], [2210, 140], [190, 1470], [2210, 1470], [1010, 1490], [1390, 1490], [190, 450], [2210, 450], [190, 850], [2210, 850], [190, 1250], [2210, 1250]]) D("vipplant", x, y, 28, 28);
     return { id: "sala_vip", name: "Sal\xE3o VIP", width: 2400, height: 1585, spawn: { x: 1200, y: 1380 }, safeZone: { x: 0, y: 0, w: 2400, h: 1585 }, obstacles: ob, spawns: [], maxMonsters: 0, npcs: [{ id: "vipconcierge", x: 1200, y: 320 }, { id: "vipmordomo", x: 1965, y: 190 }, { id: "mestre_jogos", x: 940, y: 820 }, { id: "provador", x: 1460, y: 820 }, { id: "curandeira", x: 1040, y: 1180 }, { id: "estilista", x: 1360, y: 1180 }], pois: [], portals: [{ x: 1140, y: 1470, w: 120, h: 70, label: "Voltar", locked: false, toMap: "__vipback", toSpawn: { x: 0, y: 0 } }], bossDen: { x: 1200, y: 900, r: 10 }, theme: "marble", safeLabel: "Sal\xE3o Dourado", scars: [], mood: [1.06, 0.98, 0.86], hidden: true, city: true, indoor: true };
   }
+  function bigCity(m) {
+    const W = m.width, H = m.height, F = 2.24, NW = Math.round(W * F / 20) * 20, NH = Math.round(H * F / 20) * 20, dx = Math.round((NW - W) / 2), dy = Math.round((NH - H) / 2);
+    const sh = (o) => { if (o && typeof o.x === "number") o.x += dx; if (o && typeof o.y === "number") o.y += dy; };
+    m.obstacles.forEach(sh), m.npcs.forEach(sh), (m.pois || []).forEach(sh), (m.critters || []).forEach(sh), (m.paved || []).forEach(sh), sh(m.safeZone), sh(m.spawn), sh(m.bossDen);
+    const ex = m.portals[0], gx = ex.x + dx, gw = ex.w;
+    m.portals[0] = { ...ex, x: gx, y: NH - 60 };
+    m.width = NW, m.height = NH, m.shift = { dx, dy }, m.paved = m.paved || [];
+    const rng = Oe([...m.id].reduce((q, c) => q * 31 + c.charCodeAt(0) >>> 0, 11)), S = 560, SW = 64, core = { x: dx - 110, y: dy - 110, w: W + 220, h: H + 220 };
+    const inCore = (x, y, w, h) => x < core.x + core.w && x + w > core.x && y < core.y + core.h && y + h > core.y;
+    const pv = (x, y, w, h) => { if (w > 0 && h > 0) m.paved.push({ x: Math.round(x), y: Math.round(y), w: Math.round(w), h: Math.round(h) }); };
+    pv(gx, dy + H - 40, gw, NH - (dy + H - 40));
+    const xs = [], ys = [];
+    for (let x = 300; x < NW - 200; x += S) xs.push(x);
+    for (let y = 300; y < NH - 200; y += S) ys.push(y);
+    for (const x of xs) { if (x + SW > core.x && x < core.x + core.w) { pv(x, 0, SW, core.y), pv(x, core.y + core.h, SW, NH - core.y - core.h); } else pv(x, 0, SW, NH); }
+    for (const y of ys) { if (y + SW > core.y && y < core.y + core.h) { pv(0, y, core.x, SW), pv(core.x + core.w, y, NW - core.x - core.w, SW); } else pv(0, y, NW, SW); }
+    const ob = m.obstacles, add = (o) => ob.push(o);
+    for (const x of xs) for (const y of ys) {
+      const bx = x + SW + 20, by = y + SW + 20, bw = S - SW - 40;
+      if (inCore(bx, by, bw, bw) || bx + bw > NW - 60 || by + bw > NH - 60) continue;
+      const kind = rng();
+      if (kind < 0.12) { for (let i = 0; i < 5; i++) add({ kind: "tree", x: Math.round(bx + 20 + rng() * (bw - 60)), y: Math.round(by + 20 + rng() * (bw - 60)), w: 22, h: 18 }); continue; }
+      for (let i = 0; i < 2; i++) for (let j = 0; j < 2; j++) if (rng() < 0.72) add({ kind: "house", x: Math.round(bx + 20 + i * 235 + rng() * 30), y: Math.round(by + 40 + j * 215 + rng() * 20), w: 138, h: 104 });
+      for (let i = 0; i < 3; i++) add({ kind: "tree", x: Math.round(bx + 10 + rng() * (bw - 40)), y: Math.round(by + 10 + rng() * (bw - 40)), w: 22, h: 18 });
+      add({ kind: "deco", deco: "lamp", x: x + SW + 4, y: y + SW + 4, w: $m.lamp.w, h: $m.lamp.h });
+    }
+    return m;
+  }
   var Xm = R8();
   Xm.portals.sort((e, t) => e.toMap === "planicies_jotunheim" ? -1 : t.toMap === "planicies_jotunheim" ? 1 : 0);
   var Yx = q8(), Jt = { [Xm.id]: Xm, [Yx.id]: Yx };
@@ -8937,7 +8974,7 @@ Error generating stack: ` + n.message + `
   Qm.forEach((e, t) => {
     Jt[e.id] = N8(e, t), Jt[e.id].depth = t + 1;
   });
-  for (let e of D8) Jt[e.id] = z8(e);
+  for (let e of D8) Jt[e.id] = bigCity(z8(e));
   Jt.wb_cratera = wbArena();
   {
     let mg = Jt.cidade_midgard, ch = mg.obstacles.find((q) => q.kind === "deco" && q.deco === "church");
@@ -11954,7 +11991,7 @@ Error generating stack: ` + n.message + `
         this.toast(`${t.label}: a passagem est\xE1 selada. Complete a quest de Eira para abri-la.`, "info");
         return;
       }
-      let cm = this.world.map, cx = t.x + t.w / 2, cy = t.y + t.h / 2, ex = t.x < 60 ? cx + 90 : t.x + t.w > cm.width - 60 ? cx - 90 : cx, ey = t.y < 60 ? cy + 90 : t.y + t.h > cm.height - 60 ? cy - 90 : cy, back = this.ps.pback?.[cm.id], dest = back && back.map === n.id ? { x: back.x, y: back.y } : t.toSpawn ?? n.spawn;
+      let cm = this.world.map, cx = t.x + t.w / 2, cy = t.y + t.h / 2, ex = t.x < 60 ? cx + 90 : t.x + t.w > cm.width - 60 ? cx - 90 : cx, ey = t.y < 60 ? cy + 90 : t.y + t.h > cm.height - 60 ? cy - 90 : cy, back = this.ps.pback?.[cm.id], dest = back && back.map === n.id ? { x: back.x, y: back.y } : t.toSpawn && n.shift ? { x: t.toSpawn.x + n.shift.dx, y: t.toSpawn.y + n.shift.dy } : t.toSpawn ?? n.spawn;
       this.ps.pback || (this.ps.pback = {}), this.ps.pback[n.id] = { map: cm.id, x: Math.round(ex), y: Math.round(ey) };
       this.online || (this.saveGame(), this.world = new nr(this.ps, n, void 0, dest), (this.ps.visited.includes(n.id) ? 0 : (this.ps.visited.push(n.id), this.pushLog(`Voc\xEA chegou a ${n.name}.`, "system"), this.toast(`${n.name}`, "info"))), this.dialogue = null, this.saveGame(), this.refresh());
     }
@@ -14754,7 +14791,7 @@ void main() {
     }
     return M0 = "cpu", mk(e, t);
   }
-  var Zp = 2.4;
+  var Zp = 2.4, zpOf = (e) => Math.max(Zp, Zp * Math.sqrt(e.width * e.height / 33e6));
   function lt(e, t, a = 0) {
     let n = e * 374761393 + t * 668265263 + a * 2147483647 | 0;
     return n = (n ^ n >>> 13) * 1274126177 | 0, ((n ^ n >>> 16) >>> 0) / 4294967296;
@@ -14790,7 +14827,7 @@ void main() {
     return Math.hypot(Math.max(i, 0), Math.max(s, 0)) + Math.min(Math.max(i, s), 0) - n;
   }
   function a4(e) {
-    let t = Zp, a = Math.ceil(e.width / t), n = Math.ceil(e.height / t), o = document.createElement("canvas");
+    let t = zpOf(e), a = Math.ceil(e.width / t), n = Math.ceil(e.height / t), o = document.createElement("canvas");
     o.width = a, o.height = n;
     let r = o.getContext("2d"), i = r.createImageData(a, n), s = i.data, l = e.theme ?? "grass", c = gk[l], d = l === "fire" || l === "forge", f = bk(e), u = e.obstacles.filter((w) => w.kind === "water"), m = e.safeZone, p = e.city ? e.paved ?? [] : [], h = e.city ? 4 : 18, x = e.bossDen, b = x.r >= 30, g = (w, M, T) => {
       if (w < 0 || M < 0 || w >= a || M >= n) return;
@@ -17787,7 +17824,7 @@ function ROXQM(f, c, s, l, def, ex) {
   }
   function D4(e) {
     let t = a4(e), a = o4(e.theme ?? "grass");
-    return { ground: t, gs: 1 / Zp, flat: t, ...a };
+    return { ground: t, gs: 1 / zpOf(e), flat: t, ...a };
   }
   var Vl = 16, P0 = [0.34, 0.5, 0.66], G0 = /* @__PURE__ */ new Map(), bh = /* @__PURE__ */ new Map();
   function O4(e, t, a) {
