@@ -16973,6 +16973,7 @@ void main() {
 var QCACHE = /* @__PURE__ */ new Map();
 function ROXQM(f, c, s, l, def) {
   if (!["wolf", "frostwolf", "hati", "boar", "yeti", "blob", "goblin", "draugr", "cinder", "automaton", "sylvan", "prism", "sentinel", "voidling", "jotun", "grifo", "corvo"].includes(f) || typeof ROX === "undefined" || typeof location < "u" && /[?&]old\b/.test(location.search)) return null;
+  if (typeof ROX2M !== "undefined" && !(typeof location < "u" && /[?&]old2\b/.test(location.search))) { try { const r2 = ROX2M.mon(f, c, s, l, def); if (r2) return r2; } catch (err) { if (!window.__rox2merr) { window.__rox2merr = 1; console.warn("ROX2M", err); } } }
   let key = `${f}:${def.id}:${c}:${s}:${l}`, h = QCACHE.get(key);
   if (h) return h;
   let eyes = { wolf: 0xffc040, frostwolf: 0x80e0ff, hati: 0xe0f0ff, boar: 0xff5a4a, yeti: 0xff5050, blob: 0xffffff, grifo: 0xffd040 };
@@ -18864,8 +18865,8 @@ function ROXQM(f, c, s, l, def) {
         nt(n, u, r.x + m.dx, r.y + 6 + m.dy - moff + jy2, l, $a * m.sx, $a * m.sy, m.rot);
         a.ps.equipment.headTop === "poring_saltitante" && drawPoring(n, r.x + m.dx, r.y + 6 + m.dy - moff + (a.sitting ? 13 : 0), 1, this.clock, s, l);
         if (mnt) {
-          let mw = ROXQM("corvo", s, i.moving ? Math.floor(i.phase * ea) : -1, atkM ? 1 : 0, { id: "montaria" + (a.ps.dye || 0), color: a.ps.dye || 13209406 }), lun = atkM ? Math.sin(Math.min(1, (this.clock - i.atkAt) / Math.max(260, i.atkDur || 0)) * Math.PI) : 0;
-          mw && nt(n, mw, r.x, r.y + 10 - lun * 4, l, $a * (a.sitting ? 1.04 : 1) * (1 + lun * 0.08), $a * (a.sitting ? 0.78 : 1) * (1 - lun * 0.04));
+          let mw = ROXQM("boar", s, i.moving ? Math.floor(i.phase * ea) : -1, atkM ? 1 : 0, { id: "montaria" + (a.ps.dye || 0), color: a.ps.dye || 9332298 }), lun = atkM ? Math.sin(Math.min(1, (this.clock - i.atkAt) / Math.max(260, i.atkDur || 0)) * Math.PI) : 0;
+          mw && nt(n, mw, r.x, r.y + 10 - lun * 4, l, $a * 1.2 * (a.sitting ? 1.04 : 1) * (1 + lun * 0.08), $a * 1.2 * (a.sitting ? 0.78 : 1) * (1 - lun * 0.04));
         }
         a.ps.level >= 99 && this.epicFx(r.x, r.y, 1);
       }
@@ -18927,6 +18928,8 @@ function ROXQM(f, c, s, l, def) {
       if (k >= 0 && k < 1) { let tg = ce(fs.x, fs.y), u = k < 0.5 ? k * 2 : (1 - k) * 2, e = u * u * (3 - 2 * u); px += (tg.x - px) * e, py += (tg.y - 14 - py) * e, fx = tg.x - px; }
       let sd = fx >= 0 ? 1 : -1, fl = Math.sin(T * 14) * 6;
       this.blob(base.x + (px - base.x) * 0.2, base.y + 4, 5);
+      let fsp = null; try { fsp = typeof ROX2M !== "undefined" ? ROX2M.mon("corvo", "side", Math.floor(T * 10) % 8, 0, { id: "falcao", color: null }, { st: Math.min(3, w.ps.tier || 0) }) : null; } catch (e) { fsp = null; }
+      if (fsp) { nt(n, fsp, px, py, sd < 0, $a * 0.62, $a * 0.62); } else {
       n.save(), n.translate(px, py), n.scale(sd, 1);
       n.fillStyle = "#7a5a3a", n.beginPath(), n.ellipse(0, 0, 8, 4.5, 0, 0, 7), n.fill();
       n.fillStyle = "#5a3e24", n.beginPath(), n.moveTo(-1, -1), n.lineTo(-7, -9 - fl), n.lineTo(4, -2), n.fill(), n.beginPath(), n.moveTo(-1, 1), n.lineTo(-8, 8 + fl), n.lineTo(3, 2), n.fill();
@@ -18934,6 +18937,7 @@ function ROXQM(f, c, s, l, def) {
       n.fillStyle = "#f0b838", n.beginPath(), n.moveTo(10.5, -2.6), n.lineTo(14.5, -1), n.lineTo(10.5, -0.2), n.fill(), n.fillStyle = "#111", n.fillRect(8, -3.2, 1.4, 1.4);
       n.fillStyle = "#4a3220", n.beginPath(), n.moveTo(-7, 0), n.lineTo(-13, -1.5), n.lineTo(-13, 2.5), n.fill();
       n.restore();
+      }
     }
     drawVend() {
       let w = this.store.world; if (!w || !w.ps.vend?.open) return;

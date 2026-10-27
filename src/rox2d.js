@@ -304,5 +304,6 @@
     const cx = cv.getContext("2d"); cx.putImageData(new ImageData(d, CW, CW), 0, 0);
     return { cv, ax: CW / 2 * KS, ay: GYY * KS, k: KS };
   }
+  ROX2.eng = { hx, mix, dk, TAU, clamp, Ctx, Img, put, ellipsoid, strip, outline };
   return ROX2;
 })();

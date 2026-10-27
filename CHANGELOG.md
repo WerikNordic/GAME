@@ -1,3 +1,9 @@
+## v203 - Monstros no visual novo
+- Monstros (lobos, javali, goblin, draugr, yeti, imp, golens, silvano, prisma, vazio, gosma, chefes Hati/Jotun) e critters/pet lobo no mesmo estilo pixel por partes, formas mais quadradas (menos bolas), cores vindas da definicao de cada monstro.
+- Falcao do Cacador agora e o Corvo de Odin, com 4 estagios por tier (olho/asas mudam de cor).
+- Montaria do Berserker/Escudeiro deixou de ser o corvo: agora e um javali.
+- ?old2 desliga so o visual novo dos monstros; ?old volta tudo ao antigo.
+
 ## v202 - Proporcao
 - Sem bolas nos ombros (removidas as golas/pele redondas e o ombro dos bracos ficou rente ao tronco).
 - Cabeca menor (so a cabeca), mais proporcional ao corpo.
