@@ -1,3 +1,6 @@
+## v196
+- Boss mundial renomeado para Werikr (WERIK em nordico): banner de despertar com runas ᚹᛖᚱᛁᚲᚱ + WERIKR DESPERTOU; nome atualizado no mapa Cratera, painel, logs, comando de teste e skill Terremoto de Werikr.
+
 ## v195
 - Recepcionista Dourada (Sala VIP) agora fica ao lado do ponto de chegada de cada cidade, bem perto do spawn (antes ficava longe, na praca).
 
