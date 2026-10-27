@@ -1,3 +1,6 @@
+# v152
+- NOVO: NPC Sala VIP em todas as cidades. Passe VIP (7 dias 15.000 / 30 dias 50.000 Zens). Regalias: loja VIP 35% mais barata com itens exclusivos, montaria gratis, bencao (cura + agilidade), cores neon/metalicas de cabelo e roupa e cortes de ambos os generos no estilista. ADM sempre VIP.
+
 # v151
 - Comandos de ADM no chat (conta admin): @ajuda, @lvlup 0-99, @joblv, @statpts, @skillpts, @zeny, @heal, @god, @goto, @item, @ban/@unban (e-mail). Aura dourada e coroa + nome [ADM].
 
