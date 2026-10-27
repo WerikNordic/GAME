@@ -17601,6 +17601,27 @@ function ROXQM(f, c, s, l, def) {
       }
     }
     for (const m of Object.values(Jt)) {
+      if (!String(m.id).startsWith("cidade_") || !(m.paved || []).length) continue;
+      const pv = m.paved, onSt = (x, y, g) => pv.some((q) => x > q.x - g && x < q.x + q.w + g && y > q.y - g && y < q.y + q.h + g);
+      const isT = (o) => o.kind === "tree" || o.kind === "deco" && o.deco === "lamp";
+      const solid = m.obstacles.filter((o) => !isT(o) && o.kind !== "rock" && o.kind !== "water");
+      const taken = new Set(), out = [];
+      for (const o of m.obstacles) {
+        if (!isT(o)) { out.push(o); continue; }
+        const cx = o.x + o.w / 2, cy = o.y + o.h / 2;
+        if (onSt(cx, cy, 64)) continue;
+        const G = o.kind === "tree" ? 96 : 128;
+        let nx = Math.round(cx / G) * G, ny = Math.round(cy / G) * G;
+        const ok = (x, y) => x > 60 && y > 60 && x < m.width - 60 && y < m.height - 60 && !onSt(x, y, 64) && !solid.some((q) => x > q.x - 18 && x < q.x + q.w + 18 && y > q.y - 18 && y < q.y + q.h + 18);
+        if (!ok(nx, ny)) { nx = cx; ny = cy; }
+        const key = o.kind + ":" + Math.round(nx) + ":" + Math.round(ny);
+        if (taken.has(key)) continue;
+        taken.add(key);
+        out.push({ ...o, x: Math.round(nx - o.w / 2), y: Math.round(ny - o.h / 2) });
+      }
+      m.obstacles = out;
+    }
+    for (const m of Object.values(Jt)) {
       if (!String(m.id).startsWith("cidade_")) continue;
       const bs = m.obstacles.filter((o) => o.kind === "deco" && o.deco === "bench");
       if (bs.length <= 3) continue;

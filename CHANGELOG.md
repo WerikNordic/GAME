@@ -1,3 +1,7 @@
+# v179
+- Cidades: removidas árvores e postes nas ruas pavimentadas (paralelepípedos) e junto às bordas das ruas.
+- Árvores e postes restantes alinhados numa grade regular (sem posição aleatória); duplicatas removidas. Árvore de Natal central de Isenborg intacta.
+
 # v178
 - Telas iniciais: criação e seleção de personagem agora escalam com o tamanho da janela (antes ficavam minúsculas em tela grande).
 - Corrigido: a seleção de personagem ficava presa e cortada dentro do cartão do menu (o efeito de desfoque do cartão prendia a tela).
