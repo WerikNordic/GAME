@@ -17740,7 +17740,7 @@ function ROXQM(f, c, s, l, def) {
     for (const m of Object.values(Jt)) {
       if (!String(m.id).startsWith("cidade_") || !(m.paved || []).length) continue;
       const pv = m.paved, onSt = (x, y, g) => pv.some((q) => x > q.x - g && x < q.x + q.w + g && y > q.y - g && y < q.y + q.h + g);
-      const isT = (o) => o.kind === "tree" || o.kind === "deco" && o.deco === "lamp";
+      const isT = (o) => o.kind === "tree" || o.kind === "deco" && (o.deco === "lamp" || o.deco === "frosttree" || o.deco === "cactus" || o.deco === "palm");
       const solid = m.obstacles.filter((o) => !isT(o) && o.kind !== "rock" && o.kind !== "water");
       const taken = new Set(), out = [];
       for (const o of m.obstacles) {

@@ -1,3 +1,6 @@
+## v190
+- Ruas das cidades: removidas as árvores de neve (Isenborg, 54 nas ruas), cactos (Eldvik) e palmeiras que ainda ficavam sobre o calçamento; agora seguem a mesma regra das outras árvores e postes (fora das ruas, alinhados à grade).
+
 ## v189
 - Drops de monstros agora sempre caem em 1 unidade (nunca mais de uma por drop).
 
