@@ -1,3 +1,6 @@
+# v151
+- Comandos de ADM no chat (conta admin): @ajuda, @lvlup 0-99, @joblv, @statpts, @skillpts, @zeny, @heal, @god, @goto, @item, @ban/@unban (e-mail). Aura dourada e coroa + nome [ADM].
+
 # v78
 - Sprites no estilo Ragnarok: proporcao mais realista, paleta terrosa/apagada, dithering, cabelo e rosto menores e detalhados; cenario menos saturado.
 

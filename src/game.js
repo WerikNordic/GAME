@@ -11518,6 +11518,52 @@ Error generating stack: ` + n.message + `
       await MP.refreshSoc();
       this.refresh();
     }
+    admCmd(txt) {
+      let [cmd, ...args] = txt.slice(1).split(/\s+/), c = cmd.toLowerCase(), ps = this.ps, say = (m, tone = "good") => (this.pushLog(m, "system", tone), true);
+      if (!["ajuda", "adm", "lvlup", "joblv", "item", "zeny", "heal", "god", "goto", "ban", "unban", "skillpts", "statpts", "mvp", "ir"].includes(c)) return false;
+      if (!(window.__admin === true)) return say("Comando restrito a administradores.", "bad");
+      if (c === "ajuda" || c === "adm") return say("ADM: @lvlup 0-99 \u00B7 @joblv N \u00B7 @item id|nome [qtd] \u00B7 @zeny N \u00B7 @heal \u00B7 @god \u00B7 @goto mapa \u00B7 @statpts N \u00B7 @skillpts N \u00B7 @ban e-mail \u00B7 @unban e-mail");
+      if (c === "lvlup") {
+        let n = parseInt(args[0]);
+        if (!(n >= 0 && n <= 99)) return say("Uso: @lvlup 0 a 99", "bad");
+        n = Math.max(1, n);
+        if (n > ps.level) { for (let l = ps.level + 1; l <= n; l++) ps.statPoints += I8(l); ps.level = n; ps.exp = 0; }
+        else { ps.level = n; ps.exp = 0; ps.stats = { ...Ce[ps.line].base }; ps.statPoints = 0; for (let l = 2; l <= n; l++) ps.statPoints += I8(l); }
+        let d = Ua(ps); ps.hp = d.maxHp, ps.mp = d.maxMp, this.saveGameQuiet(), this.refresh();
+        return say(`Nível base ajustado para ${n}.`);
+      }
+      if (c === "joblv") { let n = parseInt(args[0]); if (!(n >= 1 && n <= 99)) return say("Uso: @joblv 1 a 99", "bad"); ps.jobLevel = n, ps.jobExp = 0, this.refresh(); return say(`Nível de classe: ${n}.`); }
+      if (c === "statpts" || c === "skillpts") { let n = parseInt(args[0]); if (!(n >= 0 && n <= 9999)) return say(`Uso: @${c} 0 a 9999`, "bad"); c === "statpts" ? ps.statPoints += n : ps.skillPoints += n, this.refresh(); return say("Pontos adicionados."); }
+      if (c === "zeny") { let n = parseInt(args[0]); if (!Number.isFinite(n)) return say("Uso: @zeny quantidade", "bad"); ps.silver = Math.max(0, ps.silver + n), this.refresh(); return say(`Zens: ${ps.silver}.`); }
+      if (c === "heal") { let d = Ua(ps); ps.hp = d.maxHp, ps.mp = d.maxMp, this.refresh(); return say("Vida e mana restauradas."); }
+      if (c === "god") { this._god = !this._god, this.world && (this.world.player.invulnUntil = this._god ? 1e15 : 0); return say(this._god ? "Modo invulnerável LIGADO." : "Modo invulnerável DESLIGADO."); }
+      if (c === "goto" || c === "ir") {
+        let q = args.join(" ").toLowerCase(), m = Object.values(Jt).find((x) => x.id === q) ?? Object.values(Jt).find((x) => x.name.toLowerCase().includes(q));
+        if (!q || !m) return say("Uso: @goto id-ou-nome-do-mapa", "bad");
+        this.world = new nr(this.ps, m, void 0, m.spawn), this.panel = "none", this.refresh();
+        return say(`Teleportado para ${m.name}.`);
+      }
+      if (c === "item") {
+        let q = (args[0] ?? "").toLowerCase(), qty = Math.max(1, Math.min(9999, parseInt(args[1]) || 1)), it = Wa[q] ?? Object.values(Wa).find((x) => x.name.toLowerCase().replace(/\s+/g, "_") === q) ?? Object.values(Wa).find((x) => x.id.includes(q) || x.name.toLowerCase().includes(q.replace(/_/g, " ")));
+        if (!q || !it) return say("Uso: @item id-ou-nome [quantidade] (ex.: @item pocao_vermelha 50)", "bad");
+        let left = He(ps.inventory, it.id, qty);
+        this.refresh();
+        return say(left > 0 ? `${it.name}: inventário cheio (${left} não couberam).` : `Criado: ${qty}x ${it.name}.`, left > 0 ? "bad" : "good");
+      }
+      if (c === "ban" || c === "unban") {
+        let em = (args[0] ?? "").toLowerCase();
+        if (!em) return say(`Uso: @${c} e-mail-da-conta`, "bad");
+        if (!window.__tok) return say("Sem sessão de conta ativa.", "bad");
+        sbRpc("eld_admin_list", { p_token: window.__tok }).then((r) => {
+          let a = r?.accounts?.find((x) => x.email === em);
+          if (!a) return say("Conta não encontrada.", "bad");
+          if (a.admin) return say("Não é possível banir um administrador.", "bad");
+          return sbRpc("eld_admin_set", { p_token: window.__tok, p_id: a.id, p_status: c === "ban" ? "blocked" : "approved" }).then((r2) => say(r2?.ok ? (c === "ban" ? `Conta ${em} banida permanentemente.` : `Conta ${em} liberada.`) : "Falha ao aplicar.", r2?.ok ? "good" : "bad"));
+        });
+        return true;
+      }
+      return false;
+    }
     sendChat(t) {
       if (!this.ps) return;
       { let dm = t.trim().match(/^\/(denunciar|report)\s+(\S+)\s+([\s\S]{3,})$/i); if (dm) { sbRpc("mp_report", { p_id: MP.pid + ":" + (this.activeSlot ?? 0), p_name: this.ps.name, p_target: dm[2], p_reason: dm[3] }).then((r) => { this.pushLog(r?.ok ? `Den\u00FAncia sobre ${dm[2]} enviada \u00E0 modera\u00E7\u00E3o.` : r?.error ?? "Sem conex\u00E3o com o servidor.", "system", r?.ok ? "good" : "bad"), this.refresh(); }); return; } if (/^\/(denunciar|report)\b/i.test(t.trim())) { this.pushLog("Uso: /denunciar nome motivo", "system", "info"), this.refresh(); return; } }
@@ -11525,6 +11571,7 @@ Error generating stack: ` + n.message + `
         this.goAfk();
         return;
       }
+      if (/^@\S/.test(t.trim()) && this.admCmd(t.trim())) return;
       let wm = t.trim().match(/^\/(w|whisper|sussurro)\s+(\S+)\s+([\s\S]+)$/i);
       if (wm && MP.ok && !this.online) {
         let to = wm[2], tx = wm[3].slice(0, 200);
@@ -17592,6 +17639,7 @@ function ROXQM(f, c, s, l, def) {
       if (!a) return;
       let n = this.ctx, o = a.player, r = ce(o.pos.x, o.pos.y), i = this.animOf("p", o.pos.x, o.pos.y, t), { dir: s, flip: l } = Kl(o.facing), c = a.isDead(), d = Km(this.clock - i.atkAt, i.atkImpact, i.atkDur), f = a.sitting ? -2 : i.moving ? Math.floor(i.phase * ea) : -1, u = fa(po(cs(a.ps)), s, f, d, i.atkStyle);
       a.ps.mount && a.ps.mountOwned && !c && !d && (u = fa(po(cs(a.ps)), s, -2, 0, i.atkStyle));
+      window.__admin === true && !c && this.admAura(r);
       if (n.save(), n.globalAlpha = c ? 0.3 : 1, c) n.translate(r.x, r.y), n.rotate(Math.PI / 2), N4(() => nt(n, u, 0, 0, l, $a, $a));
       else {
         this.blob(r.x, r.y + 4, 15), a.ps.level >= 99 && this.epicFx(r.x, r.y, 0);
@@ -17608,10 +17656,27 @@ function ROXQM(f, c, s, l, def) {
       if (n.restore(), !c) {
         a.ps.pet && a.ps.petData || (window.__petHit = null);
         let m = a.sitting ? -14 : 0;
-        this.nameOn("p") && this.text(a.ps.name, r.x, r.y + 16, 12, "#ffffff");
+        window.__admin === true ? this.text("\u265B [ADM] " + a.ps.name, r.x, r.y + 16, 12, "#ffd34d") : this.nameOn("p") && this.text(a.ps.name, r.x, r.y + 16, 12, "#ffffff");
         let p = a.derived();
         this.bar(r.x, r.y - 52 + m, 38, Math.max(0, a.ps.hp / p.maxHp), "#58d468"), a.speech && a.time < a.speech.until ? this.speechBalloon(a.speech.text, r.x, r.y - 70 + m, Math.min(1, (a.speech.until - a.time) / 500)) : a.emote && a.time < a.emote.until && (emoKind(a.emote.text) ? this.emoBubble(emoKind(a.emote.text), r.x, r.y - 82 + m - Math.sin(this.clock / 260) * 2, Math.min(1, (a.emote.until - a.time) / 400), a.emote.until - a.time) : this.balloon(a.emote.text, r.x, r.y - 82 + m - Math.sin(this.clock / 260) * 2, Math.min(1, (a.emote.until - a.time) / 400)));
       }
+    }
+    admAura(r) {
+      let o = this.ctx, T = this.clock / 1e3;
+      o.save(), o.globalCompositeOperation = "lighter";
+      for (let k = 0; k < 3; k++) {
+        let ph = (T * 0.6 + k / 3) % 1;
+        o.strokeStyle = `rgba(255,214,90,${(0.55 * (1 - ph)).toFixed(3)})`, o.lineWidth = 2, o.beginPath(), o.ellipse(r.x, r.y + 4, 14 + ph * 34, (14 + ph * 34) * 0.42, 0, 0, 6.283), o.stroke();
+      }
+      let g = o.createRadialGradient(r.x, r.y - 22, 4, r.x, r.y - 22, 46);
+      g.addColorStop(0, "rgba(255,226,120,0.22)"), g.addColorStop(1, "rgba(255,200,60,0)"), o.fillStyle = g, o.fillRect(r.x - 50, r.y - 70, 100, 100);
+      for (let k = 0; k < 6; k++) {
+        let a = T * 1.4 + k * 1.047, px = r.x + Math.cos(a) * 24, py = r.y - 24 + Math.sin(a) * 10 - Math.sin(T * 2 + k) * 8;
+        o.fillStyle = "rgba(255,236,150,0.9)", o.fillRect(px - 1.5, py - 1.5, 3, 3);
+      }
+      o.restore();
+      let b = Math.sin(T * 2.2) * 2;
+      o.save(), o.font = "bold 16px serif", o.textAlign = "center", o.fillStyle = "#ffd34d", o.strokeStyle = "#5a3a00", o.lineWidth = 3, o.strokeText("\u265B", r.x, r.y - 86 + b), o.fillText("\u265B", r.x, r.y - 86 + b), o.restore();
     }
     drawPet() {
       let a = this.store.world;
