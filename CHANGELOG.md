@@ -1,3 +1,8 @@
+# v181
+- Papai Noel agora fica na porta da Casa do Papai Noel (área limpa ao redor), com gorro de Natal novo, barriga, cinto com fivela dourada, barba e roupa vermelha de debrum branco. Ao clicar, abre o diálogo desejando Feliz Natal.
+- Isenborg com trilha própria: melodia de Natal calma (Noite Feliz, domínio público) em sinos suaves com pad e guizos discretos; mais lenta à noite.
+- Casa do Papai Noel: colisão ajustada ao tamanho visual.
+
 # v180
 - Fontes removidas de todos os mapas; só Cidade de Midgard mantém as suas (inclui as fontes secas de Kharnheim e Eldvik).
 - Pedras rúnicas só em locais com sentido (ruínas, cemitério, catacumbas, santuário, observatório, catedral, Idavoll, trono de Jotunheim, fenda do Limbo, Gladsheim e mapas secretos).
