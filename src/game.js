@@ -9367,6 +9367,7 @@ Error generating stack: ` + n.message + `
     }
     window.__genMonsters = made.length;
   }
+
   var BAL = { hp: 1.55, atk: 1.3, def: 1.12, exp: 1, silver: 0.55, drop: 0.55, bossHp: 1.35, bossAtk: 1.25, bossExp: 1, bossDrop: 0.8 };
 
   {
@@ -9540,12 +9541,28 @@ Error generating stack: ` + n.message + `
     { id: "vis_violeta", kind: "look", name: "Olhar M\xEDstico", desc: "", need: [["runa_mente",2]], reward: "olhos_violeta" },
     { id: "vis_esmeralda", kind: "look", name: "Olhar da Floresta", desc: "", need: [["erva_azul",12],["erva_espinhosa",4]], reward: "olhos_esmeralda" },
   ];
+  {
+    const h32q = (str) => { let h = 7; for (let i = 0; i < str.length; i++) h = h * 31 + str.charCodeAt(i) >>> 0; h = Math.imul(h ^ h >>> 16, 73244475) >>> 0; return (h ^ h >>> 16) >>> 0; };
+    const gearId = (lv, p, seed) => { const hh = h32q(seed), ti = Math.max(0, Math.min(32, Math.round((lv - 1) / 3))), kk = hh % 3, id = kk === 0 ? `g_w_${["sword", "axe", "bow", "staff", "spear", "dagger", "fist", "mace"][(hh >>> 3) % 8]}_${ti}_${p}` : kk === 1 ? `g_a_${(hh >>> 3) % 10}_${ti}_${p}` : `g_c_${(hh >>> 3) % 10}_${ti}_${p}`; return Wa[id] ? id : void 0; };
+    const matLv = {};
+    for (const d of Object.values(Qu)) { if (d.boss) continue; for (const x of d.drops ?? []) { const it = Wa[x.item]; if (it && it.kind === "material" && !it.socket && it.sell > 0 && x.chance >= 0.05 && (matLv[x.item] === void 0 || d.level < matLv[x.item])) matLv[x.item] = d.level; } }
+    const mats = Object.keys(matLv).sort((a, b) => matLv[a] - matLv[b] || a.localeCompare(b));
+    for (const m of mats) { const it = Wa[m], q = 20, lv = matLv[m]; RQ.push({ id: "zq_" + m, kind: "zeny", name: `Encomenda: ${it.name}`, desc: "Pagamento em Zens.", need: [[m, q]], zeny: Math.round(it.sell * q * 1.5 + lv * 20), pct: 0.02 }); }
+    for (let i = 0; i + 2 < mats.length; i += 2) { const [a, b, c] = [mats[i], mats[i + 1], mats[i + 2]], lv = matLv[c], p = Math.min(7, 3 + Math.floor(lv / 20)), g = gearId(lv, p, "hq" + i); RQ.push({ id: "hq_" + i, kind: "hard", name: `Grande Expedição ${Math.floor(i / 2) + 1}`, desc: "Uma longa jornada reunindo despojos de várias criaturas.", need: [[a, 30], [b, 30], [c, 15]], zeny: Math.round((Wa[a].sell * 30 + Wa[b].sell * 30 + Wa[c].sell * 15) * 1.3), pct: Math.min(4, 0.6 + lv / 35), gear: g }); }
+    for (const d of Object.values(Qu)) {
+      if (!d.boss || d.id === "jormungandr") continue;
+      const pick = (d.drops ?? []).filter((x) => { const it = Wa[x.item]; return it && x.item !== "pocao_laranja" && it.kind !== "consumable" && it.kind !== "ammo" && it.sell >= 40; }).sort((x, y) => (y.chance || 0) - (x.chance || 0)).slice(0, 2);
+      if (!pick.length) continue;
+      const g = gearId(d.level, 9, "mq" + d.id) ?? gearId(d.level, 8, "mq" + d.id);
+      RQ.push({ id: "mq_" + d.id, kind: "mvp", name: `Troféu: ${d.name.replace("[MVP] ", "")}`, desc: "Prove que derrotou o chefe.", need: pick.map((x) => [x.item, 1 + (Wa[x.item].kind === "material" ? 1 : 0)]), zeny: Math.round(d.level * 900 + 3000), pct: 1.2 + d.level / 40, gear: g });
+    }
+  }
   var EYEC = { eye_gold: 15122688, eye_ice: 8442111, eye_ember: 16729344, eye_violet: 11556095, eye_green: 3586875 };
   function rqDo(e, t) {
     let a = RQ.find((l) => l.id === t);
     if (!a) return { ok: false, msg: "Quest desconhecida." };
     e.rqDone || (e.rqDone = []);
-    if (a.kind === "look" && e.rqDone.includes(a.id)) return { ok: false, msg: "Voc\xEA j\xE1 concluiu esta quest." };
+    if ((a.kind === "look" || a.kind === "hard" || a.kind === "mvp") && e.rqDone.includes(a.id)) return { ok: false, msg: "Voc\xEA j\xE1 concluiu esta quest." };
     for (let [l, c] of a.need) if (It(e.inventory, l) < c) return { ok: false, msg: "Itens insuficientes." };
     let n = ip(e.inventory);
     for (let [l, c] of a.need) if (!Ea(n, l, c)) return { ok: false, msg: "Itens insuficientes." };
@@ -9554,9 +9571,10 @@ Error generating stack: ` + n.message + `
       e.inventory = n, e.rqDone.push(a.id);
       return { ok: true, msg: `Quest conclu\xEDda: ${$(a.reward).name}! (visual)` };
     }
-    e.inventory = n;
-    let o = Yu(e, Math.max(1, Math.round(tr(e.level) * a.pct)));
-    return { ok: true, msg: `Quest conclu\xEDda: ${a.name}`, gain: o };
+    if (a.gear && He(n, a.gear, 1) !== 0) return { ok: false, msg: "Invent\xE1rio cheio. Libere espa\xE7o." };
+    e.inventory = n, a.zeny && (e.silver += a.zeny), (a.kind === "hard" || a.kind === "mvp") && e.rqDone.push(a.id);
+    let o = Yu(e, Math.max(1, Math.round(tr(e.level) * (a.pct ?? 0.05))));
+    return { ok: true, msg: `Quest conclu\xEDda: ${a.name}${a.zeny ? ` (+${a.zeny} Zens)` : ""}${a.gear ? ` + ${$(a.gear)?.name}` : ""}`, gain: o };
   }
   function Fu(e, t) {
     let a = Ba(t), n = e.quests.active[t];
@@ -15223,7 +15241,7 @@ void main() {
     }
     return { w: t.w, h: t.h, data: ae };
   }
-  typeof location < 'u' && location.search.includes('debug') && (window.__game = () => ({ WB, j, Ce, Ua, Yu, ty, I8, tr, U8, ap, Dr, Jy, Rb, Cc, _p, Ua, en, Jt, nr }), window.__defs = () => Object.values(Qu), window.__items = () => Wa, window.__maps = () => Jt, window.__data = () => ({ Or, RQ: typeof RQ < 'undefined' ? RQ : [], REALM_Q: typeof REALM_Q < 'undefined' ? REALM_Q : [], CRAFT_REC: typeof CRAFT_REC < 'undefined' ? CRAFT_REC : [], cv, Qm, D8, Q8, Ep, Ir, kp }), window.__sprDbg = () => ({ cs, po, fa, hh, R4, ea, ROXQM, O4, P0, Vl }), window.__spr2 = () => ({ O4, _4 }));
+  typeof location < 'u' && location.search.includes('debug') && (window.__game = () => ({ WB, j, Ce, Ua, Yu, ty, I8, tr, U8, ap, Dr, Jy, Rb, Cc, _p, Ua, en, Jt, nr, He, It }), window.__defs = () => Object.values(Qu), window.__items = () => Wa, window.__maps = () => Jt, window.__data = () => ({ Or, RQ: typeof RQ < 'undefined' ? RQ : [], REALM_Q: typeof REALM_Q < 'undefined' ? REALM_Q : [], CRAFT_REC: typeof CRAFT_REC < 'undefined' ? CRAFT_REC : [], cv, Qm, D8, Q8, Ep, Ir, kp }), window.__sprDbg = () => ({ cs, po, fa, hh, R4, ea, ROXQM, O4, P0, Vl }), window.__spr2 = () => ({ O4, _4 }));
   var c4 = [1, -1, 0, 0, 1, -1, 1, -1], u4 = [0, 0, 1, -1, 1, -1, -1, 1];
   function d4(e, t, a, n) {
     let o = A.RX(a).mul(A.RY(t)), r = o.r, i = 1e9, s = -1e9, l = 1e9, c = -1e9;
@@ -19235,11 +19253,17 @@ function ROXQM(f, c, s, l, def) {
   function QuestsPanel() {
     let t = ge().player, [a, n] = (0, xo.useState)("exp");
     if (!t) return null;
-    let o = t.rqDone ?? [], r = RQ.filter((i) => i.kind === a);
-    return (0, Ye.jsxs)(Yt, { id: "quests", title: "Quests", onClose: () => j.closePanel(), wide: true, children: [(0, Ye.jsx)("p", { className: "muted", children: "Quests de itens: junte o que se pede e entregue. Escolha entre ganhar EXP (repet\xEDvel) ou conquistar um visual novo (chap\xE9u, gorro, olhos\u2026 sem b\xF4nus, s\xF3 apar\xEAncia)." }), (0, Ye.jsxs)("div", { className: "row wrap", children: [(0, Ye.jsx)("button", { className: `btn btn-small${a === "exp" ? " btn-primary" : ""}`, onClick: () => n("exp"), children: "Quests de EXP" }), (0, Ye.jsx)("button", { className: `btn btn-small${a === "look" ? " btn-primary" : ""}`, onClick: () => n("look"), children: "Quests de Visual" })] }), (0, Ye.jsx)("div", { className: "refine-list", children: r.map((i) => {
-      let l = i.kind === "look" ? $(i.reward) : null, c = i.need.every(([f, u]) => It(t.inventory, f) >= u), d = i.kind === "look" && o.includes(i.id);
-      return (0, Ye.jsxs)("div", { className: "eq-row", children: [l ? (0, Ye.jsx)(Aa, { id: l.id, size: 32 }) : null, (0, Ye.jsxs)("div", { children: [(0, Ye.jsx)("b", { children: i.name }), l ? (0, Ye.jsxs)("small", { children: ["Recompensa: ", l.name, " (visual)"] }) : (0, Ye.jsxs)("small", { children: ["Recompensa: ", Math.round(i.pct * 100), "% do EXP do n\xEDvel atual \xB7 ", i.desc] }), i.need.map(([f, u]) => (0, Ye.jsxs)("small", { style: { color: It(t.inventory, f) >= u ? "#1c7a2e" : "#8a2d2d" }, children: [$(f)?.name, ": ", Math.min(It(t.inventory, f), u), "/", u] }, f))] }), (0, Ye.jsx)("button", { className: "btn btn-primary btn-small", disabled: !c || d, onClick: () => j.doQuest(i.id), children: d ? "Conclu\xEDda" : "Entregar" })] }, i.id);
-    }) })] });
+    let o = t.rqDone ?? [], r = RQ.filter((i) => i.kind === a), tabs = [["exp", "EXP"], ["zeny", "Zeny"], ["hard", "Dif\u00EDceis"], ["mvp", "MVP"], ["look", "Visual"]];
+    return Hh(Yt, { id: "quests", title: "Quests", onClose: () => j.closePanel(), wide: true },
+      Hh("p", { className: "muted" }, "Entregue itens pedidos. EXP e Zeny s\u00E3o repet\u00EDveis; Dif\u00EDceis, MVP e Visual s\u00E3o \u00FAnicas (Dif\u00EDceis/MVP d\u00E3o EXP, Zeny e um equipamento raro)."),
+      Hh("div", { className: "row wrap" }, ...tabs.map(([k, l]) => Hh("button", { key: k, className: `btn btn-small${a === k ? " btn-primary" : ""}`, onClick: () => n(k) }, l))),
+      Hh("div", { className: "refine-list", style: { maxHeight: 420, overflow: "auto" } }, ...r.map((i) => {
+        let l = i.kind === "look" ? $(i.reward) : null, c = i.need.every(([f, u]) => It(t.inventory, f) >= u), d = (i.kind === "look" || i.kind === "hard" || i.kind === "mvp") && o.includes(i.id);
+        return Hh("div", { key: i.id, className: "eq-row" }, l ? Hh(Aa, { id: l.id, size: 32 }) : i.gear ? Hh(Aa, { id: i.gear, size: 32 }) : null,
+          Hh("div", null, Hh("b", null, i.name), l ? Hh("small", null, "Recompensa: ", l.name, " (visual)") : Hh("small", null, "Recompensa: ", Math.round((i.pct ?? 0.05) * 100), "% do EXP do n\u00EDvel", i.zeny ? ` \u00B7 ${i.zeny} Zens` : "", i.gear ? ` \u00B7 ${$(i.gear)?.name}` : "", i.desc ? ` \u00B7 ${i.desc}` : ""),
+            ...i.need.map(([f, u]) => Hh("small", { key: f, style: { color: It(t.inventory, f) >= u ? "#1c7a2e" : "#8a2d2d" } }, $(f)?.name, ": ", Math.min(It(t.inventory, f), u), "/", u))),
+          Hh("button", { className: "btn btn-primary btn-small", disabled: !c || d, onClick: () => j.doQuest(i.id) }, d ? "Conclu\u00EDda" : "Entregar"));
+      })));
   }
   function UtilShop({ vip }) {
     let t = ge().player, [a, n] = (0, xo.useState)("buy");
