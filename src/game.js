@@ -7675,7 +7675,7 @@ Error generating stack: ` + n.message + `
     m.style.cssText = `position:fixed;left:${Math.min(x, innerWidth - 200)}px;top:${Math.min(y, innerHeight - 250)}px;z-index:80;background:#2a1c10;border:2px solid #c9a23a;border-radius:8px;box-shadow:0 6px 20px #000a;min-width:180px;overflow:hidden;font:600 13px system-ui,sans-serif;color:#f1e3c0`;
     const it = (lbl, fn) => `<div class="pm-i" data-f="${fn}" style="padding:8px 12px;cursor:pointer;border-bottom:1px solid #4a3418">${lbl}</div>`;
     let cls = Ce[q.line]?.names?.[Math.min(q.tier ?? 0, 2)] ?? "Aventureiro";
-    m.innerHTML = `<div style="padding:6px 12px;background:#150e06;font-weight:700">\u2694 ${nm.replace(/</g, "&lt;")} \u00B7 Nv ${q.level ?? "?"}</div>` + it("\uD83D\uDCAC Sussurrar", "w") + it("\uD83D\uDC65 Convidar para o grupo", "inv") + it(friend ? "\u2796 Remover dos amigos" : "\u2795 Adicionar aos amigos", "fr") + it("\uD83D\uDD0D Inspecionar", "ins") + it(blocked ? "\u2705 Desbloquear" : "\uD83D\uDEAB Bloquear", "bl");
+    m.innerHTML = `<div style="padding:6px 12px;background:#150e06;font-weight:700">\u2694 ${nm.replace(/</g, "&lt;")} \u00B7 Nv ${q.level ?? "?"}</div>` + it("\uD83D\uDCAC Sussurrar", "w") + it("\uD83D\uDC65 Convidar para o grupo", "inv") + it(friend ? "\u2796 Remover dos amigos" : "\u2795 Adicionar aos amigos", "fr") + it("\uD83E\uDD1D Trocar", "tr") + it("\uD83D\uDD0D Inspecionar", "ins") + it(blocked ? "\u2705 Desbloquear" : "\uD83D\uDEAB Bloquear", "bl");
     m.addEventListener("pointerdown", (e) => e.stopPropagation());
     m.querySelectorAll(".pm-i").forEach((el) => {
       el.onmouseenter = () => el.style.background = "#4a3418"; el.onmouseleave = () => el.style.background = "";
@@ -7683,6 +7683,7 @@ Error generating stack: ` + n.message + `
         let f = el.dataset.f; m.remove();
         if (f === "w") window.dispatchEvent(new CustomEvent("eldvar:pm-open", { detail: { name: nm } }));
         else if (f === "inv") MP.ok && !j.online ? j.serverSocial("party", "invite", nm) : j.socialCmd("grupo", "convidar " + nm);
+        else if (f === "tr") j.tradeStart(nm);
         else if (f === "fr") j.socialCmd("amigo", (friend ? "remover " : "add ") + nm), j.refresh();
         else if (f === "ins") j.pushLog(`${nm} \u2014 ${cls}, N\u00EDvel ${q.level ?? "?"}${q.afk ? " (AFK)" : ""}.`, "system", "info"), j.toast(`${nm}: ${cls} Nv ${q.level ?? "?"}`, "info"), j.refresh();
         else if (f === "bl") {
@@ -11843,6 +11844,92 @@ Error generating stack: ` + n.message + `
       let n = hy(this.ps, t, a);
       this.toast(n.msg, n.ok ? "good" : "bad"), n.ok && (this.pushLog(n.msg, "system"), this.saveGameQuiet()), this.refresh();
     }
+    tradeSend(cmd, ...args) {
+      let tr = this.trade; if (!tr) return;
+      tr.q || (tr.q = []);
+      if (cmd === "off") tr.q = tr.q.filter((x) => x.cmd !== "off");
+      tr.q.push({ cmd, args });
+      if (tr.pump) return;
+      let pump = async () => {
+        let tr2 = this.trade;
+        if (!tr2 || tr2 !== tr) return;
+        let m = tr.q.shift();
+        if (!m) { tr.pump = null; return; }
+        let body = ["~TR", m.cmd, ...m.args, ++tr.n].join("|");
+        let r = await MP.say(body, tr.peer);
+        if (!r.ok && m.cmd !== "can") { tr.fails = (tr.fails || 0) + 1; if (tr.fails < 4) tr.q.unshift(m); else this.tradeCancel(true, r.error); }
+        else tr.fails = 0;
+        tr.pump = setTimeout(pump, 1350);
+      };
+      tr.pump = setTimeout(pump, 50);
+    }
+    tradeStart(name) {
+      if (!this.ps || !MP.ok || this.online) return this.toast("Troca exige o modo multijogador online.", "bad"), void this.refresh();
+      if (this.trade) return this.toast("Voc\u00EA j\u00E1 est\u00E1 em uma troca.", "bad"), void this.refresh();
+      this.trade = { peer: name, phase: "req-out", mine: { items: {}, zeny: 0, ok: false }, theirs: { items: {}, zeny: 0, ok: false }, n: Math.floor(Date.now() / 1e3) % 1e5, since: Date.now() };
+      this.pushLog(`Pedido de troca enviado a ${name}.`, "system", "info"), this.tradeSend("req"), this.panel = "trade", this.refresh();
+    }
+    tradeCanon(o) { return Object.keys(o.items).sort().map((k) => k + ":" + o.items[k]).join(",") + "$" + o.zeny; }
+    tradeHash(a, b) { let str = a + "/" + b, h = 5381; for (let i = 0; i < str.length; i++) h = (h * 33 ^ str.charCodeAt(i)) >>> 0; return h.toString(36); }
+    tradeCancel(silent, why) {
+      let tr = this.trade; if (!tr) return;
+      !silent && tr.phase !== "ended" && this.tradeSend("can");
+      let pump = tr.pump; this.trade = null;
+      setTimeout(() => pump && clearTimeout(pump), 2500);
+      this.toast(why ?? "Troca cancelada.", "bad"), this.pushLog(why ?? "Troca cancelada.", "system", "bad"), this.panel === "trade" && (this.panel = "none"), this.refresh();
+    }
+    tradeAccept(ok) { let tr = this.trade; if (!tr || tr.phase !== "req-in") return; if (!ok) return this.tradeSend("dec"), this.tradeCancel(true, "Voc\u00EA recusou a troca."); tr.phase = "open", this.tradeSend("acc"), this.panel = "trade", this.refresh(); }
+    tradeSet(id, qty) {
+      let tr = this.trade, ps = this.ps; if (!tr || tr.phase !== "open") return;
+      if (id === "$zeny") tr.mine.zeny = Math.max(0, Math.min(ps.silver, Math.floor(qty) || 0));
+      else {
+        let it = $(id); if (!it) return;
+        if (it.bound) return this.toast("Este item \u00E9 vinculado e n\u00E3o pode ser trocado.", "bad"), void this.refresh();
+        qty = Math.max(0, Math.min(It(ps.inventory, id), Math.floor(qty) || 0));
+        qty ? (Object.keys(tr.mine.items).length < 8 || tr.mine.items[id]) ? tr.mine.items[id] = qty : this.toast("Limite de 8 tipos de item.", "bad") : delete tr.mine.items[id];
+      }
+      tr.mine.ok = tr.theirs.ok = false;
+      tr.dirty = true, clearTimeout(tr.offT), tr.offT = setTimeout(() => { this.trade === tr && (tr.dirty = false, this.tradeSend("off", tr.mine.zeny, Object.keys(tr.mine.items).map((k) => k + ":" + tr.mine.items[k]).join(","))); }, 800), this.refresh();
+    }
+    tradeOk() {
+      let tr = this.trade; if (!tr || tr.phase !== "open" || tr.dirty) return;
+      tr.mine.ok = true, this.tradeSend("ok", this.tradeHash(this.tradeCanon(tr.mine), this.tradeCanon(tr.theirs))), this.tradeTry(), this.refresh();
+    }
+    tradeTry() {
+      let tr = this.trade, ps = this.ps; if (!tr || !tr.mine.ok || !tr.theirs.ok || tr.dirty) return;
+      if (tr.theirs.h !== this.tradeHash(this.tradeCanon(tr.theirs), this.tradeCanon(tr.mine))) return;
+      for (let k of Object.keys(tr.mine.items)) if (It(ps.inventory, k) < tr.mine.items[k]) return this.tradeCancel(false, "Voc\u00EA n\u00E3o tem mais os itens oferecidos.");
+      if (ps.silver < tr.mine.zeny) return this.tradeCancel(false, "Zeny insuficiente.");
+      for (let k of Object.keys(tr.mine.items)) Ea(ps.inventory, k, tr.mine.items[k]);
+      ps.silver -= tr.mine.zeny;
+      let lost = [];
+      for (let k of Object.keys(tr.theirs.items)) { let q = tr.theirs.items[k]; Fi(ps.inventory, k, q) ? He(ps.inventory, k, q) : lost.push(k); }
+      ps.silver += tr.theirs.zeny;
+      this.pushLog(`Troca conclu\u00EDda com ${tr.peer}!${lost.length ? " Mochila cheia: alguns itens se perderam." : ""}`, "system", "good"), this.toast("Troca conclu\u00EDda!", "good");
+      tr.phase = "ended", this.tradeSend("done"), this.saveGameQuiet();
+      let pump = tr.pump; setTimeout(() => { this.trade === tr && (this.trade = null); pump && clearTimeout(pump); }, 4000);
+      this.panel === "trade" && (this.panel = "none"), this.refresh();
+    }
+    tradeRecv(from, body) {
+      let f = body.split("|"), cmd = f[1], tr = this.trade;
+      if (cmd === "req") {
+        if (tr) return;
+        this.trade = { peer: from, phase: "req-in", mine: { items: {}, zeny: 0, ok: false }, theirs: { items: {}, zeny: 0, ok: false }, n: Math.floor(Date.now() / 1e3) % 1e5, since: Date.now() };
+        this.toast(`${from} quer trocar com voc\u00EA!`, "info"), this.pushLog(`${from} prop\u00F5e uma troca.`, "system", "info"), this.panel = "trade", this.refresh();
+        return;
+      }
+      if (!tr || tr.peer.toLowerCase() !== from.toLowerCase()) return;
+      if (cmd === "dec") return this.tradeCancel(true, `${from} recusou a troca.`);
+      if (cmd === "can") return this.tradeCancel(true, `${from} cancelou a troca.`);
+      if (cmd === "acc" && tr.phase === "req-out") tr.phase = "open";
+      else if (cmd === "off" && tr.phase === "open") {
+        let items = {};
+        for (let p of (f[3] || "").split(",")) { let [k, q] = p.split(":"); q = Math.floor(+q); $(k) && !$(k).bound && q > 0 && q < 1e4 && Object.keys(items).length < 8 && (items[k] = q); }
+        tr.theirs = { items, zeny: Math.max(0, Math.min(1e9, Math.floor(+f[2]) || 0)), ok: false }, tr.mine.ok = false;
+      } else if (cmd === "ok" && tr.phase === "open") tr.theirs.ok = true, tr.theirs.h = f[2], this.tradeTry();
+      else if (cmd === "done" && tr.phase === "open" && tr.mine.ok) tr.theirs.ok = true, this.tradeTry();
+      this.refresh();
+    }
     vipBuy(i) {
       let p = this.ps, o = VIP_PASS[i];
       if (!p || !o) return;
@@ -11945,7 +12032,7 @@ Error generating stack: ` + n.message + `
           this.closeSettings();
           return;
         }
-        if (this.panel === "inventory" || this.panel === "questlog" || this.panel === "stats" || this.panel === "skills" || this.panel === "bestiary" || this.panel === "worldmap" || this.panel === "refine" || this.panel === "craft" || this.panel === "shop" || this.panel === "stylist" || this.panel === "provador" || this.panel === "party" || this.panel === "utilshop" || this.panel === "vipshop" || this.panel === "viproom" || this.panel === "quests" || this.panel === "feitos") {
+        if (this.panel === "inventory" || this.panel === "questlog" || this.panel === "stats" || this.panel === "skills" || this.panel === "bestiary" || this.panel === "worldmap" || this.panel === "refine" || this.panel === "craft" || this.panel === "shop" || this.panel === "stylist" || this.panel === "provador" || this.panel === "party" || this.panel === "utilshop" || this.panel === "vipshop" || this.panel === "viproom" || this.panel === "trade" || this.panel === "quests" || this.panel === "feitos") {
           this.closePanel();
           return;
         }
@@ -12194,6 +12281,7 @@ Error generating stack: ` + n.message + `
         for (let k of [...this.others.keys()]) seen.has(k) || this.others.delete(k);
         for (let m of r.msgs) {
           if ((j.ps?.blocked ?? []).some((b) => b.toLowerCase() === String(m.f).toLowerCase())) continue;
+          if (m.t && typeof m.b === "string" && m.b.startsWith("~TR|")) { j.tradeRecv(m.f, m.b); continue; }
           if (m.t) {
             j.pushLog(`De ${m.f}: ${m.b}`, "sussurro", "info"), j.toast(`${m.f}: ${m.b}`, "info"), window.dispatchEvent(new CustomEvent("eldvar:pm-in", { detail: { from: m.f, text: m.b } }));
           } else if (m.c) {
@@ -18832,6 +18920,24 @@ function ROXQM(f, c, s, l, def) {
         return Hh("div", { key: i, className: "eq-row" }, Hh(Aa, { id: i, size: 32 }), Hh("div", null, Hh("b", { style: { color: so[l.rarity] } }, l.name, " \u00D7", q), Hh("small", null, c ?? `${d} Zens cada`)), Hh("div", { className: "row wrap" }, Hh("button", { className: "btn btn-small", disabled: !!c, onClick: () => j.utilSell(i, 1) }, "Vender 1"), q > 1 && Hh("button", { className: "btn btn-small", disabled: !!c, onClick: () => j.utilSell(i, q) }, "Tudo")));
       })));
   }
+  function TradePanel() {
+    let e = ge(), t = e.player, tr = j.trade, [zs, setZs] = (0, xo.useState)("0");
+    if (!t || !tr) return null;
+    let close = () => { tr.phase === "req-in" ? j.tradeAccept(false) : j.tradeCancel(false); };
+    if (tr.phase === "req-in" || tr.phase === "req-out") return Hh(Yt, { id: "trade", title: "\uD83E\uDD1D Troca", onClose: close },
+      Hh("p", null, tr.phase === "req-in" ? `${tr.peer} quer trocar itens com voc\u00EA.` : `Aguardando ${tr.peer} aceitar...`),
+      Hh("div", { className: "row wrap" }, tr.phase === "req-in" && Hh("button", { className: "btn btn-primary", onClick: () => j.tradeAccept(true) }, "Aceitar"), Hh("button", { className: "btn", onClick: close }, tr.phase === "req-in" ? "Recusar" : "Cancelar")));
+    let side = (o, who) => Hh("div", { className: "refine-list", style: { flex: 1, minWidth: 200 } }, Hh("b", null, who, o.ok ? " \u2714 confirmou" : ""), Hh("small", null, "Zeny: ", o.zeny), ...Object.keys(o.items).map((k) => { let it = $(k); return it && Hh("div", { key: k, className: "eq-row" }, Hh(Aa, { id: k, size: 28 }), Hh("div", null, Hh("b", { style: { color: so[it.rarity] } }, it.name, " \u00D7", o.items[k])), who === "Voc\u00EA" && Hh("button", { className: "btn btn-small", onClick: () => j.tradeSet(k, 0) }, "\u2715")); }));
+    let inv = /* @__PURE__ */ new Map();
+    for (let i of t.inventory.slots) i && inv.set(i.id, (inv.get(i.id) ?? 0) + i.qty);
+    let list = [...inv.entries()].filter(([i]) => $(i) && !$(i).bound);
+    return Hh(Yt, { id: "trade", title: `\uD83E\uDD1D Troca com ${tr.peer}`, onClose: close, wide: true },
+      Hh("div", { className: "row wrap", style: { alignItems: "flex-start", gap: 12 } }, side(tr.mine, "Voc\u00EA"), side(tr.theirs, tr.peer)),
+      Hh("div", { className: "row wrap" }, Hh("span", null, "Zeny a oferecer:"), Hh("input", { type: "number", min: 0, max: t.silver, value: zs, style: { width: 110 }, onChange: (ev) => setZs(ev.target.value) }), Hh("button", { className: "btn btn-small", onClick: () => j.tradeSet("$zeny", +zs) }, "Definir"), Hh("span", { className: "coin-line" }, "Voc\u00EA tem ", t.silver)),
+      Hh("small", { className: "muted" }, "Clique nos itens da mochila para oferecer (+1) ou use \u00D7todos."),
+      Hh("div", { className: "refine-list", style: { maxHeight: 180, overflow: "auto" } }, ...list.map(([i, q]) => { let it = $(i); return Hh("div", { key: i, className: "eq-row" }, Hh(Aa, { id: i, size: 28 }), Hh("div", null, Hh("b", { style: { color: so[it.rarity] } }, it.name, " \u00D7", q), Hh("small", null, "Oferecendo: ", tr.mine.items[i] ?? 0)), Hh("div", { className: "row wrap" }, Hh("button", { className: "btn btn-small", onClick: () => j.tradeSet(i, (tr.mine.items[i] ?? 0) + 1) }, "+1"), Hh("button", { className: "btn btn-small", onClick: () => j.tradeSet(i, q) }, "todos"))); })),
+      Hh("div", { className: "row wrap" }, Hh("button", { className: "btn btn-primary", disabled: tr.mine.ok || tr.dirty, onClick: () => j.tradeOk() }, tr.mine.ok ? "Aguardando o outro\u2026" : "Confirmar troca"), Hh("button", { className: "btn", onClick: close }, "Cancelar")));
+  }
   function VipRoom() {
     let t = ge().player;
     if (!t) return null;
@@ -19025,7 +19131,7 @@ function ROXQM(f, c, s, l, def) {
         j.setMove(0, 0), j.setAttackHeld(false);
       };
       return window.addEventListener("blur", a), () => window.removeEventListener("blur", a);
-    }, []), (0, pt.jsxs)("div", { className: `game${t ? " has-touch" : ""}`, children: [(0, pt.jsx)(IS, {}), (0, pt.jsx)(Q4, {}), (0, pt.jsx)(K4, {}), (0, pt.jsx)(p5, {}), (0, pt.jsx)(F4, {}), e.panel === "inventory" && (0, pt.jsx)(Ch, { mode: "bag" }), e.panel === "equip" && (0, pt.jsx)(Ch, { mode: "equip" }), e.panel === "questlog" && (0, pt.jsx)(Ch, { mode: "quests" }), e.panel === "stats" && (0, pt.jsx)(a5, {}), e.panel === "skills" && (0, pt.jsx)(l5, {}), e.panel === "bestiary" && (0, pt.jsx)(s5, {}), e.panel === "worldmap" && (0, pt.jsx)(e5, {}), e.panel === "refine" && (0, pt.jsx)(c5, {}), e.panel === "craft" && Hh(CraftPanel, {}), e.panel === "shop" && (0, pt.jsx)(m5, {}), e.panel === "provador" && Hh(PV_, {}), e.panel === "party" && Hh(PartyPanel, {}), (e.panel === "utilshop" || e.panel === "vipshop") && Hh(UtilShop, { vip: e.panel === "vipshop" }), e.panel === "viproom" && Hh(VipRoom, {}), e.panel === "stylist" && (0, pt.jsx)(u5, {}), e.panel === "quests" && (0, pt.jsx)(QuestsPanel, {}), e.panel === "feitos" && (0, pt.jsx)(d5, {}), e.panel === "pause" && (0, pt.jsx)(Z4, {}), e.panel === "settings" && (0, pt.jsx)(c0, {})] });
+    }, []), (0, pt.jsxs)("div", { className: `game${t ? " has-touch" : ""}`, children: [(0, pt.jsx)(IS, {}), (0, pt.jsx)(Q4, {}), (0, pt.jsx)(K4, {}), (0, pt.jsx)(p5, {}), (0, pt.jsx)(F4, {}), e.panel === "inventory" && (0, pt.jsx)(Ch, { mode: "bag" }), e.panel === "equip" && (0, pt.jsx)(Ch, { mode: "equip" }), e.panel === "questlog" && (0, pt.jsx)(Ch, { mode: "quests" }), e.panel === "stats" && (0, pt.jsx)(a5, {}), e.panel === "skills" && (0, pt.jsx)(l5, {}), e.panel === "bestiary" && (0, pt.jsx)(s5, {}), e.panel === "worldmap" && (0, pt.jsx)(e5, {}), e.panel === "refine" && (0, pt.jsx)(c5, {}), e.panel === "craft" && Hh(CraftPanel, {}), e.panel === "shop" && (0, pt.jsx)(m5, {}), e.panel === "provador" && Hh(PV_, {}), e.panel === "party" && Hh(PartyPanel, {}), (e.panel === "utilshop" || e.panel === "vipshop") && Hh(UtilShop, { vip: e.panel === "vipshop" }), e.panel === "viproom" && Hh(VipRoom, {}), e.panel === "trade" && Hh(TradePanel, {}), e.panel === "stylist" && (0, pt.jsx)(u5, {}), e.panel === "quests" && (0, pt.jsx)(QuestsPanel, {}), e.panel === "feitos" && (0, pt.jsx)(d5, {}), e.panel === "pause" && (0, pt.jsx)(Z4, {}), e.panel === "settings" && (0, pt.jsx)(c0, {})] });
   }
   var rn = oe(ue(), 1), zh = class extends g5.Component {
     state = { error: null };

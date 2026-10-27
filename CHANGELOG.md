@@ -1,3 +1,6 @@
+# v154
+- NOVA janela de Troca entre jogadores (clique direito > Trocar): ate 8 tipos de item + Zeny, os dois confirmam; itens vinculados (ex. chapeu Poring) nao entram. Usa o canal de sussurro como transporte.
+
 # v153
 - Clique direito em outro jogador abre menu: Sussurrar, Convidar para o grupo, Adicionar/Remover amigo, Inspecionar (classe e nivel), Bloquear/Desbloquear (esconde o chat da pessoa).
 
