@@ -27,7 +27,6 @@
   }
   function finish(cfg, e, T, cls, C, deco) {
     const hp = headPlan(e, cls, T), hf = hairFn(e, hx(e.hair), hp.cover);
-    cfg.headImg = !!(HT.ok && (e.hairStyle === "orig" || /^h[mf]\d+$/.test(e.hairStyle || "")) && hp.main === "none" && !hp.extra && !e.low && !e.mid && !e.eyePat);
     { const mk = [COSX.marks[e.low], COSX.marks[e.mid]].filter(Boolean); if (mk.length) cfg.faceExtra = (az, el) => { for (const f of mk) { const r = f(az, el); if (r) return r; } return 0; }; if (e.eyePat) cfg.eyePat = e.eyePat; if (e.eye2 != null) cfg.eye2 = hx(e.eye2); }
     cfg.hairFn = (E, S, o) => hf(E, S, o);
     cfg.deco = (E, S, o) => {
@@ -291,8 +290,6 @@
   const KIND_BY_STYLE = { slash: "slash", quick: "quick", cast: "cast", stab: "stab", shoot: "shoot", punch: "punch", nova: "cast", bolt: "shoot", dash: "quick" };
   const ATKU = { slash: [.2, .41, .56], quick: [.16, .3, .46], cast: [.3, .5, .62], stab: [.22, .4, .54], shoot: [.34, .48, .6], punch: [.16, .3, .46] };
   const PERS = { slash: 1.5, quick: 1.1, cast: 1.6, stab: 1.3, shoot: 1.4, punch: 1.0 };
-  const HI = { ok: false };
-  const HIW = 76, HIH = 71, HAS = 0.8, HAC = 0.92;
   const KDIR = { down: 0, dq: 1, side: 2, uq: 3, up: 4 };
   const WALK = { p: 1.0, a: .78, m: 1.4 };
   const SCALE = 1.3, CW = 184, GYY = 170, KS = 1.06;
@@ -307,7 +304,6 @@
     const d = render(cfg, KDIR[dir] ?? 0, anim, t, kind, fam, { S: SCALE, w: CW, h: CW, gy: GYY });
     const cv = document.createElement("canvas"); cv.width = CW; cv.height = CW;
     const cx = cv.getContext("2d"); cx.putImageData(new ImageData(d, CW, CW), 0, 0);
-    if (cfg.headImg && HEADM) { const bk = (KDIR[dir] ?? 0) >= 3, m = /^h([mf])(\d+)$/.exec(e.hairStyle || ""), ix = m ? (m[1] === "f" ? 45 : 0) + Number(m[2]) - 1 : 90; cx.imageSmoothingEnabled = false; cx.drawImage(HT.cv, ((ix % 10) * 2 + (bk ? 1 : 0)) * 56, Math.floor(ix / 10) * 88, 56, 88, Math.round(HEADM.x - 28), Math.round(HEADM.y + HEADM.ry * 0.95 - 36), 56, 88); }
     return { cv, ax: CW / 2 * KS, ay: GYY * KS, k: KS };
   }
   ROX2.COSX = COSX; ROX2.CAT = CAT;

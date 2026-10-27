@@ -1,3 +1,6 @@
+## v213 — Volta ao cabelo/cabeça anteriores
+- Removidos a cabeça "Original Eldvar" e os 90 penteados das tabelas; cabeças e cortes voltam ao que era na v208.
+
 ## v212 — Penteados adaptados ao estilo do jogo
 - Os 90 penteados (45 masc. + 45 fem.) e a cabeça original foram reprocessados: pixels nítidos no mesmo tamanho dos do corpo, contorno escuro igual ao dos sprites do jogo, sem borrão/halo. Cores originais preservadas.
 
