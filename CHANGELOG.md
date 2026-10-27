@@ -1,3 +1,6 @@
+# v173
+- Troca com liquidacao pelo servidor: depois que os dois confirmam, cada lado registra o compromisso no Supabase (tabela mp_trades + RPC trade_commit); so aplica a troca quando o servidor confirma que AMBOS confirmaram. Evita o caso de um lado concluir e o outro nao, e deixa registro auditavel da oferta. Limite: o servidor nao guarda o inventario, entao a checagem de posse continua no cliente.
+
 # v172
 - Capa com fisica propria: a barra da capa agora balanca separada do corpo (mola amortecida: puxa para tras ao correr e oscila ao parar, mais brisa leve parado). O corpo quase nao inclina mais quando ha capa equipada.
 

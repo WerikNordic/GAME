@@ -12254,8 +12254,8 @@ Error generating stack: ` + n.message + `
     tradeStart(name) {
       if (!this.ps || !MP.ok || this.online) return this.toast("Troca exige o modo multijogador online.", "bad"), void this.refresh();
       if (this.trade) return this.toast("Voc\u00EA j\u00E1 est\u00E1 em uma troca.", "bad"), void this.refresh();
-      this.trade = { peer: name, phase: "req-out", mine: { items: {}, zeny: 0, ok: false }, theirs: { items: {}, zeny: 0, ok: false }, n: Math.floor(Date.now() / 1e3) % 1e5, since: Date.now() };
-      this.pushLog(`Pedido de troca enviado a ${name}.`, "system", "info"), this.tradeSend("req"), this.panel = "trade", this.refresh();
+      this.trade = { peer: name, phase: "req-out", mine: { items: {}, zeny: 0, ok: false }, theirs: { items: {}, zeny: 0, ok: false }, n: Math.floor(Date.now() / 1e3) % 1e5, since: Date.now(), nonce: Math.random().toString(36).slice(2, 10) };
+      this.pushLog(`Pedido de troca enviado a ${name}.`, "system", "info"), this.tradeSend("req", this.trade.nonce), this.panel = "trade", this.refresh();
     }
     tradeCanon(o) { return Object.keys(o.items).sort().map((k) => k + ":" + o.items[k]).join(",") + "$" + o.zeny; }
     tradeHash(a, b) { let str = a + "/" + b, h = 5381; for (let i = 0; i < str.length; i++) h = (h * 33 ^ str.charCodeAt(i)) >>> 0; return h.toString(36); }
@@ -12284,8 +12284,26 @@ Error generating stack: ` + n.message + `
       tr.mine.ok = true, this.tradeSend("ok", this.tradeHash(this.tradeCanon(tr.mine), this.tradeCanon(tr.theirs))), this.tradeTry(), this.refresh();
     }
     tradeTry() {
-      let tr = this.trade, ps = this.ps; if (!tr || !tr.mine.ok || !tr.theirs.ok || tr.dirty) return;
+      let tr = this.trade, ps = this.ps; if (!tr || !tr.mine.ok || !tr.theirs.ok || tr.dirty || tr.commit) return;
       if (tr.theirs.h !== this.tradeHash(this.tradeCanon(tr.theirs), this.tradeCanon(tr.mine))) return;
+      for (let k of Object.keys(tr.mine.items)) if (It(ps.inventory, k) < tr.mine.items[k]) return this.tradeCancel(false, "Voc\u00EA n\u00E3o tem mais os itens oferecidos.");
+      if (ps.silver < tr.mine.zeny) return this.tradeCancel(false, "Zeny insuficiente.");
+      this.tradeSettle(tr);
+    }
+    async tradeSettle(tr) {
+      tr.commit = "pending", this.toast("Confirmando com o servidor\u2026", "info");
+      for (let i = 0; i < 25; i++) {
+        if (this.trade !== tr) return;
+        let r = await sbRpc("trade_commit", { p_id: MP.pid + ":" + this.activeSlot, p_name: this.ps.name, p_peer: tr.peer, p_nonce: tr.nonce, p_offer: this.tradeCanon(tr.mine) });
+        if (this.trade !== tr) return;
+        if (r && r.ok === false && r.error && !/conex/i.test(r.error)) return this.tradeCancel(false, r.error);
+        if (r && r.ok && r.both) return this.tradeApply(tr);
+        await new Promise((q) => setTimeout(q, 1000));
+      }
+      this.trade === tr && this.tradeCancel(false, "Tempo esgotado aguardando a confirma\u00E7\u00E3o do servidor.");
+    }
+    tradeApply(tr) {
+      let ps = this.ps; if (!tr || this.trade !== tr || tr.phase === "ended") return;
       for (let k of Object.keys(tr.mine.items)) if (It(ps.inventory, k) < tr.mine.items[k]) return this.tradeCancel(false, "Voc\u00EA n\u00E3o tem mais os itens oferecidos.");
       if (ps.silver < tr.mine.zeny) return this.tradeCancel(false, "Zeny insuficiente.");
       for (let k of Object.keys(tr.mine.items)) Ea(ps.inventory, k, tr.mine.items[k]);
@@ -12293,16 +12311,16 @@ Error generating stack: ` + n.message + `
       let lost = [];
       for (let k of Object.keys(tr.theirs.items)) { let q = tr.theirs.items[k]; Fi(ps.inventory, k, q) ? He(ps.inventory, k, q) : lost.push(k); }
       ps.silver += tr.theirs.zeny;
-      this.pushLog(`Troca conclu\u00EDda com ${tr.peer}!${lost.length ? " Mochila cheia: alguns itens se perderam." : ""}`, "system", "good"), this.toast("Troca conclu\u00EDda!", "good");
-      tr.phase = "ended", this.tradeSend("done"), this.saveGameQuiet();
-      let pump = tr.pump; setTimeout(() => { this.trade === tr && (this.trade = null); pump && clearTimeout(pump); }, 4000);
+      this.pushLog(`Troca conclu\u00EDda com ${tr.peer}! (validada pelo servidor)${lost.length ? " Mochila cheia: alguns itens se perderam." : ""}`, "system", "good"), this.toast("Troca conclu\u00EDda!", "good");
+      tr.phase = "ended", this.saveGameQuiet();
+      let pump = tr.pump; setTimeout(() => { this.trade === tr && (this.trade = null); pump && clearTimeout(pump); }, 2500);
       this.panel === "trade" && (this.panel = "none"), this.refresh();
     }
     tradeRecv(from, body) {
       let f = body.split("|"), cmd = f[1], tr = this.trade;
       if (cmd === "req") {
         if (tr) return;
-        this.trade = { peer: from, phase: "req-in", mine: { items: {}, zeny: 0, ok: false }, theirs: { items: {}, zeny: 0, ok: false }, n: Math.floor(Date.now() / 1e3) % 1e5, since: Date.now() };
+        this.trade = { peer: from, phase: "req-in", mine: { items: {}, zeny: 0, ok: false }, theirs: { items: {}, zeny: 0, ok: false }, n: Math.floor(Date.now() / 1e3) % 1e5, since: Date.now(), nonce: String(f[2] || "x").slice(0, 24) };
         this.toast(`${from} quer trocar com voc\u00EA!`, "info"), this.pushLog(`${from} prop\u00F5e uma troca.`, "system", "info"), this.panel = "trade", this.refresh();
         return;
       }
