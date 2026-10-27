@@ -1,3 +1,6 @@
+# v155
+- NOVO NPC Capitao Brynjar (Dirigivel) em todas as cidades: voo pago com cena de viagem para qualquer cidade ou trilha de cacada ate 5 niveis acima do seu. VIP paga metade.
+
 # v154
 - NOVA janela de Troca entre jogadores (clique direito > Trocar): ate 8 tipos de item + Zeny, os dois confirmam; itens vinculados (ex. chapeu Poring) nao entram. Usa o canal de sussurro como transporte.
 
