@@ -1,3 +1,7 @@
+# v175
+- Mapas de caça maiores (4200x2800, +25%) com densidade de monstros ~+27%.
+- Portais com spawn dinâmico; 3 retornos de cidade que caíam dentro de obstáculos (Eldvik, Solvik, Gladsheim) corrigidos.
+
 # v174
 - Casamento validado pelo servidor: os dois noivos confirmam no Supabase (trade_commit) e so casam quando o servidor registra AMBOS; some a situacao de um casar e o outro nao.
 - Armas por classe: cada tipo de arma agora so pode ser usado pelas classes certas (espada: Berserker/Mercador/Valquiria/Thay; machado: Berserker/Mercador; arco: Cacador/Skald; cajado: Volva/Valquiria/Skald; lanca: Berserker/Valquiria/Cacador; adaga: Thay/Cacador/Mercador/Skald; luvas: Thay/Valquiria/Berserker; maca: Mercador/Valquiria/Berserker). Antes qualquer classe usava qualquer arma.
