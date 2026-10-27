@@ -1,3 +1,9 @@
+# v171
+- HP do grupo: cada jogador publica sua vida (novo campo hpf em mp_presence + RPCs mp_hp e mp_hps no Supabase). Barra de vida real acima dos outros jogadores (vermelha abaixo de 30%) e porcentagem de vida de cada membro no painel do Grupo (Alt+Z).
+- Casamento: Vestido de Noiva deixa o personagem de branco; Smoking do Noivo, de preto.
+- Ferreiro: +8% de sucesso no refino, 30% de chance do item resistir a uma falha, /afiar (ataque +20%) e /reforcar (defesa +25%) por 8 min (150 Zens + 1 Sucata de Goblin).
+- Painel Caminho das Classes (/classes): evolucao de cada classe (Aprendiz > 1a > 2a), caminhos e regras de nivel de classe 10/50 e renascimento.
+
 # v170
 - Monstros maiores: +22% no tamanho visual dos monstros comuns e +12% nos chefes (so visual; hitbox e alcance iguais). Mapas de caca ja tem 3360x2240 (1,75x o original); nao foram ampliados de novo para nao quebrar portais.
 

@@ -9210,7 +9210,7 @@ Error generating stack: ` + n.message + `
     }
     return t;
   }
-  var PATHS = { berserker: [["Ulfhednar", "a", "F\u00FAria lupina: +10% de ataque e ataque m\u00E1gico."], ["Jarl da Guerra", "d", "L\u00EDder de batalha: +20% de vida e +10% de mana."]], escudeiro: [["Ferreiro", "a", "Forja de guerra: +10% de ataque."], ["Alquimista", "d", "Elixires e vida: +20% de vida. Pode criar um Hom\u00FAnculo (Pai dos Hom\u00FAnculos, em Isenborg)."]], cacador: [["Atirador de Ullr", "a", "Mira letal: +10% de ataque."], ["Senhor das Feras", "d", "Aliado da mata: +20% de vida."]], volva: [["Tecel\u00E3 do Destino", "a", "Magia ofensiva: +10% de ataque m\u00E1gico."], ["Or\u00E1culo de M\u00EDmir", "d", "Sabedoria: +20% de vida e +10% de mana."]], valquiria: [["Chama de Frigg", "a", "Fogo sagrado: +10% de ataque m\u00E1gico."], ["Escudo de Frigg", "d", "Prote\u00E7\u00E3o: +20% de vida."]], skald: [["L\u00E2mina de Loki", "a", "Golpes trai\u00E7oeiros: +10% de ataque."], ["Trapaceiro das Sombras", "d", "Esquiva: +20% de vida."]], thay: [["Punho de Tyr", "a", "Punhos de justi\u00E7a: +10% de ataque."], ["Alma de Tyr", "d", "Resist\u00EAncia: +20% de vida e +10% de mana."]] };
+  var PATHS = { berserker: [["Ulfhednar", "a", "F\u00FAria lupina: +10% de ataque e ataque m\u00E1gico."], ["Jarl da Guerra", "d", "L\u00EDder de batalha: +20% de vida e +10% de mana."]], escudeiro: [["Ferreiro", "a", "Forja de guerra: +10% de ataque, +8% de sucesso no refino, 30% de chance do item resistir a uma falha, comandos /afiar (ataque +20%) e /reforcar (defesa +25%) por 8 min."], ["Alquimista", "d", "Elixires e vida: +20% de vida. Pode criar um Hom\u00FAnculo (Pai dos Hom\u00FAnculos, em Isenborg)."]], cacador: [["Atirador de Ullr", "a", "Mira letal: +10% de ataque."], ["Senhor das Feras", "d", "Aliado da mata: +20% de vida."]], volva: [["Tecel\u00E3 do Destino", "a", "Magia ofensiva: +10% de ataque m\u00E1gico."], ["Or\u00E1culo de M\u00EDmir", "d", "Sabedoria: +20% de vida e +10% de mana."]], valquiria: [["Chama de Frigg", "a", "Fogo sagrado: +10% de ataque m\u00E1gico."], ["Escudo de Frigg", "d", "Prote\u00E7\u00E3o: +20% de vida."]], skald: [["L\u00E2mina de Loki", "a", "Golpes trai\u00E7oeiros: +10% de ataque."], ["Trapaceiro das Sombras", "d", "Esquiva: +20% de vida."]], thay: [["Punho de Tyr", "a", "Punhos de justi\u00E7a: +10% de ataque."], ["Alma de Tyr", "d", "Resist\u00EAncia: +20% de vida e +10% de mana."]] };
   function ey(e) {
     let t = {};
     for (let a of Object.values(e.equipment)) {
@@ -9426,8 +9426,8 @@ Error generating stack: ` + n.message + `
     let r = sp(o);
     if (e.silver < r.silver) return { ok: false, success: false, msg: `Zens insuficientes (${r.silver}).`, level: o };
     if (It(e.inventory, Zi) < r.material) return { ok: false, success: false, msg: `Faltam ${$(Zi)?.name ?? "material"} (${r.material}).`, level: o };
-    if (e.silver -= r.silver, Ea(e.inventory, Zi, r.material), a() < $u(o)) return e.refine[t] = o + 1, { ok: true, success: true, msg: `${n.name} refinado para +${o + 1}!`, level: o + 1 };
-    if (o < 4) return { ok: true, success: false, msg: "O refino falhou, mas o item resistiu.", level: o };
+    if (e.silver -= r.silver, Ea(e.inventory, Zi, r.material), a() < $u(o) + (e.line === "escudeiro" && e.path === 1 ? 0.08 : 0)) return e.refine[t] = o + 1, { ok: true, success: true, msg: `${n.name} refinado para +${o + 1}!`, level: o + 1 };
+    if (o < 4 || e.line === "escudeiro" && e.path === 1 && Math.random() < 0.3) return { ok: true, success: false, msg: "O refino falhou, mas o item resistiu.", level: o };
     let i = Object.keys(e.equipment).find((s) => e.equipment[s] === t);
     return i ? delete e.equipment[i] : Ea(e.inventory, t, 1), delete e.refine[t], delete e.sockets[t], delete e.cards[t], no(e), { ok: true, success: false, destroyed: true, msg: `O refino falhou e ${n.name} +${o} foi destru\xEDdo!`, level: 0 };
   }
@@ -12103,6 +12103,14 @@ Error generating stack: ` + n.message + `
         this.goAfk();
         return;
       }
+      if (/^[@\/]classes?$/i.test(t.trim())) { this.panel = "classes", this.refresh(); return; }
+      if (/^[@\/](afiar|reforcar)/i.test(t.trim())) {
+        let afi = /afiar/i.test(t), p = this.ps, w = this.world;
+        if (!(p.line === "escudeiro" && p.path === 1)) this.pushLog("S\u00F3 Ferreiros (Mercador > caminho Ferreiro) sabem fazer isso.", "system", "bad");
+        else if (p.silver < 150 || It(p.inventory, "sucata_goblin") < 1) this.pushLog("Custa 150 Zens e 1 Sucata de Goblin.", "system", "bad");
+        else if (w) { let id = afi ? "afiar" : "reforcar"; Ea(p.inventory, "sucata_goblin", 1), p.silver -= 150, w.player.buffs = w.player.buffs.filter((b) => b.id !== id), w.player.buffs.push({ id, [afi ? "atk" : "def"]: afi ? 0.2 : 0.25, until: w.time + 48e4 }), w.emit({ type: "fx", kind: "buff", x: w.player.pos.x, y: w.player.pos.y, angle: 0, range: 60, arc: 360, magic: false, fromPlayer: true, light: 16757800 }), this.pushLog(afi ? "Voc\u00EA afiou sua arma: ataque +20% por 8 min." : "Voc\u00EA reforçou sua armadura: defesa +25% por 8 min.", "system", "good"), this.saveGameQuiet(); }
+        this.refresh(); return;
+      }
       if (/^[@\/]falc/i.test(t.trim())) { if (this.ps.line !== "cacador") this.pushLog("S\u00F3 Ca\u00E7adores t\u00EAm Falc\u00E3o.", "system", "bad"); else if (this.ps.level < 10) this.pushLog("O Falc\u00E3o atende Ca\u00E7adores a partir do n\u00EDvel 10.", "system", "info"); else this.ps.falcaoOff = !this.ps.falcaoOff, this.pushLog(this.ps.falcaoOff ? "Falc\u00E3o dispensado." : "Falc\u00E3o chamado: ataca sozinho a cada 5 s.", "system", "good"), this.saveGameQuiet(); this.refresh(); return; }
       if (/^[@\/]homun/i.test(t.trim())) { if (!(this.ps.line === "escudeiro" && this.ps.path === 2)) this.pushLog("S\u00F3 Alquimistas t\u00EAm Hom\u00FAnculo (Mercador > caminho Alquimista).", "system", "bad"); else if (!this.ps.homun) this.pushLog("Voc\u00EA ainda n\u00E3o tem um Hom\u00FAnculo. Procure o Pai dos Hom\u00FAnculos em Isenborg (escondido).", "system", "info"); else this.panel = "homun"; this.refresh(); return; }
       if (/^[@\/](bencao|b\u00EAn\u00E7\u00E3o)\b/i.test(t.trim())) { this.wedBless(); return; }
@@ -12666,7 +12674,7 @@ Error generating stack: ` + n.message + `
           this.closeSettings();
           return;
         }
-        if (this.panel === "inventory" || this.panel === "questlog" || this.panel === "stats" || this.panel === "skills" || this.panel === "bestiary" || this.panel === "worldmap" || this.panel === "refine" || this.panel === "craft" || this.panel === "shop" || this.panel === "stylist" || this.panel === "provador" || this.panel === "party" || this.panel === "utilshop" || this.panel === "vipshop" || this.panel === "viproom" || this.panel === "airship" || this.panel === "wedding" || this.panel === "homun" || String(this.panel).startsWith("story:") || this.panel === "vendor" || this.panel === "cartcfg" || this.panel === "boat" || this.panel === "trade" || this.panel === "quests" || this.panel === "feitos") {
+        if (this.panel === "inventory" || this.panel === "questlog" || this.panel === "stats" || this.panel === "skills" || this.panel === "bestiary" || this.panel === "worldmap" || this.panel === "refine" || this.panel === "craft" || this.panel === "shop" || this.panel === "stylist" || this.panel === "provador" || this.panel === "party" || this.panel === "utilshop" || this.panel === "vipshop" || this.panel === "viproom" || this.panel === "airship" || this.panel === "wedding" || this.panel === "classes" || this.panel === "homun" || String(this.panel).startsWith("story:") || this.panel === "vendor" || this.panel === "cartcfg" || this.panel === "boat" || this.panel === "trade" || this.panel === "quests" || this.panel === "feitos") {
           this.closePanel();
           return;
         }
@@ -12913,6 +12921,9 @@ Error generating stack: ` + n.message + `
           c ? Object.assign(c, { tx: o.x, ty: o.y, facing: o.facing, moving: o.moving, afk: o.afk, level: o.level, tier: o.tier, line: o.line, name: o.name }) : this.others.set(o.id, { ...o, tx: o.x, ty: o.y, say: "", sayUntil: 0 });
         }
         for (let k of [...this.others.keys()]) seen.has(k) || this.others.delete(k);
+        { const nw = Date.now(), hpf = Math.round(Math.max(0, Math.min(1, j.ps.hp / Math.max(1, Ua(j.ps).maxHp))) * 40) / 40;
+          if (hpf !== this.lastHp || nw - (this.hpAt ?? 0) > 8000) this.lastHp = hpf, this.hpAt = nw, sbRpc("mp_hp", { p_id: this.pid + ":" + j.activeSlot, p_hp: hpf });
+          if (nw - (this.hpsAt ?? 0) > 2500 && this.others.size) this.hpsAt = nw, sbRpc("mp_hps", { p_ids: [...this.others.keys()] }).then((rr) => { Array.isArray(rr) && rr.forEach((q) => { const o = this.others.get(q.id); o && (o.hpf = q.hpf); }); }); }
         for (let m of r.msgs) {
           if ((j.ps?.blocked ?? []).some((b) => b.toLowerCase() === String(m.f).toLowerCase())) continue;
           if (m.t && typeof m.b === "string" && m.b.startsWith("~WD|")) { j.wedRecv(m.f, m.b); continue; }
@@ -17485,7 +17496,7 @@ function ROXQM(f, c, s, l, def) {
   }
   function cs(e) {
     let t = e.equipment.weapon ? $(e.equipment.weapon)?.weaponType : void 0, a = (n) => n ? $(n)?.headStyle : void 0;
-    return { base: e.line, hair: kh(e.name), gear: t ? cS[t] ?? "none" : "none", top: a(e.equipment.headTop), mid: a(e.equipment.headMid), low: a(e.equipment.headLow), bk: e.equipment.back ? $(e.equipment.back)?.backStyle : void 0, sx: e.gender === "f" ? "f" : void 0, dye: e.dye ?? 0, hs: e.style?.hairStyle, hc: e.style?.hairColor, ti: e.tier || 0, ep: e.level >= 99 ? 1 : 0 };
+    return { base: e.line, hair: kh(e.name), gear: t ? cS[t] ?? "none" : "none", top: a(e.equipment.headTop), mid: a(e.equipment.headMid), low: a(e.equipment.headLow), bk: e.equipment.back ? $(e.equipment.back)?.backStyle : void 0, sx: e.gender === "f" ? "f" : void 0, dye: e.equipment.armor === "vestido_noiva" ? 16316664 : e.equipment.armor === "smoking_noivo" ? 2236962 : e.dye ?? 0, hs: e.style?.hairStyle, hc: e.style?.hairColor, ti: e.tier || 0, ep: e.level >= 99 ? 1 : 0 };
   }
   var FIXYAW = Math.PI / 4, CAM0 = (() => {
     try {
@@ -19129,7 +19140,7 @@ function ROXQM(f, c, s, l, def) {
     drawOther(t, a) {
       t.say && performance.now() < t.sayUntil && this.speechBalloon(t.say, ce(t.x, t.y).x, ce(t.x, t.y).y - 70, Math.min(1, (t.sayUntil - performance.now()) / 500));
       let n = this.ctx, o = ce(t.x, t.y), r = this.animOf(`o${t.id}`, t.x, t.y, a), { dir: i, flip: s } = Kl(t.facing), l = t.state === "dead", c = Km(this.clock - r.atkAt, r.atkImpact, r.atkDur), d = r.moving ? Math.floor(r.phase * ea) : -1, f = fa(po({ base: t.line, hair: kh(t.name), sx: t.sx || void 0, ti: t.tier || 0, ep: t.level >= 99 ? 1 : 0 }), i, d, c, r.atkStyle);
-      n.save(), n.globalAlpha = l ? 0.3 : 1, l ? (n.translate(o.x, o.y), n.rotate(Math.PI / 2), nt(n, f, 0, 0, s, $a, $a)) : nt(n, f, o.x, o.y + 6, s, $a, $a), n.restore(), l || (t.afk && this.text(`[AFK] ${t.name} \xB7 Nv ${t.level}`, o.x, o.y + 16, 12, "#ffd27a"), !t.afk && this.nameOn(`o${t.id}`) && this.text(`${t.name} \xB7 Nv ${t.level}`, o.x, o.y + 16, 12, "#9fe8ff"), this.bar(o.x, o.y - 52, 38, Math.max(0, t.hp / Math.max(1, t.maxHp)), "#58b8d4"));
+      n.save(), n.globalAlpha = l ? 0.3 : 1, l ? (n.translate(o.x, o.y), n.rotate(Math.PI / 2), nt(n, f, 0, 0, s, $a, $a)) : nt(n, f, o.x, o.y + 6, s, $a, $a), n.restore(), l || (t.afk && this.text(`[AFK] ${t.name} \xB7 Nv ${t.level}`, o.x, o.y + 16, 12, "#ffd27a"), !t.afk && this.nameOn(`o${t.id}`) && this.text(`${t.name} \xB7 Nv ${t.level}`, o.x, o.y + 16, 12, "#9fe8ff"), this.bar(o.x, o.y - 52, 38, Math.max(0, t.hpf ?? 1), t.hpf !== void 0 && t.hpf < 0.3 ? "#e05858" : "#58b8d4"));
     }
     drawMonster(t, a) {
       if (t.def.id === "jormungandr") return this.drawSerpent(t, a);
@@ -20205,6 +20216,20 @@ function ROXQM(f, c, s, l, def) {
         return Hh("div", { key: i, className: "eq-row" }, Hh(Aa, { id: i, size: 32 }), Hh("div", null, Hh("b", { style: { color: so[l.rarity] } }, l.name, " \u00D7", q), Hh("small", null, c ?? `${d} Zens cada`)), Hh("div", { className: "row wrap" }, Hh("button", { className: "btn btn-small", disabled: !!c, onClick: () => j.utilSell(i, 1) }, "Vender 1"), q > 1 && Hh("button", { className: "btn btn-small", disabled: !!c, onClick: () => j.utilSell(i, q) }, "Tudo")));
       })));
   }
+  function ClassesPanel() {
+    let t = ge().player;
+    if (!t) return null;
+    const hx = (v) => "#" + (v >>> 0).toString(16).padStart(6, "0");
+    return Hh(Yt, { id: "classes", title: "📜 Caminho das Classes", onClose: () => j.closePanel(), wide: true },
+      Hh("p", { className: "muted" }, "Evolução: todo herói começa Aprendiz. Nível de classe 10 → 1ª classe (fale com o Mestre de Classes). Nível de classe 50 → 2ª classe e escolha de CAMINHO (único por personagem). Nível base 99 → Renascimento, que reinicia o ciclo com bônus."),
+      Hh("div", { className: "refine-list", style: { maxHeight: 440, overflow: "auto" } }, ...Pr.filter((l) => Ce[l]).map((l) => {
+        let c = Ce[l], me = t.line === l, pa = PATHS[l] ?? [];
+        return Hh("div", { key: l, className: "eq-row", style: me ? { outline: "2px solid #d4a84a" } : void 0 },
+          Hh("div", { style: { width: 10, alignSelf: "stretch", background: hx(c.color ?? 8421504), borderRadius: 3 } }),
+          Hh("div", null, Hh("b", null, c.names?.[0], " → ", c.names?.[1], " → ", c.names?.[2], me ? " ← você" : ""), Hh("small", null, c.role ?? ""),
+            ...pa.map((q, i) => Hh("small", { key: i }, "Caminho: ", Hh("b", null, q[0]), " — ", q[2]))));
+      })));
+  }
   function StoryPanel({ id }) {
     let t = ge().player, st = STORY[id], [k, setK] = (0, xo.useState)("a");
     if (!t || !st) return null;
@@ -20316,7 +20341,7 @@ function ROXQM(f, c, s, l, def) {
       mem.length === 0 ? Hh("div", { className: "party-empty" }, Hh("p", { className: "muted" }, "Voc\u00EA n\u00E3o est\u00E1 em um grupo."), Hh("div", { className: "row" }, Hh("input", { value: nm, placeholder: "Nome do grupo", maxLength: 24, onChange: (x) => setNm(x.target.value) }), Hh("button", { className: "btn btn-small btn-primary", onClick: () => run("criar", nm.trim()) }, "Criar grupo")))
       : Hh("div", { className: "party" }, Hh("h3", null, sc?.name ?? e.party?.name), Hh("div", { className: "party-list" }, mem.map((x) => {
         let isMe = x.n.toLowerCase() === me.name.toLowerCase(), close = isMe || near.has(x.n.toLowerCase());
-        return Hh("div", { key: x.n, className: `party-row${x.on || isMe ? "" : " off"}` }, Hh("span", { className: "pr-role", title: x.role === "leader" ? "Criador do grupo" : "Membro" }, x.role === "leader" ? "\u2605" : "\u00B7"), Hh("b", null, x.n), Hh("span", { className: "pr-lv" }, "Nv ", isMe ? me.level : x.lv ?? "?"), isMe ? Hh("div", { className: "pr-hp", title: "Sua vida" }, Hh("i", { style: { width: Math.round((e.hud?.hp ?? 0) / Math.max(1, e.hud?.maxHp ?? 1) * 100) + "%" } }), Hh("em", null, e.hud?.hp, "/", e.hud?.maxHp)) : Hh("span", { className: "muted pr-map" }, x.on ? (close ? "pr\u00F3ximo" : x.map) : "offline"), isLeader && !isMe && Hh("button", { className: "btn btn-small", onClick: () => run("expulsar", x.n) }, "Expulsar"));
+        return Hh("div", { key: x.n, className: `party-row${x.on || isMe ? "" : " off"}` }, Hh("span", { className: "pr-role", title: x.role === "leader" ? "Criador do grupo" : "Membro" }, x.role === "leader" ? "\u2605" : "\u00B7"), Hh("b", null, x.n), Hh("span", { className: "pr-lv" }, "Nv ", isMe ? me.level : x.lv ?? "?"), isMe ? Hh("div", { className: "pr-hp", title: "Sua vida" }, Hh("i", { style: { width: Math.round((e.hud?.hp ?? 0) / Math.max(1, e.hud?.maxHp ?? 1) * 100) + "%" } }), Hh("em", null, e.hud?.hp, "/", e.hud?.maxHp)) : (() => { let oo = close && [...MP.others.values()].find((q) => String(q.name).toLowerCase() === x.n.toLowerCase()); return oo && oo.hpf !== void 0 ? Hh("div", { className: "pr-hp", title: "Vida de " + x.n }, Hh("i", { style: { width: Math.round(oo.hpf * 100) + "%" } }), Hh("em", null, Math.round(oo.hpf * 100) + "%")) : Hh("span", { className: "muted pr-map" }, x.on ? (close ? "pr\u00F3ximo" : x.map) : "offline"); })(), isLeader && !isMe && Hh("button", { className: "btn btn-small", onClick: () => run("expulsar", x.n) }, "Expulsar"));
       })), Hh("div", { className: "row" }, Hh("button", { className: "btn btn-small", onClick: () => run("sair") }, "Sair do grupo"), isLeader && Hh("button", { className: "btn btn-small", onClick: () => run("dissolver") }, "Dissolver"), Hh("small", { className: "muted" }, "Convidar: /grupo convidar NOME \u00B7 B\u00F4nus de EXP +10% por membro no mapa"))));
   }
   function PV_() {
@@ -20484,7 +20509,7 @@ function ROXQM(f, c, s, l, def) {
         j.setMove(0, 0), j.setAttackHeld(false);
       };
       return window.addEventListener("blur", a), () => window.removeEventListener("blur", a);
-    }, []), (0, pt.jsxs)("div", { className: `game${t ? " has-touch" : ""}`, children: [(0, pt.jsx)(IS, {}), (0, pt.jsx)(Q4, {}), (0, pt.jsx)(K4, {}), (0, pt.jsx)(p5, {}), (0, pt.jsx)(F4, {}), e.panel === "inventory" && (0, pt.jsx)(Ch, { mode: "bag" }), e.panel === "equip" && (0, pt.jsx)(Ch, { mode: "equip" }), e.panel === "questlog" && (0, pt.jsx)(Ch, { mode: "quests" }), e.panel === "stats" && (0, pt.jsx)(a5, {}), e.panel === "skills" && (0, pt.jsx)(l5, {}), e.panel === "bestiary" && (0, pt.jsx)(s5, {}), e.panel === "worldmap" && (0, pt.jsx)(e5, {}), e.panel === "refine" && (0, pt.jsx)(c5, {}), e.panel === "craft" && Hh(CraftPanel, {}), e.panel === "shop" && (0, pt.jsx)(m5, {}), e.panel === "provador" && Hh(PV_, {}), e.panel === "party" && Hh(PartyPanel, {}), (e.panel === "utilshop" || e.panel === "vipshop") && Hh(UtilShop, { vip: e.panel === "vipshop" }), e.panel === "viproom" && Hh(VipRoom, {}), e.panel === "airship" && Hh(AirshipPanel, {}), e.panel === "wedding" && Hh(WeddingPanel, {}), e.panel === "homun" && Hh(HomunPanel, {}), typeof e.panel == "string" && e.panel.startsWith("story:") && Hh(StoryPanel, { id: e.panel.slice(6), key: e.panel }), e.panel === "vendor" && Hh(VendorPanel, {}), e.panel === "cartcfg" && Hh(CartPanel, {}), e.panel === "boat" && Hh(AirshipPanel, { boat: true }), e.panel === "trade" && Hh(TradePanel, {}), e.panel === "stylist" && (0, pt.jsx)(u5, {}), e.panel === "quests" && (0, pt.jsx)(QuestsPanel, {}), e.panel === "feitos" && (0, pt.jsx)(d5, {}), e.panel === "pause" && (0, pt.jsx)(Z4, {}), e.panel === "settings" && (0, pt.jsx)(c0, {})] });
+    }, []), (0, pt.jsxs)("div", { className: `game${t ? " has-touch" : ""}`, children: [(0, pt.jsx)(IS, {}), (0, pt.jsx)(Q4, {}), (0, pt.jsx)(K4, {}), (0, pt.jsx)(p5, {}), (0, pt.jsx)(F4, {}), e.panel === "inventory" && (0, pt.jsx)(Ch, { mode: "bag" }), e.panel === "equip" && (0, pt.jsx)(Ch, { mode: "equip" }), e.panel === "questlog" && (0, pt.jsx)(Ch, { mode: "quests" }), e.panel === "stats" && (0, pt.jsx)(a5, {}), e.panel === "skills" && (0, pt.jsx)(l5, {}), e.panel === "bestiary" && (0, pt.jsx)(s5, {}), e.panel === "worldmap" && (0, pt.jsx)(e5, {}), e.panel === "refine" && (0, pt.jsx)(c5, {}), e.panel === "craft" && Hh(CraftPanel, {}), e.panel === "shop" && (0, pt.jsx)(m5, {}), e.panel === "provador" && Hh(PV_, {}), e.panel === "party" && Hh(PartyPanel, {}), (e.panel === "utilshop" || e.panel === "vipshop") && Hh(UtilShop, { vip: e.panel === "vipshop" }), e.panel === "viproom" && Hh(VipRoom, {}), e.panel === "airship" && Hh(AirshipPanel, {}), e.panel === "wedding" && Hh(WeddingPanel, {}), e.panel === "homun" && Hh(HomunPanel, {}), e.panel === "classes" && Hh(ClassesPanel, {}), typeof e.panel == "string" && e.panel.startsWith("story:") && Hh(StoryPanel, { id: e.panel.slice(6), key: e.panel }), e.panel === "vendor" && Hh(VendorPanel, {}), e.panel === "cartcfg" && Hh(CartPanel, {}), e.panel === "boat" && Hh(AirshipPanel, { boat: true }), e.panel === "trade" && Hh(TradePanel, {}), e.panel === "stylist" && (0, pt.jsx)(u5, {}), e.panel === "quests" && (0, pt.jsx)(QuestsPanel, {}), e.panel === "feitos" && (0, pt.jsx)(d5, {}), e.panel === "pause" && (0, pt.jsx)(Z4, {}), e.panel === "settings" && (0, pt.jsx)(c0, {})] });
   }
   var rn = oe(ue(), 1), zh = class extends g5.Component {
     state = { error: null };
