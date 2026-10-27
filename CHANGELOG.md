@@ -1,3 +1,11 @@
+## v205 - Regras e UI
+- Removido o botao "Distribuir automaticamente": cada jogador faz sua build.
+- Consumiveis podem ser usados mesmo com HP/SP cheios.
+- Equipar/desequipar nao mostra mais aviso na tela.
+- Historias dos NPCs nao dao recompensa.
+- Morrer em ilha reaparece na propria ilha.
+- Dirigivel e barco so levam as ilhas (e da ilha de volta a Midgard).
+
 ## v204 - Monstros animados por especie
 - Cada monstro tem comportamento proprio quando parado: lobos farejam, sentam e uivam; warg rosna; javali raspa o chao e bufa; goblin se coca e provoca; draugr balanca e geme; troll ruge; yeti bate no peito; silvano balanca; golens cerram os punhos e tremem; diabrete provoca; gosma pula; espectro lamenta.
 - Andar com trote diagonal nos quadrupedes, joelhos/jarretes dobrando, ataques com mordida/golpe de cada especie.

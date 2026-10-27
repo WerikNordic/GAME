@@ -9112,7 +9112,7 @@ Error generating stack: ` + n.message + `
     if (t) for (let a of t.portals) a.toMap === e.id && (a.toSpawn = { x: 130, y: Xx / 2 });
   }
   function nearestCity(id) {
-    if (String(id).startsWith("ilha_")) return "cidade_midgard";
+    if (String(id).startsWith("ilha_")) return id;
     let m = en(id);
     if (m?.city) return id;
     let i = Qm.findIndex((x) => x.id === id), best = "cidade_midgard", bd = 1e9;
@@ -9403,7 +9403,6 @@ Error generating stack: ` + n.message + `
     if (!n || n.kind !== "consumable" || !n.use) return { ok: false, msg: "Este item n\xE3o pode ser usado." };
     if (e.level < n.reqLevel) return { ok: false, msg: `Requer n\xEDvel ${n.reqLevel}.` };
     let o = Ua(e), hA = n.use.hp ?? (n.use.hpPct ? Math.round(o.maxHp * n.use.hpPct / 100) : 0), mA = n.use.mp ?? (n.use.mpPct ? Math.round(o.maxMp * n.use.mpPct / 100) : 0), r = hA > 0 && e.hp < o.maxHp, i = mA > 0 && e.mp < o.maxMp;
-    if (!r && !i) return { ok: false, msg: "N\xE3o h\xE1 nada a recuperar." };
     let s = hA ? np(hA, e.stats.vit) : 0, l = mA ? np(mA, e.stats.int) : 0, c = e.hp, d = e.mp;
     s && (e.hp = Math.min(o.maxHp, e.hp + s)), l && (e.mp = Math.min(o.maxMp, e.mp + l)), a.qty -= 1, a.qty === 0 && (e.inventory.slots[t] = null);
     let f = [e.hp > c ? `+${Math.round(e.hp - c)} HP` : "", e.mp > d ? `+${Math.round(e.mp - d)} SP` : ""].filter(Boolean).join(" ");
@@ -10758,7 +10757,7 @@ Error generating stack: ` + n.message + `
         this.ps.hp = Math.ceil(t.maxHp * 0.5), this.ps.mp = Math.ceil(t.maxMp * 0.5), this.player.deadAt = null, this.emit({ type: "respawnWarp", map: cp });
         return;
       }
-      this.player.pos = cityCenter(this.map), this.player.deadAt = null, this.player.invulnUntil = this.time + 3e3, this.ps.hp = Math.ceil(t.maxHp * 0.5), this.ps.mp = Math.ceil(t.maxMp * 0.5), this.emit({ type: "respawned" });
+      this.player.pos = String(this.map.id).startsWith("ilha_") ? { ...this.map.spawn } : cityCenter(this.map), this.player.deadAt = null, this.player.invulnUntil = this.time + 3e3, this.ps.hp = Math.ceil(t.maxHp * 0.5), this.ps.mp = Math.ceil(t.maxMp * 0.5), this.emit({ type: "respawned" });
     }
     makeMonster(t, a, n, o) {
       return { id: this.nextId++, def: t, pos: { ...a }, home: { ...a }, hp: t.hp, maxHp: t.hp, state: "idle", facing: this.rng() * Math.PI * 2, phase: 1, slot: n, summoned: o, stateUntil: 0, windupKind: "bite", windupStart: 0, dir: { x: 1, y: 0 }, slamCenter: { x: 0, y: 0 }, nextSlamAt: 0, stunUntil: 0, slowUntil: 0, speedMul: 1, atkMul: 1, nextWanderAt: 0, wander: { ...a }, respawnAt: 0, diedAt: 0, stuck: 0, detourUntil: 0, detour: 0, chargeHit: false, engagedAnnounced: false, provoked: false, carried: [], lowHp: { fired: false }, fleeUntil: 0, slamR: ar.radius, slamM: ar.mult };
@@ -12748,6 +12747,7 @@ Error generating stack: ` + n.message + `
       let ps = this.ps, m = en(id), mi = m && this.airInfo(m);
       if (!ps || !this.world || !m || !mi || this.online || this.flying) return;
       m.lo = mi.lo, m.hi = mi.hi;
+      if (!/^ilha_/.test(m.id) && !(String(this.world.map.id).startsWith("ilha_") && m.id === "cidade_midgard")) return this.toast("Dirig\u00EDvel e barco s\u00F3 levam \u00E0s ilhas.", "bad"), void this.refresh();
       if (m.id === this.world.map.id) return this.toast("Voc\u00EA j\u00E1 est\u00E1 aqui.", "info"), void this.refresh();
       if (!m.city && !boat && (m.lo ?? 1) > ps.level + 5) return this.toast("Rota perigosa demais para o seu n\u00EDvel.", "bad"), void this.refresh();
       let fare = this.airFare(m, boat);
@@ -12993,12 +12993,12 @@ Error generating stack: ` + n.message + `
     equipAt(t) {
       if (!this.ps) return;
       let a = uy(this.ps, t);
-      this.toast(a.msg, a.ok ? "good" : "bad"), this.refresh();
+      a.ok || this.toast(a.msg, "bad"), this.refresh();
     }
     unequipSlot(t) {
       if (!this.ps) return;
       let a = dy(this.ps, t);
-      this.toast(a.msg, a.ok ? "good" : "bad"), this.refresh();
+      a.ok || this.toast(a.msg, "bad"), this.refresh();
     }
     dropAt(t, a) {
       if (!this.ps || !this.world) return;
@@ -21637,7 +21637,7 @@ function ROXQM(f, c, s, l, def, ex) {
     let e = ge(), t = e.player, a = e.derived;
     if (!t || !a) return null;
     let n = Vu(t);
-    return (0, De.jsxs)(Yt, { id: "stats", title: "Atributos", onClose: () => j.closePanel(), children: [(0, De.jsxs)("div", { className: "attr-points", children: [(0, De.jsx)("span", { children: "Pontos dispon\xEDveis" }), (0, De.jsx)("b", { children: t.statPoints })] }), (0, De.jsx)("button", { className: "btn btn-small btn-primary", disabled: t.statPoints < 1, title: "Gasta os pontos de acordo com o estilo da sua classe", onClick: () => j.autoStats(), children: "\u2728 Distribuir automaticamente" }), yn.map((o) => {
+    return (0, De.jsxs)(Yt, { id: "stats", title: "Atributos", onClose: () => j.closePanel(), children: [(0, De.jsxs)("div", { className: "attr-points", children: [(0, De.jsx)("span", { children: "Pontos dispon\xEDveis" }), (0, De.jsx)("b", { children: t.statPoints })] }), yn.map((o) => {
       let r = t.stats[o], i = ep(r), s = t.statPoints >= i && r < 99;
       return (0, De.jsxs)("div", { className: "attr-row", title: OS[o], children: [(0, De.jsxs)("span", { className: "stat-name", children: [(0, De.jsx)(sr, { name: o, size: 22 }), " ", t5[o]] }), (0, De.jsxs)("b", { children: [r, n[o] ? (0, De.jsxs)("small", { className: "muted", children: [" +", n[o]] }) : null] }), r >= 99 ? (0, De.jsx)("span", { className: "cost", children: "m\xE1ximo" }) : null, (0, De.jsx)("button", { className: "btn btn-small", disabled: !s, onClick: () => j.allocate(o), "aria-label": `Aumentar ${t5[o]}`, children: "+" })] }, o);
     }), (0, De.jsxs)("ul", { className: "derived", children: [(0, De.jsxs)("li", { children: ["Vida m\xE1x.: ", (0, De.jsx)("b", { children: a.maxHp })] }), (0, De.jsxs)("li", { children: ["Mana m\xE1x.: ", (0, De.jsx)("b", { children: a.maxMp })] }), (0, De.jsxs)("li", { children: ["Ataque: ", (0, De.jsx)("b", { children: a.atk })] }), (0, De.jsxs)("li", { children: ["Atq. m\xE1gico: ", (0, De.jsx)("b", { children: a.matk })] }), (0, De.jsxs)("li", { children: ["Defesa: ", (0, De.jsx)("b", { children: a.def })] }), (0, De.jsxs)("li", { children: ["Cr\xEDtico: ", (0, De.jsxs)("b", { children: [(a.crit * 100).toFixed(1), "%"] })] }), (0, De.jsxs)("li", { children: ["Esquiva: ", (0, De.jsxs)("b", { children: [(a.dodge * 100).toFixed(1), "%"] })] }), (0, De.jsxs)("li", { children: ["Velocidade: ", (0, De.jsx)("b", { children: Math.round(a.speed) })] })] })] });
@@ -21829,9 +21829,9 @@ function ROXQM(f, c, s, l, def, ex) {
     return Hh(Yt, { id: "story", title: st.name + " — " + st.title, onClose: () => j.closePanel() },
       Hh("p", { style: { lineHeight: 1.55, fontStyle: "italic" } }, nd.t),
       nd.c ? Hh("div", { className: "row wrap", style: { flexDirection: "column", alignItems: "stretch", gap: 6 } }, ...nd.c.map(([l, nx]) => Hh("button", { key: nx + l, className: "btn", onClick: () => setK(nx) }, l)))
-        : Hh("div", null, Hh("p", { className: "muted" }, "Final: ", Hh("b", null, nd.end.k), done ? ` · você já recebeu a recompensa (final "${done}")` : ""),
-          Hh("div", { className: "row wrap" }, !done && Hh("button", { className: "btn btn-primary", onClick: () => { j.storyClaim(id, k), j.closePanel(); } }, "Receber recompensa"), Hh("button", { className: "btn", onClick: () => setK("a") }, "Ouvir de novo (outro caminho)"))),
-      Hh("small", { className: "muted" }, `${endings} finais possíveis · a recompensa vale só uma vez.`));
+        : Hh("div", null, Hh("p", { className: "muted" }, "Final: ", Hh("b", null, nd.end.k)),
+          Hh("div", { className: "row wrap" }, Hh("button", { className: "btn", onClick: () => setK("a") }, "Ouvir de novo (outro caminho)"))),
+      Hh("small", { className: "muted" }, `${endings} finais possíveis · histórias não dão recompensa.`));
   }
   function TradePanel() {
     let e = ge(), t = e.player, tr = j.trade, [zs, setZs] = (0, xo.useState)("0");
@@ -21901,11 +21901,11 @@ function ROXQM(f, c, s, l, def, ex) {
   function AirshipPanel({ boat }) {
     let t = ge().player;
     if (!t) return null;
-    let cities = Object.values(Jt).filter((m) => m.city), maps = boat ? ["ilha_coral", "ilha_naufragio", "ilha_kraken"].map((id) => j.airInfo(en(id))).filter(Boolean).map((m) => ({ id: m.id, name: m.name, lo: m.lo, hi: m.hi })) : J4().map((e) => ({ id: e.entry.id, name: e.entry.name, lo: e.lo, hi: e.hi })).filter((m) => m.lo <= t.level + 5).sort((a, b) => a.lo - b.lo);
+    let here = j.world?.map?.id ?? "", onIsle = String(here).startsWith("ilha_"), cities = onIsle ? [en("cidade_midgard")].filter(Boolean) : [], maps = ["ilha_coral", "ilha_naufragio", "ilha_kraken"].filter((id) => id !== here).map((id) => j.airInfo(en(id))).filter(Boolean).map((m) => ({ id: m.id, name: m.name, lo: m.lo, hi: m.hi }));
     let row = (m) => Hh("div", { key: m.id, className: "eq-row" }, Hh("div", null, Hh("b", null, m.name), Hh("small", null, m.city ? "Cidade" : `Nv ${m.lo ?? 1}\u2013${m.hi ?? "?"}`)), Hh("button", { className: "btn btn-small btn-primary", disabled: t.silver < j.airFare(m, boat), onClick: () => j.airTravel(m.id, boat) }, j.airFare(m, boat), " Zens"));
     return Hh(Yt, { id: "airship", title: boat ? "\u2693 Barco para as Ilhas" : "\u2708 Dirig\u00EDvel", onClose: () => j.closePanel(), wide: true },
       Hh("div", { className: "row wrap" }, Hh("span", { className: "coin-line" }, Hh(sr, { name: "coin", size: 18 }), " Zens: ", Hh("b", null, t.silver)), isVip(t) && Hh("span", { style: { color: "#ffd34d" } }, "\u2605 VIP: metade do pre\u00E7o")),
-      Hh("div", { className: "refine-list", style: { maxHeight: 360, overflow: "auto" } }, boat ? Hh("h4", null, "Ilhas") : Hh("h4", null, "Cidades"), ...(boat ? maps : cities).map(row), Hh("h4", null, boat ? "Cidades" : "Trilhas de ca\u00E7a (at\u00E9 5 n\u00EDveis acima do seu)"), ...(boat ? cities : maps).map(row)));
+      Hh("div", { className: "refine-list", style: { maxHeight: 360, overflow: "auto" } }, Hh("h4", null, "Ilhas"), ...maps.map(row), ...(cities.length ? [Hh("h4", null, "Voltar ao continente"), ...cities.map(row)] : [])));
   }
   function VipRoom() {
     let t = ge().player;
