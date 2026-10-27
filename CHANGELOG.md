@@ -1,3 +1,6 @@
+# v156
+- NOVAS ILHAS (3 mapas tropicais com palmeiras): Ilha dos Corais (Nv 18-20), Costa dos Naufragios (Nv 28-32), Ilha do Kraken (Nv 38-40, com MVP Capitao Hvalgrim). 9 monstros novos, 10 itens novos (conchas, perolas, sabre/arco/cajado, casaco, colar). Barqueiro Sigmund em todas as cidades e nas ilhas (viagem paga, VIP paga metade).
+
 # v155
 - NOVO NPC Capitao Brynjar (Dirigivel) em todas as cidades: voo pago com cena de viagem para qualquer cidade ou trilha de cacada ate 5 niveis acima do seu. VIP paga metade.
 
