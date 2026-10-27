@@ -1,3 +1,6 @@
+# v157
+- Ilhas com chao de areia e grama rala, agua turquesa e palmeiras.
+
 # v156
 - NOVAS ILHAS (3 mapas tropicais com palmeiras): Ilha dos Corais (Nv 18-20), Costa dos Naufragios (Nv 28-32), Ilha do Kraken (Nv 38-40, com MVP Capitao Hvalgrim). 9 monstros novos, 10 itens novos (conchas, perolas, sabre/arco/cajado, casaco, colar). Barqueiro Sigmund em todas as cidades e nas ilhas (viagem paga, VIP paga metade).
 
