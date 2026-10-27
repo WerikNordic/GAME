@@ -9540,6 +9540,29 @@ Error generating stack: ` + n.message + `
   }
 
   {
+    Object.assign(Wa, {
+      gel_verde: te({ id: "gel_verde", name: "Gel Verde", kind: "material", rarity: "common", reqLevel: 1, stack: 99, sell: 5, desc: "Gosma morna e pegajosa. Boa para iniciantes." }),
+      cogumelo_rubro: te({ id: "cogumelo_rubro", name: "Cogumelo Rubro", kind: "material", rarity: "common", reqLevel: 1, stack: 99, sell: 7, desc: "Chapéu vermelho com pintas brancas." }),
+      pelo_macio: te({ id: "pelo_macio", name: "Pelo Macio", kind: "material", rarity: "common", reqLevel: 1, stack: 99, sell: 6, desc: "Pelagem de filhote." })
+    });
+    const mkb = (base, id, nm, lv, hp, atk, exp, col, rad, drops, sil) => { let B = Qu[base]; B && (Qu[id] = { ...B, id, name: nm, level: lv, hp, atk, def: 0, exp, silver: sil, color: col, radius: rad, drops, ai: void 0 }); };
+    const dr = [{ item: "erva_vermelha", chance: 0.12, min: 1, max: 1 }, { item: "pocao_laranja", chance: 0.03, min: 1, max: 1 }];
+    mkb("broto_espinhoso", "gosma_verde", "Gosma Verde", 1, 45, 6, 5, 5420304, 11, [{ item: "gel_verde", chance: 0.5, min: 1, max: 2 }, ...dr], [1, 3]);
+    mkb("javali", "javali_filhote", "Javali Filhote", 2, 80, 9, 9, 11436126, 12, [{ item: "pelo_macio", chance: 0.45, min: 1, max: 2 }, ...dr], [2, 4]);
+    mkb("guardiao_raiz", "broto_andante", "Broto Andante", 3, 110, 11, 13, 4906624, 13, [{ item: "cogumelo_rubro", chance: 0.45, min: 1, max: 2 }, ...dr], [2, 5]);
+    mkb("goblin_saqueador", "goblin_mirim", "Goblin Mirim", 4, 150, 14, 17, 9419584, 12, [{ item: "sucata_goblin", chance: 0.3, min: 1, max: 1 }, { item: "cogumelo_rubro", chance: 0.2, min: 1, max: 1 }, ...dr], [3, 6]);
+    for (const id of ["gosma_verde", "javali_filhote", "broto_andante", "goblin_mirim"]) if (Qu[id]) { Qu[id].respawnMs = 12e3; Qu[id].aggro = Math.min(Qu[id].aggro ?? 120, 110); }
+    const INI = [
+      { id: "ini_prado", name: "Prado dos Aprendizes", seed: 7101, trees: 55, rocks: 6, lakes: [{ x: 1350, y: 800, w: 260, h: 150 }], spawns: [N("gosma_verde", 520, 560, 230, 9), N("gosma_verde", 1400, 480, 200, 7), N("javali_filhote", 900, 950, 220, 7)], safeLabel: "Entrada do Prado", prev: "campos_midgard", next: "ini_vale", mood: [1.05, 1.02, 0.95], depth: 1 },
+      { id: "ini_vale", name: "Vale dos Cogumelos", seed: 7202, trees: 120, rocks: 10, lakes: [], spawns: [N("broto_andante", 500, 520, 230, 9), N("gosma_verde", 1450, 600, 200, 7), N("javali_filhote", 880, 980, 210, 7)], safeLabel: "Clareira dos Cogumelos", prev: "ini_prado", next: "ini_colina", mood: [0.92, 1, 0.9], depth: 2, crates: [[600, 700]] },
+      { id: "ini_colina", name: "Colina dos Goblins Mirins", seed: 7303, trees: 40, rocks: 60, lakes: [], spawns: [N("goblin_mirim", 520, 560, 220, 9), N("broto_andante", 1400, 520, 200, 7), N("goblin_mirim", 900, 1000, 220, 8)], safeLabel: "Pé da Colina", prev: "ini_vale", mood: [1, 0.96, 0.9], depth: 3, crates: [[1300, 700]] }
+    ];
+    INI.forEach((e, i) => { Jt[e.id] = N8(e, i), Jt[e.id].depth = e.depth; });
+    Jt.ini_prado.portals.forEach((q) => { q.toMap === "campos_midgard" && (q.toSpawn = { x: 960, y: 130 }); });
+    Jt.campos_midgard.portals.push({ ...pRect("top", Jt.campos_midgard.width, Jt.campos_midgard.height), label: "Prado dos Aprendizes", locked: false, toMap: "ini_prado", toSpawn: pSpawn("top", Jt.ini_prado.width, Jt.ini_prado.height) });
+  }
+
+  {
     const SUF = [["de Bronze", { def: 1 }], ["de Ferro", { def: 2 }], ["de Aço", { atk: 2 }], ["de Prata", { luk: 1 }], ["de Ouro", { maxHp: 12 }], ["de Gelo", { int: 1 }], ["de Brasa", { str: 1 }], ["das Sombras", { agi: 1 }], ["de Tyr", { vit: 1 }], ["das Valquírias", { dex: 1 }]];
     const WB = { sword: ["Espada Curta", "Espada Longa", "Montante", "Claymore", "Lâmina Rúnica", "Lâmina Divina"], axe: ["Machadinha", "Machado de Guerra", "Machado Dobrado", "Machado Berserker", "Fendedor"], bow: ["Arco Curto", "Arco Longo", "Arco Composto", "Arco Rúnico", "Arco Celeste"], staff: ["Cajado", "Cajado Entalhado", "Cajado Rúnico", "Cajado Arcano", "Cajado Celeste"], spear: ["Lança", "Lança de Caça", "Lança de Batalha", "Lança Alada", "Lança Divina"], dagger: ["Adaga", "Punhal", "Faca de Caça", "Lâmina Sombria", "Presa"], fist: ["Luvas de Couro", "Manoplas", "Garras", "Punhos Rúnicos", "Punhos Divinos"], mace: ["Maça", "Martelo", "Maça Estrelada", "Martelo de Tyr", "Martelo Divino"] };
     const AB = [["T\u00FAnica", 0.7, 1.4, ["volva", "valquiria"], "int"], ["Gib\u00E3o", 0.9, 1.1, ["cacador", "skald", "thay"], "agi"], ["Coura\u00E7a", 1.1, 1, ["berserker", "escudeiro", "valquiria"], "vit"], ["Brunea", 1.2, 0.9, ["berserker", "escudeiro"], "str"], ["Cota de Malha", 1.25, 0.9, ["berserker", "escudeiro", "cacador"], "vit"], ["Armadura de Placas", 1.5, 0.8, ["berserker", "escudeiro"], "str"], ["Manto R\u00FAnico", 0.8, 1.3, ["volva", "valquiria"], "int"], ["Veste de Seda", 0.6, 1.5, ["volva", "valquiria", "skald"], "dex"], ["Peitoral de Escamas", 1.1, 1.1, ["cacador", "skald", "berserker", "thay"], "agi"], ["Armadura de Draugr", 1.3, 1, ["berserker", "escudeiro", "thay", "skald"], "str"]];

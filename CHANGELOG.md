@@ -1,3 +1,6 @@
+# v166
+- 3 mapas iniciais encadeados a partir dos Campos de Midgard (portal no topo): Prado dos Aprendizes (Nv1-2), Vale dos Cogumelos (Nv2-3), Colina dos Goblins Mirins (Nv3-4). 4 monstros fracos novos (Gosma Verde, Javali Filhote, Broto Andante, Goblin Mirim) e 3 materiais (Gel Verde, Cogumelo Rubro, Pelo Macio), respawn rapido e agressividade baixa.
+
 # v165
 - Isenborg: presentes (giftpile) embaixo da arvore de Natal central, de cada arvore de neve e ao redor da Casa do Papai Noel (fabrica de brinquedos).
 - Kharnheim e Eldvik: duas fontes secas e rachadas (sem agua) ladeando a praca.
