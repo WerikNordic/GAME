@@ -1,3 +1,6 @@
+# v167
+- Falcao do Cacador: a partir do nivel 10 o Cacador ganha um falcao que sobrevoa o personagem e mergulha sozinho a cada 5 s no monstro mais proximo (dano ~110% do ataque + atordoa 0,45 s). /falcao liga/desliga. Nao ataca em zona segura.
+
 # v166
 - 3 mapas iniciais encadeados a partir dos Campos de Midgard (portal no topo): Prado dos Aprendizes (Nv1-2), Vale dos Cogumelos (Nv2-3), Colina dos Goblins Mirins (Nv3-4). 4 monstros fracos novos (Gosma Verde, Javali Filhote, Broto Andante, Goblin Mirim) e 3 materiais (Gel Verde, Cogumelo Rubro, Pelo Macio), respawn rapido e agressividade baixa.
 

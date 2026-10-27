@@ -7826,6 +7826,7 @@ Error generating stack: ` + n.message + `
   function petSay(m, tone = "info") { try { j.pushLog(m, "system", tone); } catch {} }
   var HOM_KINDS = { vitalis: { name: "Vitalis", color: 8050826, desc: "Cura o dono periodicamente." }, granito: { name: "Granito", color: 10127994, desc: "Pele de pedra: +8% de vida do dono." }, faisca: { name: "Fa\u00EDsca", color: 16765000, desc: "Ataques r\u00E1pidos." }, caos: { name: "Caos", color: 11559136, desc: "Dano imprevis\u00EDvel, de fraco a devastador." } };
   function homunOk(ps) { return !!(ps && ps.line === "escudeiro" && ps.path === 2 && ps.homun); }
+  function falconOk(ps) { return !!(ps && ps.line === "cacador" && ps.level >= 10 && !ps.falcaoOff); }
   function homunNeed(L) { return Math.round(50 * Math.pow(L, 1.5)); }
   function homunStats(ps) { let h = ps.homun, m = h.evolved ? 1.6 : 1; return { atk: Math.round((10 + h.level * 3.4 + ps.level * 0.7) * m), heal: (h.evolved ? 0.07 : 0.04) }; }
   function homunGain(ps, amt, say) { let h = ps.homun; if (!h || h.level >= 99) return; for (h.exp += amt; h.level < 99 && h.exp >= homunNeed(h.level); ) h.exp -= homunNeed(h.level), h.level++, say?.(`${h.name} subiu para o n\u00EDvel ${h.level}!`); }
@@ -10381,7 +10382,7 @@ Error generating stack: ` + n.message + `
     }
     step(t) {
       let a = Math.max(0, Math.min(t, hM));
-      this.time += a, this.ps.playTimeMs += a, this.player.buffs = this.player.buffs.filter((n) => n.until > this.time), this.player.deadAt !== null ? this.time - this.player.deadAt >= pM && this.respawnPlayer() : this.updatePlayer(a), this.updateProjectiles(a), this.updateDelayed(), this.petBite(), this.homunTick(), this.tutorial(), this.updatePendingBasic(), this.updateMonsters(a), this.updateLoot(), this.monsters = this.monsters.filter((n) => !(n.summoned && n.state === "dead" && this.time - n.diedAt > 3e3));
+      this.time += a, this.ps.playTimeMs += a, this.player.buffs = this.player.buffs.filter((n) => n.until > this.time), this.player.deadAt !== null ? this.time - this.player.deadAt >= pM && this.respawnPlayer() : this.updatePlayer(a), this.updateProjectiles(a), this.updateDelayed(), this.petBite(), this.homunTick(), this.falconTick(), this.tutorial(), this.updatePendingBasic(), this.updateMonsters(a), this.updateLoot(), this.monsters = this.monsters.filter((n) => !(n.summoned && n.state === "dead" && this.time - n.diedAt > 3e3));
     }
     buffSum(t) {
       let a = 0;
@@ -10640,6 +10641,13 @@ Error generating stack: ` + n.message + `
       if (k === "vitalis") { let d = Ua(ps); if (ps.hp < d.maxHp * 0.85) ps.hp = Math.min(d.maxHp, ps.hp + Math.round(d.maxHp * st.heal)), this.emit({ type: "fx", kind: "buff", x: this.player.pos.x, y: this.player.pos.y, angle: 0, range: 50, arc: 360, magic: true, fromPlayer: true, light: 8050826 }); }
       let m = this.nearestMonster(190);
       if (m && m.state !== "dead" && !this.inSafeZone?.(this.player.pos)) { let mul = k === "vitalis" ? 0.6 : k === "granito" ? 0.8 : k === "faisca" ? 0.9 : 0.4 + Math.random() * 2.2; this.hitMonster(m, Math.round(st.atk * mul), 1, 0, 0); }
+    }
+    falconTick() {
+      let ps = this.ps;
+      if (!falconOk(ps) || this.player.deadAt !== null || this.time < (this._falAt ?? 0)) return;
+      let m = this.nearestMonster(300);
+      if (!m || m.state === "dead" || this.inSafeZone?.(this.player.pos)) return;
+      this._falAt = this.time + 5200, this.falconStrike = { t0: this.time, x: m.pos.x, y: m.pos.y }, this.hitMonster(m, Math.round(this.playerPower(false) * 1.1), 1, 450, 0);
     }
     petBite() {
       if (!this.ps.pet || !this.ps.petData || this.player.deadAt !== null || this.time < (this._petAt ?? 0)) return;
@@ -12029,6 +12037,7 @@ Error generating stack: ` + n.message + `
         this.goAfk();
         return;
       }
+      if (/^[@\/]falc/i.test(t.trim())) { if (this.ps.line !== "cacador") this.pushLog("S\u00F3 Ca\u00E7adores t\u00EAm Falc\u00E3o.", "system", "bad"); else if (this.ps.level < 10) this.pushLog("O Falc\u00E3o atende Ca\u00E7adores a partir do n\u00EDvel 10.", "system", "info"); else this.ps.falcaoOff = !this.ps.falcaoOff, this.pushLog(this.ps.falcaoOff ? "Falc\u00E3o dispensado." : "Falc\u00E3o chamado: ataca sozinho a cada 5 s.", "system", "good"), this.saveGameQuiet(); this.refresh(); return; }
       if (/^[@\/]homun/i.test(t.trim())) { if (!(this.ps.line === "escudeiro" && this.ps.path === 2)) this.pushLog("S\u00F3 Alquimistas t\u00EAm Hom\u00FAnculo (Mercador > caminho Alquimista).", "system", "bad"); else if (!this.ps.homun) this.pushLog("Voc\u00EA ainda n\u00E3o tem um Hom\u00FAnculo. Procure o Pai dos Hom\u00FAnculos em Isenborg (escondido).", "system", "info"); else this.panel = "homun"; this.refresh(); return; }
       if (/^[@\/](bencao|b\u00EAn\u00E7\u00E3o)\b/i.test(t.trim())) { this.wedBless(); return; }
       if (/^[@\/]trade\b/i.test(t.trim())) { this.vendOpenPanel(t.trim().replace(/^[@\/]trade\s*/i, "")); return; }
@@ -18648,7 +18657,7 @@ function ROXQM(f, c, s, l, def) {
         M(H.x, H.y) && (z.add(`o${q.id}`), T.push({ depth: Ja(q.x, q.y), draw: () => this.drawOther(q, t) }));
       }
       for (let q of n.critters ?? []) { let H = ce(q.x, q.y); M(H.x, H.y) && T.push({ depth: Ja(q.x, q.y), draw: () => this.drawCritter(q) }); }
-      T.push({ depth: m, draw: () => this.drawPlayer(t) }), a.ps.cart?.on && a.ps.line === "escudeiro" ? T.push({ depth: this._cart ? Ja(this._cart.x, this._cart.y) : m + 1, draw: () => this.drawCart() }) : this._cart = null, a.ps.vend?.open && T.push({ depth: m + 3, draw: () => this.drawVend() }), a.ps.baby && T.push({ depth: this._bb ? Ja(this._bb.x, this._bb.y) : m + 1, draw: () => this.drawBaby() }), homunOk(a.ps) && a.ps.homun.on ? T.push({ depth: this._hm ? Ja(this._hm.x, this._hm.y) : m + 1, draw: () => this.drawHomun() }) : this._hm = null, a.ps.pet && a.ps.petData && T.push({ depth: this._pet ? Ja(this._pet.x, this._pet.y) : m + 1, draw: () => this.drawPet() }), this.store.fx && Date.now() - this.store.fx.t0 < 3800 && T.push({ depth: m + 9, draw: () => this.drawBlessing(a.player.pos) });
+      T.push({ depth: m, draw: () => this.drawPlayer(t) }), a.ps.cart?.on && a.ps.line === "escudeiro" ? T.push({ depth: this._cart ? Ja(this._cart.x, this._cart.y) : m + 1, draw: () => this.drawCart() }) : this._cart = null, a.ps.vend?.open && T.push({ depth: m + 3, draw: () => this.drawVend() }), a.ps.baby && T.push({ depth: this._bb ? Ja(this._bb.x, this._bb.y) : m + 1, draw: () => this.drawBaby() }), falconOk(a.ps) && T.push({ depth: m + 40, draw: () => this.drawFalcon() }), homunOk(a.ps) && a.ps.homun.on ? T.push({ depth: this._hm ? Ja(this._hm.x, this._hm.y) : m + 1, draw: () => this.drawHomun() }) : this._hm = null, a.ps.pet && a.ps.petData && T.push({ depth: this._pet ? Ja(this._pet.x, this._pet.y) : m + 1, draw: () => this.drawPet() }), this.store.fx && Date.now() - this.store.fx.t0 < 3800 && T.push({ depth: m + 9, draw: () => this.drawBlessing(a.player.pos) });
       if (n.obstacles.some((q) => q.deco === "airship")) {
         let A2 = this.air;
         (!A2 || A2.map !== n) && (A2 = this.air = { map: n, x: n.width * (0.2 + Math.random() * 0.6), y: n.height * (0.2 + Math.random() * 0.6), tx: 0, ty: 0, hd: 1, last: this.clock, pick: true });
@@ -18962,6 +18971,20 @@ function ROXQM(f, c, s, l, def) {
       if (h.kind === "vitalis") n.fillStyle = "#fff", n.fillRect(-1, -13, 2, 6), n.fillRect(-3, -11, 6, 2);
       if (h.kind === "caos") n.fillStyle = "#6a2a9a", n.beginPath(), n.moveTo(-7, -7), n.lineTo(-10, -15), n.lineTo(-3, -9), n.moveTo(7, -7), n.lineTo(10, -15), n.lineTo(3, -9), n.fill();
       n.fillStyle = "#fff", n.beginPath(), n.arc(-3.5, -1, 2.4, 0, 7), n.arc(3.5, -1, 2.4, 0, 7), n.fill(), n.fillStyle = "#1a1a2a", n.beginPath(), n.arc(-3, -0.6, 1.2, 0, 7), n.arc(4, -0.6, 1.2, 0, 7), n.fill();
+      n.restore();
+    }
+    drawFalcon() {
+      let w = this.store.world; if (!w || !falconOk(w.ps) || w.isDead()) return;
+      let o = w.player, n = this.ctx, T = this.clock / 1e3, fs = w.falconStrike, k = fs ? (w.time - fs.t0) / 900 : 2, base = ce(o.pos.x, o.pos.y), px = base.x + Math.cos(T * 1.3) * 46, py = base.y - 74 + Math.sin(T * 1.3) * 14 + Math.sin(T * 5) * 2, fx = Math.cos(T * 1.3 + 1.57);
+      if (k >= 0 && k < 1) { let tg = ce(fs.x, fs.y), u = k < 0.5 ? k * 2 : (1 - k) * 2, e = u * u * (3 - 2 * u); px += (tg.x - px) * e, py += (tg.y - 14 - py) * e, fx = tg.x - px; }
+      let sd = fx >= 0 ? 1 : -1, fl = Math.sin(T * 14) * 6;
+      this.blob(base.x + (px - base.x) * 0.2, base.y + 4, 5);
+      n.save(), n.translate(px, py), n.scale(sd, 1);
+      n.fillStyle = "#7a5a3a", n.beginPath(), n.ellipse(0, 0, 8, 4.5, 0, 0, 7), n.fill();
+      n.fillStyle = "#5a3e24", n.beginPath(), n.moveTo(-1, -1), n.lineTo(-7, -9 - fl), n.lineTo(4, -2), n.fill(), n.beginPath(), n.moveTo(-1, 1), n.lineTo(-8, 8 + fl), n.lineTo(3, 2), n.fill();
+      n.fillStyle = "#e8d8b8", n.beginPath(), n.ellipse(2, 1.5, 4.5, 2.4, 0, 0, 7), n.fill(), n.fillStyle = "#7a5a3a", n.beginPath(), n.arc(8, -2, 3.4, 0, 7), n.fill();
+      n.fillStyle = "#f0b838", n.beginPath(), n.moveTo(10.5, -2.6), n.lineTo(14.5, -1), n.lineTo(10.5, -0.2), n.fill(), n.fillStyle = "#111", n.fillRect(8, -3.2, 1.4, 1.4);
+      n.fillStyle = "#4a3220", n.beginPath(), n.moveTo(-7, 0), n.lineTo(-13, -1.5), n.lineTo(-13, 2.5), n.fill();
       n.restore();
     }
     drawVend() {
