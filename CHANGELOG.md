@@ -37,6 +37,10 @@
 - /guilda, /g, /grupo, /p, /amigo (locais; sem servidor de jogo ainda).
 - ESC nao pausa; tela de entrada nordica; novos efeitos sonoros; sem visual inicial de classe.
 
+## v148
+- Pesos lógicos por item (automáticos por tipo/material: ferro/aço pesado, algodão/seda leve, poções e flechas quase nada; peso sobe um pouco com o nível). Capacidade de carga ajustada (300 + FOR*25 + nível*8).
+- Conferido: aprendiz que muda de classe já recebe a arma inicial da classe; itens exigem nível e tipo de arma da classe.
+
 ## v147
 - Estátua do boss mundial (Nidh-WERIK-r) refeita: serpente de pedra enrolada sobre pedestal, com pescoço erguido e olhos brilhantes (substitui o colosso na variante da serpente).
 

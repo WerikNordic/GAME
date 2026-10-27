@@ -9788,10 +9788,32 @@ Error generating stack: ` + n.message + `
       return Math.max(0, (this.due.get(t) ?? this.o.now()) - this.o.now());
     }
   };
+  function autoW(t) {
+    if (t.weight !== void 0) return t.weight;
+    if (t._aw !== void 0) return t._aw;
+    let x = ((t.id || "") + " " + (t.name || "")).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ""), has = (...k) => k.some((q) => x.includes(q)), w;
+    let heavy = has("ferro", "aco", "placa", "malha", "pedra", "rocha", "obsid", "magma", "bronze", "cobre", "runico", "titan", "gigante", "colosso"), light = has("algodao", "seda", "linho", "tecido", "pano", "pluma", "pena", "veu", "manto", "tunica", "vestes", "roupa", "camisa", "robe", "luvas_couro");
+    switch (t.kind) {
+      case "weapon": w = { dagger: 6, sword: 22, axe: 38, mace: 34, spear: 28, bow: 14, staff: 11 }[t.weaponType] ?? 18, heavy && (w *= 1.35), light && (w *= 0.8); break;
+      case "armor": w = heavy ? 55 : has("couro", "pele", "escama") ? 20 : light ? 6 : 28; break;
+      case "headTop": w = has("elmo", "capacete", "coroa") ? heavy ? 22 : 12 : has("chapeu", "capuz", "tiara", "gorro", "boina") ? 3 : 6; break;
+      case "headMid": case "headLow": w = 2; break;
+      case "back": w = has("manto", "capa") ? 5 : 8; break;
+      case "accessory": w = has("anel", "brinco", "amuleto", "colar", "runa") ? 1 : 3; break;
+      case "ammo": w = 0.1; break;
+      case "card": w = 0.1; break;
+      case "quest": w = 0.2; break;
+      case "material": w = heavy || has("minerio", "lingote", "barra", "bloco") ? 8 : has("couro", "pele", "osso", "presa", "garra") ? 2.5 : has("gema", "cristal", "essencia", "po", "fragmento", "pedaco") ? 0.8 : 1.5; break;
+      case "consumable": w = has("pocao") ? 0.7 : has("asa") ? 0.1 : has("carne", "pao", "peixe") ? 1 : 0.5; break;
+      default: w = gp[t.kind] ?? 1;
+    }
+    w *= 1 + Math.min(1, (t.reqLevel || 1) / 120) * 0.35;
+    return t._aw = Math.max(0.1, Math.round(w * 10) / 10);
+  }
   var gp = { consumable: 3, weapon: 50, armor: 40, accessory: 5, headTop: 15, headMid: 3, headLow: 3, back: 5, card: 1, material: 2, quest: 1, ammo: 0.1 }, Br = class {
     constructor(t) {
       this.def = t;
-      this.id = t.id, this.name = t.name, this.minLevel = t.reqLevel, this.sellPrice = t.sell, this.weight = t.weight ?? gp[t.kind];
+      this.id = t.id, this.name = t.name, this.minLevel = t.reqLevel, this.sellPrice = t.sell, this.weight = autoW(t);
     }
     def;
     id;
@@ -9874,7 +9896,7 @@ Error generating stack: ` + n.message + `
   var Ly = 0.75, aM = 1.25;
   function bp(e) {
     let t = Wa[e];
-    return t ? t.weight ?? gp[t.kind] ?? 1 : 0;
+    return t ? autoW(t) : 0;
   }
   function Tl(e) {
     let t = 0;
@@ -9883,7 +9905,7 @@ Error generating stack: ` + n.message + `
     return Math.round(t * 10) / 10;
   }
   function Rl(e) {
-    return Math.round(900 + tp(e).str * 45 + e.level * 12);
+    return Math.round(300 + tp(e).str * 25 + e.level * 8);
   }
   function Ny(e, t, a) {
     let n = Wa[t];
