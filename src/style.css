@@ -199,3 +199,12 @@ body.armed canvas{cursor:crosshair!important}
 .panel.stylist{max-height:92vh;overflow:auto}
 .title-bg{background:none!important}.title-bg:before,.title-bg:after{display:none!important}.title-bg .cs-canvas{position:absolute;inset:0;width:100%;height:100%;image-rendering:auto}
 .title-card{background:linear-gradient(rgba(14,12,40,.72),rgba(8,8,28,.78))!important;backdrop-filter:blur(3px)}
+.fbar2{top:58px!important}
+.inv-tabs{grid-column:1/-1;display:flex;gap:4px;margin-bottom:4px}.inv-tab{flex:1;padding:4px 6px;font-size:12px;border:1px solid var(--line);background:#0c1220cc;color:var(--text);border-radius:6px;cursor:pointer}.inv-tab.on{border-color:var(--gold);background:#2a2210e6;color:var(--gold)}
+.paperdoll{display:grid;grid-template-columns:64px auto 64px;gap:10px;justify-content:center;align-items:start;margin:4px auto}.pd-col{display:grid;gap:8px}.pd-mid{display:flex;justify-content:center}
+.pd-slot{width:62px;height:62px;display:grid;place-content:center;justify-items:center;gap:1px;border:1px dashed var(--line);border-radius:8px;background:#0c1220cc;text-align:center;cursor:default}.pd-slot.full{border-style:solid;cursor:pointer}.pd-slot small{font-size:9px;color:var(--muted);line-height:1}
+.pd-share{display:block;text-align:center;font-size:12px;margin:6px 0}
+.equip-wrap{display:flex!important;flex-direction:column;align-items:center}
+[data-window="skills"] .panel{width:min(1100px,94vw)!important;max-width:94vw!important;max-height:90vh;overflow:auto}
+.skill-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:6px 10px}
+.skill-grid .skill-row{min-width:0}

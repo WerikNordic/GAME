@@ -37,6 +37,14 @@
 - /guilda, /g, /grupo, /p, /amigo (locais; sem servidor de jogo ainda).
 - ESC nao pausa; tela de entrada nordica; novos efeitos sonoros; sem visual inicial de classe.
 
+## v134 (interface)
+- Barra de habilidades F1–F9 no topo (vazia até você colocar algo); F11 abre/fecha 2ª barra (teclas 1–0, abaixo da principal); F10 esconde/mostra o chat; F12 esconde/mostra missões; Alt+V esconde/mostra informações básicas.
+- Vida dos monstros: barrinha verde embaixo do monstro com o número em branco no meio, diminui ao tomar dano.
+- Alt+Q: sem botão Remover; equipamentos ao redor do personagem (duplo clique desequipa); opção "mostrar meus equipamentos a outros jogadores".
+- Alt+E: abas Consumíveis / Equipáveis / Outros. Alt+S: habilidades em grade horizontal.
+- Drops: cartas 0,01–0,02%, equipamentos 0,1–1%, comuns 5–25%, teto 90%. EXP base 1x.
+- Sem avisos de clima/dia/noite; nome da cidade/mapa só na primeira visita.
+
 ## v133
 - Tela de título (e de login) com fundo estilo anime: lua, aurora, ponte Bifrost arco-íris, ilha de Asgard, barco viking, Yggdrasil luminosa, folhas, vaga-lumes, estrela cadente e parallax com o mouse. Respeita "reduzir movimento".
 

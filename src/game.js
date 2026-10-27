@@ -7483,7 +7483,7 @@ Error generating stack: ` + n.message + `
   function $(e) {
     return Object.prototype.hasOwnProperty.call(Wa, e) ? Wa[e] : void 0;
   }
-  var Ui = 12, zu = () => Array.from({ length: Ui }, () => null);
+  var Ui = 19, zu = () => Array.from({ length: Ui }, () => null);
   function Du(e) {
     let t = e;
     return !t || typeof t != "object" ? false : t.t === "skill" ? Number.isInteger(t.i) && t.i >= 0 && t.i < 40 : t.t === "item" ? typeof t.id == "string" && ["consumable", "ammo"].includes($(t.id)?.kind ?? "") : false;
@@ -7494,13 +7494,7 @@ Error generating stack: ` + n.message + `
     return t;
   }
   function Ou(e) {
-    let t = [...e];
-    for (let a = 0; a < 4; a++) {
-      if (t.some((o) => o?.t === "skill" && o.i === a)) continue;
-      let n = t.findIndex((o) => !o);
-      n >= 0 && (t[n] = { t: "skill", i: a });
-    }
-    return t;
+    return [...e];
   }
   var k8 = (e, t) => !!e && e.t === t.t && (e.t === "skill" ? e.i === t.i : e.id === t.id);
   function Lx(e, t, a) {
@@ -9155,7 +9149,7 @@ Error generating stack: ` + n.message + `
       m_.spawns.push(...add_);
     }
   }
-  var BAL = { hp: 1.55, atk: 1.3, def: 1.12, exp: 0.5, silver: 0.55, drop: 0.55, bossHp: 1.35, bossAtk: 1.25, bossExp: 0.45, bossDrop: 0.8 };
+  var BAL = { hp: 1.55, atk: 1.3, def: 1.12, exp: 1, silver: 0.55, drop: 0.55, bossHp: 1.35, bossAtk: 1.25, bossExp: 1, bossDrop: 0.8 };
 
   {
     const DEP_ = (id) => { let ix = []; Qm.forEach((m, i) => m.spawns && m.spawns.some((q) => q.monster === id) && ix.push(i + 1)); return ix.length ? ix.reduce((x, y) => x + y) / ix.length : 40; };
@@ -9219,7 +9213,14 @@ Error generating stack: ` + n.message + `
     let bs = !!d.boss;
     { let L_ = d.level || 1, f_ = L_ <= 25 ? 1 : L_ <= 40 ? 1 - (L_ - 25) * 0.03 : Math.max(0.28, 0.55 - (L_ - 40) * 0.0045), fa_ = L_ <= 25 ? 1 : Math.max(0.78, 1 - (L_ - 25) * 0.01); if (bs) f_ = 0.55 + 0.45 * f_, fa_ = 0.9 + 0.1 * fa_; d.hp = Math.round(d.hp * f_), d.atk = Math.round(d.atk * fa_); }
     d.hp = Math.round(d.hp * (bs ? BAL.bossHp : BAL.hp)), d.atk = Math.round(d.atk * (bs ? BAL.bossAtk : BAL.atk)), d.def = Math.round(d.def * BAL.def), d.exp = Math.max(1, Math.round(d.exp * (bs ? BAL.bossExp : BAL.exp))), d.silver = [Math.max(1, Math.round(d.silver[0] * BAL.silver)), Math.max(1, Math.round(d.silver[1] * BAL.silver))];
-    d.drops = d.drops.map((x) => $(x.item)?.kind === "quest" ? x : { ...x, chance: Math.min(1, x.chance * (bs ? BAL.bossDrop : BAL.drop)) });
+    d.drops = d.drops.map((x) => {
+      let k = $(x.item)?.kind, c = x.chance * (bs ? BAL.bossDrop : BAL.drop);
+      if (k === "quest") return { ...x, chance: Math.min(0.9, x.chance) };
+      if (k === "card") c = bs ? 0.0002 : d.elite || /elite/i.test(d.id) ? 0.00015 : 0.0001;
+      else if (k === "weapon" || k === "armor" || k === "accessory" || k === "back" || (k || "").startsWith("head")) c = Math.min(0.01, Math.max(0.001, c));
+      else c = Math.min(0.25, Math.max(0.05, c));
+      return { ...x, chance: Math.min(0.9, c) };
+    });
   }
   for (let id_ of Object.keys(Qu)) {
     let d_ = Qu[id_];
@@ -11179,9 +11180,8 @@ Error generating stack: ` + n.message + `
       let o = `${n.night ? "n" : n.phase}|${n.weather.kind}|${n.special?.def.id ?? ""}`;
       if (this.evKey && o !== this.evKey) {
         let [r, i, s] = this.evKey.split("|"), [, l, c] = o.split("|"), d = (f, u) => {
-          this.banner = { seq: this.banner.seq + 1, text: f, color: u }, this.pushLog(f, "system");
         };
-        c && c !== s && n.special ? d(`\u2726 ${n.special.def.name}: ${n.special.def.desc}`, n.special.def.color) : l !== i && n.weather.kind !== "clear" ? this.pushLog(`${Mp(n.weather.kind, a.map.theme)} come\xE7a.`, "system") : o.split("|")[0] !== r && (n.night || n.phase === "dia") && d(n.night ? "A noite cai sobre os Nove Reinos." : "O sol nasce de novo.", n.night ? "#9db4ff" : "#ffe08a");
+        c && c !== s && n.special ? d(`\u2726 ${n.special.def.name}: ${n.special.def.desc}`, n.special.def.color) : l !== i && n.weather.kind !== "clear" ? 0 : o.split("|")[0] !== r && (n.night || n.phase === "dia") && d(n.night ? "A noite cai sobre os Nove Reinos." : "O sol nasce de novo.", n.night ? "#9db4ff" : "#ffe08a");
       }
       if (this.evKey = o, n.special?.def.id === "monstro_dourado" && !a.map.city) {
         let r = `${n.special.startsAt}:${a.map.id}`;
@@ -11328,7 +11328,7 @@ Error generating stack: ` + n.message + `
       }
       let cm = this.world.map, cx = t.x + t.w / 2, cy = t.y + t.h / 2, ex = t.x < 60 ? cx + 90 : t.x + t.w > cm.width - 60 ? cx - 90 : cx, ey = t.y < 60 ? cy + 90 : t.y + t.h > cm.height - 60 ? cy - 90 : cy, back = this.ps.pback?.[cm.id], dest = back && back.map === n.id ? { x: back.x, y: back.y } : t.toSpawn ?? n.spawn;
       this.ps.pback || (this.ps.pback = {}), this.ps.pback[n.id] = { map: cm.id, x: Math.round(ex), y: Math.round(ey) };
-      this.online || (this.saveGame(), this.world = new nr(this.ps, n, void 0, dest), this.ps.visited.includes(n.id) || this.ps.visited.push(n.id), this.dialogue = null, this.pushLog(`Voc\xEA chegou a ${n.name}.`, "system"), this.toast(`${n.name}`, "info"), this.saveGame(), this.refresh());
+      this.online || (this.saveGame(), this.world = new nr(this.ps, n, void 0, dest), (this.ps.visited.includes(n.id) ? 0 : (this.ps.visited.push(n.id), this.pushLog(`Voc\xEA chegou a ${n.name}.`, "system"), this.toast(`${n.name}`, "info"))), this.dialogue = null, this.saveGame(), this.refresh());
     }
     togglePanel(t) {
       if (this.screen !== "playing" || this.dialogue) return;
@@ -11348,15 +11348,16 @@ Error generating stack: ` + n.message + `
     }
     loadHotkeys() {
       try {
-        let t = this.storage?.getItem(this.hotkeyKey());
-        this.hotkeys = Ou(qx(t ? JSON.parse(t) : null));
+        let t = this.storage?.getItem(this.hotkeyKey() + ".v2"), old = null;
+        if (!t) { let o = this.storage?.getItem(this.hotkeyKey()); if (o) { let arr = JSON.parse(o); old = Array.isArray(arr) ? arr.slice(0, 9) : null; } }
+        this.hotkeys = Ou(qx(t ? JSON.parse(t) : old));
       } catch {
         this.hotkeys = Ou(zu());
       }
     }
     persistHotkeys() {
       try {
-        this.storage?.setItem(this.hotkeyKey(), JSON.stringify(this.hotkeys));
+        this.storage?.setItem(this.hotkeyKey() + ".v2", JSON.stringify(this.hotkeys));
       } catch {
       }
     }
@@ -11767,7 +11768,7 @@ Error generating stack: ` + n.message + `
       if (!a || !a.city) return this.toast("O teletransporte s\xF3 leva a cidades.", "bad");
       if (this.online) return this.toast("Teletransporte indispon\xEDvel no modo online.", "bad");
       if (t === this.world.map.id) return this.toast("Voc\xEA j\xE1 est\xE1 aqui.", "info");
-      this.ps.visited.includes(t) || this.ps.visited.push(t), this.saveGame(), this.world = new nr(this.ps, a, void 0, a.spawn), this.panel = "none", this.warpMode = false, this.dialogue = null, this.pushLog(`O corvo o leva a ${a.name}.`, "system"), this.toast(`Teletransportado para ${a.name}.`, "good"), this.saveGame(), this.refresh();
+      this.ps.visited.includes(t) || this.ps.visited.push(t), this.saveGame(), this.world = new nr(this.ps, a, void 0, a.spawn), this.panel = "none", this.warpMode = false, this.dialogue = null, this.saveGame(), this.refresh();
     }
     chooseClass(t) {
       if (!this.ps || !this.dialogue) return;
@@ -16560,13 +16561,23 @@ function ROXQM(f, c, s, l, def) {
         case "KeyJ":
           this.store.pressAttack();
           break;
+        case "Digit1": case "Digit2": case "Digit3": case "Digit4": case "Digit7": case "Digit8": case "Digit9": case "Digit0":
+        case "Numpad1": case "Numpad2": case "Numpad3": case "Numpad4": case "Numpad7": case "Numpad8": case "Numpad9": case "Numpad0":
+          if (this.store.bar2On) { let d = Number(t.code.slice(-1)); this.store.triggerHotkey(9 + (d === 0 ? 9 : d - 1)); }
+          break;
         case "Digit5":
         case "Numpad5":
-        case "KeyQ":
+          if (this.store.bar2On) { this.store.triggerHotkey(13); break; }
           this.store.potion("hp");
           break;
         case "Digit6":
         case "Numpad6":
+          if (this.store.bar2On) { this.store.triggerHotkey(14); break; }
+          this.store.potion("mp");
+          break;
+        case "KeyQ":
+          this.store.potion("hp");
+          break;
         case "KeyR":
           this.store.potion("mp");
           break;
@@ -17090,6 +17101,15 @@ function ROXQM(f, c, s, l, def) {
       let i = Math.max(30, r.measureText(t).width + 16), s = 26;
       r.fillStyle = "#ffffff", r.strokeStyle = "#1d2a44", r.lineWidth = 2, r.lineJoin = "round", r.beginPath(), r.roundRect(a - i / 2, n - s, i, s, 8), r.fill(), r.stroke(), r.beginPath(), r.moveTo(a - 5, n - 1), r.lineTo(a, n + 7), r.lineTo(a + 5, n - 1), r.closePath(), r.fillStyle = "#ffffff", r.fill(), r.stroke(), r.fillStyle = "#ffffff", r.fillRect(a - 4, n - 3, 8, 3), r.fillStyle = t === "\u2665" ? "#e0305a" : "#1d2a44", r.textAlign = "center", r.textBaseline = "middle", r.fillText(t, a, n - s / 2 + 1), r.restore();
     }
+    monBar(x, y, w, frac, cur) {
+      let c = this.ctx, h = 11;
+      this.hpShow || (this.hpShow = new Map());
+      c.save(), c.fillStyle = "rgba(6,10,6,0.88)", c.beginPath(), c.roundRect(x - w / 2 - 1.5, y - 1.5, w + 3, h + 3, 4), c.fill();
+      c.fillStyle = "#1c3a20", c.beginPath(), c.roundRect(x - w / 2, y, w, h, 3), c.fill();
+      let fw = Math.max(0, w * frac);
+      if (fw > 0.5) { let gr = c.createLinearGradient(0, y, 0, y + h); gr.addColorStop(0, "#6fe86f"), gr.addColorStop(1, "#2a9a36"), c.fillStyle = gr, c.beginPath(), c.roundRect(x - w / 2, y, fw, h, 3), c.fill(); }
+      c.font = "bold 9px system-ui, sans-serif", c.textAlign = "center", c.textBaseline = "middle", c.lineWidth = 2.4, c.strokeStyle = "rgba(0,0,0,.75)", c.strokeText(String(cur), x, y + h / 2 + 0.5), c.fillStyle = "#fff", c.fillText(String(cur), x, y + h / 2 + 0.5), c.restore();
+    }
     bar(t, a, n, o, r) {
       return;
       let i = this.ctx;
@@ -17452,7 +17472,7 @@ function ROXQM(f, c, s, l, def) {
       let b = t.state === "dead" ? { dx: 0, dy: 0, rot: 0, sx: 1, sy: 1 } : this.organic(i, t.facing, { moving: i.moving, breath: f === "goblin" || f === "draugr" ? 0.014 : 0.02, windup: t.state === "windup", charge: t.state === "charge", atkT: t.state === "recover" ? 1 : void 0 });
       nt(o, u, r.x + b.dx, r.y + 4 + b.dy, p, m * b.sx, m * b.sy, p ? -b.rot : b.rot), x && o.restore();
       let g = Math.max(0, t.hp / t.maxHp), v = n.targetId === t.id || x || g < 1 || t.state === "chase" || t.state === "windup" || t.state === "charge" || t.state === "recover", k = r.y - (t.def.boss ? t.def.radius * 3.4 : f === "goblin" || f === "draugr" || f === "cinder" || f === "automaton" || f === "sylvan" || f === "prism" || f === "sentinel" || f === "voidling" ? 56 : t.def.radius * 2.6 + 8);
-      v && this.bar(r.x, k + 8, Math.max(34, t.def.radius * 2.4), g, t.def.boss ? "#c77dff" : "#e0483e"), (t.golden || this.nameOn(`m${t.id}`)) && this.text(t.golden ? `\u2726 ${t.def.name} dourado` : t.def.name, r.x, k - 4, t.def.boss ? 14 : 11, t.golden ? "#ffd24a" : t.def.boss ? "#ffe9a8" : "#ffffff", t.def.boss || !!t.golden);
+      v && this.monBar(r.x, r.y + (t.def.boss ? 14 : 10), t.def.boss ? Math.max(70, t.def.radius * 2.8) : Math.max(46, t.def.radius * 2.4), g, Math.max(0, Math.ceil(t.hp))), (t.golden || this.nameOn(`m${t.id}`)) && this.text(t.golden ? `\u2726 ${t.def.name} dourado` : t.def.name, r.x, k - 4, t.def.boss ? 14 : 11, t.golden ? "#ffd24a" : t.def.boss ? "#ffe9a8" : "#ffffff", t.def.boss || !!t.golden);
     }
     drawCritter(q) {
       let o = this.ctx, T = this.clock / 1e3 + q.seed, ph = Math.sin(T * 0.35 + q.seed) , wx = q.x + ph * 9, moving = Math.cos(T * 0.35 + q.seed) * (q.kind === "corvo" ? 0.3 : 1) > 0.5, face = Math.cos(T * 0.35 + q.seed) >= 0 ? 0 : Math.PI, r = ce(wx, q.y), { dir: d, flip: f } = Kl(face);
@@ -18061,12 +18081,13 @@ function ROXQM(f, c, s, l, def) {
       }
       j.sendChat(u), u.startsWith("/w") || u.toLowerCase().startsWith("/whisper") ? a("sussurro") : u.startsWith("/") || a((m) => m);
     };
-    return (0, ho.useEffect)(() => {
+    let [hid, setHid] = (0, ho.useState)(false);
+    return (0, ho.useEffect)(() => { let h = () => setHid((v) => !v); return window.addEventListener("eldvar:chat-vis", h), () => window.removeEventListener("eldvar:chat-vis", h); }, []), (0, ho.useEffect)(() => {
       let u = () => {
-        o(true), setTimeout(() => document.getElementById("chat-input")?.focus(), 30);
+        setHid(false), o(true), setTimeout(() => document.getElementById("chat-input")?.focus(), 30);
       };
       return window.addEventListener("eldvar:chat-toggle", u), () => window.removeEventListener("eldvar:chat-toggle", u);
-    }, []), (0, ta.jsxs)("section", { className: `logp${n ? "" : " logp-closed"}`, "aria-label": "Chat e registro de mensagens", ref: l.ref, style: l.style, children: [(0, ta.jsxs)("header", { children: [(0, ta.jsx)("span", { className: "grip", ...l.handle, "aria-label": "Mover o chat", children: "\u283F" }), (0, ta.jsx)("div", { role: "tablist", children: qS.map(([u, m]) => (0, ta.jsx)("button", { role: "tab", "aria-selected": t === u, className: t === u ? "on" : "", onClick: () => {
+    }, []), (0, ta.jsxs)("section", { className: `logp${n ? "" : " logp-closed"}`, "aria-label": "Chat e registro de mensagens", ref: l.ref, style: hid ? { ...(l.style || {}), display: "none" } : l.style, children: [(0, ta.jsxs)("header", { children: [(0, ta.jsx)("span", { className: "grip", ...l.handle, "aria-label": "Mover o chat", children: "\u283F" }), (0, ta.jsx)("div", { role: "tablist", children: qS.map(([u, m]) => (0, ta.jsx)("button", { role: "tab", "aria-selected": t === u, className: t === u ? "on" : "", onClick: () => {
       a(u), o(true);
     }, children: m }, u)) }), (0, ta.jsx)("button", { className: "logp-toggle", onClick: () => o((u) => !u), "aria-label": n ? "Recolher registro" : "Abrir registro", children: n ? "\u25BE" : "\u25B4" })] }), n && (0, ta.jsxs)(ta.Fragment, { children: [(0, ta.jsx)("div", { className: "logp-body", ref: s, role: "log", "aria-live": "polite", children: c.length === 0 ? (0, ta.jsx)("small", { className: "muted", children: "Sem mensagens." }) : c.map((u) => (0, ta.jsx)("div", { className: `ll ll-${u.tone} ll-${u.kind === "system" ? "k-system" : u.kind}`, children: u.text }, u.id)) }), (0, ta.jsx)("input", { id: "chat-input", className: "chat-in", value: r, maxLength: 200, placeholder: "Enter: falar \xB7 /ajuda para ver os comandos", onChange: (u) => i(u.target.value), onKeyDown: (u) => {
       u.key === "Enter" ? (u.preventDefault(), f()) : u.key === "Escape" && (u.stopPropagation(), u.target.blur(), o(false));
@@ -18124,10 +18145,12 @@ function ROXQM(f, c, s, l, def) {
   var Qr = "application/x-eldvar-hotkey";
   var go = oe(ue(), 1);
   function $4() {
-    let e = ge(), [t, a] = (0, X4.useState)(null), n = e.player;
+    let e = ge(), [t, a] = (0, X4.useState)(null), [b2, setB2] = (0, X4.useState)(() => { try { return localStorage.getItem("eldvar:bar2") === "1"; } catch { return false; } }), n = e.player;
+    (0, X4.useEffect)(() => { j.bar2On = b2; try { localStorage.setItem("eldvar:bar2", b2 ? "1" : "0"); } catch {} }, [b2]);
+    (0, X4.useEffect)(() => { let f = () => setB2((v) => !v); return window.addEventListener("eldvar:bar2", f), () => window.removeEventListener("eldvar:bar2", f); }, []);
     if (!n) return null;
     let o = Ce[n.line];
-    return (0, go.jsx)("div", { className: "fbar", "aria-label": "Barra de atalhos F1 a F12", children: Array.from({ length: Ui }, (r, i) => {
+    let mk = (i, lab) => {
       let s = e.hotkeys[i], l = "", c = "", d = 0, f = false;
       if (s?.t === "skill") {
         let u = e.skills[s.i];
@@ -18137,7 +18160,7 @@ function ROXQM(f, c, s, l, def) {
         let u = n.inventory.slots.reduce((m, p) => m + (p?.id === s.id ? p.qty : 0), 0);
         c = `x${u}`, f = u === 0;
       }
-      return (0, go.jsxs)("button", { className: `fslot${s ? " full" : ""}${t === i ? " over" : ""}${s?.t === "item" && n.ammo === s.id ? " on" : ""}`, style: f ? { opacity: 0.5 } : void 0, "data-slot": i, title: s ? `F${i + 1}: ${s.t === "skill" ? o.skills[s.i]?.name : $(s.id)?.name} \xB7 bot\xE3o direito remove` : `F${i + 1}: arraste um consum\xEDvel, uma flecha ou uma habilidade`, onClick: () => j.triggerHotkey(i), onContextMenu: (u) => {
+      return (0, go.jsxs)("button", { key: i, className: `fslot${s ? " full" : ""}${t === i ? " over" : ""}${s?.t === "item" && n.ammo === s.id ? " on" : ""}`, style: f ? { opacity: 0.5 } : void 0, "data-slot": i, title: s ? `${lab}: ${s.t === "skill" ? o.skills[s.i]?.name : $(s.id)?.name} \xB7 bot\xE3o direito remove` : `${lab}: arraste um consum\xEDvel, uma flecha ou uma habilidade`, onClick: () => j.triggerHotkey(i), onContextMenu: (u) => {
         u.preventDefault(), j.clearHotkeySlot(i);
       }, onDragOver: (u) => {
         u.dataTransfer.types.includes(Qr) && (u.preventDefault(), u.dataTransfer.dropEffect = "copy", a(i));
@@ -18148,8 +18171,9 @@ function ROXQM(f, c, s, l, def) {
           Du(m) && j.setHotkey(i, m);
         } catch {
         }
-      }, children: [(0, go.jsxs)("span", { className: "fk", children: ["F", i + 1] }), s?.t === "skill" && o.skills[s.i] ? (0, go.jsx)(h0, { id: o.skills[s.i].id, kind: o.skills[s.i].kind, size: 36 }) : s?.t === "item" ? (0, go.jsx)(Aa, { id: s.id, size: 36 }) : l, c && (0, go.jsx)("span", { className: "fq", children: c }), s?.t === "skill" && (0, go.jsx)("i", { className: "cd", style: { height: `${d * 100}%` } })] }, i);
-    }) });
+      }, children: [(0, go.jsxs)("span", { className: "fk", children: [lab] }), s?.t === "skill" && o.skills[s.i] ? (0, go.jsx)(h0, { id: o.skills[s.i].id, kind: o.skills[s.i].kind, size: 36 }) : s?.t === "item" ? (0, go.jsx)(Aa, { id: s.id, size: 36 }) : l, c && (0, go.jsx)("span", { className: "fq", children: c }), s?.t === "skill" && (0, go.jsx)("i", { className: "cd", style: { height: `${d * 100}%` } })] });
+    };
+    return (0, go.jsxs)(go.Fragment, { children: [(0, go.jsx)("div", { className: "fbar", "aria-label": "Barra de atalhos F1 a F9", children: Array.from({ length: 9 }, (r, i) => mk(i, "F" + (i + 1))) }), b2 && (0, go.jsx)("div", { className: "fbar fbar2", "aria-label": "Segunda barra, teclas 1 a 0", children: Array.from({ length: 10 }, (r, i) => mk(9 + i, String((i + 1) % 10))) })] });
   }
   var pe = oe(ue(), 1);
   function LS({ c: e }) {
@@ -18169,7 +18193,8 @@ function ROXQM(f, c, s, l, def) {
       } catch {
         return false;
       }
-    }), i = (0, Kr.useRef)(null);
+    }), i = (0, Kr.useRef)(null), [infoHid, setInfoHid] = (0, Kr.useState)(false), [qHid, setQHid] = (0, Kr.useState)(false);
+    (0, Kr.useEffect)(() => { let f = () => setInfoHid((v) => !v), g = () => setQHid((v) => !v); return window.addEventListener("eldvar:info-vis", f), window.addEventListener("eldvar:quest-vis", g), () => (window.removeEventListener("eldvar:info-vis", f), window.removeEventListener("eldvar:quest-vis", g)); }, []);
     if (!t) return null;
     let s = () => r((c) => {
       let d = !c;
@@ -18179,12 +18204,12 @@ function ROXQM(f, c, s, l, def) {
       }
       return d;
     }), l = a.handle;
-    return (0, pe.jsxs)("div", { className: "hud", "aria-label": "Interface de jogo", children: [(0, pe.jsx)("div", { className: "evchips", "aria-label": "Eventos ativos", children: e.chips.map((c) => (0, pe.jsx)(LS, { c }, c.key)) }), (0, pe.jsxs)("section", { className: `hud-card hud-player${a.moved ? " moved" : ""}${o ? " min" : ""}`, ref: a.ref, style: a.style, ...l, title: o ? "Clique para expandir \xB7 arraste para mover" : "Clique para minimizar \xB7 arraste para mover \xB7 duplo clique volta ao lugar", onPointerDown: (c) => {
+    return (0, pe.jsxs)("div", { className: "hud", "aria-label": "Interface de jogo", children: [(0, pe.jsx)("div", { className: "evchips", "aria-label": "Eventos ativos", children: e.chips.map((c) => (0, pe.jsx)(LS, { c }, c.key)) }), (0, pe.jsxs)("section", { className: `hud-card hud-player${a.moved ? " moved" : ""}${o ? " min" : ""}`, ref: a.ref, style: infoHid ? { ...(a.style || {}), display: "none" } : a.style, ...l, title: o ? "Clique para expandir \xB7 arraste para mover" : "Clique para minimizar \xB7 arraste para mover \xB7 duplo clique volta ao lugar", onPointerDown: (c) => {
       i.current = { x: c.clientX, y: c.clientY }, l.onPointerDown(c);
     }, onClick: (c) => {
       let d = i.current;
       d && Math.hypot(c.clientX - d.x, c.clientY - d.y) < 5 && !c.target.closest("button, a") && s();
-    }, children: [(0, pe.jsx)("div", { className: "hud-id", children: (0, pe.jsxs)("div", { className: "hud-id-text", children: [(0, pe.jsxs)("div", { className: "hud-name", children: [(0, pe.jsx)("strong", { children: e.player?.name }), (0, pe.jsx)("span", { children: t.className })] }), e.player?.title && (0, pe.jsxs)("div", { className: "hud-title", children: ["\xAB", e.player.title, "\xBB"] }), (0, pe.jsxs)("div", { className: "hud-lv", children: [(0, pe.jsxs)("span", { children: ["N\xEDvel base ", (0, pe.jsx)("b", { children: t.level })] }), (0, pe.jsxs)("span", { children: ["N\xEDvel de classe ", (0, pe.jsx)("b", { children: t.jobLevel })] })] })] }) }), (0, pe.jsx)(as, { kind: "hp", value: t.hp, max: t.maxHp, label: `Vida ${t.hp}/${t.maxHp} (${Math.round(t.hp / t.maxHp * 100)}%)` }), !o && (0, pe.jsxs)(pe.Fragment, { children: [(0, pe.jsx)(as, { kind: "mp", value: t.mp, max: t.maxMp, label: `Mana ${t.mp}/${t.maxMp} (${Math.round(t.mp / Math.max(1, t.maxMp) * 100)}%)` }), (0, pe.jsx)(as, { kind: "exp", value: t.exp, max: t.expNext, label: `EXP ${Math.floor(t.exp / t.expNext * 100)}%` }), (0, pe.jsx)(as, { kind: "job", value: t.jobLevel >= t.jobCap ? 1 : t.jobExp, max: t.jobLevel >= t.jobCap ? 1 : t.jobNext, label: `Classe ${t.jobLevel}/${t.jobCap}` }), e.online && (0, pe.jsxs)("div", { className: `hud-online hud-online-${e.online.status}`, role: "status", children: ["\u25CF Online \xB7 ", e.online.others + 1, " jogador(es) vis\xEDvel(is)", e.online.status !== "open" ? ` \xB7 ${e.online.status === "reconnecting" ? "reconectando\u2026" : "conectando\u2026"}` : ""] }), (0, pe.jsxs)("div", { className: "hud-line", children: [(0, pe.jsxs)("span", { className: "coin-line", children: [(0, pe.jsx)(sr, { name: "coin", size: 18 }), " Zens: ", t.silver] }), (e.player?.statPoints ?? 0) > 0 && (0, pe.jsxs)("span", { className: "hint-pts", children: ["+", e.player?.statPoints, " pontos"] })] })] })] }), e.boss && (0, pe.jsxs)("section", { className: "hud-boss", "aria-live": "polite", children: [(0, pe.jsxs)("strong", { children: [e.boss.name, e.boss.phase === 2 ? " \xB7 Fase 2" : ""] }), (0, pe.jsx)(as, { kind: "boss", value: e.boss.hp, max: e.boss.max, label: `${e.boss.hp}/${e.boss.max}` })] }), (0, pe.jsxs)("section", { className: "hud-card hud-quests", ref: n.ref, style: n.style, ...n.handle, children: [(0, pe.jsx)("header", { children: e.location }), e.tracker.length === 0 ? (0, pe.jsx)("small", { className: "muted", children: e.online ? "Quests e NPCs ainda n\xE3o existem no modo online." : e.location.includes("J\xF6tunheim") ? "Sem quests ativas. Fale com Ylva." : "Sem quests ativas. Fale com Eira." }) : e.tracker.map((c) => (0, pe.jsxs)("div", { className: `q${c.ready ? " q-ready" : ""}`, children: [(0, pe.jsxs)("strong", { children: [c.name, c.ready ? " \u2714" : ""] }), c.lines.map((d, f) => (0, pe.jsx)("small", { children: d }, f)), c.ready && (0, pe.jsx)("small", { children: "Volte \xE0 Eira para entregar." })] }, c.id))] }), e.prompt && (0, pe.jsx)("div", { className: "prompt", children: e.prompt }), (0, pe.jsx)($4, {}), (0, pe.jsx)(Y4, {}), (0, pe.jsx)(PmDock, {}), (0, pe.jsx)("div", { className: "help-line", children: "Clique no ch\xE3o: andar \xB7 clique em monstro: atacar \xB7 clique em NPC: falar \xB7 Espa\xE7o atacar \xB7 F1-F12 habilidades e atalhos \xB7 Shift esquiva \xB7 5-6 po\xE7\xF5es \xB7 I invent\xE1rio \xB7 T atributos \xB7 L habilidades \xB7 B besti\xE1rio \xB7 J feitos \xB7 Enter abre/fecha o chat \xB7 Ctrl+C mensagem privada \xB7 @afk (cidades) \xB7 arraste as janelinhas para mudar de lugar \xB7 M mapa-m\xFAndi \xB7 Alt+Q equipamento \xB7 Alt+E invent\xE1rio \xB7 bot\xE3o direito arrasta: girar c\xE2mera em volta do personagem (Shift = inclinar) \xB7 Esc pausa" }), e.dead && (0, pe.jsxs)("div", { className: "death", role: "alert", children: [(0, pe.jsx)("h2", { children: "Voc\xEA caiu em batalha" }), (0, pe.jsx)("p", { children: "Os corvos de Odin o levam de volta \xE0 vila\u2026" })] })] });
+    }, children: [(0, pe.jsx)("div", { className: "hud-id", children: (0, pe.jsxs)("div", { className: "hud-id-text", children: [(0, pe.jsxs)("div", { className: "hud-name", children: [(0, pe.jsx)("strong", { children: e.player?.name }), (0, pe.jsx)("span", { children: t.className })] }), e.player?.title && (0, pe.jsxs)("div", { className: "hud-title", children: ["\xAB", e.player.title, "\xBB"] }), (0, pe.jsxs)("div", { className: "hud-lv", children: [(0, pe.jsxs)("span", { children: ["N\xEDvel base ", (0, pe.jsx)("b", { children: t.level })] }), (0, pe.jsxs)("span", { children: ["N\xEDvel de classe ", (0, pe.jsx)("b", { children: t.jobLevel })] })] })] }) }), (0, pe.jsx)(as, { kind: "hp", value: t.hp, max: t.maxHp, label: `Vida ${t.hp}/${t.maxHp} (${Math.round(t.hp / t.maxHp * 100)}%)` }), !o && (0, pe.jsxs)(pe.Fragment, { children: [(0, pe.jsx)(as, { kind: "mp", value: t.mp, max: t.maxMp, label: `Mana ${t.mp}/${t.maxMp} (${Math.round(t.mp / Math.max(1, t.maxMp) * 100)}%)` }), (0, pe.jsx)(as, { kind: "exp", value: t.exp, max: t.expNext, label: `EXP ${Math.floor(t.exp / t.expNext * 100)}%` }), (0, pe.jsx)(as, { kind: "job", value: t.jobLevel >= t.jobCap ? 1 : t.jobExp, max: t.jobLevel >= t.jobCap ? 1 : t.jobNext, label: `Classe ${t.jobLevel}/${t.jobCap}` }), e.online && (0, pe.jsxs)("div", { className: `hud-online hud-online-${e.online.status}`, role: "status", children: ["\u25CF Online \xB7 ", e.online.others + 1, " jogador(es) vis\xEDvel(is)", e.online.status !== "open" ? ` \xB7 ${e.online.status === "reconnecting" ? "reconectando\u2026" : "conectando\u2026"}` : ""] }), (0, pe.jsxs)("div", { className: "hud-line", children: [(0, pe.jsxs)("span", { className: "coin-line", children: [(0, pe.jsx)(sr, { name: "coin", size: 18 }), " Zens: ", t.silver] }), (e.player?.statPoints ?? 0) > 0 && (0, pe.jsxs)("span", { className: "hint-pts", children: ["+", e.player?.statPoints, " pontos"] })] })] })] }), e.boss && (0, pe.jsxs)("section", { className: "hud-boss", "aria-live": "polite", children: [(0, pe.jsxs)("strong", { children: [e.boss.name, e.boss.phase === 2 ? " \xB7 Fase 2" : ""] }), (0, pe.jsx)(as, { kind: "boss", value: e.boss.hp, max: e.boss.max, label: `${e.boss.hp}/${e.boss.max}` })] }), (0, pe.jsxs)("section", { className: "hud-card hud-quests", ref: n.ref, style: qHid ? { ...(n.style || {}), display: "none" } : n.style, ...n.handle, children: [(0, pe.jsx)("header", { children: e.location }), e.tracker.length === 0 ? (0, pe.jsx)("small", { className: "muted", children: e.online ? "Quests e NPCs ainda n\xE3o existem no modo online." : e.location.includes("J\xF6tunheim") ? "Sem quests ativas. Fale com Ylva." : "Sem quests ativas. Fale com Eira." }) : e.tracker.map((c) => (0, pe.jsxs)("div", { className: `q${c.ready ? " q-ready" : ""}`, children: [(0, pe.jsxs)("strong", { children: [c.name, c.ready ? " \u2714" : ""] }), c.lines.map((d, f) => (0, pe.jsx)("small", { children: d }, f)), c.ready && (0, pe.jsx)("small", { children: "Volte \xE0 Eira para entregar." })] }, c.id))] }), e.prompt && (0, pe.jsx)("div", { className: "prompt", children: e.prompt }), (0, pe.jsx)($4, {}), (0, pe.jsx)(Y4, {}), (0, pe.jsx)(PmDock, {}), (0, pe.jsx)("div", { className: "help-line", children: "Clique no ch\xE3o: andar \xB7 clique em monstro: atacar \xB7 clique em NPC: falar \xB7 Espa\xE7o atacar \xB7 F1-F9 habilidades e atalhos \xB7 F10 chat \xB7 F11 2\xAA barra (1-0) \xB7 F12 miss\xF5es \xB7 Alt+V info \xB7 Shift esquiva \xB7 5-6 po\xE7\xF5es \xB7 I invent\xE1rio \xB7 T atributos \xB7 L habilidades \xB7 B besti\xE1rio \xB7 J feitos \xB7 Enter abre/fecha o chat \xB7 Ctrl+C mensagem privada \xB7 @afk (cidades) \xB7 arraste as janelinhas para mudar de lugar \xB7 M mapa-m\xFAndi \xB7 Alt+Q equipamento \xB7 Alt+E invent\xE1rio \xB7 bot\xE3o direito arrasta: girar c\xE2mera em volta do personagem (Shift = inclinar) \xB7 Esc pausa" }), e.dead && (0, pe.jsxs)("div", { className: "death", role: "alert", children: [(0, pe.jsx)("h2", { children: "Voc\xEA caiu em batalha" }), (0, pe.jsx)("p", { children: "Os corvos de Odin o levam de volta \xE0 vila\u2026" })] })] });
   }
   var Ah = oe(ue(), 1);
   function K4() {
@@ -18219,15 +18244,21 @@ function ROXQM(f, c, s, l, def) {
       return () => clearInterval(l);
     }, [r, a, o]), (0, X.jsxs)("div", { className: "equip-prev", children: [(0, X.jsx)("canvas", { ref: t, width: 170, height: 250, "aria-label": "Pr\xE9via do personagem" }), (0, X.jsx)("div", { className: "row", children: (0, X.jsx)("button", { className: "btn btn-small", onClick: () => n((i) => i === "down" ? "dq" : i === "dq" ? "side" : i === "side" ? "uq" : i === "uq" ? "up" : "down"), children: "\u27F3 Girar" }) })] });
   }
+  function PdSlot({ slot: f, p: i }) {
+    let u = i.equipment[f] ? $(i.equipment[f]) : void 0;
+    let tip = u ? `${u.name}\n${Vp(u.bonus).join(" \xB7 ")}${i.cards[u.id]?.length ? "\nCartas: " + i.cards[u.id].map((m) => $(m)?.name).join(", ") : ""}\n(duplo clique para desequipar)` : NS[f];
+    return Hh("div", { className: `pd-slot${u ? " full" : ""}`, title: tip, style: u ? { borderColor: so[u.rarity] } : void 0, onDoubleClick: u ? () => j.unequipSlot(f) : void 0 }, u ? Hh(Aa, { id: u.id, size: 34 }) : Hh(sr, { name: `slot_${f}`, size: 30 }), Hh("small", {}, NS[f]));
+  }
   function Ch({ mode: e = "bag" }) {
-    let t = ge(), [a, n] = (0, cr.useState)(e === "equip" ? "char" : e === "quests" ? "quests" : "bag"), [o, r] = (0, cr.useState)(null), i = t.player;
+    let t = ge(), [a, n] = (0, cr.useState)(e === "equip" ? "char" : e === "quests" ? "quests" : "bag"), [o, r] = (0, cr.useState)(null), [tb, setTb] = (0, cr.useState)("c"), i = t.player;
     if (!i || !t.derived) return null;
     let s = t.derived, l = o !== null ? i.inventory.slots[o] : null, c = l ? $(l.id) : void 0, d = c && Pt(c.kind);
     return (0, X.jsxs)(Yt, { id: e === "equip" ? "equip" : e === "quests" ? "questlog" : "inventory", title: e === "equip" ? "Equipamento" : e === "quests" ? "Quests (Alt+G)" : "Invent\xE1rio", onClose: () => j.togglePanel(e === "equip" ? "equip" : e === "quests" ? "questlog" : "inventory"), wide: true, children: [false && (0, X.jsx)("div", { className: "tabs", role: "tablist", children: [["bag", "Itens"], ["quests", "Quests"]].map(([f, u]) => (0, X.jsx)("button", { role: "tab", "aria-selected": a === f, className: `tab${a === f ? " active" : ""}`, onClick: () => n(f), children: u }, f)) }), a === "bag" && (() => {
       let f = Tl(i), u = Rl(i), m = f / u;
       return (0, X.jsxs)("div", { className: `weightbar${m > 1 ? " over" : m > 0.8 ? " warn" : ""}`, title: "Acima de 100% voc\xEA anda 25% mais devagar; acima de 125% n\xE3o pega mais itens.", children: [(0, X.jsxs)("span", { children: ["Peso ", Math.round(f), " / ", u] }), (0, X.jsx)("div", { children: (0, X.jsx)("i", { style: { width: `${Math.min(100, m * 100)}%` } }) }), (0, X.jsxs)("em", { children: [Math.round(m * 100), "%", m > 1 ? " \xB7 Sobrecarregado" : ""] })] });
-    })(), a === "bag" && (0, X.jsxs)("div", { className: "bag", children: [(0, X.jsx)("div", { className: "grid", role: "list", children: i.inventory.slots.map((f, u) => {
+    })(), a === "bag" && (0, X.jsxs)("div", { className: "bag", children: [(0, X.jsx)("div", { className: "grid", role: "list", children: [Hh("div", { key: "tabs", className: "inv-tabs" }, [["c", "Consum\xEDveis"], ["e", "Equip\xE1veis"], ["o", "Outros"]].map(([k, lab]) => Hh("button", { key: k, className: `inv-tab${tb === k ? " on" : ""}`, onClick: () => (setTb(k), r(null)) }, lab))), i.inventory.slots.map((f, u) => {
       let m = f ? $(f.id) : void 0;
+      if (!m || (Pt(m.kind) ? "e" : m.kind === "consumable" || m.kind === "ammo" ? "c" : "o") !== tb) return null;
       return (0, X.jsx)("button", { role: "listitem", className: `cell${o === u ? " sel" : ""}${f ? "" : " empty"}`, style: m ? { borderColor: so[m.rarity] } : void 0, draggable: !!m, title: m ? m.name + " \u2014 " + Ev(m) + "\n" + m.desc : void 0, onDragStart: (p) => {
         m && ((m.kind === "consumable" || m.kind === "ammo") && p.dataTransfer.setData(Qr, JSON.stringify({ t: "item", id: m.id })), p.dataTransfer.setData("text/plain", m.id), p.dataTransfer.effectAllowed = "copyMove");
       }, onDragEnd: (p) => {
@@ -18235,16 +18266,13 @@ function ROXQM(f, c, s, l, def) {
         let pr = p.currentTarget.closest(".panel")?.getBoundingClientRect();
         pr && p.clientX >= pr.left && p.clientX <= pr.right && p.clientY >= pr.top && p.clientY <= pr.bottom || j.dropAt(u, f.qty);
       }, onClick: () => {}, onDoubleClick: () => { m && (Pt(m.kind) ? j.equipAt(u) : (m.kind === "consumable" || m.kind === "ammo") && j.useItemAt(u)); }, "aria-label": m ? `${m.name} x${f?.qty}` : "Slot vazio", children: m && (0, X.jsxs)(X.Fragment, { children: [(0, X.jsx)(Aa, { id: m.id, size: 36 }), f.qty > 1 && (0, X.jsx)("i", { className: "qty", children: f.qty })] }) }, u);
-    }) }), (0, X.jsx)("aside", { className: "detail", children: c && l && o !== null ? (0, X.jsxs)(X.Fragment, { children: [(0, X.jsxs)("h3", { style: { color: so[c.rarity] }, children: [(0, X.jsx)(Aa, { id: c.id, size: 40 }), " ", c.name] }), (0, X.jsx)("small", { children: Ev(c) }), (0, X.jsx)("p", { children: c.desc }), d && !Ml(i, c).ok && (0, X.jsx)("p", { className: "error", children: Ml(i, c).msg }), (0, X.jsxs)("div", { className: "row wrap", children: [c.kind === "consumable" && (0, X.jsx)("small", { className: "muted", children: "Arraste para a barra F1\u2013F12." }), c.kind === "consumable" && (0, X.jsx)("button", { className: "btn btn-primary btn-small", onClick: () => j.useItemAt(o), children: "Usar" }), c.kind === "ammo" && (0, X.jsx)("small", { className: "muted", children: "Arraste para a barra F1\u2013F12: a tecla troca a flecha da aljava." }), c.kind === "ammo" && (0, X.jsx)("button", { className: "btn btn-primary btn-small", onClick: () => j.useItemAt(o), children: i.ammo === c.id ? "Na aljava" : "Equipar na aljava" }), d && (0, X.jsx)("button", { className: "btn btn-primary btn-small", onClick: () => {
+    })] }), (0, X.jsx)("aside", { className: "detail", children: c && l && o !== null ? (0, X.jsxs)(X.Fragment, { children: [(0, X.jsxs)("h3", { style: { color: so[c.rarity] }, children: [(0, X.jsx)(Aa, { id: c.id, size: 40 }), " ", c.name] }), (0, X.jsx)("small", { children: Ev(c) }), (0, X.jsx)("p", { children: c.desc }), d && !Ml(i, c).ok && (0, X.jsx)("p", { className: "error", children: Ml(i, c).msg }), (0, X.jsxs)("div", { className: "row wrap", children: [c.kind === "consumable" && (0, X.jsx)("small", { className: "muted", children: "Arraste para a barra F1\u2013F12." }), c.kind === "consumable" && (0, X.jsx)("button", { className: "btn btn-primary btn-small", onClick: () => j.useItemAt(o), children: "Usar" }), c.kind === "ammo" && (0, X.jsx)("small", { className: "muted", children: "Arraste para a barra F1\u2013F12: a tecla troca a flecha da aljava." }), c.kind === "ammo" && (0, X.jsx)("button", { className: "btn btn-primary btn-small", onClick: () => j.useItemAt(o), children: i.ammo === c.id ? "Na aljava" : "Equipar na aljava" }), d && (0, X.jsx)("button", { className: "btn btn-primary btn-small", onClick: () => {
       j.equipAt(o), r(null);
     }, children: "Equipar" }), c.kind !== "quest" && (0, X.jsx)("button", { className: "btn btn-small", onClick: () => {
       j.dropAt(o, 1), l.qty <= 1 && r(null);
     }, children: "Largar 1 no chão" }), c.kind !== "quest" && l.qty > 1 && (0, X.jsx)("button", { className: "btn btn-small", onClick: () => {
       j.dropAt(o, l.qty), r(null);
-    }, children: "Largar tudo" })] }), c.kind === "quest" && (0, X.jsx)("small", { className: "muted", children: "Item de quest: n\xE3o pode ser descartado." })] }) : (0, X.jsx)("p", { className: "muted", children: "Selecione um item." }) })] }), a === "char" && (0, X.jsxs)("div", { className: "equip-wrap", children: [(0, X.jsx)(zS, {}), (0, X.jsxs)("div", { className: "char", children: [(0, X.jsxs)("section", { children: [(0, X.jsx)("h3", { children: "Equipamento" }), vl.map((f) => {
-      let u = i.equipment[f] ? $(i.equipment[f]) : void 0;
-      return (0, X.jsxs)("div", { className: "eq-row", title: u ? "Duplo clique para desequipar" : void 0, onDoubleClick: u ? () => j.unequipSlot(f) : void 0, children: [(0, X.jsxs)("span", { className: "muted eq-ico", children: [u ? (0, X.jsx)(Aa, { id: u.id, size: 32 }) : (0, X.jsx)(sr, { name: `slot_${f}`, size: 32 }), NS[f]] }), (0, X.jsx)("div", { children: u ? (0, X.jsxs)(X.Fragment, { children: [(0, X.jsx)("b", { style: { color: so[u.rarity] }, children: u.name }), (0, X.jsxs)("small", { children: [Vp(u.bonus).join(" \xB7 "), i.cards[u.id]?.length ? ` \xB7 Cartas: ${i.cards[u.id].map((m) => $(m)?.name).join(", ")}` : ""] })] }) : (0, X.jsx)("i", { className: "muted", children: "vazio" }) }), u && (0, X.jsx)("button", { className: "btn btn-small", onClick: () => j.unequipSlot(f), children: "Remover" })] }, f);
-    }), jr(i) && (0, X.jsxs)("div", { className: "eq-row", children: [(0, X.jsx)("span", { className: "muted", children: "Aljava" }), (0, X.jsx)("div", { children: i.ammo && $(i.ammo) ? (0, X.jsxs)(X.Fragment, { children: [(0, X.jsx)("b", { children: $(i.ammo)?.name }), (0, X.jsxs)("small", { children: [ry(i), " flechas \xB7 elemento ", $(i.ammo)?.element ?? "neutro"] })] }) : (0, X.jsx)("i", { className: "muted", children: "vazia \u2014 equipe uma flecha pelo invent\xE1rio" }) })] })] }), (0, X.jsxs)("section", { children: [(0, X.jsx)("h3", { children: "Pontos" }), (0, X.jsxs)("p", { className: "muted", children: [i.statPoints, " de atributo \xB7 ", i.skillPoints, " de habilidade. Use as janelas Atributos (T) e Habilidades (L)."] }), (0, X.jsxs)("div", { className: "row wrap", children: [(0, X.jsx)("button", { className: "btn btn-small", onClick: () => j.togglePanel("stats"), children: "Atributos" }), (0, X.jsx)("button", { className: "btn btn-small", onClick: () => j.togglePanel("skills"), children: "Habilidades" })] })] }), (0, X.jsxs)("section", { children: [(0, X.jsx)("h3", { children: "Combate" }), (0, X.jsxs)("ul", { className: "derived", children: [(0, X.jsxs)("li", { children: ["Vida m\xE1x.: ", (0, X.jsx)("b", { children: s.maxHp })] }), (0, X.jsxs)("li", { children: ["Mana m\xE1x.: ", (0, X.jsx)("b", { children: s.maxMp })] }), (0, X.jsxs)("li", { children: ["Ataque: ", (0, X.jsx)("b", { children: s.atk })] }), (0, X.jsxs)("li", { children: ["Ataque m\xE1gico: ", (0, X.jsx)("b", { children: s.matk })] }), (0, X.jsxs)("li", { children: ["Defesa: ", (0, X.jsx)("b", { children: s.def })] }), (0, X.jsxs)("li", { children: ["Cr\xEDtico: ", (0, X.jsxs)("b", { children: [(s.crit * 100).toFixed(1), "%"] })] }), (0, X.jsxs)("li", { children: ["Esquiva: ", (0, X.jsxs)("b", { children: [(s.dodge * 100).toFixed(1), "%"] })] }), (0, X.jsxs)("li", { children: ["Velocidade: ", (0, X.jsx)("b", { children: Math.round(s.speed) })] })] })] })] })] }), a === "quests" && (0, X.jsx)("div", { className: "quests", children: [Hh(RealmChron, { key: "rc" }), ...Object.values(Or).map((f) => {
+    }, children: "Largar tudo" })] }), c.kind === "quest" && (0, X.jsx)("small", { className: "muted", children: "Item de quest: n\xE3o pode ser descartado." })] }) : (0, X.jsx)("p", { className: "muted", children: "Selecione um item." }) })] }), a === "char" && (0, X.jsxs)("div", { className: "equip-wrap", children: [(0, X.jsxs)("div", { className: "paperdoll", children: [(0, X.jsx)("div", { className: "pd-col", children: ["headTop", "headMid", "headLow", "weapon"].map((f) => Hh(PdSlot, { key: f, slot: f, p: i })) }), (0, X.jsx)("div", { className: "pd-mid", children: (0, X.jsx)(zS, {}) }), (0, X.jsxs)("div", { className: "pd-col", children: [...["armor", "accessory", "back"].map((f) => Hh(PdSlot, { key: f, slot: f, p: i })), jr(i) && Hh("div", { key: "ammo", className: "pd-slot", title: i.ammo && $(i.ammo) ? `Aljava: ${$(i.ammo).name} (${ry(i)} flechas)` : "Aljava: equipe uma flecha pelo invent\xE1rio" }, i.ammo && $(i.ammo) ? Hh(Aa, { id: i.ammo, size: 34 }) : Hh("small", {}, "Aljava"))] })] }), (0, X.jsx)("label", { className: "check pd-share", children: [(0, X.jsx)("input", { key: "i", type: "checkbox", checked: !!i.showEquip, onChange: (m) => { i.showEquip = m.target.checked, j.saveGameQuiet(), j.refresh(); } }), " Mostrar meus equipamentos a outros jogadores"] }), (0, X.jsxs)("div", { className: "char", children: [(0, X.jsxs)("section", { children: [(0, X.jsx)("h3", { children: "Pontos" }), (0, X.jsxs)("p", { className: "muted", children: [i.statPoints, " de atributo \xB7 ", i.skillPoints, " de habilidade. Use as janelas Atributos (T) e Habilidades (L)."] }), (0, X.jsxs)("div", { className: "row wrap", children: [(0, X.jsx)("button", { className: "btn btn-small", onClick: () => j.togglePanel("stats"), children: "Atributos" }), (0, X.jsx)("button", { className: "btn btn-small", onClick: () => j.togglePanel("skills"), children: "Habilidades" })] })] }), (0, X.jsxs)("section", { children: [(0, X.jsx)("h3", { children: "Combate" }), (0, X.jsxs)("ul", { className: "derived", children: [(0, X.jsxs)("li", { children: ["Vida m\xE1x.: ", (0, X.jsx)("b", { children: s.maxHp })] }), (0, X.jsxs)("li", { children: ["Mana m\xE1x.: ", (0, X.jsx)("b", { children: s.maxMp })] }), (0, X.jsxs)("li", { children: ["Ataque: ", (0, X.jsx)("b", { children: s.atk })] }), (0, X.jsxs)("li", { children: ["Ataque m\xE1gico: ", (0, X.jsx)("b", { children: s.matk })] }), (0, X.jsxs)("li", { children: ["Defesa: ", (0, X.jsx)("b", { children: s.def })] }), (0, X.jsxs)("li", { children: ["Cr\xEDtico: ", (0, X.jsxs)("b", { children: [(s.crit * 100).toFixed(1), "%"] })] }), (0, X.jsxs)("li", { children: ["Esquiva: ", (0, X.jsxs)("b", { children: [(s.dodge * 100).toFixed(1), "%"] })] }), (0, X.jsxs)("li", { children: ["Velocidade: ", (0, X.jsx)("b", { children: Math.round(s.speed) })] })] })] })] })] }), a === "quests" && (0, X.jsx)("div", { className: "quests", children: [Hh(RealmChron, { key: "rc" }), ...Object.values(Or).map((f) => {
       let u = tn(i, f.id);
       return u === "locked" ? null : (0, X.jsxs)("article", { className: `quest quest-${u}`, children: [(0, X.jsxs)("header", { children: [(0, X.jsx)("strong", { children: f.name }), (0, X.jsx)("small", { children: { available: "Dispon\xEDvel", active: "Em andamento", ready: "Pronta para entregar", done: "Conclu\xEDda", locked: "" }[u] })] }), (0, X.jsx)("p", { children: f.summary }), (u === "active" || u === "ready") && Fu(i, f.id).map((m, p) => (0, X.jsxs)("small", { children: [m.label, ": ", m.have, "/", m.need] }, p)), u === "available" && (0, X.jsxs)("small", { className: "muted", children: ["Fale com ", f.giver === "eira" ? "Eira" : f.giver, " na vila."] })] }, f.id);
     })] })] });
@@ -18392,14 +18420,14 @@ function ROXQM(f, c, s, l, def) {
     let [selSk, setSelSk] = (0, Ln.useState)(-1), t = ge().player;
     if (!t) return null;
     let a = Ce[t.line];
-    return (0, ma.jsxs)(Yt, { id: "skills", title: "Habilidades", onClose: () => j.closePanel(), children: [(0, ma.jsxs)("div", { className: "attr-points", children: [(0, ma.jsx)("span", { children: "Pontos de habilidade" }), (0, ma.jsx)("b", { children: t.skillPoints })] }), a.skills.map((n, o) => {
+    return (0, ma.jsxs)(Yt, { id: "skills", title: "Habilidades", onClose: () => j.closePanel(), children: [(0, ma.jsxs)("div", { className: "attr-points", children: [(0, ma.jsx)("span", { children: "Pontos de habilidade" }), (0, ma.jsx)("b", { children: t.skillPoints })] }), Hh("div", { className: "skill-grid" }, a.skills.map((n, o) => {
       let r = t.skillLevels[o] ?? 1, i = skLocked(t, o);
       return (0, ma.jsxs)("div", { className: "attr-row skill-row" + (i ? " skill-locked" : ""), style: { gridTemplateColumns: "auto 1fr auto auto" }, onContextMenu: (ev) => {
         ev.preventDefault(), setSelSk(selSk === o ? -1 : o);
       }, children: [selSk === o && (0, ma.jsxs)("div", { className: "skill-bonus", style: { gridColumn: "1 / -1", order: 9 }, onClick: () => setSelSk(-1), children: [(0, ma.jsx)("b", { children: n.name + " \u2014 Nv " + r + (r >= Ll(t.tier) ? " (m\xE1x.)" : "") }), skBonus(n, r).map(([k, v], q) => (0, ma.jsxs)("div", { className: "sb-row", children: [(0, ma.jsx)("span", { children: k }), (0, ma.jsx)("b", { children: v })] }, q)), r < Ll(t.tier) && n.mult ? (0, ma.jsx)("div", { className: "sb-row sb-next", children: (0, ma.jsx)("span", { children: "Nv " + (r + 1) + ": dano " + Math.round(n.mult * jy(r + 1) * 100) + "% \xB7 mana " + Ju(n.mp, r + 1) }) }) : null] }),(0, ma.jsx)("div", { className: "skill-ico", draggable: !i, onDragStart: (s) => {
         s.dataTransfer.setData(Qr, JSON.stringify({ t: "skill", i: o })), s.dataTransfer.effectAllowed = "copy";
       }, title: "Arraste para a barra de atalhos \u00B7 bot\xE3o direito: ver b\xF4nus", children: (0, ma.jsx)(h0, { id: n.id, kind: n.kind, size: 36 }) }), (0, ma.jsxs)("span", { title: n.desc, children: [n.name, i ? " \u{1F512}" : "", (0, ma.jsx)("br", {}), (0, ma.jsx)("small", { className: "muted", children: n.desc })] }), (0, ma.jsxs)("b", { children: ["Nv ", r] }), (0, ma.jsx)("button", { className: "btn btn-small", disabled: t.skillPoints < 1 || i || r >= Ll(t.tier), onClick: () => j.upgradeSkillAt(o), "aria-label": `Aumentar ${n.name}`, children: "+" })] }, n.id);
-    })] });
+    }))] });
   }
   var Mt = oe(ue(), 1);
 
@@ -18612,7 +18640,11 @@ function ROXQM(f, c, s, l, def) {
           else if (n.altKey && !n.repeat && "oO".includes(n.key)) n.preventDefault(), j.togglePanel("craft");
           else if (n.altKey && !n.repeat && "aA".includes(n.key)) n.preventDefault(), j.togglePanel("stats");
           else if ((n.key === "i" || n.key === "I") && !n.repeat) j.togglePanel("inventory");
-          else if (/^F([1-9]|1[0-2])$/.test(n.key)) n.preventDefault(), n.repeat || j.triggerHotkey(Number(n.key.slice(1)) - 1);
+          else if (/^F[1-9]$/.test(n.key)) n.preventDefault(), n.repeat || j.triggerHotkey(Number(n.key.slice(1)) - 1);
+          else if (n.key === "F10") n.preventDefault(), n.repeat || window.dispatchEvent(new Event("eldvar:chat-vis"));
+          else if (n.key === "F11") n.preventDefault(), n.repeat || window.dispatchEvent(new Event("eldvar:bar2"));
+          else if (n.key === "F12") n.preventDefault(), n.repeat || window.dispatchEvent(new Event("eldvar:quest-vis"));
+          else if (n.altKey && !n.repeat && "vV".includes(n.key)) n.preventDefault(), window.dispatchEvent(new Event("eldvar:info-vis"));
           else if ((n.key === "t" || n.key === "T") && !n.repeat) j.togglePanel("stats");
           else if ((n.key === "l" || n.key === "L") && !n.repeat) j.togglePanel("skills");
           else if ((n.key === "b" || n.key === "B") && !n.repeat) j.togglePanel("bestiary");
