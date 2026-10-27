@@ -1,3 +1,6 @@
+# v158
+- Catalogo gigante: +10.560 equipamentos gerados (armas dos 8 tipos, armaduras, acessorios, chapeus; 33 faixas de nivel x 10 qualidades) e +189 especies de monstros (255 no total), 3 novas por mapa, cada uma com drops proprios. Equipamentos gerados nao poluem o provador.
+
 # v157
 - Ilhas com chao de areia e grama rala, agua turquesa e palmeiras.
 

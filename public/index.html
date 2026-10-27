@@ -9514,6 +9514,74 @@ Error generating stack: ` + n.message + `
     ISL.forEach((e, i) => { Jt[e.id] = N8(e, 200 + i), Jt[e.id].depth = e.depth; });
     Jt.ilha_coral.portals = Jt.ilha_coral.portals.filter((q) => q.toMap !== "cidade_midgard");
   }
+
+  {
+    const SUF = [["de Bronze", { def: 1 }], ["de Ferro", { def: 2 }], ["de Aço", { atk: 2 }], ["de Prata", { luk: 1 }], ["de Ouro", { maxHp: 12 }], ["de Gelo", { int: 1 }], ["de Brasa", { str: 1 }], ["das Sombras", { agi: 1 }], ["de Tyr", { vit: 1 }], ["das Valquírias", { dex: 1 }]];
+    const WB = { sword: ["Espada Curta", "Espada Longa", "Montante", "Claymore", "Lâmina Rúnica", "Lâmina Divina"], axe: ["Machadinha", "Machado de Guerra", "Machado Dobrado", "Machado Berserker", "Fendedor"], bow: ["Arco Curto", "Arco Longo", "Arco Composto", "Arco Rúnico", "Arco Celeste"], staff: ["Cajado", "Cajado Entalhado", "Cajado Rúnico", "Cajado Arcano", "Cajado Celeste"], spear: ["Lança", "Lança de Caça", "Lança de Batalha", "Lança Alada", "Lança Divina"], dagger: ["Adaga", "Punhal", "Faca de Caça", "Lâmina Sombria", "Presa"], fist: ["Luvas de Couro", "Manoplas", "Garras", "Punhos Rúnicos", "Punhos Divinos"], mace: ["Maça", "Martelo", "Maça Estrelada", "Martelo de Tyr", "Martelo Divino"] };
+    const AB = [["Túnica", 0.7, 1.4], ["Gibão", 0.9, 1.1], ["Couraça", 1.1, 1], ["Brunea", 1.2, 0.9], ["Cota de Malha", 1.25, 0.9], ["Armadura de Placas", 1.5, 0.8], ["Manto Rúnico", 0.8, 1.3], ["Veste de Seda", 0.6, 1.5], ["Peitoral de Escamas", 1.1, 1.1], ["Armadura de Draugr", 1.3, 1]];
+    const CB = ["Anel", "Colar", "Brincos", "Pulseira", "Broche", "Talismã", "Amuleto", "Cinto", "Medalhão", "Fivela"];
+    const hs = [...new Set(Object.values(Wa).filter((x) => x.kind === "headTop" && x.headStyle).map((x) => x.headStyle))];
+    const HB = [["Elmo", "helm"], ["Capuz", "hood2"], ["Coroa", "crowngold"], ["Chapéu", hs.find((x) => !["helm", "hood2", "crowngold"].includes(x)) ?? "helm"]];
+    const RAR = ["common", "common", "common", "uncommon", "uncommon", "uncommon", "rare", "rare", "epic", "legendary"];
+    const add = (o) => { o.stack = 1, o.gen = true, Wa[o.id] = o; };
+    const GEN = { ids: [] };
+    for (let ti = 0; ti < 33; ti++) {
+      const L = Math.min(99, 1 + ti * 3);
+      for (let p = 0; p < 10; p++) {
+        const q = 0.92 + 0.025 * p, [sn, sb] = SUF[p], sx = {};
+        for (const k in sb) sx[k] = k === "maxHp" ? sb[k] + Math.round(L * 1.6) : sb[k] + Math.floor(L / 14);
+        const rar = RAR[p], sell = Math.round((L * 3 + 8) * (1 + p * 0.6));
+        for (const [wt, names] of Object.entries(WB)) {
+          const band = Math.min(names.length - 1, Math.floor(ti * names.length / 33)), id = `g_w_${wt}_${ti}_${p}`, v = Math.round((4 + L * 1.3) * q);
+          add({ id, name: `${names[band]} ${sn} (Nv ${L})`, kind: "weapon", weaponType: wt, rarity: rar, reqLevel: L, sell, desc: `Arma ${sn}.`, bonus: { ...(wt === "staff" ? { matk: v } : { atk: v }), ...sx }, slots: p >= 7 ? 2 : p >= 4 ? 1 : 0 });
+          GEN.ids.push(id);
+        }
+        AB.forEach(([an, dm, hm], k) => {
+          const id = `g_a_${k}_${ti}_${p}`;
+          add({ id, name: `${an} ${sn} (Nv ${L})`, kind: "armor", rarity: rar, reqLevel: L, sell, desc: `Armadura ${sn}.`, bonus: { def: Math.round((2 + L * 0.85) * q * dm), maxHp: Math.round((8 + L * 4.5) * q * hm), ...sx }, slots: p >= 7 ? 2 : p >= 4 ? 1 : 0 });
+          GEN.ids.push(id);
+        });
+        CB.forEach((cn, k) => {
+          const id = `g_c_${k}_${ti}_${p}`, a = Math.round((1 + L / 9) * (0.9 + 0.03 * p)), keys = ["str", "agi", "vit", "int", "dex", "luk"], k1 = keys[(k + p) % 6], k2 = keys[(k * 2 + p + 1) % 6], b = { maxHp: Math.round(6 + L * 2.2 * q) };
+          b[k1] = (b[k1] ?? 0) + a, b[k2] = (b[k2] ?? 0) + Math.max(1, a - 1);
+          add({ id, name: `${cn} ${sn} (Nv ${L})`, kind: "accessory", rarity: rar, reqLevel: L, sell, desc: `Acessório ${sn}.`, bonus: b, slots: p >= 6 ? 1 : 0 });
+          GEN.ids.push(id);
+        });
+        HB.forEach(([hn, st], k) => {
+          const id = `g_h_${k}_${ti}_${p}`;
+          add({ id, name: `${hn} ${sn} (Nv ${L})`, kind: "headTop", headStyle: st, rarity: rar, reqLevel: L, sell, desc: `Cabeça (topo): ${hn.toLowerCase()} ${sn}.`, bonus: { def: Math.round((1 + L * 0.35) * q), ...sx }, slots: 0 });
+          GEN.ids.push(id);
+        });
+      }
+    }
+    window.__genCount = GEN.ids.length;
+    const h32 = (str) => { let h = 7; for (let i = 0; i < str.length; i++) h = h * 31 + str.charCodeAt(i) >>> 0; h = Math.imul(h ^ h >>> 16, 73244475) >>> 0; h = Math.imul(h ^ h >>> 16, 73244475) >>> 0; return (h ^ h >>> 16) >>> 0; };
+    const hsl = (h, s_, l_) => { s_ /= 100, l_ /= 100; const k = (n) => (n + h / 30) % 12, a = s_ * Math.min(l_, 1 - l_), f = (n) => l_ - a * Math.max(-1, Math.min(k(n) - 3, Math.min(9 - k(n), 1))); return Math.round(f(0) * 255) << 16 | Math.round(f(8) * 255) << 8 | Math.round(f(4) * 255); };
+    const NOUN = { wolf: [["Lobo", 0], ["Cão", 0], ["Matilheiro", 0], ["Caçador", 0]], frostwolf: [["Lobo Glacial", 0], ["Cão de Gelo", 0]], boar: [["Javali", 0], ["Presa", 1], ["Porco-Bravo", 0]], goblin: [["Goblin", 0], ["Saqueador", 0], ["Mercenário", 0], ["Bruxo", 0]], draugr: [["Draugr", 0], ["Guardião Tumular", 0], ["Espectro", 0]], yeti: [["Yeti", 0], ["Brutamontes", 0], ["Gigante Branco", 0]], cinder: [["Brasa", 1], ["Elemental", 0], ["Chama", 1]], automaton: [["Autômato", 0], ["Sentinela", 1], ["Construto", 0]], sylvan: [["Ent", 0], ["Guardião", 0], ["Espírito Florestal", 0]], prism: [["Prisma", 0], ["Cristal", 0], ["Fragmento", 0]], sentinel: [["Sentinela", 1], ["Colosso", 0], ["Guardião de Pedra", 0]], voidling: [["Eco", 0], ["Sombra", 1], ["Vazio", 0]], blob: [["Gosma", 1], ["Broto", 0], ["Limo", 0]] };
+    const ADJ = ["Ferido", "Faminto", "Selvagem", "Ancestral", "Rúnico", "Gélido", "Ardente", "Sombrio", "Sagrado", "Corrompido", "Furioso", "Veloz", "Gigante", "Esquelético", "Venenoso", "Espectral", "Cristalino", "Maldito", "Errante", "Enlouquecido", "Dourado", "Prateado", "Carmesim", "Cinzento", "Abissal", "Trovejante", "Silencioso", "Cruel", "Antigo", "Sedento"];
+    const used = new Set(Object.values(Qu).map((d) => d.name)), made = [];
+    for (const m of Object.values(Jt)) {
+      if (!m.spawns || m.city || m.id === "wb_cratera") continue;
+      const base = m.spawns.map((q) => Qu[q.monster]).filter((d) => d && !d.boss && NOUN[d.shape]);
+      if (!base.length) continue;
+      const L = Math.max(2, Math.round(base.reduce((a, d) => a + d.level, 0) / base.length));
+      for (let k = 0; k < 3; k++) {
+        const b = base[(h32(m.id) + k) % base.length], nouns = NOUN[b.shape], key = h32(m.id + k);
+        let nm, tries = 0;
+        do { const [nn, g] = nouns[(key + tries) % nouns.length]; let adj = ADJ[((key >>> 3) + tries * 7) % ADJ.length]; adj = adj.replace(/o$/, g ? "a" : "o"); nm = `${nn} ${adj}`; tries++; } while (used.has(nm) && tries < 60);
+        if (used.has(nm)) continue;
+        used.add(nm);
+        const id = `sp_${m.id}_${k}`, lv = Math.max(1, L + (k - 1) * 2), f = (lv + 4) / (b.level + 4), jit = 0.9 + (key % 30) / 100;
+        const pick = (g) => { const hh = h32(id + "x" + g), ti = Math.max(0, Math.min(32, Math.round((lv - 1) / 3) + (hh % 3) - 1)), p = (hh >>> 4) % 8, kk = ["w", "a", "c", "h"][(hh >>> 9) & 3], r12 = hh >>> 12, idx = kk === "w" ? Object.keys(WB)[r12 % 8] : kk === "h" ? r12 % 4 : r12 % 10; return `g_${kk === "w" ? "w_" : kk + "_"}${idx}_${ti}_${p}`.replace("g_w__", "g_w_"); };
+        const drops = [...[0, 1, 2, 3].map((g) => ({ item: pick(g), chance: 0.012 + (g === 3 ? 0 : 0.004), min: 1, max: 1 })).filter((d) => Wa[d.item]), { item: "pocao_laranja", chance: 0.06, min: 1, max: 2 }, { item: "infusao_runica", chance: 0.07, min: 1, max: 1 }, ...(b.drops ?? []).filter((d) => $(d.item)?.kind === "material").slice(0, 2)];
+        Qu[id] = { ...b, id, name: nm, level: lv, hp: Math.round(b.hp * f * jit), atk: Math.round(b.atk * Math.pow(f, 0.8)), def: Math.round(b.def * Math.pow(f, 0.8)) + 1, exp: Math.round(b.exp * f * 1.05), silver: [Math.round(b.silver[0] * f), Math.round(b.silver[1] * f)], color: hsl(key % 360, 45 + key % 30, 42 + (key >>> 4) % 14), drops };
+        const W = m.width ?? 3360, H = m.height ?? 2240, rr = Oe(h32(id));
+        m.spawns.push({ monster: id, x: Math.round(400 + rr() * (W - 800)), y: Math.round(500 + rr() * (H - 800)), radius: 170, count: 5 });
+        made.push(id);
+      }
+    }
+    window.__genMonsters = made.length;
+  }
   var BAL = { hp: 1.55, atk: 1.3, def: 1.12, exp: 1, silver: 0.55, drop: 0.55, bossHp: 1.35, bossAtk: 1.25, bossExp: 1, bossDrop: 0.8 };
 
   {
@@ -19801,7 +19869,7 @@ function ROXQM(f, c, s, l, def) {
   }
   function PV_() {
     let t = ge().player, a = (0, xo.useRef)(null), [hs, setHs] = (0, xo.useState)(t?.style?.hairStyle), [hc, setHc] = (0, xo.useState)(t?.style?.hairColor), [dye, setDye] = (0, xo.useState)(t?.dye ?? 0), [dir, setDir] = (0, xo.useState)("down"), [eq, setEq] = (0, xo.useState)({}), [tab, setTab] = (0, xo.useState)("hair");
-    let all = Object.values(Wa), byKind = (k) => all.filter((x) => x.kind === k), wpn = [], seen = /* @__PURE__ */ new Set();
+    let all = Object.values(Wa).filter((x) => !x.gen), byKind = (k) => all.filter((x) => x.kind === k), wpn = [], seen = /* @__PURE__ */ new Set();
     for (let x of all) if (x.kind === "weapon" && x.weaponType && !seen.has(x.weaponType)) seen.add(x.weaponType), wpn.push(x);
     let f = t ? { ...t, dye, style: { hairStyle: hs, hairColor: hc }, equipment: { ...t.equipment, ...eq } } : null, key = f ? po(cs(f)) : "";
     (0, xo.useEffect)(() => {
