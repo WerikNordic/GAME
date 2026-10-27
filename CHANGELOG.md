@@ -1,3 +1,11 @@
+## v207 — Lote C
+- Curandeira: buff instantâneo ao clicar, no centro de cada cidade; montaria só em Midgard.
+- NPCs aleatórios por mapa, NPCs de história escondidos, sem barracas na rua (só canteiros).
+- Animais vivos que fogem (espécie por cidade), esfinge redesenhada, música própria por cidade.
+- Sofás VIP sentáveis + NPCs de entretenimento.
+- Catedral de casamento gigante com portal -> mapa interno (padre = cerimônia, Irmã Eldrid = loja).
+- 7 casas de guilda grandes (uma por classe) ao lado de cada mestre, com portal -> sala decorada da classe; portal interno volta de onde entrou.
+
 ## v206 - Visuais, provador, montaria e pet
 - 143 visuais novos: 40 cabeca, 34 rosto/olhos (padroes: gato, dragao, serpente, estrela, runas, heterocromia, vazio, chama), 31 boca, 41 costas (capas, asas naturais emplumadas, espadas, machados, mochilas personalizadas, aljavas). Obtidos por quests de visual (RQ) e testaveis no provador.
 - Provador: sem aba de armas; janela de itens com icone + nome; 2 cliques equipam/desequipam.

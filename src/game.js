@@ -8196,8 +8196,8 @@ Error generating stack: ` + n.message + `
     for (; r.length < a; ) r.push(T8(t, o));
     return r;
   }
-  var $m = { fountain: { w: 64, h: 48 }, dryfountain: { w: 64, h: 48 }, giftpile: { w: 26, h: 20 }, well: { w: 36, h: 30 }, stall: { w: 72, h: 36 }, lamp: { w: 12, h: 12 }, banner: { w: 12, h: 12 }, statue: { w: 40, h: 36 }, post: { w: 22, h: 18 }, tower: { w: 52, h: 44 }, bench: { w: 44, h: 16 }, cart: { w: 56, h: 32 }, hay: { w: 40, h: 28 }, planter: { w: 34, h: 22 }, pillar: { w: 20, h: 20 }, pillar_broken: { w: 22, h: 20 }, wall: { w: 56, h: 26 }, wall_v: { w: 26, h: 56 }, arch: { w: 64, h: 16 }, tent: { w: 52, h: 38 }, campfire: { w: 24, h: 22 }, runestone: { w: 20, h: 14 }, gravestone: { w: 16, h: 10 }, altar: { w: 42, h: 28 }, obelisk: { w: 20, h: 20 }, longhouse: { w: 120, h: 50 }, magetower: { w: 72, h: 66 }, clocktower: { w: 56, h: 48 }, pyramid: { w: 120, h: 100 }, sphinx: { w: 100, h: 40 }, arena: { w: 190, h: 150 }, lighthouse: { w: 44, h: 40 }, ship: { w: 100, h: 34 }, dock: { w: 124, h: 40 }, totem: { w: 40, h: 30 }, hut: { w: 52, h: 44 }, pagoda: { w: 74, h: 60 }, frosttree: { w: 56, h: 44 }, wbstatue: { w: 56, h: 56 }, sleigh: { w: 50, h: 26 }, reindeer: { w: 32, h: 16 }, xmastree: { w: 56, h: 44 }, snowman: { w: 28, h: 24 }, toyfactory: { w: 154, h: 100 }, santahouse: { w: 150, h: 98 }, santachair: { w: 46, h: 30 }, ruinhouse: { w: 120, h: 50 }, ruinhall: { w: 230, h: 120 }, ruintower: { w: 52, h: 44 }, ruintent: { w: 52, h: 38 }, ruinwall: { w: 56, h: 26 }, ruinwall_v: { w: 26, h: 56 }, viprug: { w: 180, h: 390 }, viprugc: { w: 260, h: 260 }, vipportal: { w: 140, h: 140 }, vipcol: { w: 30, h: 30 }, vipwall: { w: 200, h: 30 }, vipwall_v: { w: 30, h: 200 }, vipdais: { w: 440, h: 140 }, vipsofa: { w: 120, h: 44 }, vipsofa_n: { w: 120, h: 44 }, viptable: { w: 56, h: 56 }, vipgold: { w: 70, h: 44 }, vipbar: { w: 230, h: 50 }, vipplant: { w: 28, h: 28 }, toysack: { w: 34, h: 24 }, crypt: { w: 78, h: 60 }, palm: { w: 24, h: 20 }, cactus: { w: 26, h: 20 }, parasol: { w: 60, h: 50 }, spiritlamp: { w: 12, h: 12 }, keep: { w: 170, h: 150 }, palace: { w: 250, h: 100 }, hof: { w: 230, h: 120 }, warrior: { w: 52, h: 44 }, brazier: { w: 18, h: 18 }, forge: { w: 92, h: 36 }, church: { w: 110, h: 70 }, castle: { w: 150, h: 110 }, monument: { w: 44, h: 44 }, bigforge: { w: 120, h: 70 }, colossus: { w: 56, h: 56 }, airship: { w: 84, h: 44 } };
-  var DSC = { palace: 2.3, keep: 2.1, hof: 1.8, longhouse: 1.85, warrior: 1.9, statue: 1.9, fountain: 3.6, dryfountain: 3.6, giftpile: 1.5, tower: 1.7, forge: 1.5, stall: 1.3, tent: 1.5, well: 1.4, cart: 1.2, obelisk: 1.6, altar: 1.4, brazier: 1.3, lamp: 1.15, banner: 1.4, church: 1.7, castle: 2, monument: 2.2, bigforge: 1.8, colossus: 2.4, airship: 1.6, xmastree: 3.4, santahouse: 2.4, santachair: 1.05, ruinhouse: 1.85, ruinhall: 1.8, ruintower: 1.7, ruintent: 1.5, toysack: 1.5, wbstatue: 1.7, sleigh: 1.7, reindeer: 1.7, lighthouse: 3.2, clocktower: 2.6, totem: 3.2, magetower: 1.9, pagoda: 2.6, parasol: 3.2, crypt: 2.2, bench: 1.15, runestone: 1.5 };
+  var $m = { fountain: { w: 64, h: 48 }, dryfountain: { w: 64, h: 48 }, giftpile: { w: 26, h: 20 }, well: { w: 36, h: 30 }, stall: { w: 72, h: 36 }, lamp: { w: 12, h: 12 }, banner: { w: 12, h: 12 }, statue: { w: 40, h: 36 }, post: { w: 22, h: 18 }, tower: { w: 52, h: 44 }, bench: { w: 44, h: 16 }, cart: { w: 56, h: 32 }, hay: { w: 40, h: 28 }, planter: { w: 34, h: 22 }, pillar: { w: 20, h: 20 }, pillar_broken: { w: 22, h: 20 }, wall: { w: 56, h: 26 }, wall_v: { w: 26, h: 56 }, arch: { w: 64, h: 16 }, tent: { w: 52, h: 38 }, campfire: { w: 24, h: 22 }, runestone: { w: 20, h: 14 }, gravestone: { w: 16, h: 10 }, altar: { w: 42, h: 28 }, obelisk: { w: 20, h: 20 }, longhouse: { w: 120, h: 50 }, magetower: { w: 72, h: 66 }, clocktower: { w: 56, h: 48 }, pyramid: { w: 120, h: 100 }, sphinx: { w: 150, h: 70 }, arena: { w: 190, h: 150 }, lighthouse: { w: 44, h: 40 }, ship: { w: 100, h: 34 }, dock: { w: 124, h: 40 }, totem: { w: 40, h: 30 }, hut: { w: 52, h: 44 }, pagoda: { w: 74, h: 60 }, frosttree: { w: 56, h: 44 }, wbstatue: { w: 56, h: 56 }, sleigh: { w: 50, h: 26 }, reindeer: { w: 32, h: 16 }, xmastree: { w: 56, h: 44 }, snowman: { w: 28, h: 24 }, toyfactory: { w: 154, h: 100 }, santahouse: { w: 150, h: 98 }, santachair: { w: 46, h: 30 }, ruinhouse: { w: 120, h: 50 }, ruinhall: { w: 230, h: 120 }, ruintower: { w: 52, h: 44 }, ruintent: { w: 52, h: 38 }, ruinwall: { w: 56, h: 26 }, ruinwall_v: { w: 26, h: 56 }, viprug: { w: 180, h: 390 }, viprugc: { w: 260, h: 260 }, vipportal: { w: 140, h: 140 }, vipcol: { w: 30, h: 30 }, vipwall: { w: 200, h: 30 }, vipwall_v: { w: 30, h: 200 }, vipdais: { w: 440, h: 140 }, vipsofa: { w: 120, h: 44 }, vipsofa_n: { w: 120, h: 44 }, viptable: { w: 56, h: 56 }, vipgold: { w: 70, h: 44 }, vipbar: { w: 230, h: 50 }, vipplant: { w: 28, h: 28 }, toysack: { w: 34, h: 24 }, crypt: { w: 78, h: 60 }, palm: { w: 24, h: 20 }, cactus: { w: 26, h: 20 }, parasol: { w: 60, h: 50 }, spiritlamp: { w: 12, h: 12 }, keep: { w: 170, h: 150 }, palace: { w: 250, h: 100 }, hof: { w: 230, h: 120 }, warrior: { w: 52, h: 44 }, brazier: { w: 18, h: 18 }, forge: { w: 92, h: 36 }, church: { w: 110, h: 70 }, gh_cacador: { w: 130, h: 88 }, gh_berserker: { w: 136, h: 92 }, gh_escudeiro: { w: 138, h: 92 }, gh_volva: { w: 110, h: 100 }, gh_valquiria: { w: 136, h: 88 }, gh_skald: { w: 128, h: 84 }, gh_thay: { w: 130, h: 130 }, castle: { w: 150, h: 110 }, monument: { w: 44, h: 44 }, bigforge: { w: 120, h: 70 }, colossus: { w: 56, h: 56 }, airship: { w: 84, h: 44 } };
+  var DSC = { palace: 2.3, keep: 2.1, hof: 1.8, longhouse: 1.85, warrior: 1.9, statue: 1.9, fountain: 3.6, dryfountain: 3.6, giftpile: 1.5, tower: 1.7, forge: 1.5, stall: 1.3, tent: 1.5, well: 1.4, cart: 1.2, obelisk: 1.6, altar: 1.4, brazier: 1.3, lamp: 1.15, banner: 1.4, church: 3.0, gh_cacador: 2.4, gh_berserker: 2.3, gh_escudeiro: 2.3, gh_volva: 2.4, gh_valquiria: 2.3, gh_skald: 2.4, gh_thay: 2.1, castle: 2, monument: 2.2, bigforge: 1.8, colossus: 2.4, airship: 1.6, xmastree: 3.4, santahouse: 2.4, santachair: 1.05, ruinhouse: 1.85, ruinhall: 1.8, ruintower: 1.7, ruintent: 1.5, toysack: 1.5, wbstatue: 1.7, sleigh: 1.7, reindeer: 1.7, lighthouse: 3.2, clocktower: 2.6, totem: 3.2, magetower: 1.9, pagoda: 2.6, parasol: 3.2, crypt: 2.2, bench: 1.15, runestone: 1.5 };
   for (let e of Object.keys(DSC)) $m[e] && ($m[e].w = Math.round($m[e].w * DSC[e]), $m[e].h = Math.round($m[e].h * DSC[e]));
   function groves(W, H, rng, budget, rockFrac, ok, rockOnly) {
     let PX = 4, PY = 3, GP = 78, BW = (PX - 1) * GP + 60, BH = (PY - 1) * GP + 60, LX = 150, LY = 130, cols = Math.max(1, Math.floor((W - 120) / (BW + LX))), rows = Math.max(1, Math.floor((H - 120) / (BH + LY))), blocks = [], out = [];
@@ -8363,7 +8363,7 @@ Error generating stack: ` + n.message + `
         line(curve((y) => [1250 + 420 * Math.sin(y / 480), y], 1700, 5800, 60), 90, "pagoda", 5), line(curve((y) => [t - 1250 - 420 * Math.sin(y / 480 + 1.5), y], 1700, 5800, 60), 90, "planter", 3);
         break;
       case "cidade_handelsvik":
-        for (let y of [5300, 5600, 5900]) line([[620, y], [t - 620, y]], 70, "stall", 4);
+        for (let y of [5300, 5600, 5900]) line([[620, y], [t - 620, y]], 70, "planter", 4);
         line([[620, 2000], [620, 5300]], 90, "cart", 5), line([[t - 620, 2000], [t - 620, 5300]], 90, "cart", 5);
         break;
       case "cidade_solvik":
@@ -8378,7 +8378,8 @@ Error generating stack: ` + n.message + `
   var STON = ["cidade_midgard", "cidade_gladsheim", "cidade_skogvik", "cidade_helvik"];
   function z8(e) {
     let ST = CSTY[e.id] ?? CSTY.cidade_midgard, rs = Oe(e.seed + 55), tt2 = Object.assign({}, tt, ST.tt ?? {});
-    let { w: t, h: a } = Wo.city, n = Oe(e.seed), o = [], r = [], i = 0, svc = Math.floor(Oe(e.seed + 9)() * 5), s = (_, G, re) => {
+    let { w: t, h: a } = Wo.city, n = Oe(e.seed), o = [], r = [], i = 0, svc = Math.floor(Oe(e.seed + 9)() * 5), allowStall = false, s = (_, G, re) => {
+      if ((_ === "stall" || _ === "cart") && !allowStall) return;
       !STON.includes(e.id) && (_ === "warrior" || _ === "colossus") && (_ = _ === "warrior" ? "brazier" : "fountain");
       let sv0 = _ === "colossus" ? svc++ % 5 : -1;
       sv0 === 4 && (_ = "wbstatue");
@@ -8430,7 +8431,7 @@ Error generating stack: ` + n.message + `
         case "salavip":
           return { x: d - 600, y: k + 330 };
         case "curandeira":
-          return { x: d - 420, y: k + 250 };
+          return { x: d, y: k + 170 };
         case "papainoel":
           return { x: d - 560, y: k + 250 };
         case "montaria":
@@ -8447,9 +8448,12 @@ Error generating stack: ` + n.message + `
           return { x: d + G * 300, y: k + 500 };
       }
     }, M = [];
-    for (let _ of e.npcs) {
-      let G = w(_.id);
-      for (let re = 0; re < 12 && M.some((ie) => Math.hypot(ie.x - G.x, ie.y - G.y) < 130); re++) G = w(_.id);
+    const FIXN = new Set(["curandeira", "aeronave", "barqueiro", "salavip", "ylva", "torvald"]);
+    const rp = () => { if (x() < 0.4) return { x: d + (x() - 0.5) * (Wo.avenue - 120), y: tt2.palaceY + 760 + x() * (a - 1150 - tt2.palaceY) }; const sy = [k, tt2.streetN, tt2.streetS][Math.floor(x() * 3)]; return { x: c.x + 160 + x() * (c.w - 320), y: sy + (x() - 0.5) * (Wo.street - 90) }; };
+    const pn = (id) => FIXN.has(id) ? w(id) : rp();
+    for (let _ of [...e.npcs].sort((q1, q2) => (q2.id === "curandeira") - (q1.id === "curandeira"))) {
+      let G = pn(_.id);
+      for (let re = 0; re < 30 && (M.some((ie) => Math.hypot(ie.x - G.x, ie.y - G.y) < 170) || !FIXN.has(_.id) && Math.hypot(G.x - d, G.y - k - 170) < 240); re++) G = pn(_.id);
       M.push({ id: _.id, x: Math.round(G.x), y: Math.round(G.y) });
     }
     let wk = (_) => ST.wall !== "ruined" || rs() > 0.16;
@@ -8506,6 +8510,7 @@ Error generating stack: ` + n.message + `
     });
     let K = T / 2 + 20;
     for (let _ = I.y + 60; _ < a - 160; _ += 170) _ > D.y - 60 && _ < D.y + D.h + 60 || (s("lamp", d - K, _), s("lamp", d + K, _));
+    allowStall = true; for (let _ = I.y + 160, qn = 0; _ < a - 260; _ += 170, qn++) !(_ > D.y - 60 && _ < D.y + D.h + 60) && qn % 4 === 1 && (s(qn % 8 === 1 ? "stall" : "cart", d - K - 62, _ + 20), s("stall", d + K + 62, _ + 20)); allowStall = false;
     for (let _ = c.x + 120; _ < c.x + c.w - 100; _ += 190) _ > D.x - 60 && _ < D.x + D.w + 60 || (s("lamp", _, J.y - 20), s("lamp", _, J.y + J.h + 20));
     for (let _ of Z) for (let G = c.x + 200; G < c.x + c.w - 100; G += 420) Math.abs(G - d) < T || s("lamp", G, _ - z / 2 - 14);
     for (let _ = I.y + 120; _ < D.y - 120; _ += 340) Math.abs(_ - 2150) < 80 || (s("banner", d - K - 36, _), s("banner", d + K + 36, _));
@@ -8630,7 +8635,7 @@ Error generating stack: ` + n.message + `
         for (let q = -2; q <= 2; q++) q && s("palm", cx + q * 130, cy + 215);
         s("cactus", cx - 330, cy), s("cactus", cx + 330, cy + 40), s("cactus", cx - 280, cy - 210), s("cactus", cx + 290, cy - 200);
       } else if (kd === "sphinx") {
-        s("sphinx", cx, cy), s("obelisk", cx - 190, cy - 130), s("obelisk", cx + 190, cy - 130), s("brazier", cx - 120, cy + 130), s("brazier", cx + 120, cy + 130);
+        s("sphinx", cx, cy), s("obelisk", cx - 230, cy - 150), s("obelisk", cx + 230, cy - 150), s("obelisk", cx - 230, cy + 130), s("obelisk", cx + 230, cy + 130), s("brazier", cx - 120, cy + 170), s("brazier", cx + 120, cy + 170);
         for (let q = -2; q <= 2; q++) s("warrior", cx + q * 120, cy + 250);
         for (let q of [-1, 1]) s("palm", cx + q * 300, cy - 20), s("cactus", cx + q * 360, cy + 130);
       } else if (kd === "oasis") {
@@ -8791,7 +8796,7 @@ Error generating stack: ` + n.message + `
     }
     let crit = [];
     {
-      let cr = Oe(e.id.length * 7919 + e.id.charCodeAt(0) * 131), kinds = ({ cidade_midgard: ["cao", "gato"], cidade_ravnhaven: ["corvo", "gato"], cidade_isenborg: ["gato"], cidade_eldvik: ["abutre"], cidade_kharnheim: ["cao"], cidade_freyrhain: ["cao"], cidade_gladsheim: ["gato"], cidade_skogvik: ["gato"], cidade_handelsvik: ["cao", "corvo"], cidade_solvik: ["gato", "cao"], cidade_helvik: ["corvo", "abutre"] })[e.id] ?? ["cao", "gato"], tries = 0;
+      let cr = Oe(e.id.length * 7919 + e.id.charCodeAt(0) * 131), kinds = ({ cidade_midgard: ["cao", "gato"], cidade_ravnhaven: ["gaivota", "gato"], cidade_isenborg: ["raposa", "coelho"], cidade_eldvik: ["abutre", "raposa"], cidade_kharnheim: ["gato", "corvo"], cidade_freyrhain: ["coelho", "raposa"], cidade_gladsheim: ["gato", "corvo"], cidade_skogvik: ["gato", "coelho"], cidade_handelsvik: ["gaivota", "gato"], cidade_solvik: ["gaivota", "coelho"], cidade_helvik: ["corvo", "abutre"] })[e.id] ?? ["gato", "coelho"], tries = 0;
       for (; crit.length < 6 && tries < 400; tries++) {
         let x0 = c.x + 100 + cr() * (c.w - 200), y0 = c.y + 100 + cr() * (c.h - 200);
         if (o.some((q) => x0 + 22 > q.x && x0 - 22 < q.x + q.w && y0 + 20 > q.y && y0 - 20 < q.y + q.h)) continue;
@@ -8808,7 +8813,7 @@ Error generating stack: ` + n.message + `
     if (e.id === "cidade_isenborg") for (let q of o.filter((z) => z.kind === "deco" && z.deco === "frosttree")) o.push({ kind: "deco", deco: "giftpile", x: q.x + q.w / 2 + 6, y: q.y + q.h + 4, w: 26, h: 20 });
     return { id: e.id, name: e.name, width: t, height: a, spawn: { x: d, y: a - 420 }, safeZone: { x: c.x, y: c.y, w: c.w, h: c.h }, obstacles: tidyCity(e.id === "cidade_eldvik" ? o.filter((q) => !(q.kind === "deco" && q.deco === "palm")) : e.id === "cidade_freyrhain" ? o.filter((q) => !(q.kind === "deco" && (q.deco === "lamp" || q.deco === "banner" || q.deco === "bench"))) : o, M), treeTheme: e.id === "cidade_eldvik" ? "dead" : void 0, critters: crit, spawns: [], maxMonsters: 0, npcs: M, pois: r, portals: [{ x: f.from, y: a - 60, w: f.to - f.from, h: 60, label: "Sa\xEDda da cidade", locked: false, toMap: e.from, toSpawn: { x: 130, y: 630 } }], bossDen: { x: t / 2, y: a / 2 + 600, r: 10 }, theme: e.theme, safeLabel: e.safeLabel, scars: [], mood: e.mood, city: true, paved: e.id === "cidade_freyrhain" ? [] : p };
   }
-  var Hr = (...e) => ["arauto", "ottar", "bruna", "brokk", "munin", "sigrun", "estilista", "provador", "utilidades", "cronista", "checkpoint", "questor", "lider", "mestre_jogos", "montaria", "salavip", "aeronave", "barqueiro", ...e].map((t) => ({ id: t, x: 0, y: 0 })), D8 = [{ id: "cidade_midgard", name: "Cidade de Midgard", seed: 7e3, theme: "grass", from: "campos_midgard", safeLabel: "Pra\xE7a de Midgard", npcs: Hr("eira", "curandeira"), grand: "palace", grandName: "Sal\xE3o do Jarl" }, { id: "cidade_ravnhaven", name: "Cidade de Ravnhaven", seed: 7101, theme: "grass", from: "midgard_brumaforte", safeLabel: "Pra\xE7a do Corvo", npcs: Hr(), grand: "castle", grandName: "Fortaleza do Corvo" }, { id: "cidade_isenborg", name: "Cidade de Isenborg", seed: 7202, theme: "snow", from: "jotunheim_aldeia", safeLabel: "Pra\xE7a da Geada", npcs: Hr("ylva", "torvald", "papainoel", "paihomun"), grand: "castle", grandName: "Cidadela de Gelo", mood: [0.92, 0.96, 1] }, { id: "cidade_eldvik", name: "Cidade de Eldvik", seed: 7303, theme: "sand", from: "muspel_cinzas", safeLabel: "Pra\xE7a das Brasas", npcs: Hr(), grand: "none", mood: [1.04, 0.96, 0.84] }, { id: "cidade_kharnheim", name: "Cidade de Kharnheim", seed: 7404, theme: "forge", from: "svart_mercado", safeLabel: "Pra\xE7a da Bigorna", npcs: Hr(), grand: "palace", grandName: "Grande Sal\xE3o da Bigorna", mood: [1, 0.9, 0.85] }, { id: "cidade_freyrhain", name: "Cidade de Freyrhain", seed: 7505, theme: "lush", from: "vana_santuario", safeLabel: "Pra\xE7a das Ra\xEDzes", npcs: Hr(), grand: "palace", grandName: "Pal\xE1cio das Ra\xEDzes" }, { id: "cidade_gladsheim", name: "Cidade de Gladsheim", seed: 7606, theme: "marble", from: "asg_praca", safeLabel: "Pra\xE7a dos Aesir", npcs: Hr(), grand: "both", grandName: "Sal\xE3o dos Aesir" }, { id: "cidade_skogvik", name: "Cidade de Skogvik", seed: 7707, theme: "wood", from: "midgard_bosque", safeLabel: "Pra\xE7a das Copas", npcs: Hr(), grand: "palace", grandName: "Pagode do Conselho", mood: [0.96, 1, 0.94] }, { id: "cidade_handelsvik", name: "Cidade de Handelsvik", seed: 7808, theme: "grass", from: "midgard_lago", safeLabel: "Cais dos Mercadores", npcs: Hr(), grand: "castle", grandName: "Sal\xE3o da Guilda", mood: [1, 1, 1.04] }, { id: "cidade_solvik", name: "Cidade de Solvik", seed: 7909, theme: "tropic", from: "vana_pantano", safeLabel: "Praia das Festas", npcs: Hr(), grand: "none", mood: [1.05, 1.02, 0.96] }, { id: "cidade_helvik", name: "Cidade de Helvik", seed: 8010, theme: "dead", from: "niflheim_catacumbas", safeLabel: "Pra\xE7a dos Sussurros", npcs: Hr(), grand: "palace", grandName: "Mausol\xE9u de Hel", mood: [0.7, 0.8, 0.86] }];
+  var Hr = (...e) => [...new Set(["arauto", "ottar", "bruna", "brokk", "munin", "sigrun", "estilista", "provador", "utilidades", "cronista", "checkpoint", "questor", "lider", "mestre_jogos", "salavip", "aeronave", "barqueiro", "curandeira", ...e])].map((t) => ({ id: t, x: 0, y: 0 })), D8 = [{ id: "cidade_midgard", name: "Cidade de Midgard", seed: 7e3, theme: "grass", from: "campos_midgard", safeLabel: "Pra\xE7a de Midgard", npcs: Hr("eira", "curandeira", "montaria"), grand: "palace", grandName: "Sal\xE3o do Jarl" }, { id: "cidade_ravnhaven", name: "Cidade de Ravnhaven", seed: 7101, theme: "grass", from: "midgard_brumaforte", safeLabel: "Pra\xE7a do Corvo", npcs: Hr(), grand: "castle", grandName: "Fortaleza do Corvo" }, { id: "cidade_isenborg", name: "Cidade de Isenborg", seed: 7202, theme: "snow", from: "jotunheim_aldeia", safeLabel: "Pra\xE7a da Geada", npcs: Hr("ylva", "torvald", "papainoel", "paihomun"), grand: "castle", grandName: "Cidadela de Gelo", mood: [0.92, 0.96, 1] }, { id: "cidade_eldvik", name: "Cidade de Eldvik", seed: 7303, theme: "sand", from: "muspel_cinzas", safeLabel: "Pra\xE7a das Brasas", npcs: Hr(), grand: "none", mood: [1.04, 0.96, 0.84] }, { id: "cidade_kharnheim", name: "Cidade de Kharnheim", seed: 7404, theme: "forge", from: "svart_mercado", safeLabel: "Pra\xE7a da Bigorna", npcs: Hr(), grand: "palace", grandName: "Grande Sal\xE3o da Bigorna", mood: [1, 0.9, 0.85] }, { id: "cidade_freyrhain", name: "Cidade de Freyrhain", seed: 7505, theme: "lush", from: "vana_santuario", safeLabel: "Pra\xE7a das Ra\xEDzes", npcs: Hr(), grand: "palace", grandName: "Pal\xE1cio das Ra\xEDzes" }, { id: "cidade_gladsheim", name: "Cidade de Gladsheim", seed: 7606, theme: "marble", from: "asg_praca", safeLabel: "Pra\xE7a dos Aesir", npcs: Hr(), grand: "both", grandName: "Sal\xE3o dos Aesir" }, { id: "cidade_skogvik", name: "Cidade de Skogvik", seed: 7707, theme: "wood", from: "midgard_bosque", safeLabel: "Pra\xE7a das Copas", npcs: Hr(), grand: "palace", grandName: "Pagode do Conselho", mood: [0.96, 1, 0.94] }, { id: "cidade_handelsvik", name: "Cidade de Handelsvik", seed: 7808, theme: "grass", from: "midgard_lago", safeLabel: "Cais dos Mercadores", npcs: Hr(), grand: "castle", grandName: "Sal\xE3o da Guilda", mood: [1, 1, 1.04] }, { id: "cidade_solvik", name: "Cidade de Solvik", seed: 7909, theme: "tropic", from: "vana_pantano", safeLabel: "Praia das Festas", npcs: Hr(), grand: "none", mood: [1.05, 1.02, 0.96] }, { id: "cidade_helvik", name: "Cidade de Helvik", seed: 8010, theme: "dead", from: "niflheim_catacumbas", safeLabel: "Pra\xE7a dos Sussurros", npcs: Hr(), grand: "palace", grandName: "Mausol\xE9u de Hel", mood: [0.7, 0.8, 0.86] }];
   function O8(e, t, a) {
     let n = Jt[e], o = 1600, r = 1200, i = Oe(a), s = [], l = [], c = { x: 800, y: 150 }, d = Math.min(60, Qm.findIndex((y) => y.id === e) + 2), f = { rng: i, theme: n.theme, tier: d, mapId: t.id, sizes: $m, obstacles: s, pois: l, n: 0 };
     Jo("ruin", 800, 640, f), Jo("nook", 280, 980, f), Jo("nook", 1330, 330, f), Jo("camp", 1250, 640, f), Jo("stones", 1300, 900, f), Jo("graves", 300, 420, f);
@@ -8839,12 +8844,73 @@ Error generating stack: ` + n.message + `
     D("vipgold", 840, 115, 70, 44), D("vipgold", 1560, 115, 70, 44), D("vipbar", 1965, 105, 230, 50);
     for (const x of [600, 1800]) for (const y of [640, 1100]) D("viptable", x, y, 56, 56), D("vipsofa", x, y - 78, 120, 44), D("vipsofa_n", x, y + 78, 120, 44);
     for (const [x, y] of [[190, 140], [2210, 140], [190, 1470], [2210, 1470], [1010, 1490], [1390, 1490], [190, 450], [2210, 450], [190, 850], [2210, 850], [190, 1250], [2210, 1250]]) D("vipplant", x, y, 28, 28);
-    return { id: "sala_vip", name: "Sal\xE3o VIP", width: 2400, height: 1585, spawn: { x: 1200, y: 1380 }, safeZone: { x: 0, y: 0, w: 2400, h: 1585 }, obstacles: ob, spawns: [], maxMonsters: 0, npcs: [{ id: "vipconcierge", x: 1200, y: 320 }, { id: "vipmordomo", x: 1965, y: 190 }], pois: [], portals: [{ x: 1140, y: 1470, w: 120, h: 70, label: "Voltar", locked: false, toMap: "__vipback", toSpawn: { x: 0, y: 0 } }], bossDen: { x: 1200, y: 900, r: 10 }, theme: "marble", safeLabel: "Sal\xE3o Dourado", scars: [], mood: [1.06, 0.98, 0.86], hidden: true, city: true, indoor: true };
+    return { id: "sala_vip", name: "Sal\xE3o VIP", width: 2400, height: 1585, spawn: { x: 1200, y: 1380 }, safeZone: { x: 0, y: 0, w: 2400, h: 1585 }, obstacles: ob, spawns: [], maxMonsters: 0, npcs: [{ id: "vipconcierge", x: 1200, y: 320 }, { id: "vipmordomo", x: 1965, y: 190 }, { id: "mestre_jogos", x: 940, y: 820 }, { id: "provador", x: 1460, y: 820 }, { id: "curandeira", x: 1040, y: 1180 }, { id: "estilista", x: 1360, y: 1180 }], pois: [], portals: [{ x: 1140, y: 1470, w: 120, h: 70, label: "Voltar", locked: false, toMap: "__vipback", toSpawn: { x: 0, y: 0 } }], bossDen: { x: 1200, y: 900, r: 10 }, theme: "marble", safeLabel: "Sal\xE3o Dourado", scars: [], mood: [1.06, 0.98, 0.86], hidden: true, city: true, indoor: true };
   }
   var Xm = R8();
   Xm.portals.sort((e, t) => e.toMap === "planicies_jotunheim" ? -1 : t.toMap === "planicies_jotunheim" ? 1 : 0);
   var Yx = q8(), Jt = { [Xm.id]: Xm, [Yx.id]: Yx };
   Jt.sala_vip = vipMap();
+  function roomWalls(ob, W, H, gap) {
+    const D = (deco, x, y, ex) => { const d = $m[deco] || { w: 30, h: 30 }; ob.push({ kind: "deco", deco, x: Math.round(x - d.w / 2), y: Math.round(y - d.h / 2), w: d.w, h: d.h, ...ex }); };
+    for (let x = 40; x <= W - 40; x += 56) { D("wall", x, 40); (Math.abs(x - W / 2) > gap) && D("wall", x, H - 30); }
+    for (let y = 70; y <= H - 40; y += 56) D("wall_v", 32, y), D("wall_v", W - 32, y);
+    return D;
+  }
+  function classRoom(gl) {
+    const W = 1800, H = 1300, ob = [], D = roomWalls(ob, W, H, 110), cx = W / 2, G = GUILDS[gl];
+    const th = { cacador: "lush", berserker: "forge", escudeiro: "grass", volva: "crystal", valquiria: "marble", skald: "void", thay: "fire" }[gl];
+    const row = (deco, x0, x1, y, st) => { for (let x = x0; x <= x1; x += st) D(deco, x, y); };
+    for (const [x, y] of [[140, 150], [W - 140, 150], [140, 1000], [W - 140, 1000]]) D("brazier", x, y);
+    D("vipportal", cx, H - 125, { walk: true });
+    if (gl === "cacador") {
+      D("tent", 300, 210), D("tent", 1500, 210), D("campfire", cx, 640), D("bench", cx - 120, 700), D("bench", cx + 120, 700), D("bench", cx, 560);
+      for (const [x, y] of [[200, 520], [245, 560], [1560, 530], [1605, 570], [210, 760], [1590, 770]]) D("hay", x, y);
+      D("totem", 520, 180), D("totem", 1280, 180); row("banner", 700, 1100, 130, 100); row("post", 480, 1320, 900, 140);
+      for (const [x, y] of [[200, 850], [1600, 850], [700, 360], [1100, 360], [400, 420], [1400, 420]]) D("planter", x, y); D("cart", 1400, 760);
+    } else if (gl === "berserker") {
+      D("forge", 300, 200), D("forge", 1500, 200), D("altar", cx, 210), D("warrior", 380, 520), D("warrior", 1420, 520), D("bench", 700, 700), D("bench", 1100, 700);
+      row("banner", 560, 1240, 130, 120); row("post", 560, 1240, 880, 130); for (const [x, y] of [[200, 880], [240, 920], [1560, 880], [1600, 920]]) D("hay", x, y);
+      D("totem", 620, 420), D("totem", 1180, 420); D("campfire", cx, 560);
+    } else if (gl === "escudeiro") {
+      for (const x of [300, 620, 1180, 1500]) D("stall", x, 220);
+      for (const [x, y] of [[250, 600], [1550, 600], [420, 880], [1380, 880], [cx, 520]]) D("cart", x, y);
+      for (const [x, y] of [[180, 420], [220, 460], [1600, 420], [1560, 460], [180, 760], [1620, 760]]) D("hay", x, y);
+      row("banner", 700, 1100, 130, 100); D("bench", 720, 760), D("bench", 1080, 760); D("planter", 160, 300), D("planter", 1640, 300);
+    } else if (gl === "volva") {
+      for (const [x, y] of [[300, 200], [1500, 200], [300, 900], [1500, 900]]) D("obelisk", x, y);
+      D("altar", cx, 210); for (let i = 0; i < 8; i++) { const a = i / 8 * 6.283; D("runestone", cx + Math.cos(a) * 240, 600 + Math.sin(a) * 200); }
+      D("pillar", 600, 330), D("pillar", 1200, 330), D("pillar", 520, 820), D("pillar", 1280, 820);
+      for (const [x, y] of [[440, 560], [1360, 560], [cx, 600], [cx - 110, 1000], [cx + 110, 1000]]) D("spiritlamp", x, y);
+    } else if (gl === "valquiria") {
+      for (const x of [400, 700, 1100, 1400]) D("pillar", x, 330), D("pillar", x, 840);
+      D("altar", cx, 200); D("statue", 450, 580), D("statue", 1350, 580);
+      for (const y of [600, 700]) D("bench", 640, y), D("bench", 1160, y);
+      row("banner", 560, 1240, 130, 120); D("planter", 180, 300), D("planter", 1620, 300), D("planter", 180, 800), D("planter", 1620, 800);
+    } else if (gl === "skald") {
+      D("tent", 320, 250); for (const [x, y] of [[1500, 250], [1545, 295], [1500, 340], [260, 800], [305, 840]]) D("crate" in $m ? "crate" : "hay", x, y);
+      D("cart", 1450, 720), D("campfire", 450, 800), D("bench", 520, 880), D("bench", 380, 880);
+      for (const [x, y] of [[cx, 300], [500, 500], [1300, 500]]) D("spiritlamp", x, y); row("runestone", 700, 1100, 640, 100); row("post", 700, 1100, 900, 100);
+    } else {
+      D("pagoda", cx, 260), D("totem", 560, 220), D("totem", 1240, 220), D("altar", cx, 480);
+      for (const [x, y] of [[360, 520], [1440, 520], [360, 820], [1440, 820]]) D("parasol", x, y);
+      row("lamp", 500, 1300, 700, 100); row("banner", 500, 1300, 120, 160); D("bench", 700, 900), D("bench", 1100, 900);
+    }
+    return { id: "casa_" + gl, name: "Casa da " + G.name, width: W, height: H, spawn: { x: cx, y: H - 250 }, safeZone: { x: 0, y: 0, w: W, h: H }, obstacles: ob, spawns: [], maxMonsters: 0, npcs: [], pois: [], portals: [{ x: cx - 60, y: H - 170, w: 120, h: 80, label: "Sair", locked: false, toMap: "__back", toSpawn: { x: 0, y: 0 } }], bossDen: { x: cx, y: 700, r: 10 }, theme: th, safeLabel: "Casa da Guilda", scars: [], mood: [1.04, 0.98, 0.9], hidden: true, city: true, indoor: true, homeCity: G.city };
+  }
+  function churchRoom() {
+    const W = 2000, H = 1500, ob = [], D = (deco, x, y, w, h, ex) => ob.push({ kind: "deco", deco, x: Math.round(x - w / 2), y: Math.round(y - h / 2), w, h, ...ex });
+    for (let k = 0; k <= 9; k++) D("vipwall", 200 + 200 * k, 55, 200, 30);
+    for (let j = 0; j <= 6; j++) D("vipwall_v", 115, 170 + 200 * j, 30, 200), D("vipwall_v", W - 115, 170 + 200 * j, 30, 200);
+    for (const cx of [200, 400, 600, 800, 1200, 1400, 1600, 1800]) D("vipwall", cx, H - 20, 200, 30);
+    D("viprug", 1000, 700, 180, 700, { walk: true }), D("viprug", 1000, 1200, 180, 500, { walk: true }), D("viprugc", 1000, 330, 300, 240, { walk: true }), D("vipportal", 1000, H - 90, 140, 140, { walk: true });
+    D("vipdais", 1000, 150, 520, 140);
+    for (const x of [420, 1580]) for (const y of [300, 520, 740, 960, 1180]) D("vipcol", x, y, 30, 30);
+    for (const y of [560, 680, 800, 920, 1040]) for (const x of [700, 1300, 540, 1460]) D("vipsofa", x, y, 120, 44);
+    D("brazier", 760, 250, 18, 18), D("brazier", 1240, 250, 18, 18), D("vipgold", 780, 115, 70, 44), D("vipgold", 1220, 115, 70, 44);
+    D("vipbar", 1640, 250, 230, 50); D("viptable", 1500, 330, 56, 56);
+    for (const [x, y] of [[190, 300], [190, 700], [190, 1100], [W - 190, 700], [W - 190, 1100], [900, 1400], [1100, 1400]]) D("vipplant", x, y, 28, 28);
+    return { id: "igreja_interna", name: "Catedral de Casamento", width: W, height: H, spawn: { x: 1000, y: 1290 }, safeZone: { x: 0, y: 0, w: W, h: H }, obstacles: ob, spawns: [], maxMonsters: 0, npcs: [{ id: "padre", x: 1000, y: 330 }, { id: "cerimonialista", x: 1500, y: 395 }], pois: [], portals: [{ x: 940, y: H - 150, w: 120, h: 80, label: "Sair", locked: false, toMap: "__back", toSpawn: { x: 0, y: 0 } }], bossDen: { x: 1000, y: 800, r: 10 }, theme: "marble", safeLabel: "Catedral", scars: [], mood: [1.06, 0.98, 0.9], hidden: true, city: true, indoor: true, homeCity: "cidade_midgard" };
+  }
 
   {
     let RL_ = [
@@ -8875,7 +8941,12 @@ Error generating stack: ` + n.message + `
   Jt.wb_cratera = wbArena();
   {
     let mg = Jt.cidade_midgard, ch = mg.obstacles.find((q) => q.kind === "deco" && q.deco === "church");
-    ch && mg.npcs.push({ id: "cerimonialista", x: Math.round(ch.x + ch.w / 2 + 70), y: Math.round(ch.y + ch.h + 70) });
+    if (ch) {
+      const pcx = Math.round(ch.x + ch.w / 2), pr = { x: pcx - 80, y: ch.y + ch.h + 6, w: 160, h: 80 };
+      mg.obstacles = mg.obstacles.filter((q) => q === ch || q.kind === "building" || !(q.x < pr.x + pr.w + 40 && q.x + q.w > pr.x - 40 && q.y < pr.y + pr.h + 40 && q.y + q.h > pr.y - 40));
+      mg.obstacles.push({ kind: "deco", deco: "vipportal", walk: true, x: pcx - 70, y: pr.y - 20, w: 140, h: 140 });
+      mg.portals.push({ ...pr, label: "Catedral de Casamento", locked: false, toMap: "igreja_interna", toSpawn: { x: 1000, y: 1290 } });
+    }
   }
   var xn = Jt.cidade_midgard;
   xn.portals[0].toSpawn = { x: 330, y: 630 };
@@ -10045,14 +10116,14 @@ Error generating stack: ` + n.message + `
       return !n || n.length === 0 ? false : (this.clearOrders(), this.path = n, this.pendingLoot = id, true);
     }
     benchAt(x, y) {
-      for (let o of this.map.obstacles) if (o.kind === "deco" && o.deco === "bench" && Math.hypot(x - (o.x + o.w / 2), y - (o.y + o.h / 2)) < 20) return o;
+      for (let o of this.map.obstacles) if (o.kind === "deco" && (o.deco === "bench" && Math.hypot(x - (o.x + o.w / 2), y - (o.y + o.h / 2)) < 20 || (o.deco === "vipsofa" || o.deco === "vipsofa_n" || o.deco === "vipchair" || o.deco === "vipbed") && x > o.x - 6 && x < o.x + o.w + 6 && y > o.y - 10 && y < o.y + o.h + 10)) return this._sitX = x, o;
       return null;
     }
     commandSit(b) {
       if (this.player.deadAt !== null) return false;
       this.sitting && (this.sitting = false);
-      let tx = b.x + b.w / 2, ty = b.y + b.h + 16, n = El(this.player.pos, { x: tx, y: ty }, this.player.radius, this.map.obstacles, this.map.width, this.map.height);
-      return !n || n.length === 0 ? false : (this.clearOrders(), this.path = n, this.pendingSit = { x: tx, y: ty, bx: b.x + b.w / 2, by: b.y + b.h / 2 }, true);
+      let sofa = b.deco !== "bench", tx = sofa ? Math.max(b.x + 24, Math.min(b.x + b.w - 24, this._sitX ?? b.x + b.w / 2)) : b.x + b.w / 2, ty = b.deco === "vipsofa_n" ? b.y - 14 : b.y + b.h + 16, n = El(this.player.pos, { x: tx, y: ty }, this.player.radius, this.map.obstacles, this.map.width, this.map.height);
+      return !n || n.length === 0 ? false : (this.clearOrders(), this.path = n, this.pendingSit = { x: tx, y: ty, bx: b.x + b.w / 2, by: b.y + b.h / 2, face: b.deco === "vipsofa" ? Math.PI / 2 : b.deco === "vipsofa_n" ? -Math.PI / 2 : -Math.PI / 2, sofa: b.deco !== "bench", dec: b.deco }, true);
     }
     pendingPoi = null;
     repathAt = 0;
@@ -10253,7 +10324,7 @@ Error generating stack: ` + n.message + `
         if (this.pendingSit) {
           let q = this.pendingSit;
           if (Math.hypot(q.x - n.pos.x, q.y - n.pos.y) <= 30 || this.path.length === 0) {
-            if (this.clearOrders(), this.time - n.lastCombatAt >= 3e3 && Math.hypot(q.x - n.pos.x, q.y - n.pos.y) <= 70) n.pos.x = q.x, n.pos.y = q.y - 4, n.facing = -Math.PI / 2, this.sitting = true, this.emit({ type: "sat" });
+            if (this.clearOrders(), this.time - n.lastCombatAt >= 3e3 && Math.hypot(q.x - n.pos.x, q.y - n.pos.y) <= 70) n.pos.x = q.x, n.pos.y = q.dec === "vipsofa" ? q.y - 22 : q.dec === "vipsofa_n" ? q.y + 22 : q.y - 4, n.facing = q.face ?? -Math.PI / 2, this.sitting = true, this.emit({ type: "sat" });
           }
         }
         if (this.pendingNpc) {
@@ -11873,6 +11944,11 @@ Error generating stack: ` + n.message + `
         this.online || (this.saveGame(), this.world = new nr(this.ps, n, void 0, d), this.dialogue = null, this.toast(n.name, "info"), this.saveGame(), this.refresh());
         return;
       }
+      if (t.toMap === "__back") {
+        let b = this.ps.pback?.[this.world.map.id], hc = this.world.map.homeCity, n = b && en(b.map) ? en(b.map) : en(hc || "cidade_midgard"), d = b && en(b.map) ? { x: b.x, y: b.y + 110 } : cityCenter(n);
+        this.online || (this.saveGame(), this.world = new nr(this.ps, n, void 0, d), this.dialogue = null, this.toast(n.name, "info"), this.saveGame(), this.refresh());
+        return;
+      }
       let a = t.requiresQuest, n = en(t.toMap);
       if (t.locked || !n || a && !this.ps.quests.done.includes(a)) {
         this.toast(`${t.label}: a passagem est\xE1 selada. Complete a quest de Eira para abri-la.`, "info");
@@ -12636,7 +12712,7 @@ Error generating stack: ` + n.message + `
           this.closeSettings();
           return;
         }
-        if (this.panel === "inventory" || this.panel === "questlog" || this.panel === "stats" || this.panel === "skills" || this.panel === "bestiary" || this.panel === "worldmap" || this.panel === "refine" || this.panel === "craft" || this.panel === "shop" || this.panel === "stylist" || this.panel === "provador" || this.panel === "party" || this.panel === "utilshop" || this.panel === "vipshop" || this.panel === "viproom" || this.panel === "airship" || this.panel === "wedding" || this.panel === "classes" || this.panel === "homun" || String(this.panel).startsWith("story:") || this.panel === "vendor" || this.panel === "cartcfg" || this.panel === "boat" || this.panel === "trade" || this.panel === "quests" || this.panel === "feitos") {
+        if (this.panel === "inventory" || this.panel === "questlog" || this.panel === "stats" || this.panel === "skills" || this.panel === "bestiary" || this.panel === "worldmap" || this.panel === "refine" || this.panel === "craft" || this.panel === "shop" || this.panel === "stylist" || this.panel === "provador" || this.panel === "party" || this.panel === "utilshop" || this.panel === "vipshop" || this.panel === "viproom" || this.panel === "airship" || this.panel === "wedding" || this.panel === "weddingshop" || this.panel === "classes" || this.panel === "homun" || String(this.panel).startsWith("story:") || this.panel === "vendor" || this.panel === "cartcfg" || this.panel === "boat" || this.panel === "trade" || this.panel === "quests" || this.panel === "feitos") {
           this.closePanel();
           return;
         }
@@ -12646,8 +12722,15 @@ Error generating stack: ` + n.message + `
     resume() {
       this.panel = "none", this.refresh();
     }
+    curarAgora() {
+      let ps = this.ps, w = this.world, now = Date.now(), dd = Ua(ps);
+      ps.hp = dd.maxHp, ps.mp = dd.maxMp, ps.curaAt = now, ps.blessUntil = now + 6e5;
+      w && (w.player.buffs = w.player.buffs.filter((b) => b.id !== "agilidade"), w.player.buffs.push({ id: "agilidade", spd: 0.5, until: w.time + 6e5 }), w.emit({ type: "fx", kind: "buff", x: w.player.pos.x, y: w.player.pos.y, angle: 0, range: 60, arc: 360, magic: true, fromPlayer: true, light: 16774336 }));
+      this.toast("Curado e aben\u00E7oado: Ben\u00E7\u00E3o e Agilidade por 10 minutos.", "good"), this.saveGameQuiet(), this.refresh();
+    }
     openDialogue(t) {
       if (!this.ps) return;
+      if (t === "curandeira") return this.curarAgora();
       let a = Pp(t, this.ps);
       a && (this.dialogue = { ...a, lineIndex: 0 }, this.world?.clearOrders?.(), this.world?.setMove(0, 0), this.world?.setAttackHeld(false), this.refresh());
     }
@@ -14425,7 +14508,9 @@ Error generating stack: ` + n.message + `
     }
     start(t, a) {
       if (a.mapId === "cidade_isenborg") return this.xmas(t, a);
-      let n = Xv[a.mapId === "lim_deserto" || a.mapId === "cidade_eldvik" ? "lonely" : a.mapId === "sala_vip" ? "lounge" : a.theme ?? "grass"] ?? Xv.grass, o = tk(a.mapId), r = Oe(o), i = 45 + o % 8, s = n.bpm * (a.night ? 0.86 : 1) * (a.city ? 1.04 : 1) * (a.boss ? 1.12 : 1), l = 60 / s, c = l * 4, d = a.hidden && n.mode === kn.ionian ? kn.dorian : n.mode, f = n.progs[o % n.progs.length], u = a.city ? n.lead === "bell" ? "bell" : o % 2 ? "harp" : "flute" : n.lead, m = n.density * (a.night ? 0.62 : 1) * (a.city ? 1.1 : 1), p = Array.from({ length: 5 }, () => Math.floor(r() * 5) - 1 + (r() < 0.3 ? 2 : 0)), h = [0, 1, 1.5, 2, 2.5, 3, 3.5].filter(() => r() < 0.62 + m * 0.2), x = t.createGain();
+      const CM = CMUS[a.mapId];
+      let n = Xv[a.mapId === "lim_deserto" || a.mapId === "cidade_eldvik" ? "lonely" : a.mapId === "sala_vip" ? "lounge" : a.theme ?? "grass"] ?? Xv.grass; CM && (n = { ...n, ...CM });
+      let o = tk(a.mapId), r = Oe(o), i = CM?.root ?? 45 + o % 8, s = n.bpm * (a.night ? 0.86 : 1) * (a.city ? 1.04 : 1) * (a.boss ? 1.12 : 1), l = 60 / s, c = l * 4, d = a.hidden && n.mode === kn.ionian ? kn.dorian : n.mode, f = n.progs[o % n.progs.length], u = CM?.lead ?? (a.city ? n.lead === "bell" ? "bell" : o % 2 ? "harp" : "flute" : n.lead), m = n.density * (a.night ? 0.62 : 1) * (a.city ? 1.1 : 1), p = Array.from({ length: 5 }, () => Math.floor(r() * 5) - 1 + (r() < 0.3 ? 2 : 0)), h = [0, 1, 1.5, 2, 2.5, 3, 3.5].filter(() => r() < 0.62 + m * 0.2), x = t.createGain();
       x.gain.value = 0, x.connect(this.master);
       let b = t.createGain();
       b.gain.value = a.night ? 0.85 : 0.6, x.connect(b), b.connect(this.verb), x.gain.setTargetAtTime(1, t.currentTime, 1.6);
@@ -14496,6 +14581,18 @@ Error generating stack: ` + n.message + `
         }
       } };
     }
+  };
+  var CMUS = {
+    cidade_midgard: { mode: kn.ionian, bpm: 66, lead: "harp", root: 48, progs: [[0, 4, 5, 3], [0, 3, 4, 0]], density: 0.7 },
+    cidade_ravnhaven: { mode: kn.dorian, bpm: 74, lead: "flute", root: 50, progs: [[0, 6, 3, 4], [0, 3, 6, 4]], density: 0.75 },
+    cidade_eldvik: { mode: kn.phrygian, bpm: 58, lead: "flute", root: 46, progs: [[0, 1, 0, 6], [0, 6, 1, 0]], density: 0.6, drone: true },
+    cidade_kharnheim: { mode: kn.aeolian, bpm: 86, lead: "bell", root: 43, progs: [[0, 5, 6, 4], [0, 0, 6, 5]], density: 0.8, anvil: true },
+    cidade_freyrhain: { mode: kn.pentMaj, bpm: 76, lead: "harp", root: 52, progs: [[0, 2, 3, 4], [0, 4, 2, 3]], density: 0.8 },
+    cidade_gladsheim: { mode: kn.lydian, bpm: 60, lead: "bell", root: 53, progs: [[0, 1, 4, 5], [0, 4, 1, 3]], density: 0.55, drone: true },
+    cidade_skogvik: { mode: kn.pentMin, bpm: 70, lead: "flute", root: 49, progs: [[0, 3, 2, 4], [0, 2, 3, 1]], density: 0.7 },
+    cidade_handelsvik: { mode: kn.ionian, bpm: 94, lead: "harp", root: 47, progs: [[0, 3, 4, 3], [0, 4, 3, 0]], density: 0.95 },
+    cidade_solvik: { mode: kn.lydian, bpm: 82, lead: "flute", root: 51, progs: [[0, 4, 1, 4], [0, 1, 4, 5]], density: 0.9 },
+    cidade_helvik: { mode: kn.aeolian, bpm: 50, lead: "bell", root: 41, progs: [[0, 5, 3, 6], [0, 6, 5, 4]], density: 0.45, drone: true }
   };
   var ak = [920072, 1774608, 2759962, 1454108, 2050602, 2976564, 4164156, 5941322, 8177242, 10935672, 13495962, 1454671, 2051962, 3111088, 5152984, 8833262, 13035256, 15398655, 2364943, 3876120, 5913122, 8147504, 10513470, 12880466, 14724466, 6037276, 9187111, 12076079, 14248511, 15635552, 2303534, 4080462, 6252146, 8686744, 11186877, 13818079, 15856630, 9073746, 12098670, 13940872, 15258788, 16181444, 9063994, 12087372, 13930088, 15775888, 16570548, 2043750, 3099290, 4877512, 8034532, 2890314, 4861818, 8016568, 11045600, 13679348, 7214624, 11020848, 14174282, 15761528, 9071130, 12884522, 15254090, 16442512, 12077162, 15239336, 12869658, 15765552, 16564320, 16777215, 14674680, 10467548], Kp = ak.map((e) => [e >> 16 & 255, e >> 8 & 255, e & 255]);
   function nk(e, t, a) {
@@ -16203,9 +16300,98 @@ void main() {
     });
     return n;
   }
+  function ghBuild(n, k, o, r, a) {
+    const GL = { shine: 0.5, glow: 0.9 }, DK = 1710626, tri = (p, q, w, c) => Ne(n, [p, q, w, p], c, { mat: Re }),
+      gable = (W, D, y, H, c) => { const b = W / 2, g = D / 2; tri([-b, y, g], [b, y, g], [b, y + H, 0], c), tri([-b, y, g], [b, y + H, 0], [-b, y + H, 0], c), tri([b, y, -g], [-b, y, -g], [-b, y + H, 0], Y(c, 0.8)), tri([b, y, -g], [-b, y + H, 0], [b, y + H, 0], Y(c, 0.8)), tri([b, y, g], [b, y, -g], [b, y + H, 0], Y(c, 0.9)), tri([-b, y, -g], [-b, y, g], [-b, y + H, 0], Y(c, 0.9)); },
+      door = (w, h, glow, z = 35.6) => { O(n, S(0, h / 2 + 2, z), w + 4, h + 3, 1.2, DK), O(n, S(0, h / 2 + 2, z + .5), w, h, 1.2, glow, GL); };
+    switch (k) {
+      case "cacador": {
+        const wd = Y(r, 1.05), gr = 3827258;
+        O(n, S(0, 2, 0), 130, 4, 88, Y(o, 0.8), Q), O(n, S(0, 20, 0), 108, 32, 68, wd, Q);
+        for (let i = 0; i < 6; i++) O(n, S(0, 7 + i * 6, 34.6), 110, 2, 1.6, Y(wd, 0.8)), O(n, S(54.6, 7 + i * 6, 0), 1.6, 2, 70, Y(wd, 0.8));
+        gable(122, 84, 36, 30, gr), O(n, S(0, 67, 0), 124, 2.5, 3, Y(gr, 0.7));
+        door(18, 24, 16757850);
+        for (const sg of [-1, 1]) { F(n, S(sg * 8, 46, 36).mul(A.RZ(-sg * 0.7)), 1.6, 0.4, 16, 15129796, { seg: 5 }); F(n, S(sg * 13, 52, 36).mul(A.RZ(-sg * 0.3)), 1.2, 0.3, 9, 15129796, { seg: 5 }); }
+        O(n, S(0, 42, 36), 10, 8, 2, Y(wd, 0.8)), L(n, S(0, 48, 36.5), 5, 5, 2, 15129796, { seg: 8, ring: 5 });
+        for (const sg of [-1, 1]) { O(n, S(sg * 70, 16, 18), 2, 28, 2, Y(wd, 0.8)); F(n, S(sg * 72, 18, 20).mul(A.RX(Math.PI / 2)), 11, 11, 2, 15129796, { seg: 14 }); F(n, S(sg * 72, 18, 21.2).mul(A.RX(Math.PI / 2)), 7.5, 7.5, 1, 13840452, { seg: 14 }); F(n, S(sg * 72, 18, 22).mul(A.RX(Math.PI / 2)), 3.5, 3.5, 1, 16766000, { seg: 10 }); }
+        for (const [x, z, h] of [[-72, -26, 40], [-80, -8, 30], [72, -30, 36], [80, -10, 28]]) F(n, S(x, 0, z), 11, 0, h, 2970690, { seg: 8 }), F(n, S(x, 8, z), 8, 0, h * .7, 3827258, { seg: 8 });
+        for (let i = 0; i < 4; i++) F(n, S(-44 + i * 7, 3 + (i % 2) * 6, 46).mul(A.RZ(Math.PI / 2)), 3, 3, 18, Y(wd, 0.85), { seg: 8 });
+        F(n, S(40, 36, -20), 8, 8, 26, Y(o, 0.9), { seg: 6, mat: Q }), O(n, S(0, 68, 0), 2, 8, 2, DK), O(n, S(5, 70, 0), 10, 6, 1, 3827258);
+        return n;
+      }
+      case "berserker": {
+        const rd = 10494000;
+        O(n, S(0, 2, 0), 136, 4, 92, Y(o, 0.75), Q), O(n, S(0, 28, 0), 112, 52, 70, o, Q);
+        for (let u = -54; u <= 54; u += 12) O(n, S(u, 56, 36), 7, 8, 4, Y(o, 1.05), Q), O(n, S(u, 56, -36), 7, 8, 4, Y(o, 1.05), Q);
+        for (let u = -30; u <= 30; u += 12) O(n, S(-56, 56, u), 4, 8, 7, Y(o, 1.05), Q), O(n, S(56, 56, u), 4, 8, 7, Y(o, 1.05), Q);
+        gable(100, 56, 58, 24, rd), O(n, S(0, 84, 0), 102, 3, 4, Y(rd, 0.7));
+        O(n, S(0, 20, 36.6), 28, 40, 2, DK), O(n, S(0, 26, 37.5), 20, 30, 1, 5056544), O(n, S(0, 44, 37.8), 28, 6, 1.4, Y(o, 0.85), Q);
+        for (const sg of [-1, 1]) { O(n, S(sg * 22, 36, 37), 8, 40, 1, 12597547); O(n, S(sg * 22, 14, 37.2), 6, 3, 1, 16766000); F(n, S(sg * 44, 28, 40).mul(A.RX(Math.PI / 2)), 9, 9, 2, 13553358, { seg: 16, mat: Ve }); F(n, S(sg * 44, 28, 41.2).mul(A.RX(Math.PI / 2)), 5, 5, 1, 12597547, { seg: 14 }); }
+        for (const sg of [-1, 1]) { O(n, S(sg * 15, 66, 40), 2.4, 30, 1.2, 15129796, Ve); O(n, S(sg * 15, 56, 40), 10, 2.6, 1.4, 16766000, Ve); O(n, S(sg * 15 * -1 + sg * 0, 66, 40.6), 2.4, 30, 1.2, 15129796, Ve); }
+        for (const [x, z] of [[-66, 40], [66, 40], [-66, -40], [66, -40]]) F(n, S(x, 0, z), 14, 12, 46, Y(o, 1.03), { seg: 12, mat: Q }), F(n, S(x, 46, z), 16, 0, 22, rd, { seg: 12, mat: Re });
+        for (const x of [-30, 30]) F(n, S(x, 4, 52), 4, 3, 14, Y(o, 0.9), { seg: 8, mat: Q }), L(n, S(x, 20, 52), 4, 5, 4, 16747050, { seg: 8, ring: 5, mat: GL });
+        return n;
+      }
+      case "escudeiro": {
+        const wd = Y(r, 1.1), aw = [13840452, 15855615];
+        O(n, S(0, 2, 0), 138, 4, 92, Y(o, 0.8), Q), O(n, S(0, 24, -6), 112, 42, 62, wd, Q), O(n, S(0, 62, -10), 90, 34, 52, Y(wd, 1.08), Q);
+        gable(116, 70, 46, 14, 7090740), gable(96, 58, 79, 22, 7090740), O(n, S(34, 100, -14), 9, 24, 9, Y(o, 0.9), Q);
+        O(n, S(0, 20, 26.6), 30, 32, 1.6, DK), O(n, S(0, 18, 27.5), 24, 26, 1, 16757850, GL);
+        for (let i = 0; i < 8; i++) O(n, S(-56 + i * 16 + 8, 44, 39), 15, 3, 18, aw[i % 2]), O(n, S(-56 + i * 16 + 8, 40, 48), 15, 3, 4, aw[i % 2]);
+        for (const sg of [-1, 1]) { O(n, S(sg * 62, 16, 36), 18, 18, 18, Y(wd, 0.95)), O(n, S(sg * 62, 32, 36), 14, 14, 14, Y(wd, 1.1)), F(n, S(sg * 66, 0, 54), 8, 8, 14, Y(r, 0.8), { seg: 10 }), O(n, S(sg * 52, 8, 52), 12, 12, 12, Y(wd, 0.9)); }
+        O(n, S(0, 72, 30), 2, 20, 1.6, a.gold, Ve), O(n, S(0, 82, 30), 24, 2, 1.6, a.gold, Ve); for (const sg of [-1, 1]) F(n, S(sg * 11, 72, 30), 5, 5, 1.4, a.gold, { seg: 10, mat: Ve });
+        L(n, S(-30, 58, 31), 6, 4, 6, 13840452, { seg: 10, ring: 5 }), L(n, S(26, 56, 31), 5, 5, 5, 3838618, { seg: 10, ring: 5 });
+        return n;
+      }
+      case "volva": {
+        const pu = 5260693, cr = 11364095;
+        F(n, S(0, 0, 0), 46, 46, 5, Y(o, 0.8), { seg: 18, mat: Q }), F(n, S(0, 5, 0), 36, 30, 90, Y(pu, 1.15), { seg: 14, mat: Q }), F(n, S(0, 95, 0), 40, 40, 5, Y(o, 0.9), { seg: 14, mat: Q }), F(n, S(0, 100, 0), 42, 0, 54, 3355712, { seg: 14, mat: Re });
+        F(n, S(0, 5, 0), 30, 26, 0.6, 0, { seg: 14 }); for (let i = 0; i < 5; i++) O(n, S(0, 22 + i * 16, 0), 74 - i * 4, 2, 74 - i * 4, Y(o, 0.9), Q);
+        for (let i = 0; i < 6; i++) { const g = i / 6 * 6.283; O(n, S(Math.cos(g) * 31, 52, Math.sin(g) * 31), 2.5, 7, 2.5, cr, GL); }
+        O(n, S(0, 14, 31), 14, 24, 1.6, DK), O(n, S(0, 14, 31.6), 10, 20, 1, 11364095, GL);
+        L(n, S(0, 140, 0), 7, 10, 7, cr, { seg: 10, ring: 6, mat: GL }); for (const sg of [-1, 1]) { L(n, S(sg * 54, 40, 8), 4, 9, 4, cr, { seg: 8, ring: 5, mat: GL }); O(n, S(sg * 54, 12, 8), 7, 18, 7, Y(o, 0.9), Q); O(n, S(sg * 66, 10, -14), 9, 14, 9, Y(o, 0.8), Q); }
+        for (let i = 0; i < 8; i++) { const g = i / 8 * 6.283 + 0.3; F(n, S(Math.cos(g) * 60, 0, Math.sin(g) * 40), 3, 2, 10 + (i % 3) * 5, Y(o, 1.1), { seg: 5, mat: Q }); }
+        return n;
+      }
+      case "valquiria": {
+        const wh = 15855615, gd = a.gold;
+        O(n, S(0, 2, 6), 136, 4, 80, Y(o, 1.05), Q), O(n, S(0, 24, 0), 100, 40, 56, wh, Q);
+        for (const x of [-46, -30, -14, 14, 30, 46]) F(n, S(x, 4, 40), 4, 3.4, 44, wh, { seg: 10, mat: Q }), O(n, S(x, 49, 40), 9, 3, 9, Y(wh, 0.9), Q);
+        O(n, S(0, 52, 40), 108, 4, 12, Y(wh, 0.95), Q), gable(116, 20, 54, 12, Y(wh, 0.85)), O(n, S(0, 62, 40), 8, 8, 4, gd, Ve);
+        F(n, S(0, 44, -4), 36, 34, 6, wh, { seg: 16, mat: Q }), L(n, S(0, 54, -4), 30, 24, 30, gd, { seg: 16, ring: 8, mat: Ve }), F(n, S(0, 78, -4), 1.2, 1.2, 14, gd, { seg: 5 }), O(n, S(0, 90, -4), 7, 2, 1.4, gd, Ve);
+        O(n, S(0, 18, 28.6), 16, 30, 1.4, DK), O(n, S(0, 18, 29.2), 12, 26, 1, 16774336, GL);
+        for (const sg of [-1, 1]) { F(n, S(sg * 64, 4, 14), 8, 6, 52, wh, { seg: 10, mat: Q }), L(n, S(sg * 64, 62, 14), 8, 10, 8, gd, { seg: 10, ring: 6, mat: Ve }); O(n, S(sg * 30, 30, 28.6), 8, 16, 1, 16774336, GL); }
+        for (const sg of [-1, 1]) { F(n, S(sg * 24, 56, 41).mul(A.RZ(-sg * 1.0)), 2.4, 0.4, 20, 16774336, { seg: 5, mat: GL }); F(n, S(sg * 30, 52, 41).mul(A.RZ(-sg * 1.25)), 2, 0.4, 16, 16774336, { seg: 5, mat: GL }); }
+        return n;
+      }
+      case "skald": {
+        const dk = 3811914, wd = Y(r, 0.7);
+        O(n, S(0, 2, 0), 128, 4, 84, Y(o, 0.6), Q), O(n, S(-8, 20, 0), 96, 32, 62, Y(wd, 0.9), Q), O(n, S(36, 40, -6), 40, 40, 44, Y(wd, 0.78), Q);
+        Ne(n, [[-58, 36, 34], [34, 36, 34], [-8, 56, 0], [-58, 36, 34]], 2105376, { mat: Re }), Ne(n, [[34, 36, 34], [-58, 36, -34], [-8, 56, 0], [34, 36, 34]], 2763306, { mat: Re }), Ne(n, [[-58, 36, -34], [34, 36, -34], [-8, 56, 0], [-58, 36, -34]], 2105376, { mat: Re }), Ne(n, [[34, 36, -34], [34, 36, 34], [-8, 56, 0], [34, 36, -34]], 2763306, { mat: Re }), Ne(n, [[-58, 36, 34], [-58, 36, -34], [-8, 56, 0], [-58, 36, 34]], 2763306, { mat: Re });
+        F(n, S(36, 60, -6).mul(A.RZ(0.12)), 28, 0, 40, 2105376, { seg: 5, mat: Re }), F(n, S(-30, 52, -18), 5, 4, 24, Y(o, 0.7), { seg: 6, mat: Q });
+        O(n, S(-8, 14, 31.6), 14, 24, 1.4, DK), L(n, S(36, 36, 17), 6, 6, 1.6, 16762992, { seg: 10, ring: 5, mat: GL }), O(n, S(-8, 16, 32.2), 1.2, 20, 1, 8978312, GL);
+        F(n, S(-30, 40, 34), 1.2, 1.2, 12, 4864046, { seg: 4 }), L(n, S(-30, 30, 34), 3.4, 4, 3.4, 16762992, { seg: 8, ring: 5, mat: GL }); L(n, S(6, 30, 36), 6, 7, 2, 15855615, { seg: 10, ring: 6 }); O(n, S(3, 30, 37.2), 2, 3, .6, DK), O(n, S(9, 30, 37.2), 2, 3, .6, DK);
+        for (const [x, z] of [[-60, 40], [58, 36], [-66, -20]]) O(n, S(x, 8, z), 14, 12, 12, Y(wd, 1.1)), O(n, S(x + 3, 18, z - 2), 10, 8, 10, Y(wd, 0.9));
+        for (const x of [-30, 20]) O(n, S(x, 44, 32), 14, 22, 1.4, 4864046), O(n, S(x, 44, 32.7), 10, 18, 1, 8978312, GL);
+        return n;
+      }
+      default: { // thay: pagode de tres andares
+        const rd = 12597547, rf = 3355712;
+        O(n, S(0, 2, 0), 130, 4, 130, Y(o, 0.85), Q), O(n, S(0, 5, 0), 108, 4, 108, Y(o, 1), Q);
+        for (let i = 0; i < 3; i++) { const w = 74 - i * 14, y = 8 + i * 34; O(n, S(0, y + 12, 0), w, 24, w, 15855615, Q); for (const [x, z] of [[-1, -1], [1, -1], [-1, 1], [1, 1]]) F(n, S(x * (w / 2 - 2), y, z * (w / 2 - 2)), 2.6, 2.6, 24, rd, { seg: 8 }); F(n, S(0, y + 24, 0).mul(A.RY(Math.PI / 4)), w * .92, w * .26, 10, rf, { seg: 4, mat: Re }); O(n, S(0, y + 12, w / 2 + .2), 12, 14, 1, 16764006, GL); }
+        F(n, S(0, 118, 0).mul(A.RY(Math.PI / 4)), 12, 0, 22, rf, { seg: 4, mat: Re }), F(n, S(0, 140, 0), 1.2, 1.2, 14, a.gold, { seg: 5 }), L(n, S(0, 152, 0), 3.4, 3.4, 3.4, a.gold, { seg: 8, ring: 5, mat: Ve });
+        O(n, S(0, 14, 38), 16, 24, 1.4, DK), O(n, S(0, 14, 38.7), 12, 20, 1, 14429954, GL);
+        for (const sg of [-1, 1]) { F(n, S(sg * 50, 4, 44), 3.4, 3, 40, rd, { seg: 8 }), O(n, S(sg * 50, 46, 44), 10, 3, 10, rd), L(n, S(sg * 50, 38, 44), 5, 6, 5, 16766000, { seg: 8, ring: 5, mat: GL }); }
+        F(n, S(-56, 18, 30).mul(A.RX(Math.PI / 2)), 11, 11, 2.4, a.gold, { seg: 18, mat: Ve }), O(n, S(-56, 34, 30), 2, 30, 2, rd), O(n, S(-56, 8, 30), 26, 2, 2, rd);
+        return n;
+      }
+    }
+  }
   function eS(e, t, vr = 0) {
     let a = ss[e], n = new ua(), o = a.stone, r = a.wood, i = e === "fire" || e === "forge" ? 16747050 : 7123168;
     switch (t) {
+      case "gh_cacador": case "gh_berserker": case "gh_escudeiro": case "gh_volva": case "gh_valquiria": case "gh_skald": case "gh_thay":
+        return ghBuild(n, t.slice(3), o, r, a);
       case "fountain":
         F(n, S(0, 0, 0), 30, 28, 10, o, { seg: 20, mat: Q }), F(n, S(0, 8, 0), 25, 25, 3, i, { seg: 20, mat: { shine: 0.9, glow: 0.2 } }), F(n, S(0, 0, 0), 5, 4, 34, o, { seg: 10 }), F(n, S(0, 30, 0), 14, 10, 4, o, { seg: 14, mat: Q }), L(n, S(0, 34, 0), 11, 1.5, 11, i, { seg: 14, ring: 4, mat: { shine: 0.9, glow: 0.2 } });
         for (let s = 0; s < 6; s++) {
@@ -16560,14 +16746,21 @@ void main() {
         return n;
       }
       case "sphinx": {
-        let Z = 1.75, sd = 14664848, nm = a.cloth[0], B = (x, y, z, w, h, d, c, m) => O(n, S(x * Z, y * Z, z * Z), w * Z, h * Z, d * Z, c, m);
-        B(0, 11, 0, 84, 22, 34, sd, Q), B(-40, 18, 0, 20, 30, 30, Y(sd, 0.92), Q), B(0, 24, 0, 86, 3, 36, Y(sd, 0.85), Q);
-        for (let z of [-11, 11]) B(42, 6, z, 40, 12, 10, Y(sd, 1.08), Q), B(62, 4, z, 8, 8, 11, Y(sd, 1.12), Q);
-        B(30, 34, 0, 20, 22, 22, sd, Q), L(n, S(32 * Z, 56 * Z, 0), 11 * Z, 13 * Z, 10.5 * Z, Y(sd, 1.08), { seg: 14, ring: 9, mat: Q });
-        B(30, 56, 0, 27, 26, 7, nm, Re), B(26, 44, 0, 16, 34, 28, nm, Re), B(32, 66, 0, 24, 3, 24, a.gold, Ve);
-        for (let z of [-4.6, 4.6]) B(43, 58, z, 1.4, 2, 1.8, 1710626);
-        B(44, 49, 0, 3, 3.6, 5, Y(sd, 0.85));
-        F(n, S(-18 * Z, 22 * Z, 0).mul(A.RZ(-0.2)), 3 * Z, 2.4 * Z, 20 * Z, a.gold, { seg: 6, mat: Ve });
+        let Z = 2.1, sd = 14664848, B = (x, y, z, w, h, d, c, m) => O(n, S(x * Z, y * Z, z * Z), w * Z, h * Z, d * Z, c, m || Q);
+        B(0, 2, 0, 118, 4, 66, Y(sd, 0.78)), B(0, 6, 0, 108, 4, 56, Y(sd, 0.86)), B(-8, 10, 0, 100, 4, 46, Y(sd, 0.94));
+        L(n, S(-30 * Z, 24 * Z, 0), 17 * Z, 15 * Z, 19 * Z, Y(sd, 0.97), { seg: 14, ring: 9, mat: Q });
+        B(-2, 22, 0, 52, 22, 32, sd), B(16, 26, 0, 24, 26, 28, Y(sd, 1.03));
+        for (let z of [-11, 11]) { B(38, 13, z, 46, 11, 9, Y(sd, 1.06)); B(62, 12, z, 12, 9, 10, Y(sd, 1.12)); for (let t of [-3, 0, 3]) B(68, 13, z + t, 2, 6, 1, Y(sd, 0.7)); B(14, 17, z * 1.3, 14, 14, 6, Y(sd, 0.9)); }
+        B(30, 42, 0, 17, 18, 18, sd), B(31, 50, 0, 20, 8, 20, Y(sd, 0.95));
+        for (let i2 = 0; i2 < 5; i2++) B(31, 52 + i2 * 4.6, 0, 27 - i2 * .4, 3, 25 - i2 * .3, Y(sd, i2 % 2 ? 0.8 : 1.12));
+        for (let z of [-14, 14]) B(29, 46, z, 9, 30, 6, Y(sd, 0.88)), B(29, 31, z, 7, 5, 6, Y(sd, 1.06));
+        L(n, S(37 * Z, 55 * Z, 0), 7.5 * Z, 9.5 * Z, 8 * Z, Y(sd, 1.14), { seg: 14, ring: 9, mat: Q });
+        for (let z of [-3.6, 3.6]) B(43.4, 57, z, 1.6, 2, 3.4, Y(sd, 0.5)), B(43, 59.5, z, 1.6, 1, 4, Y(sd, 0.68));
+        B(43, 53, 0, 2.4, 4, 3, Y(sd, 0.92)), B(42.6, 48.5, 0, 1.8, 2, 7, Y(sd, 0.6)), B(41, 40, 0, 5, 12, 5, Y(sd, 0.88)), B(31, 71, 0, 4, 8, 4, Y(sd, 1.2));
+        B(14, 64, 0, 6, 3, 12, Y(sd, 0.9));
+        F(n, S(-44 * Z, 20 * Z, 0).mul(A.RZ(0.5)), 2.6 * Z, 2 * Z, 22 * Z, Y(sd, 0.96), { seg: 8, mat: Q });
+        for (let z of [-33, 33]) { B(30, 9, z, 8, 14, 4, Y(sd, 0.82)), B(30, 18, z, 10, 2, 5, Y(sd, 1.15)); }
+        for (let k = 0; k < 4; k++) B(-14 + k * 14, 28, -16.4, 8, 12, 1, Y(sd, 0.62)), B(-14 + k * 14, 28, 16.4, 8, 12, 1, Y(sd, 0.62));
         return n;
       }
       case "arena": {
@@ -17018,7 +17211,7 @@ void main() {
       RQ.push({ id: "vx_" + c.id, kind: "look", name: w.name, desc: "", need: big ? [[a, 6 + r * 2], [b2, 3 + r], [MT[3][k % 5], 1 + (r > 2 ? 1 : 0)]] : [[a, 8 + r * 6], [b2, 4 + r * 4]], reward: iid }); } }
 var QCACHE = /* @__PURE__ */ new Map();
 function ROXQM(f, c, s, l, def, ex) {
-  if (!["wolf", "frostwolf", "hati", "boar", "horse", "yeti", "blob", "goblin", "draugr", "cinder", "automaton", "sylvan", "prism", "sentinel", "voidling", "jotun", "grifo", "corvo"].includes(f) || typeof ROX === "undefined" || typeof location < "u" && /[?&]old\b/.test(location.search)) return null;
+  if (!["wolf", "frostwolf", "hati", "boar", "horse", "cao", "gato", "raposa", "coelho", "yeti", "blob", "goblin", "draugr", "cinder", "automaton", "sylvan", "prism", "sentinel", "voidling", "jotun", "grifo", "corvo"].includes(f) || typeof ROX === "undefined" || typeof location < "u" && /[?&]old\b/.test(location.search)) return null;
   if (typeof ROX2M !== "undefined" && !(typeof location < "u" && /[?&]old2\b/.test(location.search))) { try { const r2 = ROX2M.mon(f, c, s, l, def, ex); if (r2) return r2; } catch (err) { if (!window.__rox2merr) { window.__rox2merr = 1; console.warn("ROX2M", err); } } }
   let key = `${f}:${def.id}:${c}:${s}:${l}`, h = QCACHE.get(key);
   if (h) return h;
@@ -17352,16 +17545,18 @@ function ROXQM(f, c, s, l, def, ex) {
       cv[id] = { id, name: st.name, title: st.title, color: st.color, blocks: [{ lines: st.intro, action: { type: "panel", panel: "story:" + id, label: "Ouvir a história" } }] };
       I0[id] = st.look;
       const m = Jt[st.city]; if (!m) continue;
-      const an = m.npcs.find((q) => q.id === "arauto") || m.npcs[0] || { x: m.width / 2, y: m.height / 2 };
-      let best = null;
-      outer: for (let r = 260; r <= 1100; r += 70) for (let k = 0; k < 18; k++) {
-        const ag = k / 18 * 6.283 + r, x = Math.round(an.x + Math.cos(ag) * r), y = Math.round(an.y + Math.sin(ag) * r * 0.7);
-        if (x < 420 || y < 420 || x > m.width - 420 || y > m.height - 420) continue;
+      const hs = [...id].reduce((q, ch) => q * 31 + ch.charCodeAt(0) >>> 0, 7) + Math.floor(Date.now() / 864e5) * 7919, rr = Oe(hs), cxm = m.width / 2, cym = m.height / 2;
+      let best = null, fb = null;
+      for (let tr = 0; tr < 1500 && !best; tr++) {
+        const x = Math.round(420 + rr() * (m.width - 840)), y = Math.round(420 + rr() * (m.height - 840));
+        if (Math.hypot((x - cxm) / m.width, (y - cym) / m.height) < 0.22) continue;
         if (m.obstacles.some((o) => x > o.x - 34 && x < o.x + o.w + 34 && y > o.y - 34 && y < o.y + o.h + 34)) continue;
-        if (m.npcs.some((q) => Math.hypot(q.x - x, q.y - y) < 120)) continue;
-        if (m.portals.some((q) => x > q.x - 80 && x < q.x + q.w + 80 && y > q.y - 80 && y < q.y + q.h + 80)) continue;
-        best = { x, y }; break outer;
+        if (m.npcs.some((q) => Math.hypot(q.x - x, q.y - y) < 260)) continue;
+        if (m.portals.some((q) => x > q.x - 120 && x < q.x + q.w + 120 && y > q.y - 120 && y < q.y + q.h + 120)) continue;
+        const hid = m.obstacles.some((o) => o.kind !== "deco" || o.w >= 30 ? x > o.x - 90 && x < o.x + o.w + 90 && y > o.y - 90 && y < o.y + o.h + 90 : false);
+        if (hid) best = { x, y }; else fb || (fb = { x, y });
       }
+      best = best || fb;
       best && m.npcs.push({ id, ...best });
     }
     const placeNear = (m, id, tx, ty, r0) => {
@@ -17391,6 +17586,30 @@ function ROXQM(f, c, s, l, def, ex) {
       const m = Jt[G.city]; if (!m) continue;
       const an = m.npcs.find((q) => q.id === "arauto") || { x: m.width / 2, y: m.height / 2 };
       placeNear(m, id, an.x - 380, an.y + 150, 120);
+    }
+    for (const gl of Object.keys(GUILDS)) Jt["casa_" + gl] = classRoom(gl);
+    Jt.igreja_interna = churchRoom();
+    cv.padre = { id: "padre", name: "Padre Halvard", title: "Sacerdote de Frigg", color: 16764108, blocks: [{ lines: ["Sob a luz dos vitrais, um velho sacerdote de t\u00FAnica branca e dourada sorri com ternura.", "\u2014 Que Frigg aben\u00E7oe o v\u00EDnculo. Para casar, ambos precisam ser n\u00EDvel 99, ter uma Alian\u00E7a de Ouro e estar aqui juntos."], action: { type: "panel", panel: "wedding", label: "Cerim\u00F4nia" } }] };
+    I0.padre = { skin: 15780008, hair: 15790320, hairStyle: "short", tunic: 16316664, trim: 15254090, pants: 14210000, boots: 11574400, gear: "staff", head: "none", cape: 16316664 };
+    cv.cerimonialista = { id: "cerimonialista", name: "Irm\u00E3 Eldrid", title: "Loja da Catedral", color: 16764108, blocks: [{ lines: ["Alian\u00E7as, vestidos, smokings e buqu\u00EAs: tudo aben\u00E7oado e pronto para o grande dia.", "Compro e vendo o necess\u00E1rio para a cerim\u00F4nia."], action: { type: "panel", panel: "weddingshop", label: "Loja da Catedral" } }] };
+    for (const [gl, G] of Object.entries(GUILDS)) {
+      const m = Jt[G.city]; if (!m) continue;
+      const mst = m.npcs.find((q) => q.id === "guilda_" + gl); if (!mst) continue;
+      const d = $m["gh_" + gl], hw = d.w, hh = d.h; let ok = false;
+      for (let pass = 0; pass < 3 && !ok; pass++) for (let r = 160; r <= 2600 && !ok; r += 50) for (let k = 0; k < 24 && !ok; k++) {
+        const mg = [40, 14, 0][pass], bd = [300, 200, 120][pass];
+        const ag = k / 24 * 6.283 + r * 0.01, cx = Math.round(mst.x + Math.cos(ag) * r), cy = Math.round(mst.y + Math.sin(ag) * r * 0.7);
+        const hr = { x: cx - hw / 2 - mg, y: cy - hh / 2 - mg, w: hw + mg * 2, h: hh + mg * 2 + 130 };
+        if (hr.x < bd || hr.y < bd || hr.x + hr.w > m.width - bd || hr.y + hr.h > m.height - bd) continue;
+        const hit = (q) => q.x < hr.x + hr.w && q.x + q.w > hr.x && q.y < hr.y + hr.h && q.y + q.h > hr.y;
+        if (m.obstacles.some(hit) || m.portals.some(hit) || m.npcs.some((q) => q.x > hr.x - 60 && q.x < hr.x + hr.w + 60 && q.y > hr.y - 60 && q.y < hr.y + hr.h + 60)) continue;
+        if (m.safeZone && m.safeZone.w && !(cx > m.safeZone.x && cx < m.safeZone.x + m.safeZone.w && cy > m.safeZone.y && cy < m.safeZone.y + m.safeZone.h)) { }
+        const py = cy + hh / 2 + 24;
+        m.obstacles.push({ kind: "deco", deco: "gh_" + gl, x: Math.round(cx - hw / 2), y: Math.round(cy - hh / 2), w: hw, h: hh });
+        m.obstacles.push({ kind: "deco", deco: "vipportal", walk: true, x: cx - 70, y: py - 40, w: 140, h: 140 });
+        m.portals.push({ x: cx - 60, y: py, w: 120, h: 80, label: "Casa da " + G.name.replace("Guilda dos ", "Guilda dos "), locked: false, toMap: "casa_" + gl, toSpawn: { x: 900, y: 1050 } });
+        ok = true;
+      }
     }
   }
   if (typeof window < "u") {
@@ -18623,7 +18842,7 @@ function ROXQM(f, c, s, l, def, ex) {
         let H = ce(q.x, q.y);
         M(H.x, H.y) && (z.add(`o${q.id}`), T.push({ depth: Ja(q.x, q.y), draw: () => this.drawOther(q, t) }));
       }
-      for (let q of n.critters ?? []) { let H = ce(q.x, q.y); M(H.x, H.y) && T.push({ depth: Ja(q.x, q.y), draw: () => this.drawCritter(q) }); }
+      for (let q of n.critters ?? []) { this.stepCritter(q); let H = ce(q.x, q.y); M(H.x, H.y) && T.push({ depth: Ja(q.x, q.y), draw: () => this.drawCritter(q) }); }
       T.push({ depth: m, draw: () => this.drawPlayer(t) }), a.mvpUntil > a.time && T.push({ depth: m + 4e3, draw: () => this.drawMvpPlate(a.player.pos, a.mvpUntil - a.time) }), a.ps.cart?.on && a.ps.line === "escudeiro" ? T.push({ depth: this._cart ? Ja(this._cart.x, this._cart.y) : m + 1, draw: () => this.drawCart() }) : this._cart = null, a.ps.vend?.open && T.push({ depth: m + 3, draw: () => this.drawVend() }), a.ps.baby && T.push({ depth: this._bb ? Ja(this._bb.x, this._bb.y) : m + 1, draw: () => this.drawBaby() }), falconOk(a.ps) && T.push({ depth: m + 40, draw: () => this.drawFalcon() }), homunOk(a.ps) && a.ps.homun.on ? T.push({ depth: this._hm ? Ja(this._hm.x, this._hm.y) : m + 1, draw: () => this.drawHomun() }) : this._hm = null, a.ps.pet && a.ps.petData && T.push({ depth: this._pet ? Ja(this._pet.x, this._pet.y) : m + 1, draw: () => this.drawPet() }), this.store.fx && Date.now() - this.store.fx.t0 < 3800 && T.push({ depth: m + 9, draw: () => this.drawBlessing(a.player.pos) });
       if (n.obstacles.some((q) => q.deco === "airship")) {
         let A2 = this.air;
@@ -18833,7 +19052,7 @@ function ROXQM(f, c, s, l, def, ex) {
         let f = Gu(this.camX + l, this.camY + c), u = o + f.x * i, m = r + f.y * s;
         d === 0 ? n.moveTo(u, m) : n.lineTo(u, m);
       }), n.closePath(), n.stroke();
-      const NR = { falcoeiro: ["A", "#d8a060", "Falcoeiro"], guilda_cacador: ["G", "#ffd34d", "Guilda"], guilda_berserker: ["G", "#ffd34d", "Guilda"], guilda_escudeiro: ["G", "#ffd34d", "Guilda"], guilda_volva: ["G", "#ffd34d", "Guilda"], guilda_valquiria: ["G", "#ffd34d", "Guilda"], guilda_skald: ["G", "#ffd34d", "Guilda"], guilda_thay: ["G", "#ffd34d", "Guilda"], solveig: ["\u2709", "#e0b8d0", "Hist\u00F3ria"], eirik: ["\u2693", "#9ac8ff", "Hist\u00F3ria"], torgrim: ["\u266A", "#d8c090", "Hist\u00F3ria"], ragnvald: ["\u2620", "#b8b8b8", "Hist\u00F3ria"], hulda: ["\u2620", "#b8b8b8", "Hist\u00F3ria"], cerimonialista: ["\u2665", "#ff9ac0", "Capela"], barqueiro: ["\u2693", "#5ac8ff", "Barqueiro"], aeronave: ["\u2708", "#9ad0ff", "Dirig\u00EDvel"], salavip: ["\u2605", "#ffd34d", "Sala VIP"], vipconcierge: ["\u2605", "#ffd34d", "Sala VIP"], vipmordomo: ["\u2605", "#ffd34d", "Loja VIP"], mestre_jogos: ["J", "#7affc8", "Jogos"], montaria: ["V", "#ffb060", "Montaria"], brokk: ["F", "#ff8a3a", "Ferreiro"], torvald: ["F", "#ff8a3a", "Ferreiro"], bruna: ["M", "#ffd34d", "Mercadora"], munin: ["T", "#b88aff", "Teletransportador"], lider: ["L", "#ff5a7a", "L\xEDder de Classe"], sigrun: ["R", "#7ad0ff", "Runas"], cronista: ["C", "#e8e0c0", "Cronista"], arauto: ["A", "#ffe08a", "Arauto"], questor: ["!", "#7dff9a", "Miss\xF5es"], checkpoint: ["P", "#5ad0ff", "Check Point"], estilista: ["E", "#ff8ac8", "Estilista"], provador: ["T", "#c8a0ff", "Teste de Visuais"], utilidades: ["U", "#7fe08a", "Utilidades"], curandeira: ["C", "#fff0c0", "Curandeira"], papainoel: ["N", "#ff6060", "Papai Noel"], ottar: ["G", "#c0c8d8", "Guarda"], eira: ["G", "#c0c8d8", "Guarda"], ylva: ["G", "#c0c8d8", "Guarda"] }, seenR = /* @__PURE__ */ new Map();
+      const NR = { padre: ["P", "#ffe9a8", "Padre"], cerimonialista: ["L", "#ffc0e0", "Loja"], falcoeiro: ["A", "#d8a060", "Falcoeiro"], guilda_cacador: ["G", "#ffd34d", "Guilda"], guilda_berserker: ["G", "#ffd34d", "Guilda"], guilda_escudeiro: ["G", "#ffd34d", "Guilda"], guilda_volva: ["G", "#ffd34d", "Guilda"], guilda_valquiria: ["G", "#ffd34d", "Guilda"], guilda_skald: ["G", "#ffd34d", "Guilda"], guilda_thay: ["G", "#ffd34d", "Guilda"], solveig: ["\u2709", "#e0b8d0", "Hist\u00F3ria"], eirik: ["\u2693", "#9ac8ff", "Hist\u00F3ria"], torgrim: ["\u266A", "#d8c090", "Hist\u00F3ria"], ragnvald: ["\u2620", "#b8b8b8", "Hist\u00F3ria"], hulda: ["\u2620", "#b8b8b8", "Hist\u00F3ria"], cerimonialista: ["\u2665", "#ff9ac0", "Capela"], barqueiro: ["\u2693", "#5ac8ff", "Barqueiro"], aeronave: ["\u2708", "#9ad0ff", "Dirig\u00EDvel"], salavip: ["\u2605", "#ffd34d", "Sala VIP"], vipconcierge: ["\u2605", "#ffd34d", "Sala VIP"], vipmordomo: ["\u2605", "#ffd34d", "Loja VIP"], mestre_jogos: ["J", "#7affc8", "Jogos"], montaria: ["V", "#ffb060", "Montaria"], brokk: ["F", "#ff8a3a", "Ferreiro"], torvald: ["F", "#ff8a3a", "Ferreiro"], bruna: ["M", "#ffd34d", "Mercadora"], munin: ["T", "#b88aff", "Teletransportador"], lider: ["L", "#ff5a7a", "L\xEDder de Classe"], sigrun: ["R", "#7ad0ff", "Runas"], cronista: ["C", "#e8e0c0", "Cronista"], arauto: ["A", "#ffe08a", "Arauto"], questor: ["!", "#7dff9a", "Miss\xF5es"], checkpoint: ["P", "#5ad0ff", "Check Point"], estilista: ["E", "#ff8ac8", "Estilista"], provador: ["T", "#c8a0ff", "Teste de Visuais"], utilidades: ["U", "#7fe08a", "Utilidades"], curandeira: ["C", "#fff0c0", "Curandeira"], papainoel: ["N", "#ff6060", "Papai Noel"], ottar: ["G", "#c0c8d8", "Guarda"], eira: ["G", "#c0c8d8", "Guarda"], ylva: ["G", "#c0c8d8", "Guarda"] }, seenR = /* @__PURE__ */ new Map();
       n.font = `bold 8px ${ms}`, n.textAlign = "center", n.textBaseline = "middle";
       for (let l of a.npcs) { let nr_ = NR[l.id] ?? ["?", "#ffd34d", l.id], px = o + l.x * i, py = r + l.y * s; seenR.set(nr_[2], nr_), n.fillStyle = nr_[1], n.strokeStyle = "#111", n.lineWidth = 1, n.beginPath(), n.arc(px, py, 5, 0, Math.PI * 2), n.fill(), n.stroke(), n.fillStyle = "#111", n.fillText(nr_[0], px, py + 0.5); }
       this._mmLegend = [...seenR.values()];
@@ -19057,10 +19276,39 @@ function ROXQM(f, c, s, l, def, ex) {
       let g = Math.max(0, t.hp / t.maxHp), v = n.targetId === t.id || x || g < 1 || t.state === "chase" || t.state === "windup" || t.state === "charge" || t.state === "recover", k = r.y - (t.def.boss ? t.def.radius * 3.4 : f === "goblin" || f === "draugr" || f === "cinder" || f === "automaton" || f === "sylvan" || f === "prism" || f === "sentinel" || f === "voidling" ? 56 : t.def.radius * 2.6 + 8);
       v && this.monBar(r.x, r.y + (t.def.boss ? 14 : 10), t.def.boss ? Math.max(70, t.def.radius * 2.8) : Math.max(46, t.def.radius * 2.4), g, Math.max(0, Math.ceil(t.hp))), (t.golden || this.nameOn(`m${t.id}`)) && this.text(t.golden ? `\u2726 ${t.def.name} dourado` : t.def.name, r.x, k - 4, t.def.boss ? 14 : 11, t.golden ? "#ffd24a" : t.def.boss ? "#ffe9a8" : "#ffffff", t.def.boss || !!t.golden);
     }
+    stepCritter(q) {
+      const w = this.store.world; if (!w) return;
+      const now = this.clock, bird = q.kind === "corvo" || q.kind === "abutre" || q.kind === "gaivota";
+      if (q.hx === void 0) { q.hx = q.x; q.hy = q.y; q.st = 0; q.tt = now + 500 + (q.seed * 977 % 2500); q.fa = (q.seed * 2.3) % 6.283; q.lt = now; q.z = 0; q.col = q.col ?? ({ cao: [12099720, 9332298, 14527168, 5385760][Math.floor(q.seed) % 4], gato: [14530688, 4210752, 12632256, 15246410, 9082240][Math.floor(q.seed) % 5], raposa: q.kind === "raposa" && w.map.id === "cidade_isenborg" ? 15855615 : w.map.id === "cidade_eldvik" ? 14072920 : 14125610, coelho: [13158560, 15855615, 11571840][Math.floor(q.seed) % 3], corvo: 1710624, gaivota: 15856113, abutre: 5386024 }[q.kind]); }
+      const dt = Math.min(0.06, (now - q.lt) / 1000); q.lt = now; if (dt <= 0) return;
+      const pp = w.player.pos, dx = q.x - pp.x, dy = q.y - pp.y, dist = Math.hypot(dx, dy) || 1, spd0 = { cao: 38, gato: 34, raposa: 40, coelho: 44, corvo: 20, gaivota: 20, abutre: 18 }[q.kind] || 30;
+      const free = (x, y) => !w.map.obstacles.some((o) => o.kind !== "water" && x > o.x - 8 && x < o.x + o.w + 8 && y > o.y - 6 && y < o.y + o.h + 6) && x > 60 && y > 60 && x < w.map.width - 60 && y < w.map.height - 60;
+      if (dist < (bird ? 120 : 140) && q.st !== 2 && !w.isDead?.()) { q.st = 2; q.tt = now + 2200; q.sp = 1; q.fa = Math.atan2(dy, dx); q.panic = now; }
+      if (q.st === 2) {
+        const sp = (bird ? 190 : { cao: 150, gato: 175, raposa: 170, coelho: 200 }[q.kind] || 150) * (dist < 220 ? 1 : 0.7);
+        if (dist < 260) q.fa = Math.atan2(dy, dx) + Math.sin(now / 150 + q.seed) * 0.25;
+        const nx = q.x + Math.cos(q.fa) * sp * dt, ny = q.y + Math.sin(q.fa) * sp * dt;
+        if (bird || free(nx, ny)) q.x = nx, q.y = ny; else q.fa += 1.6 + q.seed % 1;
+        if (bird) q.z = Math.min(46, q.z + 120 * dt);
+        if (now > q.tt && dist > 240) { q.st = 0; q.tt = now + 1500; q.hx = q.x; q.hy = q.y; }
+        return;
+      }
+      if (bird && q.z > 0) q.z = Math.max(0, q.z - 40 * dt);
+      if (q.st === 1) {
+        const nx = q.x + Math.cos(q.fa) * spd0 * dt, ny = q.y + Math.sin(q.fa) * spd0 * dt;
+        if (free(nx, ny) && Math.hypot(nx - q.hx, ny - q.hy) < 160) q.x = nx, q.y = ny; else { q.st = 0; q.tt = now + 800 + (q.seed * 313 % 1800); }
+        if (now > q.tt) { q.st = 0; q.tt = now + 1800 + (Math.sin(now * q.seed) + 1) * 2200; }
+      } else if (now > q.tt) {
+        const r1 = Math.abs(Math.sin(now * 0.001 * (q.seed + 1.7))), ang = r1 * 6.283 + q.seed;
+        q.st = 1; q.fa = Math.atan2(q.hy - q.y, q.hx - q.x) * (Math.hypot(q.x - q.hx, q.y - q.hy) > 110 ? 1 : 0) + (Math.hypot(q.x - q.hx, q.y - q.hy) > 110 ? 0 : ang); q.tt = now + 1400 + r1 * 2400;
+      } else if (dist < 260 && !bird) q.fa = Math.atan2(-dy, -dx) + Math.PI;
+    }
     drawCritter(q) {
-      let o = this.ctx, T = this.clock / 1e3 + q.seed, ph = Math.sin(T * 0.35 + q.seed) , wx = q.x + ph * 9, moving = Math.cos(T * 0.35 + q.seed) * (q.kind === "corvo" || q.kind === "abutre" ? 0.3 : 1) > 0.5, face = Math.cos(T * 0.35 + q.seed) >= 0 ? 0 : Math.PI, r = ce(wx, q.y), { dir: d, flip: f } = Kl(face);
-      let col = { cao: 12099720, gato: 14530688, corvo: 1710624, abutre: 3680544 }[q.kind], sc = { cao: 1.1, gato: 0.78, corvo: 0.5, abutre: 0.95 }[q.kind], sp = ROXQM("wolf", d, moving ? Math.floor(this.clock / 110 % ea) : -1, 0, { id: "c_" + q.kind, color: col });
-      sp && (this.blob(r.x, r.y + 2, q.kind === "corvo" ? 4 : 7), nt(o, sp, r.x, r.y + 3 - (q.kind === "corvo" && !moving ? Math.max(0, Math.sin(T * 3)) * 2 : 0), f, $a * sc, $a * sc));
+      let o = this.ctx, bird = q.kind === "corvo" || q.kind === "abutre" || q.kind === "gaivota", r = ce(q.x, q.y), { dir: d, flip: f } = Kl(q.st === 2 ? q.fa : q.st === 1 ? q.fa : q.fa), mv = q.st === 1 || q.st === 2;
+      let nm = bird ? "corvo" : q.kind, sc = { cao: 0.95, gato: 0.8, raposa: 0.95, coelho: 0.8, corvo: 0.55, gaivota: 0.55, abutre: 1.0 }[q.kind] || 0.9;
+      let sp = ROXQM(nm, d, mv || bird ? Math.floor(this.clock / (q.st === 2 ? 70 : 120) % ea) : -1, 0, { id: "c_" + q.kind + (q.col || 0), color: q.col }, !mv ? { clk: this.clock, seed: Math.floor(q.seed * 10) % 97 } : void 0), z = q.z || 0;
+      sp && (this.blob(r.x, r.y + 2, bird ? 4 : 7), nt(o, sp, r.x, r.y + 3 - (bird ? 10 + z + (q.st === 0 ? Math.sin(this.clock / 300 + q.seed) * 2 : 0) : q.st === 2 ? Math.abs(Math.sin(this.clock / 90 + q.seed)) * 3 : 0), f, $a * sc, $a * sc));
+      q.st === 2 && !bird && this.text("!", r.x, r.y - 34, 13, "#ffe070");
     }
     drawSerpent(t, a) {
       let n = this.store.world;
@@ -20160,17 +20408,17 @@ function ROXQM(f, c, s, l, def, ex) {
       Hh("div", { className: "row wrap" }, Hh("button", { className: "btn btn-primary", disabled: tr.mine.ok || tr.dirty, onClick: () => j.tradeOk() }, tr.mine.ok ? "Aguardando o outro\u2026" : "Confirmar troca"), Hh("button", { className: "btn", onClick: close }, "Cancelar")));
   }
   var CART_COLS = [9066026, 12603178, 14711832, 5921370, 3828314, 3304384, 7152336, 12599360, 15245546, 2967224], CART_DECO = [["none", "Nenhuma"], ["flag", "Bandeira"], ["lantern", "Lanterna"], ["sacks", "Sacos"], ["barrel", "Barril"], ["parasol", "Sombrinha"], ["chest", "Baú"]];
-  function WeddingPanel() {
+  function WeddingPanel(props) {
     let t = ge().player, [nm, setNm] = (0, xo.useState)("");
     if (!t) return null;
     let q = j.wed, row = (id, price) => { let it = $(id); return Hh("div", { key: id, className: "eq-row" }, Hh(Aa, { id, size: 28 }), Hh("div", null, Hh("b", null, it.name), Hh("small", null, it.desc)), Hh("button", { className: "btn btn-small", disabled: t.silver < price, onClick: () => j.wedShop(id) }, price, " Zens")); };
-    return Hh(Yt, { id: "wedding", title: "\uD83D\uDC8D Capela de Midgard", onClose: () => j.closePanel(), wide: true },
+    return Hh(Yt, { id: "wedding", title: props?.shop ? "\uD83D\uDC8D Loja da Catedral" : "\uD83D\uDC8D Catedral de Midgard", onClose: () => j.closePanel(), wide: true },
       Hh("div", { className: "row wrap" }, Hh("span", { className: "coin-line" }, Hh(sr, { name: "coin", size: 18 }), " Zens: ", Hh("b", null, t.silver)), Hh("span", null, t.spouse ? `\u2665 Casado(a) com ${t.spouse}${t.baby ? ` \u00B7 beb\u00EA: ${t.baby.name}` : ""}` : "Solteiro(a)")),
-      q?.dir === "in" && Hh("div", { className: "row wrap" }, Hh("b", null, `${q.peer} quer casar com voc\u00EA!`), Hh("button", { className: "btn btn-primary", onClick: () => j.wedAnswer(true) }, "Aceitar"), Hh("button", { className: "btn", onClick: () => j.wedAnswer(false) }, "Recusar")),
-      q?.dir === "out" && Hh("p", null, `Aguardando ${q.peer}...`, " ", Hh("button", { className: "btn btn-small", onClick: () => { j.wed = null, j.refresh(); } }, "Cancelar")),
-      !t.spouse && !q && Hh("div", { className: "row wrap" }, Hh("input", { value: nm, placeholder: "Nome do(a) noivo(a)", onChange: (e) => setNm(e.target.value) }), Hh("button", { className: "btn btn-primary", onClick: () => j.wedPropose(nm) }, "Pedir em casamento"), Hh("small", { className: "muted" }, "Ambos: n\u00EDvel 99 e uma Alian\u00E7a de Ouro. A pessoa deve estar por perto.")),
-      t.spouse && Hh("div", { className: "row wrap" }, !t.baby && Hh("button", { className: "btn", onClick: () => j.wedBaby() }, "Adotar beb\u00EA (20.000)"), Hh("button", { className: "btn", onClick: () => j.wedBless() }, "B\u00EAn\u00E7\u00E3o da fam\u00EDlia (/bencao)"), Hh("button", { className: "btn", onClick: () => j.wedDivorce() }, "Divorciar")),
-      Hh("h4", null, "Loja da Capela"), Hh("div", { className: "refine-list" }, row("alianca_ouro", 8000), row("vestido_noiva", 4000), row("smoking_noivo", 4000), row("buque_flores", 800)));
+      !props?.shop && q?.dir === "in" && Hh("div", { className: "row wrap" }, Hh("b", null, `${q.peer} quer casar com voc\u00EA!`), Hh("button", { className: "btn btn-primary", onClick: () => j.wedAnswer(true) }, "Aceitar"), Hh("button", { className: "btn", onClick: () => j.wedAnswer(false) }, "Recusar")),
+      !props?.shop && q?.dir === "out" && Hh("p", null, `Aguardando ${q.peer}...`, " ", Hh("button", { className: "btn btn-small", onClick: () => { j.wed = null, j.refresh(); } }, "Cancelar")),
+      !props?.shop && !t.spouse && !q && Hh("div", { className: "row wrap" }, Hh("input", { value: nm, placeholder: "Nome do(a) noivo(a)", onChange: (e) => setNm(e.target.value) }), Hh("button", { className: "btn btn-primary", onClick: () => j.wedPropose(nm) }, "Pedir em casamento"), Hh("small", { className: "muted" }, "Ambos: n\u00EDvel 99 e uma Alian\u00E7a de Ouro. A pessoa deve estar por perto.")),
+      !props?.shop && t.spouse && Hh("div", { className: "row wrap" }, !t.baby && Hh("button", { className: "btn", onClick: () => j.wedBaby() }, "Adotar beb\u00EA (20.000)"), Hh("button", { className: "btn", onClick: () => j.wedBless() }, "B\u00EAn\u00E7\u00E3o da fam\u00EDlia (/bencao)"), Hh("button", { className: "btn", onClick: () => j.wedDivorce() }, "Divorciar")),
+      props?.shop && Hh("div", { className: "refine-list" }, row("alianca_ouro", 8000), row("vestido_noiva", 4000), row("smoking_noivo", 4000), row("buque_flores", 800)));
   }
   function HomunPanel() {
     let t = ge().player, [nm, setNm] = (0, xo.useState)("");
@@ -20409,7 +20657,7 @@ function ROXQM(f, c, s, l, def, ex) {
         j.setMove(0, 0), j.setAttackHeld(false);
       };
       return window.addEventListener("blur", a), () => window.removeEventListener("blur", a);
-    }, []), (0, pt.jsxs)("div", { className: `game${t ? " has-touch" : ""}`, children: [(0, pt.jsx)(IS, {}), (0, pt.jsx)(Q4, {}), (0, pt.jsx)(K4, {}), (0, pt.jsx)(p5, {}), (0, pt.jsx)(F4, {}), e.panel === "inventory" && (0, pt.jsx)(Ch, { mode: "bag" }), e.panel === "equip" && (0, pt.jsx)(Ch, { mode: "equip" }), e.panel === "questlog" && (0, pt.jsx)(Ch, { mode: "quests" }), e.panel === "stats" && (0, pt.jsx)(a5, {}), e.panel === "skills" && (0, pt.jsx)(l5, {}), e.panel === "bestiary" && (0, pt.jsx)(s5, {}), e.panel === "worldmap" && (0, pt.jsx)(e5, {}), e.panel === "refine" && (0, pt.jsx)(c5, {}), e.panel === "craft" && Hh(CraftPanel, {}), e.panel === "shop" && (0, pt.jsx)(m5, {}), e.panel === "provador" && Hh(PV_, {}), e.panel === "party" && Hh(PartyPanel, {}), (e.panel === "utilshop" || e.panel === "vipshop") && Hh(UtilShop, { vip: e.panel === "vipshop" }), e.panel === "viproom" && Hh(VipRoom, {}), e.panel === "airship" && Hh(AirshipPanel, {}), e.panel === "wedding" && Hh(WeddingPanel, {}), e.panel === "homun" && Hh(HomunPanel, {}), e.panel === "classes" && Hh(ClassesPanel, {}), typeof e.panel == "string" && e.panel.startsWith("story:") && Hh(StoryPanel, { id: e.panel.slice(6), key: e.panel }), e.panel === "vendor" && Hh(VendorPanel, {}), e.panel === "cartcfg" && Hh(CartPanel, {}), e.panel === "boat" && Hh(AirshipPanel, { boat: true }), e.panel === "trade" && Hh(TradePanel, {}), e.panel === "stylist" && (0, pt.jsx)(u5, {}), e.panel === "quests" && (0, pt.jsx)(QuestsPanel, {}), e.panel === "feitos" && (0, pt.jsx)(d5, {}), e.panel === "pause" && (0, pt.jsx)(Z4, {}), e.panel === "settings" && (0, pt.jsx)(c0, {})] });
+    }, []), (0, pt.jsxs)("div", { className: `game${t ? " has-touch" : ""}`, children: [(0, pt.jsx)(IS, {}), (0, pt.jsx)(Q4, {}), (0, pt.jsx)(K4, {}), (0, pt.jsx)(p5, {}), (0, pt.jsx)(F4, {}), e.panel === "inventory" && (0, pt.jsx)(Ch, { mode: "bag" }), e.panel === "equip" && (0, pt.jsx)(Ch, { mode: "equip" }), e.panel === "questlog" && (0, pt.jsx)(Ch, { mode: "quests" }), e.panel === "stats" && (0, pt.jsx)(a5, {}), e.panel === "skills" && (0, pt.jsx)(l5, {}), e.panel === "bestiary" && (0, pt.jsx)(s5, {}), e.panel === "worldmap" && (0, pt.jsx)(e5, {}), e.panel === "refine" && (0, pt.jsx)(c5, {}), e.panel === "craft" && Hh(CraftPanel, {}), e.panel === "shop" && (0, pt.jsx)(m5, {}), e.panel === "provador" && Hh(PV_, {}), e.panel === "party" && Hh(PartyPanel, {}), (e.panel === "utilshop" || e.panel === "vipshop") && Hh(UtilShop, { vip: e.panel === "vipshop" }), e.panel === "viproom" && Hh(VipRoom, {}), e.panel === "airship" && Hh(AirshipPanel, {}), e.panel === "wedding" && Hh(WeddingPanel, {}), e.panel === "weddingshop" && Hh(WeddingPanel, { shop: true }), e.panel === "homun" && Hh(HomunPanel, {}), e.panel === "classes" && Hh(ClassesPanel, {}), typeof e.panel == "string" && e.panel.startsWith("story:") && Hh(StoryPanel, { id: e.panel.slice(6), key: e.panel }), e.panel === "vendor" && Hh(VendorPanel, {}), e.panel === "cartcfg" && Hh(CartPanel, {}), e.panel === "boat" && Hh(AirshipPanel, { boat: true }), e.panel === "trade" && Hh(TradePanel, {}), e.panel === "stylist" && (0, pt.jsx)(u5, {}), e.panel === "quests" && (0, pt.jsx)(QuestsPanel, {}), e.panel === "feitos" && (0, pt.jsx)(d5, {}), e.panel === "pause" && (0, pt.jsx)(Z4, {}), e.panel === "settings" && (0, pt.jsx)(c0, {})] });
   }
   var rn = oe(ue(), 1), zh = class extends g5.Component {
     state = { error: null };

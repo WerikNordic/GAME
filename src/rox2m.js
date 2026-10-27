@@ -59,7 +59,7 @@ var ROX2M = (() => {
   for(const sx of[-1,1]){const ep=A3(A3(A3(hd,dv,p.hl*.62),up,p.hh*.22),[sx*p.hw*.64,0,0]);
    if(closed)S({pts:[A3(ep,[0,0,0]),A3(ep,dv,1.6)],w:[1,1],col:hx(0x14101a)});else E({x:ep[0],y:ep[1],z:ep[2],rx:1.3,ry:1,rz:.8,p:3,col:p.eye,bias:1});
    if(p.ears){const flat=Math.max(0,k)*.9+how*.2+snf*.15,eb=A3(A3(A3(hd,up,p.hh*.55),dv,-p.hl*.15),[sx*p.hw*.6,0,0]);
-    const et=A3(A3(A3(eb,up,p.hh*(1.5-flat*.8)),dv,-p.hl*(.35+flat*.8)),[sx*(p.hw*.12+flat*2),0,0]);
+    const et=A3(A3(A3(eb,up,p.hh*(1.5-flat*.8)*(p.earL||1)),dv,-p.hl*(.35+flat*.8)),[sx*(p.hw*.12+flat*2),0,0]);
     S({pts:[eb,et],w:[p.hw*.75,.8],col:p.col});if(!flat)S({pts:[A3(eb,dv,.8),A3(et,dv,.4)],w:[p.hw*.35,.5],col:p.earIn||hx(0x6a4a50)})}}
   if(p.mane)for(let i=0;i<p.mane;i++){const u=i/(p.mane-1);const z=chZ+Lb*.06-u*(chZ-hpZ+Lb*.1),y=chY+(hpY-chY)*u-Hh*.55-(p.maneH||5)*(1-Math.abs(u-.4));S({pts:[[0,y+Hh*.1,z],[0,y-(p.maneH||5)*(.8+(i%2)*.4),z-2]],w:[3,.8],col:p.maneC||p.col2})}
   // cauda
@@ -84,6 +84,11 @@ var ROX2M = (() => {
   const r=canid(E,S,o,{L:38,H:15,W:6,legL:21,legW:2.5,col:hx(0x8a5a3a),col2:hx(0x6a4028),stride:6.5,lift:3.6,hw:3.9,hh:4.4,hl:7.6,snoutL:.7,snoutW:.7,snout:hx(0x7a4c30),eye:hx(0x1a1210),ears:1,earIn:hx(0x4a2a1c),tail:1,tailW:4.2,tailTip:hx(0x2a1a14),hHigh:-15,pitch0:-.6,belly:1,paw:hx(0xe8dcc0)});
   const nb=[0,r.chY-15*.3-1,r.chZ+38*.08];for(let i=0;i<6;i++){const u=i/5,p0=L3(nb,r.hd,.12+u*.7);S({pts:[[p0[0],p0[1]-1,p0[2]-1.2],[p0[0],p0[1]+3.4,p0[2]-3.6]],w:[3.2,1],col:hx(0x2a1a14)})}
   S({pts:[[0,r.chY-6,r.hd[2]-5],[0,r.hd[1]-1,r.hd[2]-1.6]],w:[2.4,1.4],col:hx(0x2a1a14)})}});
+const PETSCH=[['stand',2.6,6],['sniff',2,8],['stand',1.6,5],['sit',3.4,6],['look',2.2,8],['sit',2,5],['stand',1.2,4]];
+ reg('cao',{name:'Cao',w:80,h:60,gy:52,sched:PETSCH,build:(E,S,o)=>canid(E,S,o,{L:20,H:8.5,W:4.2,legL:6.4,legW:1.9,col:hx(0xb08850),col2:hx(0xd8c8a0),stride:4.4,lift:2.2,hw:3.1,hh:2.9,hl:3.4,snoutL:.55,snoutW:.55,snout:hx(0xd8c8a0),eye:hx(0x1a1210),ears:1,earL:.8,earIn:hx(0x8a6a40),tail:1,tailW:2.4,tailTip:hx(0xd8c8a0),hHigh:.6,belly:1})});
+ reg('gato',{name:'Gato',w:70,h:56,gy:48,sched:PETSCH,build:(E,S,o)=>canid(E,S,o,{L:15,H:6,W:3,legL:4.6,legW:1.3,col:hx(0x8a8f96),col2:hx(0xc4c8cc),stride:3.4,lift:1.6,hw:2.8,hh:2.6,hl:2.6,snoutL:.15,snoutW:.8,snout:hx(0xe0d4d4),eye:hx(0xe8d040),ears:1,earL:.9,earIn:hx(0xd8a0a8),tail:1,tailW:1.4,tailTip:hx(0x5a5e66),hHigh:.2,belly:1})});
+ reg('raposa',{name:'Raposa',w:80,h:60,gy:52,sched:PETSCH,build:(E,S,o)=>canid(E,S,o,{L:17,H:7,W:3.4,legL:6,legW:1.5,col:hx(0xd8702a),col2:hx(0xf4ecdc),stride:4,lift:2.2,hw:2.9,hh:2.6,hl:3.2,snoutL:.8,snoutW:.45,snout:hx(0xf4ecdc),eye:hx(0x1a1210),ears:1,earL:1.15,earIn:hx(0x3a2a20),tail:1,tailW:4.4,tailTip:hx(0xf4ecdc),hHigh:.4,paw:hx(0x3a2a20)})});
+ reg('coelho',{name:'Coelho',w:60,h:60,gy:50,sched:[['stand',2.2,6],['sniff',2,8],['look',1.8,8],['stand',1.2,4]],build:(E,S,o)=>canid(E,S,o,{L:10,H:6.4,W:3.4,legL:3,legW:1.6,col:hx(0xc8b8a0),col2:hx(0xf4f0e8),stride:3,lift:3,hw:2.4,hh:2.4,hl:2.6,snoutL:.15,snoutW:.8,snout:hx(0xf4f0e8),eye:hx(0x2a1a14),ears:1,earL:2.6,earIn:hx(0xf0b8b8),tail:2,hHigh:.6,rumpUp:-.8})});
  // ---------- bipedes ----------
  function biped(E,S,o,p){
   const s=p.sc||1,g=o.g,b=o.beh||'',w=o.bw||0,ph=o.ph||0,walk=o.ph?1:0,k=o.k||0,T=o.t,PP=p.pp||3.4;
@@ -236,7 +241,7 @@ var ROX2M = (() => {
   for(const sx of[-1,1])S({pts:[[sx*2,y0+6,z0],[sx*2,y0+10,z0+2+(kk>0?2:0)],[sx*2.4,y0+12,z0+3]],w:[1.4,1],col:hx(0xe0a838)});
   for(let i=0;i<3;i++){const u=(o.t*.8+i*.33)%1;E({x:Math.sin(i*5)*12,y:o.g-u*20,z:-5,rx:.8,ry:.8,rz:.8,p:4,col:hx(0x9a8aff),bias:1})}}});
  // ---------- mapeamento shape -> especie ----------
- const SHAPES={wolf:['lobo',.5,1.9],frostwolf:['lobogelo',.6,1.9],hati:['warg',.35,2],boar:['javali',.5,2.0],horse:['cavalo',.25,1.7],yeti:['yeti',.7,1.35],blob:['gosma',.85,1.9],goblin:['goblin',.3,2],draugr:['draugr',.3,1.75],cinder:['imp',.55,1.7],automaton:['golemmetal',.75,1.2],sylvan:['sylvan',.7,1.3],prism:['golemprisma',.8,1.1],sentinel:['golempedra',.6,1.2],voidling:['espectro',.85,1.1],jotun:['troll',.5,1.5],grifo:['corvo',.35,1.8],corvo:['corvo',0,1.6]};
+ const SHAPES={wolf:['lobo',.5,1.9],frostwolf:['lobogelo',.6,1.9],hati:['warg',.35,2],boar:['javali',.5,2.0],horse:['cavalo',.25,1.7],cao:['cao',.45,1.9],gato:['gato',.5,1.9],raposa:['raposa',.35,1.9],coelho:['coelho',.4,1.9],yeti:['yeti',.7,1.35],blob:['gosma',.85,1.9],goblin:['goblin',.3,2],draugr:['draugr',.3,1.75],cinder:['imp',.55,1.7],automaton:['golemmetal',.75,1.2],sylvan:['sylvan',.7,1.3],prism:['golemprisma',.8,1.1],sentinel:['golempedra',.6,1.2],voidling:['espectro',.85,1.1],jotun:['troll',.5,1.5],grifo:['corvo',.35,1.8],corvo:['corvo',0,1.6]};
  const DIRS={down:0,dq:1,side:2,uq:3,up:4};
  const lumOf=(c)=>(c[0]+c[1]+c[2])/765;
  function mkTint(rgb,k){const tl=lumOf(rgb)||.5;return (c)=>{if(!Array.isArray(c))return c;const s=lumOf(c)/tl;return mix(c,[Math.min(255,rgb[0]*s),Math.min(255,rgb[1]*s),Math.min(255,rgb[2]*s)],k)}}
