@@ -51,7 +51,7 @@
       const sw = (i, a = 1) => Math.sin(tt * 2.4 + i) * .5 * a;
       if (!cover) {
         const mo = X === "mohawk";
-        E({ x: 0, y: hy - 1.6, z: hz - .8, rx: 9 * T, ry: 11, rz: 9.2 * T, p: 4.2, col: hc, tex: hairCap({ hair: hc }, { bangs: mo ? () => -.5 : FRINGE[clamp(hs.F, 0, 8)], side: mo ? -.2 : L >= 1 ? .62 : .32, back: mo ? .45 : L >= 1 ? .95 : .82 }) });
+        E({ x: 0, y: hy - 1.6, z: hz - .8, rx: 8.5 * T, ry: 10.3, rz: 8.7 * T, p: 4.2, col: hc, tex: hairCap({ hair: hc }, { bangs: mo ? () => -.5 : FRINGE[clamp(hs.F, 0, 8)], side: mo ? -.2 : L >= 1 ? .62 : .32, back: mo ? .45 : L >= 1 ? .95 : .82 }) });
         if (X === "curl" || hs.T === 3) for (let i = 0; i < 9; i++) { const a = i / 9 * TAU; E({ x: Math.cos(a) * 9, y: hy - 6 + (i % 3), z: hz - 1 + Math.sin(a) * 8.4, rx: 2.8, ry: 2.8, rz: 2.8, col: i % 2 ? hc : hl }); }
       }
       if (L >= 1 && X !== "bob") { // massa de cabelo atrás
@@ -75,6 +75,7 @@
   }
   // ---------- cabeça: itens ----------
   function headMain(kind, E, S, o, e, C) {
+    if (kind.startsWith("x:")) { const f = COSX.top[kind.slice(2)]; if (f) f(E, S, o, e, C); return; }
     const { hy, hz } = o, tt = o.t;
     const G = C.gold, G2 = dk(C.gold, .75), st = C.steel, st2 = C.steel2;
     if (kind === "hat") { // chapéu de mago
@@ -129,12 +130,14 @@
     } else if (kind === "halo") { for (let i = 0; i < 24; i++) { const a = i / 24 * TAU; E({ x: Math.cos(a) * 6.6, y: hy - 13.6 + Math.sin(a) * 1.1, z: hz - 3.2, rx: .65, ry: .65, rz: .65, col: hx(0xfff0a0), bias: 1 }); } }
   }
   function lowItems(low, E, S, o, e, C) {
+    if (COSX.low[low]) { COSX.low[low](E, S, o, e, C); return; }
     const { hy, hz, bob, tz } = o;
     if (low === "scarf" || low === "scarf2") { const c = low === "scarf" ? hx(0xb04a2a) : hx(0x5a7aa8); E({ x: 0, y: tz + 33.4 + bob, z: tz + .6, rx: 7, ry: 3.2, rz: 5.4, col: c, tex: (mx) => Math.sin(mx * 22) > .5 ? lt(c, .16) : 0 }); S({ pts: [[3, tz + 35 + bob, tz + 4], [6 + Math.sin(o.t * 2), tz + 44 + bob, tz + 3], [7 + Math.sin(o.t * 2 + 1), tz + 52 + bob, tz + 1]], w: [4, 2.2], col: c }); }
     else if (low === "mask") { E({ x: 0, y: hy + 6.4, z: hz + 3.2, rx: 7.4, ry: 4.2, rz: 5.6, col: hx(0x6a4a2e), tex: (mx, my, mz) => (mz > 0 && my < -.5) ? null : (Math.abs(my - .2) < .1 ? hx(0x8a6a44) : 0) }); }
     else if (low === "beard") { const b = hx(e.hair); S({ pts: [[0, hy + 8, hz + 5], [0, hy + 15, hz + 6.4], [0, hy + 25, hz + 5.6]], w: [10, 8, 2.6], col: (q) => Math.sin(q * 28) > .55 ? lt(b, .16) : b }); for (const sg of [-1, 1]) S({ pts: [[sg * 3, hy + 8, hz + 4], [sg * 5, hy + 14, hz + 5], [sg * 3.4, hy + 20, hz + 4.6]], w: [4.4, 1.6], col: b }); }
   }
   function midItems(mid, E, S, o, e) {
+    if (COSX.mid[mid]) { COSX.mid[mid](E, S, o, e); return; }
     const { hy, hz } = o;
     if (mid === "goggles") { for (const sg of [-1, 1]) { E({ x: sg * 3.6, y: hy - .4, z: hz + 7.6, rx: 3.2, ry: 2.8, rz: 1.8, col: hx(0xb88a3a), metal: 1, tex: (mx, my, mz, X, Y) => Math.hypot(X, Y) < .62 ? hx(0x9ad8e8) : 0 }); } S({ pts: [[-9, hy - .6, hz + 2], [0, hy - .6, hz + 8.6], [9, hy - .6, hz + 2]], w: 1.4, col: hx(0x5a3a22) }); }
     else if (mid === "eyepatch") { E({ x: -3.4, y: hy - .4, z: hz + 7.4, rx: 3, ry: 2.8, rz: 1.8, col: hx(0x1a1a22) }); S({ pts: [[-9, hy - 3, hz + 2], [-4, hy - 2, hz + 8], [8, hy + 1, hz + 6]], w: 1, col: hx(0x1a1a22) }); }
@@ -142,6 +145,7 @@
   // ---------- itens de costas ----------
   function backItems(E, S, o, e, C) {
     const { bob, tz, t } = o; const b = bob; const cw = (e.cw || 0) * 3;
+    if (e.bkx && COSX.back[e.bkx]) { COSX.back[e.bkx].fn(E, S, o, e, C); return; }
     if (C.pack) {
       const lea = hx(0x8a5a30), lea2 = dk(lea, .75);
       E({ x: 0, y: tz + 45 + b, z: tz - 8.4, rx: 6.8, ry: 8.4, rz: 3.8, p: 2.6, col: lea, tex: (mx, my, mz) => { if (mz < 0 && Math.abs(my - .25) < .06) return lea2; if (mz < 0 && my > .2 && my < .9 && Math.abs(mx) < .12) return hx(0xe8b838); return Math.sin(mx * 14 + my * 3) > .8 ? lt(lea, .12) : 0; } });

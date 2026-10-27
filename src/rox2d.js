@@ -18,14 +18,16 @@
   const ATK = { berserker: "slash", escudeiro: "slash", cacador: "shoot", volva: "cast", valquiria: "stab", skald: "quick", thay: "punch", aprendiz: "quick" };
   const FAM = { berserker: "p", escudeiro: "p", cacador: "a", volva: "m", valquiria: "m", skald: "a", thay: "a", aprendiz: "a" };
   function headPlan(e, cls, T) {
-    let h = e.head || "none"; const por = h === "poring"; if (!/^(circlet|wings|horns|helm|hood|hood2|beanie|wreath|bandana|feathercap|crown|crowngold|santa)$/.test(h)) h = "none"; const SIG = "none";
+    let h = e.head || "none"; const por = h === "poring"; const xt = !!COSX.top[h]; if (!xt && !/^(circlet|wings|horns|helm|hood|hood2|beanie|wreath|bandana|feathercap|crown|crowngold|santa)$/.test(h)) h = "none"; const SIG = "none";
     let main = SIG, extra = null;
     if (h === "none") { } else if (h === "circlet" || h === "wings") extra = h; else if (h === "horns") main = "helmH"; else if (h === "helm") main = "helm"; else if (h === "hood") main = (SIG === "hood" || SIG === "furhood") ? SIG : "hood"; else main = h;
+    if (xt) main = "x:" + h;
     if (por) main = "none";
-    return { main, extra, cover: main === "helm" || main === "helmH" || main === "hood" || main === "furhood" || main === "hood2" };
+    return { main, extra, cover: (xt && COSX.topCover[h]) || main === "helm" || main === "helmH" || main === "hood" || main === "furhood" || main === "hood2" };
   }
   function finish(cfg, e, T, cls, C, deco) {
     const hp = headPlan(e, cls, T), hf = hairFn(e, hx(e.hair), hp.cover);
+    { const mk = [COSX.marks[e.low], COSX.marks[e.mid]].filter(Boolean); if (mk.length) cfg.faceExtra = (az, el) => { for (const f of mk) { const r = f(az, el); if (r) return r; } return 0; }; if (e.eyePat) cfg.eyePat = e.eyePat; if (e.eye2 != null) cfg.eye2 = hx(e.eye2); }
     cfg.hairFn = (E, S, o) => hf(E, S, o);
     cfg.deco = (E, S, o) => {
       deco(E, S, o); backItems(E, S, o, e, C);
@@ -290,7 +292,7 @@
   const PERS = { slash: 1.5, quick: 1.1, cast: 1.6, stab: 1.3, shoot: 1.4, punch: 1.0 };
   const KDIR = { down: 0, dq: 1, side: 2, uq: 3, up: 4 };
   const WALK = { p: 1.0, a: .78, m: 1.4 };
-  const SCALE = 1.3, CW = 184, GYY = 170, KS = .88;
+  const SCALE = 1.3, CW = 184, GYY = 170, KS = 1.06;
   function ROX2(e, dir, frame, lvl, style) {
     const cls = e.cls, D = DES[cls] || DES.npc; if (!D) return null;
     if (DES[cls]) { e = { ...e, head: e.eqHead || "none" }; if (!e.eqBack) { e.cape = undefined; e.quiver = false; e.wingsBack = undefined; } }
@@ -304,6 +306,7 @@
     const cx = cv.getContext("2d"); cx.putImageData(new ImageData(d, CW, CW), 0, 0);
     return { cv, ax: CW / 2 * KS, ay: GYY * KS, k: KS };
   }
+  ROX2.COSX = COSX; ROX2.CAT = CAT;
   ROX2.eng = { hx, mix, dk, TAU, clamp, Ctx, Img, put, ellipsoid, strip, outline };
   return ROX2;
 })();

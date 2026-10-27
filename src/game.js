@@ -7408,6 +7408,7 @@ Error generating stack: ` + n.message + `
     ["asas_corvo", "Asas de Corvo", "wings", "rare"], ["asas_anjo", "Asas de Luz", "wings", "epic"], ["asas_brasa", "Asas de Brasa", "wings", "epic"]
   ].forEach(([id, name, ty, rarity]) => { Wa[id] = { id, name, kind: "back", backStyle: id, rarity, reqLevel: 1, stack: 1, sell: 1, desc: "Costas: " + ty.replace("cape", "capa").replace("quiver", "aljava").replace("wings", "asas") + " decorativa. Apenas visual.", cosmetic: true }; });
   for (let e of QCOS) Wa[e.id] = e;
+  var CX_ = {};
   for (let e of M8) Wa[e.id] = e;
   [["luvas_couro", "Luvas de Couro", 1, 4, "common", 12], ["manoplas_ferro", "Manoplas de Ferro", 10, 16, "uncommon", 140], ["garras_lobo", "Garras de Lobo", 22, 30, "rare", 420], ["punhos_tyr", "Punhos de Tyr", 36, 52, "epic", 1100]].forEach(([id, name, lv, atk, rarity, sell]) => { Wa[id] = te({ id, name, kind: "weapon", weaponType: "fist", rarity, reqLevel: lv, stack: 1, sell, weight: 15, desc: "Arma de punho para Thays. Golpes r\u00E1pidos e secos.", bonus: { atk } }); });
   [["maca_ferro", "Ma\xE7a de Ferro", 1, 5, "common", 15], ["maca_cravejada", "Ma\xE7a Cravejada", 10, 17, "uncommon", 150], ["martelo_guerra", "Martelo de Guerra", 22, 32, "rare", 440], ["martelo_trovao", "Martelo do Trov\xE3o", 36, 54, "epic", 1150]].forEach(([id, name, lv, atk, rarity, sell]) => { Wa[id] = te({ id, name, kind: "weapon", weaponType: "mace", rarity, reqLevel: lv, stack: 1, sell, weight: 20, desc: "Arma de comerciante guerreiro: pesada, firme e feita para atordoar.", bonus: { atk } }); });
@@ -7578,7 +7579,22 @@ Error generating stack: ` + n.message + `
   function emoCanvas(k) { return EMO_CACHE[k] ?? (EMO_CACHE[k] = emoMake(k)); }
   var EMO_CMD = { feliz: "feliz", rir: "rir", haha: "rir", kkk: "joy", joy: "joy", amor: "amor", coracao: "coracao", piscar: "piscar", legal: "legal", cool: "legal", triste: "triste", chorar: "chorar", bravo: "bravo", surpreso: "surpreso", dormir: "dormir", pensar: "pensar", suor: "suor", timido: "timido", abraco: "abraco", estrela: "estrela", joia: "joia", ola: "ola", palmas: "palmas", paz: "paz", forca: "forca", oracao: "oracao", fogo: "fogo", musica: "musica", brindar2: "brindar", duvida: "duvida", exclama: "exclama", caveira: "caveira", nao: "nao", danca2: "danca" };
   var Hu = { ok: "OK", lv: "\u2665", love: "\u2665", gg: "GG", heh: "^^", hmm: "...", swt: "'-'", sob: "T_T", no: "X", thx: "Obg", hi: "Oi", zz: "Zzz", "!": "!", "?": "?", omg: "O_O", grr: ">:(", lol: "XD", bye: "Tchau", gl: "GL" }, S8 = ["Servidor: /quem (jogadores online) \u00B7 /guilda criar|convidar NOME|aceitar|recusar|sair|expulsar NOME|dissolver \u00B7 /grupo criar|convidar|aceitar|sair|expulsar \u00B7 /g msg (guilda) \u00B7 /p msg (grupo) \u00B7 /denunciar NOME motivo \u00B7 grupo d\u00E1 +10% EXP por membro perto (at\u00E9 +50%)", "Montaria/pet: /montar \xB7 /desmontar (voc\u00EA s\u00F3 desce com este comando, mesmo ap\u00F3s sair do jogo) \xB7 /pet (chama ou guarda o lobo)", "Social: /amigo add NOME \xB7 /amigos \xB7 /casar nome \xB7 /abracar \xB7 /brindar \xB7 /danca \xB7 /caminho (n\xEDvel 70) \xB7 /cozinhar \xB7 /jogos (janela dos minigames)", "Minigames (nas cidades): /dados aposta \xB7 /corrida barco(1-3) aposta \xB7 /pescar + /puxar \xB7 N\xEDvel 99: tecla U = Ultimate", "Comandos: /sentar (/sit) \xB7 /levantar (/stand) \xB7 /onde (/where) \xB7 /quem (/who) \xB7 /exp \xB7 /hora (/time)", "@afk (nas cidades principais): sai do jogo e deixa o personagem na cidade \xB7 /boss: testa o boss mundial", "/nomes (/showname) liga/desliga nomes \xB7 /efeitos (/effect) liga/desliga n\xFAmeros de dano \xB7 /refresh \xB7 /criar", "Chat: /w nome msg \xB7 /p msg (grupo) \xB7 /g msg (guilda) \xB7 Alt+C: mensagem privada em janela", "Emotes: " + Object.keys(Hu).filter((e) => e !== "love").map((e) => "/" + e).join(" ") + " \xB7 /rps (pedra, papel ou tesoura) \xB7 /emotes (\xEDcones)", "Teclas: Insert senta \xB7 Alt+E mochila \xB7 Alt+S habilidades \xB7 Alt+A atributos \xB7 F1\u2013F12 habilidades e atalhos"], w8 = 200;
-  var __petPlayAt = 0;
+  var __petPlayAt = 0, __petPlayKind = 0, __petPlayDir = 1;
+  function petAnim(pl, kind, fallbackFace) {
+    const D = __petPlayDir, o = { face: fallbackFace, ox: 0, jy: 0, rot: 0, run: false, carry: false, stick: null, fx: kind };
+    if (kind === 0) { o.face = [0, 0.8, 1.57, 2.4, 3.14, 2.4, 1.57, 0.8][Math.floor(pl / 170) % 8]; o.jy = -Math.abs(Math.sin(pl / 130)) * 20; }
+    else if (kind === 1) { o.face = [0, 0.8, 1.57, 2.4, 3.14, 3.9, 4.71, 5.5][Math.floor(pl / 80) % 8]; o.jy = -Math.abs(Math.sin(pl / 90)) * 5; o.run = true; }
+    else if (kind === 2) {
+      const S = 74 * D; o.face = D > 0 ? 0 : Math.PI;
+      if (pl < 520) { const u = pl / 520; o.stick = { x: S * u, y: -26 - Math.sin(u * 3.14) * 34 + u * 26, r: pl / 60 }; }
+      else if (pl < 1500) o.stick = { x: S, y: 0, r: 0.5 };
+      if (pl >= 350 && pl < 1300) { o.ox = S * (pl - 350) / 950; o.run = true; o.jy = -Math.abs(Math.sin(pl / 85)) * 4; }
+      else if (pl >= 1300 && pl < 1600) { o.ox = S; o.jy = -Math.abs(Math.sin(pl / 60)) * 5; }
+      else if (pl >= 1600) { const u = Math.min(1, (pl - 1600) / 1000); o.ox = S * (1 - u); o.run = u < 1; o.carry = true; o.face = D > 0 ? Math.PI : 0; o.jy = -Math.abs(Math.sin(pl / 85)) * 4; }
+    } else if (kind === 3) { o.rot = pl / 130 * (D > 0 ? 1 : -1); o.jy = -Math.abs(Math.sin(pl / 200)) * 6; o.face = 1.57; }
+    else { o.rot = -0.5 * Math.sin(Math.min(1, pl / 420) * 1.57) * (D > 0 ? 1 : -1); o.face = D > 0 ? 0 : Math.PI; o.jy = pl > 420 ? Math.sin(pl / 70) * 0.8 : 0; }
+    return o;
+  }
   function petNew() { return { name: "Filhote", renamed: false, level: 1, exp: 0, joy: 60, plays: 0, bites: 0, since: Date.now() }; }
   function petNeed(L) { return Math.round(40 * Math.pow(L, 1.55)); }
   function petMountBonus(ps) { return 0.4; }
@@ -7601,8 +7617,8 @@ Error generating stack: ` + n.message + `
     if (!pd) return;
     let now = Date.now();
     if (now - __petPlayAt < 4000) return petSay(`${pd.name} ainda est\u00E1 se divertindo...`);
-    __petPlayAt = now, pd.joy = Math.min(100, (pd.joy ?? 50) + 8), pd.plays = (pd.plays ?? 0) + 1;
-    petSay(`${pd.name} pula e rola de alegria! \u2665 Felicidade ${pd.joy}%.`, "good");
+    __petPlayAt = now, pd.joy = Math.min(100, (pd.joy ?? 50) + 8), pd.plays = (pd.plays ?? 0) + 1, __petPlayKind = pd.plays % 5, __petPlayDir = Math.cos(j.world?.player?.facing ?? 0) >= 0 ? 1 : -1;
+    petSay(`${pd.name} ${["pula de alegria", "gira atr\u00E1s do pr\u00F3prio rabo", "corre para buscar o graveto", "rola no ch\u00E3o", "uiva para a lua"][__petPlayKind]}! \u2665 Felicidade ${pd.joy}%.`, "good");
     try { j.saveGameQuiet(); } catch {}
   }
   function petBox(id, w) {
@@ -13792,8 +13808,29 @@ Error generating stack: ` + n.message + `
   function os(e) {
     let t = Hv.get(e);
     if (t) return t;
+    if (CX_[e]) { try { t = cxIcon(e); Hv.set(e, t); return t; } catch (err) { } }
     let a = new Me(ir, ir), n = $(e);
     return n ? n.kind === "weapon" ? jM(a, n) : n.kind === "armor" ? BM(a, n) : n.kind === "accessory" ? IM(a, n) : n.kind === "back" ? BKI(a, n) : n.kind === "headTop" || n.kind === "headMid" || n.kind === "headLow" ? UM(a, n) : n.kind === "consumable" ? VM(a, n) : n.kind === "card" ? XM(a, n) : n.kind === "ammo" ? $M(a, n) : n.kind === "quest" ? Ov(a) : n.socket || he(n.id, "runa") ? QM(a, n) : YM(a, n) : Ov(a), (() => { let m_ = /_t(\d+)$/.exec(e); if (!m_) return; let ti_ = (+m_[1] - 16) / 8, k_ = ti_ >= 9 ? 5 : ti_ >= 6 ? 4 : ti_ >= 3 ? 3 : ti_ >= 1 ? 2 : 1, pc_ = P(ti_ >= 6 ? 16777215 : 15254090); for (let q_ = 0; q_ < k_; q_++) a.dot(3 + q_ * 3, 29, pc_), a.dot(3 + q_ * 3, 30, pc_); })(), a.outline(), t = a.toCanvas(), Hv.set(e, t), t;
+  }
+  var CXB_ = {};
+  function cxBox(dir) {
+    if (CXB_[dir]) return CXB_[dir];
+    const r = ROX2(R4({ base: "berserker", hair: 3, sx: "m" }), dir, -1, 0, ""), cv = r.cv, d = cv.getContext("2d").getImageData(0, 0, cv.width, cv.height).data;
+    let x0 = 1e9, x1 = -1, y0 = 1e9, y1 = -1;
+    for (let y = 0; y < cv.height; y++) for (let x = 0; x < cv.width; x++) if (d[(y * cv.width + x) * 4 + 3] > 40) { if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y; }
+    return CXB_[dir] = { x0, x1, y0, y1, H: y1 - y0 + 1, cx: (x0 + x1) / 2 };
+  }
+  function cxIcon(id) {
+    const it = Wa[id], k = it.kind, look = { base: "berserker", hair: 3, sx: "m" };
+    if (k === "headTop") look.top = it.headStyle; else if (k === "headMid") look.mid = it.headStyle; else if (k === "headLow") look.low = it.headStyle; else look.bk = it.backStyle;
+    const dir = k === "back" ? "up" : "down", B = cxBox(dir), cv = ROX2(R4(look), dir, -1, 0, "").cv;
+    const out = document.createElement("canvas"); out.width = out.height = 64; const g = out.getContext("2d"); g.imageSmoothingEnabled = false;
+    let sw, sx, sy;
+    if (k === "back") { sw = B.H * 1.08; sx = B.cx - sw / 2; sy = B.y0 - B.H * .12; }
+    else if (k === "headTop") { sw = B.H * .52; sx = B.cx - sw / 2; sy = B.y0 - sw * .4; }
+    else if (k === "headMid") { sw = B.H * .26; sx = B.cx - sw / 2; sy = B.y0 + B.H * .08; } else { sw = B.H * .3; sx = B.cx - sw / 2; sy = B.y0 + B.H * .11; }
+    g.drawImage(cv, sx, sy, sw, sw, 0, 0, 64, 64);
+    return out;
   }
   var KM = { golpe_runico: "slash", salto_trovao: "dash", redemoinho: "nova", furia_lobo: "wolf", golpe_escudo: "shield", investida_escudo: "dash", muralha: "shield", juramento_tyr: "nova", tiro_certeiro: "bolt", armadilha_skadi: "trap", chuva_flechas: "volley", flecha_perfurante: "pierce", lanca_gelo: "ice", raio_trovao: "lightning", tempestade_runas: "nova", meteoro_muspel: "meteor", lanca_divina: "spear", voo_valquiria: "wing", cura_valquirica: "heal", ressuscitar: "ankh", nota_dissonante: "resonance", balada_cura: "note", cancao_batalha: "buff", requiem: "lightning" }, FM = { cone: "slash", line: "dash", nova: "nova", buff: "buff", projectile: "bolt", meteor: "meteor", volley: "volley", chain: "lightning", heal: "heal", resurrect: "ankh" }, Bv = { slash: 15228970, shield: 4885224, wolf: 13148240, dash: 8050943, nova: 15254090, buff: 15900720, bolt: 8050776, trap: 10477823, volley: 8050776, pierce: 8050776, ice: 9425136, lightning: 16048202, meteor: 16742954, spear: 14673646, wing: 15265010, heal: 5824650, ankh: 15254090, note: 15900720, resonance: 12607720 }, ZM = { redemoinho: 15228970, juramento_tyr: 6992127, tempestade_runas: 10516712, salto_trovao: 15915082, investida_escudo: 8040703, voo_valquiria: 15265010, requiem: 15228970, golpe_runico: 16747066, lanca_divina: 16773296 };
   function Iv(e, t, a) {
@@ -15574,7 +15611,7 @@ void main() {
     }
     return { w: t.w, h: t.h, data: ae };
   }
-  typeof location < 'u' && location.search.includes('debug') && (window.__game = () => ({ WB, j, Ce, Ua, Yu, ty, I8, tr, U8, ap, Dr, Jy, Rb, Cc, _p, Ua, en, Jt, nr, He, It }), window.__defs = () => Object.values(Qu), window.__items = () => Wa, window.__maps = () => Jt, window.__data = () => ({ Or, RQ: typeof RQ < 'undefined' ? RQ : [], REALM_Q: typeof REALM_Q < 'undefined' ? REALM_Q : [], CRAFT_REC: typeof CRAFT_REC < 'undefined' ? CRAFT_REC : [], cv, Qm, D8, Q8, Ep, Ir, kp }), window.__sprDbg = () => ({ cs, po, fa, hh, R4, ea, ROXQM, O4, P0, Vl }), window.__spr2 = () => ({ O4, _4 }));
+  typeof location < 'u' && location.search.includes('debug') && (window.__petPlay = () => { __petPlayAt = 0; petPlay(); }), (window.__cxIcon = (id) => cxIcon(id).toDataURL()), (window.__cxFull = (id, dir) => { const it = Wa[id], look = { base: "berserker", hair: 3, sx: "m" }; if (it.kind === "back") look.bk = it.backStyle; else look.top = it.headStyle; return ROX2(R4(look), dir, -1, 0, "").cv.toDataURL(); }), typeof location < 'u' && location.search.includes('debug') && (window.__game = () => ({ WB, j, Ce, Ua, Yu, ty, I8, tr, U8, ap, Dr, Jy, Rb, Cc, _p, Ua, en, Jt, nr, He, It }), window.__defs = () => Object.values(Qu), window.__items = () => Wa, window.__maps = () => Jt, window.__data = () => ({ Or, RQ: typeof RQ < 'undefined' ? RQ : [], REALM_Q: typeof REALM_Q < 'undefined' ? REALM_Q : [], CRAFT_REC: typeof CRAFT_REC < 'undefined' ? CRAFT_REC : [], cv, Qm, D8, Q8, Ep, Ir, kp }), window.__sprDbg = () => ({ cs, po, fa, hh, R4, ea, ROXQM, O4, P0, Vl }), window.__spr2 = () => ({ O4, _4 }));
   var c4 = [1, -1, 0, 0, 1, -1, 1, -1], u4 = [0, 0, 1, -1, 1, -1, -1, 1];
   function d4(e, t, a, n) {
     let o = A.RX(a).mul(A.RY(t)), r = o.r, i = 1e9, s = -1e9, l = 1e9, c = -1e9;
@@ -16970,9 +17007,18 @@ void main() {
   }
   var uo = { lw: 80, lh: 112, lax: 40, lay: 100, pxu: 30 }, vE = { ax: uo.lax, ay: uo.lay };
 /*__ROX__*/
+  { const KD = { top: "headTop", mid: "headMid", eyes: "headMid", low: "headLow", back: "back" }, LB = { top: "Cabe\xE7a (topo)", mid: "Rosto", eyes: "Olhos", low: "Cabe\xE7a (baixo)", back: "Costas" };
+    if (typeof ROX2 !== "undefined" && ROX2.CAT) for (const [grp, arr] of Object.entries(ROX2.CAT)) for (const [id, name, rar] of arr) {
+      const iid = "cx_" + id; CX_[iid] = { grp, id, rar };
+      Wa[iid] = { id: iid, name, kind: KD[grp], rarity: rar, reqLevel: 1, stack: 1, sell: 1, desc: LB[grp] + ": " + name + ". Apenas visual.", cosmetic: true };
+      if (grp === "back") Wa[iid].backStyle = id; else Wa[iid].headStyle = id;
+    } }
+  { const MT = [["pele_lobo","presa_javali","sucata_goblin","erva_vermelha","erva_azul"],["pelo_yeti","osso_gelido","presa_gelo","gema_azul","erva_espinhosa"],["pelagem_lunar","runa_forca","runa_vigor","runa_mente","gema_azul"],["runa_egide","coracao_de_gelo","pelagem_lunar","runa_mente","runa_forca"]], RI = { common: 0, uncommon: 1, rare: 1, epic: 2, legendary: 3 }; let n = 0;
+    for (const [iid, c] of Object.entries(CX_)) { const w = Wa[iid], r = RI[c.rar] ?? 0, pool = MT[r], k = n++; const a = pool[k % 5], b2 = pool[(k + 2) % 5], big = r >= 2;
+      RQ.push({ id: "vx_" + c.id, kind: "look", name: w.name, desc: "", need: big ? [[a, 6 + r * 2], [b2, 3 + r], [MT[3][k % 5], 1 + (r > 2 ? 1 : 0)]] : [[a, 8 + r * 6], [b2, 4 + r * 4]], reward: iid }); } }
 var QCACHE = /* @__PURE__ */ new Map();
 function ROXQM(f, c, s, l, def, ex) {
-  if (!["wolf", "frostwolf", "hati", "boar", "yeti", "blob", "goblin", "draugr", "cinder", "automaton", "sylvan", "prism", "sentinel", "voidling", "jotun", "grifo", "corvo"].includes(f) || typeof ROX === "undefined" || typeof location < "u" && /[?&]old\b/.test(location.search)) return null;
+  if (!["wolf", "frostwolf", "hati", "boar", "horse", "yeti", "blob", "goblin", "draugr", "cinder", "automaton", "sylvan", "prism", "sentinel", "voidling", "jotun", "grifo", "corvo"].includes(f) || typeof ROX === "undefined" || typeof location < "u" && /[?&]old\b/.test(location.search)) return null;
   if (typeof ROX2M !== "undefined" && !(typeof location < "u" && /[?&]old2\b/.test(location.search))) { try { const r2 = ROX2M.mon(f, c, s, l, def, ex); if (r2) return r2; } catch (err) { if (!window.__rox2merr) { window.__rox2merr = 1; console.warn("ROX2M", err); } } }
   let key = `${f}:${def.id}:${c}:${s}:${l}`, h = QCACHE.get(key);
   if (h) return h;
@@ -17176,7 +17222,9 @@ function ROXQM(f, c, s, l, def, ex) {
       tp && Object.assign(t, tp), t.ti = e.ti || 0;
     }
     e.ep && (t.epic = true);
-    if (e.mid && e.mid.startsWith("eye_")) { t.eye = EYEC[e.mid]; e = { ...e, mid: void 0 }; }
+    if (e.mid && ROX2.COSX.eyes[e.mid]) { const ey = ROX2.COSX.eyes[e.mid]; t.eye = ey.col; t.eyePat = ey.pat; if (ey.col2 != null) t.eye2 = ey.col2; e = { ...e, mid: void 0 }; }
+    else if (e.mid && e.mid.startsWith("eye_")) { t.eye = EYEC[e.mid]; e = { ...e, mid: void 0 }; }
+    if (e.bk && !BACKS[e.bk] && ROX2.COSX.back[e.bk]) { t.eqBack = true; t.bkx = e.bk; delete t.cape; delete t.quiver; delete t.wingsBack; }
     return e.hair !== void 0 && !Number.isNaN(e.hair) && (t.hair = xh[e.hair % xh.length]), e.hs && (t.hairStyle = e.hs, /^v\d+$/.test(e.hs) && HV50[Number(e.hs.slice(1)) - 1] && (t.hvp = HV50[Number(e.hs.slice(1)) - 1], t.hairStyle = "short")), e.hc !== void 0 && !Number.isNaN(e.hc) && (t.hair = e.hc, t.eye === void 0 && (t.eye = (((e.hc >> 16 & 255) + 40 > 255 ? 255 : (e.hc >> 16 & 255) + 40) << 16) | (((e.hc >> 8 & 255) + 40 > 255 ? 255 : (e.hc >> 8 & 255) + 40) << 8) | ((e.hc & 255) + 40 > 255 ? 255 : (e.hc & 255) + 40))), e.gear && (t.gear = e.gear), e.top && (t.head = e.top, t.eqHead = e.top), e.mid && (t.mid = e.mid), e.low && (t.low = e.low), e.sx === "f" && (t.slim = true, e.hs || (t.hairStyle = "long")), e.bk && BACKS[e.bk] && (t.eqBack = true, BACKS[e.bk].type === "cape" ? t.cape = BACKS[e.bk].c : BACKS[e.bk].type === "quiver" ? t.quiver = true : t.wingsBack = [BACKS[e.bk].c, BACKS[e.bk].c2]), t;
   }
   {
@@ -18018,6 +18066,7 @@ function ROXQM(f, c, s, l, def, ex) {
       return o;
     }
     onPointerDown = (t) => {
+      if (t.button === 0 && window.__petHit && this.store.ps?.petData) { let hp0 = window.__petHit, np0 = this.toScreenPt(t.clientX, t.clientY); if (Math.hypot(np0.x - hp0.x, np0.y - hp0.y) <= hp0.r) { petPlay(); return; } }
       if (t.button === 2 && t.pointerType === "mouse") {
         if (t.shiftKey && this.store.ps?.petData && this._pet) { let sp = this.toScreenPt(t.clientX, t.clientY), wp = Gu(sp.x, sp.y); this._petHold = { x: wp.x, y: wp.y }; return; }
         let hp = window.__petHit, np = hp && this.toScreenPt(t.clientX, t.clientY);
@@ -18858,16 +18907,17 @@ function ROXQM(f, c, s, l, def, ex) {
       if (n.save(), n.globalAlpha = c ? 0.3 : 1, c) n.translate(r.x, r.y), n.rotate(Math.PI / 2), N4(() => nt(n, u, 0, 0, l, $a, $a));
       else {
         this.blob(r.x, r.y + 4, 15), a.ps.level >= 99 && this.epicFx(r.x, r.y, 0);
-        var mnt = a.ps.mount && a.ps.mountOwned, moff = mnt ? (a.sitting ? 34 : 46) : 0, atkM = this.clock - i.atkAt < Math.max(260, i.atkDur || 0), pl2 = 0, play2 = false, jy2 = 0;
+        var mnt = a.ps.mount && a.ps.mountOwned, moff = mnt ? (a.sitting ? 30 : 38) : 0, atkM = this.clock - i.atkAt < Math.max(260, i.atkDur || 0), pl2 = 0, play2 = false, jy2 = 0;
         let m = this.organic(i, o.facing, { moving: i.moving, atkT: this.clock - i.atkAt, atkImpact: i.atkImpact, atkDur: i.atkDur, breath: a.sitting ? 8e-3 : 0.011 });
         a.sitting && (m.dx = 0, m.dy = 0, m.rot *= 0.3);
         a.sitting || (m.rot += (this._cap?.a ?? 0) * (a.ps.equipment.back ? 0.25 : 1));
-        nt(n, u, r.x + m.dx, r.y + 6 + m.dy - moff + jy2, l, $a * m.sx, $a * m.sy, m.rot);
-        a.ps.equipment.headTop === "poring_saltitante" && drawPoring(n, r.x + m.dx, r.y + 6 + m.dy - moff + (a.sitting ? 13 : 0), 1, this.clock, s, l);
         if (mnt) {
-          let mw = ROXQM("boar", s, i.moving ? Math.floor(i.phase * ea) : -1, atkM ? 1 : 0, { id: "montaria" + (a.ps.dye || 0), color: a.ps.dye || 9332298 }), lun = atkM ? Math.sin(Math.min(1, (this.clock - i.atkAt) / Math.max(260, i.atkDur || 0)) * Math.PI) : 0;
+          let mw = ROXQM("horse", s, i.moving ? Math.floor(i.phase * ea) : -1, atkM ? 1 : 0, { id: "montaria" + (a.ps.dye || 0), color: a.ps.dye || 9332298 }), lun = atkM ? Math.sin(Math.min(1, (this.clock - i.atkAt) / Math.max(260, i.atkDur || 0)) * Math.PI) : 0;
           mw && nt(n, mw, r.x, r.y + 10 - lun * 4, l, $a * 1.2 * (a.sitting ? 1.04 : 1) * (1 + lun * 0.08), $a * 1.2 * (a.sitting ? 0.78 : 1) * (1 - lun * 0.04));
         }
+        nt(n, u, r.x + m.dx, r.y + 6 + m.dy - moff + jy2, l, $a * m.sx, $a * m.sy, m.rot);
+        a.ps.equipment.headTop === "poring_saltitante" && drawPoring(n, r.x + m.dx, r.y + 6 + m.dy - moff + (a.sitting ? 13 : 0), 1, this.clock, s, l);
+        if (mnt && !d) { const sd = { down: [0, -58, -9, -50], dq: [l ? -34 : 34, -62, l ? 8 : -8, -52], side: [l ? -44 : 44, -68, l ? -7 : 7, -50], uq: [l ? -18 : 18, -70, l ? 5 : -5, -54], up: [0, -72, 0, -56] }[s] || [0, -60, 0, -50], bob = i.moving ? Math.sin(i.phase * 6.283) * 1.6 : Math.sin(this.clock / 600) * 0.6; n.save(); n.lineCap = "round"; for (const hs of s === "down" || s === "up" ? [-1, 1] : [1]) { const hxp = r.x + sd[2] * (s === "down" || s === "up" ? -hs * 0.8 : 1) , hyp = r.y + sd[3] + bob, mxp = r.x + sd[0] + (s === "down" || s === "up" ? hs * 4 : 0), myp = r.y + sd[1] + 21; n.strokeStyle = "#3a1e0e"; n.lineWidth = 2.6; n.beginPath(); n.moveTo(hxp, hyp); n.quadraticCurveTo((hxp + mxp) / 2, Math.max(hyp, myp) + 6 + bob, mxp, myp); n.stroke(); n.strokeStyle = "#a8683a"; n.lineWidth = 1.2; n.stroke(); n.fillStyle = "#e8d49a"; n.fillRect(mxp - 1.5, myp - 1.5, 3, 3); n.fillStyle = "#f2d6b0"; n.beginPath(); n.arc(hxp, hyp, 2.4, 0, 6.283); n.fill(); } n.restore(); }
         a.ps.level >= 99 && this.epicFx(r.x, r.y, 1);
       }
       if (n.restore(), !c) {
@@ -18974,11 +19024,16 @@ function ROXQM(f, c, s, l, def, ex) {
       {
           let pd = a.ps.petData, pt = this._pet || (this._pet = { x: o.pos.x - 30, y: o.pos.y + 20, f: 0 }), hd = this._petHold && Math.hypot(o.pos.x - this._petHold.x, o.pos.y - this._petHold.y) < 380 ? this._petHold : (this._petHold = null), tx = hd ? hd.x : o.pos.x - Math.cos(o.facing) * 34 + 14, ty = hd ? hd.y : o.pos.y - Math.sin(o.facing) * 34 + 18, dx = tx - pt.x, dy = ty - pt.y, dd = Math.hypot(dx, dy);
           if (dd > 400) pt.x = tx, pt.y = ty; else if (dd > 6) pt.x += dx * 0.09, pt.y += dy * 0.09, pt.f = Math.atan2(dy, dx);
-          let pl = Date.now() - __petPlayAt, play = pl >= 0 && pl < 2600, pm = dd > 12 && !play, pr = ce(pt.x, pt.y), face = play ? [0, 0.8, 1.57, 2.4, 3.14, 2.4, 1.57, 0.8][Math.floor(pl / 170) % 8] : pt.f, { dir: pd2, flip: pf } = Kl(face), ps2 = ROXQM("wolf", pd2, pm ? Math.floor(this.clock / 90 % ea) : -1, 0, { id: "filhote", color: 13026744 }), jy = play ? -Math.abs(Math.sin(pl / 130)) * 16 : 0;
+          let pl = Date.now() - __petPlayAt, play = pl >= 0 && pl < (__petPlayKind === 2 ? 2700 : 2600), pa = play ? petAnim(pl, __petPlayKind, pt.f) : null, pm = (dd > 12 && !play) || !!(pa && pa.run), pr = ce(pt.x, pt.y), { dir: pd2, flip: pf } = Kl(pa ? pa.face : pt.f), PS = 0.64, ps2 = ROXQM("wolf", pd2, pm ? Math.floor(this.clock / 90 % ea) : -1, 0, { id: "filhote", color: 13026744 }), jy = pa ? pa.jy : 0, pox = pa ? pa.ox : 0;
           if (ps2) {
-            this.blob(pr.x, pr.y + 3, 7 + (play ? jy * 0.1 : 0)), nt(n, ps2, pr.x, pr.y + 4 + jy, pf, $a * 0.48, $a * 0.48), (() => { let np = this.toScreenPt(this.ptr.x, this.ptr.y); Math.hypot(np.x - pr.x, np.y - (pr.y - 8)) < 26 && this.text(pd.name, pr.x, pr.y - 24, 11, "#ffe9a8"); })()
-            if (play) for (let q = 0; q < 3; q++) { let tt = (pl / 900 + q / 3) % 1; this.text("\u2665", pr.x + Math.sin(q * 2.1 + pl / 300) * 12, pr.y - 26 - tt * 30, 12, `rgba(255,120,160,${1 - tt})`); }
-            window.__petHit = { x: pr.x, y: pr.y - 8, r: 24 };
+            this.blob(pr.x + pox, pr.y + 3, 8 + (play ? jy * 0.1 : 0));
+            nt(n, ps2, pr.x + pox, pr.y + 4 + jy, pf, $a * PS, $a * PS, pa ? pa.rot : 0);
+            if (pa && (pa.stick || pa.carry)) { const sxp = pa.carry ? pr.x + pox + (__petPlayDir > 0 ? -12 : 12) : pr.x + (pa.stick.x), syp = pa.carry ? pr.y - 12 + jy : pr.y - 8 + pa.stick.y; n.save(); n.translate(sxp, syp); n.rotate(pa.carry ? 0.3 : pa.stick.r); n.fillStyle = "#6a4020"; n.fillRect(-9, -1.5, 18, 3); n.fillStyle = "#8a5a2c"; n.fillRect(-9, -1.5, 18, 1); n.restore(); }
+            if (pa && pa.fx === 3) for (let q = 0; q < 5; q++) { const tt = ((pl / 500 + q / 5) % 1); n.fillStyle = `rgba(190,170,130,${0.5 * (1 - tt)})`; n.beginPath(); n.arc(pr.x + pox + (q - 2) * 7 * (0.6 + tt), pr.y + 2 - tt * 10, 2 + tt * 3, 0, 6.283); n.fill(); }
+            (() => { let np = this.toScreenPt(this.ptr.x, this.ptr.y); Math.hypot(np.x - (pr.x + pox), np.y - (pr.y - 8)) < 28 && this.text(pd.name, pr.x + pox, pr.y - 32, 11, "#ffe9a8"); })();
+            if (play && pa.fx === 4) for (let q = 0; q < 4; q++) { let tt = (pl / 1100 + q / 4) % 1; this.text(["\u266A", "\u266B"][q % 2], pr.x + pox + (__petPlayDir > 0 ? 14 : -14) + Math.sin(q * 2.1 + pl / 260) * 10, pr.y - 30 - tt * 38, 13, `rgba(255,236,160,${1 - tt})`); }
+            else if (play) for (let q = 0; q < 3; q++) { let tt = (pl / 900 + q / 3) % 1; this.text("\u2665", pr.x + pox + Math.sin(q * 2.1 + pl / 300) * 12, pr.y - 34 - tt * 30, 12, `rgba(255,120,160,${1 - tt})`); }
+            window.__petHit = { x: pr.x + pox, y: pr.y - 10, r: 30 };
           }
       }
     }
@@ -20203,10 +20258,10 @@ function ROXQM(f, c, s, l, def, ex) {
       loop(); let b = setTimeout(x, 250); return () => (alive = false, cancelAnimationFrame(raf), clearTimeout(b));
     }, [key, dir]);
     if (!t || !f) return null;
-    let setSlot = (k, id) => setEq((q) => ({ ...q, [k]: q[k] === id ? void 0 : id })), tabs = [["hair", "Cabelo"], ["top", "Cabe\u00E7a"], ["mid", "Rosto"], ["low", "Boca"], ["back", "Costas"], ["weapon", "Armas"], ["dye", "Cores"]];
-    let items = (k, list) => Hh("div", { className: "sty-row sty-grid" }, ...list.map((x) => Hh("button", { key: x.id, className: `btn btn-small${eq[k] === x.id ? " on" : ""}`, onClick: () => setSlot(k, x.id) }, Hh(Aa, { id: x.id, size: 20 }), " ", x.name)), list.length === 0 && Hh("span", { className: "muted" }, "Nenhum."));
+    let setSlot = (k, id) => setEq((q) => ({ ...q, [k]: q[k] === id ? void 0 : id })), tabs = [["hair", "Cabelo"], ["top", "Cabe\u00E7a"], ["mid", "Rosto"], ["low", "Boca"], ["back", "Costas"], ["dye", "Cores"]];
+    let items = (k, list) => Hh("div", { className: "pv-win" }, Hh("h4", null, "Itens (", list.length, ") \u00B7 2 cliques para equipar/desequipar"), Hh("div", { className: "pv-grid" }, ...list.map((x) => Hh("div", { key: x.id, role: "button", tabIndex: 0, title: x.name, className: `pv-card r-${x.rarity}${eq[k] === x.id ? " on" : ""}`, onDoubleClick: () => setSlot(k, x.id), onKeyDown: (ev) => { ev.key === "Enter" && setSlot(k, x.id); } }, Hh(Aa, { id: x.id, size: 44 }), Hh("span", null, x.name))), list.length === 0 && Hh("span", { className: "muted" }, "Nenhum.")));
     let body = tab === "hair" ? Hh("div", null, Hh("h4", null, "Corte (todos)"), Hh("div", { className: "sty-row sty-grid" }, ...zp.filter((h) => h.id !== "short" && h.id !== "long").map((h) => Hh("button", { key: h.id, className: `btn btn-small${hs === h.id ? " on" : ""}`, onClick: () => setHs(h.id) }, h.name))), Hh("h4", null, "Cor do cabelo"), Hh("div", { className: "sty-sw" }, ...Dp.map((h) => Hh("button", { key: h, className: `sw${hc === h ? " on" : ""}`, style: { background: Q0(h) }, onClick: () => setHc(h) }))))
-      : tab === "top" ? items("headTop", byKind("headTop")) : tab === "mid" ? items("headMid", byKind("headMid")) : tab === "low" ? items("headLow", byKind("headLow")) : tab === "back" ? items("back", byKind("back")) : tab === "weapon" ? items("weapon", wpn)
+      : tab === "top" ? items("headTop", byKind("headTop")) : tab === "mid" ? items("headMid", byKind("headMid")) : tab === "low" ? items("headLow", byKind("headLow")) : tab === "back" ? items("back", byKind("back"))
       : Hh("div", null, Hh("h4", null, "Cor da roupa"), Hh("div", { className: "sty-sw" }, ...Op.map((h) => Hh("button", { key: h, className: `sw${dye === h ? " on" : ""}${h === 0 ? " orig" : ""}`, style: h ? { background: Q0(h) } : void 0, onClick: () => setDye(h) }))));
     return Hh("div", { className: "overlay", role: "dialog", "aria-modal": "true", "aria-label": "Teste de Visuais" }, Hh("div", { className: "panel stylist" },
       Hh("header", { className: "panel-head" }, Hh("h2", null, "Teste de Visuais"), Hh("button", { className: "btn btn-small", onClick: () => j.closePanel(), "aria-label": "Fechar" }, "\u2715")),

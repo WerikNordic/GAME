@@ -1,3 +1,11 @@
+## v206 - Visuais, provador, montaria e pet
+- 143 visuais novos: 40 cabeca, 34 rosto/olhos (padroes: gato, dragao, serpente, estrela, runas, heterocromia, vazio, chama), 31 boca, 41 costas (capas, asas naturais emplumadas, espadas, machados, mochilas personalizadas, aljavas). Obtidos por quests de visual (RQ) e testaveis no provador.
+- Provador: sem aba de armas; janela de itens com icone + nome; 2 cliques equipam/desequipam.
+- Olhos novos desenhados na medida do rosto; maos com palma, dedos e polegar; sentar com coxas a frente e joelhos dobrados; cabelo mais justo na cabeca.
+- Personagens e NPCs 20% maiores.
+- Montaria agora e um cavalo; cavaleiro sentado sobre o dorso (sem flutuar) segurando rédeas com a mao.
+- Pet maior (+33%); brincar com 5 animacoes diferentes (pular, girar, buscar graveto, rolar, uivar); clique esquerdo no pet tambem brinca.
+
 ## v205 - Regras e UI
 - Removido o botao "Distribuir automaticamente": cada jogador faz sua build.
 - Consumiveis podem ser usados mesmo com HP/SP cheios.

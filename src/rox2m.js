@@ -80,6 +80,10 @@ var ROX2M = (() => {
  reg('javali',{name:'Javali',w:84,h:64,gy:56,sched:[['stand',2.2,6],['paw',2.6,8],['sniff',2.2,8],['stand',1.4,4],['snort',1.8,8],['look',2,8]],build:(E,S,o)=>{
   const r=canid(E,S,o,{L:23,H:13,W:6.4,legL:5.2,legW:2.5,col:hx(0x6a4a34),col2:hx(0x8a6444),stride:4,lift:2,hw:4.4,hh:4,hl:4.4,snoutL:.35,snoutW:.8,snout:hx(0x9a7a64),eye:hx(0xffd040),ears:1,earIn:hx(0x3a2a20),tail:2,tusks:1,hHigh:3,rumpUp:-1.4,pitch0:-.08,belly:1,tex:(mx,my,mz)=>Math.sin(mx*20+mz*8)>.7?hx(0x8a6444):(Math.sin(my*9+mz*5)<-.75?hx(0x3a2a1c):0)});
   for(let i=0;i<7;i++)S({pts:[[0,(r.chY+(r.hpY-r.chY)*(i/6))-7,r.chZ+3-i*3.6],[0,(r.chY+(r.hpY-r.chY)*(i/6))-11-(i%2)*1.5,r.chZ+1.4-i*3.6]],w:[2.4,.6],col:hx(0x2a2018)})}});
+ reg('cavalo',{name:'Cavalo',w:110,h:96,gy:88,sched:[['stand',2.4,6],['graze',3,8],['stand',1.6,5],['look',2.4,8],['snort',1.8,8],['stand',1.4,4]],build:(E,S,o)=>{
+  const r=canid(E,S,o,{L:38,H:15,W:6,legL:21,legW:2.5,col:hx(0x8a5a3a),col2:hx(0x6a4028),stride:6.5,lift:3.6,hw:3.9,hh:4.4,hl:7.6,snoutL:.7,snoutW:.7,snout:hx(0x7a4c30),eye:hx(0x1a1210),ears:1,earIn:hx(0x4a2a1c),tail:1,tailW:4.2,tailTip:hx(0x2a1a14),hHigh:-15,pitch0:-.6,belly:1,paw:hx(0xe8dcc0)});
+  const nb=[0,r.chY-15*.3-1,r.chZ+38*.08];for(let i=0;i<6;i++){const u=i/5,p0=L3(nb,r.hd,.12+u*.7);S({pts:[[p0[0],p0[1]-1,p0[2]-1.2],[p0[0],p0[1]+3.4,p0[2]-3.6]],w:[3.2,1],col:hx(0x2a1a14)})}
+  S({pts:[[0,r.chY-6,r.hd[2]-5],[0,r.hd[1]-1,r.hd[2]-1.6]],w:[2.4,1.4],col:hx(0x2a1a14)})}});
  // ---------- bipedes ----------
  function biped(E,S,o,p){
   const s=p.sc||1,g=o.g,b=o.beh||'',w=o.bw||0,ph=o.ph||0,walk=o.ph?1:0,k=o.k||0,T=o.t,PP=p.pp||3.4;
@@ -232,7 +236,7 @@ var ROX2M = (() => {
   for(const sx of[-1,1])S({pts:[[sx*2,y0+6,z0],[sx*2,y0+10,z0+2+(kk>0?2:0)],[sx*2.4,y0+12,z0+3]],w:[1.4,1],col:hx(0xe0a838)});
   for(let i=0;i<3;i++){const u=(o.t*.8+i*.33)%1;E({x:Math.sin(i*5)*12,y:o.g-u*20,z:-5,rx:.8,ry:.8,rz:.8,p:4,col:hx(0x9a8aff),bias:1})}}});
  // ---------- mapeamento shape -> especie ----------
- const SHAPES={wolf:['lobo',.5,1.9],frostwolf:['lobogelo',.6,1.9],hati:['warg',.35,2],boar:['javali',.5,2.0],yeti:['yeti',.7,1.35],blob:['gosma',.85,1.9],goblin:['goblin',.3,2],draugr:['draugr',.3,1.75],cinder:['imp',.55,1.7],automaton:['golemmetal',.75,1.2],sylvan:['sylvan',.7,1.3],prism:['golemprisma',.8,1.1],sentinel:['golempedra',.6,1.2],voidling:['espectro',.85,1.1],jotun:['troll',.5,1.5],grifo:['corvo',.35,1.8],corvo:['corvo',0,1.6]};
+ const SHAPES={wolf:['lobo',.5,1.9],frostwolf:['lobogelo',.6,1.9],hati:['warg',.35,2],boar:['javali',.5,2.0],horse:['cavalo',.25,1.7],yeti:['yeti',.7,1.35],blob:['gosma',.85,1.9],goblin:['goblin',.3,2],draugr:['draugr',.3,1.75],cinder:['imp',.55,1.7],automaton:['golemmetal',.75,1.2],sylvan:['sylvan',.7,1.3],prism:['golemprisma',.8,1.1],sentinel:['golempedra',.6,1.2],voidling:['espectro',.85,1.1],jotun:['troll',.5,1.5],grifo:['corvo',.35,1.8],corvo:['corvo',0,1.6]};
  const DIRS={down:0,dq:1,side:2,uq:3,up:4};
  const lumOf=(c)=>(c[0]+c[1]+c[2])/765;
  function mkTint(rgb,k){const tl=lumOf(rgb)||.5;return (c)=>{if(!Array.isArray(c))return c;const s=lumOf(c)/tl;return mix(c,[Math.min(255,rgb[0]*s),Math.min(255,rgb[1]*s),Math.min(255,rgb[2]*s)],k)}}

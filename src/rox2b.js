@@ -61,10 +61,10 @@
         o.bob = kf(u, [[0, 0], [.16, 1], [.3, -1.8], [.5, -1.2], [1, 0]]); o.leg[1].z = kf(u, [[0, 0], [.3, 8], [.6, 8], [1, 0]]); o.leg[0].z = kf(u, [[0, 0], [.3, -5], [.6, -4], [1, 0]]); o.leg[0].x = o.leg[1].x = 1.8; o.sx = kf(u, [[0, 0], [.16, 1], [.3, -1.2], [1, 0]]);
       }
     } else if (anim === 5) {
-      o.bob = -8 + (PA ? 0 : MG ? 1.2 + 1.2 * S(t * 2.618) : 0) + br * .25;
+      o.bob = -7 + (PA ? 0 : MG ? 1.2 + 1.2 * S(t * 2.618) : 0) + br * .25;
       if (PA) { o.lean = -.4; o.leg[0] = { z: 8.5, l: 0, ky: 6.5, kz: .6, x: 1.4, kx: .4 }; o.leg[1] = { z: 8.5, l: 0, ky: 6.5, kz: .6, x: 1.4, kx: .4 }; o.arm[0] = { x: 8.4, y: 9.2, z: 5.6 }; o.arm[1] = { x: 8.4, y: 9.2, z: 5.6 }; o.hx = S(t * 2.618) * 1; o.hz = -.2; }
-      else if (AS) { o.lean = -1.6; o.sx = -.6; o.leg[0] = { z: 13, l: 0, x: 1.4 }; o.leg[1] = { z: 5.4, l: 0, ky: 10, kz: -1.2, x: 1.6, kx: .6 }; o.arm[1] = { x: 8.6, y: 9.4, z: 3.6 }; o.arm[0] = { x: 12, y: 20, z: -3.4 }; o.hy = .8 + S(t * 2.618) * .4; o.hx = S(t * 2.618) * 1.6; o.hz = 1; }
-      else { o.lean = .2; o.leg[0] = { z: 6, l: 0, ky: 1.2, kz: 2.6, x: -2.6, kx: 5 }; o.leg[1] = { z: 6, l: 0, ky: 1.2, kz: 2.6, x: -2.6, kx: 5 }; o.arm[0] = { x: 10.8, y: 18.6, z: 5 }; o.arm[1] = { x: 10.8, y: 18.6, z: 5 }; o.hy = .4 + S(t * 2.618) * .4; o.mood = 0; }
+      else if (AS) { o.lean = -1.6; o.sx = -.6; o.leg[0] = { z: 8.5, l: 0, ky: 6.5, kz: .6, x: 1.5, kx: .4 }; o.leg[1] = { z: 8.5, l: 0, ky: 6.5, kz: .6, x: 1.5, kx: .4 }; o.arm[1] = { x: 8.6, y: 9.4, z: 3.6 }; o.arm[0] = { x: 8.6, y: 9.4, z: 3.6 }; o.hy = .8 + S(t * 2.618) * .4; o.hx = S(t * 2.618) * 1.6; o.hz = 1; }
+      else { o.lean = .2; o.leg[0] = { z: 8.5, l: 0, ky: 6.5, kz: .6, x: 1.5, kx: .4 }; o.leg[1] = { z: 8.5, l: 0, ky: 6.5, kz: .6, x: 1.5, kx: .4 }; o.arm[0] = { x: 8.4, y: 9.2, z: 5.6 }; o.arm[1] = { x: 8.4, y: 9.2, z: 5.6 }; o.hy = .4 + S(t * 2.618) * .4; o.mood = 0; }
     }
     return o;
   }
@@ -88,7 +88,14 @@
       const dx = (az - s * .40) / .18, dy = (el - .2) / .22, r = dx * dx + dy * dy;
       if (r < 1) {
         if (dy < -.62) return [26, 16, 30]; if (dy > .78) return dk(cfg.skin, .78);
-        if (Math.abs(dx) < .66) { const hx_ = (dx * -s) > .05 && dy < -.05 && dy > -.5 && Math.abs(dx) > .12; if (hx_) return [255, 255, 255]; if (dy > .35) return cfg.eyeL; if (dy < -.25) return dk(cfg.eye, .55); return cfg.eye; }
+        if (Math.abs(dx) < .66) { const pt = cfg.eyePat, ic = (pt === "hetero" && s > 0 && cfg.eye2) ? cfg.eye2 : cfg.eye, rr = dx * dx + dy * dy;
+          if (pt === "slit" && Math.abs(dx) < .2 && dy > -.7 && dy < .7) return [14, 10, 16];
+          if (pt === "void") return rr < .5 ? [8, 6, 14] : dk(ic, .5);
+          if (pt === "star" && (Math.abs(dx) < .12 || Math.abs(dy) < .12) && rr < .5) return [255, 250, 220];
+          if (pt === "rune" && rr < .42 && rr > .18) return mix(ic, [255, 255, 255], .6);
+          if (pt === "glow" && rr < .5) return mix(ic, [255, 255, 255], .55);
+          if (pt && pt !== "slit" && rr < .1) return [12, 8, 18];
+          const hx_ = (dx * -s) > .05 && dy < -.05 && dy > -.5 && Math.abs(dx) > .12; if (hx_) return [255, 255, 255]; if (dy > .35) return cfg.eyeL; if (dy < -.25) return dk(ic, .55); return ic; }
         return [246, 244, 250];
       }
       if (Math.abs(az - s * .4) < .25 && el > .42 && el < .5) return 0;
@@ -133,7 +140,10 @@
       const sg = i ? 1 : -1, a = P.arm[i];
       const sh = [sg * 8.2 * bk, 38 + bob, tz], h = [sg * a.x * bk, 37 + a.y + bob, tz + a.z], m = [(sh[0] + h[0]) / 2 + sg * 1.2, (sh[1] + h[1]) / 2, (sh[2] + h[2]) / 2 - 1.5];
       S({ pts: [sh, m, h], w: [4.4, 4.4], col: (tt) => tt < .62 ? cfg.sleeve : (cfg.bracer && tt < .95 ? cfg.bracer : (cfg.sleeveLong ? cfg.sleeve : sk)), metal: cfg.metalLimb });
-      E({ x: h[0], y: h[1] + 1, z: h[2] + .3, rx: 2.5, ry: 2.5, rz: 2.5, col: cfg.glove || sk }); hands[i] = { h: [h[0], h[1] + 1, h[2] + .3], m };
+      { const gc = cfg.glove || sk, dxm = h[0] - m[0], dym = h[1] - m[1], dzm = h[2] - m[2], ln = Math.hypot(dxm, dym, dzm) || 1, ux = dxm / ln, uy = dym / ln, uz = dzm / ln;
+        E({ x: h[0] + ux * .8, y: h[1] + 1 + uy * .8, z: h[2] + .3 + uz * .8, rx: 2.1, ry: 2.4, rz: 2.2, p: 3, col: gc });
+        E({ x: h[0] + ux * 2.2, y: h[1] + 1 + uy * 2.2, z: h[2] + .3 + uz * 2.2, rx: 1.7, ry: 1.7, rz: 1.7, col: dk(gc, .92) });
+        E({ x: h[0] - sg * 1.4 + ux, y: h[1] + .2 + uy, z: h[2] + 1.6 + uz, rx: .9, ry: 1.4, rz: 1, col: gc }); } hands[i] = { h: [h[0], h[1] + 1, h[2] + .3], m };
     }
     if (cfg.wpn) cfg.wpn(E, S, { R: hands[1], L: hands[0], P, t, tz, bob, unarmed: !P.armed });
     const hy = 22 + bob, hz = tz;
