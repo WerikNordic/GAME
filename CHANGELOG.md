@@ -37,6 +37,9 @@
 - /guilda, /g, /grupo, /p, /amigo (locais; sem servidor de jogo ainda).
 - ESC nao pausa; tela de entrada nordica; novos efeitos sonoros; sem visual inicial de classe.
 
+## v143
+- Isenborg: novos modelos de trenó e renas (nariz vermelho brilhante) nos quarteirões de gelo/brinquedos; NPC Papai Noel (Guardião do Inverno) na praça.
+
 ## v142
 - Eldvik: sem chuva, sem palmeiras, árvores mortas, sem oásis (cidade devastada). Freyrhain: sem pavimento, só grama, sem postes/estandartes/bancos.
 
