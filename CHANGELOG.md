@@ -1,3 +1,7 @@
+## v194
+- Gelatina/Poring Saltitante ~28% menor e pulo mais baixo, assentado na cabeça do personagem.
+- Deserto (Cidade de Eldvik) agora é uma cidade esquecida: casas, salão, torres, muralhas e tendas em ruínas (paredes quebradas, vigas caídas, entulho e areia), sem postes, bráseiros acesos, bancos, vasos nem estandartes; luz mais pálida. Música triste também em Eldvik.
+
 ## v193
 - Sala VIP agora é um espaço físico: ao falar com a Recepcionista nas cidades, você é teletransportado para o Salão VIP (mapa próprio, interno, sem chuva/noite): piso de mármore, paredes brancas com detalhes dourados e vermelho, colunas, tapete vermelho com medalhão, plataforma com trono, bar com garrafas, baús de ouro, sofás e mesas, plantas, bráseiros e música de salão (harpa).
 - Dentro: a Recepcionista Dourada (passe e regalias) e o mordomo Gunnar (Loja VIP). Portal dourado no fundo volta exatamente para o lugar de onde você veio (guardado no save).

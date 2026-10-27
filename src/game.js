@@ -8180,8 +8180,8 @@ Error generating stack: ` + n.message + `
     for (; r.length < a; ) r.push(T8(t, o));
     return r;
   }
-  var $m = { fountain: { w: 64, h: 48 }, dryfountain: { w: 64, h: 48 }, giftpile: { w: 26, h: 20 }, well: { w: 36, h: 30 }, stall: { w: 72, h: 36 }, lamp: { w: 12, h: 12 }, banner: { w: 12, h: 12 }, statue: { w: 40, h: 36 }, post: { w: 22, h: 18 }, tower: { w: 52, h: 44 }, bench: { w: 44, h: 16 }, cart: { w: 56, h: 32 }, hay: { w: 40, h: 28 }, planter: { w: 34, h: 22 }, pillar: { w: 20, h: 20 }, pillar_broken: { w: 22, h: 20 }, wall: { w: 56, h: 26 }, wall_v: { w: 26, h: 56 }, arch: { w: 64, h: 16 }, tent: { w: 52, h: 38 }, campfire: { w: 24, h: 22 }, runestone: { w: 20, h: 14 }, gravestone: { w: 16, h: 10 }, altar: { w: 42, h: 28 }, obelisk: { w: 20, h: 20 }, longhouse: { w: 120, h: 50 }, magetower: { w: 72, h: 66 }, clocktower: { w: 56, h: 48 }, pyramid: { w: 120, h: 100 }, sphinx: { w: 100, h: 40 }, arena: { w: 190, h: 150 }, lighthouse: { w: 44, h: 40 }, ship: { w: 100, h: 34 }, dock: { w: 124, h: 40 }, totem: { w: 40, h: 30 }, hut: { w: 52, h: 44 }, pagoda: { w: 74, h: 60 }, frosttree: { w: 56, h: 44 }, wbstatue: { w: 56, h: 56 }, sleigh: { w: 50, h: 26 }, reindeer: { w: 32, h: 16 }, xmastree: { w: 56, h: 44 }, snowman: { w: 28, h: 24 }, toyfactory: { w: 154, h: 100 }, santahouse: { w: 150, h: 98 }, santachair: { w: 46, h: 30 }, viprug: { w: 180, h: 390 }, viprugc: { w: 260, h: 260 }, vipportal: { w: 140, h: 140 }, vipcol: { w: 30, h: 30 }, vipwall: { w: 200, h: 30 }, vipwall_v: { w: 30, h: 200 }, vipdais: { w: 440, h: 140 }, vipsofa: { w: 120, h: 44 }, vipsofa_n: { w: 120, h: 44 }, viptable: { w: 56, h: 56 }, vipgold: { w: 70, h: 44 }, vipbar: { w: 230, h: 50 }, vipplant: { w: 28, h: 28 }, toysack: { w: 34, h: 24 }, crypt: { w: 78, h: 60 }, palm: { w: 24, h: 20 }, cactus: { w: 26, h: 20 }, parasol: { w: 60, h: 50 }, spiritlamp: { w: 12, h: 12 }, keep: { w: 170, h: 150 }, palace: { w: 250, h: 100 }, hof: { w: 230, h: 120 }, warrior: { w: 52, h: 44 }, brazier: { w: 18, h: 18 }, forge: { w: 92, h: 36 }, church: { w: 110, h: 70 }, castle: { w: 150, h: 110 }, monument: { w: 44, h: 44 }, bigforge: { w: 120, h: 70 }, colossus: { w: 56, h: 56 }, airship: { w: 84, h: 44 } };
-  var DSC = { palace: 2.3, keep: 2.1, hof: 1.8, longhouse: 1.85, warrior: 1.9, statue: 1.9, fountain: 3.6, dryfountain: 3.6, giftpile: 1.5, tower: 1.7, forge: 1.5, stall: 1.3, tent: 1.5, well: 1.4, cart: 1.2, obelisk: 1.6, altar: 1.4, brazier: 1.3, lamp: 1.15, banner: 1.4, church: 1.7, castle: 2, monument: 2.2, bigforge: 1.8, colossus: 2.4, airship: 1.6, xmastree: 3.4, santahouse: 2.4, santachair: 1.05, toysack: 1.5, wbstatue: 1.7, sleigh: 1.7, reindeer: 1.7, lighthouse: 3.2, clocktower: 2.6, totem: 3.2, magetower: 1.9, pagoda: 2.6, parasol: 3.2, crypt: 2.2, bench: 1.15, runestone: 1.5 };
+  var $m = { fountain: { w: 64, h: 48 }, dryfountain: { w: 64, h: 48 }, giftpile: { w: 26, h: 20 }, well: { w: 36, h: 30 }, stall: { w: 72, h: 36 }, lamp: { w: 12, h: 12 }, banner: { w: 12, h: 12 }, statue: { w: 40, h: 36 }, post: { w: 22, h: 18 }, tower: { w: 52, h: 44 }, bench: { w: 44, h: 16 }, cart: { w: 56, h: 32 }, hay: { w: 40, h: 28 }, planter: { w: 34, h: 22 }, pillar: { w: 20, h: 20 }, pillar_broken: { w: 22, h: 20 }, wall: { w: 56, h: 26 }, wall_v: { w: 26, h: 56 }, arch: { w: 64, h: 16 }, tent: { w: 52, h: 38 }, campfire: { w: 24, h: 22 }, runestone: { w: 20, h: 14 }, gravestone: { w: 16, h: 10 }, altar: { w: 42, h: 28 }, obelisk: { w: 20, h: 20 }, longhouse: { w: 120, h: 50 }, magetower: { w: 72, h: 66 }, clocktower: { w: 56, h: 48 }, pyramid: { w: 120, h: 100 }, sphinx: { w: 100, h: 40 }, arena: { w: 190, h: 150 }, lighthouse: { w: 44, h: 40 }, ship: { w: 100, h: 34 }, dock: { w: 124, h: 40 }, totem: { w: 40, h: 30 }, hut: { w: 52, h: 44 }, pagoda: { w: 74, h: 60 }, frosttree: { w: 56, h: 44 }, wbstatue: { w: 56, h: 56 }, sleigh: { w: 50, h: 26 }, reindeer: { w: 32, h: 16 }, xmastree: { w: 56, h: 44 }, snowman: { w: 28, h: 24 }, toyfactory: { w: 154, h: 100 }, santahouse: { w: 150, h: 98 }, santachair: { w: 46, h: 30 }, ruinhouse: { w: 120, h: 50 }, ruinhall: { w: 230, h: 120 }, ruintower: { w: 52, h: 44 }, ruintent: { w: 52, h: 38 }, ruinwall: { w: 56, h: 26 }, ruinwall_v: { w: 26, h: 56 }, viprug: { w: 180, h: 390 }, viprugc: { w: 260, h: 260 }, vipportal: { w: 140, h: 140 }, vipcol: { w: 30, h: 30 }, vipwall: { w: 200, h: 30 }, vipwall_v: { w: 30, h: 200 }, vipdais: { w: 440, h: 140 }, vipsofa: { w: 120, h: 44 }, vipsofa_n: { w: 120, h: 44 }, viptable: { w: 56, h: 56 }, vipgold: { w: 70, h: 44 }, vipbar: { w: 230, h: 50 }, vipplant: { w: 28, h: 28 }, toysack: { w: 34, h: 24 }, crypt: { w: 78, h: 60 }, palm: { w: 24, h: 20 }, cactus: { w: 26, h: 20 }, parasol: { w: 60, h: 50 }, spiritlamp: { w: 12, h: 12 }, keep: { w: 170, h: 150 }, palace: { w: 250, h: 100 }, hof: { w: 230, h: 120 }, warrior: { w: 52, h: 44 }, brazier: { w: 18, h: 18 }, forge: { w: 92, h: 36 }, church: { w: 110, h: 70 }, castle: { w: 150, h: 110 }, monument: { w: 44, h: 44 }, bigforge: { w: 120, h: 70 }, colossus: { w: 56, h: 56 }, airship: { w: 84, h: 44 } };
+  var DSC = { palace: 2.3, keep: 2.1, hof: 1.8, longhouse: 1.85, warrior: 1.9, statue: 1.9, fountain: 3.6, dryfountain: 3.6, giftpile: 1.5, tower: 1.7, forge: 1.5, stall: 1.3, tent: 1.5, well: 1.4, cart: 1.2, obelisk: 1.6, altar: 1.4, brazier: 1.3, lamp: 1.15, banner: 1.4, church: 1.7, castle: 2, monument: 2.2, bigforge: 1.8, colossus: 2.4, airship: 1.6, xmastree: 3.4, santahouse: 2.4, santachair: 1.05, ruinhouse: 1.85, ruinhall: 1.8, ruintower: 1.7, ruintent: 1.5, toysack: 1.5, wbstatue: 1.7, sleigh: 1.7, reindeer: 1.7, lighthouse: 3.2, clocktower: 2.6, totem: 3.2, magetower: 1.9, pagoda: 2.6, parasol: 3.2, crypt: 2.2, bench: 1.15, runestone: 1.5 };
   for (let e of Object.keys(DSC)) $m[e] && ($m[e].w = Math.round($m[e].w * DSC[e]), $m[e].h = Math.round($m[e].h * DSC[e]));
   function groves(W, H, rng, budget, rockFrac, ok, rockOnly) {
     let PX = 4, PY = 3, GP = 78, BW = (PX - 1) * GP + 60, BH = (PY - 1) * GP + 60, LX = 150, LY = 130, cols = Math.max(1, Math.floor((W - 120) / (BW + LX))), rows = Math.max(1, Math.floor((H - 120) / (BH + LY))), blocks = [], out = [];
@@ -14300,7 +14300,7 @@ Error generating stack: ` + n.message + `
     }
     start(t, a) {
       if (a.mapId === "cidade_isenborg") return this.xmas(t, a);
-      let n = Xv[a.mapId === "lim_deserto" ? "lonely" : a.mapId === "sala_vip" ? "lounge" : a.theme ?? "grass"] ?? Xv.grass, o = tk(a.mapId), r = Oe(o), i = 45 + o % 8, s = n.bpm * (a.night ? 0.86 : 1) * (a.city ? 1.04 : 1) * (a.boss ? 1.12 : 1), l = 60 / s, c = l * 4, d = a.hidden && n.mode === kn.ionian ? kn.dorian : n.mode, f = n.progs[o % n.progs.length], u = a.city ? n.lead === "bell" ? "bell" : o % 2 ? "harp" : "flute" : n.lead, m = n.density * (a.night ? 0.62 : 1) * (a.city ? 1.1 : 1), p = Array.from({ length: 5 }, () => Math.floor(r() * 5) - 1 + (r() < 0.3 ? 2 : 0)), h = [0, 1, 1.5, 2, 2.5, 3, 3.5].filter(() => r() < 0.62 + m * 0.2), x = t.createGain();
+      let n = Xv[a.mapId === "lim_deserto" || a.mapId === "cidade_eldvik" ? "lonely" : a.mapId === "sala_vip" ? "lounge" : a.theme ?? "grass"] ?? Xv.grass, o = tk(a.mapId), r = Oe(o), i = 45 + o % 8, s = n.bpm * (a.night ? 0.86 : 1) * (a.city ? 1.04 : 1) * (a.boss ? 1.12 : 1), l = 60 / s, c = l * 4, d = a.hidden && n.mode === kn.ionian ? kn.dorian : n.mode, f = n.progs[o % n.progs.length], u = a.city ? n.lead === "bell" ? "bell" : o % 2 ? "harp" : "flute" : n.lead, m = n.density * (a.night ? 0.62 : 1) * (a.city ? 1.1 : 1), p = Array.from({ length: 5 }, () => Math.floor(r() * 5) - 1 + (r() < 0.3 ? 2 : 0)), h = [0, 1, 1.5, 2, 2.5, 3, 3.5].filter(() => r() < 0.62 + m * 0.2), x = t.createGain();
       x.gain.value = 0, x.connect(this.master);
       let b = t.createGain();
       b.gain.value = a.night ? 0.85 : 0.6, x.connect(b), b.connect(this.verb), x.gain.setTargetAtTime(1, t.currentTime, 1.6);
@@ -16677,6 +16677,52 @@ void main() {
         for (let [x, y, z] of [[-11, 46, 9], [10, 54, 8], [4, 40, -12], [-6, 62, 6]]) L(n, S(x, y, z), 2.6, 2.6, 2.6, gd, { seg: 8, ring: 5, mat: Ve });
         return n;
       }
+      case "ruinhouse":
+      case "ruinhall": {
+        let hall = t === "ruinhall", W = hall ? 230 : 120, D = hall ? 120 : 52, H = hall ? 52 : 30, rn = (k) => (vr * 7919 + k * 104729) % 1000 / 1000, st = Y(o, 0.9), st2 = Y(o, 0.74), sand = Y(o, 1.2), wd = Y(r, 0.68), seg = hall ? 22 : 15; sand = Y(o, 0.98);
+        O(n, S(0, 3, 0), W + 6, 6, D + 6, Y(o, 0.82), Q);
+        for (let side of [-1, 1]) for (let i = 0, x = -W / 2 + seg / 2; x < W / 2; x += seg, i++) {
+          let hh = H * (0.12 + 0.88 * rn(i * 2 + (side > 0 ? 1 : 7))) * (side > 0 ? 0.72 : 1);
+          if (side > 0 && (i === 2 || i === 3)) hh = 3;
+          O(n, S(x, hh / 2 + 5, side * D / 2), seg - 1.2, hh, 5, i % 2 ? st : st2, Q);
+          hh > 8 && O(n, S(x + (rn(i + 30) - 0.5) * 4, hh + 6.5, side * D / 2 + (rn(i + 40) - 0.5) * 2), seg * 0.5, 3, 4.4, st2, Q);
+        }
+        for (let side of [-1, 1]) for (let j = 0, z = -D / 2 + 8; z < D / 2 - 4; z += 14, j++) {
+          let hh = H * (0.1 + 0.55 * rn(j * 3 + (side > 0 ? 11 : 17)));
+          j === 1 && side < 0 && (hh = 4);
+          O(n, S(side * W / 2, hh / 2 + 5, z), 5, hh, 13, j % 2 ? st : st2, Q);
+        }
+        L(n, S(0, 6, 0), W * 0.42, 6, D * 0.34, sand, { seg: 14, ring: 6, mat: Q }), L(n, S(-W * 0.3, 5, D * 0.2), W * 0.16, 5, D * 0.2, sand, { seg: 10, ring: 5, mat: Q });
+        for (let k = 0, nb = hall ? 6 : 3; k < nb; k++) { let bx = (rn(k + 50) - 0.5) * W * 0.7, bz = (rn(k + 60) - 0.5) * D * 0.6; O(n, S(bx, H * 0.55 + 6, bz).mul(A.RZ((rn(k + 70) - 0.5) * 1.3)), 4, D * 0.7 + 10, 4, wd, Re); }
+        O(n, S(-W * 0.2, 16, -D * 0.1).mul(A.RZ(0.5)), W * 0.22, 3, D * 0.45, wd, Re), O(n, S(W * 0.24, 12, D * 0.05).mul(A.RZ(-0.35)), W * 0.18, 3, D * 0.4, Y(wd, 1.15), Re);
+        for (let k = 0; k < (hall ? 14 : 9); k++) { let a = rn(k + 80) * 6.283, rx = Math.cos(a) * (W / 2 + 4 + rn(k + 90) * 4), rz = Math.sin(a) * (D / 2 + 3 + rn(k + 100) * 3), sz = 5 + rn(k + 110) * 8; O(n, S(rx, sz / 2 + 4, rz), sz, sz * 0.8, sz * 0.9, k % 2 ? st : st2, Q); }
+        return n;
+      }
+      case "ruintower": {
+        let rn = (k) => (vr * 7919 + k * 104729) % 1000 / 1000, sand = Y(o, 0.98);
+        O(n, S(0, 5, 0), 50, 10, 48, Y(o, 0.8), Q), O(n, S(0, 45, 0), 42, 80, 38, o, Q);
+        for (let yy of [30, 60]) O(n, S(0, yy, 0), 44, 1.6, 40, Y(o, 0.78), Q);
+        for (let [xx, zz] of [[-14, -12], [0, -12], [14, -12], [-14, 12], [0, 12], [14, 12], [-14, 0], [14, 0]]) { let hh = 8 + rn(Math.round(xx * 3 + zz)) * 62; O(n, S(xx, 85 + hh / 2, zz), 13.5, hh, 12.5, Y(o, 0.9 + rn(Math.round(xx + zz * 5)) * 0.1), Q); }
+        O(n, S(0, 52, 19.2), 6, 14, 1.4, 1315343), O(n, S(0, 30, -19.2), 6, 14, 1.4, 1315343), O(n, S(8, 38, 19.3), 2, 56, 1.2, Y(o, 0.5)), O(n, S(21.1, 62, 6), 1.4, 12, 6, 1315343);
+        L(n, S(0, 5, 0), 36, 9, 32, sand, { seg: 12, ring: 6, mat: Q });
+        for (let k = 0; k < 8; k++) { let a = rn(k + 5) * 6.283, sz = 6 + rn(k + 9) * 9; O(n, S(Math.cos(a) * 32, sz / 2 + 4, Math.sin(a) * 30), sz, sz * 0.8, sz, k % 2 ? Y(o, 0.9) : Y(o, 0.72), Q); }
+        return n;
+      }
+      case "ruinwall":
+      case "ruinwall_v": {
+        let v = t === "ruinwall_v", rn = (k) => (vr * 7919 + k * 104729) % 1000 / 1000, P = (x, y, z, w, h, d, c, m) => v ? O(n, S(z, y, x), d, h, w, c, m) : O(n, S(x, y, z), w, h, d, c, m);
+        for (let i = 0; i < 4; i++) { let x = -21 + i * 14, hh = 8 + rn(i + 3) * 28; P(x, hh / 2, 0, 13.4, hh, 12, i % 2 ? Y(o, 0.9) : Y(o, 0.76), Q); hh > 14 && P(x + (rn(i + 20) - 0.5) * 3, hh + 2, 0, 8, 4, 10, Y(o, 0.7), Q); }
+        for (let k = 0; k < 5; k++) { let x = (rn(k + 40) - 0.5) * 56, z = (rn(k + 50) > 0.5 ? 1 : -1) * (8 + rn(k + 60) * 3), sz = 4 + rn(k + 70) * 6; P(x, sz / 2, z, sz, sz * 0.8, sz, Y(o, 0.82), Q); }
+        L(n, v ? S(0, 3, 0) : S(0, 3, 0), v ? 9 : 24, 4, v ? 24 : 9, Y(o, 1.2), { seg: 10, ring: 5, mat: Q });
+        return n;
+      }
+      case "ruintent": {
+        let rn = (k) => (vr * 7919 + k * 104729) % 1000 / 1000, cl = 7368816, wd = Y(r, 0.6);
+        for (let [x, z, ang] of [[-18, -10, 0.25], [18, -10, -0.5], [-16, 12, 0.7], [20, 11, -0.2]]) O(n, S(x, 16, z).mul(A.RZ(ang)), 3, 34, 3, wd, Re);
+        O(n, S(-8, 20, 0).mul(A.RZ(0.62)), 30, 1.6, 30, Y(cl, 0.8), Re), O(n, S(14, 3, 6), 30, 1.6, 22, Y(cl, 0.7), Re), O(n, S(2, 2, -8).mul(A.RZ(0.12)), 22, 1.4, 14, Y(cl, 0.9), Re);
+        L(n, S(0, 3, 0), 22, 4, 18, Y(o, 0.98), { seg: 10, ring: 5, mat: Q });
+        return n;
+      }
       case "santachair": {
         let gd = 13805866, red = 11214112, rd2 = Y(red, 0.78), lt = Y(red, 1.28), wh = 16316664;
         O(n, S(0, 2, 0), 50, 4, 40, Y(gd, 0.7), Ve);
@@ -16798,7 +16844,7 @@ void main() {
       case "portal":
         return [34, 16];
       default:
-        return e.deco === "wall" ? [34, 12] : e.deco === "wall_v" ? [12, 34] : e.deco === "tent" ? [32, 24] : e.deco === "altar" ? [26, 18] : e.deco === "arch" ? [38, 12] : e.deco === "fountain" || e.deco === "dryfountain" ? [38, 30] : e.deco === "giftpile" ? [14, 10] : e.deco === "santahouse" ? [150, 66] : e.deco === "tower" ? [34, 28] : e.deco === "longhouse" ? [74, 36] : e.deco === "keep" ? [96, 96] : e.deco === "palace" ? [140, 64] : e.deco === "hof" ? [120, 74] : e.deco === "warrior" ? [30, 26] : e.deco === "forge" ? [48, 30] : e.deco === "stall" ? [44, 22] : e.deco === "church" ? [120, 62] : e.deco === "castle" ? [140, 100] : e.deco === "monument" ? [48, 48] : e.deco === "bigforge" ? [100, 58] : e.deco === "colossus" ? [54, 54] : e.deco === "airship" ? [1, 1] : e.deco === "magetower" ? [60, 50] : e.deco === "clocktower" ? [46, 40] : e.deco === "pyramid" ? [100, 80] : e.deco === "sphinx" ? [80, 34] : e.deco === "arena" ? [150, 110] : e.deco === "toyfactory" ? [120, 80] : e.deco === "pagoda" ? [60, 50] : e.deco === "crypt" ? [64, 50] : e.deco === "ship" || e.deco === "dock" ? [90, 34] : [20, 16];
+        return e.deco === "ruinwall" ? [34, 12] : e.deco === "ruinwall_v" ? [12, 34] : e.deco === "ruintent" ? [32, 24] : e.deco === "ruintower" ? [34, 28] : e.deco === "ruinhouse" ? [74, 36] : e.deco === "ruinhall" ? [120, 74] : e.deco === "wall" ? [34, 12] : e.deco === "wall_v" ? [12, 34] : e.deco === "tent" ? [32, 24] : e.deco === "altar" ? [26, 18] : e.deco === "arch" ? [38, 12] : e.deco === "fountain" || e.deco === "dryfountain" ? [38, 30] : e.deco === "giftpile" ? [14, 10] : e.deco === "santahouse" ? [150, 66] : e.deco === "tower" ? [34, 28] : e.deco === "longhouse" ? [74, 36] : e.deco === "keep" ? [96, 96] : e.deco === "palace" ? [140, 64] : e.deco === "hof" ? [120, 74] : e.deco === "warrior" ? [30, 26] : e.deco === "forge" ? [48, 30] : e.deco === "stall" ? [44, 22] : e.deco === "church" ? [120, 62] : e.deco === "castle" ? [140, 100] : e.deco === "monument" ? [48, 48] : e.deco === "bigforge" ? [100, 58] : e.deco === "colossus" ? [54, 54] : e.deco === "airship" ? [1, 1] : e.deco === "magetower" ? [60, 50] : e.deco === "clocktower" ? [46, 40] : e.deco === "pyramid" ? [100, 80] : e.deco === "sphinx" ? [80, 34] : e.deco === "arena" ? [150, 110] : e.deco === "toyfactory" ? [120, 80] : e.deco === "pagoda" ? [60, 50] : e.deco === "crypt" ? [64, 50] : e.deco === "ship" || e.deco === "dock" ? [90, 34] : [20, 16];
     }
   }
   var Rt = 2, S4 = 0.38, fh = 2;
@@ -17069,6 +17115,19 @@ function ROXQM(f, c, s, l, def) {
         m.obstacles = m.obstacles.filter((o) => o === h || !(o.deco === "sleigh" || o.deco === "reindeer" || o.deco === "giftpile" || o.deco === "santahouse"));
         m.obstacles = m.obstacles.filter((o) => !((o.kind === "crate" || o.kind === "tree" || o.kind === "deco" && ["snowman", "lamp", "well", "cart", "planter", "bench", "hay", "frosttree"].includes(o.deco)) && o.x + o.w > x + 80 && o.x < x + 330 && o.y + o.h > y - 70 && o.y < y + 60));
         m.obstacles.push({ kind: "deco", deco: "sleigh", x: Math.round(x + 100), y: Math.round(y - 14), w: 85, h: 44 }, { kind: "deco", deco: "reindeer", x: Math.round(x + 196), y: Math.round(y - 14), w: 54, h: 27 }, { kind: "deco", deco: "reindeer", x: Math.round(x + 256), y: Math.round(y + 12), w: 54, h: 27 });
+      }
+    }
+    {
+      const m = Jt.cidade_eldvik;
+      if (m) {
+        const hs = (o) => Math.abs(Math.round(o.x * 0.37) * 31 + Math.round(o.y * 0.53) * 17) % 100, MAP = { longhouse: "ruinhouse", tower: "ruintower", wall: "ruinwall", wall_v: "ruinwall_v", hof: "ruinhall", tent: "ruintent" }, out = [];
+        for (const o of m.obstacles) {
+          if (o.kind !== "deco") { out.push(o); continue; }
+          const d = o.deco, h = hs(o);
+          if (d === "planter" || d === "banner" || d === "bench" || d === "brazier" || d === "lamp" || d === "stall" && h < 55) continue;
+          out.push(MAP[d] ? { ...o, deco: MAP[d] } : o);
+        }
+        m.obstacles = out, m.mood = [0.98, 0.9, 0.78];
       }
     }
     {
@@ -18065,8 +18124,8 @@ function ROXQM(f, c, s, l, def) {
         } else if (r.kind === "deco" && r.deco === "airship") {
         } else if (r.kind === "deco") {
           let m = n.decos[r.deco ?? ""];
-          (m || mo) && o.push({ depth: r.walk ? -1e5 : l, sx: s.x, sy: s.y, tall: r.deco === "tower" || r.deco === "statue" || r.deco === "keep" || r.deco === "palace" || r.deco === "hof" || r.deco === "warrior" || r.deco === "longhouse" || r.deco === "banner" || r.deco === "lamp" || r.deco === "church" || r.deco === "castle" || r.deco === "monument" || r.deco === "bigforge" || r.deco === "colossus" || r.deco === "wbstatue" || r.deco === "airship" || r.deco === "magetower" || r.deco === "clocktower" || r.deco === "pyramid" || r.deco === "sphinx" || r.deco === "arena" || r.deco === "lighthouse" || r.deco === "ship" || r.deco === "totem" || r.deco === "pagoda" || r.deco === "frosttree" || r.deco === "xmastree" || r.deco === "toyfactory" || r.deco === "crypt" || r.deco === "palm" || r.deco === "cactus" || r.deco === "parasol" || r.deco === "vipcol" || r.deco === "vipwall" || r.deco === "vipwall_v" || r.deco === "vipdais" || r.deco === "vipbar", draw: () => {
-            let p = u({ kind: "deco", theme: d, variant: r.deco === "longhouse" ? Math.abs(Math.round(r.x / 10) + Math.round(r.y / 10) * 3) % 6 : r.deco === "colossus" ? r.sv ?? Math.abs(Math.round(r.x / 7) * 5 + Math.round(r.y / 11) * 3) % 5 : 0, deco: r.deco });
+          (m || mo) && o.push({ depth: r.walk ? -1e5 : l, sx: s.x, sy: s.y, tall: r.deco === "tower" || r.deco === "statue" || r.deco === "keep" || r.deco === "palace" || r.deco === "hof" || r.deco === "warrior" || r.deco === "longhouse" || r.deco === "banner" || r.deco === "lamp" || r.deco === "church" || r.deco === "castle" || r.deco === "monument" || r.deco === "bigforge" || r.deco === "colossus" || r.deco === "wbstatue" || r.deco === "airship" || r.deco === "magetower" || r.deco === "clocktower" || r.deco === "pyramid" || r.deco === "sphinx" || r.deco === "arena" || r.deco === "lighthouse" || r.deco === "ship" || r.deco === "totem" || r.deco === "pagoda" || r.deco === "frosttree" || r.deco === "xmastree" || r.deco === "toyfactory" || r.deco === "crypt" || r.deco === "palm" || r.deco === "cactus" || r.deco === "parasol" || r.deco === "vipcol" || r.deco === "ruinhouse" || r.deco === "ruinhall" || r.deco === "ruintower" || r.deco === "vipwall" || r.deco === "vipwall_v" || r.deco === "vipdais" || r.deco === "vipbar", draw: () => {
+            let p = u({ kind: "deco", theme: d, variant: /^ruin/.test(r.deco ?? "") ? Math.abs(Math.round(r.x / 10) * 7 + Math.round(r.y / 10) * 13) % 8 : r.deco === "longhouse" ? Math.abs(Math.round(r.x / 10) + Math.round(r.y / 10) * 3) % 6 : r.deco === "colossus" ? r.sv ?? Math.abs(Math.round(r.x / 7) * 5 + Math.round(r.y / 11) * 3) % 5 : 0, deco: r.deco });
             p ? (r.deco === "santachair" ? (() => { let q = this.clock % 7000, ho = q < 1700, dy = Math.sin(this.clock / 640) * 0.6 - (ho ? Math.abs(Math.sin(q / 85)) * 2.4 : 0); nt(a, p, f.x, f.y + dy, false, 1, 1 + (ho ? Math.sin(q / 85) * 0.012 : Math.sin(this.clock / 900) * 0.004)); ho && this.text("Ho ho ho!", f.x + 6, f.y - 188 + Math.sin(this.clock / 120) * 2, 17, "#ff6a6a", true); })() : nt(a, p, f.x, f.y)) : m && nt(a, m, s.x, s.y + 4), r.deco === "bench" && this.benchMark(f.x, f.y - 16);
           } });
         } else if (r.kind === "crate") o.push({ depth: l, sx: s.x, sy: s.y, draw: () => {
@@ -19553,8 +19612,8 @@ function ROXQM(f, c, s, l, def) {
   var cr = oe(St(), 1);
   var X = oe(ue(), 1), NS = { weapon: "Arma", armor: "Armadura", accessory: "Acess\xF3rio", headTop: "Cabe\xE7a (topo)", headMid: "Cabe\xE7a (meio)", headLow: "Cabe\xE7a (baixo)", back: "Costas" };
   function drawPoring(n, x, y, sc, clock, view, flip) {
-    let tt = (clock / 640) % 1, hop = Math.abs(Math.sin(tt * Math.PI)), land = 1 - hop, wd = 1 + land * 0.2 - hop * 0.1, ht = 1 - land * 0.2 + hop * 0.12, py = y - 62 * sc - hop * 14 * sc;
-    n.save(), n.translate(x, py), n.scale(sc * wd * 0.72 * (flip ? -1 : 1), sc * ht * 0.72);
+    let tt = (clock / 640) % 1, hop = Math.abs(Math.sin(tt * Math.PI)), land = 1 - hop, wd = 1 + land * 0.2 - hop * 0.1, ht = 1 - land * 0.2 + hop * 0.12, py = y - 59 * sc - hop * 10 * sc;
+    n.save(), n.translate(x, py), n.scale(sc * wd * 0.52 * (flip ? -1 : 1), sc * ht * 0.52);
     let gr = n.createRadialGradient(-3, -5, 1, 0, 0, 12); gr.addColorStop(0, "#ffd6e2"), gr.addColorStop(0.6, "#ff9cb8"), gr.addColorStop(1, "#e0688a");
     n.fillStyle = gr, n.strokeStyle = "#a83a60", n.lineWidth = 1.4, n.beginPath(), n.ellipse(0, 0, 11, 9, 0, 0, Math.PI * 2), n.fill(), n.stroke();
     n.fillStyle = "rgba(255,255,255,.7)", n.beginPath(), n.ellipse(-4, -4, 3, 1.8, -0.5, 0, Math.PI * 2), n.fill();
