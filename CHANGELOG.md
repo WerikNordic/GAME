@@ -1,3 +1,7 @@
+## v201 - Nada na cabeca/costas sem equipamento
+- Nenhuma classe usa chapeu, capuz, elmo, faixa, tiara, auréola, capa, aljava ou asas por padrao. So aparecem ao equipar um item/visual (o tier nao adiciona mais isso no visual novo).
+- Excecao: Mercador e Aprendiz carregam mochila.
+
 ## v200 - Correcoes do novo visual
 - Corrigido: sombra e preview da criacao de personagem desalinhados, Poring Saltitante fora da cabeca (ancora/escala do sprite novo).
 - Cabeca mais quadrada e menos redonda (rosto, cabelo e queixo).

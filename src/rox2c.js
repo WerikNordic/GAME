@@ -141,7 +141,13 @@
   }
   // ---------- itens de costas ----------
   function backItems(E, S, o, e, C) {
-    const { bob, tz, t } = o; const cw = (e.cw || 0) * 3;
+    const { bob, tz, t } = o; const b = bob; const cw = (e.cw || 0) * 3;
+    if (C.pack) {
+      const lea = hx(0x8a5a30), lea2 = dk(lea, .75);
+      E({ x: 0, y: tz + 45 + b, z: tz - 8.4, rx: 6.8, ry: 8.4, rz: 3.8, p: 2.6, col: lea, tex: (mx, my, mz) => { if (mz < 0 && Math.abs(my - .25) < .06) return lea2; if (mz < 0 && my > .2 && my < .9 && Math.abs(mx) < .12) return hx(0xe8b838); return Math.sin(mx * 14 + my * 3) > .8 ? lt(lea, .12) : 0; } });
+      E({ x: 0, y: tz + 35.4 + b, z: tz - 8, rx: 7, ry: 2.6, rz: 2.8, col: hx(0xc8b888), tex: (mx) => Math.sin(mx * 16) > .6 ? dk(hx(0xc8b888), .8) : 0 });
+      for (const sg of [-1, 1]) S({ pts: [[sg * 5, tz + 37 + b, tz - 5.2], [sg * 6.6, tz + 42 + b, tz + 3.2], [sg * 5, tz + 50 + b, tz - 4.4]], w: 1.8, col: lea2 });
+    }
     if (e.cape != null && !C.noCape) {
       const cc = hx(e.cape), c2 = dk(cc, .84);
       for (let i = 0; i < 4; i++) { const x = -7.5 + i * 5; S({ pts: [[x, tz + 37 + bob, tz - 5.6], [x * 1.1 + cw * .4, tz + 52 + bob, tz - 8.5 + Math.sin(t * 2 + i) * .8], [x * 1.2 + cw, tz + (C.capeL || 64) + bob, tz - 9 + Math.sin(t * 2 + i + 1) * 1.2]], w: [5.6, 6.6], col: i % 2 ? cc : c2, bias: -.1 }); }

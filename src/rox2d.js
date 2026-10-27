@@ -18,10 +18,10 @@
   const ATK = { berserker: "slash", escudeiro: "slash", cacador: "shoot", volva: "cast", valquiria: "stab", skald: "quick", thay: "punch", aprendiz: "quick" };
   const FAM = { berserker: "p", escudeiro: "p", cacador: "a", volva: "m", valquiria: "m", skald: "a", thay: "a", aprendiz: "a" };
   function headPlan(e, cls, T) {
-    let h = e.head || "none"; const por = h === "poring"; if (!/^(circlet|wings|horns|helm|hood|hood2|beanie|wreath|bandana|feathercap|crown|crowngold|santa)$/.test(h)) h = "none"; const SIG = { volva: "hat", skald: "hood", cacador: "furhood", escudeiro: T >= 1 ? "helm" : "none", thay: "band", aprendiz: "band" }[cls] || "none";
+    let h = e.head || "none"; const por = h === "poring"; if (!/^(circlet|wings|horns|helm|hood|hood2|beanie|wreath|bandana|feathercap|crown|crowngold|santa)$/.test(h)) h = "none"; const SIG = "none";
     let main = SIG, extra = null;
     if (h === "none") { } else if (h === "circlet" || h === "wings") extra = h; else if (h === "horns") main = "helmH"; else if (h === "helm") main = "helm"; else if (h === "hood") main = (SIG === "hood" || SIG === "furhood") ? SIG : "hood"; else main = h;
-    if (por) main = "none"; if (cls === "valquiria" && !extra && T >= 1) extra = "halo";
+    if (por) main = "none";
     return { main, extra, cover: main === "helm" || main === "helmH" || main === "hood" || main === "furhood" || main === "hood2" };
   }
   function finish(cfg, e, T, cls, C, deco) {
@@ -39,7 +39,8 @@
   const DES = {};
   // ===== ESCUDEIRO (Mercador) — armadura de aço + tabardo + escudo =====
   DES.escudeiro = (e, T) => {
-    const C = palette(e, T), tun = hx(e.tunic), GD = C.gold, sh = T >= 1;
+    const C = palette(e, T); C.pack = true;
+    const  tun = hx(e.tunic), GD = C.gold, sh = T >= 1;
     const cfg = common(e, T, "escudeiro", {
       eye: 0x3a8aff, metalTop: 1, metalLimb: 1, bulk: (e.slim ? .9 : 1.1), top: STEEL, sleeve: hx(0xc4d0e4), belt: dk(hx(0x6a4220), 1), pants: STEEL2, boots: hx(0xd0daea), bracer: GD, glove: GD, skirt: tun, greaves: STEEL,
       topTex: (mx, my, mz) => { if (my < -.82) return GD; if (mz < 0) return my > .55 ? GD : 0; if (Math.abs(mx) < .045) return hx(0xffffff); if (Math.abs(mx) > .9) return GD; if (Math.abs(Math.abs(mx) * .62 - my - .28) < .045) return hx(0x6a7ca0); if (Math.abs(my - .62) < .05) return GD; if (Math.abs(mx) < .16 && my > -.66 && my < .18) return GD; if (Math.abs(my + .32) < .1 && Math.abs(mx) < .5) return GD; if (rv(mx, my, 0, -.2, .1)) return hx(0x4aa8ff); for (const sx of [-1, 1]) for (const [x, y] of [[.72, -.62], [.74, .1], [.56, .42], [.38, -.74]]) if (rv(mx, my, sx * x, y)) return hx(0xfff4c0); return 0; },
@@ -194,7 +195,7 @@
     C.hoodC = dk(tun, .95); C.hoodTrim = ac2; C.capeTrim = AC; C.capeL = 60;
     const cfg = common(e, T, "skald", {
       eye: 0xff3a58, top: tun, sleeve: dk(tun, .92), belt: ac2, pants: dk(tun, .8), boots: hx(e.boots), bracer: lt(tun, .22), glove: hx(e.boots), skirt: dk(tun, .92), metalLimb: 0,
-      faceExtra: T >= 1 ? (az, el) => (Math.abs(az) < 1.25 && el > .3) ? (Math.abs(az) < .04 ? lt(tun, .16) : dk(tun, .9)) : 0 : null,
+      faceExtra: false ? (az, el) => (Math.abs(az) < 1.25 && el > .3) ? (Math.abs(az) < .04 ? lt(tun, .16) : dk(tun, .9)) : 0 : null,
       topTex: (mx, my, mz) => { if (my < -.82) return lt(tun, .22); if (mz > 0) { if ((Math.abs(mx - my * .95) < .07 || Math.abs(mx + my * .95) < .07) && my > -.75) return ac2; if (rv(mx, my, 0, 0, .13)) return hx(0xc8a848); if (Math.abs(my - .42) < .07) return dk(AC, .8); if (Math.abs(mx) < .04) return dk(tun, .6); if (Math.sin(mx * 26 + my * 9) > .8) return lt(tun, .1); } return Math.sin(mx * 18 + my * 5) > .8 ? lt(tun, .1) : 0; },
       skirtTex: (mx, my, mz) => (my > .5 && Math.abs(mx) > .28 && mz > 0) ? null : (my > .7 ? ac2 : 0),
       wpn: (E, S, o) => {
@@ -241,7 +242,8 @@
   };
   // ===== APRENDIZ =====
   DES.aprendiz = (e, T) => {
-    const C = palette(e, T), tun = hx(e.tunic), TR = hx(e.trim ?? 0xe8b838); C.trim = TR; C.capeTrim = TR;
+    const C = palette(e, T); C.pack = true;
+    const  tun = hx(e.tunic), TR = hx(e.trim ?? 0xe8b838); C.trim = TR; C.capeTrim = TR;
     const cfg = common(e, T, "aprendiz", {
       eye: 0x3d7bd0, blush: 1, top: tun, sleeve: tun, belt: hx(0x6a4426), pants: hx(e.pants), boots: hx(e.boots), bracer: hx(0x6a4426), metalLimb: 0,
       topTex: (mx, my, mz) => { const az = Math.atan2(mx, mz); if (my < -.78) return hx(0xefe6d0); if (my < -.7 && mz > 0 && (Math.floor(az * 12) & 1)) return hx(0xd8cbb0); if (mz > 0 && my < .2 && Math.abs((mx - my * .9) + .2) < .1) return hx(0x5a3a22); if (mz > 0 && my > .1 && my < .3 && Math.abs(mx - .2) < .2 && Math.abs(my - .22) < .1) return hx(0x6a4426); return 0; },
@@ -249,7 +251,6 @@
       tweak: (P, a) => { if (a === 0) { P.arm[0] = { x: 7, y: 14, z: -2 }; P.arm[1] = { x: 7.2, y: 14, z: -2 }; } },
     });
     return finish(cfg, e, T, "aprendiz", C, (E, S, o) => {
-      E({ x: -8.5, y: o.tz + 51 + o.bob, z: o.tz - 4, rx: 3.4, ry: 3.8, rz: 2.6, col: hx(0x7a5030) });
       S({ pts: [[-6, o.tz + 37 + o.bob, o.tz + 3], [0, o.tz + 44 + o.bob, o.tz + 6], [7, o.tz + 52 + o.bob, o.tz + 3]], w: 1.6, col: hx(0x5a3a22) });
       E({ x: 0, y: o.tz + 34 + o.bob, z: o.tz, rx: 6.4, ry: 2, rz: 5, col: dk(tun, .9) });
     });
@@ -294,6 +295,7 @@
   const SCALE = 1.3, CW = 184, GYY = 170, KS = .88;
   function ROX2(e, dir, frame, lvl, style) {
     const cls = e.cls, D = DES[cls] || DES.npc; if (!D) return null;
+    if (DES[cls]) { e = { ...e, head: e.eqHead || "none" }; if (!e.eqBack) { e.cape = undefined; e.quiver = false; e.wingsBack = undefined; } }
     const T = e.ti || 0, fam = FAM[cls] || (e.gear === "club" ? "p" : "a"); if (!ATK[cls]) { ATK[cls] = "slash"; } const cfg = D(e, T);
     let anim, t, kind = ATK[cls];
     if (lvl > 0) { anim = 2; t = ATKU[kind][Math.min(3, lvl) - 1] * PERS[kind]; }
