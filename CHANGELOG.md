@@ -1,3 +1,6 @@
+# v162
+- NOVO sistema de casamento: Irma Eldrid (cerimonialista) na Capela de Midgard. Ambos nivel 99 + Alianca de Ouro, pedido/aceite entre jogadores online, fogos de confete; loja da capela (alianca, vestido, smoking, buque); adocao de bebe (segue o casal, +2% EXP); /bencao da familia (15 s de agilidade, cura 25%, tambem no conjuge); divorcio.
+
 # v161
 - Caminhos do Mercador viram Ferreiro (+10% ataque) e Alquimista (+20% vida). SO o Alquimista tem Homunculo: Pai dos Homunculos (NPC escondido num canto de Isenborg) cria (5000 Zeny + materiais); 4 tipos (Vitalis cura, Granito +vida, Faisca rapido, Caos imprevisivel); luta ao lado, ganha EXP, renomeia, evolui com Pedra de Evolucao (cai de MVPs, nivel 30). Comando /homun.
 
