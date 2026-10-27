@@ -37,6 +37,9 @@
 - /guilda, /g, /grupo, /p, /amigo (locais; sem servidor de jogo ainda).
 - ESC nao pausa; tela de entrada nordica; novos efeitos sonoros; sem visual inicial de classe.
 
+## v137
+- Escala: personagem/NPCs/pet a 74%; monstros por tamanho (pequeno 0.62, médio 0.78, grande 0.96, gigante 1.2), bosses 1.5x+ (Jormungand inalterado). Árvores e cenário passam a ser bem maiores que o personagem.
+
 ## v136
 - Alt+Z: janela do grupo (criador ★, nível, sua vida; membros com mapa/próximo/offline; criar, sair, expulsar, dissolver).
 - NPC Utilidades (todas as cidades, abaixo da praça): Poção Vermelha 20%, Laranja 35% (nv12), Branca 55% (nv30), Azul 30% mana (nv10), Asa de Mosca, Asa de Borboleta, flechas (ferro, prata, fogo, vento, gelo, pedra), hidromel e infusão. Compra e venda de qualquer item.

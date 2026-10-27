@@ -16533,7 +16533,7 @@ function ROXQM(f, c, s, l, def) {
       this.flash > 0.01 && (t.fillStyle = `rgba(235,242,255,${this.flash * this.flash * 0.55})`, t.fillRect(0, 0, o, r)), t.restore();
     }
   };
-  var B4 = '"Cinzel Decorative", "Uncial Antiqua", Georgia, serif', ms = 'Arial, "Helvetica Neue", Helvetica, sans-serif', X0 = 30, CS = { common: "#d9d9d9", uncommon: "#6fe08a", rare: "#5aa9ff", epic: "#c07bff", legendary: "#ffb02e" }, $a = 1, Cn = 188, $r = 124, I4 = (e) => Math.max(0, Math.min(1, e)), TS = (e) => e * e * (3 - 2 * e), RS = (e, t) => {
+  var B4 = '"Cinzel Decorative", "Uncial Antiqua", Georgia, serif', ms = 'Arial, "Helvetica Neue", Helvetica, sans-serif', X0 = 30, CS = { common: "#d9d9d9", uncommon: "#6fe08a", rare: "#5aa9ff", epic: "#c07bff", legendary: "#ffb02e" }, $a = 0.74, monScale = (d) => d.boss ? 1.5 + Math.max(0, d.radius - 26) / 28 : d.radius <= 14 ? 0.62 : d.radius <= 17 ? 0.78 : d.radius <= 20 ? 0.96 : 1.2, Cn = 188, $r = 124, I4 = (e) => Math.max(0, Math.min(1, e)), TS = (e) => e * e * (3 - 2 * e), RS = (e, t) => {
     let a = (t - e) % (Math.PI * 2);
     return a > Math.PI && (a -= Math.PI * 2), a < -Math.PI && (a += Math.PI * 2), a;
   }, Kl = (e) => {
@@ -17538,7 +17538,7 @@ function ROXQM(f, c, s, l, def) {
       if (t.def.id === "jormungandr") return this.drawSerpent(t, a);
       let n = this.store.world;
       if (!n) return;
-      let o = this.ctx, r = ce(t.pos.x, t.pos.y), i = this.animOf(`m${t.id}`, t.pos.x, t.pos.y, a), s = i.moving ? Math.floor(i.phase * ea) : -1, l = t.state === "windup" ? 2 : t.state === "charge" ? 3 : 0, { dir: c, flip: d } = Kl(t.facing), f = t.def.shape, u, m = 1, p = d;
+      let o = this.ctx, r = ce(t.pos.x, t.pos.y), i = this.animOf(`m${t.id}`, t.pos.x, t.pos.y, a), s = i.moving ? Math.floor(i.phase * ea) : -1, l = t.state === "windup" ? 2 : t.state === "charge" ? 3 : 0, { dir: c, flip: d } = Kl(t.facing), f = t.def.shape, u, m = monScale(t.def), p = d;
       f === "xx" ? u = Xr(f, c, s, l) ?? fa(f, c, s, l) : (u = ROXQM(f, c, s, l, t.def) ?? Xr(f, c, s, l) ?? us(f, s, l, c), p = mo ? d : Xi(t.facing).x < 0);
       let h = `${f}:${c}:${s}:${l}`;
       t.def.boss && f === "jotun" && t.def.id !== "hrimgar" && (u = ds(u, `bs${t.def.id}:${s}:${l}`, t.def.color, 0.78)), t.state === "windup" ? u = ds(u, h, 16724016, 0.5) : n.time < t.stunUntil ? u = ds(u, h, 16769126, 0.5) : n.time < t.slowUntil ? u = ds(u, h, 7321855, 0.45) : t.phase === 2 && (u = ds(u, h, 16736352, 0.28)), t.state === "charge" && (m *= 1.08);
