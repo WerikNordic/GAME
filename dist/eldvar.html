@@ -8493,7 +8493,7 @@ Error generating stack: ` + n.message + `
     cidade_midgard: { mirror: false, plaza: "radial", wall: "towers", blocks: "dense", gap: 250, alt: 0.1, feat: { 1: "church", 4: "monument", 6: "statue" } },
     cidade_ravnhaven: { mirror: true, plaza: "colonnade", wall: "towers", blocks: "rows", gap: 250, alt: 0.14, feat: { 0: "arena", 1: "park", 6: "harbor", 3: "stalls", 2: "church", 5: "harbor", 7: "park" }, tt: { streetsX: [1000, 4200], streetN: 2560 } },
     cidade_isenborg: { mirror: false, plaza: "obelisks", wall: "palisade", blocks: "camp", gap: 262, alt: 0.3, feat: { 0: "frost", 3: "toy", 5: "frost", 7: "camp", 2: "castle", 1: "monument", 4: "frost", 6: "toy" }, tt: { streetsX: [1150, 4050], streetS: 5260 } },
-    cidade_eldvik: { mirror: true, plaza: "braziers", wall: "ruined", blocks: "dense", gap: 240, alt: 0.12, feat: { 2: "bazaar", 4: "oasis", 5: "sphinx", 0: "pyramid", 3: "statue", 1: "bazaar", 6: "oasis", 7: "pyramid" }, tt: { streetsX: [950, 4250], streetN: 2800 } },
+    cidade_eldvik: { mirror: true, plaza: "braziers", wall: "ruined", blocks: "dense", gap: 240, alt: 0.12, feat: { 2: "bazaar", 4: "pyramid", 5: "sphinx", 0: "pyramid", 3: "statue", 1: "bazaar", 6: "sphinx", 7: "pyramid" }, tt: { streetsX: [950, 4250], streetN: 2800 } },
     cidade_kharnheim: { mirror: false, plaza: "market", wall: "towers", blocks: "forge", gap: 255, alt: 0.3, feat: { 1: "stalls", 2: "clock", 5: "canal", 6: "stalls", 0: "bigforge", 3: "canal", 4: "clock", 7: "forge" }, tt: { streetsX: [1100, 4150], streetN: 2620, streetS: 5200 } },
     cidade_freyrhain: { mirror: true, plaza: "garden", wall: "palisade", blocks: "gardens", gap: 275, alt: 0.38, feat: { 0: "tribal", 2: "tribal", 5: "totems", 7: "tribal", 1: "park", 3: "statue", 4: "tribal", 6: "park" }, tt: { streetsX: [1200, 4000], streetN: 2500 } },
     cidade_gladsheim: { mirror: false, plaza: "colonnade", wall: "ruined", blocks: "sparse", gap: 300, alt: 0.18, feat: { 0: "mage", 1: "park", 2: "church", 3: "park", 4: "park", 5: "mage", 6: "monument", 7: "statue" }, tt: { streetsX: [900, 4300], streetS: 5300 } }
@@ -8937,7 +8937,7 @@ Error generating stack: ` + n.message + `
           else if (q === 3) (ix2 + iy) % 4 === 0 ? s("well", gx, gy) : s("lamp", gx, gy);
           else if (q === 4 || q === 5) {
             let th = e.theme;
-            th === "sand" ? s(q === 4 ? "palm" : "cactus", gx, gy) : th === "tropic" ? s("palm", gx, gy) : th === "dead" ? s("spiritlamp", gx, gy) : th === "forge" ? s("brazier", gx, gy) : o.push({ kind: "tree", x: Math.round(gx - 11), y: Math.round(gy - 9), w: 22, h: 18 });
+            th === "sand" && q !== 4 ? s("cactus", gx, gy) : th === "tropic" ? s("palm", gx, gy) : th === "dead" ? s("spiritlamp", gx, gy) : th === "forge" ? s("brazier", gx, gy) : o.push({ kind: "tree", x: Math.round(gx - 11), y: Math.round(gy - 9), w: 22, h: 18 });
           }
         }
       }
@@ -8958,7 +8958,7 @@ Error generating stack: ` + n.message + `
       for (let _ of M) _.x = t - _.x;
       for (let _ of r) _.x = t - _.x;
     }
-    return { id: e.id, name: e.name, width: t, height: a, spawn: { x: d, y: a - 420 }, safeZone: { x: c.x, y: c.y, w: c.w, h: c.h }, obstacles: tidyCity(o, M), critters: crit, spawns: [], maxMonsters: 0, npcs: M, pois: r, portals: [{ x: f.from, y: a - 60, w: f.to - f.from, h: 60, label: "Sa\xEDda da cidade", locked: false, toMap: e.from, toSpawn: { x: 130, y: 630 } }], bossDen: { x: t / 2, y: a / 2 + 600, r: 10 }, theme: e.theme, safeLabel: e.safeLabel, scars: [], mood: e.mood, city: true, paved: p };
+    return { id: e.id, name: e.name, width: t, height: a, spawn: { x: d, y: a - 420 }, safeZone: { x: c.x, y: c.y, w: c.w, h: c.h }, obstacles: tidyCity(e.id === "cidade_freyrhain" ? o.filter((q) => !(q.kind === "deco" && (q.deco === "lamp" || q.deco === "banner" || q.deco === "bench"))) : o, M), treeTheme: e.id === "cidade_eldvik" ? "dead" : void 0, critters: crit, spawns: [], maxMonsters: 0, npcs: M, pois: r, portals: [{ x: f.from, y: a - 60, w: f.to - f.from, h: 60, label: "Sa\xEDda da cidade", locked: false, toMap: e.from, toSpawn: { x: 130, y: 630 } }], bossDen: { x: t / 2, y: a / 2 + 600, r: 10 }, theme: e.theme, safeLabel: e.safeLabel, scars: [], mood: e.mood, city: true, paved: e.id === "cidade_freyrhain" ? [] : p };
   }
   var Hr = (...e) => ["arauto", "ottar", "bruna", "brokk", "munin", "sigrun", "estilista", "provador", "utilidades", "cronista", "checkpoint", "questor", "lider", "mestre_jogos", "montaria", ...e].map((t) => ({ id: t, x: 0, y: 0 })), D8 = [{ id: "cidade_midgard", name: "Cidade de Midgard", seed: 7e3, theme: "grass", from: "campos_midgard", safeLabel: "Pra\xE7a de Midgard", npcs: Hr("eira", "curandeira"), grand: "palace", grandName: "Sal\xE3o do Jarl" }, { id: "cidade_ravnhaven", name: "Cidade de Ravnhaven", seed: 7101, theme: "grass", from: "midgard_brumaforte", safeLabel: "Pra\xE7a do Corvo", npcs: Hr(), grand: "castle", grandName: "Fortaleza do Corvo" }, { id: "cidade_isenborg", name: "Cidade de Isenborg", seed: 7202, theme: "snow", from: "jotunheim_aldeia", safeLabel: "Pra\xE7a da Geada", npcs: Hr("ylva", "torvald"), grand: "castle", grandName: "Cidadela de Gelo", mood: [0.92, 0.96, 1] }, { id: "cidade_eldvik", name: "Cidade de Eldvik", seed: 7303, theme: "sand", from: "muspel_cinzas", safeLabel: "Pra\xE7a das Brasas", npcs: Hr(), grand: "none", mood: [1.04, 0.96, 0.84] }, { id: "cidade_kharnheim", name: "Cidade de Kharnheim", seed: 7404, theme: "forge", from: "svart_mercado", safeLabel: "Pra\xE7a da Bigorna", npcs: Hr(), grand: "palace", grandName: "Grande Sal\xE3o da Bigorna", mood: [1, 0.9, 0.85] }, { id: "cidade_freyrhain", name: "Cidade de Freyrhain", seed: 7505, theme: "lush", from: "vana_santuario", safeLabel: "Pra\xE7a das Ra\xEDzes", npcs: Hr(), grand: "palace", grandName: "Pal\xE1cio das Ra\xEDzes" }, { id: "cidade_gladsheim", name: "Cidade de Gladsheim", seed: 7606, theme: "marble", from: "asg_praca", safeLabel: "Pra\xE7a dos Aesir", npcs: Hr(), grand: "both", grandName: "Sal\xE3o dos Aesir" }, { id: "cidade_skogvik", name: "Cidade de Skogvik", seed: 7707, theme: "wood", from: "midgard_bosque", safeLabel: "Pra\xE7a das Copas", npcs: Hr(), grand: "palace", grandName: "Pagode do Conselho", mood: [0.96, 1, 0.94] }, { id: "cidade_handelsvik", name: "Cidade de Handelsvik", seed: 7808, theme: "grass", from: "midgard_lago", safeLabel: "Cais dos Mercadores", npcs: Hr(), grand: "castle", grandName: "Sal\xE3o da Guilda", mood: [1, 1, 1.04] }, { id: "cidade_solvik", name: "Cidade de Solvik", seed: 7909, theme: "tropic", from: "vana_pantano", safeLabel: "Praia das Festas", npcs: Hr(), grand: "none", mood: [1.05, 1.02, 0.96] }, { id: "cidade_helvik", name: "Cidade de Helvik", seed: 8010, theme: "dead", from: "niflheim_catacumbas", safeLabel: "Pra\xE7a dos Sussurros", npcs: Hr(), grand: "palace", grandName: "Mausol\xE9u de Hel", mood: [0.7, 0.8, 0.86] }];
   function O8(e, t, a) {
@@ -17235,7 +17235,7 @@ function ROXQM(f, c, s, l, def) {
     }
     update(t, a, n, o, r, i) {
       this.t += t;
-      let s = this.rnd, l = t / 16.67, c = a.weather.intensity, d = a.weather.kind, f = Wu(n), u = d === "precip" || d === "storm" ? Math.round((f === "rain" ? 240 : f === "snow" ? 170 : f === "ash" ? 110 : 80) * c * (d === "storm" ? 1.7 : 1)) : 0;
+      let s = this.rnd, l = t / 16.67, c = a.weather.intensity, d = a.weather.kind, f = Wu(n), u = (d === "precip" || d === "storm") && n !== "sand" ? Math.round((f === "rain" ? 240 : f === "snow" ? 170 : f === "ash" ? 110 : 80) * c * (d === "storm" ? 1.7 : 1)) : 0;
       this.fill(this.ps, u, r, i, () => ({ x: s() * r, y: s() * i, vx: 0, vy: 0, s: 0.6 + s() * 0.8, a: 0.4 + s() * 0.5, ph: s() * 6.28 }));
       let m = d === "storm" ? 1.6 : 0.6;
       for (let h of this.ps) f === "rain" ? (h.x += -3.2 * m * l * h.s, h.y += 15 * h.s * l * (d === "storm" ? 1.3 : 1)) : f === "snow" ? (h.x += (Math.sin(this.t / 700 + h.ph) * 0.7 - 0.9 * m) * l, h.y += (1.1 + h.s * 0.9) * l * (d === "storm" ? 2.2 : 1)) : f === "ash" ? (h.x += (0.8 + Math.sin(this.t / 600 + h.ph) * 0.5) * l, h.y -= (0.6 + h.s * 0.5) * l * 0.35, h.y += 0.5 * l) : (h.x += Math.sin(this.t / 900 + h.ph) * 0.4 * l, h.y -= 0.35 * h.s * l), h.y > i + 20 && (h.y = -10, h.x = s() * r), h.y < -20 && (h.y = i + 10), h.x < -20 && (h.x = r + 10), h.x > r + 20 && (h.x = -10);
@@ -17706,7 +17706,7 @@ function ROXQM(f, c, s, l, def) {
         else {
           let m = c < 0.5 ? 0 : c < 0.82 ? 1 : 2;
           o.push({ depth: l, sx: s.x, sy: s.y, tall: true, draw: () => {
-            let p = u({ kind: "tree", theme: d, variant: m });
+            let p = u({ kind: "tree", theme: t.treeTheme ?? d, variant: m });
             let ts = 1.15 + 0.5 * Sh(r.x, r.y, 29); p ? nt(a, p, f.x, f.y, c > 0.9, ts, ts) : nt(a, n.trees[m], s.x, s.y + 6, c > 0.9, ts, ts);
           } });
         }
