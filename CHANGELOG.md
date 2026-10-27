@@ -37,6 +37,9 @@
 - /guilda, /g, /grupo, /p, /amigo (locais; sem servidor de jogo ainda).
 - ESC nao pausa; tela de entrada nordica; novos efeitos sonoros; sem visual inicial de classe.
 
+## v144
+- Montaria agora é habilidade passiva na janela de Habilidades (Alt+S), concedida automaticamente a Espadachins; botão Montar/Desmontar ali. NPC Montaria só entrega a montaria (sem gastar ponto).
+
 ## v143
 - Isenborg: novos modelos de trenó e renas (nariz vermelho brilhante) nos quarteirões de gelo/brinquedos; NPC Papai Noel (Guardião do Inverno) na praça.
 
