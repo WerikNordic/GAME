@@ -1,3 +1,8 @@
+# v165
+- Isenborg: presentes (giftpile) embaixo da arvore de Natal central, de cada arvore de neve e ao redor da Casa do Papai Noel (fabrica de brinquedos).
+- Kharnheim e Eldvik: duas fontes secas e rachadas (sem agua) ladeando a praca.
+- Ajuste de NPCs: barqueiro/aeronave subiram um pouco (sobreposicao com cronista) e Pai dos Homunculos saiu de cima de uma muralha.
+
 # v164
 - Fisica basica: mola amortecida no personagem (inclina com a inercia ao andar/parar; capa balanca mais e com brisa leve parado). Sem efeito sentado.
 

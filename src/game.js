@@ -8178,8 +8178,8 @@ Error generating stack: ` + n.message + `
     for (; r.length < a; ) r.push(T8(t, o));
     return r;
   }
-  var $m = { fountain: { w: 64, h: 48 }, well: { w: 36, h: 30 }, stall: { w: 72, h: 36 }, lamp: { w: 12, h: 12 }, banner: { w: 12, h: 12 }, statue: { w: 40, h: 36 }, post: { w: 22, h: 18 }, tower: { w: 52, h: 44 }, bench: { w: 44, h: 16 }, cart: { w: 56, h: 32 }, hay: { w: 40, h: 28 }, planter: { w: 34, h: 22 }, pillar: { w: 20, h: 20 }, pillar_broken: { w: 22, h: 20 }, wall: { w: 56, h: 26 }, wall_v: { w: 26, h: 56 }, arch: { w: 64, h: 16 }, tent: { w: 52, h: 38 }, campfire: { w: 24, h: 22 }, runestone: { w: 20, h: 14 }, gravestone: { w: 16, h: 10 }, altar: { w: 42, h: 28 }, obelisk: { w: 20, h: 20 }, longhouse: { w: 120, h: 50 }, magetower: { w: 72, h: 66 }, clocktower: { w: 56, h: 48 }, pyramid: { w: 120, h: 100 }, sphinx: { w: 100, h: 40 }, arena: { w: 190, h: 150 }, lighthouse: { w: 44, h: 40 }, ship: { w: 100, h: 34 }, dock: { w: 124, h: 40 }, totem: { w: 40, h: 30 }, hut: { w: 52, h: 44 }, pagoda: { w: 74, h: 60 }, frosttree: { w: 56, h: 44 }, wbstatue: { w: 56, h: 56 }, sleigh: { w: 50, h: 26 }, reindeer: { w: 32, h: 16 }, xmastree: { w: 56, h: 44 }, snowman: { w: 28, h: 24 }, toyfactory: { w: 154, h: 100 }, crypt: { w: 78, h: 60 }, palm: { w: 24, h: 20 }, cactus: { w: 26, h: 20 }, parasol: { w: 60, h: 50 }, spiritlamp: { w: 12, h: 12 }, keep: { w: 170, h: 150 }, palace: { w: 250, h: 100 }, hof: { w: 230, h: 120 }, warrior: { w: 52, h: 44 }, brazier: { w: 18, h: 18 }, forge: { w: 92, h: 36 }, church: { w: 110, h: 70 }, castle: { w: 150, h: 110 }, monument: { w: 44, h: 44 }, bigforge: { w: 120, h: 70 }, colossus: { w: 56, h: 56 }, airship: { w: 84, h: 44 } };
-  var DSC = { palace: 2.3, keep: 2.1, hof: 1.8, longhouse: 1.85, warrior: 1.9, statue: 1.9, fountain: 3.6, tower: 1.7, forge: 1.5, stall: 1.3, tent: 1.5, well: 1.4, cart: 1.2, obelisk: 1.6, altar: 1.4, brazier: 1.3, lamp: 1.15, banner: 1.4, church: 1.7, castle: 2, monument: 2.2, bigforge: 1.8, colossus: 2.4, airship: 1.6, xmastree: 3.4, wbstatue: 1.7, sleigh: 1.7, reindeer: 1.7, lighthouse: 3.2, clocktower: 2.6, totem: 3.2, magetower: 1.9, pagoda: 2.6, parasol: 3.2, crypt: 2.2, bench: 1.15, runestone: 1.5 };
+  var $m = { fountain: { w: 64, h: 48 }, dryfountain: { w: 64, h: 48 }, giftpile: { w: 26, h: 20 }, well: { w: 36, h: 30 }, stall: { w: 72, h: 36 }, lamp: { w: 12, h: 12 }, banner: { w: 12, h: 12 }, statue: { w: 40, h: 36 }, post: { w: 22, h: 18 }, tower: { w: 52, h: 44 }, bench: { w: 44, h: 16 }, cart: { w: 56, h: 32 }, hay: { w: 40, h: 28 }, planter: { w: 34, h: 22 }, pillar: { w: 20, h: 20 }, pillar_broken: { w: 22, h: 20 }, wall: { w: 56, h: 26 }, wall_v: { w: 26, h: 56 }, arch: { w: 64, h: 16 }, tent: { w: 52, h: 38 }, campfire: { w: 24, h: 22 }, runestone: { w: 20, h: 14 }, gravestone: { w: 16, h: 10 }, altar: { w: 42, h: 28 }, obelisk: { w: 20, h: 20 }, longhouse: { w: 120, h: 50 }, magetower: { w: 72, h: 66 }, clocktower: { w: 56, h: 48 }, pyramid: { w: 120, h: 100 }, sphinx: { w: 100, h: 40 }, arena: { w: 190, h: 150 }, lighthouse: { w: 44, h: 40 }, ship: { w: 100, h: 34 }, dock: { w: 124, h: 40 }, totem: { w: 40, h: 30 }, hut: { w: 52, h: 44 }, pagoda: { w: 74, h: 60 }, frosttree: { w: 56, h: 44 }, wbstatue: { w: 56, h: 56 }, sleigh: { w: 50, h: 26 }, reindeer: { w: 32, h: 16 }, xmastree: { w: 56, h: 44 }, snowman: { w: 28, h: 24 }, toyfactory: { w: 154, h: 100 }, crypt: { w: 78, h: 60 }, palm: { w: 24, h: 20 }, cactus: { w: 26, h: 20 }, parasol: { w: 60, h: 50 }, spiritlamp: { w: 12, h: 12 }, keep: { w: 170, h: 150 }, palace: { w: 250, h: 100 }, hof: { w: 230, h: 120 }, warrior: { w: 52, h: 44 }, brazier: { w: 18, h: 18 }, forge: { w: 92, h: 36 }, church: { w: 110, h: 70 }, castle: { w: 150, h: 110 }, monument: { w: 44, h: 44 }, bigforge: { w: 120, h: 70 }, colossus: { w: 56, h: 56 }, airship: { w: 84, h: 44 } };
+  var DSC = { palace: 2.3, keep: 2.1, hof: 1.8, longhouse: 1.85, warrior: 1.9, statue: 1.9, fountain: 3.6, dryfountain: 3.6, giftpile: 1.5, tower: 1.7, forge: 1.5, stall: 1.3, tent: 1.5, well: 1.4, cart: 1.2, obelisk: 1.6, altar: 1.4, brazier: 1.3, lamp: 1.15, banner: 1.4, church: 1.7, castle: 2, monument: 2.2, bigforge: 1.8, colossus: 2.4, airship: 1.6, xmastree: 3.4, wbstatue: 1.7, sleigh: 1.7, reindeer: 1.7, lighthouse: 3.2, clocktower: 2.6, totem: 3.2, magetower: 1.9, pagoda: 2.6, parasol: 3.2, crypt: 2.2, bench: 1.15, runestone: 1.5 };
   for (let e of Object.keys(DSC)) $m[e] && ($m[e].w = Math.round($m[e].w * DSC[e]), $m[e].h = Math.round($m[e].h * DSC[e]));
   function groves(W, H, rng, budget, rockFrac, ok, rockOnly) {
     let PX = 4, PY = 3, GP = 78, BW = (PX - 1) * GP + 60, BH = (PY - 1) * GP + 60, LX = 150, LY = 130, cols = Math.max(1, Math.floor((W - 120) / (BW + LX))), rows = Math.max(1, Math.floor((H - 120) / (BH + LY))), blocks = [], out = [];
@@ -8235,7 +8235,7 @@ Error generating stack: ` + n.message + `
   var pSides = (id, prev) => { let h = pHash(id), fieldPrev = prev === "campos_midgard" || prev === "planicies_jotunheim", raw = h % 2 ? "top" : "right", nx = h >> 1 & 1 || raw === "right" ? "bottom" : "right"; return { pr: fieldPrev ? "top" : raw, nx }; };
   var pRect = (sd, a, n) => sd === "top" ? { x: a / 2 - 70, y: 0, w: 140, h: 50 } : sd === "bottom" ? { x: a / 2 - 70, y: n - 50, w: 140, h: 50 } : { x: a - 50, y: n / 2 - 70, w: 50, h: 140 };
   var pSpawn = (sd, a, n) => sd === "top" ? { x: a / 2, y: 130 } : sd === "bottom" ? { x: a / 2, y: n - 130 } : { x: a - 130, y: n / 2 };
-  var TC_SMALL = new Set(["lamp", "brazier", "bench", "hay", "cart", "banner", "planter", "runestone", "gravestone", "campfire", "post", "snowman", "spiritlamp", "palm", "cactus", "frosttree"]);
+  var TC_SMALL = new Set(["lamp", "brazier", "bench", "hay", "cart", "banner", "planter", "runestone", "gravestone", "campfire", "post", "snowman", "spiritlamp", "palm", "cactus", "frosttree", "giftpile"]);
   var TC_BIG = new Set(["longhouse", "bigforge", "church", "castle", "hof", "keep", "palace", "warrior", "statue", "monument", "colossus", "wbstatue", "magetower", "clocktower", "pyramid", "sphinx", "arena", "crypt", "pagoda", "toyfactory", "hut", "tent", "stall", "forge", "tower", "fountain"]);
   function tidyCity(list, npcs) {
     let hit = (a, b, m) => a.x < b.x + b.w + m && a.x + a.w + m > b.x && a.y < b.y + b.h + m && a.y + a.h + m > b.y;
@@ -8404,11 +8404,11 @@ Error generating stack: ` + n.message + `
         case "utilidades":
           return { x: d, y: k + 330 };
         case "paihomun":
-          return { x: t - 240, y: 330 };
+          return { x: t - 340, y: 330 };
         case "barqueiro":
-          return { x: d - 300, y: k + 460 };
+          return { x: d - 300, y: k + 400 };
         case "aeronave":
-          return { x: d + 300, y: k + 460 };
+          return { x: d + 300, y: k + 400 };
         case "salavip":
           return { x: d - 600, y: k + 330 };
         case "curandeira":
@@ -8458,6 +8458,8 @@ Error generating stack: ` + n.message + `
     let H = tt2.plazaY;
     let CTRK = { cidade_midgard: "fountain", cidade_ravnhaven: "lighthouse", cidade_isenborg: "xmastree", cidade_eldvik: "monument", cidade_kharnheim: "clocktower", cidade_freyrhain: "totem", cidade_gladsheim: "magetower", cidade_skogvik: "pagoda", cidade_handelsvik: "obelisk", cidade_solvik: "parasol", cidade_helvik: "crypt" }[e.id] ?? "fountain", CHW = ($m[CTRK]?.w ?? 64) / 2, CHH = ($m[CTRK]?.h ?? 48) / 2;
     s(CTRK, d, H);
+    if (e.id === "cidade_isenborg") for (let q = 0; q < 6; q++) { let g = q / 6 * 6.283 + 0.5; s("giftpile", d + Math.cos(g) * 95, H + Math.sin(g) * 70); }
+    if (e.id === "cidade_kharnheim" || e.id === "cidade_eldvik") for (let sg of [-1, 1]) s("dryfountain", d + sg * 520, H + 40);
     if (CTRK === "fountain") for (let [_, G] of [[-150, -110], [150, -110], [-150, 110], [150, 110]]) s("brazier", d + _, H + G);
     for (let [_, G] of [[-1, 0], [1, 0], [0, -1], [0, 1]]) {
       let bx = d + _ * Math.max(260, CHW + 90), by = H + G * Math.max(230, CHH + 90);
@@ -8640,6 +8642,7 @@ Error generating stack: ` + n.message + `
         l(cx - 60, cy + 80), l(cx + 20, cy + 95), l(cx + 70, cy + 70), s("sleigh", cx - 150, cy + 60), s("reindeer", cx - 60, cy + 40), s("reindeer", cx - 10, cy + 70), s("reindeer", cx + 120, cy + 90);
       } else if (kd === "toy") {
         s("toyfactory", cx, cy - 30);
+        for (let [dx, dy] of [[-110, 100], [-60, 120], [70, 118], [118, 98], [-190, 20], [190, 20]]) s("giftpile", cx + dx, cy + dy);
         s("snowman", cx - 260, cy + 150), s("snowman", cx + 260, cy + 150), s("snowman", cx - 140, cy + 170), s("snowman", cx + 140, cy + 170), s("sleigh", cx + 330, cy + 80), s("reindeer", cx + 400, cy + 60), s("reindeer", cx + 450, cy + 90);
         for (let q = -3; q <= 3; q++) s("lamp", cx + q * 100, cy + 235);
         l(cx - 40, cy + 120), l(cx + 10, cy + 135), l(cx + 60, cy + 118), s("cart", cx + 200, cy + 60);
@@ -8687,7 +8690,7 @@ Error generating stack: ` + n.message + `
     }
     for (let _ of M) for (let G = o.length - 1; G >= 0; G--) {
       let re = o[G];
-      re.kind === "deco" && (re.deco === "wall" || re.deco === "wall_v" || re.deco === "tower" || re.deco === "warrior" || re.deco === "fountain" || re.deco === "keep" || re.deco === "palace" || re.deco === "hof" || re.deco === "forge" || re.deco === "altar" || re.deco === "obelisk") || Math.hypot(re.x + re.w / 2 - _.x, re.y + re.h / 2 - _.y) < 56 && o.splice(G, 1);
+      re.kind === "deco" && (re.deco === "wall" || re.deco === "wall_v" || re.deco === "tower" || re.deco === "warrior" || re.deco === "fountain" || re.deco === "dryfountain" || re.deco === "keep" || re.deco === "palace" || re.deco === "hof" || re.deco === "forge" || re.deco === "altar" || re.deco === "obelisk") || Math.hypot(re.x + re.w / 2 - _.x, re.y + re.h / 2 - _.y) < 56 && o.splice(G, 1);
     }
     for (let _ of M) _.id === "bruna" ? (s("banner", _.x, _.y - 54), l(_.x - 60, _.y + 40), l(_.x + 60, _.y + 40)) : _.id === "ylva" ? (s("tent", _.x - 80, _.y - 20), s("campfire", _.x + 70, _.y - 30)) : _.id === "torvald" ? l(_.x + 56, _.y + 14) : _.id === "ottar" && (s("brazier", _.x - 70, _.y), s("brazier", _.x + 70, _.y));
     let Jl = 0, ec = 0;
@@ -8784,6 +8787,7 @@ Error generating stack: ` + n.message + `
       for (let _ of M) _.x = t - _.x;
       for (let _ of r) _.x = t - _.x;
     }
+    if (e.id === "cidade_isenborg") for (let q of o.filter((z) => z.kind === "deco" && z.deco === "frosttree")) o.push({ kind: "deco", deco: "giftpile", x: q.x + q.w / 2 + 6, y: q.y + q.h + 4, w: 26, h: 20 });
     return { id: e.id, name: e.name, width: t, height: a, spawn: { x: d, y: a - 420 }, safeZone: { x: c.x, y: c.y, w: c.w, h: c.h }, obstacles: tidyCity(e.id === "cidade_eldvik" ? o.filter((q) => !(q.kind === "deco" && q.deco === "palm")) : e.id === "cidade_freyrhain" ? o.filter((q) => !(q.kind === "deco" && (q.deco === "lamp" || q.deco === "banner" || q.deco === "bench"))) : o, M), treeTheme: e.id === "cidade_eldvik" ? "dead" : void 0, critters: crit, spawns: [], maxMonsters: 0, npcs: M, pois: r, portals: [{ x: f.from, y: a - 60, w: f.to - f.from, h: 60, label: "Sa\xEDda da cidade", locked: false, toMap: e.from, toSpawn: { x: 130, y: 630 } }], bossDen: { x: t / 2, y: a / 2 + 600, r: 10 }, theme: e.theme, safeLabel: e.safeLabel, scars: [], mood: e.mood, city: true, paved: e.id === "cidade_freyrhain" ? [] : p };
   }
   var Hr = (...e) => ["arauto", "ottar", "bruna", "brokk", "munin", "sigrun", "estilista", "provador", "utilidades", "cronista", "checkpoint", "questor", "lider", "mestre_jogos", "montaria", "salavip", "aeronave", "barqueiro", ...e].map((t) => ({ id: t, x: 0, y: 0 })), D8 = [{ id: "cidade_midgard", name: "Cidade de Midgard", seed: 7e3, theme: "grass", from: "campos_midgard", safeLabel: "Pra\xE7a de Midgard", npcs: Hr("eira", "curandeira"), grand: "palace", grandName: "Sal\xE3o do Jarl" }, { id: "cidade_ravnhaven", name: "Cidade de Ravnhaven", seed: 7101, theme: "grass", from: "midgard_brumaforte", safeLabel: "Pra\xE7a do Corvo", npcs: Hr(), grand: "castle", grandName: "Fortaleza do Corvo" }, { id: "cidade_isenborg", name: "Cidade de Isenborg", seed: 7202, theme: "snow", from: "jotunheim_aldeia", safeLabel: "Pra\xE7a da Geada", npcs: Hr("ylva", "torvald", "papainoel", "paihomun"), grand: "castle", grandName: "Cidadela de Gelo", mood: [0.92, 0.96, 1] }, { id: "cidade_eldvik", name: "Cidade de Eldvik", seed: 7303, theme: "sand", from: "muspel_cinzas", safeLabel: "Pra\xE7a das Brasas", npcs: Hr(), grand: "none", mood: [1.04, 0.96, 0.84] }, { id: "cidade_kharnheim", name: "Cidade de Kharnheim", seed: 7404, theme: "forge", from: "svart_mercado", safeLabel: "Pra\xE7a da Bigorna", npcs: Hr(), grand: "palace", grandName: "Grande Sal\xE3o da Bigorna", mood: [1, 0.9, 0.85] }, { id: "cidade_freyrhain", name: "Cidade de Freyrhain", seed: 7505, theme: "lush", from: "vana_santuario", safeLabel: "Pra\xE7a das Ra\xEDzes", npcs: Hr(), grand: "palace", grandName: "Pal\xE1cio das Ra\xEDzes" }, { id: "cidade_gladsheim", name: "Cidade de Gladsheim", seed: 7606, theme: "marble", from: "asg_praca", safeLabel: "Pra\xE7a dos Aesir", npcs: Hr(), grand: "both", grandName: "Sal\xE3o dos Aesir" }, { id: "cidade_skogvik", name: "Cidade de Skogvik", seed: 7707, theme: "wood", from: "midgard_bosque", safeLabel: "Pra\xE7a das Copas", npcs: Hr(), grand: "palace", grandName: "Pagode do Conselho", mood: [0.96, 1, 0.94] }, { id: "cidade_handelsvik", name: "Cidade de Handelsvik", seed: 7808, theme: "grass", from: "midgard_lago", safeLabel: "Cais dos Mercadores", npcs: Hr(), grand: "castle", grandName: "Sal\xE3o da Guilda", mood: [1, 1, 1.04] }, { id: "cidade_solvik", name: "Cidade de Solvik", seed: 7909, theme: "tropic", from: "vana_pantano", safeLabel: "Praia das Festas", npcs: Hr(), grand: "none", mood: [1.05, 1.02, 0.96] }, { id: "cidade_helvik", name: "Cidade de Helvik", seed: 8010, theme: "dead", from: "niflheim_catacumbas", safeLabel: "Pra\xE7a dos Sussurros", npcs: Hr(), grand: "palace", grandName: "Mausol\xE9u de Hel", mood: [0.7, 0.8, 0.86] }];
@@ -15843,6 +15847,18 @@ void main() {
           L(n, S(Math.cos(l) * 8, 44 - Math.abs(Math.sin(l * 2)) * 4, Math.sin(l) * 8), 1.8, 4, 1.8, 14677247, { seg: 6, ring: 4, mat: on });
         }
         return L(n, S(0, 49, 0), 3, 4, 3, 14677247, { seg: 6, ring: 4, mat: on }), n;
+      case "dryfountain": {
+        let dk = Y(o, 0.62);
+        F(n, S(0, 0, 0), 30, 28, 10, dk, { seg: 20, mat: Q }), F(n, S(0, 8, 0), 25, 25, 3, 4864046, { seg: 20 }), F(n, S(0, 0, 0), 5, 4, 30, dk, { seg: 10 }), F(n, S(0, 28, 0), 12, 8, 3, dk, { seg: 14, mat: Q });
+        for (let q = 0; q < 7; q++) { let l = q / 7 * 6.28 + 0.4, rr = 9 + q % 3 * 5; O(n, S(Math.cos(l) * rr, 9.5, Math.sin(l) * rr), 3 + q % 2 * 2, 1.6 + q % 3, 2.4, q % 2 ? 6968352 : 8023584); }
+        for (let q = 0; q < 3; q++) O(n, S(-27 + q * 3, 11 + q * 4, 6 - q * 9), 1.4, 7 - q, 1, 3813162);
+        return O(n, S(14, 30, -6), 4, 3, 3, dk), n;
+      }
+      case "giftpile": {
+        let cs = [13840452, 3838618, 15649060, 4504832, 16505360], rb = 16766000;
+        for (let [gx, gz, w, h, ci] of [[-6, 0, 11, 9, 0], [6, 2, 9, 7, 1], [0, -4, 8, 8, 2], [0, 4, 6, 5, 3]]) { O(n, S(gx, h / 2, gz), w, h, w, cs[ci], Q), O(n, S(gx, h / 2, gz), w + 0.6, h + 0.6, 1.6, rb), O(n, S(gx, h / 2, gz), 1.6, h + 0.6, w + 0.6, rb), O(n, S(gx, h + 1.2, gz), 3, 2, 3, rb); }
+        return n;
+      }
       case "well":
         F(n, S(0, 0, 0), 15, 14, 16, o, { seg: 14, mat: Q }), L(n, S(0, 16, 0), 11, 1.5, 11, 1714746, { seg: 12, ring: 4 });
         for (let s of [-13, 13]) O(n, S(s, 30, 0), 3, 28, 3, r);
@@ -16397,7 +16413,7 @@ void main() {
       case "portal":
         return [34, 16];
       default:
-        return e.deco === "wall" ? [34, 12] : e.deco === "wall_v" ? [12, 34] : e.deco === "tent" ? [32, 24] : e.deco === "altar" ? [26, 18] : e.deco === "arch" ? [38, 12] : e.deco === "fountain" ? [38, 30] : e.deco === "tower" ? [34, 28] : e.deco === "longhouse" ? [74, 36] : e.deco === "keep" ? [96, 96] : e.deco === "palace" ? [140, 64] : e.deco === "hof" ? [120, 74] : e.deco === "warrior" ? [30, 26] : e.deco === "forge" ? [48, 30] : e.deco === "stall" ? [44, 22] : e.deco === "church" ? [120, 62] : e.deco === "castle" ? [140, 100] : e.deco === "monument" ? [48, 48] : e.deco === "bigforge" ? [100, 58] : e.deco === "colossus" ? [54, 54] : e.deco === "airship" ? [1, 1] : e.deco === "magetower" ? [60, 50] : e.deco === "clocktower" ? [46, 40] : e.deco === "pyramid" ? [100, 80] : e.deco === "sphinx" ? [80, 34] : e.deco === "arena" ? [150, 110] : e.deco === "toyfactory" ? [120, 80] : e.deco === "pagoda" ? [60, 50] : e.deco === "crypt" ? [64, 50] : e.deco === "ship" || e.deco === "dock" ? [90, 34] : [20, 16];
+        return e.deco === "wall" ? [34, 12] : e.deco === "wall_v" ? [12, 34] : e.deco === "tent" ? [32, 24] : e.deco === "altar" ? [26, 18] : e.deco === "arch" ? [38, 12] : e.deco === "fountain" || e.deco === "dryfountain" ? [38, 30] : e.deco === "giftpile" ? [14, 10] : e.deco === "tower" ? [34, 28] : e.deco === "longhouse" ? [74, 36] : e.deco === "keep" ? [96, 96] : e.deco === "palace" ? [140, 64] : e.deco === "hof" ? [120, 74] : e.deco === "warrior" ? [30, 26] : e.deco === "forge" ? [48, 30] : e.deco === "stall" ? [44, 22] : e.deco === "church" ? [120, 62] : e.deco === "castle" ? [140, 100] : e.deco === "monument" ? [48, 48] : e.deco === "bigforge" ? [100, 58] : e.deco === "colossus" ? [54, 54] : e.deco === "airship" ? [1, 1] : e.deco === "magetower" ? [60, 50] : e.deco === "clocktower" ? [46, 40] : e.deco === "pyramid" ? [100, 80] : e.deco === "sphinx" ? [80, 34] : e.deco === "arena" ? [150, 110] : e.deco === "toyfactory" ? [120, 80] : e.deco === "pagoda" ? [60, 50] : e.deco === "crypt" ? [64, 50] : e.deco === "ship" || e.deco === "dock" ? [90, 34] : [20, 16];
     }
   }
   var Rt = 2, S4 = 0.38, fh = 2;
