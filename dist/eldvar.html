@@ -17888,7 +17888,7 @@ var ROX2 = (() => {
     const sh = (x, y, z) => { const k = w(y); return [x + P.sx * k + (hd(y) ? P.hx : 0), y + (hd(y) ? P.hy : 0), z + P.lean * k + (hd(y) ? P.hz : 0) + (P.gz || 0)]; };
     for (const [kk, o] of out) { if (kk === "e") { const r = sh(o.x, o.y, o.z); o.x = r[0]; o.y = r[1]; o.z = r[2]; } else o.pts = o.pts.map((p) => sh(p[0], p[1], p[2])); }
   }
-  const HS = 1.1, LS = .7, NECK = 32, HB = 29.5;
+  const HS = .94, LS = .7, NECK = 32, HB = 29.5;
   const ty = (y) => y <= HB ? NECK - (NECK - y) * HS : y >= 55 ? 74 - (74 - y) * LS : y;
   function chibi(out) {
     for (const [k, o] of out) {
@@ -17946,8 +17946,8 @@ var ROX2 = (() => {
     const hands = [null, null];
     for (const i of [0, 1]) {
       const sg = i ? 1 : -1, a = P.arm[i];
-      const sh = [sg * 9.4 * bk, 37 + bob, tz], h = [sg * a.x * bk, 37 + a.y + bob, tz + a.z], m = [(sh[0] + h[0]) / 2 + sg * 1.2, (sh[1] + h[1]) / 2, (sh[2] + h[2]) / 2 - 1.5];
-      S({ pts: [sh, m, h], w: [5.2, 4.4], col: (tt) => tt < .62 ? cfg.sleeve : (cfg.bracer && tt < .95 ? cfg.bracer : (cfg.sleeveLong ? cfg.sleeve : sk)), metal: cfg.metalLimb });
+      const sh = [sg * 8.2 * bk, 38 + bob, tz], h = [sg * a.x * bk, 37 + a.y + bob, tz + a.z], m = [(sh[0] + h[0]) / 2 + sg * 1.2, (sh[1] + h[1]) / 2, (sh[2] + h[2]) / 2 - 1.5];
+      S({ pts: [sh, m, h], w: [4.4, 4.4], col: (tt) => tt < .62 ? cfg.sleeve : (cfg.bracer && tt < .95 ? cfg.bracer : (cfg.sleeveLong ? cfg.sleeve : sk)), metal: cfg.metalLimb });
       E({ x: h[0], y: h[1] + 1, z: h[2] + .3, rx: 2.5, ry: 2.5, rz: 2.5, col: cfg.glove || sk }); hands[i] = { h: [h[0], h[1] + 1, h[2] + .3], m };
     }
     if (cfg.wpn) cfg.wpn(E, S, { R: hands[1], L: hands[0], P, t, tz, bob, unarmed: !P.armed });
@@ -18218,7 +18218,6 @@ var ROX2 = (() => {
     return finish(cfg, e, T, "berserker", C, (E, S, o) => {
       const b = o.bob, tz = o.tz, hy = o.hy;
       E({ x: 0, y: tz + 34.8 + b, z: tz, rx: 9.4, ry: 2.7, rz: 6.4, col: fur, tex: (mx) => Math.sin(mx * 24) > .45 ? furD : 0 });
-      for (const sg of [-1, 1]) { E({ x: sg * 6.4, y: tz + 36.4 + b, z: tz + 1, rx: 3.6, ry: 2, rz: 4.6, col: fur, tex: (mx, my) => Math.sin(mx * 20 + my * 14) > .5 ? furD : 0 }); }
       for (let i = 0; i < 7; i++) { const x = -9 + i * 3; S({ pts: [[x, tz + 52 + b, tz + 5], [x * 1.04, tz + 57 + b + (i % 2), tz + 5.6], [x * 1.06, tz + 62 + b + (i % 2) * 2, tz + 5.2]], w: [3.2, 1.2], col: i % 2 ? hx(0x5a4030) : hx(0x4a3320) }); }
       E({ x: 0, y: tz + 52 + b, z: tz + 5.8, rx: 3, ry: 2.4, rz: 1.2, col: hx(0xd8b040), metal: 1, tex: (mx, my) => Math.hypot(mx, my) < .4 ? hx(0xc8421e) : 0 });
       for (const sg of [-1, 1]) { E({ x: sg * 3.7, y: 66 + b * .3, z: (o.P.leg[sg > 0 ? 1 : 0].z) + 0.4, rx: 4.2, ry: 2.2, rz: 4.2, col: fur, tex: (mx) => Math.sin(mx * 18) > .4 ? furD : 0 }); }
@@ -18249,7 +18248,6 @@ var ROX2 = (() => {
     return finish(cfg, e, T, "cacador", C, (E, S, o) => {
       const b = o.bob, tz = o.tz;
       E({ x: 0, y: tz + 34.8 + b, z: tz, rx: 10.4, ry: 3, rz: 6.8, col: fur, tex: (mx, my) => Math.sin(mx * 24 + my * 8) > .4 ? hx(0xc4c8d0) : 0 });
-      for (const sg of [-1, 1]) E({ x: sg * 7, y: tz + 36.6 + b, z: tz, rx: 3.6, ry: 2.4, rz: 4.4, col: fur, tex: (mx, my) => Math.sin(mx * 18 + my * 14) > .5 ? hx(0xc4c8d0) : 0 });
       for (const sg of [-1, 1]) E({ x: sg * 7.8, y: tz + 55 + b, z: tz + 3.4, rx: 2.8, ry: 3.2, rz: 2, col: hx(0x6a4a2a), tex: (mx, my) => my < -.4 ? lt(hx(0x6a4a2a), .2) : 0 });
       E({ x: 0, y: tz + 52 + b, z: tz + 5.8, rx: 2.2, ry: 2, rz: 1, col: TR, metal: 1 });
       for (const sg of [-1, 1]) { E({ x: sg * 3.7, y: 66 + b * .3, z: o.P.leg[sg > 0 ? 1 : 0].z + .4, rx: 4, ry: 2.4, rz: 4, col: fur, tex: (mx) => Math.sin(mx * 18) > .4 ? hx(0xc4c8d0) : 0 }); for (let i = 0; i < 3; i++) E({ x: sg * 3.7, y: tz + 57 + b + i * 1.8, z: o.P.leg[sg > 0 ? 1 : 0].z * .3, rx: 3.5, ry: .6, rz: 3.5, col: lea }); }

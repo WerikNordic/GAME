@@ -73,7 +73,7 @@
     const sh = (x, y, z) => { const k = w(y); return [x + P.sx * k + (hd(y) ? P.hx : 0), y + (hd(y) ? P.hy : 0), z + P.lean * k + (hd(y) ? P.hz : 0) + (P.gz || 0)]; };
     for (const [kk, o] of out) { if (kk === "e") { const r = sh(o.x, o.y, o.z); o.x = r[0]; o.y = r[1]; o.z = r[2]; } else o.pts = o.pts.map((p) => sh(p[0], p[1], p[2])); }
   }
-  const HS = 1.1, LS = .7, NECK = 32, HB = 29.5;
+  const HS = .94, LS = .7, NECK = 32, HB = 29.5;
   const ty = (y) => y <= HB ? NECK - (NECK - y) * HS : y >= 55 ? 74 - (74 - y) * LS : y;
   function chibi(out) {
     for (const [k, o] of out) {
@@ -131,8 +131,8 @@
     const hands = [null, null];
     for (const i of [0, 1]) {
       const sg = i ? 1 : -1, a = P.arm[i];
-      const sh = [sg * 9.4 * bk, 37 + bob, tz], h = [sg * a.x * bk, 37 + a.y + bob, tz + a.z], m = [(sh[0] + h[0]) / 2 + sg * 1.2, (sh[1] + h[1]) / 2, (sh[2] + h[2]) / 2 - 1.5];
-      S({ pts: [sh, m, h], w: [5.2, 4.4], col: (tt) => tt < .62 ? cfg.sleeve : (cfg.bracer && tt < .95 ? cfg.bracer : (cfg.sleeveLong ? cfg.sleeve : sk)), metal: cfg.metalLimb });
+      const sh = [sg * 8.2 * bk, 38 + bob, tz], h = [sg * a.x * bk, 37 + a.y + bob, tz + a.z], m = [(sh[0] + h[0]) / 2 + sg * 1.2, (sh[1] + h[1]) / 2, (sh[2] + h[2]) / 2 - 1.5];
+      S({ pts: [sh, m, h], w: [4.4, 4.4], col: (tt) => tt < .62 ? cfg.sleeve : (cfg.bracer && tt < .95 ? cfg.bracer : (cfg.sleeveLong ? cfg.sleeve : sk)), metal: cfg.metalLimb });
       E({ x: h[0], y: h[1] + 1, z: h[2] + .3, rx: 2.5, ry: 2.5, rz: 2.5, col: cfg.glove || sk }); hands[i] = { h: [h[0], h[1] + 1, h[2] + .3], m };
     }
     if (cfg.wpn) cfg.wpn(E, S, { R: hands[1], L: hands[0], P, t, tz, bob, unarmed: !P.armed });

@@ -91,7 +91,6 @@
     return finish(cfg, e, T, "berserker", C, (E, S, o) => {
       const b = o.bob, tz = o.tz, hy = o.hy;
       E({ x: 0, y: tz + 34.8 + b, z: tz, rx: 9.4, ry: 2.7, rz: 6.4, col: fur, tex: (mx) => Math.sin(mx * 24) > .45 ? furD : 0 });
-      for (const sg of [-1, 1]) { E({ x: sg * 6.4, y: tz + 36.4 + b, z: tz + 1, rx: 3.6, ry: 2, rz: 4.6, col: fur, tex: (mx, my) => Math.sin(mx * 20 + my * 14) > .5 ? furD : 0 }); }
       for (let i = 0; i < 7; i++) { const x = -9 + i * 3; S({ pts: [[x, tz + 52 + b, tz + 5], [x * 1.04, tz + 57 + b + (i % 2), tz + 5.6], [x * 1.06, tz + 62 + b + (i % 2) * 2, tz + 5.2]], w: [3.2, 1.2], col: i % 2 ? hx(0x5a4030) : hx(0x4a3320) }); }
       E({ x: 0, y: tz + 52 + b, z: tz + 5.8, rx: 3, ry: 2.4, rz: 1.2, col: hx(0xd8b040), metal: 1, tex: (mx, my) => Math.hypot(mx, my) < .4 ? hx(0xc8421e) : 0 });
       for (const sg of [-1, 1]) { E({ x: sg * 3.7, y: 66 + b * .3, z: (o.P.leg[sg > 0 ? 1 : 0].z) + 0.4, rx: 4.2, ry: 2.2, rz: 4.2, col: fur, tex: (mx) => Math.sin(mx * 18) > .4 ? furD : 0 }); }
@@ -122,7 +121,6 @@
     return finish(cfg, e, T, "cacador", C, (E, S, o) => {
       const b = o.bob, tz = o.tz;
       E({ x: 0, y: tz + 34.8 + b, z: tz, rx: 10.4, ry: 3, rz: 6.8, col: fur, tex: (mx, my) => Math.sin(mx * 24 + my * 8) > .4 ? hx(0xc4c8d0) : 0 });
-      for (const sg of [-1, 1]) E({ x: sg * 7, y: tz + 36.6 + b, z: tz, rx: 3.6, ry: 2.4, rz: 4.4, col: fur, tex: (mx, my) => Math.sin(mx * 18 + my * 14) > .5 ? hx(0xc4c8d0) : 0 });
       for (const sg of [-1, 1]) E({ x: sg * 7.8, y: tz + 55 + b, z: tz + 3.4, rx: 2.8, ry: 3.2, rz: 2, col: hx(0x6a4a2a), tex: (mx, my) => my < -.4 ? lt(hx(0x6a4a2a), .2) : 0 });
       E({ x: 0, y: tz + 52 + b, z: tz + 5.8, rx: 2.2, ry: 2, rz: 1, col: TR, metal: 1 });
       for (const sg of [-1, 1]) { E({ x: sg * 3.7, y: 66 + b * .3, z: o.P.leg[sg > 0 ? 1 : 0].z + .4, rx: 4, ry: 2.4, rz: 4, col: fur, tex: (mx) => Math.sin(mx * 18) > .4 ? hx(0xc4c8d0) : 0 }); for (let i = 0; i < 3; i++) E({ x: sg * 3.7, y: tz + 57 + b + i * 1.8, z: o.P.leg[sg > 0 ? 1 : 0].z * .3, rx: 3.5, ry: .6, rz: 3.5, col: lea }); }
