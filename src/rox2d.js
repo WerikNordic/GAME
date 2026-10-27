@@ -18,10 +18,10 @@
   const ATK = { berserker: "slash", escudeiro: "slash", cacador: "shoot", volva: "cast", valquiria: "stab", skald: "quick", thay: "punch", aprendiz: "quick" };
   const FAM = { berserker: "p", escudeiro: "p", cacador: "a", volva: "m", valquiria: "m", skald: "a", thay: "a", aprendiz: "a" };
   function headPlan(e, cls, T) {
-    let h = e.head || "none"; if (!/^(circlet|wings|horns|helm|hood|hood2|beanie|wreath|bandana|feathercap|crown|crowngold|santa)$/.test(h)) h = "none"; const SIG = { volva: "hat", skald: "hood", cacador: "furhood", escudeiro: T >= 1 ? "helm" : "none", thay: "band", aprendiz: "band" }[cls] || "none";
+    let h = e.head || "none"; const por = h === "poring"; if (!/^(circlet|wings|horns|helm|hood|hood2|beanie|wreath|bandana|feathercap|crown|crowngold|santa)$/.test(h)) h = "none"; const SIG = { volva: "hat", skald: "hood", cacador: "furhood", escudeiro: T >= 1 ? "helm" : "none", thay: "band", aprendiz: "band" }[cls] || "none";
     let main = SIG, extra = null;
     if (h === "none") { } else if (h === "circlet" || h === "wings") extra = h; else if (h === "horns") main = "helmH"; else if (h === "helm") main = "helm"; else if (h === "hood") main = (SIG === "hood" || SIG === "furhood") ? SIG : "hood"; else main = h;
-    if (cls === "valquiria" && !extra && T >= 1) extra = "halo";
+    if (por) main = "none"; if (cls === "valquiria" && !extra && T >= 1) extra = "halo";
     return { main, extra, cover: main === "helm" || main === "helmH" || main === "hood" || main === "furhood" || main === "hood2" };
   }
   function finish(cfg, e, T, cls, C, deco) {
@@ -254,16 +254,47 @@
       E({ x: 0, y: o.tz + 34 + o.bob, z: o.tz, rx: 6.4, ry: 2, rz: 5, col: dk(tun, .9) });
     });
   };
+  // ===== NPC genérico (mesmo padrão visual) =====
+  function gearItem(g, E, S, o, C) {
+    const H = o.R; if (!H || !g || g === "none") return; const h = H.h, d = nrm([.12, -1, .22]);
+    if (g === "staff") { S({ pts: [add(h, d, -8), add(h, d, 30)], w: 1.9, col: hx(0x7a5030) }); const t2 = add(h, d, 32); ball(E, t2, 2.8, hx(0x7ad8ff), { bias: .8 }); S({ pts: [add(t2, [0, 3, 0]), add(t2, [3, 0, 0]), add(t2, [0, -3, 0])], w: 1, col: C.gold, metal: 1 }); }
+    else if (g === "club" || g === "mace") { S({ pts: [add(h, d, -4), add(h, d, 16)], w: 2.2, col: hx(0x6a4220) }); E({ x: add(h, d, 18)[0], y: add(h, d, 18)[1], z: add(h, d, 18)[2], rx: 3.6, ry: 4, rz: 3.6, col: hx(0x7a5a38), tex: (mx, my) => Math.sin(mx * 12 + my * 9) > .7 ? hx(0xb0b4c0) : 0 }); }
+    else if (g === "axe") { S({ pts: [add(h, d, -4), add(h, d, 22)], w: 2.1, col: hx(0x6a4220) }); const t2 = add(h, d, 19); S({ pts: [add(t2, d, 2), add(add(t2, d, 0), [6, 0, 0]), add(add(t2, d, -7), [5.4, 0, 0]), add(t2, d, -9)], w: [4, 3.6], col: C.steel2, metal: 1 }); }
+    else if (g === "sword") { S({ pts: [h, add(h, d, 3)], w: 2, col: hx(0x5a3a22) }); S({ pts: [add(add(h, d, 3), [-3.4, 0, 0]), add(add(h, d, 3), [3.4, 0, 0])], w: 1.8, col: C.gold, metal: 1 }); S({ pts: [add(h, d, 3), add(h, d, 22)], w: [3, 1.4], col: C.steel, metal: 1 }); }
+    else if (g === "spear") { S({ pts: [add(h, d, -8), add(h, d, 38)], w: 1.8, col: hx(0x7a5430) }); S({ pts: [add(h, d, 37), add(h, d, 45)], w: [3.4, .9], col: C.steel, metal: 1 }); }
+    else if (g === "dagger") { S({ pts: [h, add(h, d, 2)], w: 2, col: hx(0x3a2a22) }); S({ pts: [add(h, d, 2), add(h, d, 11)], w: [2.8, .9], col: C.steel, metal: 1 }); }
+    else if (g === "bow") { const x = h[0] + 1; S({ pts: [[x, h[1] - 20, h[2] - 3], [x, h[1], h[2] + 3], [x, h[1] + 20, h[2] - 3]], w: 1.9, col: hx(0x7a4a24) }); S({ pts: [[x, h[1] - 20, h[2] - 3], [x, h[1] + 20, h[2] - 3]], w: .8, col: hx(0xf0ead8) }); }
+  }
+  DES.npc = (e, T) => {
+    const C = palette(e, T), tun = hx(e.tunic), TR = hx(e.trim ?? 0xe8b838), fem = !!e.slim, belly = !!e.belly, robe = !!e.robe;
+    const cfg = common(e, T, e.cls, {
+      eye: 0x4a3a2a, robe: robe ? 1 : 0, robeCol: dk(tun, .9), top: tun, sleeve: tun, belt: dk(TR, .85), pants: hx(e.pants), boots: hx(e.boots), bracer: dk(TR, .7), metalLimb: 0, bulk: belly ? 1.36 : fem ? .9 : 1.04, hipw: fem ? 1.06 : 1,
+      robeTex: (mx, my, mz) => my > .9 ? TR : (mz > 0 && Math.abs(mx) < .08 && my > -.2 ? lt(tun, .35) : (Math.sin(mx * 12 + my * 3) > .75 ? lt(tun, .12) : 0)),
+      topTex: (mx, my, mz) => { if (my < -.8) return TR; if (mz > 0 && Math.abs(mx) < .06 && my > -.6) return dk(tun, .6); if (mz > 0 && my > .3 && my < .4) return dk(TR, .8); return Math.sin(mx * 16 + my * 5) > .78 ? lt(tun, .1) : 0; },
+      skirt: (fem && !robe) ? dk(tun, .92) : null, skirtTex: (mx, my) => my > .6 ? TR : 0,
+      wpn: (E, S, o) => { cuff(S, o.R, tun, TR, 5.2); cuff(S, o.L, tun, TR, 5.2); gearItem(e.gear, E, S, o, C); },
+      tweak: (P, a) => { if (a === 0) { P.leg[0].x = P.leg[1].x = 1; P.hx = 0; if (e.gear && e.gear !== "none") { P.arm[1] = { x: 10, y: 14, z: 3 }; } } },
+    });
+    if (e.pointyEars) cfg.pointy = true;
+    return finish(cfg, e, T, e.cls, C, (E, S, o) => {
+      const b = o.bob, tz = o.tz, hy = o.hy;
+      E({ x: 0, y: tz + 34.2 + b, z: tz, rx: 6.8, ry: 2.4, rz: 5.2, col: dk(tun, .92), tex: (mx) => Math.sin(mx * 18) > .55 ? lt(tun, .14) : 0 });
+      E({ x: 0, y: tz + 51.8 + b, z: tz + 5.8, rx: 2.4, ry: 2.2, rz: 1, col: TR, metal: 1 });
+      if (belly) E({ x: 0, y: tz + 45 + b, z: tz + 5.4, rx: 8.6, ry: 7.4, rz: 4.4, col: tun });
+      if (!robe) E({ x: -8, y: tz + 54 + b, z: tz + 3.6, rx: 2.4, ry: 3, rz: 2, col: dk(hx(e.boots), 1.1) });
+      if (e.pointyEars) for (const sg of [-1, 1]) S({ pts: [[sg * 8.6, hy + 1, o.hz], [sg * 12.4, hy - 2.4, o.hz], [sg * 14.4, hy - 5, o.hz]], w: [3.2, .8], col: hx(e.skin) });
+    });
+  };
   // ---------- entrada ----------
   const KIND_BY_STYLE = { slash: "slash", quick: "quick", cast: "cast", stab: "stab", shoot: "shoot", punch: "punch", nova: "cast", bolt: "shoot", dash: "quick" };
   const ATKU = { slash: [.2, .41, .56], quick: [.16, .3, .46], cast: [.3, .5, .62], stab: [.22, .4, .54], shoot: [.34, .48, .6], punch: [.16, .3, .46] };
   const PERS = { slash: 1.5, quick: 1.1, cast: 1.6, stab: 1.3, shoot: 1.4, punch: 1.0 };
   const KDIR = { down: 0, dq: 1, side: 2, uq: 3, up: 4 };
   const WALK = { p: 1.0, a: .78, m: 1.4 };
-  const SCALE = 1.3, CW = 184, GYY = 170, KS = .74;
+  const SCALE = 1.3, CW = 184, GYY = 170, KS = .88;
   function ROX2(e, dir, frame, lvl, style) {
-    const cls = e.cls, D = DES[cls]; if (!D) return null;
-    const T = e.ti || 0, fam = FAM[cls]; const cfg = D(e, T);
+    const cls = e.cls, D = DES[cls] || DES.npc; if (!D) return null;
+    const T = e.ti || 0, fam = FAM[cls] || (e.gear === "club" ? "p" : "a"); if (!ATK[cls]) { ATK[cls] = "slash"; } const cfg = D(e, T);
     let anim, t, kind = ATK[cls];
     if (lvl > 0) { anim = 2; t = ATKU[kind][Math.min(3, lvl) - 1] * PERS[kind]; }
     else if (frame === -2) { anim = 5; t = 0; } else if (frame < 0) { anim = 0; t = 0; }
@@ -271,7 +302,7 @@
     const d = render(cfg, KDIR[dir] ?? 0, anim, t, kind, fam, { S: SCALE, w: CW, h: CW, gy: GYY });
     const cv = document.createElement("canvas"); cv.width = CW; cv.height = CW;
     const cx = cv.getContext("2d"); cx.putImageData(new ImageData(d, CW, CW), 0, 0);
-    return { cv, ax: CW / 2, ay: GYY, k: KS };
+    return { cv, ax: CW / 2 * KS, ay: GYY * KS, k: KS };
   }
   return ROX2;
 })();

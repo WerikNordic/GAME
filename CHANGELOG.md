@@ -1,3 +1,9 @@
+## v200 - Correcoes do novo visual
+- Corrigido: sombra e preview da criacao de personagem desalinhados, Poring Saltitante fora da cabeca (ancora/escala do sprite novo).
+- Cabeca mais quadrada e menos redonda (rosto, cabelo e queixo).
+- NPCs agora seguem o mesmo padrao visual (corpo, cabeca, cabelo, barba, capas, cajado/clava na mao).
+- Poring equipado substitui chapeu/capuz da classe.
+
 ## v199 - Novo visual das classes
 - Todas as 8 classes (Aprendiz, Espadachim, Mercador, Arqueiro, Mago, Novico, Gatuno, Thay) ganharam o novo visual pixel-art: cabeca menos redonda, botas e detalhes, roupas proporcionais, sem asas no elmo e sem bolas nos ombros. Mecanicas, classes e tiers nao mudaram.
 - Cada classe tem postura, andar, sentar e ataque proprios (machado, martelo+escudo, arco, cajado, lanca, adagas, socos). Armas so aparecem ao atacar.

@@ -51,7 +51,7 @@
       const sw = (i, a = 1) => Math.sin(tt * 2.4 + i) * .5 * a;
       if (!cover) {
         const mo = X === "mohawk";
-        E({ x: 0, y: hy - 1.6, z: hz - .8, rx: 9.6 * T, ry: 11.4 * (X === "bun" || X === "buns" ? 1 : 1), rz: 9.8 * T, col: hc, tex: hairCap({ hair: hc }, { bangs: mo ? () => -.5 : FRINGE[clamp(hs.F, 0, 8)], side: mo ? -.2 : L >= 1 ? .62 : .32, back: mo ? .45 : L >= 1 ? .95 : .82 }) });
+        E({ x: 0, y: hy - 1.6, z: hz - .8, rx: 9 * T, ry: 11, rz: 9.2 * T, p: 4.2, col: hc, tex: hairCap({ hair: hc }, { bangs: mo ? () => -.5 : FRINGE[clamp(hs.F, 0, 8)], side: mo ? -.2 : L >= 1 ? .62 : .32, back: mo ? .45 : L >= 1 ? .95 : .82 }) });
         if (X === "curl" || hs.T === 3) for (let i = 0; i < 9; i++) { const a = i / 9 * TAU; E({ x: Math.cos(a) * 9, y: hy - 6 + (i % 3), z: hz - 1 + Math.sin(a) * 8.4, rx: 2.8, ry: 2.8, rz: 2.8, col: i % 2 ? hc : hl }); }
       }
       if (L >= 1 && X !== "bob") { // massa de cabelo atrás
