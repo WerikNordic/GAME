@@ -1,3 +1,6 @@
+# v170
+- Monstros maiores: +22% no tamanho visual dos monstros comuns e +12% nos chefes (so visual; hitbox e alcance iguais). Mapas de caca ja tem 3360x2240 (1,75x o original); nao foram ampliados de novo para nao quebrar portais.
+
 # v169
 - Organizacao dos NPCs: todas as cidades passam por uma checagem ao carregar; NPC dentro de predio/pilar/torre ou colado em outro e movido para o ponto livre mais proximo. Antes havia 12 casos em 8 dias simulados (Aeronave em Gladsheim, Bruna em Skogvik, Torvald em Isenborg); agora 0.
 

@@ -17268,7 +17268,7 @@ function ROXQM(f, c, s, l, def) {
       this.flash > 0.01 && (t.fillStyle = `rgba(235,242,255,${this.flash * this.flash * 0.55})`, t.fillRect(0, 0, o, r)), t.restore();
     }
   };
-  var B4 = '"Cinzel Decorative", "Uncial Antiqua", Georgia, serif', ms = 'Arial, "Helvetica Neue", Helvetica, sans-serif', X0 = 30, CS = { common: "#d9d9d9", uncommon: "#6fe08a", rare: "#5aa9ff", epic: "#c07bff", legendary: "#ffb02e" }, $a = 0.74, monScale = (d) => d.boss ? 1.5 + Math.max(0, d.radius - 26) / 28 : d.radius <= 14 ? 0.62 : d.radius <= 17 ? 0.78 : d.radius <= 20 ? 0.96 : 1.2, Cn = 188, $r = 124, I4 = (e) => Math.max(0, Math.min(1, e)), TS = (e) => e * e * (3 - 2 * e), RS = (e, t) => {
+  var B4 = '"Cinzel Decorative", "Uncial Antiqua", Georgia, serif', ms = 'Arial, "Helvetica Neue", Helvetica, sans-serif', X0 = 30, CS = { common: "#d9d9d9", uncommon: "#6fe08a", rare: "#5aa9ff", epic: "#c07bff", legendary: "#ffb02e" }, $a = 0.74, monScale = (d) => (d.boss ? 1.5 + Math.max(0, d.radius - 26) / 28 : d.radius <= 14 ? 0.62 : d.radius <= 17 ? 0.78 : d.radius <= 20 ? 0.96 : 1.2) * (d.boss ? 1.12 : 1.22), Cn = 188, $r = 124, I4 = (e) => Math.max(0, Math.min(1, e)), TS = (e) => e * e * (3 - 2 * e), RS = (e, t) => {
     let a = (t - e) % (Math.PI * 2);
     return a > Math.PI && (a -= Math.PI * 2), a < -Math.PI && (a += Math.PI * 2), a;
   }, Kl = (e) => {
