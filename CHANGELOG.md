@@ -1,3 +1,6 @@
+## v210 — Penteados originais
+- 45 penteados masculinos + 45 femininos (frente e costas), recortados das tabelas enviadas, com cores e desenho originais. Escolha na criação (por sexo), no provador e no estilista. "Original Eldvar" segue como padrão masculino; padrão feminino = Fem. 1.
+
 ## v209 — Cabeça original
 - Nova cabeça (a imagem enviada pelo Werik, sem alterações) como visual padrão dos jogadores; opção "Original Eldvar" na criação e no cabeleireiro. Vista de frente/lado e versão de costas. Com chapéu/máscara equipada, volta ao cabelo normal.
 
