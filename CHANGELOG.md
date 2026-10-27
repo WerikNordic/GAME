@@ -1,3 +1,7 @@
+# v174
+- Casamento validado pelo servidor: os dois noivos confirmam no Supabase (trade_commit) e so casam quando o servidor registra AMBOS; some a situacao de um casar e o outro nao.
+- Armas por classe: cada tipo de arma agora so pode ser usado pelas classes certas (espada: Berserker/Mercador/Valquiria/Thay; machado: Berserker/Mercador; arco: Cacador/Skald; cajado: Volva/Valquiria/Skald; lanca: Berserker/Valquiria/Cacador; adaga: Thay/Cacador/Mercador/Skald; luvas: Thay/Valquiria/Berserker; maca: Mercador/Valquiria/Berserker). Antes qualquer classe usava qualquer arma.
+
 # v173
 - Troca com liquidacao pelo servidor: depois que os dois confirmam, cada lado registra o compromisso no Supabase (tabela mp_trades + RPC trade_commit); so aplica a troca quando o servidor confirma que AMBOS confirmaram. Evita o caso de um lado concluir e o outro nao, e deixa registro auditavel da oferta. Limite: o servidor nao guarda o inventario, entao a checagem de posse continua no cliente.
 

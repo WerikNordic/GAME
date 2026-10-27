@@ -12125,13 +12125,25 @@ Error generating stack: ` + n.message + `
       if (!p || !w || !MP.ok || this.online) return this.toast("Casamento exige o modo multijogador online.", "bad"), void this.refresh();
       if (!this.wedOk(p)) return this.toast("Voc\u00EA precisa ser n\u00EDvel 99, solteiro(a) e ter uma Alian\u00E7a de Ouro.", "bad"), void this.refresh();
       if (!w.others.some((o) => (o.name ?? "").toLowerCase() === name.toLowerCase())) return this.toast("Essa pessoa precisa estar aqui perto.", "bad"), void this.refresh();
-      this.wed = { peer: name, dir: "out" }, this.wedSend(name, "req"), this.toast(`Pedido enviado a ${name}.`, "info"), this.refresh();
+      this.wed = { peer: name, dir: "out", nonce: "w" + Math.random().toString(36).slice(2, 9) }, this.wedSend(name, "req", this.wed.nonce), this.toast(`Pedido enviado a ${name}.`, "info"), this.refresh();
     }
     wedAnswer(ok) {
       let q = this.wed; if (!q || q.dir !== "in") return;
       if (!ok) return this.wedSend(q.peer, "dec"), this.wed = null, void this.refresh();
       let p = this.ps; if (!this.wedOk(p)) return this.toast("Voc\u00EA precisa ser n\u00EDvel 99, solteiro(a) e ter uma Alian\u00E7a de Ouro.", "bad"), void this.refresh();
-      this.wedSend(q.peer, "acc"), this.wedMarry(q.peer);
+      this.wedSend(q.peer, "acc"), this.wedSettle(q.peer, q.nonce);
+    }
+    async wedSettle(peer, nonce) {
+      let q = this.wed; if (!q || q.settling) return; q.settling = true, this.toast("Confirmando a cerim\u00F4nia com o servidor\u2026", "info");
+      for (let i = 0; i < 25; i++) {
+        if (this.wed !== q) return;
+        let r = await sbRpc("trade_commit", { p_id: MP.pid + ":" + this.activeSlot, p_name: this.ps.name, p_peer: peer, p_nonce: String(nonce || "w").slice(0, 24), p_offer: "casamento" });
+        if (this.wed !== q) return;
+        if (r && r.ok === false && r.error && !/conex/i.test(r.error)) return this.wed = null, this.toast(r.error, "bad"), void this.refresh();
+        if (r && r.ok && r.both) return this.wedMarry(peer);
+        await new Promise((z) => setTimeout(z, 1000));
+      }
+      this.wed === q && (this.wed = null, this.toast("Tempo esgotado: o casamento n\u00E3o foi confirmado.", "bad"), this.refresh());
     }
     wedMarry(peer) {
       let p = this.ps; if (!p || p.spouse) return;
@@ -12140,9 +12152,9 @@ Error generating stack: ` + n.message + `
     }
     wedRecv(from, body) {
       let f = body.split("|"), c = f[1], p = this.ps; if (!p) return;
-      if (c === "req") { if (p.spouse || this.wed) return this.wedSend(from, "dec"); this.wed = { peer: from, dir: "in" }, this.toast(`${from} pediu voc\u00EA em casamento!`, "info"), this.pushLog(`${from} pediu sua m\u00E3o. Abra a Cerim\u00F4nia na Capela de Midgard ou /bencao.`, "system", "info"), this.panel = "wedding"; }
+      if (c === "req") { if (p.spouse || this.wed) return this.wedSend(from, "dec"); this.wed = { peer: from, dir: "in", nonce: String(f[2] || "w").slice(0, 24) }, this.toast(`${from} pediu voc\u00EA em casamento!`, "info"), this.pushLog(`${from} pediu sua m\u00E3o. Abra a Cerim\u00F4nia na Capela de Midgard ou /bencao.`, "system", "info"), this.panel = "wedding"; }
       else if (c === "dec" && this.wed?.peer?.toLowerCase() === from.toLowerCase()) this.wed = null, this.toast(`${from} recusou.`, "bad");
-      else if (c === "acc" && this.wed?.dir === "out" && this.wed.peer.toLowerCase() === from.toLowerCase()) this.wedMarry(from);
+      else if (c === "acc" && this.wed?.dir === "out" && this.wed.peer.toLowerCase() === from.toLowerCase()) this.wedSettle(from, this.wed.nonce);
       else if (c === "bless" && p.spouse && p.spouse.toLowerCase() === from.toLowerCase()) this.wedApplyBless(false);
       this.refresh();
     }
@@ -16786,6 +16798,10 @@ function ROXQM(f, c, s, l, def) {
     return e.hair !== void 0 && !Number.isNaN(e.hair) && (t.hair = xh[e.hair % xh.length]), e.hs && (t.hairStyle = e.hs, /^v\d+$/.test(e.hs) && HV50[Number(e.hs.slice(1)) - 1] && (t.hvp = HV50[Number(e.hs.slice(1)) - 1], t.hairStyle = "short")), e.hc !== void 0 && !Number.isNaN(e.hc) && (t.hair = e.hc, t.eye === void 0 && (t.eye = (((e.hc >> 16 & 255) + 40 > 255 ? 255 : (e.hc >> 16 & 255) + 40) << 16) | (((e.hc >> 8 & 255) + 40 > 255 ? 255 : (e.hc >> 8 & 255) + 40) << 8) | ((e.hc & 255) + 40 > 255 ? 255 : (e.hc & 255) + 40))), e.gear && (t.gear = e.gear), e.top && (t.head = e.top), e.mid && (t.mid = e.mid), e.low && (t.low = e.low), e.sx === "f" && (t.slim = true, e.hs || (t.hairStyle = "long")), e.bk && BACKS[e.bk] && (BACKS[e.bk].type === "cape" ? t.cape = BACKS[e.bk].c : BACKS[e.bk].type === "quiver" ? t.quiver = true : t.wingsBack = [BACKS[e.bk].c, BACKS[e.bk].c2]), t;
   }
   {
+    {
+      const WJ = { sword: ["berserker", "escudeiro", "valquiria", "thay"], axe: ["berserker", "escudeiro"], bow: ["cacador", "skald"], staff: ["volva", "valquiria", "skald"], spear: ["berserker", "valquiria", "cacador"], dagger: ["thay", "cacador", "escudeiro", "skald"], fist: ["thay", "valquiria", "berserker"], mace: ["escudeiro", "valquiria", "berserker"] };
+      for (const it of Object.values(Wa)) if (it.kind === "weapon" && it.weaponType && !it.allowedJobs?.length && WJ[it.weaponType]) it.allowedJobs = WJ[it.weaponType];
+    }
     for (const m of Object.values(Jt)) {
       if (!String(m.id).startsWith("cidade_")) continue;
       const blk = (x, y, mg) => m.obstacles.some((o) => o.kind !== "tree" && o.kind !== "rock" && o.kind !== "water" && x > o.x - mg && x < o.x + o.w + mg && y > o.y - mg && y < o.y + o.h + mg);
