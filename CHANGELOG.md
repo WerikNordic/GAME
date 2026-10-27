@@ -38,7 +38,7 @@
 - ESC nao pausa; tela de entrada nordica; novos efeitos sonoros; sem visual inicial de classe.
 
 ## v142
-- Eldvik: sem chuva, árvores mortas, sem oásis (cidade devastada). Freyrhain: sem pavimento, só grama, sem postes/estandartes/bancos.
+- Eldvik: sem chuva, sem palmeiras, árvores mortas, sem oásis (cidade devastada). Freyrhain: sem pavimento, só grama, sem postes/estandartes/bancos.
 
 ## v141
 - Cada cidade com centro próprio (só Midgard mantém a fonte): Ravnhaven farol, Isenborg árvore de Natal gigante, Eldvik monumento, Kharnheim torre do relógio, Freyrhain totem, Gladsheim torre de mago, Skogvik pagode, Handelsvik obelisco, Solvik ombrelone, Helvik cripta. Bancos acompanham o tamanho do centro.
