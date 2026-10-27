@@ -9498,6 +9498,7 @@ Error generating stack: ` + n.message + `
   for (let d of Object.values(Qu)) {
     if (d.id === "jormungandr") { d.atk = Math.round(d.atk * 1.15); continue; }
     let bs = !!d.boss;
+    bs && !d.name.startsWith("[MVP]") && (d.name = "[MVP] " + d.name);
     { let L_ = d.level || 1, f_ = L_ <= 25 ? 1 : L_ <= 40 ? 1 - (L_ - 25) * 0.03 : Math.max(0.28, 0.55 - (L_ - 40) * 0.0045), fa_ = L_ <= 25 ? 1 : Math.max(0.78, 1 - (L_ - 25) * 0.01); if (bs) f_ = 0.55 + 0.45 * f_, fa_ = 0.9 + 0.1 * fa_; d.hp = Math.round(d.hp * f_), d.atk = Math.round(d.atk * fa_); }
     d.hp = Math.round(d.hp * (bs ? BAL.bossHp : BAL.hp)), d.atk = Math.round(d.atk * (bs ? BAL.bossAtk : BAL.atk)), d.def = Math.round(d.def * BAL.def), d.exp = Math.max(1, Math.round(d.exp * (bs ? BAL.bossExp : BAL.exp))), d.silver = [Math.max(1, Math.round(d.silver[0] * BAL.silver)), Math.max(1, Math.round(d.silver[1] * BAL.silver))];
     !bs && /javali|planta|silvan|raiz|musgo|cogumelo|folha|bosque|treant|dryad|hati/i.test(d.id + " " + d.name) && !d.drops.some((x) => x.item === "morango") && d.drops.push({ item: "morango", chance: 0.08, min: 1, max: 1 });
@@ -9771,7 +9772,7 @@ Error generating stack: ` + n.message + `
     o;
     due = /* @__PURE__ */ new Map();
     static policyFor(t, a) {
-      return t || (a.boss ? { mode: "timed", delayMs: a.respawnMs, varianceMs: 3e5 } : { mode: "timed", delayMs: a.respawnMs, varianceMs: 0 });
+      return t || (a.boss ? { mode: "timed", delayMs: 72e5, varianceMs: 36e5 } : { mode: "timed", delayMs: a.respawnMs, varianceMs: 0 });
     }
     schedule(t, a, n) {
       let o = this.o.now(), r;
@@ -10492,6 +10493,10 @@ Error generating stack: ` + n.message + `
       return { id: this.nextId++, def: t, pos: { ...a }, home: { ...a }, hp: t.hp, maxHp: t.hp, state: "idle", facing: this.rng() * Math.PI * 2, phase: 1, slot: n, summoned: o, stateUntil: 0, windupKind: "bite", windupStart: 0, dir: { x: 1, y: 0 }, slamCenter: { x: 0, y: 0 }, nextSlamAt: 0, stunUntil: 0, slowUntil: 0, speedMul: 1, atkMul: 1, nextWanderAt: 0, wander: { ...a }, respawnAt: 0, diedAt: 0, stuck: 0, detourUntil: 0, detour: 0, chargeHit: false, engagedAnnounced: false, provoked: false, carried: [], lowHp: { fired: false }, fleeUntil: 0, slamR: ar.radius, slamM: ar.mult };
     }
     pickSpawnPos(t, a) {
+      if (a.boss && this.map.id !== "wb_cratera" && !this.map.hidden) for (let n = 0; n < 80; n++) {
+        let i = 120 + this.rng() * (this.map.width - 240), s = 120 + this.rng() * (this.map.height - 240);
+        if (Ia(i, s, a.radius + 6, this.map.obstacles, this.map.width, this.map.height) && !Bu(i, s, this.map.safeZone) && Be({ x: i, y: s }, this.map.spawn) > 700) return { x: i, y: s };
+      }
       if (t.radius <= 0) return { x: t.x, y: t.y };
       for (let n = 0; n < 40; n++) {
         let o = this.rng() * Math.PI * 2, r = Math.sqrt(this.rng()) * Math.max(t.radius * 3.2, 700), i = t.x + Math.cos(o) * r, s = t.y + Math.sin(o) * r;

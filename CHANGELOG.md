@@ -37,6 +37,9 @@
 - /guilda, /g, /grupo, /p, /amigo (locais; sem servidor de jogo ainda).
 - ESC nao pausa; tela de entrada nordica; novos efeitos sonoros; sem visual inicial de classe.
 
+## v150
+- Bosses viram "[MVP] Nome" (Nidhwerikr segue como boss mundial). Nascem em ponto aleatório do mapa (longe da entrada e da zona segura) e renascem em 1 a 3 h (2 h ±1 h), também em local aleatório.
+
 ## v149
 - Mapa-múndi (M): janela grande; 70 pontos para os mapas reais de caça, agrupados por reino. Passar o mouse mostra nome do mapa, nível recomendado e os monstros (com nível e ★ para boss).
 
