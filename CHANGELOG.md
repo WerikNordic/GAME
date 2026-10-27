@@ -1,3 +1,6 @@
+# v163
+- Trilha de Quests: encomendas de Zeny repetiveis (20 materiais), 9 Grandes Expedicoes unicas (3 materiais -> EXP + Zeny + equipamento raro) e 14 Trofeus de MVP unicos (drops do chefe -> EXP + Zeny + equipamento raro). Painel de Quests com abas EXP / Zeny / Dificeis / MVP / Visual.
+
 # v162
 - NOVO sistema de casamento: Irma Eldrid (cerimonialista) na Capela de Midgard. Ambos nivel 99 + Alianca de Ouro, pedido/aceite entre jogadores online, fogos de confete; loja da capela (alianca, vestido, smoking, buque); adocao de bebe (segue o casal, +2% EXP); /bencao da familia (15 s de agilidade, cura 25%, tambem no conjuge); divorcio.
 
