@@ -17752,6 +17752,651 @@ var ROX = (() => {
   };
 })();
 
+// ===== ROX2: visual pixel-art novo (partes 3D -> pixel, z-buffer, 4 tons, contorno) =====
+var ROX2 = (() => {
+  const TAU = Math.PI * 2, clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+  const hx = (c) => [(c >> 16) & 255, (c >> 8) & 255, c & 255];
+  const mix = (a, b, t) => a.map((v, i) => v + (b[i] - v) * t);
+  const dk = (c, f) => c.map((v) => v * f);
+  const lt = (c, t) => mix(c, [255, 255, 255], t);
+  const tones = (c) => [mix(dk(c, .5), [30, 20, 70], .25), mix(dk(c, .76), [60, 40, 110], .14), c, mix(c, [255, 246, 220], .3)];
+  const LV = (() => { const l = [-.55, -.75, .6], m = Math.hypot(...l); return l.map((v) => v / m); })();
+  let SOFT = false, METAL = false;
+  function Ctx(a) { const c = Math.cos(a), s = Math.sin(a); return { c, s, P: (x, z) => x * c + z * s, D: (x, z) => z * c - x * s }; }
+  class Img { constructor(w, h) { this.w = w; this.h = h; this.d = new Uint8ClampedArray(w * h * 4); this.z = new Float32Array(w * h).fill(-1e9); } }
+  function put(I, x, y, z, col, a = 255) { if (x < 0 || y < 0 || x >= I.w || y >= I.h) return; const i = y * I.w + x; if (z < I.z[i]) return; I.z[i] = z; const j = i * 4; I.d[j] = col[0]; I.d[j + 1] = col[1]; I.d[j + 2] = col[2]; I.d[j + 3] = a; }
+  function tone(nx, ny, nz, base, bias = 0) {
+    const v = nx * LV[0] + ny * LV[1] + nz * LV[2] + bias;
+    const T = SOFT ? [mix(dk(base, .74), [190, 90, 110], .22), mix(dk(base, .88), [230, 130, 130], .12), base, mix(base, [255, 250, 235], .22)] : tones(base);
+    if (METAL) { const T2 = [mix(dk(base, .38), [20, 20, 70], .3), mix(dk(base, .62), [50, 50, 110], .18), base, mix(base, [255, 255, 255], .38), [255, 255, 255]]; return v > .92 ? T2[4] : v > .62 ? T2[3] : v > .18 ? T2[2] : v > -.3 ? T2[1] : T2[0]; }
+    return v > .7 ? T[3] : v > .3 ? T[2] : v > -.12 ? T[1] : T[0];
+  }
+  function ellipsoid(I, K, o) {
+    const { c, s, P, D } = K; const cx = P(o.x, o.z) + I.w / 2, cy = o.y, zc = D(o.x, o.z);
+    const rxp = Math.max(.8, Math.hypot(o.rx * c, o.rz * s)), rzp = Math.hypot(o.rx * s, o.rz * c) || 1, p = o.p || 2;
+    for (let y = Math.floor(cy - o.ry); y <= Math.ceil(cy + o.ry); y++) for (let x = Math.floor(cx - rxp); x <= Math.ceil(cx + rxp); x++) {
+      const dx = (x + .5 - cx) / rxp, dy = (y + .5 - cy) / o.ry; const r = Math.pow(Math.pow(Math.abs(dx), p) + Math.pow(Math.abs(dy), p), 1 / p); if (r > 1) continue;
+      const q = Math.min(1, Math.hypot(dx, dy)); const nz = Math.sqrt(Math.max(0, 1 - q * q));
+      const X = dx, Y = dy, Z = nz; const mx = X * c - Z * s, mz = X * s + Z * c, my = Y;
+      let col = o.col; if (o.tex) { const t = o.tex(mx, my, mz, X, Y, Z); if (t === null) continue; if (t) col = t; }
+      METAL = !!o.metal; SOFT = !!o.soft; put(I, x, y, zc + Z * rzp, tone(X, Y, Z, col, o.bias || 0)); METAL = false; SOFT = false;
+    }
+  }
+  function strip(I, K, o) {
+    const { P, D } = K; const pr = o.pts.map((q) => [P(q[0], q[2]) + I.w / 2, q[1], D(q[0], q[2])]); const n = pr.length - 1;
+    for (let i = 0; i < n; i++) {
+      const a = pr[i], b = pr[i + 1]; const w0 = Array.isArray(o.w) ? o.w[0] + (o.w[1] - o.w[0]) * i / n : o.w, w1 = Array.isArray(o.w) ? o.w[0] + (o.w[1] - o.w[0]) * (i + 1) / n : o.w; const rm = Math.max(w0, w1) / 2 + 1;
+      const minx = Math.floor(Math.min(a[0], b[0]) - rm), maxx = Math.ceil(Math.max(a[0], b[0]) + rm), miny = Math.floor(Math.min(a[1], b[1]) - rm), maxy = Math.ceil(Math.max(a[1], b[1]) + rm);
+      const vx = b[0] - a[0], vy = b[1] - a[1], L2 = vx * vx + vy * vy || 1e-6;
+      for (let y = miny; y <= maxy; y++) for (let x = minx; x <= maxx; x++) {
+        const px = x + .5 - a[0], py = y + .5 - a[1]; const tt = clamp((px * vx + py * vy) / L2, 0, 1); const ex = px - vx * tt, ey = py - vy * tt; const w = (w0 + (w1 - w0) * tt) / 2; const d2 = (ex * ex + ey * ey) / (w * w); if (d2 > 1) continue;
+        const X = ex / w, Y = ey / w, Z = Math.sqrt(Math.max(0, 1 - d2)); const tg = (i + tt) / n; let col = typeof o.col === "function" ? o.col(tg, X) : o.col; if (!col) continue;
+        METAL = !!o.metal; put(I, x, y, a[2] + (b[2] - a[2]) * tt + Z * w, tone(X, Y, Z, col, o.bias || 0)); METAL = false;
+      }
+    }
+  }
+  function outline(I, minA = 200) {
+    const H = I.h, W = I.w, B = I.d, o = new Uint8ClampedArray(B);
+    for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
+      const i = (y * W + x) * 4; if (B[i + 3] >= minA) continue; let best = -1, bl = 999;
+      for (const [dx, dy] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) { const xx = x + dx, yy = y + dy; if (xx < 0 || yy < 0 || xx >= W || yy >= H) continue; const j = (yy * W + xx) * 4; if (B[j + 3] >= minA) { const l = B[j] + B[j + 1] + B[j + 2]; if (l < bl) { bl = l; best = j; } } }
+      if (best >= 0) { o[i] = B[best] * .26 + 8; o[i + 1] = B[best + 1] * .22 + 4; o[i + 2] = B[best + 2] * .28 + 14; o[i + 3] = 255; }
+    }
+    B.set(o);
+  }
+  const SM = (x) => x * x * (3 - 2 * x);
+  function kf(u, k) { if (u <= k[0][0]) return k[0][1]; for (let i = 1; i < k.length; i++) if (u <= k[i][0]) { const a = k[i - 1], b = k[i]; return a[1] + (b[1] - a[1]) * SM((u - a[0]) / (b[0] - a[0] || 1)); } return k[k.length - 1][1]; }
+  function kf3(u, k) { return { x: kf(u, k.map((r) => [r[0], r[1]])), y: kf(u, k.map((r) => [r[0], r[2]])), z: kf(u, k.map((r) => [r[0], r[3]])) }; }
+  // dedupe: permite hoisting
+  const add = (a, b, k = 1) => [a[0] + b[0] * k, a[1] + b[1] * k, a[2] + b[2] * k];
+  const nrm = (v) => { const l = Math.hypot(v[0], v[1], v[2]) || 1; return [v[0] / l, v[1] / l, v[2] / l]; };
+  const wd = (H, P) => P.wd ? nrm(P.wd) : P.mood === 1 ? nrm([(H.h[0] - H.m[0]) * .5, (H.h[1] - H.m[1]) * .5 - 3, (H.h[2] - H.m[2]) * .9 + 2]) : P.mood === 2 ? [0, -1, .1] : nrm([.18, -1, .3]);
+  const lerp = (a, b, k) => a.map((v, i) => v + (b[i] - v) * k);
+  //__POSE__
+  // ---------- pose ----------
+  // fam: 'p' (pesado), 'a' (ágil), 'm' (místico). kind de ataque: slash, quick, cast, stab, shoot, punch
+  function pose(anim, t, fam, kind) {
+    const o = { bob: 0, lz: 0, leg: [{ z: 0, l: 0 }, { z: 0, l: 0 }], arm: [{ x: 9.6, y: 15, z: 1.5 }, { x: 9.6, y: 15, z: 1.5 }], mood: 0, armed: false, sx: 0, lean: 0, hx: 0, hz: 0, hy: 0, marks: [] };
+    const S = Math.sin, C = Math.cos, PA = fam === "p", AS = fam === "a", MG = fam === "m"; const pick = (a, b, c) => PA ? a : AS ? b : c;
+    const br = S(t * 2.618);
+    if (anim === 0) {
+      o.bob = .35 + .35 * br;
+      if (PA) { o.lean = -.5; o.arm[0] = { x: 10.2, y: 14 + br * .3, z: 2.6 }; o.arm[1] = { x: 8.6, y: 14.6, z: 1.2 }; o.hx = S(t * 2.618) * .9; o.hz = -.2; o.leg[0].x = 1.1; o.leg[1].x = 1.1; }
+      else if (AS) { o.lean = 1.5 + br * .2; o.sx = S(t * 2.618) * 1.1; o.leg[0].z = -1.6; o.leg[1].z = 1.8; o.leg[0].x = .6; o.leg[1].x = 1.2; o.arm[0] = { x: 6, y: 14, z: 6.2 }; o.arm[1] = { x: 6.2, y: 14.2, z: 6 }; o.hx = S(t * 2.618) * 1.3; o.hy = .5 + S(t * .8) * .3; o.hz = .8; }
+      else { o.lean = .4; o.sx = S(t * 2.618) * .5; o.arm[1] = { x: 3.4, y: 3.6 + S(t * 2.618) * .9, z: 6.6 }; o.arm[0] = { x: 7.2, y: 13.4, z: -2.6 }; o.hx = S(t * 2.618) * 1.1; o.hy = .3; o.leg[0].x = .5; o.leg[1].x = .5; o.bob += .3; }
+    } else if (anim === 1 || anim === 8) {
+      const run = anim === 8; const per = run ? pick(.62, .46, .72) : pick(1.0, .78, 1.4), ph = t / per * TAU;
+      const A = run ? pick(8, 8, 6) : pick(5.2, 4.6, 3.4), L = run ? pick(5, 6, 4) : pick(3, 4, 2), Bm = run ? pick(2.4, 2, 1.5) : pick(1.5, 1.1, .8);
+      o.bob = Math.abs(S(ph)) * Bm; o.sx = S(ph) * (run ? pick(.5, .6, 1.2) : pick(.4, 1, .9)); o.lean = run ? pick(1.2, 3.8, 2.2) : pick(-.3, 1.8, .6); o.hx = -S(ph) * .5; o.hy = C(ph * 2) * .25;
+      for (let i = 0; i < 2; i++) { const p = ph + (i ? Math.PI : 0); o.leg[i].z = S(p) * A; o.leg[i].l = Math.max(0, C(p)) * L; o.leg[i].x = AS ? .4 : .8; }
+      for (let i = 0; i < 2; i++) {
+        const p = ph + (i ? Math.PI : 0);
+        if (PA) { const sw = run ? 7 : 5 * (i ? 1 : .4); o.arm[i] = { x: 9.6, y: run ? 11 : 15, z: -S(p) * sw + (i ? 0 : 1.5) }; }
+        else if (AS) { const sw = run ? 3.2 : 3; o.arm[i] = { x: run ? 8 : 7.4, y: run ? 10.5 : 13, z: -S(p) * sw + (run ? -4 : 2) }; }
+        else { if (run) o.arm[i] = { x: 10.5, y: 9, z: -S(p) * 8 }; else o.arm[i] = { x: 6, y: 14.2, z: -4.2 + S(p) * .7 }; }
+      }
+    } else if (anim === 2) {
+      o.armed = true; o.mood = 1;
+      const per = { slash: 1.5, quick: 1.1, cast: 1.6, stab: 1.3, shoot: 1.4, punch: 1.0 }[kind] || 1.5, u = (t % per) / per;
+      if (kind === "slash") {
+        o.arm[1] = kf3(u, [[0, 8, 12, 4], [.12, 7.5, 2, 0], [.22, 6, -16, -5], [.3, 6, -17, -5.5], [.33, 6, -14, -3], [.41, 7.5, 16, 12], [.46, 7.5, 17, 12.5], [.6, 7.8, 14, 8], [.8, 8, 12, 5], [1, 8, 12, 4]]);
+        o.wd = ((th) => [0, -Math.cos(th), Math.sin(th)])(kf(u, [[0, 140], [.12, 60], [.22, 0], [.3, -28], [.33, -30], [.37, 30], [.41, 100], [.44, 142], [.6, 140], [1, 140]]) * Math.PI / 180);
+        o.arm[0] = kf3(u, [[0, 9.6, 15, 1.5], [.2, 10, 10, 6], [.4, 10, 9, 7], [.7, 9.8, 13, 3], [1, 9.6, 15, 1.5]]);
+        o.lean = kf(u, [[0, 0], [.22, -2.8], [.32, -3], [.41, 4.2], [.48, 3.6], [.7, 1], [1, 0]]); o.gz = kf(u, [[0, 0], [.22, -3], [.32, -3], [.41, 5], [.52, 5], [.8, 1.5], [1, 0]]);
+        o.bob = kf(u, [[0, 0], [.22, 1], [.32, 1.2], [.4, -2.2], [.5, -1.6], [.75, -.2], [1, 0]]);
+        o.leg[1].z = kf(u, [[0, 0], [.3, -2], [.41, 8], [.6, 8], [1, 0]]); o.leg[0].z = kf(u, [[0, 0], [.3, -4], [.41, -5], [.6, -4], [1, 0]]); o.leg[0].x = o.leg[1].x = 1.4;
+      } else if (kind === "quick") {
+        o.gz = kf(u, [[0, 0], [.16, -2], [.22, -2], [.3, 15], [.44, 17], [.6, 16], [.85, 4], [1, 0]]);
+        o.bob = kf(u, [[0, 0], [.16, -3.6], [.22, -3.6], [.28, -1], [.4, -2.2], [.6, -2.4], [.72, 1.4], [.85, .2], [1, 0]]); o.lean = kf(u, [[0, 1.5], [.16, 4.5], [.3, 3.8], [.5, 2.4], [.85, 1.6], [1, 1.5]]);
+        o.arm[1] = kf3(u, [[0, 9, 12, 3], [.16, 11, 5, -8], [.22, 11, 4, -9], [.28, 2.5, 6, 13], [.34, 3, 6, 12], [.4, 11.5, 4, 5], [.46, 10, 5, 10], [.6, 9.5, 9, 8], [.85, 9, 12, 4], [1, 9, 12, 3]]);
+        o.arm[0] = kf3(u, [[0, 9, 12, 3], [.16, 11, 7, -7], [.24, 11, 6, -8], [.32, 3, 4, 13], [.38, 3, 5, 12], [.44, 11.5, 6, 6], [.5, 10, 6, 11], [.62, 9.5, 9, 8], [.85, 9, 12, 4], [1, 9, 12, 3]]);
+        o.sx = kf(u, [[0, 0], [.28, -1.4], [.4, 1.4], [.5, 0], [1, 0]]); o.leg[0].z = kf(u, [[0, -2], [.16, -5], [.3, -6], [.6, -6], [1, -2]]); o.leg[1].z = kf(u, [[0, 2], [.16, 6], [.3, 8], [.6, 8], [1, 2]]); o.leg[0].x = o.leg[1].x = 2.2; o.hx = 1;
+      } else if (kind === "cast") {
+        o.arm[1] = kf3(u, [[0, 9.6, 15, 1.5], [.1, 8, 8, 5], [.2, 8, 6, 5.2], [.26, 9, -8, 2], [.32, 5, -12, 9], [.38, 2, -12, 3], [.44, 6, -10, -3], [.5, 8, 3, 12], [.54, 7, 4, 15], [.6, 7, 4, 15], [.8, 8, 10, 7], [1, 9.6, 15, 1.5]]);
+        o.arm[0] = kf3(u, [[0, 9.6, 15, 1.5], [.1, 8, 3, 6], [.3, 8, 2, 6], [.5, 8, 8, 11], [.6, 8, 8, 11], [.85, 9, 13, 3], [1, 9.6, 15, 1.5]]);
+        o.lean = kf(u, [[0, 0], [.2, -.8], [.3, -1.4], [.5, 2.8], [.6, 2.4], [.85, .4], [1, 0]]); o.bob = kf(u, [[0, 0], [.2, -.6], [.3, 1.8], [.5, .6], [.6, .4], [1, 0]]); o.gz = kf(u, [[0, 0], [.5, 1.5], [.7, 1.5], [1, 0]]);
+        o.leg[0].z = -2; o.leg[1].z = kf(u, [[0, 0], [.5, 2.5], [1, 0]]); o.leg[0].x = o.leg[1].x = 1.2;
+        o.wd = ((th) => [0, -Math.cos(th), Math.sin(th)])(kf(u, [[0, 165], [.2, 165], [.26, 200], [.34, 300], [.42, 400], [.5, 450], [.6, 450], [.8, 490], [1, 525]]) * Math.PI / 180);
+      } else if (kind === "stab") {
+        o.arm[1] = kf3(u, [[0, 9, 12, 3], [.2, 8, 9, -6], [.3, 7, 8, 2], [.38, 6, 7, 15], [.46, 6, 7, 16], [.7, 8, 11, 7], [1, 9, 12, 3]]);
+        o.arm[0] = kf3(u, [[0, 9, 12, 3], [.2, 6, 9, 2], [.38, 5.4, 8, 10], [.5, 5.6, 8, 11], [.75, 8, 11, 5], [1, 9, 12, 3]]);
+        o.wd = ((th) => [0, -Math.cos(th), Math.sin(th)])(kf(u, [[0, 40], [.2, 62], [.38, 86], [.5, 84], [.8, 50], [1, 40]]) * Math.PI / 180);
+        o.lean = kf(u, [[0, 0], [.2, -2], [.38, 4], [.5, 3.4], [.8, .8], [1, 0]]); o.gz = kf(u, [[0, 0], [.2, -2.4], [.38, 6], [.55, 5.6], [.85, 1.2], [1, 0]]);
+        o.bob = kf(u, [[0, 0], [.2, 1], [.38, -2], [.55, -1.4], [1, 0]]); o.leg[1].z = kf(u, [[0, 0], [.3, -1], [.4, 9], [.6, 9], [1, 0]]); o.leg[0].z = kf(u, [[0, 0], [.3, -4], [.4, -6], [.6, -5], [1, 0]]); o.leg[0].x = o.leg[1].x = 1.6;
+      } else if (kind === "shoot") {
+        o.arm[0] = kf3(u, [[0, 9, 12, 3], [.22, 6.6, 4, 10], [.5, 6.2, 3, 12], [.62, 6.2, 3.4, 11.4], [.85, 8, 10, 5], [1, 9, 12, 3]]);
+        o.arm[1] = kf3(u, [[0, 9, 12, 3], [.22, 6.4, 4, 6], [.46, 4.4, 3.6, -1.4], [.52, 6.8, 5, 4], [.62, 7.8, 8, 6], [.85, 8.4, 11, 5], [1, 9, 12, 3]]);
+        o.draw = kf(u, [[0, 0], [.2, 0], [.46, 1], [.5, 1], [.52, 0], [1, 0]]); o.lean = kf(u, [[0, 0], [.22, -.4], [.48, -1.4], [.54, .6], [1, 0]]);
+        o.sx = kf(u, [[0, 0], [.3, -.8], [.5, -1.2], [.6, 0], [1, 0]]); o.bob = kf(u, [[0, 0], [.3, -.8], [.5, -1.2], [.6, -.3], [1, 0]]);
+        o.leg[0].z = -3; o.leg[1].z = 3.4; o.leg[0].x = o.leg[1].x = 1.8; o.hx = kf(u, [[0, 0], [.3, -1.2], [.5, -1.6], [1, 0]]);
+      } else {
+        o.arm[1] = kf3(u, [[0, 9, 12, 3], [.16, 8, 13, -3], [.3, 7, 6, 15], [.4, 7, 6, 16], [.62, 8, 11, 6], [1, 9, 12, 3]]);
+        o.arm[0] = kf3(u, [[0, 9, 12, 3], [.16, 8, 9, 5], [.3, 7, 8, 3], [.5, 7, 9, 7], [1, 9, 12, 3]]);
+        o.lean = kf(u, [[0, 0], [.16, -2], [.3, 4], [.42, 3.4], [.7, 1], [1, 0]]); o.gz = kf(u, [[0, 0], [.16, -1.6], [.3, 5], [.5, 4.4], [.85, 1], [1, 0]]);
+        o.bob = kf(u, [[0, 0], [.16, 1], [.3, -1.8], [.5, -1.2], [1, 0]]); o.leg[1].z = kf(u, [[0, 0], [.3, 8], [.6, 8], [1, 0]]); o.leg[0].z = kf(u, [[0, 0], [.3, -5], [.6, -4], [1, 0]]); o.leg[0].x = o.leg[1].x = 1.8; o.sx = kf(u, [[0, 0], [.16, 1], [.3, -1.2], [1, 0]]);
+      }
+    } else if (anim === 5) {
+      o.bob = -8 + (PA ? 0 : MG ? 1.2 + 1.2 * S(t * 2.618) : 0) + br * .25;
+      if (PA) { o.lean = -.4; o.leg[0] = { z: 8.5, l: 0, ky: 6.5, kz: .6, x: 1.4, kx: .4 }; o.leg[1] = { z: 8.5, l: 0, ky: 6.5, kz: .6, x: 1.4, kx: .4 }; o.arm[0] = { x: 8.4, y: 9.2, z: 5.6 }; o.arm[1] = { x: 8.4, y: 9.2, z: 5.6 }; o.hx = S(t * 2.618) * 1; o.hz = -.2; }
+      else if (AS) { o.lean = -1.6; o.sx = -.6; o.leg[0] = { z: 13, l: 0, x: 1.4 }; o.leg[1] = { z: 5.4, l: 0, ky: 10, kz: -1.2, x: 1.6, kx: .6 }; o.arm[1] = { x: 8.6, y: 9.4, z: 3.6 }; o.arm[0] = { x: 12, y: 20, z: -3.4 }; o.hy = .8 + S(t * 2.618) * .4; o.hx = S(t * 2.618) * 1.6; o.hz = 1; }
+      else { o.lean = .2; o.leg[0] = { z: 6, l: 0, ky: 1.2, kz: 2.6, x: -2.6, kx: 5 }; o.leg[1] = { z: 6, l: 0, ky: 1.2, kz: 2.6, x: -2.6, kx: 5 }; o.arm[0] = { x: 10.8, y: 18.6, z: 5 }; o.arm[1] = { x: 10.8, y: 18.6, z: 5 }; o.hy = .4 + S(t * 2.618) * .4; o.mood = 0; }
+    }
+    return o;
+  }
+  function bend(out, P) {
+    const w = (y) => clamp((56 - y) / 36, 0, 1); const hd = (y) => y <= 30 ? 1 : 0;
+    const sh = (x, y, z) => { const k = w(y); return [x + P.sx * k + (hd(y) ? P.hx : 0), y + (hd(y) ? P.hy : 0), z + P.lean * k + (hd(y) ? P.hz : 0) + (P.gz || 0)]; };
+    for (const [kk, o] of out) { if (kk === "e") { const r = sh(o.x, o.y, o.z); o.x = r[0]; o.y = r[1]; o.z = r[2]; } else o.pts = o.pts.map((p) => sh(p[0], p[1], p[2])); }
+  }
+  const HS = 1.1, LS = .7, NECK = 32, HB = 29.5;
+  const ty = (y) => y <= HB ? NECK - (NECK - y) * HS : y >= 55 ? 74 - (74 - y) * LS : y;
+  function chibi(out) {
+    for (const [k, o] of out) {
+      if (k === "e") { if (o.y <= HB) { o.x *= HS; o.z *= HS; o.rx *= HS; o.ry *= HS; o.rz *= HS; o.y = ty(o.y); } else if (o.y >= 55) { o.y = ty(o.y); o.ry *= LS; } }
+      else { const head = o.pts[0][1] <= HB && o.pts[o.pts.length - 1][1] <= HB + 6; o.pts = o.pts.map((p) => p[1] <= HB ? [p[0] * HS, ty(p[1]), p[2] * HS] : [p[0], ty(p[1]), p[2]]); if (head && o.w !== undefined) { o.w = Array.isArray(o.w) ? o.w.map((v) => v * HS) : o.w * HS; } }
+    }
+  }
+  const FEATURES = (cfg) => (mx, my, mz, X, Y, Z) => {
+    if (mz < .1) return 0; const az = Math.atan2(mx, mz), el = Math.asin(clamp(my, -1, 1));
+    if (cfg.faceExtra) { const x = cfg.faceExtra(az, el, mx, my, mz); if (x) return x; }
+    for (const s of [-1, 1]) {
+      const dx = (az - s * .40) / .18, dy = (el - .2) / .22, r = dx * dx + dy * dy;
+      if (r < 1) {
+        if (dy < -.62) return [26, 16, 30]; if (dy > .78) return dk(cfg.skin, .78);
+        if (Math.abs(dx) < .66) { const hx_ = (dx * -s) > .05 && dy < -.05 && dy > -.5 && Math.abs(dx) > .12; if (hx_) return [255, 255, 255]; if (dy > .35) return cfg.eyeL; if (dy < -.25) return dk(cfg.eye, .55); return cfg.eye; }
+        return [246, 244, 250];
+      }
+      if (Math.abs(az - s * .4) < .25 && el > .42 && el < .5) return 0;
+      if (Math.abs(az - s * .38) < .25 && el > -.18 && el < -.1) return dk(cfg.hair, .55);
+      if (cfg.blush && Math.abs(az - s * .78) < .16 && el > .5 && el < .64) return mix(cfg.skin, [255, 110, 120], .5);
+    }
+    if (Math.abs(az) < .06 && el > .42 && el < .56) return dk(cfg.skin, .82);
+    if (Math.abs(az) < .04 && el > .5 && el < .56) return mix(cfg.skin, [255, 255, 255], .35);
+    if (Math.abs(az) < .12 && el > .78 && el < .86) return cfg.mood === 2 ? [130, 30, 40] : [170, 76, 80];
+    if (cfg.paint && Math.abs(Math.abs(az) - .78) < .05 && el > .15 && el < .5) return cfg.paint;
+    return 0;
+  };
+  const strand = (az, el, base, k = 13) => { const v = Math.sin(az * k + el * 3); return v > .72 ? mix(base, [255, 240, 210], .25) : v < -.8 ? dk(base, .78) : 0; };
+  const hairCap = (cfg, style) => (mx, my, mz) => {
+    const az = Math.atan2(mx, mz), el = Math.asin(clamp(my, -1, 1)); let cover;
+    if (mz < .02) cover = el < (style.back ?? .9);
+    else { const line = -.1 + (style.bangs ? style.bangs(az) : 0); cover = el < line || (Math.abs(az) > 1.12 && el < (style.side ?? .35)); }
+    return cover ? (strand(az, el, cfg.hair) || cfg.hair) : null;
+  };
+  function build(cfg, P, out, t) {
+    const E = (o) => out.push(["e", o]), S = (o) => out.push(["s", o]);
+    const bob = -P.bob, lz = P.lz, sk = cfg.skin; cfg.mood = P.mood;
+    for (const i of [0, 1]) {
+      const sg = i ? 1 : -1; const lg = P.leg[i];
+      const hip = [sg * 3.7, 54 + bob, lg.z * .2], kn = [sg * (3.7 + (lg.kx || 0)), 62 + bob * .5 - lg.l * .5 - (lg.ky || 0), lg.z * .6 + 1.5 + (lg.kz || 0)], an = [sg * (3.7 + (lg.x || 0)), 68 - lg.l, lg.z];
+      if (!cfg.robe) S({ pts: [hip, kn, [an[0], an[1] - 3, an[2]]], w: 6.2, col: cfg.pants, metal: cfg.metalLimb });
+      S({ pts: [[an[0], an[1] - 6, an[2]], [an[0], an[1] - .8, an[2] + .2]], w: 5.6, col: cfg.boots, metal: cfg.metalLimb });
+      E({ x: an[0] + sg * .8, y: an[1] + .4, z: an[2] + 2.8, rx: 2.9, ry: 2, rz: 5.4, p: 2.5, col: cfg.boots, metal: cfg.metalLimb });
+      E({ x: an[0] + sg * 2.2, y: an[1] + 1, z: an[2] + 6.6, rx: 2.5, ry: 1.5, rz: 2.2, col: mix(cfg.boots, [255, 255, 255], .12), metal: cfg.metalLimb, bias: .2 });
+      E({ x: an[0] + sg * 1.1, y: an[1] + 2.2, z: an[2] + 2.8, rx: 3.1, ry: .8, rz: 6.6, p: 2.6, col: dk(cfg.boots, .38) });
+      E({ x: an[0], y: an[1] + 1.6, z: an[2] - 1.6, rx: 2.7, ry: 1.2, rz: 1.4, col: dk(cfg.boots, .55) });
+      if (cfg.greaves) S({ pts: [[an[0], an[1] - 8, an[2]], [an[0], an[1] - 3, an[2]]], w: 7.2, col: cfg.greaves });
+    }
+    const tz = lz, bk = cfg.bulk || 1;
+    if (cfg.robe) E({ x: 0, y: 48 + bob, z: tz, rx: 10.5 * (cfg.hipw || 1), ry: 20, rz: 7, p: 2.6, col: cfg.robeCol, tex: cfg.robeTex });
+    E({ x: 0, y: 43 + bob, z: tz, rx: 8.8 * bk, ry: 10.2, rz: 5.8 * bk, p: 3, col: cfg.top, tex: cfg.topTex, metal: cfg.metalTop });
+    if (cfg.skirt) E({ x: 0, y: 54 + bob, z: tz, rx: 9.5 * (cfg.hipw || 1), ry: 5, rz: 6.4, p: 2.4, col: cfg.skirt, tex: cfg.skirtTex });
+    E({ x: 0, y: 51.6 + bob, z: tz, rx: 9 * (cfg.hipw || 1), ry: 1.9, rz: 6, p: 3, col: cfg.belt });
+    E({ x: 0, y: 32.5 + bob, z: tz, rx: 3, ry: 3, rz: 3, col: sk });
+    const hands = [null, null];
+    for (const i of [0, 1]) {
+      const sg = i ? 1 : -1, a = P.arm[i];
+      const sh = [sg * 9.4 * bk, 37 + bob, tz], h = [sg * a.x * bk, 37 + a.y + bob, tz + a.z], m = [(sh[0] + h[0]) / 2 + sg * 1.2, (sh[1] + h[1]) / 2, (sh[2] + h[2]) / 2 - 1.5];
+      S({ pts: [sh, m, h], w: [5.2, 4.4], col: (tt) => tt < .62 ? cfg.sleeve : (cfg.bracer && tt < .95 ? cfg.bracer : (cfg.sleeveLong ? cfg.sleeve : sk)), metal: cfg.metalLimb });
+      E({ x: h[0], y: h[1] + 1, z: h[2] + .3, rx: 2.5, ry: 2.5, rz: 2.5, col: cfg.glove || sk }); hands[i] = { h: [h[0], h[1] + 1, h[2] + .3], m };
+    }
+    if (cfg.wpn) cfg.wpn(E, S, { R: hands[1], L: hands[0], P, t, tz, bob, unarmed: !P.armed });
+    const hy = 22 + bob, hz = tz;
+    E({ x: 0, y: hy, z: hz, rx: 8, ry: 10.4, rz: 8.4, p: 3.1, col: sk, soft: 1, tex: FEATURES(cfg) });
+    for (const sg of [-1, 1]) E({ x: sg * 8.2, y: hy + 1.5, z: hz, rx: 1.6, ry: 2.6, rz: 1.8, col: sk });
+    E({ x: 0, y: hy + 4.4, z: hz - .8, rx: 6.2, ry: 6.4, rz: 6.6, p: 3, col: sk, soft: 1 });
+    if (cfg.hairFn) cfg.hairFn(E, S, { hy, hz, bob, tz, t, P });
+    if (cfg.deco) cfg.deco(E, S, { hy, hz, bob, tz, t, P });
+  }
+  //__RENDER__
+  // ---------- render ----------
+  function render(cfg, kdir, anim, t, kind, fam, o) {
+    const SC = o.S, w = o.w, h = o.h, gy = o.gy; const K = Ctx(kdir * Math.PI / 4);
+    const mk = (a2, t2) => { const P_ = pose(a2, t2, fam, kind); if (cfg.tweak) cfg.tweak(P_, a2, t2, kind); return P_; };
+    const prep = (P_, t_) => {
+      const out = []; P_.marks = []; build(cfg, P_, out, t_); bend(out, P_); chibi(out);
+      const trf = (p) => [p[0] * SC, (p[1] - 74) * SC + gy, p[2] * SC];
+      for (const [kk, q] of out) { if (kk === "e") { q.x *= SC; q.z *= SC; q.rx *= SC; q.ry *= SC; q.rz *= SC; q.y = (q.y - 74) * SC + gy; } else { q.pts = q.pts.map(trf); q.w = Array.isArray(q.w) ? q.w.map((v) => v * SC) : q.w * SC; } }
+      const mp = (p) => { const kk = clamp((56 - p[1]) / 36, 0, 1), hd = p[1] <= 30; let x = p[0] + P_.sx * kk + (hd ? P_.hx : 0), y = p[1] + (hd ? P_.hy : 0), z = p[2] + P_.lean * kk + (hd ? P_.hz : 0) + (P_.gz || 0); if (y <= HB) { x *= HS; z *= HS; y = ty(y); } else y = ty(y); x *= SC; z *= SC; y = (y - 74) * SC + gy; return [K.P(x, z) + w / 2, y]; };
+      P_.mk = P_.marks.map((q) => ({ n: q.n, col: q.col, a: mp(q.a), b: mp(q.b) })); return out;
+    };
+    const I = new Img(w, h); const P = mk(anim, t); const out = prep(P, t);
+    for (const [k2, q] of out) { if (k2 === "e") ellipsoid(I, K, q); else strip(I, K, q); }
+    outline(I, 200);
+    const px = (x, y, c) => { x = Math.round(x); y = Math.round(y); put(I, x, y, 1e9, c, 255); };
+    if (P.armed) {
+      const N = 4, dt = .028, hist = [P.mk];
+      for (let j = 1; j <= N; j++) { const Pj = mk(anim, t - j * dt); prep(Pj, t - j * dt); hist.push(Pj.mk); }
+      for (const m of P.mk) {
+        const col = m.col;
+        for (let j = 0; j < N; j++) {
+          const A = hist[j].find((q) => q.n === m.n), B = hist[j + 1].find((q) => q.n === m.n); if (!A || !B) continue;
+          const mv = Math.hypot(A.b[0] - B.b[0], A.b[1] - B.b[1]); if (mv < 3) continue;
+          const L = Math.ceil(Math.hypot(A.b[0] - A.a[0], A.b[1] - A.a[1]));
+          for (let s = 0; s <= L; s++) {
+            const ks = s / (L || 1); const p0 = [A.a[0] + (A.b[0] - A.a[0]) * ks, A.a[1] + (A.b[1] - A.a[1]) * ks], p1 = [B.a[0] + (B.b[0] - B.a[0]) * ks, B.a[1] + (B.b[1] - B.a[1]) * ks];
+            const n = Math.ceil(Math.hypot(p1[0] - p0[0], p1[1] - p0[1])) + 1;
+            for (let v = 0; v <= n; v++) { const kv = v / n, f = 1 - (j + kv) / N; if (f > .12 && ks > .55) { const l2 = f > .66 ? .85 : f > .38 ? .45 : .1; px(p0[0] + (p1[0] - p0[0]) * kv, p0[1] + (p1[1] - p0[1]) * kv, [col[0] + (255 - col[0]) * l2, col[1] + (255 - col[1]) * l2, col[2] + (255 - col[2]) * l2]); } }
+          }
+        }
+      }
+    }
+    return I.d;
+  }
+  // ---------- cabelo ----------
+  const HX = { pony: 1, ponyhigh: 1, twin: 1, twinhigh: 1, lowtwin: 1, braid: 1, braidc: 1, dbraid: 1, bun: 1, buns: 1, lowbun: 1, topknot: 1, mohawk: 1, spikes: 1, curl: 1, bob: 1, wave: 1, halfup: 1, mane: 1, hime: 1 };
+  const FRINGE = [() => -.32, (az) => .12 * Math.abs(Math.sin(az * 5)), (az) => .2 + .16 * az, (az) => .2 - .16 * az, (az) => .24 * Math.abs(Math.sin(az * 2)), (az) => .16 * Math.abs(Math.sin(az * 7)), (az) => .04, (az) => -.08, (az) => .3];
+  function hairSpec(e) {
+    const hv = e.hvp; let st = e.hairStyle || "short", L, F, T, X;
+    if (hv) { L = hv.L; F = hv.F; T = hv.T; X = hv.X || ""; }
+    else {
+      L = st === "long" ? 3 : st === "mane" ? 3 : st === "ponytail" || st === "braid" ? 1 : 0; F = st === "fringe" ? 2 : st === "crop" ? 7 : 1; T = 1; X = st === "ponytail" ? "pony" : st === "braid" ? "braid" : st === "topknot" ? "topknot" : st === "mane" ? "mane" : "";
+    }
+    return { bald: st === "bald" && !hv, L, F, T, X };
+  }
+  function hairFn(e, hc, cover) {
+    const hs = hairSpec(e); if (hs.bald) return () => { };
+    return (E, S, o) => {
+      const { hy, hz } = o, tt = o.t, L = hs.L, X = hs.X; const T = [.92, 1, 1.07, 1.2][clamp(hs.T, 0, 3)];
+      const hc2 = hc, hl = mix(hc, [255, 236, 190], .22), hd = dk(hc, .8);
+      const sw = (i, a = 1) => Math.sin(tt * 2.4 + i) * .5 * a;
+      if (!cover) {
+        const mo = X === "mohawk";
+        E({ x: 0, y: hy - 1.6, z: hz - .8, rx: 9.6 * T, ry: 11.4 * (X === "bun" || X === "buns" ? 1 : 1), rz: 9.8 * T, col: hc, tex: hairCap({ hair: hc }, { bangs: mo ? () => -.5 : FRINGE[clamp(hs.F, 0, 8)], side: mo ? -.2 : L >= 1 ? .62 : .32, back: mo ? .45 : L >= 1 ? .95 : .82 }) });
+        if (X === "curl" || hs.T === 3) for (let i = 0; i < 9; i++) { const a = i / 9 * TAU; E({ x: Math.cos(a) * 9, y: hy - 6 + (i % 3), z: hz - 1 + Math.sin(a) * 8.4, rx: 2.8, ry: 2.8, rz: 2.8, col: i % 2 ? hc : hl }); }
+      }
+      if (L >= 1 && X !== "bob") { // massa de cabelo atrás
+        const len = [0, 12, 22, 32, 44][L];
+        for (let i = -1; i <= 1; i++) S({ pts: [[i * 3.6, hy + 2, hz - 8], [i * 4.2, hy + len * .5, hz - 9.6 + sw(i)], [i * 3.6 + sw(i + 2), hy + len, hz - 8.6]], w: [4.4, i ? 2.4 : 3.2], col: (q) => (Math.floor(q * 8) & 1) ? hc : hl });
+        if (L >= 2 && !cover) for (const sg of [-1, 1]) S({ pts: [[sg * 9.2, hy + 3, hz + 2], [sg * 9.8, hy + len * .45, hz + 3 + sw(sg)], [sg * 8.6, hy + len * .8, hz + 3.4]], w: [3.4, 2.2], col: (q) => (Math.floor(q * 8) & 1) ? hc : hl });
+      }
+      const tail = (x, y0, len, wd0, sg0) => S({ pts: [[x, y0, hz - 9], [x * 1.2, y0 + len * .35, hz - 13.6 + sw(1)], [x * 1.5 + sg0 * sw(2, 2), y0 + len, hz - 12.4 + sw(3)]], w: [wd0, 1.8], col: (q) => (Math.floor(q * 9) & 1) ? hc : hl });
+      if (X === "pony") tail(0, hy - 3, 16, 5.4, 1); else if (X === "ponyhigh") tail(0, hy - 9, 18, 5, 1);
+      else if (X === "twin" || X === "twinhigh" || X === "lowtwin") for (const sg of [-1, 1]) { const y0 = X === "twinhigh" ? hy - 7 : X === "lowtwin" ? hy + 4 : hy - 2; S({ pts: [[sg * 9.4, y0, hz - 2], [sg * 12.6, y0 + 8, hz - 3 + sw(sg)], [sg * 12 + sw(sg + 3), y0 + 17, hz - 2.4]], w: [4.6, 1.8], col: (q) => (Math.floor(q * 9) & 1) ? hc : hl }); }
+      else if (X === "braid" || X === "braidc" || X === "dbraid") { const xs = X === "braidc" ? [0] : X === "dbraid" ? [-8.4, 8.4] : [8]; for (const x of xs) { const zz = X === "braidc" ? hz - 9.6 : hz + 3; S({ pts: [[x, hy + 3, zz], [x * 1.08, hy + 14, zz + (X === "braidc" ? -.8 : .6) + sw(x)], [x * 1.1 + sw(x + 2), hy + 25, zz + 0.4]], w: [3.8, 2.4], col: (q) => (Math.floor(q * 12) & 1) ? hc : hd }); } }
+      if (X === "bun" || X === "topknot") { E({ x: 0, y: hy - 12.4, z: hz - 2.4, rx: X === "bun" ? 4.6 : 3.4, ry: X === "bun" ? 4.2 : 3.4, rz: X === "bun" ? 4.4 : 3.4, col: hc, tex: (mx, my) => Math.abs(Math.sin(mx * 7 + my * 5)) < .14 ? hd : 0 }); if (X === "topknot") S({ pts: [[0, hy - 13, hz - 3], [-2, hy - 17, hz - 5], [-5, hy - 16, hz - 8.4]], w: [3, 1.4], col: hc }); }
+      if (X === "buns") for (const sg of [-1, 1]) E({ x: sg * 6.4, y: hy - 11.4, z: hz - 2, rx: 3.8, ry: 3.8, rz: 3.8, col: hc });
+      if (X === "lowbun" || X === "halfup") E({ x: 0, y: hy + (X === "halfup" ? -5 : 5), z: hz - 10.6, rx: 4, ry: 3.8, rz: 3.6, col: hc });
+      if (X === "mohawk") S({ pts: [[0, hy - 8, hz + 6], [0, hy - 14, hz + 1], [0, hy - 13, hz - 6], [0, hy - 5, hz - 10]], w: [3.4, 3.8, 3.4, 2.4], col: hc });
+      if (X === "spikes") for (let i = 0; i < 6; i++) { const a = -1 + i * .4; S({ pts: [[Math.sin(a) * 6, hy - 9, hz + Math.cos(a) * 5 - 2], [Math.sin(a) * 9, hy - 14 - (i % 2) * 2, hz + Math.cos(a) * 6 - 3], [Math.sin(a) * 12, hy - 17 - (i % 2) * 3, hz + Math.cos(a) * 6 - 4]], w: [4.2, .8], col: hc }); }
+      if (X === "mane") for (let i = 0; i < 6; i++) { const x = -7 + i * 2.8; S({ pts: [[x, hy - 9, hz + 2], [x * 1.2, hy - 15 - (i % 2) * 2, hz - 4], [x * 1.4, hy - 13 + i * 1.4, hz - 11]], w: [4.4, 1.2], col: hc }); }
+      if (X === "bob") E({ x: 0, y: hy + 3.6, z: hz - 1.6, rx: 10.4, ry: 6.8, rz: 9.6, col: hc, tex: (mx, my, mz) => (mz > .1 && my < .4) ? null : (Math.sin(mx * 14) > .7 ? hl : 0) });
+      if (X === "hime") for (const sg of [-1, 1]) S({ pts: [[sg * 8.2, hy + 1, hz + 5], [sg * 8.8, hy + 12, hz + 5.6], [sg * 8.2, hy + 24, hz + 5]], w: [3.6, 2.6], col: hc });
+    };
+  }
+  // ---------- cabeça: itens ----------
+  function headMain(kind, E, S, o, e, C) {
+    const { hy, hz } = o, tt = o.t;
+    const G = C.gold, G2 = dk(C.gold, .75), st = C.steel, st2 = C.steel2;
+    if (kind === "hat") { // chapéu de mago
+      const cl = C.hatC, cl2 = dk(cl, .8), tp = C.tier >= 1 ? 1 : .82;
+      E({ x: 0, y: hy - 6.4, z: hz, rx: 11.6 * tp + .6, ry: 1.7, rz: 10.6 * tp + .6, col: cl2, tex: (mx, my, mz) => Math.hypot(mx, mz) > .9 ? G : 0 });
+      S({ pts: [[0, hy - 7, hz - .6], [0, hy - 14 * tp, hz - 2], [-2, hy - 20 * tp, hz - 4], [-6, hy - 23 * tp + Math.sin(tt * 3) * .6, hz - 5]], w: [11.4, 8, 4.4, 1.6], col: (q) => Math.sin(q * 30) > .6 ? lt(cl, .18) : cl });
+      for (const [x, y, z] of [[-3, -11, 5], [3, -15, 4], [-2, -19, 3]]) if (C.tier >= 1) E({ x, y: hy + y * tp, z: hz + z, rx: 1.4, ry: 1.4, rz: .8, col: hx(0xffe890), bias: .9 });
+      E({ x: 0, y: hy - 8.2, z: hz, rx: 9.6, ry: 1.5, rz: 9.4, col: G, metal: 1 }); E({ x: 0, y: hy - 8.2, z: hz + 9.2, rx: 2.2, ry: 1.8, rz: .8, col: hx(0xfff4c0), metal: 1, bias: .4 });
+    } else if (kind === "helm" || kind === "helmH") { // elmo angular, sem asas
+      E({ x: 0, y: hy - 5, z: hz - .2, rx: 9.8, ry: 8.8, rz: 9.8, p: 3.6, col: st, metal: 1, tex: (mx, my, mz) => { if (mz > 0 && my > .3) return null; if (my > .2 && mz <= 0) return null; if (Math.abs(mx) < .07) return st2; if (my > -.05 && my < .3 && mz > 0) return G; return 0; } });
+      E({ x: 0, y: hy - 6.2, z: hz + .2, rx: 10.2, ry: 1.1, rz: 10.4, p: 3.6, col: G, metal: 1 });
+      S({ pts: [[0, hy - 11.5, hz + 9], [0, hy - 17.5, hz + 1], [0, hy - 15, hz - 9]], w: [2.2, 3.4, 2], col: C.crest, metal: 1 });
+      S({ pts: [[0, hy - 6, hz + 9.4], [0, hy + 2.6, hz + 9.6]], w: 1.7, col: st, metal: 1 });
+      for (const sg of [-1, 1]) { E({ x: sg * 8.6, y: hy + 1.2, z: hz + 1, rx: 1.7, ry: 4.8, rz: 5.4, p: 3.2, col: st, metal: 1, tex: (mx, my) => Math.abs(my) > .86 ? G : 0 }); }
+      if (kind === "helmH") for (const sg of [-1, 1]) S({ pts: [[sg * 9.6, hy - 7, hz], [sg * 14.2, hy - 9, hz], [sg * 15.6, hy - 14, hz], [sg * 13.6, hy - 19, hz]], w: [4.4, 1.2], col: hx(0xf0e6c8) });
+    } else if (kind === "hood" || kind === "furhood") { // capuz
+      const cl = kind === "hood" ? C.hoodC : hx(0x8a8e96);
+      E({ x: 0, y: hy - 1, z: hz - .8, rx: 9.7, ry: 11.2, rz: 9.7, p: 3.4, col: cl, tex: (mx, my, mz) => { const az = Math.atan2(mx, mz), el = Math.asin(clamp(my, -1, 1)); if (mz > 0 && Math.abs(mx) < .64 && my > -.36 && my < .6) return null; if (mz > .2 && Math.abs(az) < 1.12 && el > -.42 && el < 1 && (Math.abs(az) > .94 || el < -.3)) return C.hoodTrim; return kind === "hood" ? (Math.sin(az * 10 + el * 3) > .72 ? lt(cl, .14) : (Math.sin(az * 7) < -.8 ? dk(cl, .6) : 0)) : (Math.sin(az * 14 + my * 10) > .4 ? hx(0xb0b4bc) : (Math.sin(az * 9) < -.6 ? hx(0x62666e) : 0)); } });
+      if (kind === "hood") { S({ pts: [[0, hy - 9, hz - 1], [0, hy - 14, hz - 4], [-2, hy - 16.5, hz - 9], [-7, hy - 15, hz - 15]], w: [8, 5, 2.4, .5], col: cl }); }
+      else for (const sg of [-1, 1]) { S({ pts: [[sg * 6, hy - 9, hz - 2], [sg * 7.4, hy - 13, hz - 2], [sg * 7, hy - 17, hz - 2]], w: [5, 1.6], col: cl }); S({ pts: [[sg * 6.2, hy - 9.4, hz - 1], [sg * 7, hy - 12.6, hz - 1]], w: [2.4, 1], col: hx(0xd8a0a0) }); }
+    } else if (kind === "hood2") {
+      E({ x: 0, y: hy - 1, z: hz - .8, rx: 10, ry: 11.4, rz: 10, p: 3.4, col: hx(0x4f6e3c), tex: (mx, my, mz) => { if (mz > 0 && Math.abs(mx) < .64 && my > -.36 && my < .6) return null; return Math.sin(Math.atan2(mx, mz) * 9) > .7 ? hx(0x62854a) : 0; } });
+    } else if (kind === "band") { // faixa simples na testa
+      E({ x: 0, y: hy - 4.4, z: hz, rx: 9.8, ry: 1.6, rz: 9.2, col: C.trim, tex: (mx, my, mz) => (mz < -.3) ? 0 : 0 });
+      if (o.tailBand) S({ pts: [[-2, hy - 4.4, hz - 9], [-4, hy + 2, hz - 11.4 + Math.sin(tt * 3)], [-5 + Math.sin(tt * 2), hy + 11, hz - 11.6]], w: [2.6, 1.4], col: C.trim });
+    } else if (kind === "beanie") {
+      E({ x: 0, y: hy - 6.6, z: hz - .2, rx: 10, ry: 7.4, rz: 9.8, col: hx(0xc23a3a), tex: (mx, my, mz) => my > .5 ? hx(0xe8dcc4) : (Math.sin(mx * 18) > .8 ? hx(0xa42c2c) : 0) });
+      E({ x: 0, y: hy - 13.4, z: hz - .2, rx: 2.8, ry: 2.8, rz: 2.8, col: hx(0xf4eddc) });
+    } else if (kind === "wreath") {
+      for (let i = 0; i < 16; i++) { const a = i / 16 * TAU; E({ x: Math.cos(a) * 9.6, y: hy - 6.4 + Math.sin(a) * .4, z: hz - .6 + Math.sin(a) * 8.8, rx: i % 4 === 1 ? 1.5 : 2.3, ry: i % 4 === 1 ? 1.5 : 1.7, rz: 1.8, col: i % 4 === 1 ? hx(0xd23a3a) : (i % 2 ? hx(0x3f8a3a) : hx(0x5aa84a)) }); }
+    } else if (kind === "bandana") {
+      E({ x: 0, y: hy - 4.8, z: hz, rx: 9.9, ry: 2.4, rz: 9.4, col: hx(0xb81e1e), tex: (mx, my) => my > .5 ? hx(0xd23a3a) : 0 });
+      S({ pts: [[-3, hy - 4.6, hz - 9], [-5, hy + 2, hz - 11.4 + Math.sin(tt * 3)], [-6, hy + 10, hz - 11.6]], w: [3.4, 1.4], col: hx(0xb81e1e) });
+    } else if (kind === "feathercap") {
+      E({ x: 0, y: hy - 6.6, z: hz - .2, rx: 10, ry: 7, rz: 9.8, col: hx(0x3f7a3a) }); E({ x: 0, y: hy - 3.8, z: hz, rx: 12.6, ry: 1.5, rz: 11.4, col: hx(0x2f5a2c) });
+      S({ pts: [[7, hy - 10, hz + 1], [13, hy - 17, hz - 3], [18, hy - 24, hz - 6]], w: [2.4, .8], col: hx(0xf0e8d6) });
+    } else if (kind === "crown" || kind === "crowngold") {
+      const m = kind === "crown" ? hx(0xc88a3a) : hx(0xf4c840);
+      E({ x: 0, y: hy - 7.6, z: hz, rx: 9.6, ry: 2.1, rz: 9.2, col: m, metal: 1 });
+      for (let i = 0; i < 6; i++) { const a = i / 6 * TAU + .5; S({ pts: [[Math.cos(a) * 8.6, hy - 8.6, hz + Math.sin(a) * 8.2], [Math.cos(a) * 9, hy - 13.4, hz + Math.sin(a) * 8.6]], w: [3.2, 1], col: m, metal: 1 }); E({ x: Math.cos(a) * 9, y: hy - 14, z: hz + Math.sin(a) * 8.6, rx: 1, ry: 1, rz: 1, col: i % 2 ? hx(0xff6a8a) : hx(0x8ae8ff), bias: .6 }); }
+    } else if (kind === "santa") {
+      E({ x: 0, y: hy - 7.4, z: hz - .6, rx: 10, ry: 7.4, rz: 9.8, col: hx(0xc4202a) }); E({ x: 0, y: hy - 5.2, z: hz, rx: 10.4, ry: 2.2, rz: 10, col: hx(0xf6f2ea) });
+      S({ pts: [[0, hy - 12, hz - 3], [-2, hy - 15, hz - 9], [-5, hy - 14, hz - 14]], w: [6, 3], col: hx(0xc4202a) }); E({ x: -5, y: hy - 12, z: hz - 14.6, rx: 2.6, ry: 2.6, rz: 2.6, col: hx(0xf6f2ea) });
+    }
+  }
+  function headExtra(kind, E, S, o, e, C) { // ornamentos que se somam
+    const { hy, hz } = o;
+    if (kind === "circlet") { E({ x: 0, y: hy - 4.4, z: hz, rx: 9.8, ry: 1.2, rz: 9.4, col: C.gold, metal: 1 }); E({ x: 0, y: hy - 4.6, z: hz + 9.2, rx: 1.6, ry: 1.8, rz: 1, col: hx(0xbff0ff), bias: .8, metal: 1 }); }
+    else if (kind === "wings") { // tiara + auréola (sem asas)
+      E({ x: 0, y: hy - 4.4, z: hz, rx: 9.8, ry: 1.2, rz: 9.4, col: C.gold, metal: 1 }); E({ x: 0, y: hy - 6.2, z: hz + 9.4, rx: 1.4, ry: 2.2, rz: 1, col: hx(0xff7a9a), bias: .8, metal: 1 });
+      for (let i = 0; i < 24; i++) { const a = i / 24 * TAU; E({ x: Math.cos(a) * 6.6, y: hy - 13.6 + Math.sin(a) * 1.1, z: hz - 3.2, rx: .65, ry: .65, rz: .65, col: hx(0xfff0a0), bias: 1 }); }
+    } else if (kind === "halo") { for (let i = 0; i < 24; i++) { const a = i / 24 * TAU; E({ x: Math.cos(a) * 6.6, y: hy - 13.6 + Math.sin(a) * 1.1, z: hz - 3.2, rx: .65, ry: .65, rz: .65, col: hx(0xfff0a0), bias: 1 }); } }
+  }
+  function lowItems(low, E, S, o, e, C) {
+    const { hy, hz, bob, tz } = o;
+    if (low === "scarf" || low === "scarf2") { const c = low === "scarf" ? hx(0xb04a2a) : hx(0x5a7aa8); E({ x: 0, y: tz + 33.4 + bob, z: tz + .6, rx: 7, ry: 3.2, rz: 5.4, col: c, tex: (mx) => Math.sin(mx * 22) > .5 ? lt(c, .16) : 0 }); S({ pts: [[3, tz + 35 + bob, tz + 4], [6 + Math.sin(o.t * 2), tz + 44 + bob, tz + 3], [7 + Math.sin(o.t * 2 + 1), tz + 52 + bob, tz + 1]], w: [4, 2.2], col: c }); }
+    else if (low === "mask") { E({ x: 0, y: hy + 6.4, z: hz + 3.2, rx: 7.4, ry: 4.2, rz: 5.6, col: hx(0x6a4a2e), tex: (mx, my, mz) => (mz > 0 && my < -.5) ? null : (Math.abs(my - .2) < .1 ? hx(0x8a6a44) : 0) }); }
+    else if (low === "beard") { const b = hx(e.hair); S({ pts: [[0, hy + 8, hz + 5], [0, hy + 15, hz + 6.4], [0, hy + 25, hz + 5.6]], w: [10, 8, 2.6], col: (q) => Math.sin(q * 28) > .55 ? lt(b, .16) : b }); for (const sg of [-1, 1]) S({ pts: [[sg * 3, hy + 8, hz + 4], [sg * 5, hy + 14, hz + 5], [sg * 3.4, hy + 20, hz + 4.6]], w: [4.4, 1.6], col: b }); }
+  }
+  function midItems(mid, E, S, o, e) {
+    const { hy, hz } = o;
+    if (mid === "goggles") { for (const sg of [-1, 1]) { E({ x: sg * 3.6, y: hy - .4, z: hz + 7.6, rx: 3.2, ry: 2.8, rz: 1.8, col: hx(0xb88a3a), metal: 1, tex: (mx, my, mz, X, Y) => Math.hypot(X, Y) < .62 ? hx(0x9ad8e8) : 0 }); } S({ pts: [[-9, hy - .6, hz + 2], [0, hy - .6, hz + 8.6], [9, hy - .6, hz + 2]], w: 1.4, col: hx(0x5a3a22) }); }
+    else if (mid === "eyepatch") { E({ x: -3.4, y: hy - .4, z: hz + 7.4, rx: 3, ry: 2.8, rz: 1.8, col: hx(0x1a1a22) }); S({ pts: [[-9, hy - 3, hz + 2], [-4, hy - 2, hz + 8], [8, hy + 1, hz + 6]], w: 1, col: hx(0x1a1a22) }); }
+  }
+  // ---------- itens de costas ----------
+  function backItems(E, S, o, e, C) {
+    const { bob, tz, t } = o; const cw = (e.cw || 0) * 3;
+    if (e.cape != null && !C.noCape) {
+      const cc = hx(e.cape), c2 = dk(cc, .84);
+      for (let i = 0; i < 4; i++) { const x = -7.5 + i * 5; S({ pts: [[x, tz + 37 + bob, tz - 5.6], [x * 1.1 + cw * .4, tz + 52 + bob, tz - 8.5 + Math.sin(t * 2 + i) * .8], [x * 1.2 + cw, tz + (C.capeL || 64) + bob, tz - 9 + Math.sin(t * 2 + i + 1) * 1.2]], w: [5.6, 6.6], col: i % 2 ? cc : c2, bias: -.1 }); }
+      if (C.capeTrim) { S({ pts: [[-9, tz + 37 + bob, tz - 5.6], [-10.5 + cw * .4, tz + 52 + bob, tz - 8.5], [-11 + cw, tz + (C.capeL || 64) + bob, tz - 9]], w: 1.2, col: C.capeTrim }); S({ pts: [[9, tz + 37 + bob, tz - 5.6], [10.5 + cw * .4, tz + 52 + bob, tz - 8.5], [11 + cw, tz + (C.capeL || 64) + bob, tz - 9]], w: 1.2, col: C.capeTrim }); }
+    }
+    if (e.quiver) {
+      S({ pts: [[-4, tz + 34 + bob, tz - 7], [-3, tz + 54 + bob, tz - 8]], w: [5.4, 5], col: hx(0x6a4a2a), bias: -.05 });
+      for (let i = 0; i < 3; i++) { S({ pts: [[-5 + i * 2, tz + 34 + bob, tz - 7.5], [-6 + i * 2.4, tz + 28 + bob, tz - 8.5]], w: 1.4, col: hx(0xe8e0c8) }); E({ x: -6 + i * 2.4, y: tz + 27.4 + bob, z: tz - 8.5, rx: 1.8, ry: 1.6, rz: 1, col: i % 2 ? hx(0xd04830) : hx(0xf0e8d0) }); }
+      S({ pts: [[-6, tz + 36 + bob, tz - 2], [6, tz + 50 + bob, tz + 4]], w: 1.5, col: hx(0x4a3220) });
+    }
+    if (e.wingsBack) {
+      const wa = hx(e.wingsBack[0]), wb = hx(e.wingsBack[1]); const WT = [[13, -18], [19, -12], [22, -4], [21, 5], [17, 12]];
+      for (const sg of [-1, 1]) for (let L = 1; L >= 0; L--) WT.forEach((w, i) => { const k = L ? .72 : 1, rt = [sg * 4, tz + 37 + bob, tz - 5.5 - L * .6], tp = [sg * (4 + w[0] * k), tz + 37 + bob + w[1] * k + (L ? 3 : 0) + Math.sin(t * 3 + i) * .5, tz - 7 - L]; S({ pts: [rt, [(rt[0] + tp[0]) / 2, (rt[1] + tp[1]) / 2 + 2, rt[2] - .5], tp], w: [5.2, 1.6], col: L ? wb : wa, bias: -.05 }); });
+    }
+  }
+  //__DESIGNS__
+  // ---------- classes ----------
+  const GOLD0 = hx(0xe8b838), STEEL = hx(0xdce4f2), STEEL2 = hx(0xb4c0d8), WOOD = hx(0x6a4220);
+  const rv = (mx, my, x, y, r = .075) => Math.hypot(mx - x, my - y) < r;
+  const cuff = (S, H, col, col2, w = 5.6) => { if (!H) return; S({ pts: [lerp(H.h, H.m, .42), lerp(H.h, H.m, .2)], w, col, metal: 1 }); S({ pts: [lerp(H.h, H.m, .44), lerp(H.h, H.m, .4)], w: w + .8, col: col2, metal: 1 }); S({ pts: [lerp(H.h, H.m, .22), lerp(H.h, H.m, .18)], w: w + .6, col: col2, metal: 1 }); };
+  const ball = (E, p, r, col, o2 = {}) => E({ x: p[0], y: p[1], z: p[2], rx: r, ry: r, rz: r, col, ...o2 });
+  function palette(e, T) {
+    const trim = hx(e.trim ?? 0xe8b838);
+    return { gold: trim, steel: STEEL, steel2: STEEL2, trim, tier: T, wood: WOOD, hatC: hx(e.tunic), hoodC: dk(hx(e.tunic), .9), hoodTrim: hx(e.trim ?? 0x6a1e34), crest: lt(trim, .35), capeTrim: trim };
+  }
+  function common(e, T, cls, extra) {
+    const skin = hx(e.skin), hc = hx(e.hair), fem = !!e.slim;
+    const eye = hx(e.eye ?? extra.eye), c = {
+      skin, hair: hc, eye, eyeL: lt(eye, .5), blush: fem ? 1 : 0, bulk: fem ? .9 : 1, hipw: fem ? 1.08 : 1,
+      top: hx(e.tunic), sleeve: hx(e.tunic), belt: hx(e.trim ?? 0x6a4220), pants: hx(e.pants), boots: hx(e.boots), cls,
+    };
+    const { eye: _e, ...rest } = extra; return Object.assign(c, rest);
+  }
+  const ATK = { berserker: "slash", escudeiro: "slash", cacador: "shoot", volva: "cast", valquiria: "stab", skald: "quick", thay: "punch", aprendiz: "quick" };
+  const FAM = { berserker: "p", escudeiro: "p", cacador: "a", volva: "m", valquiria: "m", skald: "a", thay: "a", aprendiz: "a" };
+  function headPlan(e, cls, T) {
+    let h = e.head || "none"; if (!/^(circlet|wings|horns|helm|hood|hood2|beanie|wreath|bandana|feathercap|crown|crowngold|santa)$/.test(h)) h = "none"; const SIG = { volva: "hat", skald: "hood", cacador: "furhood", escudeiro: T >= 1 ? "helm" : "none", thay: "band", aprendiz: "band" }[cls] || "none";
+    let main = SIG, extra = null;
+    if (h === "none") { } else if (h === "circlet" || h === "wings") extra = h; else if (h === "horns") main = "helmH"; else if (h === "helm") main = "helm"; else if (h === "hood") main = (SIG === "hood" || SIG === "furhood") ? SIG : "hood"; else main = h;
+    if (cls === "valquiria" && !extra && T >= 1) extra = "halo";
+    return { main, extra, cover: main === "helm" || main === "helmH" || main === "hood" || main === "furhood" || main === "hood2" };
+  }
+  function finish(cfg, e, T, cls, C, deco) {
+    const hp = headPlan(e, cls, T), hf = hairFn(e, hx(e.hair), hp.cover);
+    cfg.hairFn = (E, S, o) => hf(E, S, o);
+    cfg.deco = (E, S, o) => {
+      deco(E, S, o); backItems(E, S, o, e, C);
+      if (hp.main !== "none") headMain(hp.main, E, S, Object.assign(o, { tailBand: cls === "thay" || cls === "aprendiz" }), e, C);
+      if (hp.extra) headExtra(hp.extra, E, S, o, e, C);
+      if (e.low) lowItems(e.low, E, S, o, e, C); if (e.mid && !String(e.mid).startsWith("eye_")) midItems(e.mid, E, S, o, e);
+    };
+    return cfg;
+  }
+  // tecido de costas / capas por classe
+  const DES = {};
+  // ===== ESCUDEIRO (Mercador) — armadura de aço + tabardo + escudo =====
+  DES.escudeiro = (e, T) => {
+    const C = palette(e, T), tun = hx(e.tunic), GD = C.gold, sh = T >= 1;
+    const cfg = common(e, T, "escudeiro", {
+      eye: 0x3a8aff, metalTop: 1, metalLimb: 1, bulk: (e.slim ? .9 : 1.1), top: STEEL, sleeve: hx(0xc4d0e4), belt: dk(hx(0x6a4220), 1), pants: STEEL2, boots: hx(0xd0daea), bracer: GD, glove: GD, skirt: tun, greaves: STEEL,
+      topTex: (mx, my, mz) => { if (my < -.82) return GD; if (mz < 0) return my > .55 ? GD : 0; if (Math.abs(mx) < .045) return hx(0xffffff); if (Math.abs(mx) > .9) return GD; if (Math.abs(Math.abs(mx) * .62 - my - .28) < .045) return hx(0x6a7ca0); if (Math.abs(my - .62) < .05) return GD; if (Math.abs(mx) < .16 && my > -.66 && my < .18) return GD; if (Math.abs(my + .32) < .1 && Math.abs(mx) < .5) return GD; if (rv(mx, my, 0, -.2, .1)) return hx(0x4aa8ff); for (const sx of [-1, 1]) for (const [x, y] of [[.72, -.62], [.74, .1], [.56, .42], [.38, -.74]]) if (rv(mx, my, sx * x, y)) return hx(0xfff4c0); return 0; },
+      skirtTex: (mx, my, mz) => { if (my > .62) return GD; if (mz > 0 && Math.abs(mx) < .12) return lt(tun, .3); if (mz > 0 && Math.abs(Math.abs(mx) - .5) < .03) return GD; return Math.sin(mx * 14 + my * 3) > .7 ? lt(tun, .12) : 0; },
+      wpn: (E, S, o) => {
+        const H = o.R, Lh = o.L; cuff(S, H, STEEL, GD); cuff(S, Lh, STEEL, GD);
+        if (H && !o.unarmed) { const d = wd(H, o.P), h = H.h; S({ pts: [add(h, d, -3), add(h, d, 17)], w: 2, col: WOOD }); for (let i = 0; i < 4; i++) { const c = add(h, d, 1 + i * 3.8); S({ pts: [add(c, [-1.4, 0, 0]), add(c, [1.4, 0, 0])], w: 2.6, col: GD, metal: 1 }); }
+          const t = add(h, d, 20); o.P.marks.push({ n: "h", a: add(h, d, 4), b: t, col: [255, 232, 150] });
+          E({ x: t[0], y: t[1], z: t[2], rx: 4.6, ry: 4, rz: 4, col: STEEL, metal: 1, tex: (mx, my) => { const k = Math.abs(mx) > .8 || Math.abs(my) > .84 ? GD : 0; if (k) return k; if (Math.abs(mx) < .12 || Math.abs(my) < .12) return hx(0x6ae8ff); return 0; } });
+          for (const sg of [-1, 1]) S({ pts: [add(t, [sg * 4.2, 0, 0]), add(t, [sg * 6.2, 0, 0])], w: [3.4, 1.4], col: STEEL, metal: 1 }); S({ pts: [add(t, d, 5), add(t, d, 10)], w: [3.2, .8], col: STEEL, metal: 1 }); }
+        if (Lh) { const h = Lh.h; E({ x: h[0] - 2.6, y: h[1] - 3, z: h[2] + 3.4, rx: 5.8, ry: 8.4, rz: 1.8, p: 2.6, col: hx(0xe8eefa), metal: 1, tex: (mx, my, mz, X, Y) => { const r = Math.max(Math.abs(X), Math.abs(Y) * .7); if (r > .86) return GD; if (r > .78) return dk(GD, .75); const q = Math.hypot(X, Y + .1); if (q < .22) return hx(0xfff4c0); const a = Math.atan2(Y + .1, X); if (q < .62 && Math.abs(Math.sin(a * 5)) < .14) return GD; return Math.abs(X) < .06 && Y > .5 ? lt(tun, .35) : 0; } }); }
+      },
+      tweak: (P, a) => { if (a === 0) { P.arm[0] = { x: 9, y: 11, z: 5 }; } },
+    });
+    return finish(cfg, e, T, "escudeiro", C, (E, S, o) => {
+      const b = o.bob, tz = o.tz, hy = o.hy;
+      E({ x: 0, y: tz + 60 + b, z: tz + 5.6, rx: 3.6, ry: 7.6, rz: .9, p: 2.4, col: tun, tex: (mx, my) => { if (my > .82) return GD; if (my < -.8) return GD; if (Math.abs(mx) > .86) return dk(GD, .75); if (Math.abs(mx) < .14 && my < .5) return hx(0xfff4c0); if (Math.abs(my + .1) < .12 && Math.abs(mx) < .62) return hx(0xfff4c0); return 0; } });
+      for (let i = 0; i < 3; i++) E({ x: 0, y: tz + 39.5 + b + i * 2.7, z: tz + .4, rx: 8.2 - i * .5, ry: 1.5, rz: 5.9, p: 3, col: hx(0xd2dcee), metal: 1, tex: (mx, my, mz) => mz > 0 && my > .5 ? dk(GD, .75) : (mz > 0 && Math.abs(mx) < .06 ? hx(0x8a9ac0) : 0) });
+      E({ x: 0, y: tz + 35.2 + b, z: tz + 4.6, rx: 2.3, ry: 2.3, rz: 1.2, col: GD, metal: 1, tex: (mx, my) => Math.hypot(mx, my) < .45 ? hx(0x4aa8ff) : 0 });
+      if (sh) { S({ pts: [[-8.6, tz + 51 + b, tz + .5], [-10.4, tz + 58 + b, tz - 1.6], [-11.6, tz + 68 + b, tz - 4.4]], w: 2.8, col: hx(0x4a3020) }); E({ x: -8.2, y: tz + 48.4 + b, z: tz + .6, rx: 1.5, ry: 1.5, rz: 1.5, col: GD, metal: 1 }); }
+      E({ x: 0, y: tz + 34 + b, z: tz, rx: 7, ry: 2.6, rz: 5.2, col: STEEL, metal: 1, tex: (mx, my) => Math.abs(my - .1) < .18 && Math.abs(Math.sin(mx * 20)) < .1 ? hx(0x6a7ca0) : 0 });
+      for (const [x, y, w] of [[0, 57, 3.6], [-5.2, 56, 3], [5.2, 56, 3], [-8, 54, 2.2], [8, 54, 2.2]]) E({ x, y: tz + y + b, z: tz + 5.4 - Math.abs(x) * .25, rx: w, ry: 3.4, rz: 1.6, col: hx(0xdde5f2), metal: 1, tex: (mx, my) => my > .6 ? GD : (Math.abs(mx) < .08 ? hx(0x8a9ac0) : 0) });
+      for (const sg of [-1, 1]) E({ x: sg * 3.7, y: tz + 64 + b * .5, z: tz + 3.4 + (o.P.leg[sg > 0 ? 1 : 0].z) * .6, rx: 3.8, ry: 2.6, rz: 2.2, col: GD, metal: 1 });
+      E({ x: 0, y: tz + 52.2 + b, z: tz + 5.6, rx: 2.8, ry: 2.4, rz: 1.2, col: GD, metal: 1, tex: (mx, my) => Math.hypot(mx, my) < .35 ? hx(0x4aa8ff) : 0 });
+      if (T >= 2) for (let i = 0; i < 5; i++) { const u = (o.t * .6 + i * .2) % 1; E({ x: Math.sin(i * 6 + o.t) * 13, y: 78 - u * 50, z: Math.cos(i * 3) * 6, rx: .8, ry: .8, rz: .8, col: hx(0xfff4b0), bias: 1 }); }
+    });
+  };
+  // ===== BERSERKER (Espadachim / Cavaleiro de Midgard) — couro, pele e machado =====
+  DES.berserker = (e, T) => {
+    const C = palette(e, T), tun = hx(e.tunic), TR = C.gold, fur = hx(0xe2d8c2), furD = hx(0xb8ab92), iron = hx(0x9aa2b4);
+    C.capeL = 60;
+    const cfg = common(e, T, "berserker", {
+      eye: 0xc8702a, bulk: (e.slim ? .92 : 1.14), top: tun, sleeve: dk(tun, .7), belt: hx(0x4a3320), pants: hx(e.pants), boots: hx(e.boots), bracer: iron, glove: hx(0x5a4a3a), metalLimb: 0, skirt: dk(hx(e.pants), .9),
+      topTex: (mx, my, mz) => { if (my < -.8) return furD; if (mz > 0 && Math.abs(mx - my * .55 - .12) < .08 && my > -.6) return hx(0x4a3320); if (mz > 0 && rv(mx, my, 0, 0, .12)) return iron; if (mz > 0 && my > -.4 && my < .5 && Math.abs(mx) < .1 && ((Math.floor(my * 12)) & 1)) return hx(0xd8c8a0); if (mz > 0 && T >= 1 && Math.abs(Math.abs(mx) - .55) < .1 && my > -.4 && my < .2) return iron; if (mz > 0 && ((Math.floor(mx * 9) + Math.floor(my * 9)) & 1) && my > -.5) return lt(tun, .08); return 0; },
+      skirtTex: (mx, my, mz) => { if (my > .62) return hx(0x4a3320); if (mz > 0 && my < -.3 && (Math.floor(mx * 7) & 1)) return furD; return 0; },
+      wpn: (E, S, o) => {
+        cuff(S, o.R, iron, hx(0x6a7284), 5.8); cuff(S, o.L, iron, hx(0x6a7284), 5.8);
+        const H = o.R; if (!H || o.unarmed) return; const d = wd(H, o.P), h = H.h;
+        S({ pts: [add(h, d, -4), add(h, d, 24)], w: 2.2, col: WOOD }); for (let i = 0; i < 3; i++) S({ pts: [add(h, d, 1 + i * 4), add(h, d, 2.4 + i * 4)], w: 3, col: hx(0x4a3320) });
+        const t = add(h, d, 21), B = nrm([.6, .8 * d[2], -.8 * d[1]]);
+        S({ pts: [add(t, d, 3), add(add(t, d, 0), B, 7), add(add(t, d, -8), B, 6.6), add(t, d, -10)], w: [4.6, 4.2], col: iron, metal: 1 });
+        S({ pts: [add(t, d, -2), add(add(t, d, -2), B, -3.4)], w: 2.6, col: hx(0x6a7284), metal: 1 }); S({ pts: [add(t, d, 2), add(t, d, 7)], w: [2, .8], col: lt(iron, .2), metal: 1 });
+        S({ pts: [add(add(t, d, -2), B, 5.4), add(add(t, d, -6), B, 5.2)], w: 1, col: hx(0xffffff), bias: .9 });
+        o.P.marks.push({ n: "h", a: add(t, d, -8), b: add(add(t, d, 0), B, 7), col: [255, 190, 130] });
+      },
+      tweak: (P, a) => { if (a === 0) { P.arm[0] = { x: 11, y: 14, z: 2 }; P.arm[1] = { x: 11, y: 14, z: 2 }; P.lean = .4; P.hy = -.3; } else if (a === 1) { P.sx *= 1.6; } },
+    });
+    return finish(cfg, e, T, "berserker", C, (E, S, o) => {
+      const b = o.bob, tz = o.tz, hy = o.hy;
+      E({ x: 0, y: tz + 34.8 + b, z: tz, rx: 9.4, ry: 2.7, rz: 6.4, col: fur, tex: (mx) => Math.sin(mx * 24) > .45 ? furD : 0 });
+      for (const sg of [-1, 1]) { E({ x: sg * 6.4, y: tz + 36.4 + b, z: tz + 1, rx: 3.6, ry: 2, rz: 4.6, col: fur, tex: (mx, my) => Math.sin(mx * 20 + my * 14) > .5 ? furD : 0 }); }
+      for (let i = 0; i < 7; i++) { const x = -9 + i * 3; S({ pts: [[x, tz + 52 + b, tz + 5], [x * 1.04, tz + 57 + b + (i % 2), tz + 5.6], [x * 1.06, tz + 62 + b + (i % 2) * 2, tz + 5.2]], w: [3.2, 1.2], col: i % 2 ? hx(0x5a4030) : hx(0x4a3320) }); }
+      E({ x: 0, y: tz + 52 + b, z: tz + 5.8, rx: 3, ry: 2.4, rz: 1.2, col: hx(0xd8b040), metal: 1, tex: (mx, my) => Math.hypot(mx, my) < .4 ? hx(0xc8421e) : 0 });
+      for (const sg of [-1, 1]) { E({ x: sg * 3.7, y: 66 + b * .3, z: (o.P.leg[sg > 0 ? 1 : 0].z) + 0.4, rx: 4.2, ry: 2.2, rz: 4.2, col: fur, tex: (mx) => Math.sin(mx * 18) > .4 ? furD : 0 }); }
+      if (T >= 1) { for (const sg of [-1, 1]) E({ x: sg * 4.6, y: tz + 41 + b, z: tz + 5.4, rx: 3.6, ry: 3.8, rz: 1.1, p: 2.6, col: iron, metal: 1, tex: (mx, my) => Math.abs(my) > .8 || Math.abs(mx) > .8 ? hx(0x6a7284) : 0 }); }
+      if (T >= 2) { for (let i = 0; i < 6; i++) { const u = (o.t * .7 + i * .17) % 1; E({ x: Math.sin(i * 5.1 + o.t * 2) * 11, y: 64 - u * 44, z: Math.cos(i * 3.3) * 6, rx: .9, ry: .9, rz: .9, col: hx(0xff7a3a), bias: 1 }); } }
+      if (T >= 1 && !e.slim && !e.low) { E({ x: 0, y: hy + 8.4, z: o.hz + 4.8, rx: 6, ry: 4.4, rz: 3.4, col: hx(e.hair), tex: (mx, my, mz) => mz > 0 && my < -.5 ? null : (Math.sin(mx * 16) > .6 ? lt(hx(e.hair), .2) : 0) }); S({ pts: [[0, hy + 11, o.hz + 5], [0, hy + 16, o.hz + 5.4]], w: [3.6, 2], col: hx(e.hair) }); E({ x: 0, y: hy + 17, z: o.hz + 5.4, rx: 1.5, ry: 1.2, rz: 1.5, col: hx(0xf0c040) }); }
+    });
+  };
+  // ===== CAÇADOR (Arqueiro) — couro verde, manto de pele, arco =====
+  DES.cacador = (e, T) => {
+    const C = palette(e, T), tun = hx(e.tunic), lea = hx(0x8a6a40), fur = hx(0x9a9ea8), TR = C.gold;
+    C.hoodTrim = dk(hx(0xd8d8de), 1); C.capeL = 58;
+    const cfg = common(e, T, "cacador", {
+      eye: 0x2f9a4a, top: tun, sleeve: dk(tun, .85), belt: hx(0x4a3220), pants: hx(e.pants), boots: hx(e.boots), bracer: lea, glove: lea, metalLimb: 0,
+      topTex: (mx, my, mz) => { if (mz > 0 && Math.abs(mx - my * .6) < .07 && my < .5) return hx(0x4a3220); if (my < -.78) return hx(0x6a4a2a); if (mz > 0 && my > .25 && Math.abs(mx) < .5 && Math.floor(mx * 9) % 2 === 0 && my < .45) return lt(tun, .16); if (mz > 0 && Math.abs(mx) < .05) return dk(tun, .6); return 0; },
+      wpn: (E, S, o) => {
+        cuff(S, o.R, lea, dk(lea, .7), 5.2); cuff(S, o.L, lea, dk(lea, .7), 5.2);
+        const H = o.L; if (!H || o.unarmed) return; const h = H.h, x = h[0] + 1;
+        const top = [x, h[1] - 22, h[2] - 4], mid = [x, h[1], h[2] + 3.2], bot = [x, h[1] + 22, h[2] - 4];
+        S({ pts: [top, [x, h[1] - 11, h[2] + 1.8], mid, [x, h[1] + 11, h[2] + 1.8], bot], w: [2.4, 2.4], col: (q) => (Math.floor(q * 10) & 1) ? hx(0x7a4a24) : hx(0x93602e) });
+        S({ pts: [[x, h[1] - 3, h[2] + 2.6], [x, h[1] + 3, h[2] + 2.6]], w: 3.2, col: hx(0x3a2a1a) });
+        const Rh = o.R; const dr = o.P.draw || 0; const str = Rh && dr > 0 ? [Rh.h[0], Rh.h[1] - 1, Rh.h[2] - 1] : null;
+        S({ pts: str ? [top, str, bot] : [top, bot], w: .9, col: hx(0xf0ead8) });
+        if (Rh && dr > .2) { const a0 = [Rh.h[0], Rh.h[1] - 1, Rh.h[2]], a1 = [mid[0], mid[1] - 1, mid[2] + 11]; S({ pts: [a0, a1], w: 1.2, col: hx(0xe8e0c8) }); S({ pts: [add(a1, [0, 0, 0]), add(a1, [0, 0, 3.4])], w: [2.4, .6], col: hx(0xc8d0dc), metal: 1 }); S({ pts: [a0, add(a0, [0, 0, 3])], w: 2.6, col: hx(0xd04830) }); }
+      },
+      tweak: (P, a) => { if (a === 0) { P.arm[1] = { x: 9.8, y: 20, z: -1 }; P.lean = 1; P.leg[0].z = -1.4; P.leg[1].z = 2.2; } },
+    });
+    return finish(cfg, e, T, "cacador", C, (E, S, o) => {
+      const b = o.bob, tz = o.tz;
+      E({ x: 0, y: tz + 34.8 + b, z: tz, rx: 10.4, ry: 3, rz: 6.8, col: fur, tex: (mx, my) => Math.sin(mx * 24 + my * 8) > .4 ? hx(0xc4c8d0) : 0 });
+      for (const sg of [-1, 1]) E({ x: sg * 7, y: tz + 36.6 + b, z: tz, rx: 3.6, ry: 2.4, rz: 4.4, col: fur, tex: (mx, my) => Math.sin(mx * 18 + my * 14) > .5 ? hx(0xc4c8d0) : 0 });
+      for (const sg of [-1, 1]) E({ x: sg * 7.8, y: tz + 55 + b, z: tz + 3.4, rx: 2.8, ry: 3.2, rz: 2, col: hx(0x6a4a2a), tex: (mx, my) => my < -.4 ? lt(hx(0x6a4a2a), .2) : 0 });
+      E({ x: 0, y: tz + 52 + b, z: tz + 5.8, rx: 2.2, ry: 2, rz: 1, col: TR, metal: 1 });
+      for (const sg of [-1, 1]) { E({ x: sg * 3.7, y: 66 + b * .3, z: o.P.leg[sg > 0 ? 1 : 0].z + .4, rx: 4, ry: 2.4, rz: 4, col: fur, tex: (mx) => Math.sin(mx * 18) > .4 ? hx(0xc4c8d0) : 0 }); for (let i = 0; i < 3; i++) E({ x: sg * 3.7, y: tz + 57 + b + i * 1.8, z: o.P.leg[sg > 0 ? 1 : 0].z * .3, rx: 3.5, ry: .6, rz: 3.5, col: lea }); }
+      if (T >= 1) S({ pts: [[-6, tz + 36 + b, tz - 2], [6, tz + 50 + b, tz + 4]], w: 1.5, col: hx(0x4a3220) });
+      if (T >= 2) for (let i = 0; i < 4; i++) { const u = (o.t * .6 + i * .25) % 1; E({ x: Math.sin(i * 5 + o.t) * 12, y: 70 - u * 46, z: Math.cos(i * 3) * 6, rx: .8, ry: .8, rz: .8, col: hx(0x8aff9a), bias: 1 }); }
+    });
+  };
+  // ===== MAGO (Völva) — manto, chapéu, cajado =====
+  DES.volva = (e, T) => {
+    const C = palette(e, T), tun = hx(e.tunic), TR = C.gold, rob = dk(tun, .78), hl = hx(e.hair);
+    C.hatC = rob; C.capeTrim = TR; C.noCape = true;
+    const cfg = common(e, T, "volva", {
+      eye: 0x4a6aff, robe: 1, robeCol: rob, top: tun, sleeve: dk(tun, .92), belt: TR, pants: dk(tun, .5), boots: hx(e.boots), bracer: TR, hipw: e.slim ? 1.12 : 1,
+      robeTex: (mx, my, mz) => { if (my > .9) return TR; if (mz > 0) { if (Math.abs(mx) < .09 && my > -.2) return hx(0xe8f0ff); if (Math.abs(Math.abs(mx) - .1) < .03 && my > -.2) return TR; if (Math.abs(my - .74) < .05) return TR; const g = Math.sin(mx * 11 + my * 3); if (T >= 1 && Math.abs(mx) > .2 && Math.abs(mx) < .45 && my > .3 && my < .7 && Math.abs(Math.sin(my * 40 + mx * 9)) < .15) return hx(0x8ae8ff); if (((Math.floor(mx * 8) * 7 + Math.floor(my * 9) * 5) % 13) === 0) return hx(0xffe890); if (g > .7) return lt(rob, .14); if (g < -.8) return dk(rob, .72); } return Math.sin(mx * 13) > .72 ? lt(rob, .14) : 0; },
+      topTex: (mx, my, mz) => { if (my < -.8) return TR; if (mz > 0 && Math.abs(mx) < .1) return hx(0xe8f0ff); return Math.sin(mx * 16 + my * 5) > .75 ? lt(tun, .12) : 0; },
+      wpn: (E, S, o) => {
+        cuff(S, o.R, tun, TR); cuff(S, o.L, tun, TR); const H = o.R; if (!H || o.unarmed) return;
+        const h = H.h, d = o.P.mood === 1 ? wd(H, o.P) : [.05, -1, .05];
+        S({ pts: [add(h, d, -8), add(h, d, 26), add(h, d, 35)], w: [2, 2.3, 1.8], col: (q) => Math.sin(q * 38) > .6 ? hx(0x5a3a20) : hx(0x7a5030) });
+        for (const q of [.15, .5]) S({ pts: [add(h, d, -4 + q * 60), add(add(h, d, -4 + q * 60), [1, 0, 0], .01)], w: 3.4, col: TR, metal: 1 });
+        const tp = add(h, d, 38), oc = lt(hx(e.trim ?? 0x58e0ff), .2); o.P.marks.push({ n: "s", a: add(h, d, 30), b: tp, col: [140, 240, 255] });
+        for (let i = 0; i < 3; i++) { const a = i / 3 * TAU + Math.PI / 2; S({ pts: [add(tp, [0, -5, 0]), add(tp, [Math.cos(a) * 5, -1, Math.sin(a) * 3]), add(tp, [Math.cos(a) * 5.4, 5, Math.sin(a) * 3])], w: [1.8, 1], col: TR, metal: 1 }); }
+        E({ x: tp[0], y: tp[1], z: tp[2], rx: 4.4, ry: 4.8, rz: 4.4, col: hx(0x58e0ff), bias: .9, tex: (mx, my, mz, X, Y, Z) => { if (Z > .45 && Math.hypot(X + .2, Y + .3) < .3) return hx(0xffffff); return Math.abs(Math.sin(mx * 4 + my * 3)) < .1 ? hx(0xd8fbff) : 0; } });
+        for (let i = 0; i < 4; i++) { const a = o.t * 2 + i * TAU / 4; E({ x: tp[0] + Math.cos(a) * 8, y: tp[1] + Math.sin(a * 1.3) * 3, z: tp[2] + Math.sin(a) * 7, rx: .8, ry: 1.2, rz: .6, col: hx(0xb0f4ff), bias: 1 }); }
+        if (o.L) { const l = o.L.h; E({ x: l[0], y: l[1] - 2, z: l[2] + 1.4, rx: 2.4, ry: 2.4, rz: 2.4, col: hx(0x58e0ff), bias: 1 }); }
+      },
+    });
+    return finish(cfg, e, T, "volva", C, (E, S, o) => {
+      const b = o.bob, t = o.t, tz = o.tz, hy = o.hy, hz = o.hz;
+      S({ pts: [[-8, tz + 37 + b, tz + 5.4], [0, tz + 43 + b, tz + 6.2], [8, tz + 51 + b, tz + 5.6]], w: 2.8, col: (t2) => Math.sin(t2 * 34) > .3 ? TR : hx(0xfff4c0), metal: 1 });
+      E({ x: 0, y: tz + 42.6 + b, z: tz + 7, rx: 2, ry: 2.4, rz: 1, col: hx(0x58e0ff), bias: .5, tex: (mx, my) => Math.hypot(mx, my) > .8 ? TR : (Math.hypot(mx + .3, my + .3) < .25 ? hx(0xffffff) : 0) });
+      E({ x: 8.4, y: tz + 53 + b, z: tz + 4.4, rx: 3.2, ry: 4.2, rz: 1.8, col: hx(0x7a2a2a), tex: (mx, my, mz) => mz > .3 && (Math.abs(mx) < .1 || Math.abs(my) > .86 || Math.abs(mx) > .86) ? TR : (mz > .3 && Math.hypot(mx, my) < .22 ? hx(0x6ae8ff) : 0) });
+      E({ x: -8, y: tz + 54 + b, z: tz + 4, rx: 1.8, ry: 2.6, rz: 1.8, col: hx(0x58c8ff), bias: .4, tex: (mx, my) => my < -.5 ? hx(0x7a5030) : 0 });
+      E({ x: 0, y: tz + 34.4 + b, z: tz, rx: 10, ry: 3.2, rz: 6.6, col: hx(0xe8e4f0), tex: (mx) => Math.sin(mx * 30) > .4 ? hx(0xc0b8d0) : 0 });
+      E({ x: 0, y: tz + 51.6 + b, z: tz + 5.6, rx: 2.6, ry: 2.4, rz: 1.1, col: TR, metal: 1, tex: (mx, my) => Math.hypot(mx, my) < .4 ? hx(0x6ae8ff) : 0 });
+      if (T >= 2 && !e.slim && !e.low) { S({ pts: [[0, hy + 8, hz + 5], [0, hy + 16, hz + 6.6], [0, hy + 27, hz + 5.6]], w: [10, 8, 2.6], col: (t2) => Math.sin(t2 * 28) > .55 ? hx(0xdcdcee) : hx(0xf8f8ff) }); }
+      if (T >= 1) for (let i = 0; i < 5; i++) { const a = t * 1.2 + i * TAU / 5; E({ x: Math.cos(a) * 17, y: tz + 38 + Math.sin(a * 1.6 + i) * 6 + b, z: Math.sin(a) * 13, rx: 1.1, ry: 1.8, rz: .8, col: hx(0x8ae8ff), bias: 1 }); }
+    });
+  };
+  // ===== SACERDOTE (Noviço / Valquíria) — túnica clara, auréola, lança =====
+  DES.valquiria = (e, T) => {
+    const C = palette(e, T), tun = hx(e.tunic), TR = C.gold, ac = hx(e.cape ?? 0xe03a3a);
+    C.noCape = true;
+    const cfg = common(e, T, "valquiria", {
+      eye: 0x4aa6ff, blush: 1, robe: 1, robeCol: tun, top: lt(tun, .06), sleeve: lt(tun, .12), belt: TR, pants: hx(e.pants), boots: hx(e.boots), bracer: TR, glove: lt(tun, .2), hipw: e.slim ? .98 : .94,
+      robeTex: (mx, my, mz) => { if (my > .9) return TR; if (mz > 0) { if (Math.abs(mx) < .1 && my > -.1) return ac; if (Math.abs(Math.abs(mx) - .1) < .025 && my > -.1) return TR; if (my > .84) return TR; if (Math.abs(my + .5) < .03) return TR; if (Math.abs(mx) > .4 && Math.abs(mx) < .46 && my > -.4) return lt(tun, .3); } return Math.sin(mx * 12 + my * 2) > .78 ? lt(tun, .16) : (Math.sin(mx * 9) < -.82 ? dk(tun, .88) : 0); },
+      topTex: (mx, my, mz) => { if (my < -.78) return TR; if (mz > 0 && Math.abs(mx) < .12 && my > -.7) return ac; if (mz > 0 && my > -.1 && my < .08 && Math.abs(mx) > .2 && Math.abs(mx) < .6) return TR; return 0; },
+      wpn: (E, S, o) => {
+        cuff(S, o.R, lt(tun, .15), TR); cuff(S, o.L, lt(tun, .15), TR); const H = o.R; if (!H || o.unarmed) return;
+        const d = o.P.mood === 1 ? wd(H, o.P) : [.04, -1, .08], h = H.h;
+        S({ pts: [add(h, d, -9), add(h, d, 36)], w: 1.9, col: hx(0xe8dcc0) }); for (const q of [0, 14]) S({ pts: [add(h, d, q), add(h, d, q + .6)], w: 3, col: TR, metal: 1 });
+        S({ pts: [add(h, d, 35), add(h, d, 45)], w: [3.8, .9], col: STEEL, metal: 1 }); S({ pts: [add(h, d, 36), add(add(h, d, 36), [-3, -.4, 0], 1)], w: [2, .7], col: TR, metal: 1 }); S({ pts: [add(h, d, 36), add(add(h, d, 36), [3, -.4, 0], 1)], w: [2, .7], col: TR, metal: 1 });
+        S({ pts: [add(h, d, 31), add(add(h, d, 29), [Math.sin(o.t * 5) * 2.4, 0, 1.4], 1), add(add(h, d, 22), [Math.sin(o.t * 5 + 1) * 3, 0, 2], 1)], w: [2.6, 1], col: ac });
+        o.P.marks.push({ n: "s", a: add(h, d, 30), b: add(h, d, 45), col: [200, 230, 255] });
+      },
+      tweak: (P, a) => { if (a === 0) { P.arm[0] = { x: 4, y: 10, z: 7 }; P.arm[1] = { x: 4, y: 10.4, z: 7 }; } },
+    });
+    return finish(cfg, e, T, "valquiria", C, (E, S, o) => {
+      const b = o.bob, t = o.t, tz = o.tz;
+      E({ x: 0, y: tz + 35 + b, z: tz, rx: 8.4, ry: 2.6, rz: 5.4, col: lt(tun, .18), tex: (mx) => Math.sin(mx * 20) > .5 ? TR : 0 });
+      S({ pts: [[-5, tz + 36 + b, tz + 5], [0, tz + 51 + b, tz + 6.4], [5, tz + 36 + b, tz + 5]], w: 1.2, col: TR });
+      E({ x: 0, y: tz + 41 + b, z: tz + 6.2, rx: 2, ry: 2, rz: 1, col: TR, metal: 1, tex: (mx, my) => Math.hypot(mx, my) < .5 ? ac : 0 });
+      E({ x: 6.8, y: tz + 54 + b, z: tz + 4, rx: 2.8, ry: 3.4, rz: 1.6, col: hx(0xb88a50), tex: (mx, my) => my < -.4 ? TR : 0 });
+      if (T >= 1) for (let i = 0; i < 4; i++) { const u = (t * .5 + i * .25) % 1; E({ x: Math.sin(i * 4 + t) * 12, y: 76 - u * 48, z: Math.cos(i * 3) * 6, rx: .8, ry: .8, rz: .8, col: hx(0xfff4b0), bias: 1 }); }
+    });
+  };
+  // ===== SOMBRA (Gatuno / Skald) — capuz, adagas =====
+  DES.skald = (e, T) => {
+    const C = palette(e, T), tun = hx(e.tunic), AC = hx(e.trim ?? 0x8a2c48), ac2 = dk(AC, .8), ST = lt(dk(tun, 1), .12);
+    C.hoodC = dk(tun, .95); C.hoodTrim = ac2; C.capeTrim = AC; C.capeL = 60;
+    const cfg = common(e, T, "skald", {
+      eye: 0xff3a58, top: tun, sleeve: dk(tun, .92), belt: ac2, pants: dk(tun, .8), boots: hx(e.boots), bracer: lt(tun, .22), glove: hx(e.boots), skirt: dk(tun, .92), metalLimb: 0,
+      faceExtra: T >= 1 ? (az, el) => (Math.abs(az) < 1.25 && el > .3) ? (Math.abs(az) < .04 ? lt(tun, .16) : dk(tun, .9)) : 0 : null,
+      topTex: (mx, my, mz) => { if (my < -.82) return lt(tun, .22); if (mz > 0) { if ((Math.abs(mx - my * .95) < .07 || Math.abs(mx + my * .95) < .07) && my > -.75) return ac2; if (rv(mx, my, 0, 0, .13)) return hx(0xc8a848); if (Math.abs(my - .42) < .07) return dk(AC, .8); if (Math.abs(mx) < .04) return dk(tun, .6); if (Math.sin(mx * 26 + my * 9) > .8) return lt(tun, .1); } return Math.sin(mx * 18 + my * 5) > .8 ? lt(tun, .1) : 0; },
+      skirtTex: (mx, my, mz) => (my > .5 && Math.abs(mx) > .28 && mz > 0) ? null : (my > .7 ? ac2 : 0),
+      wpn: (E, S, o) => {
+        cuff(S, o.R, lt(tun, .22), AC, 5.4); cuff(S, o.L, lt(tun, .22), AC, 5.4);
+        for (const [H, sg] of [[o.R, 1], [o.L, -1]]) { if (!H || o.unarmed) continue; const d = wd(H, o.P), h = H.h; o.P.marks.push({ n: "d" + sg, a: add(h, d, 3), b: add(h, d, 13.5), col: [255, 96, 120] });
+          S({ pts: [h, add(h, d, 3)], w: 2, col: hx(0x3a2230) }); S({ pts: [add(h, d, 3), add(h, d, 10), add(add(h, d, 13.5), [sg * 2, 0, 0])], w: [3, .8], col: hx(0xe0e6f4), metal: 1 }); S({ pts: [add(h, d, 3.4), add(h, d, 9.4)], w: 1, col: hx(0xff3a58), bias: .9 }); S({ pts: [add(add(h, d, 3), [-3, 0, 0]), add(add(h, d, 3), [3, 0, 0])], w: 1.8, col: hx(0xc8a848), metal: 1 }); }
+      },
+    });
+    return finish(cfg, e, T, "skald", C, (E, S, o) => {
+      const b = o.bob, t = o.t, tz = o.tz, hy = o.hy;
+      for (let i = 0; i < 4; i++) { const x = -5 + i * 3.1, y = tz + 37.6 + b + i * 3.2; E({ x, y, z: tz + 6, rx: .9, ry: 2.1, rz: .7, col: hx(0xe0e6f4), metal: 1 }); E({ x, y: y + 2.6, z: tz + 6, rx: 1.2, ry: .8, rz: .8, col: hx(0xc8a848), metal: 1 }); }
+      if (T >= 1) for (let i = 0; i < 6; i++) { const x = -9 + i * 3.6, L = 14 + ((i * 7) % 5) * 3; S({ pts: [[x, tz + 50 + b, tz - 6.2], [x * 1.12, Math.min(tz + 50 + L * .55 + b, 64), tz - 8 + Math.sin(t * 2 + i) * .8], [x * 1.2, Math.min(tz + 50 + L + b, 66.5), tz - 8.6 + Math.sin(t * 2 + i + 1)]], w: [3.4, 1.2], col: i % 2 ? dk(tun, .9) : dk(tun, .7) }); }
+      E({ x: 0, y: tz + 33.8 + b, z: tz, rx: 6.6, ry: 2.8, rz: 5.2, col: dk(tun, .95), tex: (mx) => Math.sin(mx * 22) > .4 ? lt(tun, .16) : 0 });
+      E({ x: 0, y: tz + 52 + b, z: tz + 5.8, rx: 2.4, ry: 2.2, rz: 1, col: hx(0xc8a848), metal: 1 });
+      for (const sg of [-1, 1]) { E({ x: sg * 7.4, y: tz + 55 + b, z: tz + 3.4, rx: 2.6, ry: 3.2, rz: 2.2, col: hx(0x4a3a2a), tex: (mx, my) => my < -.3 ? hx(0xc8a848) : 0 }); for (let i = 0; i < 3; i++) E({ x: sg * 3.7, y: tz + 57 + b + i * 1.7, z: tz + (o.P.leg[sg > 0 ? 1 : 0].z) * .3, rx: 3.5, ry: .7, rz: 3.5, col: ac2 }); for (let i = 0; i < 3; i++) E({ x: sg * 3.7, y: 68 - i * 1.4, z: o.P.leg[sg > 0 ? 1 : 0].z, rx: 3.8, ry: .6, rz: 3.8, col: lt(tun, .2) }); }
+      if (T >= 1) S({ pts: [[-3, tz + 35 + b, tz + 4], [-8 + Math.sin(t * 2), tz + 45 + b, tz + 3], [-12 + Math.sin(t * 2 + 1) * 2, tz + 58 + b, tz - 2 + Math.sin(t * 3)]], w: [4.4, 2], col: AC });
+      if (T >= 1) for (let i = 0; i < 2; i++) S({ pts: [[3, hy + 7, o.hz - 8], [11 + Math.sin(t * 3 + i), hy + 11 + i * 3, o.hz - 12], [19 + Math.sin(t * 3 + 1 + i) * 2, hy + 9 + i * 5 + Math.sin(t * 4), o.hz - 14]], w: [3.6 - i, 1], col: i ? ac2 : AC });
+      if (T >= 2) for (let i = 0; i < 3; i++) { const a = t * 1.6 + i * 2.1; E({ x: Math.cos(a) * 14, y: tz + 40 + Math.sin(a * 1.7) * 5 + b, z: Math.sin(a) * 10, rx: 1.1, ry: 1.7, rz: .8, col: hx(0xff3a58), bias: 1 }); }
+    });
+  };
+  // ===== THAY (monge de punhos) =====
+  DES.thay = (e, T) => {
+    const C = palette(e, T), tun = hx(e.tunic), TR = C.gold, skin = hx(e.skin), wrap = hx(0xe8dcc0);
+    C.capeTrim = TR;
+    const cfg = common(e, T, "thay", {
+      eye: 0xe8a030, top: tun, sleeve: tun, belt: dk(TR, .9), pants: dk(hx(e.pants), 1), boots: hx(e.boots), bracer: wrap, glove: wrap, metalLimb: 0, sleeveLong: false,
+      topTex: (mx, my, mz) => { if (my < -.78) return TR; if (mz > 0 && Math.abs(mx) < .34 + my * .22 && my < .12 && my > -.7) return skin; if (mz > 0 && Math.abs(Math.abs(mx) - (.36 + my * .22)) < .06 && my < .12) return TR; if (mz > 0 && my > .3 && my < .38) return dk(TR, .8); return Math.sin(mx * 14 + my * 4) > .8 ? lt(tun, .12) : 0; },
+      wpn: (E, S, o) => {
+        cuff(S, o.R, wrap, TR, 5.4); cuff(S, o.L, wrap, TR, 5.4);
+        if (!o.unarmed) for (const [H, sg] of [[o.R, 1], [o.L, -1]]) { if (!H) continue; ball(E, add(H.h, [0, 0, 1]), 3.1, wrap); ball(E, add(H.h, [0, 0, 3.6]), 1.8, hx(0xffd890), { bias: .9 }); }
+        if (!o.unarmed && o.R) o.P.marks.push({ n: "f", a: o.R.h, b: add(o.R.h, [0, 0, 6]), col: [255, 200, 120] });
+      },
+      tweak: (P, a) => { if (a === 0) { P.arm[0] = { x: 7.4, y: 8, z: 7 }; P.arm[1] = { x: 7.4, y: 8, z: 7 }; P.lean = 1.2; P.leg[0].z = -2.2; P.leg[1].z = 2.6; P.leg[0].x = P.leg[1].x = 1.8; } else if (a === 5) { P.lean = -2; } },
+    });
+    return finish(cfg, e, T, "thay", C, (E, S, o) => {
+      const b = o.bob, t = o.t, tz = o.tz;
+      E({ x: 0, y: tz + 51.8 + b, z: tz, rx: 9.4, ry: 2.6, rz: 6.4, p: 3, col: TR, tex: (mx, my, mz) => (mz > 0 && Math.abs(mx - .3) < .1) ? dk(TR, .7) : 0 });
+      for (let i = 0; i < 2; i++) S({ pts: [[5 + i * 2, tz + 52 + b, tz + 5.4], [7 + i * 3 + Math.sin(t * 2 + i), tz + 60 + b, tz + 5], [8 + i * 3, tz + 66 + b, tz + 4 + Math.sin(t * 3)]], w: [3.2, 1.4], col: i ? dk(TR, .8) : TR });
+      for (const sg of [-1, 1]) for (let i = 0; i < 3; i++) E({ x: sg * 3.7, y: 63 + i * 1.7 - 0.5, z: o.P.leg[sg > 0 ? 1 : 0].z * .8 + 1, rx: 3.6, ry: .6, rz: 3.6, col: wrap });
+      E({ x: 0, y: tz + 34 + b, z: tz, rx: 6.6, ry: 2.4, rz: 5, col: dk(tun, .9), tex: (mx) => Math.sin(mx * 18) > .5 ? lt(tun, .12) : 0 });
+      if (T >= 1) for (const sg of [-1, 1]) { E({ x: sg * 4, y: tz + 41 + b, z: tz + 5.4, rx: 3.4, ry: 3.4, rz: 1, col: TR, metal: 1, tex: (mx, my) => Math.hypot(mx, my) < .5 ? hx(0xff7a2a) : 0 }); }
+      if (T >= 2) for (let i = 0; i < 5; i++) { const u = (t * .7 + i * .2) % 1; E({ x: Math.sin(i * 5 + t * 2) * 12, y: 66 - u * 46, z: Math.cos(i * 3) * 6, rx: .9, ry: .9, rz: .9, col: hx(0xff9a30), bias: 1 }); }
+    });
+  };
+  // ===== APRENDIZ =====
+  DES.aprendiz = (e, T) => {
+    const C = palette(e, T), tun = hx(e.tunic), TR = hx(e.trim ?? 0xe8b838); C.trim = TR; C.capeTrim = TR;
+    const cfg = common(e, T, "aprendiz", {
+      eye: 0x3d7bd0, blush: 1, top: tun, sleeve: tun, belt: hx(0x6a4426), pants: hx(e.pants), boots: hx(e.boots), bracer: hx(0x6a4426), metalLimb: 0,
+      topTex: (mx, my, mz) => { const az = Math.atan2(mx, mz); if (my < -.78) return hx(0xefe6d0); if (my < -.7 && mz > 0 && (Math.floor(az * 12) & 1)) return hx(0xd8cbb0); if (mz > 0 && my < .2 && Math.abs((mx - my * .9) + .2) < .1) return hx(0x5a3a22); if (mz > 0 && my > .1 && my < .3 && Math.abs(mx - .2) < .2 && Math.abs(my - .22) < .1) return hx(0x6a4426); return 0; },
+      wpn: (E, S, o) => { const H = o.R; if (!H || o.unarmed) return; const d = wd(H, o.P), h = H.h; o.P.marks.push({ n: "d", a: add(h, d, 3), b: add(h, d, 13.5), col: [220, 230, 255] }); S({ pts: [h, add(h, d, 3)], w: 2, col: hx(0x3a2a22) }); S({ pts: [add(h, d, 3), add(h, d, 13.5)], w: [3, .9], col: hx(0xd8dce8), metal: 1 }); S({ pts: [add(add(h, d, 3), [-3, 0, 0]), add(add(h, d, 3), [3, 0, 0])], w: 1.8, col: hx(0x9a8a60), metal: 1 }); },
+      tweak: (P, a) => { if (a === 0) { P.arm[0] = { x: 7, y: 14, z: -2 }; P.arm[1] = { x: 7.2, y: 14, z: -2 }; } },
+    });
+    return finish(cfg, e, T, "aprendiz", C, (E, S, o) => {
+      E({ x: -8.5, y: o.tz + 51 + o.bob, z: o.tz - 4, rx: 3.4, ry: 3.8, rz: 2.6, col: hx(0x7a5030) });
+      S({ pts: [[-6, o.tz + 37 + o.bob, o.tz + 3], [0, o.tz + 44 + o.bob, o.tz + 6], [7, o.tz + 52 + o.bob, o.tz + 3]], w: 1.6, col: hx(0x5a3a22) });
+      E({ x: 0, y: o.tz + 34 + o.bob, z: o.tz, rx: 6.4, ry: 2, rz: 5, col: dk(tun, .9) });
+    });
+  };
+  // ---------- entrada ----------
+  const KIND_BY_STYLE = { slash: "slash", quick: "quick", cast: "cast", stab: "stab", shoot: "shoot", punch: "punch", nova: "cast", bolt: "shoot", dash: "quick" };
+  const ATKU = { slash: [.2, .41, .56], quick: [.16, .3, .46], cast: [.3, .5, .62], stab: [.22, .4, .54], shoot: [.34, .48, .6], punch: [.16, .3, .46] };
+  const PERS = { slash: 1.5, quick: 1.1, cast: 1.6, stab: 1.3, shoot: 1.4, punch: 1.0 };
+  const KDIR = { down: 0, dq: 1, side: 2, uq: 3, up: 4 };
+  const WALK = { p: 1.0, a: .78, m: 1.4 };
+  const SCALE = 1.3, CW = 184, GYY = 170, KS = .74;
+  function ROX2(e, dir, frame, lvl, style) {
+    const cls = e.cls, D = DES[cls]; if (!D) return null;
+    const T = e.ti || 0, fam = FAM[cls]; const cfg = D(e, T);
+    let anim, t, kind = ATK[cls];
+    if (lvl > 0) { anim = 2; t = ATKU[kind][Math.min(3, lvl) - 1] * PERS[kind]; }
+    else if (frame === -2) { anim = 5; t = 0; } else if (frame < 0) { anim = 0; t = 0; }
+    else { anim = 1; t = frame / (typeof ea === "number" ? ea : 8) * WALK[fam]; }
+    const d = render(cfg, KDIR[dir] ?? 0, anim, t, kind, fam, { S: SCALE, w: CW, h: CW, gy: GYY });
+    const cv = document.createElement("canvas"); cv.width = CW; cv.height = CW;
+    const cx = cv.getContext("2d"); cx.putImageData(new ImageData(d, CW, CW), 0, 0);
+    return { cv, ax: CW / 2, ay: GYY, k: KS };
+  }
+  return ROX2;
+})();
+
 var QCACHE = /* @__PURE__ */ new Map();
 function ROXQM(f, c, s, l, def) {
   if (!["wolf", "frostwolf", "hati", "boar", "yeti", "blob", "goblin", "draugr", "cinder", "automaton", "sylvan", "prism", "sentinel", "voidling", "jotun", "grifo", "corvo"].includes(f) || typeof ROX === "undefined" || typeof location < "u" && /[?&]old\b/.test(location.search)) return null;
@@ -17763,6 +18408,7 @@ function ROXQM(f, c, s, l, def) {
   return h;
 }
   function hh(e, t, a, n, o) {
+    if (typeof ROX2 !== 'undefined' && !(typeof location < 'u' && /[?&]old\b/.test(location.search)) && e.pro !== false && e.cls && !e.quad) { try { const r2 = ROX2(e, t, a, n, o); if (r2) return r2; } catch (err) { if (!window.__rox2err) { window.__rox2err = 1; console.warn('ROX2', err); } } }
     if (typeof ROX !== 'undefined' && !(typeof location < 'u' && /[?&]old\b/.test(location.search)) && e.pro !== false) return ROX(e, t, a, n, o);
     let r = p4(e, { phase: a < 0 ? 0 : a / 8, moving: a >= 0, lvl: n, style: o, sit: a === -2 }), i = A0(r, { w: uo.lw * Rt, h: uo.lh * Rt, ax: uo.lax * Rt, ay: uo.lay * Rt, pxu: uo.pxu * Rt, yaw: rh[t], pitch: S4, ss: e.pro === false ? fh : 1, outline: e.pro === false ? 1.1 : 1.6, inner: e.pro === false ? void 0 : 0.55 });
     return e.pro !== false && tS(i, 7), { cv: mh(i), ax: uo.lax, ay: uo.lay, k: 1 / Rt };

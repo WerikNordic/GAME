@@ -1,3 +1,8 @@
+## v199 - Novo visual das classes
+- Todas as 8 classes (Aprendiz, Espadachim, Mercador, Arqueiro, Mago, Novico, Gatuno, Thay) ganharam o novo visual pixel-art: cabeca menos redonda, botas e detalhes, roupas proporcionais, sem asas no elmo e sem bolas nos ombros. Mecanicas, classes e tiers nao mudaram.
+- Cada classe tem postura, andar, sentar e ataque proprios (machado, martelo+escudo, arco, cajado, lanca, adagas, socos). Armas so aparecem ao atacar.
+- Cabelos, cores, capas, aljava, asas de costas e cosmeticos de cabeca/olhos/baixo continuam funcionando. Visual antigo: adicione ?old na URL.
+
 ## v198 - Respawns e item do MVP
 - Mini Bosses renascem de 1 em 1 hora (exato). MVPs renascem entre 3h e 5h (variavel); o tumulo mostra essa janela.
 - O item do MVP nao vai mais para o inventario: cai no chao, brilhando (feixe dourado). Exclusivo de quem levou a placa por 15s (dourado), liberado para todos por mais 15s (azul, "Liberado"), e some aos 30s. Contagem regressiva sobre o item.
