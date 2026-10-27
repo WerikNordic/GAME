@@ -9283,7 +9283,7 @@ Error generating stack: ` + n.message + `
   {
     const SUF = [["de Bronze", { def: 1 }], ["de Ferro", { def: 2 }], ["de Aço", { atk: 2 }], ["de Prata", { luk: 1 }], ["de Ouro", { maxHp: 12 }], ["de Gelo", { int: 1 }], ["de Brasa", { str: 1 }], ["das Sombras", { agi: 1 }], ["de Tyr", { vit: 1 }], ["das Valquírias", { dex: 1 }]];
     const WB = { sword: ["Espada Curta", "Espada Longa", "Montante", "Claymore", "Lâmina Rúnica", "Lâmina Divina"], axe: ["Machadinha", "Machado de Guerra", "Machado Dobrado", "Machado Berserker", "Fendedor"], bow: ["Arco Curto", "Arco Longo", "Arco Composto", "Arco Rúnico", "Arco Celeste"], staff: ["Cajado", "Cajado Entalhado", "Cajado Rúnico", "Cajado Arcano", "Cajado Celeste"], spear: ["Lança", "Lança de Caça", "Lança de Batalha", "Lança Alada", "Lança Divina"], dagger: ["Adaga", "Punhal", "Faca de Caça", "Lâmina Sombria", "Presa"], fist: ["Luvas de Couro", "Manoplas", "Garras", "Punhos Rúnicos", "Punhos Divinos"], mace: ["Maça", "Martelo", "Maça Estrelada", "Martelo de Tyr", "Martelo Divino"] };
-    const AB = [["Túnica", 0.7, 1.4], ["Gibão", 0.9, 1.1], ["Couraça", 1.1, 1], ["Brunea", 1.2, 0.9], ["Cota de Malha", 1.25, 0.9], ["Armadura de Placas", 1.5, 0.8], ["Manto Rúnico", 0.8, 1.3], ["Veste de Seda", 0.6, 1.5], ["Peitoral de Escamas", 1.1, 1.1], ["Armadura de Draugr", 1.3, 1]];
+    const AB = [["T\u00FAnica", 0.7, 1.4, ["volva", "valquiria"], "int"], ["Gib\u00E3o", 0.9, 1.1, ["cacador", "skald", "thay"], "agi"], ["Coura\u00E7a", 1.1, 1, ["berserker", "escudeiro", "valquiria"], "vit"], ["Brunea", 1.2, 0.9, ["berserker", "escudeiro"], "str"], ["Cota de Malha", 1.25, 0.9, ["berserker", "escudeiro", "cacador"], "vit"], ["Armadura de Placas", 1.5, 0.8, ["berserker", "escudeiro"], "str"], ["Manto R\u00FAnico", 0.8, 1.3, ["volva", "valquiria"], "int"], ["Veste de Seda", 0.6, 1.5, ["volva", "valquiria", "skald"], "dex"], ["Peitoral de Escamas", 1.1, 1.1, ["cacador", "skald", "berserker", "thay"], "agi"], ["Armadura de Draugr", 1.3, 1, ["berserker", "escudeiro", "thay", "skald"], "str"]];
     const CB = ["Anel", "Colar", "Brincos", "Pulseira", "Broche", "Talismã", "Amuleto", "Cinto", "Medalhão", "Fivela"];
     const hs = [...new Set(Object.values(Wa).filter((x) => x.kind === "headTop" && x.headStyle).map((x) => x.headStyle))];
     const HB = [["Elmo", "helm"], ["Capuz", "hood2"], ["Coroa", "crowngold"], ["Chapéu", hs.find((x) => !["helm", "hood2", "crowngold"].includes(x)) ?? "helm"]];
@@ -9301,9 +9301,9 @@ Error generating stack: ` + n.message + `
           add({ id, name: `${names[band]} ${sn} (Nv ${L})`, kind: "weapon", weaponType: wt, rarity: rar, reqLevel: L, sell, desc: `Arma ${sn}.`, bonus: { ...(wt === "staff" ? { matk: v } : { atk: v }), ...sx }, slots: p >= 7 ? 2 : p >= 4 ? 1 : 0 });
           GEN.ids.push(id);
         }
-        AB.forEach(([an, dm, hm], k) => {
+        AB.forEach(([an, dm, hm, jobs, st], k) => {
           const id = `g_a_${k}_${ti}_${p}`;
-          add({ id, name: `${an} ${sn} (Nv ${L})`, kind: "armor", rarity: rar, reqLevel: L, sell, desc: `Armadura ${sn}.`, bonus: { def: Math.round((2 + L * 0.85) * q * dm), maxHp: Math.round((8 + L * 4.5) * q * hm), ...sx }, slots: p >= 7 ? 2 : p >= 4 ? 1 : 0 });
+          add({ id, name: `${an} ${sn} (Nv ${L})`, kind: "armor", rarity: rar, reqLevel: L, sell, desc: `Armadura ${sn}.`, bonus: { def: Math.round((2 + L * 0.85) * q * dm), maxHp: Math.round((8 + L * 4.5) * q * hm), ...sx, [st]: (sx[st] ?? 0) + 1 + Math.floor(L / 12) }, allowedJobs: jobs, slots: p >= 7 ? 2 : p >= 4 ? 1 : 0 });
           GEN.ids.push(id);
         });
         CB.forEach((cn, k) => {

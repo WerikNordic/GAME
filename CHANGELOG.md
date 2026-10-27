@@ -1,3 +1,6 @@
+# v159
+- Armaduras geradas agora tem requisito de classe (ex.: Placas so Espadachim/Mercador; Tunica e Manto para Mago/Novico) e um atributo da funcao da peca.
+
 # v158
 - Catalogo gigante: +10.560 equipamentos gerados (armas dos 8 tipos, armaduras, acessorios, chapeus; 33 faixas de nivel x 10 qualidades) e +189 especies de monstros (255 no total), 3 novas por mapa, cada uma com drops proprios. Equipamentos gerados nao poluem o provador.
 
