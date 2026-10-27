@@ -1,3 +1,6 @@
+## v191
+- Isenborg: um único trenó com 2 renas, ao lado do Papai Noel (os outros 4 trenós e 11 renas espalhados saíram); presentes só embaixo das árvores (cada árvore tem 1–2 pilhas no chão, a árvore central tem anel de presentes); removidos presentes soltos nas ruas e os da varanda da casa; removida a segunda casa do Papai Noel duplicada.
+
 ## v190
 - Ruas das cidades: removidas as árvores de neve (Isenborg, 54 nas ruas), cactos (Eldvik) e palmeiras que ainda ficavam sobre o calçamento; agora seguem a mesma regra das outras árvores e postes (fora das ruas, alinhados à grade).
 

@@ -16598,7 +16598,6 @@ void main() {
         for (let g = 0; g < 6; g++) { let q = g / 6 * 6.283; O(n, S(Math.cos(q) * 8, 64 + Math.sin(q) * 8, 46), 2.4, 2.4, 2, red, { shine: 0.5, glow: 0.6 }); }
         for (let sd of [-1, 1]) { F(n, S(sd * 26, 6, 48), 2.6, 2.6, 42, wh, { seg: 8, mat: Q }); for (let k = 0; k < 5; k++) O(n, S(sd * 26, 12 + k * 8, 48), 5.4, 3.2, 5.4, red, Q); L(n, S(sd * 26, 48, 48), 3, 2.6, 3, red, { seg: 8, ring: 4 }); }
         for (let x = -70, i = 0; x <= 70; x += 10, i++) O(n, S(x, 77, 51), 3, 3, 3, [16729156, 4235184, 16765040, 4235519][i % 4], { shine: 0.5, glow: 0.95 });
-        for (let [x, z, c] of [[62, 54, 12597547], [76, 60, 4235184], [50, 62, 16765040], [-60, 56, 4235519], [-74, 60, 16729156]]) O(n, S(x, 7, z), 12, 12, 12, c, Q), O(n, S(x, 7, z), 12.6, 12.6, 2, 16777215), O(n, S(x, 7, z), 2, 12.6, 12.6, 16777215);
         O(n, S(0, 92, 51), 40, 9, 2, Y(wood, 0.55), Q), O(n, S(0, 92, 52.2), 34, 5, 1, gd, Ve);
         return n;
       }
@@ -16949,6 +16948,9 @@ function ROXQM(f, c, s, l, def) {
         n.x = x, n.y = y;
         m.obstacles.push({ kind: "deco", deco: "toysack", x: Math.round(x - 84), y: Math.round(y - 2), w: 30, h: 22 });
         m.obstacles.push({ kind: "deco", deco: "santachair", x: Math.round(x - 21), y: Math.round(y - 22), w: 34, h: 20 });
+        m.obstacles = m.obstacles.filter((o) => o === h || !(o.deco === "sleigh" || o.deco === "reindeer" || o.deco === "giftpile" || o.deco === "santahouse"));
+        m.obstacles = m.obstacles.filter((o) => !((o.kind === "crate" || o.kind === "tree" || o.kind === "deco" && ["snowman", "lamp", "well", "cart", "planter", "bench", "hay", "frosttree"].includes(o.deco)) && o.x + o.w > x + 80 && o.x < x + 330 && o.y + o.h > y - 70 && o.y < y + 60));
+        m.obstacles.push({ kind: "deco", deco: "sleigh", x: Math.round(x + 100), y: Math.round(y - 14), w: 85, h: 44 }, { kind: "deco", deco: "reindeer", x: Math.round(x + 196), y: Math.round(y - 14), w: 54, h: 27 }, { kind: "deco", deco: "reindeer", x: Math.round(x + 256), y: Math.round(y + 12), w: 54, h: 27 });
       }
     }
     {
@@ -16983,6 +16985,30 @@ function ROXQM(f, c, s, l, def) {
         out.push({ ...o, x: Math.round(nx - o.w / 2), y: Math.round(ny - o.h / 2) });
       }
       m.obstacles = out;
+    }
+    {
+      const m = Jt.cidade_isenborg;
+      if (m) {
+        m.obstacles = m.obstacles.filter((o) => !(o.kind === "deco" && o.deco === "giftpile"));
+        const add = [];
+        for (const o of m.obstacles) {
+          if (o.kind === "tree") {
+            const cx = o.x + o.w / 2, by = o.y + o.h, hsh = Math.abs(Math.round(cx / 7) * 31 + Math.round(by / 11) * 17) % 3;
+            add.push({ kind: "deco", deco: "giftpile", x: Math.round(cx + (hsh === 1 ? -30 : 8)), y: Math.round(by - 6), w: 26, h: 20 });
+            hsh === 0 && add.push({ kind: "deco", deco: "giftpile", x: Math.round(cx - 30), y: Math.round(by + 2), w: 26, h: 20 });
+            continue;
+          }
+          if (o.kind !== "deco") continue;
+          if (o.deco === "frosttree") {
+            const cx = o.x + o.w / 2, by = o.y + o.h;
+            add.push({ kind: "deco", deco: "giftpile", x: Math.round(cx + 6), y: Math.round(by + 2), w: 26, h: 20 }, { kind: "deco", deco: "giftpile", x: Math.round(cx - 34), y: Math.round(by - 4), w: 26, h: 20 });
+          } else if (o.deco === "xmastree") {
+            const cx = o.x + o.w / 2, cy = o.y + o.h / 2;
+            for (let k = 0; k < 9; k++) { const a = Math.PI * (0.05 + 0.9 * k / 8), px = cx + Math.cos(a) * (o.w / 2 + 6), py = cy + Math.sin(a) * (o.h / 2 + 2); add.push({ kind: "deco", deco: "giftpile", x: Math.round(px - 13), y: Math.round(py - 10), w: 26, h: 20 }); }
+          }
+        }
+        m.obstacles.push(...add);
+      }
     }
     for (const m of Object.values(Jt)) {
       if (!String(m.id).startsWith("cidade_")) continue;
