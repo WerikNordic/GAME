@@ -1,3 +1,6 @@
+## v188
+- Itens no chão não são mais pegos automaticamente ao passar por cima. Passe o mouse (aparece a mãozinha, o item brilha e mostra o nome) e clique: o personagem anda até o item, agacha e pega. Itens que os monstros-ladrões pegam seguem iguais.
+
 ## v187
 - Saco de brinquedos do Papai Noel refeito em 3D, maior: saco de juta amarrado com corda, ursinho, caixas, tambor, bola e bengalas saindo, ao lado da cadeira.
 

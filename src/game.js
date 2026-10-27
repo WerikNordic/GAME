@@ -9994,6 +9994,19 @@ Error generating stack: ` + n.message + `
     targetId = null;
     pendingNpc = null;
     pendingSit = null;
+    pendingLoot = null;
+    pickAt = null;
+    pickId = null;
+    get crouching() { return this.pickAt !== null; }
+    commandLoot(id) {
+      if (this.player.deadAt !== null || this.pickAt !== null) return false;
+      let a = this.loot.find((q) => q.id === id);
+      if (!a) return false;
+      this.sitting && (this.sitting = false);
+      if (Be(a.pos, this.player.pos) <= 34) return this.clearOrders(), this.pendingLoot = id, true;
+      let n = El(this.player.pos, { x: a.pos.x, y: a.pos.y + 6 }, this.player.radius, this.map.obstacles, this.map.width, this.map.height);
+      return !n || n.length === 0 ? false : (this.clearOrders(), this.path = n, this.pendingLoot = id, true);
+    }
     benchAt(x, y) {
       for (let o of this.map.obstacles) if (o.kind === "deco" && o.deco === "bench" && Math.hypot(x - (o.x + o.w / 2), y - (o.y + o.h / 2)) < 20) return o;
       return null;
@@ -10049,7 +10062,7 @@ Error generating stack: ` + n.message + `
       return this.clearOrders(), this.move.x = 0, this.move.y = 0, "Posi\xE7\xE3o sincronizada.";
     }
     clearOrders() {
-      this.path = [], this.targetId = null, this.pendingNpc = null, this.pendingPoi = null, this.pendingSit = null, this.stuckMs = 0;
+      this.path = [], this.targetId = null, this.pendingNpc = null, this.pendingPoi = null, this.pendingSit = null, this.pendingLoot = null, this.stuckMs = 0;
     }
     commandMove(t, a) {
       if (this.player.deadAt !== null) return false;
@@ -10156,7 +10169,7 @@ Error generating stack: ` + n.message + `
     }
     updatePlayer(t) {
       let a = this.player, n = t / 1e3, o = ((dd) => ({ ...dd, speed: dd.speed * (1 + this.buffSum("spd") + (this.ps.mount ? petMountBonus(this.ps) : 0)) }))(this.derived()), r = this.overloaded() ? { ...o, speed: o.speed * Ly } : o, i = Math.hypot(this.move.x, this.move.y);
-      if (this.moved = false, this.sitting && (a.deadAt !== null ? this.sitting = false : (this.clearOrders(), this.move.x = 0, this.move.y = 0, this.attackQueued = false, this.attackHeld = false, i = 0)), this.time < a.flinchUntil) return;
+      if (this.moved = false, this.sitting && (a.deadAt !== null ? this.sitting = false : (this.clearOrders(), this.move.x = 0, this.move.y = 0, this.attackQueued = false, this.attackHeld = false, i = 0)), this.pickAt !== null && (this.path = [], this.move.x = 0, this.move.y = 0, this.attackQueued = false, this.attackHeld = false, i = 0), this.time < a.flinchUntil) return;
       if (i > 0.01) {
         this.clearOrders();
         let c = Math.min(1, i) / i, d = { x: a.pos.x, y: a.pos.y };
@@ -10607,10 +10620,18 @@ Error generating stack: ` + n.message + `
       $(t) && this.loot.push({ id: this.nextId++, itemId: t, qty: a, pos: { x: n.x + (this.rng() - 0.5) * 40, y: n.y + (this.rng() - 0.5) * 40 }, expiresAt: this.time + 2e4 });
     }
     updateLoot() {
-      if (this.player.deadAt !== null) return;
-      let t = [];
+      if (this.player.deadAt !== null) { this.pickAt = null, this.pendingLoot = null; return; }
+      if (this.pendingLoot !== null && this.pickAt === null) {
+        let q = this.loot.find((f) => f.id === this.pendingLoot);
+        if (!q) this.pendingLoot = null;
+        else if (Be(q.pos, this.player.pos) <= 34) {
+          this.pickId = q.id, this.pickAt = this.time + 480, this.pendingLoot = null, this.path = [], this.move.x = 0, this.move.y = 0, this.targetId = null, this.player.facing = Math.atan2(q.pos.y - this.player.pos.y, q.pos.x - this.player.pos.x);
+        } else if (this.path.length === 0 && !this.moved) this.pendingLoot = null;
+      }
+      let t = [], go = this.pickAt !== null && this.time >= this.pickAt ? this.pickId : null;
+      go !== null && (this.pickAt = null, this.pickId = null);
       for (let a of this.loot) if (!(this.time >= a.expiresAt)) {
-        if (Be(a.pos, this.player.pos) <= 30 && !(a.holdUntil && this.time < a.holdUntil)) {
+        if (go !== null && a.id === go && Be(a.pos, this.player.pos) <= 48) {
           let n = Ny(this.ps, a.itemId, a.qty);
           if (n <= 0) {
             this.time - this.fullToastAt > 3e3 && (this.fullToastAt = this.time, this.toast("Peso demais: voc\xEA n\xE3o consegue carregar mais isso.", "bad")), t.push(a);
@@ -11668,6 +11689,9 @@ Error generating stack: ` + n.message + `
     }
     commandPoi(t) {
       return !this.paused && !this.dialogue && !!this.world?.commandPoi(t);
+    }
+    commandLoot(t) {
+      return !this.paused && !this.dialogue && !!this.world?.commandLoot(t);
     }
     openPoi(t) {
       if (!this.world || !this.ps) return;
@@ -17673,6 +17697,11 @@ function ROXQM(f, c, s, l, def) {
         c <= i.def.radius * 1.2 + 12 && c < r && (r = c, o = { kind: "monster", id: i.id });
       }
       if (o) return o;
+      for (let i of n.loot) {
+        let s = ce(i.pos.x, i.pos.y), l = Math.hypot(s.x - t, s.y - 6 - a);
+        l <= 20 && l < r && (r = l, o = { kind: "loot", id: i.id });
+      }
+      if (o) return o;
       for (let i of n.map.npcs) {
         let s = ce(i.x, i.y), l = i.id === "papainoel" ? Math.hypot(s.x + 14 - t, s.y - 58 - a) * 0.62 : Math.hypot(s.x - t, s.y - 24 - a);
         l <= 30 && l < r && (r = l, o = { kind: "npc", id: i.id });
@@ -17713,6 +17742,10 @@ function ROXQM(f, c, s, l, def) {
       }
       if (r?.kind === "monster") {
         a.commandTarget(r.id), this.ptr.held = false;
+        return;
+      }
+      if (r?.kind === "loot") {
+        a.commandLoot(r.id) || this.add({ k: "dest", x: o.x, y: o.y, t0: this.clock, dur: 500, bad: true }), this.ptr.held = false;
         return;
       }
       if (r?.kind === "poi") {
@@ -17834,7 +17867,7 @@ function ROXQM(f, c, s, l, def) {
           break;
         }
       }
-      this.canvas.style.cursor = this.hover?.kind === "monster" ? "crosshair" : this.hover ? "pointer" : "default";
+      this.canvas.style.cursor = this.hover?.kind === "monster" ? "crosshair" : this.hover?.kind === "loot" ? "pointer" : this.hover ? "pointer" : "default";
     }
     startFade(t, a, n, o = "0,0,0") {
       this.fade = { from: t, to: a, t0: this.clock, dur: n, color: o };
@@ -18221,7 +18254,7 @@ function ROXQM(f, c, s, l, def) {
         let H = ce(q.x, q.y);
         M(H.x, H.y) && T.push({ depth: Ja(q.x, q.y), draw: () => this.drawWalker(q) });
       }
-      for (let q of a.loot) T.push({ depth: Ja(q.pos.x, q.pos.y), draw: () => this.drawLoot(q.itemId, q.pos.x, q.pos.y) });
+      for (let q of a.loot) T.push({ depth: Ja(q.pos.x, q.pos.y), draw: () => this.drawLoot(q.itemId, q.pos.x, q.pos.y, q.id, q.qty) });
       let z = /* @__PURE__ */ new Set(["p"]);
       for (let q of a.monsters) {
         if (q.state === "dead") continue;
@@ -18465,14 +18498,14 @@ function ROXQM(f, c, s, l, def) {
       let x = this.marks.get(t);
       x && this.text(x, i, s - 76 + Math.sin(this.clock / 190) * 3, 24, x === "?" ? "#7dff9a" : "#ffd34d", true);
     }
-    drawLoot(t, a, n) {
+    drawLoot(t, a, n, lid, lq) {
       let o = this.ctx, { x: r, y: i } = ce(a, n), s = $(t), l = CS[s?.rarity ?? "common"] ?? "#d9d9d9", c = this.clock, d = Math.round(Math.sin(c / 260 + r) * 2), f = s && s.rarity !== "common";
       if (o.save(), o.globalAlpha = 0.35 + 0.15 * Math.sin(c / 300 + r), o.fillStyle = l, o.beginPath(), o.ellipse(r, i + 1, 15, 6, 0, 0, Math.PI * 2), o.fill(), o.globalAlpha = 0.5, o.strokeStyle = l, o.lineWidth = 1.5, o.beginPath(), o.ellipse(r, i + 1, 15, 6, 0, 0, Math.PI * 2), o.stroke(), o.restore(), o.fillStyle = "rgba(0,0,0,0.35)", o.beginPath(), o.ellipse(r, i + 2, 9, 3, 0, 0, Math.PI * 2), o.fill(), f) {
         let m = o.createLinearGradient(0, i - 60, 0, i);
         m.addColorStop(0, l + "00"), m.addColorStop(1, l + "88"), o.fillStyle = m, o.fillRect(Math.round(r) - 2, i - 60, 4, 60);
       }
       let u = os(t);
-      o.imageSmoothingEnabled = false, o.drawImage(u, Math.round(r - 16), Math.round(i - 30 + d), 32, 32), o.imageSmoothingEnabled = true;
+      o.imageSmoothingEnabled = false, o.drawImage(u, Math.round(r - 16), Math.round(i - 30 + d), 32, 32), o.imageSmoothingEnabled = true, this.hover?.kind === "loot" && this.hover.id === lid && (o.save(), o.strokeStyle = "#ffffff", o.globalAlpha = 0.9, o.lineWidth = 2, o.beginPath(), o.ellipse(r, i + 1, 19, 8, 0, 0, Math.PI * 2), o.stroke(), o.restore(), this.text((s?.name ?? t) + (lq > 1 ? " x" + lq : ""), r, i - 38, 12, l, true));
     }
     capeSw(x, w) {
       let ps = w.ps, cp = this._cap || (this._cap = { x, a: 0, v: 0, t: this.clock }), dt = Math.min(0.05, Math.max(0.001, (this.clock - cp.t) / 1e3));
@@ -18484,7 +18517,7 @@ function ROXQM(f, c, s, l, def) {
     drawPlayer(t) {
       let a = this.store.world;
       if (!a) return;
-      let n = this.ctx, o = a.player, r = ce(o.pos.x, o.pos.y), i = this.animOf("p", o.pos.x, o.pos.y, t), { dir: s, flip: l } = Kl(o.facing), c = a.isDead(), d = Km(this.clock - i.atkAt, i.atkImpact, i.atkDur), f = a.sitting ? -2 : i.moving ? Math.floor(i.phase * ea) : -1, u = fa(po({ ...cs(a.ps), cw: this.capeSw(r.x, a) }), s, f, d, i.atkStyle);
+      let n = this.ctx, o = a.player, r = ce(o.pos.x, o.pos.y), i = this.animOf("p", o.pos.x, o.pos.y, t), { dir: s, flip: l } = Kl(o.facing), c = a.isDead(), d = Km(this.clock - i.atkAt, i.atkImpact, i.atkDur), f = a.sitting || a.crouching ? -2 : i.moving ? Math.floor(i.phase * ea) : -1, u = fa(po({ ...cs(a.ps), cw: this.capeSw(r.x, a) }), s, f, d, i.atkStyle);
       a.ps.mount && a.ps.mountOwned && !c && !d && (u = fa(po(cs(a.ps)), s, -2, 0, i.atkStyle));
       window.__admin === true && !c && this.admAura(r);
       if (n.save(), n.globalAlpha = c ? 0.3 : 1, c) n.translate(r.x, r.y), n.rotate(Math.PI / 2), N4(() => nt(n, u, 0, 0, l, $a, $a));
