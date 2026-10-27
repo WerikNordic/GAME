@@ -17240,6 +17240,12 @@ function ROXQM(f, c, s, l, def) {
     cv.falcoeiro = { id: "falcoeiro", name: "Hrafn", title: "Adestrador de Falc\u00F5es", color: 13148960, blocks: [{ lines: ["Um homem de luvas de couro grossas acaricia um falc\u00E3o-peregrino encapuzado.", "\u2014 Quem quer ca\u00E7ar com os c\u00E9us ao lado precisa saber esperar. Aprendeu Adestrar Falc\u00E3o? Ent\u00E3o eu lhe entrego uma ave."], action: { type: "falconTrain", label: "Adestrar meu falc\u00E3o" } }] };
     I0.falcoeiro = { skin: 13214564, hair: 4864814, hairStyle: "short", tunic: 6968354, trim: 12120224, pants: 3811914, boots: 2894892, gear: "bow", head: "hood", cape: 4864814 };
     { const m = Jt.cidade_midgard; m && placeNear(m, "falcoeiro", m.width * 0.82, m.height * 0.2, 0); }
+    for (const m of Object.values(Jt)) {
+      if (!m.city || !m.spawn || !m.npcs) continue;
+      const i = m.npcs.findIndex((q) => q.id === "salavip"); if (i < 0) continue;
+      const old = m.npcs.splice(i, 1)[0];
+      if (!placeNear(m, "salavip", m.spawn.x + 240, m.spawn.y - 300, 0)) m.npcs.push(old);
+    }
     for (const [gl, G] of Object.entries(GUILDS)) {
       const id = "guilda_" + gl;
       cv[id] = { id, name: "Mestre da Guilda", title: G.name, color: G.color, blocks: [{ lines: [`Sob o estandarte da ${G.name}, um veterano confere os recrutas.`, "\u2014 Aqui a nossa classe treina, se renova e se protege. Diga quem \u00E9 e receber\u00E1 o treino do dia."], action: { type: "guild", gl, label: "Treino da guilda" } }] };

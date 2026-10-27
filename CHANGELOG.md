@@ -1,3 +1,6 @@
+## v195
+- Recepcionista Dourada (Sala VIP) agora fica ao lado do ponto de chegada de cada cidade, bem perto do spawn (antes ficava longe, na praca).
+
 ## v194
 - Gelatina/Poring Saltitante ~28% menor e pulo mais baixo, assentado na cabeça do personagem.
 - Deserto (Cidade de Eldvik) agora é uma cidade esquecida: casas, salão, torres, muralhas e tendas em ruínas (paredes quebradas, vigas caídas, entulho e areia), sem postes, bráseiros acesos, bancos, vasos nem estandartes; luz mais pálida. Música triste também em Eldvik.
