@@ -37,6 +37,10 @@
 - /guilda, /g, /grupo, /p, /amigo (locais; sem servidor de jogo ainda).
 - ESC nao pausa; tela de entrada nordica; novos efeitos sonoros; sem visual inicial de classe.
 
+## v141
+- Cada cidade com centro próprio (só Midgard mantém a fonte): Ravnhaven farol, Isenborg árvore de Natal gigante, Eldvik monumento, Kharnheim torre do relógio, Freyrhain totem, Gladsheim torre de mago, Skogvik pagode, Handelsvik obelisco, Solvik ombrelone, Helvik cripta. Bancos acompanham o tamanho do centro.
+- Isenborg: árvores de Natal removidas das ruas/quarteirões.
+
 ## v140
 - Cidades: removidos postes/carroças/feno/bancos/braseiros e árvores/pedras que ficavam sobrepostos a casas, forjas, tendas, etc. ou em cima de NPCs (~150 sobreposições a menos por cidade).
 
