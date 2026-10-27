@@ -16781,6 +16781,19 @@ void main() {
         for (let yy of [32, 44, 56]) for (let xx of [-12, 0, 12]) L(n, S(xx, yy, -9.6), 1.8, 1.8, 1.8, gd, { seg: 6, ring: 4, mat: Ve });
         O(n, S(0, 74, -15), 46, 6, 11, wh, Re), L(n, S(0, 83, -15), 6, 6, 6, gd, { seg: 10, ring: 5, mat: Ve });
         for (let sd of [-1, 1]) O(n, S(sd * 24, 32, 3), 7, 24, 34, rd2, Re), O(n, S(sd * 24, 45, 3), 9, 4, 37, wh, Re), L(n, S(sd * 24, 49, 19), 3.2, 3.2, 3.2, gd, { seg: 8, ring: 4, mat: Ve });
+        let sr = 12525866, sw = 16316664, sk = 16297642, pa = 9109504, bt = 2105376, gy = 14211288;
+        O(n, S(-8, 33, 8), 12, 9, 26, pa, Re), O(n, S(8, 33, 8), 12, 9, 26, pa, Re);
+        O(n, S(-8, 20, 22), 11, 34, 11, pa, Re), O(n, S(8, 20, 22), 11, 34, 11, pa, Re);
+        O(n, S(-8, 5, 25), 12, 10, 17, bt, Re), O(n, S(8, 5, 25), 12, 10, 17, bt, Re), O(n, S(-8, 11, 24), 13, 2.4, 13, sw, Re), O(n, S(8, 11, 24), 13, 2.4, 13, sw, Re);
+        L(n, S(0, 43, 6), 19, 15, 15, sr, { seg: 14, ring: 8, mat: Re }), O(n, S(0, 39, 6), 34, 4, 26, 2105376, Re), O(n, S(0, 39, 18), 7, 5, 1.4, 16765040, Ve);
+        O(n, S(0, 44, 18), 5, 22, 1.4, sw, Re);
+        O(n, S(0, 60, 2), 32, 18, 20, sr, Re), L(n, S(0, 66, 2), 17, 6, 11, sr, { seg: 12, ring: 6, mat: Re }), O(n, S(0, 52, 15.5), 4, 14, 1.4, sw, Re);
+        for (let sd of [-1, 1]) O(n, S(sd * 19, 57, 3), 8, 17, 9, sr, Re), O(n, S(sd * 21, 49, 12), 8, 7, 18, sr, Re), O(n, S(sd * 21, 49, 22), 9, 8, 4, sw, Re), L(n, S(sd * 21, 49, 26), 4.2, 4, 4.2, sk, { seg: 8, ring: 5, mat: Re });
+        L(n, S(0, 78, 4), 10.5, 10.5, 10.5, sk, { seg: 14, ring: 8, mat: Re });
+        L(n, S(-4.2, 80, 13.4), 1.3, 1.3, 1, 1315343, { seg: 6, ring: 4 }), L(n, S(4.2, 80, 13.4), 1.3, 1.3, 1, 1315343, { seg: 6, ring: 4 }), O(n, S(-4.2, 83, 13.6), 5, 1.6, 1.4, gy, Re), O(n, S(4.2, 83, 13.6), 5, 1.6, 1.4, gy, Re), L(n, S(0, 77, 14.6), 2.4, 2.4, 2.4, 15171712, { seg: 8, ring: 5, mat: Re });
+        L(n, S(0, 69, 11), 11.5, 11, 6.5, gy, { seg: 14, ring: 8, mat: Re }), L(n, S(0, 66, 14), 8, 10, 5, gy, { seg: 12, ring: 6, mat: Re }), L(n, S(0, 73, 13.6), 7, 2.4, 3, gy, { seg: 10, ring: 5, mat: Re });
+        L(n, S(-10, 79, 3), 3.6, 6, 7, gy, { seg: 8, ring: 5, mat: Re }), L(n, S(10, 79, 3), 3.6, 6, 7, gy, { seg: 8, ring: 5, mat: Re });
+        O(n, S(0, 86, 4), 22, 4.4, 22, sw, Re), L(n, S(0, 91, 2), 10.5, 8, 10.5, sr, { seg: 12, ring: 6, mat: Re }), L(n, S(0, 90, -9), 5.5, 5, 6, sr, { seg: 8, ring: 5, mat: Re }), L(n, S(0, 84, -14), 4.6, 4.6, 4.6, sr, { seg: 8, ring: 5, mat: Re }), L(n, S(0, 78, -17), 4.6, 4.6, 4.6, sw, { seg: 8, ring: 5, mat: Re });
         return n;
       }
       case "santahouse": {
@@ -18646,7 +18659,7 @@ function ROXQM(f, c, s, l, def) {
           let m = n.decos[r.deco ?? ""];
           (m || mo) && o.push({ depth: l, sx: s.x, sy: s.y, tall: r.deco === "tower" || r.deco === "statue" || r.deco === "keep" || r.deco === "palace" || r.deco === "hof" || r.deco === "warrior" || r.deco === "longhouse" || r.deco === "banner" || r.deco === "lamp" || r.deco === "church" || r.deco === "castle" || r.deco === "monument" || r.deco === "bigforge" || r.deco === "colossus" || r.deco === "wbstatue" || r.deco === "airship" || r.deco === "magetower" || r.deco === "clocktower" || r.deco === "pyramid" || r.deco === "sphinx" || r.deco === "arena" || r.deco === "lighthouse" || r.deco === "ship" || r.deco === "totem" || r.deco === "pagoda" || r.deco === "frosttree" || r.deco === "xmastree" || r.deco === "toyfactory" || r.deco === "crypt" || r.deco === "palm" || r.deco === "cactus" || r.deco === "parasol", draw: () => {
             let p = u({ kind: "deco", theme: d, variant: r.deco === "longhouse" ? Math.abs(Math.round(r.x / 10) + Math.round(r.y / 10) * 3) % 6 : r.deco === "colossus" ? r.sv ?? Math.abs(Math.round(r.x / 7) * 5 + Math.round(r.y / 11) * 3) % 5 : 0, deco: r.deco });
-            p ? nt(a, p, f.x, f.y) : m && nt(a, m, s.x, s.y + 4), r.deco === "bench" && this.benchMark(f.x, f.y - 16);
+            p ? (r.deco === "santachair" ? (() => { let q = this.clock % 7000, ho = q < 1700, dy = Math.sin(this.clock / 640) * 0.6 - (ho ? Math.abs(Math.sin(q / 85)) * 2.4 : 0); nt(a, p, f.x, f.y + dy, false, 1, 1 + (ho ? Math.sin(q / 85) * 0.012 : Math.sin(this.clock / 900) * 0.004)); ho && this.text("Ho ho ho!", f.x + 6, f.y - 188 + Math.sin(this.clock / 120) * 2, 17, "#ff6a6a", true); })() : nt(a, p, f.x, f.y)) : m && nt(a, m, s.x, s.y + 4), r.deco === "bench" && this.benchMark(f.x, f.y - 16);
           } });
         } else if (r.kind === "crate") o.push({ depth: l, sx: s.x, sy: s.y, draw: () => {
           let m = u({ kind: c < 0.5 ? "crate" : "barrel", theme: d, variant: 0 });
@@ -19217,7 +19230,7 @@ function ROXQM(f, c, s, l, def) {
       let f = l.idleFace ?? l.face;
       c && Math.hypot(c.x - a, c.y - n) < 430 ? f = Math.atan2(c.y - n, c.x - a) : this.clock > (l.nextLook ?? 0) && (l.idleFace = (l.idleFace ?? l.face) + (Math.random() - 0.5) * 2.6, l.nextLook = this.clock + 3200 + Math.random() * 6e3, f = l.idleFace), l.face += RS(l.face, f) * (1 - Math.exp(-o / 150));
       t === "papainoel" && (l.face = Math.PI / 2); let sk = 0, sq = 1, hoho = false; if (t === "papainoel") { let q = this.clock % 7000; hoho = q < 1700; if (hoho) sk = -Math.abs(Math.sin(q / 85)) * 3, sq = 1 + Math.sin(q / 85) * 0.014; sk += Math.sin(this.clock / 640) * 0.7; } let { dir: u, flip: m } = Kl(l.face), p = fa(t, u, t === "papainoel" ? -2 : -1, 0), h = this.organic(l, l.face, { moving: false, breath: 0.014 });
-      t === "papainoel" ? i += 9 : 0, this.blob(i, s + 4, t === "papainoel" ? 0 : 15), nt(r, p, i + h.dx, s + 6 + h.dy - (t === "papainoel" ? 6 : 0) + sk, m, $a * h.sx * (t === "papainoel" ? 1.38 : 1), $a * h.sy * sq * (t === "papainoel" ? 1.38 : 1), h.rot), hoho && this.text("Ho ho ho!", i, s - 122 + Math.sin(this.clock / 120) * 2, 17, "#ff6a6a", true), this.nameOn(`n${t}`) && this.text(n0(t)?.name ?? t, i, s + 16, 12, "#ffffff");
+      t === "papainoel" ? i += 9 : 0, t !== "papainoel" && (this.blob(i, s + 4, 15), nt(r, p, i + h.dx, s + 6 + h.dy - (t === "papainoel" ? 6 : 0) + sk, m, $a * h.sx * (t === "papainoel" ? 1.38 : 1), $a * h.sy * sq * (t === "papainoel" ? 1.38 : 1), h.rot)), this.nameOn(`n${t}`) && this.text(n0(t)?.name ?? t, i, s + 16, 12, "#ffffff");
       let x = this.marks.get(t);
       x && this.text(x, i, s - 76 + Math.sin(this.clock / 190) * 3, 24, x === "?" ? "#7dff9a" : "#ffd34d", true);
     }

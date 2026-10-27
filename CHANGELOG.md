@@ -1,3 +1,6 @@
+## v186
+- Papai Noel refeito como modelo 3D sentado dentro da cadeira (pernas, botas no chão, barriga, braços nos apoios, barba grisalha, gorro caindo para trás); animação de respiração e risada "Ho ho ho!"; clique continua abrindo o diálogo.
+
 ## v185
 - Papai Noel: sentado de verdade na cadeira (cadeira maior), saco de brinquedos jogado no chão ao lado, animação de respiração e risada ("Ho ho ho!") periódica.
 
