@@ -1,3 +1,6 @@
+# v169
+- Organizacao dos NPCs: todas as cidades passam por uma checagem ao carregar; NPC dentro de predio/pilar/torre ou colado em outro e movido para o ponto livre mais proximo. Antes havia 12 casos em 8 dias simulados (Aeronave em Gladsheim, Bruna em Skogvik, Torvald em Isenborg); agora 0.
+
 # v168
 - NPCs de historia (drama e terror), cada um com ramificacoes e varios finais; recompensa unica de EXP + Zeny por NPC (reler gratis, sem recompensa): Viuva Solveig (Midgard, A Carta Que Nao Chegou), Menino Eirik (Ravnhaven, O Barco do Pai), Torgrim o Escaldo Cego (Kharnheim, A Ultima Cancao), Coveiro Ragnvald (Helvik, Os Sussurros da Cripta), Velha Hulda (Skogvik, A Casa Que Respira).
 - CORRECAO IMPORTANTE: o salvamento descartava campos novos do personagem (caminho Ferreiro/Alquimista, homunculo, carrinho, bebe, casamento, montaria, falcao, historias etc.) ao recarregar. Agora esses campos sao preservados.

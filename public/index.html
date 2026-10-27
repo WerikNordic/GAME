@@ -17517,6 +17517,18 @@ function ROXQM(f, c, s, l, def) {
     return e.hair !== void 0 && !Number.isNaN(e.hair) && (t.hair = xh[e.hair % xh.length]), e.hs && (t.hairStyle = e.hs, /^v\d+$/.test(e.hs) && HV50[Number(e.hs.slice(1)) - 1] && (t.hvp = HV50[Number(e.hs.slice(1)) - 1], t.hairStyle = "short")), e.hc !== void 0 && !Number.isNaN(e.hc) && (t.hair = e.hc, t.eye === void 0 && (t.eye = (((e.hc >> 16 & 255) + 40 > 255 ? 255 : (e.hc >> 16 & 255) + 40) << 16) | (((e.hc >> 8 & 255) + 40 > 255 ? 255 : (e.hc >> 8 & 255) + 40) << 8) | ((e.hc & 255) + 40 > 255 ? 255 : (e.hc & 255) + 40))), e.gear && (t.gear = e.gear), e.top && (t.head = e.top), e.mid && (t.mid = e.mid), e.low && (t.low = e.low), e.sx === "f" && (t.slim = true, e.hs || (t.hairStyle = "long")), e.bk && BACKS[e.bk] && (BACKS[e.bk].type === "cape" ? t.cape = BACKS[e.bk].c : BACKS[e.bk].type === "quiver" ? t.quiver = true : t.wingsBack = [BACKS[e.bk].c, BACKS[e.bk].c2]), t;
   }
   {
+    for (const m of Object.values(Jt)) {
+      if (!String(m.id).startsWith("cidade_")) continue;
+      const blk = (x, y, mg) => m.obstacles.some((o) => o.kind !== "tree" && o.kind !== "rock" && o.kind !== "water" && x > o.x - mg && x < o.x + o.w + mg && y > o.y - mg && y < o.y + o.h + mg);
+      m.npcs.forEach((n, i) => {
+        if (!(blk(n.x, n.y, 16) || m.npcs.some((q, k) => k < i && Math.hypot(q.x - n.x, q.y - n.y) < 50))) return;
+        for (let r = 40; r <= 520; r += 30) for (let k = 0; k < 16; k++) {
+          const ag = k / 16 * 6.283, x = Math.round(n.x + Math.cos(ag) * r), y = Math.round(n.y + Math.sin(ag) * r * 0.8);
+          if (x < 300 || y < 300 || x > m.width - 300 || y > m.height - 300 || blk(x, y, 26) || m.npcs.some((q, kk) => kk !== i && Math.hypot(q.x - x, q.y - y) < 70)) continue;
+          n.x = x, n.y = y; return;
+        }
+      });
+    }
     for (const [id, st] of Object.entries(STORY)) {
       cv[id] = { id, name: st.name, title: st.title, color: st.color, blocks: [{ lines: st.intro, action: { type: "panel", panel: "story:" + id, label: "Ouvir a história" } }] };
       I0[id] = st.look;
