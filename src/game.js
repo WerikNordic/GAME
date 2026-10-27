@@ -16971,9 +16971,9 @@ void main() {
   var uo = { lw: 80, lh: 112, lax: 40, lay: 100, pxu: 30 }, vE = { ax: uo.lax, ay: uo.lay };
 /*__ROX__*/
 var QCACHE = /* @__PURE__ */ new Map();
-function ROXQM(f, c, s, l, def) {
+function ROXQM(f, c, s, l, def, ex) {
   if (!["wolf", "frostwolf", "hati", "boar", "yeti", "blob", "goblin", "draugr", "cinder", "automaton", "sylvan", "prism", "sentinel", "voidling", "jotun", "grifo", "corvo"].includes(f) || typeof ROX === "undefined" || typeof location < "u" && /[?&]old\b/.test(location.search)) return null;
-  if (typeof ROX2M !== "undefined" && !(typeof location < "u" && /[?&]old2\b/.test(location.search))) { try { const r2 = ROX2M.mon(f, c, s, l, def); if (r2) return r2; } catch (err) { if (!window.__rox2merr) { window.__rox2merr = 1; console.warn("ROX2M", err); } } }
+  if (typeof ROX2M !== "undefined" && !(typeof location < "u" && /[?&]old2\b/.test(location.search))) { try { const r2 = ROX2M.mon(f, c, s, l, def, ex); if (r2) return r2; } catch (err) { if (!window.__rox2merr) { window.__rox2merr = 1; console.warn("ROX2M", err); } } }
   let key = `${f}:${def.id}:${c}:${s}:${l}`, h = QCACHE.get(key);
   if (h) return h;
   let eyes = { wolf: 0xffc040, frostwolf: 0x80e0ff, hati: 0xe0f0ff, boar: 0xff5a4a, yeti: 0xff5050, blob: 0xffffff, grifo: 0xffd040 };
@@ -18929,7 +18929,7 @@ function ROXQM(f, c, s, l, def) {
       let sd = fx >= 0 ? 1 : -1, fl = Math.sin(T * 14) * 6;
       this.blob(base.x + (px - base.x) * 0.2, base.y + 4, 5);
       let fsp = null; try { fsp = typeof ROX2M !== "undefined" ? ROX2M.mon("corvo", "side", Math.floor(T * 10) % 8, 0, { id: "falcao", color: null }, { st: Math.min(3, w.ps.tier || 0) }) : null; } catch (e) { fsp = null; }
-      if (fsp) { nt(n, fsp, px, py, sd < 0, $a * 0.62, $a * 0.62); } else {
+      if (fsp) { nt(n, fsp, px, py, sd < 0, $a * 0.5, $a * 0.5); } else {
       n.save(), n.translate(px, py), n.scale(sd, 1);
       n.fillStyle = "#7a5a3a", n.beginPath(), n.ellipse(0, 0, 8, 4.5, 0, 0, 7), n.fill();
       n.fillStyle = "#5a3e24", n.beginPath(), n.moveTo(-1, -1), n.lineTo(-7, -9 - fl), n.lineTo(4, -2), n.fill(), n.beginPath(), n.moveTo(-1, 1), n.lineTo(-8, 8 + fl), n.lineTo(3, 2), n.fill();
@@ -18992,8 +18992,8 @@ function ROXQM(f, c, s, l, def) {
       let n = this.store.world;
       if (!n) return;
       let o = this.ctx, r = ce(t.pos.x, t.pos.y), i = this.animOf(`m${t.id}`, t.pos.x, t.pos.y, a), s = i.moving ? Math.floor(i.phase * ea) : -1, l = t.state === "windup" ? 2 : t.state === "charge" ? 3 : 0, { dir: c, flip: d } = Kl(t.facing), f = t.def.shape, u, m = monScale(t.def), p = d;
-      f === "xx" ? u = Xr(f, c, s, l) ?? fa(f, c, s, l) : (u = ROXQM(f, c, s, l, t.def) ?? Xr(f, c, s, l) ?? us(f, s, l, c), p = mo ? d : Xi(t.facing).x < 0);
-      let h = `${f}:${c}:${s}:${l}`;
+      f === "xx" ? u = Xr(f, c, s, l) ?? fa(f, c, s, l) : (u = ROXQM(f, c, s, l, t.def, s < 0 && l === 0 && t.state !== "dead" ? { clk: this.clock, seed: (typeof t.id === "number" ? t.id : String(t.id).split("").reduce((q, ch) => q + ch.charCodeAt(0), 0)) % 97 } : void 0) ?? Xr(f, c, s, l) ?? us(f, s, l, c), p = mo ? d : Xi(t.facing).x < 0);
+      let h = `${f}:${c}:${s}:${l}:${u && u.key || ""}`;
       t.def.boss && f === "jotun" && t.def.id !== "hrimgar" && (u = ds(u, `bs${t.def.id}:${s}:${l}`, t.def.color, 0.78)), t.state === "windup" ? u = ds(u, h, 16724016, 0.5) : n.time < t.stunUntil ? u = ds(u, h, 16769126, 0.5) : n.time < t.slowUntil ? u = ds(u, h, 7321855, 0.45) : t.phase === 2 && (u = ds(u, h, 16736352, 0.28)), t.state === "charge" && (m *= 1.08);
       let x = this.hover?.kind === "monster" && this.hover.id === t.id;
       x && (o.save(), o.shadowColor = "#ffd34d", o.shadowBlur = 14), t.state !== "dead" && this.blob(r.x, r.y + 3, Math.max(11, t.def.radius * 1.15));

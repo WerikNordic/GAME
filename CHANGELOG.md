@@ -1,3 +1,9 @@
+## v204 - Monstros animados por especie
+- Cada monstro tem comportamento proprio quando parado: lobos farejam, sentam e uivam; warg rosna; javali raspa o chao e bufa; goblin se coca e provoca; draugr balanca e geme; troll ruge; yeti bate no peito; silvano balanca; golens cerram os punhos e tremem; diabrete provoca; gosma pula; espectro lamenta.
+- Andar com trote diagonal nos quadrupedes, joelhos/jarretes dobrando, ataques com mordida/golpe de cada especie.
+- Formas menos redondas: cabecas com focinho/mandibula, orelhas e presas pontudas, patas em cunha, maos menores, troncos em caixa.
+- Sprites de espera animados em cache (~4 quadros/s).
+
 ## v203 - Monstros no visual novo
 - Monstros (lobos, javali, goblin, draugr, yeti, imp, golens, silvano, prisma, vazio, gosma, chefes Hati/Jotun) e critters/pet lobo no mesmo estilo pixel por partes, formas mais quadradas (menos bolas), cores vindas da definicao de cada monstro.
 - Falcao do Cacador agora e o Corvo de Odin, com 4 estagios por tier (olho/asas mudam de cor).
