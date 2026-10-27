@@ -37,6 +37,9 @@
 - /guilda, /g, /grupo, /p, /amigo (locais; sem servidor de jogo ainda).
 - ESC nao pausa; tela de entrada nordica; novos efeitos sonoros; sem visual inicial de classe.
 
+## v147
+- Estátua do boss mundial (Nidh-WERIK-r) refeita: serpente de pedra enrolada sobre pedestal, com pescoço erguido e olhos brilhantes (substitui o colosso na variante da serpente).
+
 ## v146
 - Pet: menor (80%), agora entra na ordenação de profundidade (fica atrás do personagem quando está atrás) e Shift+botão direito no chão manda o pet para lá (ele fica até você se afastar).
 
