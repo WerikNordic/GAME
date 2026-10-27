@@ -37,6 +37,13 @@
 - /guilda, /g, /grupo, /p, /amigo (locais; sem servidor de jogo ainda).
 - ESC nao pausa; tela de entrada nordica; novos efeitos sonoros; sem visual inicial de classe.
 
+## v136
+- Alt+Z: janela do grupo (criador ★, nível, sua vida; membros com mapa/próximo/offline; criar, sair, expulsar, dissolver).
+- NPC Utilidades (todas as cidades, abaixo da praça): Poção Vermelha 20%, Laranja 35% (nv12), Branca 55% (nv30), Azul 30% mana (nv10), Asa de Mosca, Asa de Borboleta, flechas (ferro, prata, fogo, vento, gelo, pedra), hidromel e infusão. Compra e venda de qualquer item.
+- Asa de Mosca: teletransporta no mapa; Asa de Borboleta: volta ao Check Point. Morango (restaura mana) dropa de alguns monstros de floresta.
+- Curandeira (Midgard): cura 100% de vida e mana, Bênção (+15% DES) e Agilidade (+50% velocidade) por 10 min; recarga de 3 min.
+- Elemento Vento adicionado (forte contra terra).
+
 ## v135 (visuais)
 - Todos os 34 visuais de cabeça/rosto/boca agora aparecem no personagem e no provador (gorro, guirlanda, bandana, chapéu de pena, coroas, óculos, tapa-olho, lenço/cachecol, máscaras, barba, capuz).
 - Gelatina Saltitante continua visível sentado e aparece (animada) no provador.
