@@ -1,3 +1,6 @@
+## v187
+- Saco de brinquedos do Papai Noel refeito em 3D, maior: saco de juta amarrado com corda, ursinho, caixas, tambor, bola e bengalas saindo, ao lado da cadeira.
+
 ## v186
 - Papai Noel refeito como modelo 3D sentado dentro da cadeira (pernas, botas no chão, barriga, braços nos apoios, barba grisalha, gorro caindo para trás); animação de respiração e risada "Ho ho ho!"; clique continua abrindo o diálogo.
 
