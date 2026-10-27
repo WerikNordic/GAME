@@ -1,3 +1,6 @@
+## v185
+- Papai Noel: sentado de verdade na cadeira (cadeira maior), saco de brinquedos jogado no chão ao lado, animação de respiração e risada ("Ho ho ho!") periódica.
+
 # v184
 - Papai Noel maior (proporcional à cadeira) e sentado como uma pessoa: quadril na altura do assento, coxas para frente e canelas retas com os pés (botas) apoiados no chão.
 

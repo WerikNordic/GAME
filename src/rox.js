@@ -445,7 +445,6 @@ var ROX = (() => {
       const hand = (sd) => [sx(sd * 19.3, 0), sy(hy0)];
       const apron = (rm, y0, y1, w) => add(dp(0, 10) + .66, () => { if (cth < -.2) return; polyS([[sx(-w, 8), sy(y0)], [sx(w, 8), sy(y0)], [sx(w + 2, 8), sy(y1)], [sx(-w - 2, 8), sy(y1)]], (x, y) => rampAt(rm, .55 - (y - sy(y0)) * .004 + BAY[y & 3][x & 3] * .12)); lineS(sx(-w + 1, 8), sy(y0), sx(-13, 2), sy(44), rm[1]); lineS(sx(w - 1, 8), sy(y0), sx(13, 2), sy(44), rm[1]); });
       if (id === "papainoel") {
-        add(dp(19.3, 6) + .5, () => { const [X, Y] = hand(1), sk = P(0x9a6a3a), rd = P(0xc4202a); ellS(X + 3 * K, Y + 9 * K, 10 * K, 13 * K, sk, .06); lineS(X - 5 * K, Y + 6 * K, X + 11 * K, Y + 12 * K, sk[1]); lineS(X - 3 * K, Y + 12 * K, X + 9 * K, Y + 17 * K, sk[1]); ellS(X + 3 * K, Y - 2 * K, 5 * K, 3 * K, rd, .05); ellS(X - 1 * K, Y - 7 * K, 3.6 * K, 3.4 * K, P(0xb07a48), .05); ellS(X - 3 * K, Y - 10 * K, 1.5 * K, 1.5 * K, P(0xb07a48)); ellS(X + 1 * K, Y - 10 * K, 1.5 * K, 1.5 * K, P(0xb07a48)); ellS(X + 6 * K, Y - 6 * K, 3 * K, 3 * K, P(0xe03030), .05); polyS([[X + 2 * K, Y - 9 * K], [X + 8 * K, Y - 9 * K], [X + 8 * K, Y - 4 * K], [X + 2 * K, Y - 4 * K]], () => P(0x3a7ad8)[3]); lineS(X + 5 * K, Y - 9 * K, X + 5 * K, Y - 4 * K, [255, 240, 120]); });
       } else if (id === "brokk" || id === "torvald") {
         apron(dk, 47, 90, 9.5);
         add(dp(0, 14) + .97, () => { if (cth < -.2) return; ellS(sx(0, 10), sy(hdY + 15), bodyW(9.4, 7.5), 4.8 * K, hair, .02); lineS(sx(-6, 12), sy(hdY + 11), sx(6, 12), sy(hdY + 11), hair[3]); });
