@@ -8425,6 +8425,27 @@ Error generating stack: ` + n.message + `
   var pSides = (id, prev) => { let h = pHash(id), fieldPrev = prev === "campos_midgard" || prev === "planicies_jotunheim", raw = h % 2 ? "top" : "right", nx = h >> 1 & 1 || raw === "right" ? "bottom" : "right"; return { pr: fieldPrev ? "top" : raw, nx }; };
   var pRect = (sd, a, n) => sd === "top" ? { x: a / 2 - 70, y: 0, w: 140, h: 50 } : sd === "bottom" ? { x: a / 2 - 70, y: n - 50, w: 140, h: 50 } : { x: a - 50, y: n / 2 - 70, w: 50, h: 140 };
   var pSpawn = (sd, a, n) => sd === "top" ? { x: a / 2, y: 130 } : sd === "bottom" ? { x: a / 2, y: n - 130 } : { x: a - 130, y: n / 2 };
+  var TC_SMALL = new Set(["lamp", "brazier", "bench", "hay", "cart", "banner", "planter", "runestone", "gravestone", "campfire", "post", "snowman", "spiritlamp", "palm", "cactus", "frosttree"]);
+  var TC_BIG = new Set(["longhouse", "bigforge", "church", "castle", "hof", "keep", "palace", "warrior", "statue", "monument", "colossus", "magetower", "clocktower", "pyramid", "sphinx", "arena", "crypt", "pagoda", "toyfactory", "hut", "tent", "stall", "forge", "tower", "fountain"]);
+  function tidyCity(list, npcs) {
+    let hit = (a, b, m) => a.x < b.x + b.w + m && a.x + a.w + m > b.x && a.y < b.y + b.h + m && a.y + a.h + m > b.y;
+    let big = list.filter((q) => q.kind === "house" || q.kind === "deco" && TC_BIG.has(q.deco));
+    let keep = [], smalls = [], flora = [];
+    for (let q of list) {
+      let isSmall = q.kind === "deco" && TC_SMALL.has(q.deco), isFlora = q.kind === "tree" || q.kind === "rock";
+      if ((isSmall || isFlora) && (npcs ?? []).some((n) => n.x > q.x - 22 && n.x < q.x + q.w + 22 && n.y > q.y - 22 && n.y < q.y + q.h + 22)) continue;
+      if (isSmall) {
+        if (q.deco === "bench" || q.deco === "brazier") { if (big.some((b) => b.deco !== "fountain" && b !== q && hit(q, b, 4))) continue; }
+        else if (big.some((b) => hit(q, b, 6)) || smalls.some((b) => b.deco !== "bench" && hit(q, b, 2))) continue;
+        smalls.push(q);
+      } else if (isFlora) {
+        if (big.some((b) => hit(q, b, 8)) || flora.some((b) => hit(q, b, 6)) || smalls.some((b) => hit(q, b, 4))) continue;
+        flora.push(q);
+      }
+      keep.push(q);
+    }
+    return keep;
+  }
   var NOBIG = new Set(["statue", "monument", "colossus", "church", "castle", "bigforge", "airship", "warrior", "keep", "palace", "hof", "tower", "longhouse", "magetower", "clocktower"]);
   function N8(e, t) {
     let a = L8, n = Xx, o = a / 1920, r = n / 1280, i = (a - 1920) / 2, s = Oe(e.seed), l = [], c = [], d = { x: a / 2, y: 130 }, f = e.village ? { x: 740 + i, y: 70, w: 460, h: 420 } : { x: 860 + i, y: 60, w: 220, h: 200 }, u = (e.npcs ?? []).map((D) => ({ id: D.id, x: D.x + i, y: D.y }));
@@ -8936,7 +8957,7 @@ Error generating stack: ` + n.message + `
       for (let _ of M) _.x = t - _.x;
       for (let _ of r) _.x = t - _.x;
     }
-    return { id: e.id, name: e.name, width: t, height: a, spawn: { x: d, y: a - 420 }, safeZone: { x: c.x, y: c.y, w: c.w, h: c.h }, obstacles: o, critters: crit, spawns: [], maxMonsters: 0, npcs: M, pois: r, portals: [{ x: f.from, y: a - 60, w: f.to - f.from, h: 60, label: "Sa\xEDda da cidade", locked: false, toMap: e.from, toSpawn: { x: 130, y: 630 } }], bossDen: { x: t / 2, y: a / 2 + 600, r: 10 }, theme: e.theme, safeLabel: e.safeLabel, scars: [], mood: e.mood, city: true, paved: p };
+    return { id: e.id, name: e.name, width: t, height: a, spawn: { x: d, y: a - 420 }, safeZone: { x: c.x, y: c.y, w: c.w, h: c.h }, obstacles: tidyCity(o, M), critters: crit, spawns: [], maxMonsters: 0, npcs: M, pois: r, portals: [{ x: f.from, y: a - 60, w: f.to - f.from, h: 60, label: "Sa\xEDda da cidade", locked: false, toMap: e.from, toSpawn: { x: 130, y: 630 } }], bossDen: { x: t / 2, y: a / 2 + 600, r: 10 }, theme: e.theme, safeLabel: e.safeLabel, scars: [], mood: e.mood, city: true, paved: p };
   }
   var Hr = (...e) => ["arauto", "ottar", "bruna", "brokk", "munin", "sigrun", "estilista", "provador", "utilidades", "cronista", "checkpoint", "questor", "lider", "mestre_jogos", "montaria", ...e].map((t) => ({ id: t, x: 0, y: 0 })), D8 = [{ id: "cidade_midgard", name: "Cidade de Midgard", seed: 7e3, theme: "grass", from: "campos_midgard", safeLabel: "Pra\xE7a de Midgard", npcs: Hr("eira", "curandeira"), grand: "palace", grandName: "Sal\xE3o do Jarl" }, { id: "cidade_ravnhaven", name: "Cidade de Ravnhaven", seed: 7101, theme: "grass", from: "midgard_brumaforte", safeLabel: "Pra\xE7a do Corvo", npcs: Hr(), grand: "castle", grandName: "Fortaleza do Corvo" }, { id: "cidade_isenborg", name: "Cidade de Isenborg", seed: 7202, theme: "snow", from: "jotunheim_aldeia", safeLabel: "Pra\xE7a da Geada", npcs: Hr("ylva", "torvald"), grand: "castle", grandName: "Cidadela de Gelo", mood: [0.92, 0.96, 1] }, { id: "cidade_eldvik", name: "Cidade de Eldvik", seed: 7303, theme: "sand", from: "muspel_cinzas", safeLabel: "Pra\xE7a das Brasas", npcs: Hr(), grand: "none", mood: [1.04, 0.96, 0.84] }, { id: "cidade_kharnheim", name: "Cidade de Kharnheim", seed: 7404, theme: "forge", from: "svart_mercado", safeLabel: "Pra\xE7a da Bigorna", npcs: Hr(), grand: "palace", grandName: "Grande Sal\xE3o da Bigorna", mood: [1, 0.9, 0.85] }, { id: "cidade_freyrhain", name: "Cidade de Freyrhain", seed: 7505, theme: "lush", from: "vana_santuario", safeLabel: "Pra\xE7a das Ra\xEDzes", npcs: Hr(), grand: "palace", grandName: "Pal\xE1cio das Ra\xEDzes" }, { id: "cidade_gladsheim", name: "Cidade de Gladsheim", seed: 7606, theme: "marble", from: "asg_praca", safeLabel: "Pra\xE7a dos Aesir", npcs: Hr(), grand: "both", grandName: "Sal\xE3o dos Aesir" }, { id: "cidade_skogvik", name: "Cidade de Skogvik", seed: 7707, theme: "wood", from: "midgard_bosque", safeLabel: "Pra\xE7a das Copas", npcs: Hr(), grand: "palace", grandName: "Pagode do Conselho", mood: [0.96, 1, 0.94] }, { id: "cidade_handelsvik", name: "Cidade de Handelsvik", seed: 7808, theme: "grass", from: "midgard_lago", safeLabel: "Cais dos Mercadores", npcs: Hr(), grand: "castle", grandName: "Sal\xE3o da Guilda", mood: [1, 1, 1.04] }, { id: "cidade_solvik", name: "Cidade de Solvik", seed: 7909, theme: "tropic", from: "vana_pantano", safeLabel: "Praia das Festas", npcs: Hr(), grand: "none", mood: [1.05, 1.02, 0.96] }, { id: "cidade_helvik", name: "Cidade de Helvik", seed: 8010, theme: "dead", from: "niflheim_catacumbas", safeLabel: "Pra\xE7a dos Sussurros", npcs: Hr(), grand: "palace", grandName: "Mausol\xE9u de Hel", mood: [0.7, 0.8, 0.86] }];
   function O8(e, t, a) {

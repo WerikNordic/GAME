@@ -37,6 +37,9 @@
 - /guilda, /g, /grupo, /p, /amigo (locais; sem servidor de jogo ainda).
 - ESC nao pausa; tela de entrada nordica; novos efeitos sonoros; sem visual inicial de classe.
 
+## v140
+- Cidades: removidos postes/carroças/feno/bancos/braseiros e árvores/pedras que ficavam sobrepostos a casas, forjas, tendas, etc. ou em cima de NPCs (~150 sobreposições a menos por cidade).
+
 ## v139
 - Portais de mapas de caça: lado de retorno (topo/direita) e de seguir viagem (baixo/direita) variam por mapa, com chegada alinhada ao portal do mapa vizinho. Corrigida a chegada em Brumaforte/Passo de Jötunheim (x errado).
 
