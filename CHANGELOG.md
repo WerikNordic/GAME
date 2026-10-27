@@ -1,3 +1,7 @@
+# v168
+- NPCs de historia (drama e terror), cada um com ramificacoes e varios finais; recompensa unica de EXP + Zeny por NPC (reler gratis, sem recompensa): Viuva Solveig (Midgard, A Carta Que Nao Chegou), Menino Eirik (Ravnhaven, O Barco do Pai), Torgrim o Escaldo Cego (Kharnheim, A Ultima Cancao), Coveiro Ragnvald (Helvik, Os Sussurros da Cripta), Velha Hulda (Skogvik, A Casa Que Respira).
+- CORRECAO IMPORTANTE: o salvamento descartava campos novos do personagem (caminho Ferreiro/Alquimista, homunculo, carrinho, bebe, casamento, montaria, falcao, historias etc.) ao recarregar. Agora esses campos sao preservados.
+
 # v167
 - Falcao do Cacador: a partir do nivel 10 o Cacador ganha um falcao que sobrevoa o personagem e mergulha sozinho a cada 5 s no monstro mais proximo (dano ~110% do ataque + atordoa 0,45 s). /falcao liga/desliga. Nao ataca em zona segura.
 
