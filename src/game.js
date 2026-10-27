@@ -17646,7 +17646,7 @@ function ROXQM(f, c, s, l, def) {
       }
       if (o) return o;
       for (let i of n.map.npcs) {
-        let s = ce(i.x, i.y), l = i.id === "papainoel" ? Math.hypot(s.x + 11 - t, s.y - 52 - a) * 0.8 : Math.hypot(s.x - t, s.y - 24 - a);
+        let s = ce(i.x, i.y), l = i.id === "papainoel" ? Math.hypot(s.x + 14 - t, s.y - 58 - a) * 0.62 : Math.hypot(s.x - t, s.y - 24 - a);
         l <= 30 && l < r && (r = l, o = { kind: "npc", id: i.id });
       }
       if (o) return o;
@@ -18433,7 +18433,7 @@ function ROXQM(f, c, s, l, def) {
       let f = l.idleFace ?? l.face;
       c && Math.hypot(c.x - a, c.y - n) < 430 ? f = Math.atan2(c.y - n, c.x - a) : this.clock > (l.nextLook ?? 0) && (l.idleFace = (l.idleFace ?? l.face) + (Math.random() - 0.5) * 2.6, l.nextLook = this.clock + 3200 + Math.random() * 6e3, f = l.idleFace), l.face += RS(l.face, f) * (1 - Math.exp(-o / 150));
       t === "papainoel" && (l.face = Math.PI / 2); let { dir: u, flip: m } = Kl(l.face), p = fa(t, u, t === "papainoel" ? -2 : -1, 0), h = this.organic(l, l.face, { moving: false, breath: 0.014 });
-      t === "papainoel" ? i += 11 : 0, this.blob(i, s + 4, t === "papainoel" ? 0 : 15), nt(r, p, i + h.dx, s + 6 + h.dy - (t === "papainoel" ? 30 : 0), m, $a * h.sx, $a * h.sy, h.rot), this.nameOn(`n${t}`) && this.text(n0(t)?.name ?? t, i, s + 16, 12, "#ffffff");
+      t === "papainoel" ? i += 9 : 0, this.blob(i, s + 4, t === "papainoel" ? 0 : 15), nt(r, p, i + h.dx, s + 6 + h.dy - (t === "papainoel" ? 6 : 0), m, $a * h.sx * (t === "papainoel" ? 1.38 : 1), $a * h.sy * (t === "papainoel" ? 1.38 : 1), h.rot), this.nameOn(`n${t}`) && this.text(n0(t)?.name ?? t, i, s + 16, 12, "#ffffff");
       let x = this.marks.get(t);
       x && this.text(x, i, s - 76 + Math.sin(this.clock / 190) * 3, 24, x === "?" ? "#7dff9a" : "#ffd34d", true);
     }

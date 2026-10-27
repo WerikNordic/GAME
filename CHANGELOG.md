@@ -1,3 +1,6 @@
+# v184
+- Papai Noel maior (proporcional à cadeira) e sentado como uma pessoa: quadril na altura do assento, coxas para frente e canelas retas com os pés (botas) apoiados no chão.
+
 # v183
 - Papai Noel agora senta de verdade na cadeira (corpo sobre o assento, centralizado, sem sombra de personagem em pé). Cadeira maior.
 - Área de clique ajustada ao novo lugar dele; clicar abre o Feliz Natal.

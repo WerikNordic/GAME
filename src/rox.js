@@ -54,7 +54,7 @@ var ROX = (() => {
     const buf = new Array(SW * SH).fill(null);
     const put = (x, y, c) => { x |= 0; y |= 0; if (x < 0 || y < 0 || x >= SW || y >= SH) return; buf[y * SW + x] = c; };
     const sx = (x, z) => AX + (x * cth * WX + z * sth) * K;
-    const sy = (y) => AY + (y - 98) * K + (sit ? 21 * K : 0);
+    const SO = e.cls === "papainoel" ? 5 : 21, sy = (y) => AY + (y - 98) * K + (sit ? SO * K : 0);
     const dp = (x, z) => z * cth - x * sth;
     const parts = [];
     let add = (d, fn) => parts.push({ d, fn });
@@ -268,6 +268,7 @@ var ROX = (() => {
         else if (ss === "kneel") { if (side > 0) { kx = 8; fx = 8; kz = 15; fz = 20; kneeY = 61; footY = 75; } else { kx = -10; fx = -3; kz = 8; fz = 2; kneeY = 72; footY = 75; } }
         else if (ss === "perch") { if (side > 0) { kx = 8; fx = 8; kz = 14; fz = 9; kneeY = 55; footY = 75; } else { kx = -9; fx = -7; kz = 10; fz = 18; kneeY = 70; footY = 75; } }
         else if (ss === "lean") { kx = side * 6; fx = side * 8; kz = 18; fz = 30; kneeY = 66; footY = 75; }
+        else if (e.cls === "papainoel") { hipY = 70; kneeY = 71; footY = 93; kz = 17; fz = 17; kx = side * 8; fx = side * 8; }
         else if (ss === "perch2") { if (side < 0) { kx = -8; fx = -8; kz = 14; fz = 9; kneeY = 55; footY = 75; } else { kx = 9; fx = 7; kz = 10; fz = 18; kneeY = 70; footY = 75; } }
       }
       C3(lx, hipY, 0, kx, kneeY, kz, 5.2 * lg * (FEM ? .92 : 1), 4.7 * lg * (FEM ? .9 : 1), pants);
