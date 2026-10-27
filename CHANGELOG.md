@@ -1,3 +1,6 @@
+# v161
+- Caminhos do Mercador viram Ferreiro (+10% ataque) e Alquimista (+20% vida). SO o Alquimista tem Homunculo: Pai dos Homunculos (NPC escondido num canto de Isenborg) cria (5000 Zeny + materiais); 4 tipos (Vitalis cura, Granito +vida, Faisca rapido, Caos imprevisivel); luta ao lado, ganha EXP, renomeia, evolui com Pedra de Evolucao (cai de MVPs, nivel 30). Comando /homun.
+
 # v160
 - Mercador: Carrinho (Alt+W, +1500 de peso, 10 cores e 7 enfeites) e Loja pessoal /trade com balao sobre a cabeca; clientes NPC compram enquanto voce fica parado numa cidade.
 
