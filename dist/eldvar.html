@@ -9732,7 +9732,7 @@ Error generating stack: ` + n.message + `
   }
   for (const id of ["yeti_ancestral", "golem_obsidiana", "ent_sombrio", "sentinela_aurea", "voidling_abissal", "ulfhednar", "chama_viva", "campeao_esquecido", "arauto_fim"]) {
     const d = Qu[id];
-    if (d && !d.boss) { d.mini = true; d.respawnMs = 18e5; d.name.startsWith("[Mini]") || (d.name = "[Mini] " + d.name); }
+    if (d && !d.boss) { d.mini = true; d.respawnMs = 36e5; d.name.startsWith("[Mini]") || (d.name = "[Mini] " + d.name); }
   }
   for (let id_ of Object.keys(Qu)) {
     let d_ = Qu[id_];
@@ -10012,7 +10012,7 @@ Error generating stack: ` + n.message + `
     o;
     due = /* @__PURE__ */ new Map();
     static policyFor(t, a) {
-      return a.mini ? { mode: "timed", delayMs: 18e5, varianceMs: 0 } : t || (a.boss ? { mode: "timed", delayMs: 54e5, varianceMs: 18e5 } : { mode: "timed", delayMs: a.respawnMs, varianceMs: 0 });
+      return a.mini ? { mode: "timed", delayMs: 36e5, varianceMs: 0 } : t || (a.boss ? { mode: "timed", delayMs: 144e5, varianceMs: 36e5 } : { mode: "timed", delayMs: a.respawnMs, varianceMs: 0 });
     }
     schedule(t, a, n) {
       let o = this.o.now(), r;
@@ -10903,17 +10903,16 @@ Error generating stack: ` + n.message + `
       this.emit({ type: "expGain", amount: bx }), r.levels > 0 && (this.emit({ type: "levelUp", level: n.level }), this.toast(`Nível ${n.level}! Pontos de atributo disponíveis.`, "good")), r.jobLevels > 0 && (this.emit({ type: "jobLevelUp", level: n.jobLevel }), this.toast(`Nível de classe ${n.jobLevel}!`, "good"));
       let pool = a.drops.filter((d) => { let k = $(d.item)?.kind; return k && k !== "card" && k !== "quest"; }), pk = pool.length ? pool[Math.floor(this.rng() * pool.length)].item : null, got = "";
       if (pk) {
-        let q = Ny(n, pk, 1);
-        if (q > 0 && He(n.inventory, pk, 1) <= 0) got = ` e ${$(pk).name} no inventário`;
-        else this.spawnLoot(pk, 1, t.pos), got = ` e ${$(pk).name} (caído no chão: peso/inventário cheio)`;
+        let e = this.spawnLoot(pk, 1, t.pos);
+        e && (e.mvp = true, e.ownerUntil = this.time + 15e3, e.expiresAt = this.time + 3e4, got = ` e ${$(pk).name} (cai no chão)`);
       }
-      this.toast(`\u{1F451} MVP! +${bx} EXP${got}.`, "good"), this.logc(`\u{1F451} Você é o MVP de ${nome}! Bônus de ${bx} EXP${got}.`, "good");
+      this.toast(`👑 MVP! +${bx} EXP${got}. Item exclusivo seu por 15s.`, "good"), this.logc(`👑 Você é o MVP de ${nome}! Bônus de ${bx} EXP${got}. Exclusivo por 15s, liberado a todos por mais 15s; depois some.`, "good");
     }
     tombList() { let o = this.ps.tombs; return o ? Object.values(o).filter((q) => q.map === this.map.id && !this.monsters.some((m) => m.slot === q.slot && m.def.id === q.id && m.state !== "dead")) : []; }
     readTomb(key) {
       let q = this.ps.tombs?.[key]; if (!q) return false;
       let f = (ms) => new Date(ms).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit", second: "2-digit" }), g = (ms) => new Date(ms).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
-      this.logc(`\u{1FAA6} Túmulo de ${q.name}: morto às ${f(q.at)} por ${q.by}${q.mvp ? " (MVP)" : ""}.`, "system"), this.logc(`⏳ Próximo renascimento entre ${g(q.at + 36e5)} e ${g(q.at + 72e5)}.`, "system"), this.toast(`Túmulo de ${q.name} — morto às ${f(q.at)} por ${q.by}`, "info");
+      this.logc(`\u{1FAA6} Túmulo de ${q.name}: morto às ${f(q.at)} por ${q.by}${q.mvp ? " (MVP)" : ""}.`, "system"), this.logc(`⏳ Próximo renascimento entre ${g(q.at + 108e5)} e ${g(q.at + 18e6)}.`, "system"), this.toast(`Túmulo de ${q.name} — morto às ${f(q.at)} por ${q.by}`, "info");
       return true;
     }
     miniTeleport(t) {
@@ -10963,7 +10962,7 @@ Error generating stack: ` + n.message + `
       }
     }
     spawnLoot(t, a, n) {
-      $(t) && this.loot.push({ id: this.nextId++, itemId: t, qty: a, pos: { x: n.x + (this.rng() - 0.5) * 40, y: n.y + (this.rng() - 0.5) * 40 }, expiresAt: this.time + 2e4 });
+      if ($(t)) { let e = { id: this.nextId++, itemId: t, qty: a, pos: { x: n.x + (this.rng() - 0.5) * 40, y: n.y + (this.rng() - 0.5) * 40 }, expiresAt: this.time + 2e4 }; return this.loot.push(e), e; }
     }
     updateLoot() {
       if (this.player.deadAt !== null) { this.pickAt = null, this.pendingLoot = null; return; }
@@ -19343,7 +19342,7 @@ function ROXQM(f, c, s, l, def) {
         let H = ce(q.x, q.y);
         M(H.x, H.y) && T.push({ depth: Ja(q.x, q.y), draw: () => this.drawWalker(q) });
       }
-      for (let q of a.loot) T.push({ depth: Ja(q.pos.x, q.pos.y), draw: () => this.drawLoot(q.itemId, q.pos.x, q.pos.y, q.id, q.qty) });
+      for (let q of a.loot) T.push({ depth: Ja(q.pos.x, q.pos.y), draw: () => (q.mvp && this.drawMvpLootFx(q), this.drawLoot(q.itemId, q.pos.x, q.pos.y, q.id, q.qty)) });
       for (let q of a.tombList()) T.push({ depth: Ja(q.x, q.y), draw: () => this.drawTomb(q) });
       let z = /* @__PURE__ */ new Set(["p"]);
       for (let q of a.monsters) {
@@ -19587,6 +19586,14 @@ function ROXQM(f, c, s, l, def) {
       t === "papainoel" ? i += 9 : 0, t !== "papainoel" && (this.blob(i, s + 4, 15), nt(r, p, i + h.dx, s + 6 + h.dy - (t === "papainoel" ? 6 : 0) + sk, m, $a * h.sx * (t === "papainoel" ? 1.38 : 1), $a * h.sy * sq * (t === "papainoel" ? 1.38 : 1), h.rot)), this.nameOn(`n${t}`) && this.text(n0(t)?.name ?? t, i, s + 16, 12, "#ffffff");
       let x = this.marks.get(t);
       x && this.text(x, i, s - 76 + Math.sin(this.clock / 190) * 3, 24, x === "?" ? "#7dff9a" : "#ffd34d", true);
+    }
+    drawMvpLootFx(q) {
+      let o = this.ctx, { x: r, y: i } = ce(q.pos.x, q.pos.y), w = this.store.world, left = q.ownerUntil - w.time, own = left > 0, c = this.clock, pu = 0.6 + 0.4 * Math.sin(c / 180), col = own ? "255,208,60" : "140,210,255", rem = Math.max(0, Math.ceil((own ? left : q.expiresAt - w.time) / 1e3));
+      o.save(), o.globalCompositeOperation = "lighter";
+      let g = o.createLinearGradient(0, i - 150, 0, i); g.addColorStop(0, `rgba(${col},0)`), g.addColorStop(1, `rgba(${col},${0.55 * pu})`), o.fillStyle = g, o.fillRect(r - 9, i - 150, 18, 150);
+      let h = o.createRadialGradient(r, i - 12, 2, r, i - 12, 46); h.addColorStop(0, `rgba(${col},${0.8 * pu})`), h.addColorStop(1, `rgba(${col},0)`), o.fillStyle = h, o.beginPath(), o.arc(r, i - 12, 46, 0, Math.PI * 2), o.fill();
+      for (let k = 0; k < 5; k++) { let a = c / 500 + k * 1.26, sy = i - 10 - ((c / 9 + k * 37) % 70); o.fillStyle = `rgba(${col},0.9)`, o.fillRect(r + Math.cos(a) * 20 - 1.5, sy, 3, 3); }
+      o.restore(), this.text(own ? `👑 Exclusivo ${rem}s` : `Liberado ${rem}s`, r, i - 52, 12, own ? "#ffe27a" : "#9fdcff", true);
     }
     drawTomb(q) {
       let o = this.ctx, { x: r, y: i } = ce(q.x, q.y), hov = this.hover?.kind === "tomb" && this.hover.id === q.key;

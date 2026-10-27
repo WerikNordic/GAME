@@ -1,3 +1,7 @@
+## v198 - Respawns e item do MVP
+- Mini Bosses renascem de 1 em 1 hora (exato). MVPs renascem entre 3h e 5h (variavel); o tumulo mostra essa janela.
+- O item do MVP nao vai mais para o inventario: cai no chao, brilhando (feixe dourado). Exclusivo de quem levou a placa por 15s (dourado), liberado para todos por mais 15s (azul, "Liberado"), e some aos 30s. Contagem regressiva sobre o item.
+
 ## v197 - MVPs e Mini Bosses
 - MVP: placar por pontos (dano 50, tank 30, 1o golpe 10, ultimo golpe 10; seu pet tambem pontua). Quem vence ganha a placa dourada "MVP" sobre a cabeca por 12s, bonus de EXP igual ao do chefe e 1 item direto no inventario (cai no chao se pesado/cheio). Placar no chat.
 - Escolta: cada MVP nasce com a escolta ao redor, anda com ele e renasce 7s apos cada morte. Morre junto com o MVP.
