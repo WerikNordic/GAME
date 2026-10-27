@@ -1,3 +1,7 @@
+# v183
+- Papai Noel agora senta de verdade na cadeira (corpo sobre o assento, centralizado, sem sombra de personagem em pé). Cadeira maior.
+- Área de clique ajustada ao novo lugar dele; clicar abre o Feliz Natal.
+
 # v182
 - Papai Noel redesenhado: gordo, roupa toda vermelha, cabelo e barba grandes grisalhos, gorro puxado para trás, saco de brinquedos na mão (ursinho, bola e presente).
 - Ele agora fica sentado numa cadeira de Papai Noel nova (veludo vermelho, botões e detalhes dourados, pele branca), virado para a praça, na porta da casa.

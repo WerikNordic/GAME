@@ -8180,7 +8180,7 @@ Error generating stack: ` + n.message + `
     return r;
   }
   var $m = { fountain: { w: 64, h: 48 }, dryfountain: { w: 64, h: 48 }, giftpile: { w: 26, h: 20 }, well: { w: 36, h: 30 }, stall: { w: 72, h: 36 }, lamp: { w: 12, h: 12 }, banner: { w: 12, h: 12 }, statue: { w: 40, h: 36 }, post: { w: 22, h: 18 }, tower: { w: 52, h: 44 }, bench: { w: 44, h: 16 }, cart: { w: 56, h: 32 }, hay: { w: 40, h: 28 }, planter: { w: 34, h: 22 }, pillar: { w: 20, h: 20 }, pillar_broken: { w: 22, h: 20 }, wall: { w: 56, h: 26 }, wall_v: { w: 26, h: 56 }, arch: { w: 64, h: 16 }, tent: { w: 52, h: 38 }, campfire: { w: 24, h: 22 }, runestone: { w: 20, h: 14 }, gravestone: { w: 16, h: 10 }, altar: { w: 42, h: 28 }, obelisk: { w: 20, h: 20 }, longhouse: { w: 120, h: 50 }, magetower: { w: 72, h: 66 }, clocktower: { w: 56, h: 48 }, pyramid: { w: 120, h: 100 }, sphinx: { w: 100, h: 40 }, arena: { w: 190, h: 150 }, lighthouse: { w: 44, h: 40 }, ship: { w: 100, h: 34 }, dock: { w: 124, h: 40 }, totem: { w: 40, h: 30 }, hut: { w: 52, h: 44 }, pagoda: { w: 74, h: 60 }, frosttree: { w: 56, h: 44 }, wbstatue: { w: 56, h: 56 }, sleigh: { w: 50, h: 26 }, reindeer: { w: 32, h: 16 }, xmastree: { w: 56, h: 44 }, snowman: { w: 28, h: 24 }, toyfactory: { w: 154, h: 100 }, santahouse: { w: 150, h: 98 }, santachair: { w: 46, h: 30 }, crypt: { w: 78, h: 60 }, palm: { w: 24, h: 20 }, cactus: { w: 26, h: 20 }, parasol: { w: 60, h: 50 }, spiritlamp: { w: 12, h: 12 }, keep: { w: 170, h: 150 }, palace: { w: 250, h: 100 }, hof: { w: 230, h: 120 }, warrior: { w: 52, h: 44 }, brazier: { w: 18, h: 18 }, forge: { w: 92, h: 36 }, church: { w: 110, h: 70 }, castle: { w: 150, h: 110 }, monument: { w: 44, h: 44 }, bigforge: { w: 120, h: 70 }, colossus: { w: 56, h: 56 }, airship: { w: 84, h: 44 } };
-  var DSC = { palace: 2.3, keep: 2.1, hof: 1.8, longhouse: 1.85, warrior: 1.9, statue: 1.9, fountain: 3.6, dryfountain: 3.6, giftpile: 1.5, tower: 1.7, forge: 1.5, stall: 1.3, tent: 1.5, well: 1.4, cart: 1.2, obelisk: 1.6, altar: 1.4, brazier: 1.3, lamp: 1.15, banner: 1.4, church: 1.7, castle: 2, monument: 2.2, bigforge: 1.8, colossus: 2.4, airship: 1.6, xmastree: 3.4, santahouse: 2.4, santachair: 0.62, wbstatue: 1.7, sleigh: 1.7, reindeer: 1.7, lighthouse: 3.2, clocktower: 2.6, totem: 3.2, magetower: 1.9, pagoda: 2.6, parasol: 3.2, crypt: 2.2, bench: 1.15, runestone: 1.5 };
+  var DSC = { palace: 2.3, keep: 2.1, hof: 1.8, longhouse: 1.85, warrior: 1.9, statue: 1.9, fountain: 3.6, dryfountain: 3.6, giftpile: 1.5, tower: 1.7, forge: 1.5, stall: 1.3, tent: 1.5, well: 1.4, cart: 1.2, obelisk: 1.6, altar: 1.4, brazier: 1.3, lamp: 1.15, banner: 1.4, church: 1.7, castle: 2, monument: 2.2, bigforge: 1.8, colossus: 2.4, airship: 1.6, xmastree: 3.4, santahouse: 2.4, santachair: 0.85, wbstatue: 1.7, sleigh: 1.7, reindeer: 1.7, lighthouse: 3.2, clocktower: 2.6, totem: 3.2, magetower: 1.9, pagoda: 2.6, parasol: 3.2, crypt: 2.2, bench: 1.15, runestone: 1.5 };
   for (let e of Object.keys(DSC)) $m[e] && ($m[e].w = Math.round($m[e].w * DSC[e]), $m[e].h = Math.round($m[e].h * DSC[e]));
   function groves(W, H, rng, budget, rockFrac, ok, rockOnly) {
     let PX = 4, PY = 3, GP = 78, BW = (PX - 1) * GP + 60, BH = (PY - 1) * GP + 60, LX = 150, LY = 130, cols = Math.max(1, Math.floor((W - 120) / (BW + LX))), rows = Math.max(1, Math.floor((H - 120) / (BH + LY))), blocks = [], out = [];
@@ -16896,7 +16896,7 @@ function ROXQM(f, c, s, l, def) {
         const x = Math.round(h.x + h.w / 2), y = Math.round(h.y + h.h + 46);
         m.obstacles = m.obstacles.filter((o) => !(o !== h && (o.kind === "crate" || o.kind === "deco" && ["giftpile", "snowman", "lamp", "sleigh", "reindeer", "well", "cart", "planter", "bench", "hay", "frosttree"].includes(o.deco)) && Math.abs(o.x + o.w / 2 - x) < 190 && Math.abs(o.y + o.h / 2 - y) < 150));
         n.x = x, n.y = y;
-        m.obstacles.push({ kind: "deco", deco: "santachair", x: Math.round(x - 27), y: Math.round(y - 22), w: 34, h: 20 });
+        m.obstacles.push({ kind: "deco", deco: "santachair", x: Math.round(x - 21), y: Math.round(y - 22), w: 34, h: 20 });
       }
     }
     {
@@ -17646,7 +17646,7 @@ function ROXQM(f, c, s, l, def) {
       }
       if (o) return o;
       for (let i of n.map.npcs) {
-        let s = ce(i.x, i.y), l = Math.hypot(s.x - t, s.y - 24 - a);
+        let s = ce(i.x, i.y), l = i.id === "papainoel" ? Math.hypot(s.x + 11 - t, s.y - 52 - a) * 0.8 : Math.hypot(s.x - t, s.y - 24 - a);
         l <= 30 && l < r && (r = l, o = { kind: "npc", id: i.id });
       }
       if (o) return o;
@@ -18433,7 +18433,7 @@ function ROXQM(f, c, s, l, def) {
       let f = l.idleFace ?? l.face;
       c && Math.hypot(c.x - a, c.y - n) < 430 ? f = Math.atan2(c.y - n, c.x - a) : this.clock > (l.nextLook ?? 0) && (l.idleFace = (l.idleFace ?? l.face) + (Math.random() - 0.5) * 2.6, l.nextLook = this.clock + 3200 + Math.random() * 6e3, f = l.idleFace), l.face += RS(l.face, f) * (1 - Math.exp(-o / 150));
       t === "papainoel" && (l.face = Math.PI / 2); let { dir: u, flip: m } = Kl(l.face), p = fa(t, u, t === "papainoel" ? -2 : -1, 0), h = this.organic(l, l.face, { moving: false, breath: 0.014 });
-      this.blob(i, s + 4, 15), nt(r, p, i + h.dx, s + 6 + h.dy, m, $a * h.sx, $a * h.sy, h.rot), this.nameOn(`n${t}`) && this.text(n0(t)?.name ?? t, i, s + 16, 12, "#ffffff");
+      t === "papainoel" ? i += 11 : 0, this.blob(i, s + 4, t === "papainoel" ? 0 : 15), nt(r, p, i + h.dx, s + 6 + h.dy - (t === "papainoel" ? 30 : 0), m, $a * h.sx, $a * h.sy, h.rot), this.nameOn(`n${t}`) && this.text(n0(t)?.name ?? t, i, s + 16, 12, "#ffffff");
       let x = this.marks.get(t);
       x && this.text(x, i, s - 76 + Math.sin(this.clock / 190) * 3, 24, x === "?" ? "#7dff9a" : "#ffd34d", true);
     }
