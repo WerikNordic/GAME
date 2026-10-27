@@ -37,6 +37,9 @@
 - /guilda, /g, /grupo, /p, /amigo (locais; sem servidor de jogo ainda).
 - ESC nao pausa; tela de entrada nordica; novos efeitos sonoros; sem visual inicial de classe.
 
+## v138
+- Mapas de monstros: sem estátuas/monumentos/colossos/castelos/igrejas/casas (segredos e mundial intactos); árvores 1,15–1,65x com variação por posição.
+
 ## v137
 - Escala: personagem/NPCs/pet a 74%; monstros por tamanho (pequeno 0.62, médio 0.78, grande 0.96, gigante 1.2), bosses 1.5x+ (Jormungand inalterado). Árvores e cenário passam a ser bem maiores que o personagem.
 
