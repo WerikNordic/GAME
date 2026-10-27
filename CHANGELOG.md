@@ -37,6 +37,10 @@
 - /guilda, /g, /grupo, /p, /amigo (locais; sem servidor de jogo ainda).
 - ESC nao pausa; tela de entrada nordica; novos efeitos sonoros; sem visual inicial de classe.
 
+## v135 (visuais)
+- Todos os 34 visuais de cabeça/rosto/boca agora aparecem no personagem e no provador (gorro, guirlanda, bandana, chapéu de pena, coroas, óculos, tapa-olho, lenço/cachecol, máscaras, barba, capuz).
+- Gelatina Saltitante continua visível sentado e aparece (animada) no provador.
+
 ## v134 (interface)
 - Barra de habilidades F1–F9 no topo (vazia até você colocar algo); F11 abre/fecha 2ª barra (teclas 1–0, abaixo da principal); F10 esconde/mostra o chat; F12 esconde/mostra missões; Alt+V esconde/mostra informações básicas.
 - Vida dos monstros: barrinha verde embaixo do monstro com o número em branco no meio, diminui ao tomar dano.
