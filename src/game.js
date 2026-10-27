@@ -10268,7 +10268,7 @@ Error generating stack: ` + n.message + `
     }
     castSkillAt(i, x, y, mid) {
       let m = mid ? this.monsters.find((q) => q.id === mid) : null;
-      m && (this.currentTarget = m), this.aimAng = ao(this.player.pos, m ? m.pos : { x, y });
+      m && (this.targetId = m.id), this.aimAng = ao(this.player.pos, m ? m.pos : { x, y });
       try { return this.castSkill(i); } finally { this.aimAng = void 0; }
     }
     castSkill(t) {
@@ -16820,7 +16820,7 @@ function ROXQM(f, c, s, l, def) {
   }
   {
     {
-      const WJ = { sword: ["berserker", "escudeiro", "valquiria", "thay"], axe: ["berserker", "escudeiro"], bow: ["cacador", "skald"], staff: ["volva", "valquiria", "skald"], spear: ["berserker", "valquiria", "cacador"], dagger: ["thay", "cacador", "escudeiro", "skald"], fist: ["thay", "valquiria", "berserker"], mace: ["escudeiro", "valquiria", "berserker"] };
+      const WJ = {}; for (const [ln, cd] of Object.entries(Ce)) if (ln !== "aprendiz") for (const wt of cd.weapons || []) (WJ[wt] ??= []).push(ln);
       for (const it of Object.values(Wa)) if (it.kind === "weapon" && it.weaponType && !it.allowedJobs?.length && WJ[it.weaponType]) it.allowedJobs = WJ[it.weaponType];
     }
     {

@@ -1,3 +1,8 @@
+# v177
+- Auditoria geral. Corrigido: habilidade lançada com clique em um monstro lançava erro (alvo era somente-leitura) e falhava.
+- Corrigido: restrição de armas por classe agora segue exatamente as armas que cada classe pode usar (antes a dica mostrava classes que não podiam equipar).
+- Verificado sem problemas: referências de itens/monstros/NPCs/missões, 98 mapas x 7 classes, painéis, salvar/carregar, stats sem NaN, portais.
+
 # v176
 - Deserto das Estrelas Mortas: música própria, lenta e triste (menor, flauta solitária, bordão grave).
 - Cidades: bancos reduzidos a no máx. 4, só perto de fonte/poço/igreja/estátua.
