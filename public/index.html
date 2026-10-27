@@ -10847,7 +10847,7 @@ Error generating stack: ` + n.message + `
       for (let l of a.drops) {
         let c = $(l.item), d = c && Pt(c.kind) ? fM[c.rarity] * (a.boss ? 2 : 1) : l.chance;
         if (this.rng() < Math.min(1, d * this.mods.drop * (t.golden ? ql.drop : 1))) {
-          this.spawnLoot(l.item, Vm(this.rng, l.min, l.max), t.pos);
+          this.spawnLoot(l.item, 1, t.pos);
           let f = c;
           f && (f.kind === "card" || f.rarity === "rare" || f.rarity === "epic" || f.rarity === "legendary") && this.emit({ type: "rareDrop", itemId: l.item, monster: a.name, mvp: !!a.boss });
         }
