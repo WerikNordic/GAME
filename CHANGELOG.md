@@ -1,3 +1,9 @@
+# v176
+- Deserto das Estrelas Mortas: música própria, lenta e triste (menor, flauta solitária, bordão grave).
+- Cidades: bancos reduzidos a no máx. 4, só perto de fonte/poço/igreja/estátua.
+- Falcão: agora exige a habilidade Adestrar Falcão (nível 10, 1 ponto, aba Habilidades) e falar com Hrafn, Adestrador de Falcões, no nordeste da Cidade de Midgard.
+- Guildas por classe com Mestre da Guilda: Arqueiros em Midgard, Espadachins em Kharnheim, Mercadores em Handelsvik, Magos em Isenborg, Noviços em Gladsheim, Gatunos em Eldvik, Thays em Helvik. Registro dá 500 Zeny; treino diário dá +10% ataque e +5% crítico por 10 min.
+
 # v175
 - Mapas de caça maiores (4200x2800, +25%) com densidade de monstros ~+27%.
 - Portais com spawn dinâmico; 3 retornos de cidade que caíam dentro de obstáculos (Eldvik, Solvik, Gladsheim) corrigidos.
