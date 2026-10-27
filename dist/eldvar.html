@@ -7897,6 +7897,40 @@ Error generating stack: ` + n.message + `
     let off = (e) => { if (!m.contains(e.target)) m.remove(), removeEventListener("pointerdown", off, true), removeEventListener("keydown", off2, true); }, off2 = (e) => { e.key === "Escape" && (m.remove(), removeEventListener("pointerdown", off, true), removeEventListener("keydown", off2, true)); };
     setTimeout(() => { addEventListener("pointerdown", off, true), addEventListener("keydown", off2, true); }, 50);
   }
+  function plMenu(x, y, q) {
+    let ps = j.ps;
+    if (!ps || !q?.name) return;
+    window.__petMenuAt = Date.now();
+    if (!window.__petCtx) window.__petCtx = true, window.addEventListener("contextmenu", (e) => { Date.now() - (window.__petMenuAt ?? 0) < 700 && e.preventDefault(); });
+    petClose();
+    document.getElementById("eld-plmenu")?.remove();
+    let nm = q.name, lo = nm.toLowerCase(), blocked = (ps.blocked ?? []).some((b) => b.toLowerCase() === lo), friend = (ps.friends ?? []).some((b) => b.toLowerCase() === lo);
+    let m = document.createElement("div");
+    m.id = "eld-plmenu";
+    m.style.cssText = `position:fixed;left:${Math.min(x, innerWidth - 200)}px;top:${Math.min(y, innerHeight - 250)}px;z-index:80;background:#2a1c10;border:2px solid #c9a23a;border-radius:8px;box-shadow:0 6px 20px #000a;min-width:180px;overflow:hidden;font:600 13px system-ui,sans-serif;color:#f1e3c0`;
+    const it = (lbl, fn) => `<div class="pm-i" data-f="${fn}" style="padding:8px 12px;cursor:pointer;border-bottom:1px solid #4a3418">${lbl}</div>`;
+    let cls = Ce[q.line]?.names?.[Math.min(q.tier ?? 0, 2)] ?? "Aventureiro";
+    m.innerHTML = `<div style="padding:6px 12px;background:#150e06;font-weight:700">\u2694 ${nm.replace(/</g, "&lt;")} \u00B7 Nv ${q.level ?? "?"}</div>` + it("\uD83D\uDCAC Sussurrar", "w") + it("\uD83D\uDC65 Convidar para o grupo", "inv") + it(friend ? "\u2796 Remover dos amigos" : "\u2795 Adicionar aos amigos", "fr") + it("\uD83D\uDD0D Inspecionar", "ins") + it(blocked ? "\u2705 Desbloquear" : "\uD83D\uDEAB Bloquear", "bl");
+    m.addEventListener("pointerdown", (e) => e.stopPropagation());
+    m.querySelectorAll(".pm-i").forEach((el) => {
+      el.onmouseenter = () => el.style.background = "#4a3418"; el.onmouseleave = () => el.style.background = "";
+      el.onclick = () => {
+        let f = el.dataset.f; m.remove();
+        if (f === "w") window.dispatchEvent(new CustomEvent("eldvar:pm-open", { detail: { name: nm } }));
+        else if (f === "inv") MP.ok && !j.online ? j.serverSocial("party", "invite", nm) : j.socialCmd("grupo", "convidar " + nm);
+        else if (f === "fr") j.socialCmd("amigo", (friend ? "remover " : "add ") + nm), j.refresh();
+        else if (f === "ins") j.pushLog(`${nm} \u2014 ${cls}, N\u00EDvel ${q.level ?? "?"}${q.afk ? " (AFK)" : ""}.`, "system", "info"), j.toast(`${nm}: ${cls} Nv ${q.level ?? "?"}`, "info"), j.refresh();
+        else if (f === "bl") {
+          ps.blocked || (ps.blocked = []);
+          blocked ? ps.blocked = ps.blocked.filter((b) => b.toLowerCase() !== lo) : ps.blocked.push(nm);
+          j.pushLog(blocked ? `${nm} desbloqueado.` : `${nm} bloqueado: voc\u00EA n\u00E3o ver\u00E1 o chat dele(a).`, "system", blocked ? "info" : "good"), j.saveGameQuiet(), j.refresh();
+        }
+      };
+    });
+    document.body.appendChild(m);
+    let off = (e) => { if (!m.contains(e.target)) m.remove(), removeEventListener("pointerdown", off, true), removeEventListener("keydown", off2, true); }, off2 = (e) => { e.key === "Escape" && (m.remove(), removeEventListener("pointerdown", off, true), removeEventListener("keydown", off2, true)); };
+    setTimeout(() => { addEventListener("pointerdown", off, true), addEventListener("keydown", off2, true); }, 50);
+  }
   function eldMini(tab) {
     if (typeof document === "undefined") return;
     let ex = document.getElementById("eld-mini");
@@ -12394,6 +12428,7 @@ Error generating stack: ` + n.message + `
         }
         for (let k of [...this.others.keys()]) seen.has(k) || this.others.delete(k);
         for (let m of r.msgs) {
+          if ((j.ps?.blocked ?? []).some((b) => b.toLowerCase() === String(m.f).toLowerCase())) continue;
           if (m.t) {
             j.pushLog(`De ${m.f}: ${m.b}`, "sussurro", "info"), j.toast(`${m.f}: ${m.b}`, "info"), window.dispatchEvent(new CustomEvent("eldvar:pm-in", { detail: { from: m.f, text: m.b } }));
           } else if (m.c) {
@@ -17643,6 +17678,9 @@ function ROXQM(f, c, s, l, def) {
           petMenu(t.clientX, t.clientY);
           return;
         }
+        { let w0 = this.store.world, np2 = w0 && this.toScreenPt(t.clientX, t.clientY), best = null, bd = 34;
+          if (w0) for (let q of [...w0.others, ...this.store.afkOthers(w0.map.id)]) { let sp = ce(q.x, q.y), d0 = Math.hypot(np2.x - sp.x, np2.y - (sp.y - 26)); d0 < bd && (bd = d0, best = q); }
+          if (best) { plMenu(t.clientX, t.clientY, best); return; } }
         this.store.armedSkill != null && this.store.setArmed(null);
         this.drag = { x: t.clientX, y: t.clientY };
         return;
