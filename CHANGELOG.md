@@ -1,3 +1,6 @@
+## v214 — Pixels dos personagens mais nítidos
+- Sprites de personagens/NPCs renderizados com ~1,6x mais resolução (mesmo tamanho na tela), contorno reforçado: mais detalhe, menos serrilhado.
+
 ## v213 — Volta ao cabelo/cabeça anteriores
 - Removidos a cabeça "Original Eldvar" e os 90 penteados das tabelas; cabeças e cortes voltam ao que era na v208.
 

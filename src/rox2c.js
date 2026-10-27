@@ -11,7 +11,7 @@
     };
     const I = new Img(w, h); const P = mk(anim, t); const out = prep(P, t);
     for (const [k2, q] of out) { if (k2 === "e") ellipsoid(I, K, q); else strip(I, K, q); }
-    outline(I, 200);
+    outline(I, 200); outline(I, 200);
     const px = (x, y, c) => { x = Math.round(x); y = Math.round(y); put(I, x, y, 1e9, c, 255); };
     if (P.armed) {
       const N = 4, dt = .028, hist = [P.mk];

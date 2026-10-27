@@ -292,7 +292,7 @@
   const PERS = { slash: 1.5, quick: 1.1, cast: 1.6, stab: 1.3, shoot: 1.4, punch: 1.0 };
   const KDIR = { down: 0, dq: 1, side: 2, uq: 3, up: 4 };
   const WALK = { p: 1.0, a: .78, m: 1.4 };
-  const SCALE = 1.3, CW = 184, GYY = 170, KS = 1.06;
+  const SCALE = 2.1, CW = 300, GYY = 275, KS = 0.656;
   function ROX2(e, dir, frame, lvl, style) {
     const cls = e.cls, D = DES[cls] || DES.npc; if (!D) return null;
     if (DES[cls]) { e = { ...e, head: e.eqHead || "none" }; if (!e.eqBack) { e.cape = undefined; e.quiver = false; e.wingsBack = undefined; } }
