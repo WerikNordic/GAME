@@ -1,3 +1,8 @@
+## v193
+- Sala VIP agora é um espaço físico: ao falar com a Recepcionista nas cidades, você é teletransportado para o Salão VIP (mapa próprio, interno, sem chuva/noite): piso de mármore, paredes brancas com detalhes dourados e vermelho, colunas, tapete vermelho com medalhão, plataforma com trono, bar com garrafas, baús de ouro, sofás e mesas, plantas, bráseiros e música de salão (harpa).
+- Dentro: a Recepcionista Dourada (passe e regalias) e o mordomo Gunnar (Loja VIP). Portal dourado no fundo volta exatamente para o lugar de onde você veio (guardado no save).
+- Tapetes e portal são decoração de chão: não bloqueiam, o personagem anda por cima.
+
 ## v192
 - Asas (Corvo, Luz, Brasa) voltaram a aparecer nas costas do personagem (o renderizador novo não as desenhava), com leve bater de asas ao andar.
 - Armas não aparecem mais na mão do personagem (sem visual de arma); dano, alcance e efeitos de ataque continuam iguais.
