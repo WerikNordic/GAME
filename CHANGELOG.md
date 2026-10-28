@@ -1,3 +1,6 @@
+## v221 — Cabeça menos alta
+- Altura da cabeça reduzida (~16%), largura quase igual: proporção mais curta e natural.
+
 ## v220 — Cabeça menor e chão mais nítido
 - Cabeça dos personagens ~13% menor.
 - Chão de todos os mapas com ~1,6x mais resolução nos mapas grandes (cidades, campos): calçada e grama mais detalhadas.
