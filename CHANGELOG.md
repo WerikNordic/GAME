@@ -697,3 +697,7 @@
 
 ## v243
 - Tela de login desativada por enquanto (AUTH_ON=false); o jogo abre direto no menu. Para reativar: AUTH_ON = true.
+
+## v244
+- Balanceamento (simulacao de progressao nv1-99, 7 classes): monstros de nivel 40+ (jarn/hverg/valh/vig) tinham HP ~1,1k e ATQ ~100 (triviais). Agora HP, ATQ, DEF e EXP acompanham a curva do jogador (~10-13s por monstro, 10-25% da vida por luta). Bosses 3x HP / 1.6x ATQ do normal.
+- Monstros de nivel 28-49 com HP exagerado (ilhas/mares, ate 20k) limitados a ~24x o ATQ do jogador, com EXP proporcional.

@@ -19991,6 +19991,22 @@ const PETSCH=[['stand',2.6,6],['sniff',2,8],['stand',1.6,5],['sit',3.4,6],['look
     for (const [iid, c] of Object.entries(CX_)) { const w = Wa[iid], r = RI[c.rar] ?? 0, pool = MT[r], k = n++; const a = pool[k % 5], b2 = pool[(k + 2) % 5], big = r >= 2;
       RQ.push({ id: "vx_" + c.id, kind: "look", name: w.name, desc: "", need: big ? [[a, 6 + r * 2], [b2, 3 + r], [MT[3][k % 5], 1 + (r > 2 ? 1 : 0)]] : [[a, 8 + r * 6], [b2, 4 + r * 4]], reward: iid }); } }
 (() => { let prev = 0; for (const d of Object.values(Qu).filter((x) => x.boss && x.id !== "jormungandr").sort((x, y) => x.level - y.level)) { if (d.hp < prev * 1.05) d.hp = Math.round(prev * 1.05); prev = d.hp; } })();
+(() => {
+  // balanceamento late-game: HP/ATQ/EXP dos monstros de nivel 40+ acompanham a curva do jogador
+  const AT = [[1, 21], [10, 102], [20, 190], [30, 335], [40, 459], [50, 593], [60, 836], [70, 1009], [80, 1197], [90, 1400], [99, 1590]];
+  const atkP = (L) => { for (let i = 1; i < AT.length; i++) if (L <= AT[i][0]) { const [a, x] = AT[i - 1], [b, y] = AT[i]; return x + (y - x) * (L - a) / (b - a); } return 1590; };
+  for (const d of Object.values(Qu)) {
+    if (d.id === "jormungandr" || d.hp > 4e5) continue;
+    if (!d.boss && d.level >= 28 && d.level < 50) { const cap = Math.round(24 * atkP(d.level)); if (d.hp > cap) { d.exp = Math.max(1, Math.round(d.exp * cap / d.hp * 1.4)); d.hp = cap; } }
+    if (d.level < 40) continue;
+    const L = d.level, hpT = Math.round(12 * atkP(L)), u8 = 100 / (100 + 3.1 * L * 1.5), atT = Math.round(0.0214 * 42 * L * 1.9 / u8 * 0.6);
+    const bm = d.boss ? 3 : 1;
+    if (d.hp < hpT * bm) d.hp = hpT * bm;
+    if (d.atk < atT * (d.boss ? 1.6 : 1)) d.atk = Math.round(atT * (d.boss ? 1.6 : 1));
+    if (d.exp < Math.round(d.hp * 0.12)) d.exp = Math.round(d.hp * 0.12);
+    if (d.def < L * 0.9) d.def = Math.round(L * 0.9);
+  }
+})();
 var QCACHE = /* @__PURE__ */ new Map();
 function ROXQM(f, c, s, l, def, ex) {
   if (!["wolf", "frostwolf", "hati", "boar", "horse", "montaria", "cao", "gato", "raposa", "coelho", "yeti", "blob", "goblin", "draugr", "cinder", "automaton", "sylvan", "prism", "sentinel", "voidling", "jotun", "grifo", "corvo", "peixe", "medusa", "polvo", "tubarao"].includes(f) || typeof ROX === "undefined" || typeof location < "u" && /[?&]old\b/.test(location.search)) return null;
