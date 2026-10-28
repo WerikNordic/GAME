@@ -8706,7 +8706,7 @@ Error generating stack: ` + n.message + `
         case "eira":
           return { x: d + Math.cos(re) * 380, y: k + Math.sin(re) * 380 };
         case "estilista":
-          return { x: d + G * 280, y: 2300 + x() * 800 };
+          return { x: d + 230, y: k - 430 };
         case "checkpoint":
           return { x: d - 560, y: k - 130 };
         case "questor":
@@ -8720,11 +8720,11 @@ Error generating stack: ` + n.message + `
         case "brokk":
           return { x: 3800 + x() * 500, y: k + 60 };
         case "lider":
-          return { x: d - 300, y: k + 330 };
+          return { x: d - 235, y: k + 175 };
         case "mestre_jogos":
           return { x: d + 300, y: k + 330 };
         case "provador":
-          return { x: d + 560, y: k + 250 };
+          return { x: d + 350, y: k + 175 };
         case "utilidades":
           return { x: d + 115, y: k + 175 };
         case "paihomun":
@@ -8734,7 +8734,7 @@ Error generating stack: ` + n.message + `
         case "aeronave":
           return { x: d + 300, y: k + 400 };
         case "salavip":
-          return { x: d - 600, y: k + 330 };
+          return { x: d + 235, y: k + 175 };
         case "curandeira":
           return { x: d, y: k + 170 };
         case "papainoel":
@@ -8751,7 +8751,7 @@ Error generating stack: ` + n.message + `
           return { x: d + G * 300, y: k + 500 };
       }
     }, M = [];
-    const FIXN = new Set(["curandeira", "munin", "utilidades", "aeronave", "barqueiro", "salavip", "ylva", "torvald"]);
+    const FIXN = new Set(["curandeira", "lider", "provador", "estilista", "munin", "utilidades", "aeronave", "barqueiro", "salavip", "ylva", "torvald"]);
     const rp = () => { if (x() < 0.4) return { x: d + (x() - 0.5) * (Wo.avenue - 120), y: tt2.palaceY + 760 + x() * (a - 1150 - tt2.palaceY) }; const sy = [k, tt2.streetN, tt2.streetS][Math.floor(x() * 3)]; return { x: c.x + 160 + x() * (c.w - 320), y: sy + (x() - 0.5) * (Wo.street - 90) }; };
     const pn = (id) => FIXN.has(id) ? w(id) : rp();
     for (let _ of [...e.npcs].sort((q1, q2) => (q2.id === "curandeira") - (q1.id === "curandeira"))) {
@@ -8760,11 +8760,11 @@ Error generating stack: ` + n.message + `
       M.push({ id: _.id, x: Math.round(G.x), y: Math.round(G.y) });
     }
     let wk = (_) => ST.wall !== "ruined" || rs() > 0.16;
-    for (let _ = c.x; _ <= c.x + c.w; _ += 56) wk() && s("wall", _, c.y), (_ < f.from - 20 || _ > f.to) && wk() && s("wall", _, c.y + c.h);
-    for (let _ = c.y + 56; _ < c.y + c.h; _ += 56) wk() && s("wall_v", c.x, _), wk() && s("wall_v", c.x + c.w, _);
-    for (let [_, G] of [[c.x, c.y], [c.x + c.w, c.y], [c.x, c.y + c.h], [c.x + c.w, c.y + c.h], [f.from - 40, c.y + c.h], [f.to + 40, c.y + c.h]]) s("tower", _, G);
-    for (let _ = c.x + 448; _ < c.x + c.w - 100; _ += 448) ST.wall === "palisade" ? (s("brazier", _, c.y + 40), Math.abs(_ - d) > 200 && s("brazier", _, c.y + c.h - 40)) : (s("tower", _, c.y), Math.abs(_ - d) > 200 && s("tower", _, c.y + c.h));
-    for (let _ = c.y + 560; _ < c.y + c.h - 100; _ += 560) ST.wall === "palisade" ? (s("brazier", c.x + 40, _), s("brazier", c.x + c.w - 40, _)) : (s("tower", c.x, _), s("tower", c.x + c.w, _));
+    if (0) for (let _ = c.x; _ <= c.x + c.w; _ += 56) wk() && s("wall", _, c.y), (_ < f.from - 20 || _ > f.to) && wk() && s("wall", _, c.y + c.h);
+    if (0) for (let _ = c.y + 56; _ < c.y + c.h; _ += 56) wk() && s("wall_v", c.x, _), wk() && s("wall_v", c.x + c.w, _);
+    if (0) for (let [_, G] of [[c.x, c.y], [c.x + c.w, c.y], [c.x, c.y + c.h], [c.x + c.w, c.y + c.h], [f.from - 40, c.y + c.h], [f.to + 40, c.y + c.h]]) s("tower", _, G);
+    if (0) for (let _ = c.x + 448; _ < c.x + c.w - 100; _ += 448) ST.wall === "palisade" ? (s("brazier", _, c.y + 40), Math.abs(_ - d) > 200 && s("brazier", _, c.y + c.h - 40)) : (s("tower", _, c.y), Math.abs(_ - d) > 200 && s("tower", _, c.y + c.h));
+    if (0) for (let _ = c.y + 560; _ < c.y + c.h - 100; _ += 560) ST.wall === "palisade" ? (s("brazier", c.x + 40, _), s("brazier", c.x + c.w - 40, _)) : (s("tower", c.x, _), s("tower", c.x + c.w, _));
     s("arch", d, c.y + c.h + 8);
     let T = Wo.avenue, z = Wo.street, I = { x: d - T / 2, y: tt2.palaceY + 560, w: T, h: a - (tt2.palaceY + 560) - 20 }, J = { x: c.x + 14, y: tt2.plazaY - T / 2, w: c.w - 28, h: T }, D = { x: d - 600, y: tt2.plazaY - 450, w: 1200, h: 900 };
     p.push(I, J, D), m(I.x - 20, I.y, I.w + 40, I.h), m(J.x, J.y - 20, J.w, J.h + 40), m(D.x - 20, D.y - 20, D.w + 40, D.h + 40);
@@ -9114,6 +9114,8 @@ Error generating stack: ` + n.message + `
       for (let _ of r) _.x = t - _.x;
     }
     if (e.id === "cidade_isenborg") for (let q of o.filter((z) => z.kind === "deco" && z.deco === "frosttree")) o.push({ kind: "deco", deco: "giftpile", x: q.x + q.w / 2 + 6, y: q.y + q.h + 4, w: 26, h: 20 });
+    { const STR = new Set(["lamp", "bench", "brazier", "cart", "stall", "well", "planter", "tent", "campfire", "giftpile", "barrel", "spiritlamp", "post", "banner"]), pv2 = p.filter((q) => Math.min(q.w, q.h) >= 40);
+      o = o.filter((q) => !(q.kind === "deco" && STR.has(q.deco) && pv2.some((z) => q.x + q.w / 2 > z.x - 4 && q.x + q.w / 2 < z.x + z.w + 4 && q.y + q.h / 2 > z.y - 4 && q.y + q.h / 2 < z.y + z.h + 4))); }
     return { id: e.id, name: e.name, width: t, height: a, spawn: { x: d, y: a - 420 }, safeZone: { x: c.x, y: c.y, w: c.w, h: c.h }, obstacles: tidyCity(e.id === "cidade_eldvik" ? o.filter((q) => !(q.kind === "deco" && q.deco === "palm")) : e.id === "cidade_freyrhain" ? o.filter((q) => !(q.kind === "deco" && (q.deco === "lamp" || q.deco === "banner" || q.deco === "bench"))) : o, M), treeTheme: e.id === "cidade_eldvik" ? "dead" : void 0, critters: crit, spawns: [], maxMonsters: 0, npcs: M, pois: r, portals: [{ x: f.from, y: a - 60, w: f.to - f.from, h: 60, label: "Sa\xEDda da cidade", locked: false, toMap: e.from, toSpawn: { x: 130, y: 630 } }], bossDen: { x: t / 2, y: a / 2 + 600, r: 10 }, theme: e.theme, safeLabel: e.safeLabel, scars: [], mood: e.mood, city: true, paved: e.id === "cidade_freyrhain" ? [] : p };
   }
   var Hr = (...e) => [...new Set(["arauto", "ottar", "bruna", "brokk", "munin", "sigrun", "estilista", "provador", "utilidades", "cronista", "checkpoint", "questor", "lider", "mestre_jogos", "salavip", "aeronave", "barqueiro", "curandeira", ...e])].map((t) => ({ id: t, x: 0, y: 0 })), D8 = [{ id: "cidade_midgard", name: "Cidade de Midgard", seed: 7e3, theme: "grass", from: "campos_midgard", safeLabel: "Pra\xE7a de Midgard", npcs: Hr("eira", "curandeira", "montaria"), grand: "palace", grandName: "Sal\xE3o do Jarl" }, { id: "cidade_ravnhaven", name: "Cidade de Ravnhaven", seed: 7101, theme: "grass", from: "midgard_brumaforte", safeLabel: "Pra\xE7a do Corvo", npcs: Hr(), grand: "castle", grandName: "Fortaleza do Corvo" }, { id: "cidade_isenborg", name: "Cidade de Isenborg", seed: 7202, theme: "snow", from: "jotunheim_aldeia", safeLabel: "Pra\xE7a da Geada", npcs: Hr("ylva", "torvald", "papainoel", "paihomun"), grand: "castle", grandName: "Cidadela de Gelo", mood: [0.92, 0.96, 1] }, { id: "cidade_eldvik", name: "Cidade de Eldvik", seed: 7303, theme: "sand", from: "muspel_cinzas", safeLabel: "Pra\xE7a das Brasas", npcs: Hr(), grand: "none", mood: [1.04, 0.96, 0.84] }, { id: "cidade_kharnheim", name: "Cidade de Kharnheim", seed: 7404, theme: "forge", from: "svart_mercado", safeLabel: "Pra\xE7a da Bigorna", npcs: Hr(), grand: "palace", grandName: "Grande Sal\xE3o da Bigorna", mood: [1, 0.9, 0.85] }, { id: "cidade_freyrhain", name: "Cidade de Freyrhain", seed: 7505, theme: "lush", from: "vana_santuario", safeLabel: "Pra\xE7a das Ra\xEDzes", npcs: Hr(), grand: "palace", grandName: "Pal\xE1cio das Ra\xEDzes" }, { id: "cidade_gladsheim", name: "Cidade de Gladsheim", seed: 7606, theme: "marble", from: "asg_praca", safeLabel: "Pra\xE7a dos Aesir", npcs: Hr(), grand: "both", grandName: "Sal\xE3o dos Aesir" }, { id: "cidade_skogvik", name: "Cidade de Skogvik", seed: 7707, theme: "wood", from: "midgard_bosque", safeLabel: "Pra\xE7a das Copas", npcs: Hr(), grand: "palace", grandName: "Pagode do Conselho", mood: [0.96, 1, 0.94] }, { id: "cidade_handelsvik", name: "Cidade de Handelsvik", seed: 7808, theme: "grass", from: "midgard_lago", safeLabel: "Cais dos Mercadores", npcs: Hr(), grand: "castle", grandName: "Sal\xE3o da Guilda", mood: [1, 1, 1.04] }, { id: "cidade_solvik", name: "Cidade de Solvik", seed: 7909, theme: "tropic", from: "vana_pantano", safeLabel: "Praia das Festas", npcs: Hr(), grand: "none", mood: [1.05, 1.02, 0.96] }, { id: "cidade_helvik", name: "Cidade de Helvik", seed: 8010, theme: "dead", from: "niflheim_catacumbas", safeLabel: "Pra\xE7a dos Sussurros", npcs: Hr(), grand: "palace", grandName: "Mausol\xE9u de Hel", mood: [0.7, 0.8, 0.86] }];
@@ -9573,6 +9575,11 @@ Error generating stack: ` + n.message + `
     return n.qty -= r, n.qty === 0 && (e.slots[t] = null), { ok: true, msg: `${o?.name ?? n.id} x${r} descartado.` };
   }
   function Xu(e, t) {
+    const it = e.inventory.slots[t], d = it && $(it.id), r = Xu0(e, t);
+    if (r.ok && d) { const u = d.use || {}, k = d.dye !== void 0 ? "dye" : (u.hp || u.hpPct) && (u.mp || u.mpPct) ? "both" : (u.hp || u.hpPct) ? (/carne|pao|peixe|ensopado|banquete|fruta|morango|rum|hidromel|buque/.test(d.id) ? "food" : "hp") : (u.mp || u.mpPct) ? "mp" : "buff"; try { window.__ufx = { t: performance.now(), kind: k }; } catch {} }
+    return r;
+  }
+  function Xu0(e, t) {
     let a = e.inventory.slots[t];
     if (!a) return { ok: false, msg: "Slot vazio." };
     let n = $(a.id);
@@ -11318,7 +11325,7 @@ Error generating stack: ` + n.message + `
     updateMonster(t, a) {
       let n = t.def, o = a / 1e3, r = this.player, i = r.deadAt === null && !this.inSafeZone(r.pos) && this.time >= 3e3, s = Be(t.pos, r.pos), l = n.speed * t.speedMul * (this.time < t.slowUntil ? 0.5 : 1);
       if (this.time < t.stunUntil) return;
-      let c = ro(n.ai) === "plant", d = { targetVisible: i, dTarget: s, aggro: n.aggro, attackRange: n.attackRange, provoked: t.provoked, hpFrac: t.hp / t.maxHp, distHome: Be(t.pos, t.home), leash: n.leash, fleeUntilPassed: this.time >= t.fleeUntil, fleeSafeDistance: s > n.aggro * 1.6 };
+      let c = ro(n.ai) === "plant", d = { targetVisible: i, dTarget: s, aggro: n.aggro, attackRange: n.attackRange, provoked: t.provoked, hpFrac: t.hp / t.maxHp, distHome: Be(t.pos, t.home), leash: n.boss ? n.leash : Math.max(n.leash, 7000), fleeUntilPassed: this.time >= t.fleeUntil, fleeSafeDistance: s > n.aggro * 1.6 };
       switch (t.state) {
         case "idle": {
           let f = Al("wandering", d, n.ai);
@@ -11335,7 +11342,7 @@ Error generating stack: ` + n.message + `
             break;
           }
           if (c || this.lootStep(t, l, o, a)) break;
-          t.hp < t.maxHp && (t.hp = Math.min(t.maxHp, t.hp + t.maxHp * 0.03 * o)), this.time >= t.nextWanderAt && (t.wander = { x: t.home.x + (this.rng() - 0.5) * 120, y: t.home.y + (this.rng() - 0.5) * 120 }, t.nextWanderAt = this.time + 2e3 + this.rng() * 3e3), Be(t.pos, t.wander) > 6 && this.steer(t, t.wander, l * 0.4, o, a);
+          t.hp < t.maxHp && (t.hp = Math.min(t.maxHp, t.hp + t.maxHp * 0.03 * o)), this.time >= t.nextWanderAt && (t.wander = n.boss ? { x: t.home.x + (this.rng() - 0.5) * 120, y: t.home.y + (this.rng() - 0.5) * 120 } : { x: Math.max(90, Math.min(this.map.width - 90, t.pos.x + (this.rng() - 0.5) * 900)), y: Math.max(90, Math.min(this.map.height - 90, t.pos.y + (this.rng() - 0.5) * 900)) }, t.nextWanderAt = this.time + 2e3 + this.rng() * 3e3), Be(t.pos, t.wander) > 6 && this.steer(t, t.wander, l * (n.boss ? 0.4 : 0.55), o, a);
           break;
         }
         case "chase": {
@@ -13280,7 +13287,7 @@ Error generating stack: ` + n.message + `
     useItemAt(t) {
       if (!this.ps) return;
       let it0 = this.ps.inventory.slots[t], d0 = it0 && $(it0.id);
-      if (d0?.special) { let r0 = this.useSpecial(d0, t); this.toast(r0.msg, r0.ok ? "good" : "bad"), r0.ok && this.saveGameQuiet(), this.refresh(); return; }
+      if (d0?.special) { let r0 = this.useSpecial(d0, t); r0.ok && (window.__ufx = { t: performance.now(), kind: "wing" }); this.toast(r0.msg, r0.ok ? "good" : "bad"), r0.ok && this.saveGameQuiet(), this.refresh(); return; }
       let a = Xu(this.ps, t);
       this.toast(a.msg, a.ok ? "good" : "bad"), this.refresh();
     }
@@ -14356,6 +14363,7 @@ Error generating stack: ` + n.message + `
   function os(e) {
     let t = Hv.get(e);
     if (t) return t;
+    if (e === "poring_saltitante") { try { let cv = document.createElement("canvas"); cv.width = cv.height = 48; let g = cv.getContext("2d"); g.translate(24, 28); g.scale(1.9, 1.9); let gr = g.createRadialGradient(-3, -5, 1, 0, 0, 12); gr.addColorStop(0, "#ffd6e2"), gr.addColorStop(0.6, "#ff9cb8"), gr.addColorStop(1, "#e0688a"); g.fillStyle = gr, g.strokeStyle = "#a83a60", g.lineWidth = 1.4, g.beginPath(), g.ellipse(0, 0, 11, 9, 0, 0, 7), g.fill(), g.stroke(); g.fillStyle = "rgba(255,255,255,.75)", g.beginPath(), g.ellipse(-4, -4, 3, 1.8, -0.5, 0, 7), g.fill(); g.fillStyle = "#2a1a20", g.beginPath(), g.ellipse(-3.6, 0, 1.3, 2, 0, 0, 7), g.ellipse(3.6, 0, 1.3, 2, 0, 0, 7), g.fill(); g.strokeStyle = "#2a1a20", g.lineWidth = 1, g.beginPath(), g.arc(0, 3, 2, 0.2, 2.9), g.stroke(); Hv.set(e, cv); return cv; } catch (err) { } }
     if (CX_[e]) { try { t = cxIcon(e); Hv.set(e, t); return t; } catch (err) { } }
     let a = new Me(ir, ir), n = $(e);
     return n ? n.kind === "weapon" ? jM(a, n) : n.kind === "armor" ? BM(a, n) : n.kind === "accessory" ? IM(a, n) : n.kind === "back" ? BKI(a, n) : n.kind === "headTop" || n.kind === "headMid" || n.kind === "headLow" ? UM(a, n) : n.kind === "consumable" ? VM(a, n) : n.kind === "card" ? XM(a, n) : n.kind === "ammo" ? $M(a, n) : n.kind === "quest" ? Ov(a) : n.socket || he(n.id, "runa") ? QM(a, n) : YM(a, n) : Ov(a), (() => { let m_ = /_t(\d+)$/.exec(e); if (!m_) return; let ti_ = (+m_[1] - 16) / 8, k_ = ti_ >= 9 ? 5 : ti_ >= 6 ? 4 : ti_ >= 3 ? 3 : ti_ >= 1 ? 2 : 1, pc_ = P(ti_ >= 6 ? 16777215 : 15254090); for (let q_ = 0; q_ < k_; q_++) a.dot(3 + q_ * 3, 29, pc_), a.dot(3 + q_ * 3, 30, pc_); })(), a.outline(), t = a.toCanvas(), Hv.set(e, t), t;
@@ -15271,7 +15279,7 @@ void main() {
   function a4(e) {
     let t = zpOf(e), a = Math.ceil(e.width / t), n = Math.ceil(e.height / t), o = document.createElement("canvas");
     o.width = a, o.height = n;
-    let r = o.getContext("2d"), i = r.createImageData(a, n), s = i.data, l = e.theme ?? "grass", c = gk[l], d = l === "fire" || l === "forge", f = bk(e), u = e.obstacles.filter((w) => w.kind === "water"), m = e.safeZone, p = e.city ? e.paved ?? [] : [], h = e.city ? 4 : 18, x = e.bossDen, b = x.r >= 30, g = (w, M, T) => {
+    let r = o.getContext("2d"), i = r.createImageData(a, n), s = i.data, l = e.theme ?? "grass", c = gk[l], d = l === "fire" || l === "forge", f = bk(e), u = e.obstacles.filter((w) => w.kind === "water"), m = e.safeZone, p = e.city && e.id !== "cidade_isenborg" ? e.paved ?? [] : [], h = e.city ? 4 : 18, x = e.bossDen, b = x.r >= 30, g = (w, M, T) => {
       if (w < 0 || M < 0 || w >= a || M >= n) return;
       let z = (M * a + w) * 4, [I, J, D] = hk(T);
       s[z] = I, s[z + 1] = J, s[z + 2] = D, s[z + 3] = 255;
@@ -21233,7 +21241,7 @@ function ROXQM(f, c, s, l, def, ex) {
         let H = ce(q.x, q.y);
         M(H.x, H.y) && (z.add(`o${q.id}`), T.push({ depth: Ja(q.x, q.y), draw: () => this.drawOther(q, t) }));
       }
-      for (let q of n.critters ?? []) { this.stepCritter(q); let H = ce(q.x, q.y); M(H.x, H.y) && T.push({ depth: Ja(q.x, q.y), draw: () => this.drawCritter(q) }); }
+      for (let q of n.critters ?? []) { this.stepCritter(q); let H = ce(q.x, q.y); M(H.x, H.y) && T.push({ depth: Ja(q.x, q.y + ((q.z || 0) > 20 ? 400 : 0)), draw: () => this.drawCritter(q) }); }
       T.push({ depth: m, draw: () => this.drawPlayer(t) }), a.mvpUntil > a.time && T.push({ depth: m + 4e3, draw: () => this.drawMvpPlate(a.player.pos, a.mvpUntil - a.time) }), a.ps.cart?.on && a.ps.line === "escudeiro" ? T.push({ depth: this._cart ? Ja(this._cart.x, this._cart.y) : m + 1, draw: () => this.drawCart() }) : this._cart = null, a.ps.vend?.open && T.push({ depth: m + 3, draw: () => this.drawVend() }), a.ps.baby && T.push({ depth: this._bb ? Ja(this._bb.x, this._bb.y) : m + 1, draw: () => this.drawBaby() }), falconOk(a.ps) && T.push({ depth: m + 40, draw: () => this.drawFalcon() }), homunOk(a.ps) && a.ps.homun.on ? T.push({ depth: this._hm ? Ja(this._hm.x, this._hm.y) : m + 1, draw: () => this.drawHomun() }) : this._hm = null, a.ps.pet && a.ps.petData && T.push({ depth: this._pet ? Ja(this._pet.x, this._pet.y) : m + 1, draw: () => this.drawPet() }), this.store.fx && Date.now() - this.store.fx.t0 < 3800 && T.push({ depth: m + 9, draw: () => this.drawBlessing(a.player.pos) });
       if (n.obstacles.some((q) => q.deco === "airship")) {
         let A2 = this.air;
@@ -21508,6 +21516,19 @@ function ROXQM(f, c, s, l, def, ex) {
       cp.x = x, cp.t = this.clock, cp.v += ((tg - cp.a) * 90 - cp.v * 7) * dt, cp.a += cp.v * dt, cp.a = Math.max(-0.16, Math.min(0.16, cp.a));
       return cp.q = cape && !w.sitting ? Math.round(cp.a / 0.16 * 3) : 0;
     }
+    useFx(x, y) {
+      const u = window.__ufx; if (!u) return; const age = (performance.now() - u.t) / 1000; if (age > 1.6) return;
+      const o = this.ctx, C = { hp: ["#ff5a6a", "#ffb0b8"], mp: ["#4aa8ff", "#a8d8ff"], both: ["#c070ff", "#f0c8ff"], food: ["#ffb347", "#ffe0a0"], dye: ["#ff6ad5", "#6affd8"], buff: ["#ffe070", "#fff6c0"], wing: ["#ffffff", "#bfe6ff"] }[u.kind] || ["#fff", "#fff"], fade = 1 - age / 1.6;
+      o.save(), o.globalCompositeOperation = "lighter";
+      o.globalAlpha = 0.5 * fade, o.strokeStyle = C[0], o.lineWidth = 3;
+      for (let k = 0; k < 2; k++) { const rr = 10 + ((age * 40 + k * 18) % 36); o.beginPath(), o.ellipse(x, y + 4, rr, rr * 0.4, 0, 0, 6.283), o.stroke(); }
+      for (let i = 0; i < 14; i++) {
+        const a0 = i * 2.399, ph = (age * 0.9 + i * 0.07) % 1, px = x + Math.cos(a0) * (8 + 8 * Math.sin(i)), py = y + 6 - ph * 62 - (i % 3) * 4;
+        o.globalAlpha = Math.max(0, 0.9 * fade * (1 - ph)), o.fillStyle = u.kind === "dye" ? `hsl(${(i * 40 + age * 300) % 360},90%,65%)` : C[i % 2];
+        if (u.kind === "hp" || u.kind === "food" || u.kind === "both") { o.fillRect(px - 1, py - 4, 2, 8), o.fillRect(px - 4, py - 1, 8, 2); } else { o.beginPath(), o.arc(px, py, 2.2 + (i % 3) * 0.6, 0, 6.283), o.fill(); }
+      }
+      o.restore();
+    }
     drawPlayer(t) {
       let a = this.store.world;
       if (!a) return;
@@ -21517,7 +21538,7 @@ function ROXQM(f, c, s, l, def, ex) {
       if (n.save(), n.globalAlpha = c ? 0.3 : 1, c) n.translate(r.x, r.y), n.rotate(Math.PI / 2), N4(() => nt(n, u, 0, 0, l, $a, $a));
       else {
         const wd0 = a.waterDepth(o.pos.x, o.pos.y), __body = () => {
-        this.blob(r.x, r.y + 4, 15), a.ps.level >= 99 && this.epicFx(r.x, r.y, 0);
+        this.blob(r.x, r.y + 4, 15), this.useFx(r.x, r.y), a.ps.level >= 99 && this.epicFx(r.x, r.y, 0);
         var mnt = a.ps.mount && a.ps.mountOwned, moff = mnt ? (a.sitting ? 37 : 47) : 0, atkM = this.clock - i.atkAt < Math.max(260, i.atkDur || 0), pl2 = 0, play2 = false, jy2 = 0;
         let m = this.organic(i, o.facing, { moving: i.moving, atkT: this.clock - i.atkAt, atkImpact: i.atkImpact, atkDur: i.atkDur, breath: a.sitting ? 8e-3 : 0.011 });
         a.sitting && (m.dx = 0, m.dy = 0, m.rot *= 0.3);
@@ -21749,6 +21770,24 @@ function ROXQM(f, c, s, l, def, ex) {
       const dt = Math.min(0.06, (now - q.lt) / 1000); q.lt = now; if (dt <= 0) return;
       const pp = w.player.pos, dx = q.x - pp.x, dy = q.y - pp.y, dist = Math.hypot(dx, dy) || 1, spd0 = { cao: 38, gato: 34, raposa: 40, coelho: 44, corvo: 20, gaivota: 20, abutre: 18 }[q.kind] || 30;
       const free = (x, y) => !w.map.obstacles.some((o) => o.kind !== "water" && x > o.x - 8 && x < o.x + o.w + 8 && y > o.y - 6 && y < o.y + o.h + 6) && x > 60 && y > 60 && x < w.map.width - 60 && y < w.map.height - 60;
+      if (bird) {
+        const hs = w.map._hs ?? (w.map._hs = w.map.obstacles.filter((o) => o.kind === "house" && o.w > 60));
+        if (hs.length) {
+          const pick = (far) => { let best = null; for (let k = 0; k < 6; k++) { const h = hs[Math.floor(Math.abs(Math.sin(now * 0.001 * (k + 1) + q.seed * 9.1 + k)) * hs.length) % hs.length]; if (!best || (far ? Math.hypot(h.x - pp.x, h.y - pp.y) > Math.hypot(best.x - pp.x, best.y - pp.y) : Math.hypot(h.x - q.x, h.y - q.y) < Math.hypot(best.x - q.x, best.y - q.y) && Math.hypot(h.x - q.x, h.y - q.y) > 20)) best = h; } return best; };
+          if (q.bs === void 0) { const h = hs[Math.floor(q.seed * 3.7) % hs.length]; q.bs = 0; q.tx = h.x + h.w / 2 + (q.seed % 1 - 0.5) * h.w * 0.5; q.ty = h.y + h.h * 0.55; q.x = q.tx; q.y = q.ty; q.z = 70; q.tt = now + 3000 + q.seed * 1500; q.h0 = 70; }
+          if (q.bs === 0) {
+            q.st = 0; q.z = 70 + Math.sin(now / 700 + q.seed) * 0.8;
+            if (dist < 130 || now > q.tt) { const h = pick(dist < 130); q.tx = h.x + h.w / 2 + (Math.sin(now + q.seed) * 0.25) * h.w; q.ty = h.y + h.h * 0.55; q.bs = 1; q.d0 = Math.hypot(q.tx - q.x, q.ty - q.y) || 1; q.fl = dist < 130 ? 1 : 0; }
+          } else {
+            q.st = 1; const ddx = q.tx - q.x, ddy = q.ty - q.y, dd = Math.hypot(ddx, ddy);
+            q.fa = Math.atan2(ddy, ddx); const sp = q.fl ? 150 : 95;
+            if (dd < 6) { q.bs = 0; q.x = q.tx; q.y = q.ty; q.z = 70; q.st = 0; q.tt = now + 7000 + Math.abs(Math.sin(now + q.seed)) * 9000; }
+            else { const m = Math.min(dd, sp * dt); q.x += ddx / dd * m; q.y += ddy / dd * m; const pr = 1 - dd / q.d0; q.z = 70 + Math.sin(Math.PI * Math.min(1, Math.max(0, pr))) * (q.fl ? 190 : 130); }
+          }
+          return;
+        }
+        q.z = Math.max(q.z || 0, 150);
+      }
       if (dist < (bird ? 120 : 140) && q.st !== 2 && !w.isDead?.()) { q.st = 2; q.tt = now + 2200; q.sp = 1; q.fa = Math.atan2(dy, dx); q.panic = now; }
       if (q.st === 2) {
         const sp = (bird ? 190 : { cao: 150, gato: 175, raposa: 170, coelho: 200 }[q.kind] || 150) * (dist < 220 ? 1 : 0.7);
@@ -21773,7 +21812,7 @@ function ROXQM(f, c, s, l, def, ex) {
       let o = this.ctx, bird = q.kind === "corvo" || q.kind === "abutre" || q.kind === "gaivota", r = ce(q.x, q.y), { dir: d, flip: f } = Kl(q.st === 2 ? q.fa : q.st === 1 ? q.fa : q.fa), mv = q.st === 1 || q.st === 2;
       let nm = bird ? "corvo" : q.kind, sc = { cao: 0.95, gato: 0.8, raposa: 0.95, coelho: 0.8, corvo: 0.55, gaivota: 0.55, abutre: 1.0 }[q.kind] || 0.9;
       let sp = ROXQM(nm, d, mv || bird ? Math.floor(this.clock / (q.st === 2 ? 70 : 120) % ea) : -1, 0, { id: "c_" + q.kind + (q.col || 0), color: q.col }, !mv ? { clk: this.clock, seed: Math.floor(q.seed * 10) % 97 } : void 0), z = q.z || 0;
-      sp && (this.blob(r.x, r.y + 2, bird ? 4 : 7), nt(o, sp, r.x, r.y + 3 - (bird ? 10 + z + (q.st === 0 ? Math.sin(this.clock / 300 + q.seed) * 2 : 0) : q.st === 2 ? Math.abs(Math.sin(this.clock / 90 + q.seed)) * 3 : 0), f, $a * sc, $a * sc));
+      sp && ((z < 30) && this.blob(r.x, r.y + 2, bird ? 4 : 7), nt(o, sp, r.x, r.y + 3 - (bird ? 10 + z + (q.st === 0 ? Math.sin(this.clock / 300 + q.seed) * 2 : 0) : q.st === 2 ? Math.abs(Math.sin(this.clock / 90 + q.seed)) * 3 : 0), f, $a * sc, $a * sc));
       q.st === 2 && !bird && this.text("!", r.x, r.y - 34, 13, "#ffe070");
     }
     drawSerpent(t, a) {
@@ -22546,7 +22585,7 @@ function ROXQM(f, c, s, l, def, ex) {
   var cr = oe(St(), 1);
   var X = oe(ue(), 1), NS = { weapon: "Arma", armor: "Armadura", accessory: "Acess\xF3rio", headTop: "Cabe\xE7a (topo)", headMid: "Cabe\xE7a (meio)", headLow: "Cabe\xE7a (baixo)", back: "Costas" };
   function drawPoring(n, x, y, sc, clock, view, flip) {
-    let tt = (clock / 640) % 1, hop = Math.abs(Math.sin(tt * Math.PI)), land = 1 - hop, wd = 1 + land * 0.2 - hop * 0.1, ht = 1 - land * 0.2 + hop * 0.12, py = y - 59 * sc - hop * 10 * sc;
+    let tt = (clock / 640) % 1, hop = Math.abs(Math.sin(tt * Math.PI)), land = 1 - hop, wd = 1 + land * 0.2 - hop * 0.1, ht = 1 - land * 0.2 + hop * 0.12, py = y - 63 * sc - hop * 10 * sc;
     n.save(), n.translate(x, py), n.scale(sc * wd * 0.52 * (flip ? -1 : 1), sc * ht * 0.52);
     let gr = n.createRadialGradient(-3, -5, 1, 0, 0, 12); gr.addColorStop(0, "#ffd6e2"), gr.addColorStop(0.6, "#ff9cb8"), gr.addColorStop(1, "#e0688a");
     n.fillStyle = gr, n.strokeStyle = "#a83a60", n.lineWidth = 1.4, n.beginPath(), n.ellipse(0, 0, 11, 9, 0, 0, Math.PI * 2), n.fill(), n.stroke();
@@ -22564,7 +22603,7 @@ function ROXQM(f, c, s, l, def, ex) {
       if (!i || !o) return;
       let s = () => {
         let c = i.getContext("2d");
-        c.clearRect(0, 0, i.width, i.height), c.imageSmoothingEnabled = true, c.imageSmoothingQuality = "high", nt(c, fa(r, a, -1, 0), i.width / 2, i.height - 16, false, 2.6, 2.6), o.equipment.headTop === "poring_saltitante" && drawPoring(c, i.width / 2, i.height - 16, 2.6, Date.now(), a, false);
+        c.clearRect(0, 0, i.width, i.height), c.imageSmoothingEnabled = true, c.imageSmoothingQuality = "high", nt(c, fa(r, a, -1, 0), i.width / 2, i.height - 16, false, 2.4, 2.4), o.equipment.headTop === "poring_saltitante" && drawPoring(c, i.width / 2, i.height - 16, 3.25, Date.now(), a, false);
       };
       s();
       let l = setInterval(s, 60);
@@ -23004,7 +23043,7 @@ function ROXQM(f, c, s, l, def, ex) {
       let h = a.current;
       if (!h) return;
       let jel = f?.equipment?.headTop === "poring_saltitante", raf = 0, alive = true;
-      let x = () => { let g = h.getContext("2d"); g.clearRect(0, 0, h.width, h.height), g.imageSmoothingEnabled = true, g.imageSmoothingQuality = "high", nt(g, fa(key, dir, -1, 0), h.width / 2, h.height - 22, false, 2.6, 2.6), jel && drawPoring(g, h.width / 2, h.height - 22, 2.6, Date.now(), dir, false); };
+      let x = () => { let g = h.getContext("2d"); g.clearRect(0, 0, h.width, h.height), g.imageSmoothingEnabled = true, g.imageSmoothingQuality = "high", nt(g, fa(key, dir, -1, 0), h.width / 2, h.height - 22, false, 2.4, 2.4), jel && drawPoring(g, h.width / 2, h.height - 22, 3.25, Date.now(), dir, false); };
       let loop = () => { if (!alive) return; x(), jel && (raf = requestAnimationFrame(loop)); };
       loop(); let b = setTimeout(x, 250); return () => (alive = false, cancelAnimationFrame(raf), clearTimeout(b));
     }, [key, dir]);

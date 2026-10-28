@@ -1,3 +1,11 @@
+## v223
+- Poring saltitante equipado aparece no Alt+Q; líder/VIP/provador ao lado da curandeira, estilista ao norte.
+- Isenborg sem ruas quadriculadas; ruas pavimentadas sem decoração (só canteiros).
+- Cidades sem muralha: exploração livre do mapa todo.
+- Corvos/gaivotas/abutres pousam nos tetos e voam alto entre casas.
+- Efeito visual ao usar consumíveis (poção, comida, tinta, asas).
+- Monstros comuns vagam pelo mapa inteiro (chefes seguem presos).
+
 ## v222 — NPCs fixos
 - NPCs não se viram mais para o jogador nem olham aleatoriamente: ficam parados, de frente.
 
