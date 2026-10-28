@@ -701,3 +701,9 @@
 ## v244
 - Balanceamento (simulacao de progressao nv1-99, 7 classes): monstros de nivel 40+ (jarn/hverg/valh/vig) tinham HP ~1,1k e ATQ ~100 (triviais). Agora HP, ATQ, DEF e EXP acompanham a curva do jogador (~10-13s por monstro, 10-25% da vida por luta). Bosses 3x HP / 1.6x ATQ do normal.
 - Monstros de nivel 28-49 com HP exagerado (ilhas/mares, ate 20k) limitados a ~24x o ATQ do jogador, com EXP proporcional.
+
+## v245 (rebalanceamento por simulacao realista)
+- Simulacao refeita: jogador com SKILLS (rotacao das 4 melhores; MP, cooldown, nivel de skill), EQUIPAMENTO por nivel (melhor item por slot com reqLevel/raridade acessiveis) e dano de magia (matk) para magos.
+- Alvos por nivel (tabela TG em game.js): TTK 3s (nv1) -> 9s (nv20+) para a classe mediana; perda de vida por monstro 12% -> 20%; chefes ~5x HP (45-70s), ATQ igual ao normal; kills p/ subir = 12 + 0,35*nivel.
+- Aplicado a TODOS os monstros mantendo a variacao relativa (0,6x-1,7x). Substitui o ajuste da v244. Boss mundial inalterado.
+- Simulado: TTK 4-18s e 10-38% de vida por luta em todos os niveis. Mago tem ~1,5-2x o DPS das outras classes (MP quase ilimitado); tanques sao os mais lentos.

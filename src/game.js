@@ -17726,19 +17726,23 @@ void main() {
       RQ.push({ id: "vx_" + c.id, kind: "look", name: w.name, desc: "", need: big ? [[a, 6 + r * 2], [b2, 3 + r], [MT[3][k % 5], 1 + (r > 2 ? 1 : 0)]] : [[a, 8 + r * 6], [b2, 4 + r * 4]], reward: iid }); } }
 (() => { let prev = 0; for (const d of Object.values(Qu).filter((x) => x.boss && x.id !== "jormungandr").sort((x, y) => x.level - y.level)) { if (d.hp < prev * 1.05) d.hp = Math.round(prev * 1.05); prev = d.hp; } })();
 (() => {
-  // balanceamento late-game: HP/ATQ/EXP dos monstros de nivel 40+ acompanham a curva do jogador
-  const AT = [[1, 21], [10, 102], [20, 190], [30, 335], [40, 459], [50, 593], [60, 836], [70, 1009], [80, 1197], [90, 1400], [99, 1590]];
-  const atkP = (L) => { for (let i = 1; i < AT.length; i++) if (L <= AT[i][0]) { const [a, x] = AT[i - 1], [b, y] = AT[i]; return x + (y - x) * (L - a) / (b - a); } return 1590; };
-  for (const d of Object.values(Qu)) {
-    if (d.id === "jormungandr" || d.hp > 4e5) continue;
-    if (!d.boss && d.level >= 28 && d.level < 50) { const cap = Math.round(24 * atkP(d.level)); if (d.hp > cap) { d.exp = Math.max(1, Math.round(d.exp * cap / d.hp * 1.4)); d.hp = cap; } }
-    if (d.level < 40) continue;
-    const L = d.level, hpT = Math.round(12 * atkP(L)), u8 = 100 / (100 + 3.1 * L * 1.5), atT = Math.round(0.0214 * 42 * L * 1.9 / u8 * 0.6);
-    const bm = d.boss ? 3 : 1;
-    if (d.hp < hpT * bm) d.hp = hpT * bm;
-    if (d.atk < atT * (d.boss ? 1.6 : 1)) d.atk = Math.round(atT * (d.boss ? 1.6 : 1));
-    if (d.exp < Math.round(d.hp * 0.12)) d.exp = Math.round(d.hp * 0.12);
-    if (d.def < L * 0.9) d.def = Math.round(L * 0.9);
+  // Balanceamento v245: alvos derivados de simulacao de jogador real (skills + equipamento por nivel; ver CHANGELOG).
+  // [nivel, HP alvo, ATQ alvo] do monstro "tipico" do nivel; variacao relativa entre monstros e mantida (limitada).
+  const TG = [[1, 205, 11], [5, 572, 22], [10, 1584, 42], [15, 2618, 63], [20, 4500, 81], [25, 5265, 122], [30, 7470, 175], [40, 10305, 306], [50, 15327, 491], [60, 22923, 784], [70, 27423, 1100], [80, 34461, 1430], [90, 45126, 1841], [99, 52191, 2278]];
+  const itp = (L, k) => { if (L <= TG[0][0]) return TG[0][k]; for (let i = 1; i < TG.length; i++) if (L <= TG[i][0]) { const [a, x, y] = [TG[i - 1][0], TG[i - 1][k], TG[i][k]], b = TG[i][0], u = (L - a) / (b - a); return Math.exp(Math.log(x) + (Math.log(y) - Math.log(x)) * u); } return TG[TG.length - 1][k]; };
+  const trL = (L) => Math.floor(18 * Math.pow(L, 1.85));
+  const all = Object.values(Qu).filter((d) => d.id !== "jormungandr" && d.hp <= 4e5);
+  const norm = all.filter((d) => !d.boss);
+  const avg = (L, key) => { const w = norm.filter((d) => Math.abs(d.level - L) <= 4); const ws = w.length ? w : norm.slice().sort((x, y) => Math.abs(x.level - L) - Math.abs(y.level - L)).slice(0, 3); return ws.reduce((t, d) => t + d[key], 0) / ws.length; };
+  const clampR = (r) => Math.max(0.6, Math.min(1.7, r));
+  const orig = new Map(all.map((d) => [d.id, { hp: d.hp, atk: d.atk, exp: d.exp }]));
+  const avgHp = new Map(), avgAtk = new Map();
+  for (const d of all) { avgHp.set(d.id, avg(d.level, "hp")); avgAtk.set(d.id, avg(d.level, "atk")); }
+  for (const d of all) {
+    const L = Math.max(1, Math.min(99, d.level)), o = orig.get(d.id), kills = 12 + 0.35 * L;
+    if (d.boss) { d.hp = Math.round(itp(L, 1) * 5 * clampR(o.hp / Math.max(1, d.hp) || 1)), d.atk = Math.round(itp(L, 2) * 1.0), d.exp = Math.round(trL(L) / kills * 8); continue; }
+    const rh = clampR(o.hp / avgHp.get(d.id)), ra = clampR(o.atk / avgAtk.get(d.id));
+    d.hp = Math.max(20, Math.round(itp(L, 1) * rh)), d.atk = Math.max(3, Math.round(itp(L, 2) * ra)), d.exp = Math.max(1, Math.round(trL(L) / kills * rh));
   }
 })();
 var QCACHE = /* @__PURE__ */ new Map();
