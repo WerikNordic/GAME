@@ -10548,7 +10548,7 @@ const SUP = {
       } else this.followOrders(t, r.speed);
       (this.attackQueued || this.attackHeld) && this.basicAttack(this.attackQueued), this.attackQueued = false;
       let s = this.ps, l = this.sitting ? 2 : 1;
-      s.mp = Math.min(r.maxMp, s.mp + (1.2 + (s.stats.int + 0) * 0.08) * n * l), this.inSafeZone(a.pos) ? s.hp = Math.min(r.maxHp, s.hp + r.maxHp * 0.04 * n * l) : this.time - a.lastCombatAt > 5e3 && (s.hp = Math.min(r.maxHp, s.hp + r.maxHp * 5e-3 * n * l));
+      s.mp = Math.min(r.maxMp, s.mp + (1.2 + (s.stats.int + 0) * 0.08 + r.maxMp * 0.008) * n * l), this.inSafeZone(a.pos) ? s.hp = Math.min(r.maxHp, s.hp + r.maxHp * 0.04 * n * l) : this.time - a.lastCombatAt > 5e3 && (s.hp = Math.min(r.maxHp, s.hp + r.maxHp * 5e-3 * n * l));
     }
     walkPath(t, a) {
       let n = this.player, o = this.path[0];
@@ -10637,7 +10637,7 @@ const SUP = {
     }
     playerPower(t) {
       let a = this.derived();
-      return (t ? a.matk : a.atk) * (1 + this.buffSum("atk"));
+      return (t ? a.matk : a.atk) * (1 + this.buffSum("atk")) * (CLSDMG[this.ps.line] ?? 1);
     }
     coneHit(t, a, n, o, r, i, s) {
       let l = this.player, c = s ?? l.facing, d = a * Math.PI / 360;
@@ -17728,7 +17728,7 @@ void main() {
 (() => {
   // Balanceamento v245: alvos derivados de simulacao de jogador real (skills + equipamento por nivel; ver CHANGELOG).
   // [nivel, HP alvo, ATQ alvo] do monstro "tipico" do nivel; variacao relativa entre monstros e mantida (limitada).
-  const TG = [[1, 205, 11], [5, 572, 22], [10, 1584, 42], [15, 2618, 63], [20, 4500, 81], [25, 5265, 122], [30, 7470, 175], [40, 10305, 306], [50, 15327, 491], [60, 22923, 784], [70, 27423, 1100], [80, 34461, 1430], [90, 45126, 1841], [99, 52191, 2278]];
+  const TG = [[1, 205, 11], [5, 576, 22], [10, 1968, 42], [15, 3368, 63], [20, 5319, 81], [25, 6894, 122], [30, 12456, 175], [40, 18171, 306], [50, 24759, 491], [60, 38205, 784], [70, 48267, 1100], [80, 63630, 1430], [90, 76752, 1841], [99, 88749, 2278]];
   const itp = (L, k) => { if (L <= TG[0][0]) return TG[0][k]; for (let i = 1; i < TG.length; i++) if (L <= TG[i][0]) { const [a, x, y] = [TG[i - 1][0], TG[i - 1][k], TG[i][k]], b = TG[i][0], u = (L - a) / (b - a); return Math.exp(Math.log(x) + (Math.log(y) - Math.log(x)) * u); } return TG[TG.length - 1][k]; };
   const trL = (L) => Math.floor(18 * Math.pow(L, 1.85));
   const all = Object.values(Qu).filter((d) => d.id !== "jormungandr" && d.hp <= 4e5);
@@ -17745,6 +17745,7 @@ void main() {
     d.hp = Math.max(20, Math.round(itp(L, 1) * rh)), d.atk = Math.max(3, Math.round(itp(L, 2) * ra)), d.exp = Math.max(1, Math.round(trL(L) / kills * rh));
   }
 })();
+var CLSDMG = { berserker: 1.1, escudeiro: 1.3, cacador: 0.93, volva: 0.72, valquiria: 1, skald: 0.88, thay: 1, aprendiz: 1 }; // equilibrio de DPS entre classes (simulacao v246)
 var QCACHE = /* @__PURE__ */ new Map();
 function ROXQM(f, c, s, l, def, ex) {
   if (!["wolf", "frostwolf", "hati", "boar", "horse", "montaria", "cao", "gato", "raposa", "coelho", "yeti", "blob", "goblin", "draugr", "cinder", "automaton", "sylvan", "prism", "sentinel", "voidling", "jotun", "grifo", "corvo", "peixe", "medusa", "polvo", "tubarao"].includes(f) || typeof ROX === "undefined" || typeof location < "u" && /[?&]old\b/.test(location.search)) return null;

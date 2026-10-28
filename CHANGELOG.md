@@ -707,3 +707,10 @@
 - Alvos por nivel (tabela TG em game.js): TTK 3s (nv1) -> 9s (nv20+) para a classe mediana; perda de vida por monstro 12% -> 20%; chefes ~5x HP (45-70s), ATQ igual ao normal; kills p/ subir = 12 + 0,35*nivel.
 - Aplicado a TODOS os monstros mantendo a variacao relativa (0,6x-1,7x). Substitui o ajuste da v244. Boss mundial inalterado.
 - Simulado: TTK 4-18s e 10-38% de vida por luta em todos os niveis. Mago tem ~1,5-2x o DPS das outras classes (MP quase ilimitado); tanques sao os mais lentos.
+
+## v246 (balanceamento entre classes)
+- Simulacao agora cobre as 7 classes + Aprendiz, com 6 skills na rotacao, buffs de ATQ (uptime) e equipamento por nivel.
+- Achado: classes corpo a corpo ficavam sem mana (regen so por INT) enquanto o mago nunca; mago fazia ~2,2x o DPS do escudeiro.
+- Regen de MP agora tambem proporcional ao MP maximo (+0,8%/s).
+- Multiplicador de dano por classe (CLSDMG): berserker 1.1, escudeiro 1.3, cacador .93, volva .72, valquiria 1, skald .88, thay 1.
+- Alvos de monstros (TG) recalculados: todas as classes ficam com TTK 3-15s e 9-36% de vida por luta; chefes 30-70s.

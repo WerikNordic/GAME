@@ -9,12 +9,13 @@ const out=await p.evaluate((LV)=>{const g=window.__game();const {Ce,Ua}=g;const 
 const U8=d=>100/(100+Math.max(0,d)*1.5);const I8=L=>6+Math.floor(L/10);
 const jy=r=>1+.14*(r-1),Ju=(m,r)=>Math.round(m*(1+.05*(r-1))),By=(c,r)=>Math.round(c*(1-.03*(r-1)));
 const rk={common:0,uncommon:1,rare:2,epic:3,legendary:4};
-const lines=['berserker','escudeiro','cacador','volva','valquiria','skald','thay'];const ranged=new Set(['cacador','volva']);
+const lines=['aprendiz','berserker','escudeiro','cacador','volva','valquiria','skald','thay'];const ranged=new Set(['cacador','volva']);
 const slotKinds={weapon:'weapon',armor:'armor',accessory:'accessory',headTop:'headTop',back:'back',headMid:'headMid',headLow:'headLow'};
 const sc=(i,slot)=>{const b=i.bonus||{};const st=(b.str||0)+(b.agi||0)+(b.vit||0)+(b.int||0)+(b.dex||0)+(b.luk||0);return slot==='weapon'?(b.atk||0)+(b.matk||0)+st*4:(b.def||0)+(b.maxHp||0)/6+((b.atk||0)+(b.matk||0))*3+st*3+(b.crit||0)*600+(b.maxMp||0)/6}
 const res={};
 for(const ln of lines){res[ln]=[];const cl=Ce[ln];
  for(const L of LV){
+  if(ln==='aprendiz'&&L>10)continue;
   ps.line=ln;ps.level=L;ps.tier=L<10?0:L<30?1:L<60?2:3;
   let pts=0;for(let l=2;l<=L;l++)pts+=I8(l);pts+=(ps.tier>=1?10:0)+(ps.tier>=2?10:0)+(ps.tier>=3?20:0);
   const base={...cl.base};base[cl.attackStat]+=Math.round(pts*.55);base.vit+=Math.round(pts*.28);base.agi+=Math.round(pts*.1);base.dex+=Math.round(pts*.07);ps.stats=base;ps.statPoints=0;
@@ -26,8 +27,9 @@ for(const ln of lines){res[ln]=[];const cl=Ce[ln];
   // skills disponiveis
   const dmg=cl.skills.map((s,idx)=>({s,idx})).filter(o=>o.s.tier<=ps.tier&&o.s.mult>0&&['cone','projectile','nova','line','chain','volley','aoe','strike','beam','meteor','rain','target','dash'].includes(o.s.kind)||o.s.tier<=ps.tier&&o.s.mult>0&&o.s.kind!=='heal'&&o.s.kind!=='buff');
   // 4 melhores por dano/mp efetivo (jogador maxa as principais)
-  const lvls=dmg.map(o=>({o,v:o.s.mult/(o.s.cooldown/1000)})).sort((a,b)=>b.v-a.v).slice(0,4).map(x=>x.o);
-  res[ln].push({L,hp:d.maxHp,mp:d.maxMp,atk:d.atk,matk:d.matk,def:d.def,crit:+d.crit.toFixed(2),gear:Object.keys(ps.equipment).length,nsk:lvls.length,
+  const lvls=dmg.map(o=>({o,v:o.s.mult/(o.s.cooldown/1000)})).sort((a,b)=>b.v-a.v).slice(0,6).map(x=>x.o);
+  const buffs=cl.skills.filter(o=>o.tier<=ps.tier&&o.kind==='buff'&&o.buff&&o.buff.atk).map(o=>[o.buff.atk,o.buff.ms,o.cooldown]);const bf=Math.min(0.9,buffs.reduce((t,b)=>t+b[0]*Math.min(1,b[1]/b[2]),0)*0.6);
+  res[ln].push({L,bf,hp:d.maxHp,mp:d.maxMp,atk:d.atk,matk:d.matk,def:d.def,crit:+d.crit.toFixed(2),gear:Object.keys(ps.equipment).length,nsk:lvls.length,
    skills:lvls.map(o=>[o.s.mult,o.s.mp,o.s.cooldown,!!o.s.magic]),basic:[cl.basic.cooldown,d.attackCooldown,!!cl.basic.magic],ranged:ranged.has(ln),int:ps.stats.int,sl})
  }}
 return res},LV);
