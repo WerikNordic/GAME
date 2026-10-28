@@ -453,6 +453,69 @@ const PETSCH=[['stand',2.6,6],['sniff',2,8],['stand',1.6,5],['sit',3.4,6],['look
    for(let i=0;i<3;i++){const a=T*1.4+i*2.1;E({x:Math.cos(a)*15,y:y0+2+Math.sin(a*1.6)*5,z:z0+Math.sin(a)*10,rx:1.6,ry:.8,rz:.8,p:3,col:BONE});}
   }
  }});
+
+
+ // ---------- variacao procedural por monstro (cada monstro com corpo/silhueta proprios) ----------
+ const VAR=new Map();
+ const ACC=[[[232,224,200],0],[[255,120,40],1],[[160,220,255],1],[[170,110,230],1],[[240,200,70],0],[[190,30,40],0],[[90,170,70],0],[[44,40,60],0],[[230,120,170],0],[[110,230,200],1]];
+ const PROP=[[1,1],[1.22,.88],[.84,1.24],[1.26,1.12],[.8,.84]];
+ const NMOD=14,NACC=12,NMARK=8,NPROP=5,NSPK=4,NTOT=(NMOD*(NMOD+1))*NACC*NMARK*NPROP*NSPK;
+ function setVariants(list){const cnt={};for(const d of list){const m=SHAPES[d.shape];if(!m)continue;const sp=m[0];const k=cnt[sp]=(cnt[sp]??-1)+1;let h=0;for(let i=0;i<sp.length;i++)h=(h*31+sp.charCodeAt(i))>>>0;
+  let hh=0;for(let i=0;i<d.id.length;i++)hh=(hh*33+d.id.charCodeAt(i))>>>0;
+  const idx=(k*100003+(h%997)*7919+(hh%13)*0)%NTOT;let x=idx;
+  const m1=x%NMOD;x=Math.floor(x/NMOD);let m2=x%(NMOD+1)-1;x=Math.floor(x/(NMOD+1));if(m2===m1)m2=-1;
+  const acc=x%NACC;x=Math.floor(x/NACC);const mark=x%NMARK;x=Math.floor(x/NMARK);const prop=x%NPROP;x=Math.floor(x/NPROP);const spk=x%NSPK;
+  VAR.set(d.id,{m1,m2,acc,mark,prop,spk,pal:hh%ACC.length,hh,k})}}
+ function applyVar(out,spec,vr,o){
+  const [wx,hy]=PROP[vr.prop],g=spec.gy;
+  for(const [k2,q] of out){if(k2==='e'){q.x*=wx;q.z*=wx;q.rx*=wx;q.rz*=wx;q.y=g-(g-q.y)*hy;q.ry*=hy}else{q.pts=q.pts.map(p=>[p[0]*wx,g-(g-p[1])*hy,p[2]*wx]);q.w=Array.isArray(q.w)?q.w.map(v=>v*wx):q.w*wx}}
+  const es=out.filter(a=>a[0]==='e').map(a=>a[1]);if(!es.length)return;
+  let big=es[0],bv=0,top=es[0],tv=1e9,fr=es[0],fv=-1e9,rear=1e9,front=-1e9,bwid=0,ht=1e9;
+  for(const q of es){const v=q.rx*q.ry*q.rz;if(v>bv){bv=v;big=q}if(q.rx>=2.2&&q.y-q.ry<tv){tv=q.y-q.ry;top=q}
+   if(q.rx>=1.6){if(q.z-q.rz<rear)rear=q.z-q.rz;if(q.z+q.rz>front)front=q.z+q.rz;bwid=Math.max(bwid,Math.abs(q.x)+q.rx);if(q.y-q.ry<ht)ht=q.y-q.ry}}
+  for(const q of es){if(q.rx>=1.8&&q.y<g-6&&q.z+q.rz>fv&&q.y-q.ry<tv+(g-tv)*.65){fv=q.z+q.rz;fr=q}}
+  const [pc,glow]=ACC[vr.pal],bc=Array.isArray(big.col)?big.col:[120,120,120],dkc=dk(bc,.62),acc=pc,B=glow?.8:undefined;
+  const E=(q)=>{if(q.p===undefined)q.p=3.2;out.push(['e',q])},S=(q)=>out.push(['s',q]);
+  const T=o.t||0,bx=big.x,bt=big.y-big.ry,bz=big.z,bw=Math.max(5,big.rx),bm=big.y,wh=[255,255,255];
+  // marcacao no corpo
+  const tx=big.tex,mk=[null,(a,b,c)=>Math.sin(b*13+a*2)>.35?dkc:0,(a,b,c)=>Math.sin(a*11+1)*Math.sin(c*11)>.4?acc:0,(a,b,c)=>b>.15&&c>-.3?mix(bc,[245,240,225],.6):0,(a,b,c)=>Math.sin(c*9)>.55?dkc:0,(a,b,c)=>(Math.abs(Math.sin(a*8+b*6))<.14)?acc:0,(a,b,c)=>b<-.05?dkc:0,(a,b,c)=>Math.abs(a*1.2+b-c*.4)<.2?acc:0][vr.mark];
+  if(mk){big.tex=(a,b,c,d,e,f)=>{const r=mk(a,b,c);if(r)return r;return tx?tx(a,b,c,d,e,f):0}}
+  const hx0=top.x,hy0=top.y-top.ry,hz0=top.z,w=Math.max(2.6,top.rx*.7),F=(top.rz||4)*.6,tk=mix(acc,wh,.25);
+  switch(vr.acc){
+   case 1:for(const sg of[-1,1])S({pts:[[hx0+sg*w,hy0+top.ry*.5,hz0],[hx0+sg*(w+4),hy0-5,hz0],[hx0+sg*(w+3),hy0-13,hz0+1]],w:[4.4,.6],col:tk});break;
+   case 2:for(const sg of[-1,1])S({pts:[[hx0+sg*w*.8,hy0+top.ry*.4,hz0],[hx0+sg*(w+3),hy0-4,hz0-4],[hx0+sg*(w+4),hy0-7,hz0-12]],w:[4.6,.6],col:tk});break;
+   case 3:S({pts:[[hx0,hy0+top.ry*.4,hz0+F],[hx0,hy0-8,hz0+F+1],[hx0,hy0-17,hz0+F+3]],w:[4.4,.4],col:mix(acc,wh,.35),bias:B});break;
+   case 4:for(let i=0;i<6;i++){const z=hz0+F-i*3.8;S({pts:[[hx0,hy0+top.ry*.3,z],[hx0,hy0-7-(i%2)*3,z-1.4]],w:[3.4,.4],col:i%2?acc:dk(acc,.8),bias:B})}break;
+   case 5:for(const sg of[-1,1]){S({pts:[[hx0+sg*w*.7,hy0+top.ry*.3,hz0],[hx0+sg*(w+3),hy0-8,hz0],[hx0+sg*(w+5),hy0-17,hz0]],w:[2.6,.6],col:mix(bc,[200,170,120],.5)});S({pts:[[hx0+sg*(w+2.4),hy0-7,hz0],[hx0+sg*(w+9),hy0-11,hz0]],w:[2,.5],col:mix(bc,[200,170,120],.5)});S({pts:[[hx0+sg*(w+4),hy0-13,hz0],[hx0+sg*(w+9),hy0-18,hz0]],w:[1.8,.4],col:mix(bc,[200,170,120],.5)})}break;
+   case 6:for(let i=0;i<6;i++){const a=i/6*TAU,x=hx0+Math.cos(a)*w*1.2,z=hz0+Math.sin(a)*w*1.2;S({pts:[[x,hy0+top.ry*.3,z],[x*1.05-hx0*.05,hy0-8-(i%2)*4-Math.sin(T*3+i)*1.2,z]],w:[3.2,.4],col:acc,bias:.95})}break;
+   case 7:for(let i=0;i<22;i++){const a=i/22*TAU;E({x:hx0+Math.cos(a)*(w+3),y:hy0-11+Math.sin(T*2)*.6,z:hz0+Math.sin(a)*(w+3),rx:1.1,ry:1.1,rz:1.1,col:acc,bias:1})}break;
+   case 8:for(const sg of[-1,1]){S({pts:[[hx0+sg*w*.5,hy0+top.ry*.4,hz0+F*.6],[hx0+sg*(w+2),hy0-8,hz0+F],[hx0+sg*(w+3),hy0-14,hz0+F+3]],w:[1.2,.7],col:dkc});E({x:hx0+sg*(w+3),y:hy0-15,z:hz0+F+3,rx:2.3,ry:2.3,rz:2.3,col:acc,bias:.9})}break;
+   case 9:S({pts:[[hx0,hy0+top.ry*.4,hz0],[hx0+1,hy0-7,hz0],[hx0,hy0-11,hz0+1]],w:[2,1.2],col:[80,150,60]});for(const sg of[-1,1])E({x:hx0+sg*4.4,y:hy0-11,z:hz0+1,rx:4.4,ry:1.4,rz:2.2,col:[110,190,70],p:2.4});E({x:hx0,y:hy0-12.6,z:hz0+1,rx:2,ry:2,rz:2,col:acc,bias:.5});break;
+   case 10:for(const sg of[-1,1])S({pts:[[hx0+sg*w*.7,fr.y+fr.ry*.2,fr.z+fr.rz*.7],[hx0+sg*(w+1.4),fr.y+fr.ry*.9,fr.z+fr.rz+3.4],[hx0+sg*(w+.6),fr.y-3,fr.z+fr.rz+6.4]],w:[3.2,.5],col:[236,230,210]});break;
+   case 11:for(const sg of[-1,1]){const y=(hy0+g)*.5-top.ry*.4;E({x:hx0+sg*(top.rx+4),y,z:hz0-2,rx:4,ry:3.6,rz:4.6,col:mix(bc,[70,70,80],.5),metal:1});S({pts:[[hx0+sg*(top.rx+4.4),y,hz0-2],[hx0+sg*(top.rx+10),y-7,hz0-2]],w:[3.2,.4],col:[200,200,210],metal:1})}break;
+  }
+  const mods=[
+   ()=>{for(const sg of[-1,1]){S({pts:[[sg*bw*.5,bt+2,bz],[sg*(bw+10),bt-11,bz-2],[sg*(bw+23),bt+4,bz-8]],w:[2.8,.9],col:dkc});for(const f of[.2,.5,.8])S({pts:[[sg*(bw*.5+5*f),bt+3+f*7,bz-1-f*4],[sg*(bw+20*(1-f*.22)),bt+4+f*6,bz-8-f*2]],w:[6-f*3.4,1.2],col:mix(acc,bc,.35)})}},
+   ()=>{for(const sg of[-1,1])for(let i=0;i<5;i++){const a=-.9+i*.5;S({pts:[[sg*bw*.5,bt+2,bz],[sg*(bw+7+Math.cos(a)*14),bt-6-Math.sin(a)*14+Math.sin(T*3+i)*1.2,bz-3-i]],w:[5,1.4],col:i%2?wh:mix(wh,acc,.2)})}},
+   ()=>{for(const sg of[-1,1])for(const k of[0,1]){S({pts:[[sg*bw*.4,bt+2,bz+1-k*3],[sg*(bw+6+k*2),bt-9+k*7,bz-5-k*3],[sg*(bw+10+k*2),bt-15+k*8,bz-9-k*4]],w:[3.4,.6],col:mix(acc,wh,.55),bias:.7})}},
+   ()=>{S({pts:[[bx,bm,rear+2],[bx,bm+2,rear-6],[bx,bm+3,rear-12]],w:[4,2.6],col:bc});E({x:bx,y:bm+3,z:rear-14,rx:4.6,ry:4.6,rz:4.6,col:dkc,metal:1});for(let i=0;i<5;i++){const a=i/5*TAU;S({pts:[[bx+Math.cos(a)*3.6,bm+3+Math.sin(a)*3.6,rear-14],[bx+Math.cos(a)*7.4,bm+3+Math.sin(a)*7.4,rear-14]],w:[2,.3],col:[210,210,220],metal:1})}},
+   ()=>{for(let i=0;i<5;i++){const a=(i-2)*.35;S({pts:[[bx,bm,rear+2],[bx+Math.sin(a)*9,bm-3-Math.abs(a)*2+Math.sin(T*5+i*1.7)*1.6,rear-9],[bx+Math.sin(a)*14,bm-8-i%2*4+Math.sin(T*4+i)*2,rear-16]],w:[4.4,.4],col:i%2?[255,230,110]:acc,bias:.95})}},
+   ()=>{S({pts:[[bx,bm-1,rear+2],[bx,bm,rear-8],[bx,bt-8,rear-6],[bx,bt-17,rear+4]],w:[3.4,1.6],col:dkc});S({pts:[[bx,bt-17,rear+4],[bx,bt-20,rear+10]],w:[2.4,.3],col:acc,bias:B})},
+   ()=>{for(let i=0;i<5;i++){const a=(i-2)*.42;S({pts:[[bx,bm,rear+2],[bx+Math.sin(a)*13,bm-2+Math.abs(a)*3,rear-12]],w:[5,1.2],col:mix(acc,bc,.3)})}},
+   ()=>{E({x:bx,y:bt-1.4,z:bz-1,rx:bw*1.08,ry:big.ry*.92,rz:big.rz*.88,col:mix(bc,[90,80,70],.55),p:2.5,metal:1,tex:(a,b,c)=>Math.abs(Math.sin(a*7)*Math.sin(c*7))<.2?dkc:0})},
+   ()=>{for(const sg of[-1,1]){E({x:top.x+sg*(top.rx+2.4),y:top.y+top.ry*.25,z:top.z+1,rx:top.rx*.86,ry:top.ry*.86,rz:top.rz*.86,col:top.col,tex:top.tex});E({x:top.x+sg*(top.rx+2.4),y:top.y,z:top.z+top.rz*.8,rx:1.4,ry:1.4,rz:1,col:acc,bias:.9})}},
+   ()=>{for(let i=0;i<3;i++){const a=T*1.6+i*TAU/3;E({x:bx+Math.cos(a)*(bw+11),y:bt-9+Math.sin(a*2)*3,z:bz+Math.sin(a)*(bw+11)*.8,rx:3.2,ry:3.2,rz:3.2,col:acc,bias:1})}},
+   ()=>{for(let i=0;i<3;i++){const x=bx+(i-1)*bw*.5;S({pts:[[x,bt+2,bz],[x+Math.sin(T*3+i)*4,bt-8,bz-3],[x+Math.sin(T*3+i+1)*6,bt-17,bz-1],[x+Math.sin(T*3+i+2)*3,bt-24,bz-3]],w:[3,.6],col:mix(acc,dkc,.4),bias:glow?.5:undefined})}},
+   ()=>{for(let i=0;i<10;i++){const a=i/10*TAU,x=top.x+Math.cos(a)*(top.rx+2),z=top.z+Math.sin(a)*(top.rz+2);S({pts:[[top.x+Math.cos(a)*top.rx*.7,top.y,top.z+Math.sin(a)*top.rz*.7],[x*1.15-top.x*.15,top.y-3-Math.sin(T*3+i)*1.2,z*1.15-top.z*.15]],w:[3.4,.5],col:i%2?acc:mix(acc,bc,.4),bias:glow?.8:undefined})}},
+   ()=>{E({x:bx,y:bm-big.ry*.15,z:rear-.5,rx:bw*.95,ry:big.ry*1.35,rz:1.1,col:mix(acc,[40,30,50],.55),p:2.4})},
+   ()=>{for(const sg of[-1,1]){S({pts:[[sg*bw*.9,bm,front-3],[sg*(bw+4),bm+3,front+4],[sg*(bw+1),bm+9,front+10]],w:[4,.5],col:[236,230,210]})}},
+  ];
+  mods[vr.m1]();if(vr.m2>=0)mods[vr.m2]();
+  const bx0=big.x,by0=big.y-big.ry,bz0=big.z;
+  if(vr.spk===1){for(let i=0;i<5;i++){const z=bz0+big.rz*(.6-i*.3);S({pts:[[bx0,by0+big.ry*.25,z],[bx0,by0-5,z-1]],w:[3,.4],col:dkc})}}
+  else if(vr.spk===2){for(let i=0;i<3;i++){const z=bz0+big.rz*(.46-i*.46),h=7+(i===1?4:0);S({pts:[[bx0,by0+big.ry*.2,z],[bx0,by0-h,z-3]],w:[6,.5],col:mix(dkc,acc,.35),bias:B})}}
+  else if(vr.spk===3){for(const sg of[-1,1])for(let i=0;i<3;i++){const z=bz0+big.rz*(.5-i*.5);S({pts:[[bx0+sg*big.rx*.85,big.y-big.ry*.2,z],[bx0+sg*(big.rx+6),big.y-big.ry*.8,z-2]],w:[3,.4],col:dkc})}}
+ }
  // ---------- mapeamento shape -> especie ----------
  const SHAPES={wolf:['lobo',.5,1.9],frostwolf:['lobogelo',.6,1.9],hati:['warg',.35,2],boar:['javali',.5,2.0],horse:['cavalo',.25,1.7],montaria:['montaria',.25,1.7],cao:['cao',.45,1.9],gato:['gato',.5,1.9],raposa:['raposa',.35,1.9],coelho:['coelho',.4,1.9],yeti:['yeti',.7,1.35],blob:['gosma',.85,1.9],goblin:['goblin',.3,2],draugr:['draugr',.3,1.75],cinder:['imp',.55,1.7],automaton:['golemmetal',.75,1.2],sylvan:['sylvan',.7,1.3],prism:['golemprisma',.8,1.1],sentinel:['golempedra',.6,1.2],voidling:['espectro',.85,1.1],jotun:['troll',.5,1.5],grifo:['corvo',.35,1.8],corvo:['corvo',0,1.6],peixe:['peixe',.55,2.5],medusa:['medusa',.5,1.9],polvo:['polvo',.55,1.9],tubarao:['tubarao',.5,2.3],pombo:['pombo',0,2.4],lif:['lif',0,1.5],amistr:['amistr',0,1.5],filir:['filir',0,1.5],vanilmirth:['vanilmirth',0,1.5]};
  const DIRS={down:0,dq:1,side:2,uq:3,up:4};
@@ -464,11 +527,11 @@ const PETSCH=[['stand',2.6,6],['sniff',2,8],['stand',1.6,5],['sit',3.4,6],['look
   else if(pose.beh){o.beh=pose.beh;o.bt=pose.bt;o.bw=pose.bw}
   return o}
  function draw(spec,dirIdx,pose,opt){
-  const S0=opt.S,w=Math.ceil(spec.w*S0),h=Math.ceil(spec.h*S0),gy=Math.round(spec.gy*S0);const K=Ctx(dirIdx*Math.PI/4);const I=new Img(w,h);
+  const S0=opt.S,vrr=opt.vr||null,pdT=vrr?Math.ceil(38*opt.S):0,pdX=vrr?Math.ceil(22*opt.S):0,w=Math.ceil(spec.w*S0)+pdX*2,h=Math.ceil(spec.h*S0)+pdT,gy=Math.round(spec.gy*S0)+pdT;const K=Ctx(dirIdx*Math.PI/4);const I=new Img(w,h);
   const o=mpose(pose.anim,pose.t,spec,pose);o.g=spec.gy;o.st=opt.st||0;const out=[];const tf=opt.tint;
   const E_=q=>{if(q.p===undefined)q.p=3.2;if(tf&&!q.bias){q.col=tf(q.col);if(q.tex){const f0=q.tex;q.tex=(a,b,c,d,e,g)=>{const r=f0(a,b,c,d,e,g);return Array.isArray(r)?tf(r):r}}}out.push(['e',q])};
   const S_=q=>{if(tf&&!q.bias){if(typeof q.col==='function'){const f0=q.col;q.col=(a,b)=>{const r=f0(a,b);return Array.isArray(r)?tf(r):r}}else q.col=tf(q.col)}out.push(['s',q])};
-  spec.build(E_,S_,o);
+  spec.build(E_,S_,o);if(vrr)applyVar(out,spec,vrr,o);
   const SS=S0,tr=(p)=>[p[0]*SS,(p[1]-spec.gy)*SS+gy,p[2]*SS];
   const sr=Math.min(24,spec.w*.2)*S0;for(let y=-3;y<=3;y++)for(let x=-sr;x<=sr;x++)if((x/sr)**2+(y/3)**2<=1)put(I,Math.round(w/2+x),gy+y,-1e8,[0,0,0],80);
   for(const [k2,q] of out){if(k2==='e'){q.x*=SS;q.z*=SS;q.rx*=SS;q.ry*=SS;q.rz*=SS;q.y=(q.y-spec.gy)*SS+gy;ellipsoid(I,K,q)}else{q.pts=q.pts.map(tr);q.w=Array.isArray(q.w)?q.w.map(v=>v*SS):q.w*SS;strip(I,K,q)}}
@@ -496,9 +559,9 @@ const PETSCH=[['stand',2.6,6],['sniff',2,8],['stand',1.6,5],['sit',3.4,6],['look
   if(CACHE.size>2400)CACHE.clear();
   const rgb=col!=null?[(col>>16)&255,(col>>8)&255,col&255]:null;
   const S0=(extra&&extra.S)||m[2]||2.2,KS=.88;
-  const img=draw(spec,di,pose,{S:S0,st,tint:rgb&&m[1]>0?mkTint(rgb,m[1]):null});
+  const img=draw(spec,di,pose,{S:S0,st,tint:rgb&&m[1]>0?mkTint(rgb,m[1]):null,vr:(def&&def.hp!==undefined&&VAR.get(def.id))||null});
   const cv=document.createElement('canvas');cv.width=img.w;cv.height=img.h;cv.getContext('2d').putImageData(new ImageData(img.d,img.w,img.h),0,0);
   r={cv,ax:img.w/2*KS,ay:img.gy*KS,k:KS,key};CACHE.set(key,r);return r;
  }
- return {mon,SHAPES,MON,idlePose};
+ return {mon,SHAPES,MON,idlePose,setVariants,VAR};
 })();

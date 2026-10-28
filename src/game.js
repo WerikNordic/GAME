@@ -10359,6 +10359,8 @@ const SUP = {
       let sofa = b.deco !== "bench", tx = sofa ? Math.max(b.x + 24, Math.min(b.x + b.w - 24, this._sitX ?? b.x + b.w / 2)) : b.x + b.w / 2, ty = b.deco === "vipsofa_n" ? b.y - 14 : b.y + b.h + 16, n = El(this.player.pos, { x: tx, y: ty }, this.player.radius, this.map.obstacles, this.map.width, this.map.height);
       return !n || n.length === 0 ? false : (this.clearOrders(), this.path = n, this.pendingSit = { x: tx, y: ty, bx: b.x + b.w / 2, by: b.y + b.h / 2, face: b.deco === "vipsofa" ? Math.PI / 2 : b.deco === "vipsofa_n" ? -Math.PI / 2 : -Math.PI / 2, sofa: b.deco !== "bench", dec: b.deco }, true);
     }
+    _carry = (() => { const ow = nr.lastWorld; return ow && ow.player && ow.player.buffs.length ? { buffs: ow.player.buffs.map((x) => ({ ...x })), time: ow.time, ps: ow.ps } : null; })();
+    _reg = (nr.lastWorld = this, 0);
     pendingPoi = null;
     repathAt = 0;
     stuckMs = 0;
@@ -10531,6 +10533,7 @@ const SUP = {
     }
     step(t) {
       let a = Math.max(0, Math.min(t, hM));
+      if (this._carry) { const c = this._carry; this._carry = null; if (c.ps === this.ps) for (const bf of c.buffs) if (bf.until > c.time && !this.player.buffs.some((q) => q.id === bf.id)) this.player.buffs.push({ ...bf, until: this.time + (bf.until - c.time) }); }
       this.time += a, this.castState && this.tickCast(), this.ps.playTimeMs += a, this.player.buffs = this.player.buffs.filter((n) => n.until > this.time), this.player.deadAt !== null ? this.time - this.player.deadAt >= pM && this.respawnPlayer() : this.updatePlayer(a), this.updateProjectiles(a), this.updateDelayed(), this.petBite(), this.homunTick(a), this.falconTick(), this.tutorial(), this.updatePendingBasic(), this.updateMonsters(a), this.updateLoot(), this.monsters = this.monsters.filter((n) => !(n.summoned && n.state === "dead" && this.time - n.diedAt > 3e3));
     }
     buffSum(t) {
@@ -15014,6 +15017,7 @@ const SUP = {
           let H = f[I % f.length], V = Math.floor(I / f.length) % 2, ae = I % 4, K = i + (n.lowOct ? -0 : 12), W = [0, 2, 4].map((B) => K + $p(d, H + B));
           if (k(W[0] - 12, J, c * 1.05, 0.05), k(W[1], J, c * 1.05, 0.032), k(W[2], J, c * 1.05, 0.028), k(W[0] + 12, J, c * 1.05, 0.02), n.drone && k(i - 24, J, c * 1.05, 0.04), n.anvil) for (let B of [1, 3]) z(J + B * l);
           let C = Oe(o + ae * 31 + V * 7);
+          if (CM && CM.motif) { const ph = (Math.floor(I / 4) % 2 ? CM.motif.B : CM.motif.A)[ae] || []; for (const [bt, dg, ln] of ph) T(i + 24 + $p(d, dg) - (n.lowOct ? 12 : 0), J + bt * l, l * ln * (u === "flute" ? 1.15 : 1), u === "flute" ? 0.07 : 0.05); } else
           if (ae !== 3 || C() < 0.5) {
             let B = 0;
             for (let ee of h) {
@@ -15042,16 +15046,17 @@ const SUP = {
     }
   };
   var CMUS = {
-    cidade_midgard: { mode: kn.ionian, bpm: 66, lead: "harp", root: 48, progs: [[0, 4, 5, 3], [0, 3, 4, 0]], density: 0.7 },
-    cidade_ravnhaven: { mode: kn.dorian, bpm: 74, lead: "flute", root: 50, progs: [[0, 6, 3, 4], [0, 3, 6, 4]], density: 0.75 },
-    cidade_eldvik: { mode: kn.phrygian, bpm: 58, lead: "flute", root: 46, progs: [[0, 1, 0, 6], [0, 6, 1, 0]], density: 0.6, drone: true },
-    cidade_kharnheim: { mode: kn.aeolian, bpm: 86, lead: "bell", root: 43, progs: [[0, 5, 6, 4], [0, 0, 6, 5]], density: 0.8, anvil: true },
-    cidade_freyrhain: { mode: kn.pentMaj, bpm: 76, lead: "harp", root: 52, progs: [[0, 2, 3, 4], [0, 4, 2, 3]], density: 0.8 },
-    cidade_gladsheim: { mode: kn.lydian, bpm: 60, lead: "bell", root: 53, progs: [[0, 1, 4, 5], [0, 4, 1, 3]], density: 0.55, drone: true },
-    cidade_skogvik: { mode: kn.pentMin, bpm: 70, lead: "flute", root: 49, progs: [[0, 3, 2, 4], [0, 2, 3, 1]], density: 0.7 },
-    cidade_handelsvik: { mode: kn.ionian, bpm: 94, lead: "harp", root: 47, progs: [[0, 3, 4, 3], [0, 4, 3, 0]], density: 0.95 },
-    cidade_solvik: { mode: kn.lydian, bpm: 82, lead: "flute", root: 51, progs: [[0, 4, 1, 4], [0, 1, 4, 5]], density: 0.9 },
-    cidade_helvik: { mode: kn.aeolian, bpm: 50, lead: "bell", root: 41, progs: [[0, 5, 3, 6], [0, 6, 5, 4]], density: 0.45, drone: true }
+    cidade_midgard: { mode: kn.ionian, bpm: 66, lead: "harp", root: 48, progs: [[0, 4, 5, 3], [0, 3, 4, 0]], density: 0.7, motif: { A: [[[0,4,1],[1,2,.5],[1.5,4,.5],[2,5,1],[3,4,1]],[[0,3,1],[1,2,1],[2,1,1],[3,2,1]],[[0,4,1],[1,2,.5],[1.5,4,.5],[2,7,1.5],[3.5,5,.5]],[[0,4,2],[2,2,1],[3,0,1]]], B: [[[0,5,1],[1,7,1],[2,8,2]],[[0,7,1],[1,5,1],[2,4,2]],[[0,5,1],[1,7,1],[2,9,1],[3,8,1]],[[0,7,3],[3,4,1]]] } },
+    cidade_ravnhaven: { mode: kn.dorian, bpm: 74, lead: "flute", root: 50, progs: [[0, 6, 3, 4], [0, 3, 6, 4]], density: 0.75, motif: { A: [[[0,0,1.5],[1.5,2,.5],[2,4,1.5],[3.5,2,.5]],[[0,3,1.5],[1.5,2,.5],[2,1,1],[3,0,1]],[[0,0,1.5],[1.5,2,.5],[2,4,1.5],[3.5,5,.5]],[[0,6,2],[2,4,1],[3,2,1]]], B: [[[0,7,1.5],[1.5,6,.5],[2,4,1.5],[3.5,6,.5]],[[0,5,1.5],[1.5,4,.5],[2,2,2]],[[0,7,1.5],[1.5,9,.5],[2,8,1],[3,6,1]],[[0,4,3]]] } },
+    cidade_eldvik: { mode: kn.phrygian, bpm: 58, lead: "flute", root: 46, progs: [[0, 1, 0, 6], [0, 6, 1, 0]], density: 0.6, drone: true, motif: { A: [[[0,0,2],[2,1,.5],[2.5,0,.5],[3,-1,1]],[[0,1,1],[1,3,1],[2,4,2]],[[0,3,.5],[.5,4,.5],[1,3,1],[2,1,1],[3,0,1]],[[0,0,4]]], B: [[[0,4,2],[2,5,.5],[2.5,4,.5],[3,3,1]],[[0,3,1],[1,1,1],[2,0,2]],[[0,1,.5],[.5,3,.5],[1,4,1],[2,5,1],[3,7,1]],[[0,7,3]]] } },
+    cidade_kharnheim: { mode: kn.aeolian, bpm: 86, lead: "bell", root: 43, progs: [[0, 5, 6, 4], [0, 0, 6, 5]], density: 0.8, anvil: true, motif: { A: [[[0,0,.5],[.5,0,.5],[1.5,2,.5],[2,4,1],[3,2,1]],[[0,0,.5],[.5,0,.5],[1.5,3,.5],[2,2,1],[3,0,1]],[[0,0,.5],[.5,0,.5],[1.5,2,.5],[2,4,.5],[2.5,5,.5],[3,4,1]],[[0,2,1],[1,1,1],[2,0,2]]], B: [[[0,4,.5],[.5,4,.5],[1.5,5,.5],[2,7,1],[3,5,1]],[[0,4,.5],[.5,4,.5],[1.5,3,.5],[2,2,2]],[[0,4,.5],[.5,4,.5],[1.5,5,.5],[2,7,.5],[2.5,8,.5],[3,7,1]],[[0,5,1],[1,3,1],[2,0,2]]] } },
+    cidade_freyrhain: { mode: kn.pentMaj, bpm: 76, lead: "harp", root: 52, progs: [[0, 2, 3, 4], [0, 4, 2, 3]], density: 0.8, motif: { A: [[[0,0,.5],[.5,2,.5],[1,4,.5],[1.5,5,.5],[2,4,.5],[2.5,2,.5],[3,0,1]],[[0,1,.5],[.5,3,.5],[1,5,.5],[1.5,6,.5],[2,5,.5],[2.5,3,.5],[3,1,1]],[[0,2,.5],[.5,4,.5],[1,6,.5],[1.5,7,.5],[2,6,.5],[2.5,4,.5],[3,2,1]],[[0,3,.5],[.5,5,.5],[1,4,.5],[1.5,2,.5],[2,0,2]]], B: [[[0,7,.5],[.5,6,.5],[1,5,.5],[1.5,4,.5],[2,3,1],[3,2,1]],[[0,5,.5],[.5,4,.5],[1,3,.5],[1.5,2,.5],[2,1,1],[3,0,1]],[[0,2,.5],[.5,4,.5],[1,5,.5],[1.5,7,.5],[2,5,1],[3,4,1]],[[0,4,1],[1,2,1],[2,0,2]]] } },
+    cidade_gladsheim: { mode: kn.lydian, bpm: 60, lead: "bell", root: 53, progs: [[0, 1, 4, 5], [0, 4, 1, 3]], density: 0.55, drone: true, motif: { A: [[[0,0,2],[2,4,1],[3,6,1]],[[0,7,2],[2,6,1],[3,4,1]],[[0,2,2],[2,5,1],[3,7,1]],[[0,9,3],[3,7,1]]], B: [[[0,7,1],[1,9,1],[2,11,2]],[[0,9,2],[2,7,2]],[[0,6,1],[1,7,1],[2,9,2]],[[0,7,4]]] } },
+    cidade_skogvik: { mode: kn.pentMin, bpm: 70, lead: "flute", root: 49, progs: [[0, 3, 2, 4], [0, 2, 3, 1]], density: 0.7, motif: { A: [[[0,2,.5],[.5,3,.5],[1,2,.5],[1.5,3,.5],[2,0,2]],[[0,4,1],[1,3,.5],[1.5,2,.5],[2,0,2]],[[0,2,.5],[.5,3,.5],[1,2,.5],[1.5,3,.5],[2,5,2]],[[0,4,1],[1,3,1],[2,2,.5],[2.5,0,.5],[3,-1,1]]], B: [[[0,5,1],[1,4,.5],[1.5,5,.5],[2,7,2]],[[0,6,1],[1,5,1],[2,4,2]],[[0,5,.5],[.5,4,.5],[1,2,1],[2,3,1],[3,2,1]],[[0,0,4]]] } },
+    cidade_handelsvik: { mode: kn.ionian, bpm: 94, lead: "harp", root: 47, progs: [[0, 3, 4, 3], [0, 4, 3, 0]], density: 0.95, motif: { A: [[[0,0,.5],[.5,2,.5],[1,4,.5],[1.5,2,.5],[2,0,.5],[2.5,2,.5],[3,4,1]],[[0,5,.5],[.5,4,.5],[1,2,.5],[1.5,4,.5],[2,5,1],[3,7,1]],[[0,4,.5],[.5,2,.5],[1,0,.5],[1.5,2,.5],[2,4,.5],[2.5,5,.5],[3,4,1]],[[0,2,1],[1,0,.5],[1.5,-1,.5],[2,0,2]]], B: [[[0,7,.5],[.5,5,.5],[1,4,.5],[1.5,5,.5],[2,7,1],[3,9,1]],[[0,8,.5],[.5,7,.5],[1,5,1],[2,4,1],[3,2,1]],[[0,4,.5],[.5,5,.5],[1,7,.5],[1.5,5,.5],[2,4,.5],[2.5,2,.5],[3,4,1]],[[0,0,.5],[.5,2,.5],[1,4,1],[2,0,2]]] } },
+    cidade_solvik: { mode: kn.lydian, bpm: 82, lead: "flute", root: 51, progs: [[0, 4, 1, 4], [0, 1, 4, 5]], density: 0.9, motif: { A: [[[.5,4,.5],[1,6,1],[2.5,4,.5],[3,2,1]],[[.5,2,.5],[1,4,1],[2.5,6,.5],[3,7,1]],[[.5,6,.5],[1,7,1],[2.5,9,.5],[3,7,1]],[[.5,6,.5],[1,4,1],[2,2,2]]], B: [[[0,7,1],[1.5,9,.5],[2,11,1],[3.5,9,.5]],[[0,7,1],[1.5,6,.5],[2,4,1.5],[3.5,6,.5]],[[0,4,1],[1.5,6,.5],[2,7,1],[3.5,9,.5]],[[0,7,2],[2,4,2]]] } },
+    cidade_helvik: { mode: kn.aeolian, bpm: 50, lead: "bell", root: 41, progs: [[0, 5, 3, 6], [0, 6, 5, 4]], density: 0.45, drone: true, motif: { A: [[[0,0,3]],[[1,2,2],[3,1,1]],[[0,0,2],[2,-2,2]],[[1,-1,3]]], B: [[[0,3,3],[3,2,1]],[[0,2,2],[2,0,2]],[[1,-2,2],[3,0,1]],[[0,0,4]]] } },
+    jotunheim_aldeia: { mode: kn.dorian, bpm: 56, lead: "bell", root: 44, progs: [[0, 2, 3, 4], [0, 4, 3, 2]], density: 0.5, drone: true, motif: { A: [[[0,0,1.5],[1.5,4,.5],[2,3,2]],[[0,2,1],[1,3,1],[2,5,2]],[[0,4,1.5],[1.5,3,.5],[2,2,2]],[[0,0,3],[3,-1,1]]], B: [[[0,2,1.5],[1.5,6,.5],[2,5,2]],[[0,4,1],[1,5,1],[2,7,2]],[[0,6,1.5],[1.5,5,.5],[2,4,2]],[[0,2,3],[3,1,1]]] } }
   };
   var ak = [920072, 1774608, 2759962, 1454108, 2050602, 2976564, 4164156, 5941322, 8177242, 10935672, 13495962, 1454671, 2051962, 3111088, 5152984, 8833262, 13035256, 15398655, 2364943, 3876120, 5913122, 8147504, 10513470, 12880466, 14724466, 6037276, 9187111, 12076079, 14248511, 15635552, 2303534, 4080462, 6252146, 8686744, 11186877, 13818079, 15856630, 9073746, 12098670, 13940872, 15258788, 16181444, 9063994, 12087372, 13930088, 15775888, 16570548, 2043750, 3099290, 4877512, 8034532, 2890314, 4861818, 8016568, 11045600, 13679348, 7214624, 11020848, 14174282, 15761528, 9071130, 12884522, 15254090, 16442512, 12077162, 15239336, 12869658, 15765552, 16564320, 16777215, 14674680, 10467548], Kp = ak.map((e) => [e >> 16 & 255, e >> 8 & 255, e & 255]);
   function nk(e, t, a) {
@@ -16210,7 +16215,7 @@ void main() {
       } catch {}
     }, 500);
   })();
-  typeof location < 'u' && location.search.includes('debug') && (window.__petPlay = () => { __petPlayAt = 0; petPlay(); }), (window.__cxIcon = (id) => cxIcon(id).toDataURL()), (window.__rox2m = () => ROX2M), (window.__cxFull = (id, dir) => { const it = Wa[id], look = { base: "berserker", hair: 3, sx: "m" }; if (it.kind === "back") look.bk = it.backStyle; else if (it.kind === "headMid") look.mid = it.headStyle; else if (it.kind === "headLow") look.low = it.headStyle; else look.top = it.headStyle; return ROX2(R4(look), dir, -1, 0, "").cv.toDataURL(); }), typeof location < 'u' && location.search.includes('debug') && (window.__game = () => ({ He, Qu, WB, j, Ce, Ua, Yu, ty, I8, tr, U8, ap, Dr, Jy, Rb, Cc, _p, Ua, en, Jt, nr, He, It }), window.__defs = () => Object.values(Qu), window.__items = () => Wa, window.__maps = () => Jt, window.__data = () => ({ Or, RQ: typeof RQ < 'undefined' ? RQ : [], REALM_Q: typeof REALM_Q < 'undefined' ? REALM_Q : [], CRAFT_REC: typeof CRAFT_REC < 'undefined' ? CRAFT_REC : [], cv, Qm, D8, Q8, Ep, Ir, kp }), window.__sprDbg = () => ({ cs, po, fa, hh, R4, ea, ROXQM, O4, P0, Vl }), window.__spr2 = () => ({ O4, _4 }));
+  typeof location < 'u' && location.search.includes('debug') && (window.__petPlay = () => { __petPlayAt = 0; petPlay(); }), (window.__cxIcon = (id) => cxIcon(id).toDataURL()), (window.__rox2m = () => ROX2M), (window.__Y0 = () => Y0), (window.__cxFull = (id, dir) => { const it = Wa[id], look = { base: "berserker", hair: 3, sx: "m" }; if (it.kind === "back") look.bk = it.backStyle; else if (it.kind === "headMid") look.mid = it.headStyle; else if (it.kind === "headLow") look.low = it.headStyle; else look.top = it.headStyle; return ROX2(R4(look), dir, -1, 0, "").cv.toDataURL(); }), typeof location < 'u' && location.search.includes('debug') && (window.__game = () => ({ He, Qu, WB, j, Ce, Ua, Yu, ty, I8, tr, U8, ap, Dr, Jy, Rb, Cc, _p, Ua, en, Jt, nr, He, It }), window.__defs = () => Object.values(Qu), window.__items = () => Wa, window.__maps = () => Jt, window.__data = () => ({ Or, RQ: typeof RQ < 'undefined' ? RQ : [], REALM_Q: typeof REALM_Q < 'undefined' ? REALM_Q : [], CRAFT_REC: typeof CRAFT_REC < 'undefined' ? CRAFT_REC : [], cv, Qm, D8, Q8, Ep, Ir, kp }), window.__sprDbg = () => ({ cs, po, fa, hh, R4, ea, ROXQM, O4, P0, Vl }), window.__spr2 = () => ({ O4, _4 }));
   var c4 = [1, -1, 0, 0, 1, -1, 1, -1], u4 = [0, 0, 1, -1, 1, -1, -1, 1];
   function d4(e, t, a, n) {
     let o = A.RX(a).mul(A.RY(t)), r = o.r, i = 1e9, s = -1e9, l = 1e9, c = -1e9;
@@ -17761,6 +17766,10 @@ void main() {
   }
 })();
 (() => {
+  // v249: harmonia dos mapas: nenhum NPC fica cercado/preso por decoracao (totens, etc.).
+  for (const m of Object.values(Jt)) { if (!m.npcs || !m.obstacles) continue; for (const n of m.npcs) m.obstacles = m.obstacles.filter((o) => !(o.kind === "deco" && o.deco === "totem" && o.x < n.x + 150 && o.x + o.w > n.x - 150 && o.y < n.y + 120 && o.y + o.h > n.y - 120)); }
+})();
+(() => {
   // v249: Fen (peixe) dropa as cartas de conjuracao; Manto de Orleans dropa de MVP; nada disso e vendido em NPC.
   const ref = Qu.peixe_lanterna;
   if (ref) {
@@ -17770,6 +17779,7 @@ void main() {
   }
   const mv = Qu.devorador_ruptura; if (mv) (mv.drops = mv.drops || []).push({ item: "manto_orleans", chance: 0.03, min: 1, max: 1 });
 })();
+(() => { if (typeof ROX2M !== "undefined" && ROX2M.setVariants) ROX2M.setVariants(Object.values(Qu).filter((d) => d.shape).sort((x, y) => (x.id < y.id ? -1 : 1))); })();
 (() => {
   // Balanceamento v245: alvos derivados de simulacao de jogador real (skills + equipamento por nivel; ver CHANGELOG).
   // [nivel, HP alvo, ATQ alvo] do monstro "tipico" do nivel; variacao relativa entre monstros e mantida (limitada).
@@ -19093,7 +19103,7 @@ function ROXQM(f, c, s, l, def, ex) {
         let i = r.x + r.w / 2, s = ce(i, r.y + r.h * 0.5 + Math.min(r.h, r.w) * 0.35), l = Ja(i, r.y + r.h * 0.5 + Math.min(r.h, r.w) * 0.35), c = Sh(r.x, r.y, 11), d = t.theme ?? "grass", f = ce(i, r.y + r.h / 2), u = (m) => mo ? O4(m, this.yawNow, this.tilt) : null;
         if (r.kind === "house") {
           let m = s.x - 55, p = s.y + 4;
-          o.push({ depth: l, sx: s.x, sy: p, draw: () => {
+          o.push({ depth: l, sx: s.x, sy: p, tall: true, draw: () => {
             let h = u({ kind: "house", theme: d, variant: Math.abs(Math.round(r.x / 13) * 7 + Math.round(r.y / 17) * 3) % 5 });
             if (h) {
               nt(a, h, f.x, f.y);
@@ -19107,7 +19117,7 @@ function ROXQM(f, c, s, l, def, ex) {
         } else if (r.kind === "deco" && r.deco === "airship") {
         } else if (r.kind === "deco") {
           let m = n.decos[r.deco ?? ""];
-          (m || mo) && o.push({ depth: r.walk ? -1e5 : l, sx: s.x, sy: s.y, tall: r.deco === "tower" || r.deco === "statue" || r.deco === "keep" || r.deco === "palace" || r.deco === "hof" || r.deco === "warrior" || r.deco === "longhouse" || r.deco === "banner" || r.deco === "lamp" || r.deco === "church" || r.deco === "castle" || r.deco === "monument" || r.deco === "bigforge" || r.deco === "colossus" || r.deco === "wbstatue" || r.deco === "airship" || r.deco === "magetower" || r.deco === "clocktower" || r.deco === "pyramid" || r.deco === "sphinx" || r.deco === "arena" || r.deco === "lighthouse" || r.deco === "ship" || r.deco === "totem" || r.deco === "pagoda" || r.deco === "frosttree" || r.deco === "xmastree" || r.deco === "toyfactory" || r.deco === "crypt" || r.deco === "palm" || r.deco === "cactus" || r.deco === "parasol" || r.deco === "vipcol" || r.deco === "ruinhouse" || r.deco === "ruinhall" || r.deco === "ruintower" || r.deco === "vipwall" || r.deco === "vipwall_v" || r.deco === "vipdais" || r.deco === "vipbar", draw: () => {
+          (m || mo) && o.push({ depth: r.walk ? -1e5 : l, sx: s.x, sy: s.y, tall: (!r.walk && $m[r.deco] && $m[r.deco].h >= 44) || r.deco === "tower" || r.deco === "statue" || r.deco === "keep" || r.deco === "palace" || r.deco === "hof" || r.deco === "warrior" || r.deco === "longhouse" || r.deco === "banner" || r.deco === "lamp" || r.deco === "church" || r.deco === "castle" || r.deco === "monument" || r.deco === "bigforge" || r.deco === "colossus" || r.deco === "wbstatue" || r.deco === "airship" || r.deco === "magetower" || r.deco === "clocktower" || r.deco === "pyramid" || r.deco === "sphinx" || r.deco === "arena" || r.deco === "lighthouse" || r.deco === "ship" || r.deco === "totem" || r.deco === "pagoda" || r.deco === "frosttree" || r.deco === "xmastree" || r.deco === "toyfactory" || r.deco === "crypt" || r.deco === "palm" || r.deco === "cactus" || r.deco === "parasol" || r.deco === "vipcol" || r.deco === "ruinhouse" || r.deco === "ruinhall" || r.deco === "ruintower" || r.deco === "vipwall" || r.deco === "vipwall_v" || r.deco === "vipdais" || r.deco === "vipbar", draw: () => {
             let p = u({ kind: "deco", theme: d, variant: /^ruin/.test(r.deco ?? "") ? Math.abs(Math.round(r.x / 10) * 7 + Math.round(r.y / 10) * 13) % 8 : r.deco === "longhouse" ? Math.abs(Math.round(r.x / 10) + Math.round(r.y / 10) * 3) % 6 : r.deco === "colossus" ? r.sv ?? Math.abs(Math.round(r.x / 7) * 5 + Math.round(r.y / 11) * 3) % 5 : 0, deco: r.deco });
             p ? (r.deco === "santachair" ? (() => { let q = this.clock % 7000, ho = q < 1700, dy = Math.sin(this.clock / 640) * 0.6 - (ho ? Math.abs(Math.sin(q / 85)) * 2.4 : 0); nt(a, p, f.x, f.y + dy, false, 1, 1 + (ho ? Math.sin(q / 85) * 0.012 : Math.sin(this.clock / 900) * 0.004)); ho && this.text("Ho ho ho!", f.x + 6, f.y - 188 + Math.sin(this.clock / 120) * 2, 17, "#ff6a6a", true); })() : nt(a, p, f.x, f.y)) : m && nt(a, m, s.x, s.y + 4), r.deco === "bench" && this.benchMark(f.x, f.y - 16);
           } });
@@ -19267,19 +19277,19 @@ function ROXQM(f, c, s, l, def, ex) {
       n.globalAlpha = 1;
       let rimR = R * 0.98;
       for (let b = 0; b < 3; b++) {
-        let per = 26 + b * 5, ph = ((t + b * 9) % per) / per, bx, by, drink = 0, flap = Math.sin(t * 22 + b) , dir = 1;
+        let cyc0 = Math.floor((t + b * 9) / (60 + b * 17)), hr = (q) => { const v = Math.sin(cyc0 * 12.9898 + b * 78.233 + q * 37.719) * 43758.5453; return v - Math.floor(v); }, per = 60 + b * 17 + hr(1) * 60, ph = ((t + b * 9) % per) / per, bx, by, drink = 0, flap = Math.sin(t * 22 + b), dir = 1, side = hr(2) > .5 ? 1 : -1;
         let ca = t * 0.5 + b * 2.1;
-        if (Math.abs(Math.sin(Math.floor((t + b * 9) / per) * 12.9898 + b * 78.233) * 43758.5453) % 1 > (b === 0 ? 0.3 : 0.12)) continue;
+        if (hr(3) > (b === 0 ? 0.3 : 0.16)) continue;
         if (ph < 0.38) {
-          let r2 = rimR * (2.6 - ph * 2.2), a = ca + ph * 5;
-          bx = c.x + Math.cos(a) * r2, by = c.y - R * 1.5 + Math.sin(a) * r2 * 0.4 - (0.38 - ph) * 40 * R / 40 * 0.4, dir = Math.sin(a) > 0 ? -1 : 1;
+          let u0 = ph / 0.38, fr = Math.pow(1 - u0, 1.6), r2 = rimR * (1.764 + 5 * fr), a = ca + ph * 5;
+          bx = c.x + Math.cos(a) * r2, by = c.y - R * (1.5 + 3.8 * fr) + Math.sin(a) * r2 * 0.4, dir = Math.sin(a) > 0 ? -1 : 1;
         } else if (ph < 0.46) {
           let u = (ph - 0.38) / 0.08, a = ca + 0.38 * 5, r2 = rimR * (2.6 - 0.38 * 2.2), sx = c.x + Math.cos(a) * r2, sy = c.y - R * 1.5 + Math.sin(a) * r2 * 0.4, ex = c.x + Math.cos(b * 2.1 + 0.8) * rimR * 0.9, ey = c.y + Math.sin(b * 2.1 + 0.8) * rimR * 0.45 - R * 0.28;
           bx = sx + (ex - sx) * u, by = sy + (ey - sy) * u, dir = ex > sx ? 1 : -1;
         } else if (ph < 0.78) {
           bx = c.x + Math.cos(b * 2.1 + 0.8) * rimR * 0.9, by = c.y + Math.sin(b * 2.1 + 0.8) * rimR * 0.45 - R * 0.28, drink = 1, flap = 0, dir = Math.cos(b * 2.1 + 0.8) > 0 ? -1 : 1;
         } else {
-          let u = (ph - 0.78) / 0.22, sx = c.x + Math.cos(b * 2.1 + 0.8) * rimR * 0.9, sy = c.y + Math.sin(b * 2.1 + 0.8) * rimR * 0.45 - R * 0.28, ex = sx + (b - 1) * R * 3 + R * 1.5, ey = sy - R * 2.4;
+          let u = (ph - 0.78) / 0.22, sx = c.x + Math.cos(b * 2.1 + 0.8) * rimR * 0.9, sy = c.y + Math.sin(b * 2.1 + 0.8) * rimR * 0.45 - R * 0.28, ex = sx + side * R * (5 + b * 1.6), ey = sy - R * 6.2;
           bx = sx + (ex - sx) * u, by = sy + (ey - sy) * u * u, dir = ex > sx ? 1 : -1;
         }
         let z = Math.max(0.6, R / 38);
@@ -19443,14 +19453,14 @@ function ROXQM(f, c, s, l, def, ex) {
           m2.addColorStop(0, "rgba(120,150,170,0)"), m2.addColorStop(1, "rgba(110,140,150," + (0.07 + L2 * 0.03) + ")"), c2.fillStyle = m2, c2.fillRect(0, 0, W, H);
         }
       })(i, this.w, this.h, R, w), i.imageSmoothingEnabled = true, i.imageSmoothingQuality = "high", i.setTransform(this.dpr * s, 0, 0, this.dpr * s, -R * this.dpr * s, -w * this.dpr * s), this.drawGroundPlane(n), this.drawWater(n), this.drawPortalAuras(n), this.drawGroundFx(a);
-      let M = (q, H) => q > R - 200 && q < R + l + 200 && H > w - 120 && H < w + c + 300, T = [];
+      let M = (q, H) => q > R - 460 && q < R + l + 460 && H > w - 240 && H < w + c + 760, T = [];
       {
         let q = ce(this.staticPivot.x, this.staticPivot.y), H = Ja(this.staticPivot.x, this.staticPivot.y);
         for (let V of this.statics) {
           let ae = (V.sx ?? 0) + q.x, K = (V.sy ?? 0) + q.y;
           M(ae, K) && T.push({ depth: V.depth + H, sx: ae, sy: K, tall: V.tall, draw: () => {
-            let pp = ce(a.player.pos.x, a.player.pos.y), occ = V.tall && V.depth + H > Ja(a.player.pos.x, a.player.pos.y) && Math.abs(ae - pp.x) < 120 && pp.y < K + 4 && pp.y > K - 330;
-            i.save(), occ && (i.globalAlpha = 0.34), i.translate(q.x, q.y), V.draw(), i.restore();
+            let pp = ce(a.player.pos.x, a.player.pos.y), occ = V.tall && V.depth + H > Ja(a.player.pos.x, a.player.pos.y) && Math.abs(ae - pp.x) < 220 && pp.y < K + 4 && pp.y > K - 720;
+            occ && (this._occF = true), i.save(), occ && (i.globalAlpha = 0.6), i.translate(q.x, q.y), V.draw(), i.restore();
           } });
         }
       }
@@ -19533,6 +19543,7 @@ function ROXQM(f, c, s, l, def, ex) {
         Ca.cx = -0.62 * (H.x - q.x) / 0.8, Ca.cy = -0.62 * (H.y - q.y) / 0.8, Ca.alpha = 0.42, Ca.on = true, L4();
       }
       for (let q of T) q.tall && q.sx !== void 0 && q.sy !== void 0 && q.depth > m && q.sy > u.y && q.sy - u.y < 120 && Math.abs(q.sx - u.x) < 46 ? (i.globalAlpha = 0.7, q.draw(), i.globalAlpha = 1) : q.draw();
+      this._occF && (this._occF = false, i.save(), i.globalAlpha = 0.95, this.drawPlayer(t), i.restore());
       Ca.on = false;
       for (let q of this.anims.keys()) !z.has(q) && q !== "p" && !q.startsWith("n:") && this.anims.delete(q);
       n.city && this.cityAmbience(n, a.player.pos), this.drawTopFx(), this.drawParticles(), n.sea && n.sea.all && this.underwaterFx(), this.ambient(n), n.city && this.forgeFx(n, a.player.pos), this.applyLighting(a, n), i.setTransform(this.dpr, 0, 0, this.dpr, 0, 0), this.drawLevelBanner(i), this.evView && (this.wfx.update(t, this.evView, n.theme, !!n.city, this.w, this.h), this.wfx.draw(i, this.evView, n.theme, this.w, this.h));
@@ -19702,7 +19713,7 @@ function ROXQM(f, c, s, l, def, ex) {
       l.face === void 0 && (l.face = Math.PI / 2 + ((d * 7) % 0.6 - 0.3), l.idleFace = l.face, l.nextLook = this.clock + 1500 + d * 700);
       let f = l.idleFace ?? l.face;
       l.face = l.idleFace;
-      t === "papainoel" && (l.face = Math.PI / 2); let sk = 0, sq = 1, hoho = false; if (t === "papainoel") { let q = this.clock % 7000; hoho = q < 1700; if (hoho) sk = -Math.abs(Math.sin(q / 85)) * 3, sq = 1 + Math.sin(q / 85) * 0.014; sk += Math.sin(this.clock / 640) * 0.7; } let { dir: u, flip: m } = Kl(l.face), p = fa(t, u, t === "papainoel" ? -2 : -1, 0), h = this.organic(l, l.face, { moving: false, breath: 0.014 });
+      t === "papainoel" && (l.face = Math.PI / 2); let sk = 0, sq = 1, hoho = false; if (t === "papainoel") { let q = this.clock % 7000; hoho = q < 1700; if (hoho) sk = -Math.abs(Math.sin(q / 85)) * 3, sq = 1 + Math.sin(q / 85) * 0.014; sk += Math.sin(this.clock / 640) * 0.7; } let { dir: u, flip: m } = Kl(l.face), p = (t === "munin" ? (() => { try { return ROX2M.mon("corvo", u, -1, 0, { id: "munin", color: 0x23233f }, { S: 2.8, clk: this.clock, seed: 3 }); } catch (e) { return null; } })() : null) || fa(t, u, t === "papainoel" ? -2 : -1, 0), h = this.organic(l, l.face, { moving: false, breath: 0.014 });
       t === "papainoel" ? i += 9 : 0, t !== "papainoel" && (this.blob(i, s + 4, 15), nt(r, p, i + h.dx, s + 6 + h.dy - (t === "papainoel" ? 6 : 0) + sk, m, $a * h.sx * (t === "papainoel" ? 1.38 : 1), $a * h.sy * sq * (t === "papainoel" ? 1.38 : 1), h.rot)), this.nameOn(`n${t}`) && this.text(n0(t)?.name ?? t, i, s + 16, 12, "#ffffff");
       let x = this.marks.get(t);
       x && this.text(x, i, s - 76 + Math.sin(this.clock / 190) * 3, 24, x === "?" ? "#7dff9a" : "#ffd34d", true);

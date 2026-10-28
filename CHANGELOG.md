@@ -733,3 +733,10 @@
 - Auditoria de visuais: 200 visuais, todos com imagem própria (0 repetidos). Corrigidos 5 pares de olhos iguais, óculos de forja, máscara de couro e aljava de prata duplicados; ícones antigos (gorro, guirlanda, elmos…) que apareciam como um elmo cinza agora mostram o visual real; equipamentos gerados de cabeça acompanham o tier em vez de repetir 4 formas.
 - 15 visuais novos: sombrios (Elmo de Caveira de Hel, Chifres de Surt, Coroa de Espinhos, Máscara Oni, Asas de Demônio), divinos (Halo do Serafim, Coroa Solar, Tiara de Freyja, Seis Asas do Serafim) e fofos (Orelhas de Raposa, Laço Gigante, Chapéu de Pintinho, Cogumelo Encantado, Focinho de Gatinho, Mochila de Ursinho).
 - Todo visual é exclusivo (não dropa; só por receita) e tem bônus por tema/raridade: sombrio FOR/DES(+crítico), divino INT/VIT(+vida/mana), fofo SOR/AGI(+veloc.), clássico VIT/DES. Máx. +3 num atributo (lendário), comum +1.
+- Pombos da fonte: aparecem de forma aleatória (nem sempre, intervalos irregulares) e chegam/partem voando alto, em vez de rondar baixo.
+- Casas/personagem sumindo nas cidades: construções agora ficam translúcidas quando o personagem está atrás (antes só as "altas" da lista, e só numa faixa estreita), o personagem é redesenhado por cima, e a margem de corte de sprites grandes (salão, palácio, etc.) aumentou para não "piscarem" ao sair da tela.
+- Monstros: cada um ganhou corpo próprio por variação procedural sobre a espécie-base (proporções, 2 módulos de corpo como asas/caudas/carapaça/cabeças/orbes/tentáculos, acessório de cabeça, marcação e espinhos); 281/281 combinações estruturais únicas, independente da cor.
+- Munin (NPC) agora é um corvo.
+- Buffs (ex.: Agilidade da curandeira) persistem ao trocar de mapa, com o tempo restante corrigido.
+- Música: cada cidade (e a aldeia de Jotunheim) tem melodia própria escrita à mão (2 frases de 4 compassos); 12/12 sequências de notas distintas.
+- Mapas: Mestre de Jogos de Freyrhain estava preso por totens; removidos os totens ao redor. Validação de 110 mapas: todos os portais e NPCs alcançáveis, sem sobreposição de portais/NPCs.
