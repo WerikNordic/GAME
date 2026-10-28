@@ -7606,7 +7606,7 @@ Error generating stack: ` + n.message + `
     for (pd.exp += amt; pd.level < 99 && pd.exp >= petNeed(pd.level); ) pd.exp -= petNeed(pd.level), pd.level++, say?.(`${pd.name} subiu para o n\u00EDvel ${pd.level}!`);
   }
   function petSay(m, tone = "info") { try { j.pushLog(m, "system", tone); } catch {} }
-  var HOM_KINDS = { vitalis: { name: "Vitalis", color: 8050826, desc: "Cura o dono periodicamente." }, granito: { name: "Granito", color: 10127994, desc: "Pele de pedra: +8% de vida do dono." }, faisca: { name: "Fa\u00EDsca", color: 16765000, desc: "Ataques r\u00E1pidos." }, caos: { name: "Caos", color: 11559136, desc: "Dano imprevis\u00EDvel, de fraco a devastador." } };
+  var HOM_KINDS = { vitalis: { name: "Lif", color: 8050826, desc: "Cura o dono periodicamente." }, granito: { name: "Amistr", color: 10127994, desc: "Pele de pedra: +8% de vida do dono." }, faisca: { name: "Filir", color: 16765000, desc: "Ataques r\u00E1pidos." }, caos: { name: "Vanilmirth", color: 11559136, desc: "Dano imprevis\u00EDvel, de fraco a devastador." } };
   function homunOk(ps) { return !!(ps && ps.line === "escudeiro" && ps.path === 2 && ps.homun); }
   function falconOk(ps) { return !!(ps && ps.line === "cacador" && ps.falconSkill && ps.falconTrained && !ps.falcaoOff); }
   function homunNeed(L) { return Math.round(50 * Math.pow(L, 1.5)); }
@@ -19764,13 +19764,44 @@ function ROXQM(f, c, s, l, def, ex) {
       let p = ce(c.x, c.y), t = this.clock / 380, bob = Math.sin(t) * 3, sc = h.evolved ? 1.3 : 1, col = HOM_KINDS[h.kind].color, hx = (v) => "#" + (v >>> 0).toString(16).padStart(6, "0");
       this.blob(p.x, p.y + 4, 8 * sc);
       n.save(), n.translate(p.x, p.y - 20 + bob), n.scale(sc, sc);
-      if (h.evolved) n.fillStyle = "rgba(255,230,140,0.25)", n.beginPath(), n.arc(0, 0, 18, 0, 7), n.fill();
-      if (h.kind === "faisca") { let fl = Math.sin(t * 5) * 0.5; n.fillStyle = "rgba(255,240,170,0.85)"; for (let sd of [-1, 1]) n.beginPath(), n.ellipse(sd * 11, -2, 7, 4 + fl * 2, sd * 0.5, 0, 7), n.fill(); }
-      n.fillStyle = hx(col), n.beginPath(), n.ellipse(0, 0, 9, 10, 0, 0, 7), n.fill(), n.fillStyle = "rgba(255,255,255,0.35)", n.beginPath(), n.ellipse(-3, -4, 3.5, 4.5, 0, 0, 7), n.fill();
-      if (h.kind === "granito") { n.fillStyle = "#6a5a4a"; for (let q of [[-6, 4], [4, 6], [0, -9]]) n.fillRect(q[0] - 2, q[1] - 2, 5, 4); }
-      if (h.kind === "vitalis") n.fillStyle = "#fff", n.fillRect(-1, -13, 2, 6), n.fillRect(-3, -11, 6, 2);
-      if (h.kind === "caos") n.fillStyle = "#6a2a9a", n.beginPath(), n.moveTo(-7, -7), n.lineTo(-10, -15), n.lineTo(-3, -9), n.moveTo(7, -7), n.lineTo(10, -15), n.lineTo(3, -9), n.fill();
-      n.fillStyle = "#fff", n.beginPath(), n.arc(-3.5, -1, 2.4, 0, 7), n.arc(3.5, -1, 2.4, 0, 7), n.fill(), n.fillStyle = "#1a1a2a", n.beginPath(), n.arc(-3, -0.6, 1.2, 0, 7), n.arc(4, -0.6, 1.2, 0, 7), n.fill();
+      const ev = !!h.evolved, E = (x, y, rx, ry, c, rot = 0) => { n.fillStyle = c, n.beginPath(), n.ellipse(x, y, rx, ry, rot, 0, 7), n.fill(); }, P = (c, pts) => { n.fillStyle = c, n.beginPath(), n.moveTo(pts[0], pts[1]); for (let q = 2; q < pts.length; q += 2) n.lineTo(pts[q], pts[q + 1]); n.closePath(), n.fill(); }, eye = (x, y, r = 2) => { E(x, y, r, r * 1.1, "#fff"), E(x + 0.5, y + 0.3, r * 0.5, r * 0.6, "#1a1a2a"); };
+      if (ev) E(0, 0, 19, 19, "rgba(255,230,140,0.22)");
+      if (h.kind === "vitalis") {
+        const fl = Math.sin(t * 6) * 0.35;
+        if (ev) { for (let sd of [-1, 1]) { P("#5fbf5a", [sd * 3, -2, sd * 16, -14 + fl * 6, sd * 20, -4, sd * 12, 4]); P("#3f9a46", [sd * 3, -2, sd * 12, -9, sd * 14, -3]); } }
+        else for (let sd of [-1, 1]) E(sd * 8, -3, 6, 3 + fl * 2, "rgba(220,245,255,0.7)", sd * 0.6 + fl);
+        P(ev ? "#fff7fa" : "#ffffff", [-4, 2, 4, 2, ev ? 9 : 7, 12, ev ? -9 : -7, 12]);
+        if (ev) for (let q of [[-5, 9], [3, 10], [-1, 6]]) E(q[0], q[1], 1.6, 1.6, q[0] > 0 ? "#ff7aa8" : "#ffd24a");
+        E(0, -4, 6, 6.4, "#ffd9bd"); E(0, -8.5, 7.4, 4.8, "#4fcf5a"); E(-6.2, -4, 2.6, 5, "#4fcf5a"); E(6.2, -4, 2.6, 5, "#4fcf5a");
+        eye(-2.4, -3.6, 1.6), eye(2.4, -3.6, 1.6); if (ev) P("#fff", [-1, -17, 1, -17, 0, -13]), E(0, -14, 2, 2, "#ff9ec0");
+      } else if (h.kind === "granito") {
+        for (let sd of [-1, 1]) for (let fb of [0, 1]) E(sd * (4 + fb * 6) - 1, 8, 2.6, 3, "#8a8e96");
+        E(0, 0, 12, 8.5, "#9aa0a8"); E(0, -3, 10.5, 6.5, ev ? "#7fd8e8" : "#6a6e76");
+        for (let q of [[-6, -4], [0, -7], [6, -4], [-3, -1], [4, -1]]) P(ev ? "#c8f4ff" : "#8a8e96", [q[0] - 3, q[1] + 2, q[0], q[1] - 3, q[0] + 3, q[1] + 2]);
+        E(11, 0, 5.4, 4.6, "#b0b4bc"); E(14.5, 1.5, 2.2, 1.6, "#3a3e46");
+        if (ev) { P("#f0c040", [9, -3, 6, -12, 12, -5]); P("#f0c040", [12, -3, 16, -11, 15, -2]); }
+        else { P("#7a7e86", [9, -3, 8, -8, 12, -4]); }
+        eye(10, -1.5, 1.5);
+      } else if (h.kind === "faisca") {
+        const fl = Math.sin(t * 9);
+        if (ev) { for (let sd of [-1, 1]) { P(sd > 0 ? "#ff4a2a" : "#3a8aff", [0, 0, sd * 20, -12 + fl * 6, sd * 24, -2, sd * 14, 6]); P(sd > 0 ? "#ffd24a" : "#9acaff", [0, 1, sd * 14, -7 + fl * 4, sd * 17, -1]); } }
+        else for (let sd of [-1, 1]) P("#3a78d8", [0, 0, sd * 14, -8 + fl * 5, sd * 11, 4]);
+        E(0, 0, 8, 7.5, ev ? "#ff8a3a" : "#5a9aff"); E(0, 3, 5.5, 4, ev ? "#ffe9a0" : "#bcd8ff");
+        E(5, -7, 4.6, 4.4, ev ? "#ff8a3a" : "#5a9aff"); P("#f0b838", [8.5, -8, 17, -6.5, 8.5, -5]);
+        P(ev ? "#ffd24a" : "#3a78d8", [-2, -11, 0, -16, 2, -11]); P("#3a78d8", [-6, 4, -14, 9, -5, 8]);
+        eye(5.5, -8, 1.4);
+      } else {
+        const sq = Math.sin(t * 3) * 0.6;
+        if (ev) {
+          for (let sd of [-1, 1]) { P("#e8e0cc", [sd * 5, -4, sd * 20, -16 + sq * 4, sd * 17, -6, sd * 24, -2, sd * 12, 4]); n.strokeStyle = "#cfc5ac", n.lineWidth = 1; for (let q = 0; q < 3; q++) n.beginPath(), n.moveTo(sd * 5, -3 + q), n.lineTo(sd * (14 + q * 3), -10 + q * 4 + sq * 3), n.stroke(); }
+          E(0, 0, 10, 10.5, "#5a3a78"); for (let q = -1; q <= 1; q++) { n.strokeStyle = "#e8e0cc", n.lineWidth = 1.4, n.beginPath(), n.arc(0, q * 4 + 1, 8, 0.4, 2.7), n.stroke(); }
+          E(0, 1, 3.2 + sq * 0.4, 3.2 + sq * 0.4, "#9affea"); E(0, 1, 1.4, 1.4, "#fff");
+          eye(-3.5, -4, 1.8), eye(3.5, -4, 1.8);
+        } else {
+          E(0, 2 - sq, 11 + sq, 8.5 - sq, "#a8743c"); E(-3, -1, 4, 2.6, "rgba(255,225,170,0.5)", -0.4);
+          eye(-3.5, 0, 2.4), eye(3.5, 0, 2.4);
+        }
+      }
       n.restore();
     }
     drawFalcon() {

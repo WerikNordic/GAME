@@ -1,3 +1,7 @@
+## v231 — Homúnculos
+- Redesenhados: Lif (fada de cabelo verde → asas de folha), Amistr (quadrúpede de pedra → touro de cristal com chifres dourados), Filir (pássaro azul → ave com asas de chamas), Vanilmirth (gelatina marrom → massa roxa com asas ósseas e núcleo brilhante).
+- Nomes trocados (Vitalis/Granito/Faísca/Caos → Lif/Amistr/Filir/Vanilmirth); homúnculos já criados mantêm o nome antigo.
+
 ## v230 — Visual por tier + correção do carrinho
 - CORREÇÃO: Mercador que nunca abriu o carrinho ficava invisível (erro ao desenhar). Agora o carrinho é criado automaticamente.
 - Transclasses (tier 3) com visual próprio por classe: Lord vermelho/dourado com capa branca, Sumo Sacerdote branco/dourado com estola vermelha, Arquimago roxo/dourado, Algoz preto/cinza, Monge laranja/dourado etc.
