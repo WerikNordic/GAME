@@ -12241,9 +12241,9 @@ Error generating stack: ` + n.message + `
     admCmd(txt) {
       txt = txt.replace(/^(@\w+)\s*=\s*/, "$1 ");
       let [cmd, ...args] = txt.slice(1).split(/\s+/), c = cmd.toLowerCase(), ps = this.ps, say = (m, tone = "good") => (this.pushLog(m, "system", tone), true);
-      if (!["ajuda", "adm", "lvlup", "joblv", "item", "zeny", "heal", "god", "goto", "ban", "unban", "skillpts", "statpts", "mvp", "ir", "classe", "class", "allstatus"].includes(c)) return false;
+      if (!["ajuda", "adm", "lvlup", "joblv", "item", "zeny", "heal", "god", "goto", "ban", "unban", "skillpts", "statpts", "mvp", "ir", "classe", "class", "allstatus", "go", "warp"].includes(c)) return false;
       if (!(window.__admin === true)) return say("Comando restrito a administradores.", "bad");
-      if (c === "ajuda" || c === "adm") return say("ADM: /aura (liga/desliga) \u00B7 @lvlup 0-99 \u00B7 @joblv N \u00B7 @item c\u00F3digo|nome [qtd] \u00B7 @classe nome \u00B7 @zeny [N] \u00B7 @classe nome \u00B7 @allstatus \u00B7 @heal \u00B7 @god \u00B7 @goto mapa \u00B7 @statpts N \u00B7 @skillpts N \u00B7 @ban e-mail \u00B7 @unban e-mail");
+      if (c === "ajuda" || c === "adm") return say("ADM: /aura (liga/desliga) \u00B7 @lvlup 0-99 \u00B7 @joblv N \u00B7 @item c\u00F3digo|nome [qtd] \u00B7 @classe nome \u00B7 @zeny [N] \u00B7 @classe nome \u00B7 @go 1-N (cidades) \u00B7 @warp mapa \u00B7 @allstatus \u00B7 @heal \u00B7 @god \u00B7 @goto mapa \u00B7 @statpts N \u00B7 @skillpts N \u00B7 @ban e-mail \u00B7 @unban e-mail");
       if (c === "lvlup") {
         let n = parseInt(args[0]);
         if (!(n >= 0 && n <= 99)) return say("Uso: @lvlup 0 a 99", "bad");
@@ -12274,6 +12274,15 @@ Error generating stack: ` + n.message + `
       }
       if (c === "heal") { let d = Ua(ps); ps.hp = d.maxHp, ps.mp = d.maxMp, this.refresh(); return say("Vida e mana restauradas."); }
       if (c === "god") { this._god = !this._god, this.world && (this.world.player.invulnUntil = this._god ? 1e15 : 0); return say(this._god ? "Modo invulnerável LIGADO." : "Modo invulnerável DESLIGADO."); }
+      if (c === "go" || c === "warp") {
+        const nzm = (x) => String(x || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]/g, ""), maps = Object.values(Jt);
+        const cities = maps.filter((m) => /^cidade_/.test(m.id)), fields = maps.filter((m) => !/^cidade_/.test(m.id) && m.spawns && m.spawns.length && m.maxMonsters !== 0);
+        let m = null, q = nzm(args.join(" "));
+        if (c === "go") { const n = parseInt(args[0]); m = cities[n - 1]; if (!m) return say("Uso: @go N. " + cities.map((x, i) => `${i + 1}=${x.name}`).join(" \u00B7 "), "bad"); }
+        else { m = fields.find((x) => nzm(x.id) === q || nzm(x.name) === q) ?? fields.find((x) => q && (nzm(x.id).includes(q) || nzm(x.name).includes(q))); if (!q || !m) return say("Uso: @warp nome-do-mapa. Ex.: " + fields.slice(0, 8).map((x) => x.name).join(", ") + "\u2026", "bad"); }
+        this.world = new nr(this.ps, m, void 0, m.spawn), this.panel = "none", this.refresh();
+        return say(`Teleportado para ${m.name}.`);
+      }
       if (c === "goto" || c === "ir") {
         let q = args.join(" ").toLowerCase(), m = Object.values(Jt).find((x) => x.id === q) ?? Object.values(Jt).find((x) => x.name.toLowerCase().includes(q));
         if (!q || !m) return say("Uso: @goto id-ou-nome-do-mapa", "bad");
@@ -12826,8 +12835,8 @@ Error generating stack: ` + n.message + `
         else p.mountOwned = true, p.mountSkill = true, this.toast("Montaria recebida! Use o bot\u00E3o na aba de habilidades.", "good"), this.pushLog("Montaria gr\u00E1tis da Sala VIP.", "system", "good");
       } else if (k === "bless") {
         let dd = Ua(p), w = this.world, now = Date.now();
-        p.hp = dd.maxHp, p.mp = dd.maxMp, p.blessUntil = now + 6e5;
-        w && (w.player.buffs = w.player.buffs.filter((b) => b.id !== "agilidade"), w.player.buffs.push({ id: "agilidade", spd: 0.5, until: w.time + 6e5 }), w.emit({ type: "fx", kind: "buff", x: w.player.pos.x, y: w.player.pos.y, angle: 0, range: 60, arc: 360, magic: true, fromPlayer: true, light: 16766720 }));
+        p.hp = dd.maxHp, p.mp = dd.maxMp, p.blessUntil = now + 18e4;
+        w && (w.player.buffs = w.player.buffs.filter((b) => b.id !== "agilidade"), w.player.buffs.push({ id: "agilidade", spd: 0.5, until: w.time + 18e4 }), w.emit({ type: "fx", kind: "buff", x: w.player.pos.x, y: w.player.pos.y, angle: 0, range: 60, arc: 360, magic: true, fromPlayer: true, light: 16766720 }));
         this.toast("B\u00EAn\u00E7\u00E3o VIP: vida e mana restauradas + Agilidade 10 min!", "good"), this.pushLog("B\u00EAn\u00E7\u00E3o da Sala VIP recebida.", "system", "good");
       }
       this.saveGameQuiet(), this.refresh();
@@ -12923,9 +12932,9 @@ Error generating stack: ` + n.message + `
     }
     curarAgora() {
       let ps = this.ps, w = this.world, now = Date.now(), dd = Ua(ps);
-      ps.hp = dd.maxHp, ps.mp = dd.maxMp, ps.curaAt = now, ps.blessUntil = now + 6e5;
-      w && (w.player.buffs = w.player.buffs.filter((b) => b.id !== "agilidade"), w.player.buffs.push({ id: "agilidade", spd: 0.5, until: w.time + 6e5 }), w.emit({ type: "fx", kind: "buff", x: w.player.pos.x, y: w.player.pos.y, angle: 0, range: 60, arc: 360, magic: true, fromPlayer: true, light: 16774336 }));
-      this.toast("Curado e aben\u00E7oado: Ben\u00E7\u00E3o e Agilidade por 10 minutos.", "good"), this.saveGameQuiet(), this.refresh();
+      ps.hp = dd.maxHp, ps.mp = dd.maxMp, ps.curaAt = now, ps.blessUntil = now + 18e4;
+      w && (w.player.buffs = w.player.buffs.filter((b) => b.id !== "agilidade"), w.player.buffs.push({ id: "agilidade", spd: 0.5, until: w.time + 18e4 }), w.emit({ type: "fx", kind: "buff", x: w.player.pos.x, y: w.player.pos.y, angle: 0, range: 60, arc: 360, magic: true, fromPlayer: true, light: 16774336 }));
+      this.toast("Curado e aben\u00E7oado: Ben\u00E7\u00E3o e Agilidade por 3 minutos.", "good"), this.saveGameQuiet(), this.refresh();
     }
     openDialogue(t) {
       if (!this.ps) return;
@@ -12969,9 +12978,9 @@ Error generating stack: ` + n.message + `
         if (ps.curaAt && now - ps.curaAt < 18e4) this.toast(`A Curandeira precisa descansar (${Math.ceil((18e4 - (now - ps.curaAt)) / 1e3)}s).`, "bad");
         else {
           let dd = Ua(ps);
-          ps.hp = dd.maxHp, ps.mp = dd.maxMp, ps.curaAt = now, ps.blessUntil = now + 6e5;
-          w && (w.player.buffs = w.player.buffs.filter((b) => b.id !== "agilidade"), w.player.buffs.push({ id: "agilidade", spd: 0.5, until: w.time + 6e5 }), w.emit({ type: "fx", kind: "buff", x: w.player.pos.x, y: w.player.pos.y, angle: 0, range: 60, arc: 360, magic: true, fromPlayer: true, light: 16774336 }));
-          this.toast("Voc\u00EA foi curado e aben\u00E7oado: Ben\u00E7\u00E3o e Agilidade por 10 minutos.", "good"), this.pushLog("A Curandeira restaurou sua vida e mana e lhe deu Ben\u00E7\u00E3o e Agilidade.", "system", "good"), this.saveGameQuiet();
+          ps.hp = dd.maxHp, ps.mp = dd.maxMp, ps.curaAt = now, ps.blessUntil = now + 18e4;
+          w && (w.player.buffs = w.player.buffs.filter((b) => b.id !== "agilidade"), w.player.buffs.push({ id: "agilidade", spd: 0.5, until: w.time + 18e4 }), w.emit({ type: "fx", kind: "buff", x: w.player.pos.x, y: w.player.pos.y, angle: 0, range: 60, arc: 360, magic: true, fromPlayer: true, light: 16774336 }));
+          this.toast("Voc\u00EA foi curado e aben\u00E7oado: Ben\u00E7\u00E3o e Agilidade por 3 minutos.", "good"), this.pushLog("A Curandeira restaurou sua vida e mana e lhe deu Ben\u00E7\u00E3o e Agilidade.", "system", "good"), this.saveGameQuiet();
         }
         this.dialogue = null, this.refresh();
         return;
@@ -15969,6 +15978,24 @@ void main() {
     }
     return { w: t.w, h: t.h, data: ae };
   }
+  (function buffHud() {
+    if (typeof document === "undefined") return;
+    const el = document.createElement("div"); el.id = "buffhud";
+    el.style.cssText = "position:fixed;right:8px;top:212px;z-index:60;display:flex;flex-direction:column;gap:5px;pointer-events:none;font:12px/1.25 system-ui,sans-serif;max-width:190px";
+    document.body.appendChild(el);
+    const NM = { agilidade: ["Agilidade", "#7fe8ff"], bencao: ["B\u00EAn\u00E7\u00E3o", "#ffe27a"], afiar: ["Afiar", "#ff9a6a"], reforcar: ["Refor\u00E7ar", "#9ab8ff"], guilda: ["Guilda", "#c8a0ff"] };
+    const fmt = (s) => { s = Math.max(0, Math.ceil(s)); return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0"); };
+    setInterval(() => {
+      try {
+        const w = j.world, rows = [];
+        if (w && j.screen === "playing" && w.ps) {
+          for (const b of w.player.buffs || []) { const rem = (b.until - w.time) / 1e3; if (!(rem > 0)) continue; const ben = []; if (b.atk) ben.push("ATK " + (b.atk > 0 ? "+" : "") + Math.round(b.atk * 100) + "%"); if (b.def) ben.push("DEF +" + Math.round(b.def * 100) + "%"); if (b.spd) ben.push("Velocidade +" + Math.round(b.spd * 100) + "%"); if (b.crit) ben.push("Cr\u00EDtico +" + Math.round(b.crit * 100) + "%"); const nm = NM[b.id] ?? [String(b.id).replace(/_/g, " ").replace(/^./, (c) => c.toUpperCase()), "#ffd98a"]; rows.push({ n: nm[0], c: nm[1], ben, rem }); }
+          if (w.ps.blessUntil > Date.now()) rows.push({ n: "B\u00EAn\u00E7\u00E3o da Curandeira", c: "#ffe27a", ben: ["DEX +15%"], rem: (w.ps.blessUntil - Date.now()) / 1e3 });
+        }
+        el.innerHTML = rows.map((r) => `<div style="background:linear-gradient(#2a1e10ee,#150e07ee);border:1px solid ${r.c};border-left:4px solid ${r.c};border-radius:5px;padding:4px 8px;color:#f6ead0;box-shadow:0 2px 8px #0008"><div style="display:flex;justify-content:space-between;gap:8px"><b style="color:${r.c}">${r.n}</b><span style="font-variant-numeric:tabular-nums">${fmt(r.rem)}</span></div>${r.ben.length ? `<div style="opacity:.85;font-size:11px">${r.ben.join(" \u00B7 ")}</div>` : ""}</div>`).join("");
+      } catch {}
+    }, 500);
+  })();
   typeof location < 'u' && location.search.includes('debug') && (window.__petPlay = () => { __petPlayAt = 0; petPlay(); }), (window.__cxIcon = (id) => cxIcon(id).toDataURL()), (window.__cxFull = (id, dir) => { const it = Wa[id], look = { base: "berserker", hair: 3, sx: "m" }; if (it.kind === "back") look.bk = it.backStyle; else look.top = it.headStyle; return ROX2(R4(look), dir, -1, 0, "").cv.toDataURL(); }), typeof location < 'u' && location.search.includes('debug') && (window.__game = () => ({ WB, j, Ce, Ua, Yu, ty, I8, tr, U8, ap, Dr, Jy, Rb, Cc, _p, Ua, en, Jt, nr, He, It }), window.__defs = () => Object.values(Qu), window.__items = () => Wa, window.__maps = () => Jt, window.__data = () => ({ Or, RQ: typeof RQ < 'undefined' ? RQ : [], REALM_Q: typeof REALM_Q < 'undefined' ? REALM_Q : [], CRAFT_REC: typeof CRAFT_REC < 'undefined' ? CRAFT_REC : [], cv, Qm, D8, Q8, Ep, Ir, kp }), window.__sprDbg = () => ({ cs, po, fa, hh, R4, ea, ROXQM, O4, P0, Vl }), window.__spr2 = () => ({ O4, _4 }));
   var c4 = [1, -1, 0, 0, 1, -1, 1, -1], u4 = [0, 0, 1, -1, 1, -1, -1, 1];
   function d4(e, t, a, n) {
@@ -17688,13 +17715,13 @@ function ROXQM(f, c, s, l, def, ex) {
     if (["aprendiz", "berserker", "escudeiro", "cacador", "volva", "valquiria", "skald", "thay"].includes(e.base)) {
       t.head = "none", delete t.cape, delete t.quiver;
       let tp = TIERLOOK[e.base]?.[Math.min(2, e.ti || 0)];
-      tp && Object.assign(t, tp), t.ti = e.ti || 0; e.adm && Object.assign(t, { tunic: 16119280, trim: 15252024, pauld: 15252024, cape: 16448240, pants: 15987690, boots: 15255648, hair: 16316664, hc: void 0, head: "admhelm", eqHead: "admhelm", eqBack: true, wingsBack: [16777215, 16769184], aura: 16769184, epic: true });
+      tp && Object.assign(t, tp), t.ti = e.ti || 0; e.adm && Object.assign(t, { adm: 1, tunic: 16119280, trim: 15252024, pauld: 15252024, cape: 16448240, pants: 15987690, boots: 15255648, hair: 16316664, hc: void 0, head: "admhelm", eqHead: "admhelm", eqBack: true, wingsBack: [16777215, 16769184], aura: 16769184, epic: true });
     }
     e.ep && (t.epic = true);
     if (e.mid && ROX2.COSX.eyes[e.mid]) { const ey = ROX2.COSX.eyes[e.mid]; t.eye = ey.col; t.eyePat = ey.pat; if (ey.col2 != null) t.eye2 = ey.col2; e = { ...e, mid: void 0 }; }
     else if (e.mid && e.mid.startsWith("eye_")) { t.eye = EYEC[e.mid]; e = { ...e, mid: void 0 }; }
     if (e.bk && !BACKS[e.bk] && ROX2.COSX.back[e.bk]) { t.eqBack = true; t.bkx = e.bk; delete t.cape; delete t.quiver; delete t.wingsBack; }
-    return e.adm && base0(e) && (e = { ...e, hair: void 0, hc: 16316664, top: "admhelm", mid: void 0 }), e.hair !== void 0 && !Number.isNaN(e.hair) && (t.hair = xh[e.hair % xh.length]), e.hs && (t.hairStyle = e.hs, /^v\d+$/.test(e.hs) && HV50[Number(e.hs.slice(1)) - 1] && (t.hvp = HV50[Number(e.hs.slice(1)) - 1], t.hairStyle = "short")), e.hc !== void 0 && !Number.isNaN(e.hc) && (t.hair = e.hc, t.eye === void 0 && (t.eye = (((e.hc >> 16 & 255) + 40 > 255 ? 255 : (e.hc >> 16 & 255) + 40) << 16) | (((e.hc >> 8 & 255) + 40 > 255 ? 255 : (e.hc >> 8 & 255) + 40) << 8) | ((e.hc & 255) + 40 > 255 ? 255 : (e.hc & 255) + 40))), e.gear && (t.gear = e.gear), e.top && (t.head = e.top, t.eqHead = e.top), e.mid && (t.mid = e.mid), e.low && (t.low = e.low), e.sx === "f" && (t.slim = true, e.hs || (t.hairStyle = "long")), e.bk && BACKS[e.bk] && (t.eqBack = true, BACKS[e.bk].type === "cape" ? t.cape = BACKS[e.bk].c : BACKS[e.bk].type === "quiver" ? t.quiver = true : t.wingsBack = [BACKS[e.bk].c, BACKS[e.bk].c2]), t;
+    return e.adm && base0(e) && (e = { ...e, hair: void 0, hc: 16316664, hs: "long", top: "admhelm", mid: void 0 }), e.hair !== void 0 && !Number.isNaN(e.hair) && (t.hair = xh[e.hair % xh.length]), e.hs && (t.hairStyle = e.hs, /^v\d+$/.test(e.hs) && HV50[Number(e.hs.slice(1)) - 1] && (t.hvp = HV50[Number(e.hs.slice(1)) - 1], t.hairStyle = "short")), e.hc !== void 0 && !Number.isNaN(e.hc) && (t.hair = e.hc, t.eye === void 0 && (t.eye = (((e.hc >> 16 & 255) + 40 > 255 ? 255 : (e.hc >> 16 & 255) + 40) << 16) | (((e.hc >> 8 & 255) + 40 > 255 ? 255 : (e.hc >> 8 & 255) + 40) << 8) | ((e.hc & 255) + 40 > 255 ? 255 : (e.hc & 255) + 40))), e.gear && (t.gear = e.gear), e.top && (t.head = e.top, t.eqHead = e.top), e.mid && (t.mid = e.mid), e.low && (t.low = e.low), e.sx === "f" && (t.slim = true, e.hs || (t.hairStyle = "long")), e.bk && BACKS[e.bk] && (t.eqBack = true, BACKS[e.bk].type === "cape" ? t.cape = BACKS[e.bk].c : BACKS[e.bk].type === "quiver" ? t.quiver = true : t.wingsBack = [BACKS[e.bk].c, BACKS[e.bk].c2]), t;
   }
   {
     {
@@ -19417,6 +19444,41 @@ function ROXQM(f, c, s, l, def, ex) {
       cp.x = x, cp.t = this.clock, cp.v += ((tg - cp.a) * 90 - cp.v * 7) * dt, cp.a += cp.v * dt, cp.a = Math.max(-0.16, Math.min(0.16, cp.a));
       return cp.q = cape && !w.sitting ? Math.round(cp.a / 0.16 * 3) : 0;
     }
+    admThrone(X, Y) {
+      const o = this.ctx, T = this.clock / 1e3, fl = Math.sin(T * 1.6) * 1.2;
+      o.save();
+      // sombra e plataforma flutuante
+      o.fillStyle = "rgba(0,0,0,0.28)", o.beginPath(), o.ellipse(X, Y + 7, 36, 11, 0, 0, 6.283), o.fill();
+      const dg = o.createLinearGradient(0, Y - 4, 0, Y + 8); dg.addColorStop(0, "#fff3c4"), dg.addColorStop(1, "#b98a2c");
+      o.fillStyle = dg, o.beginPath(), o.ellipse(X, Y + 2 + fl * 0.3, 32, 10, 0, 0, 6.283), o.fill(), o.strokeStyle = "#7a5a18", o.lineWidth = 1.2, o.stroke();
+      o.fillStyle = "#fffbe8", o.beginPath(), o.ellipse(X, Y + fl * 0.3, 26, 7.5, 0, 0, 6.283), o.fill();
+      // halo giratorio atrás da cabeça
+      o.globalCompositeOperation = "lighter";
+      for (let k = 0; k < 2; k++) { o.strokeStyle = k ? "rgba(255,236,160,0.55)" : "rgba(255,255,255,0.45)", o.lineWidth = k ? 1.4 : 2.2, o.beginPath(), o.ellipse(X, Y - 62 + fl, 22 + k * 7, 22 + k * 7, 0, 0, 6.283), o.stroke(); }
+      for (let k = 0; k < 8; k++) { const a = k / 8 * 6.283 + T * 0.7; o.fillStyle = "rgba(255,244,190,0.9)", o.fillRect(X + Math.cos(a) * 29 - 1.5, Y - 62 + fl + Math.sin(a) * 29 - 1.5, 3, 3); }
+      o.globalCompositeOperation = "source-over";
+      // asas de luz do encosto
+      for (const sg of [-1, 1]) for (let i = 0; i < 5; i++) {
+        const bx = X + sg * 17, by = Y - 30 - i * 3.4, tx = X + sg * (40 + i * 3.2 - (i > 2 ? i * 1.2 : 0)), ty = Y - 52 - i * 7.4 + Math.sin(T * 2 + i) * 0.8;
+        o.strokeStyle = i % 2 ? "#fff4c4" : "#ffffff", o.lineWidth = 4.4 - i * 0.5, o.lineCap = "round", o.beginPath(), o.moveTo(bx, by), o.quadraticCurveTo(X + sg * (36 + i * 2), by - 14, tx, ty), o.stroke();
+        o.strokeStyle = "rgba(190,140,40,0.7)", o.lineWidth = 1, o.stroke();
+      }
+      // encosto em arco gótico
+      const bg = o.createLinearGradient(0, Y - 90, 0, Y - 6); bg.addColorStop(0, "#fffdf2"), bg.addColorStop(0.5, "#f4e6b8"), bg.addColorStop(1, "#d6a940");
+      o.fillStyle = bg, o.beginPath(), o.moveTo(X - 23, Y - 6), o.lineTo(X - 24, Y - 56), o.quadraticCurveTo(X - 24, Y - 80, X, Y - 94), o.quadraticCurveTo(X + 24, Y - 80, X + 24, Y - 56), o.lineTo(X + 23, Y - 6), o.closePath(), o.fill();
+      o.strokeStyle = "#b8862a", o.lineWidth = 2, o.stroke();
+      o.strokeStyle = "rgba(184,134,42,0.8)", o.lineWidth = 1.2, o.beginPath(), o.moveTo(X - 16, Y - 10), o.lineTo(X - 17, Y - 56), o.quadraticCurveTo(X - 17, Y - 74, X, Y - 85), o.quadraticCurveTo(X + 17, Y - 74, X + 17, Y - 56), o.lineTo(X + 16, Y - 10), o.stroke();
+      // gema coroa
+      o.fillStyle = "#7fe8ff", o.beginPath(), o.moveTo(X, Y - 100), o.lineTo(X + 4, Y - 93), o.lineTo(X, Y - 86), o.lineTo(X - 4, Y - 93), o.closePath(), o.fill(), o.strokeStyle = "#b8862a", o.stroke();
+      // braços do trono
+      for (const sg of [-1, 1]) { o.fillStyle = "#ecd48a", o.fillRect(X + sg * 22 - 4, Y - 24, 8, 20), o.fillStyle = "#fff8dc", o.beginPath(), o.ellipse(X + sg * 22, Y - 25, 6, 3.2, 0, 0, 6.283), o.fill(), o.strokeStyle = "#b8862a", o.lineWidth = 1, o.stroke(); }
+      // almofada
+      o.fillStyle = "#b02838", o.beginPath(), o.ellipse(X, Y - 6, 21, 6.4, 0, 0, 6.283), o.fill(), o.strokeStyle = "#f2c448", o.lineWidth = 1.4, o.stroke();
+      // partículas de luz subindo
+      o.globalCompositeOperation = "lighter";
+      for (let i = 0; i < 12; i++) { const ph = (T * 0.35 + i * 0.083) % 1; o.fillStyle = `rgba(255,240,170,${0.8 * (1 - ph)})`, o.fillRect(X + Math.sin(i * 7.3) * 34, Y - ph * 100, 2, 2); }
+      o.restore();
+    }
     useFx(x, y) {
       const u = window.__ufx; if (!u) return; const age = (performance.now() - u.t) / 1000; if (age > 1.6) return;
       const o = this.ctx, C = { hp: ["#ff5a6a", "#ffb0b8"], mp: ["#4aa8ff", "#a8d8ff"], both: ["#c070ff", "#f0c8ff"], food: ["#ffb347", "#ffe0a0"], dye: ["#ff6ad5", "#6affd8"], buff: ["#ffe070", "#fff6c0"], wing: ["#ffffff", "#bfe6ff"] }[u.kind] || ["#fff", "#fff"], fade = 1 - age / 1.6;
@@ -19439,6 +19501,7 @@ function ROXQM(f, c, s, l, def, ex) {
       if (n.save(), n.globalAlpha = c ? 0.3 : 1, c) n.translate(r.x, r.y), n.rotate(Math.PI / 2), N4(() => nt(n, u, 0, 0, l, $a, $a));
       else {
         const wd0 = a.waterDepth(o.pos.x, o.pos.y), __body = () => {
+        const thr = admOn() && a.sitting && !(a.ps.mount && a.ps.mountOwned) ? 11 : 0; thr && this.admThrone(r.x, r.y);
         this.blob(r.x, r.y + 4, 15), this.useFx(r.x, r.y), a.ps.level >= 99 && this.epicFx(r.x, r.y, 0);
         var mnt = a.ps.mount && a.ps.mountOwned, moff = mnt ? (a.sitting ? 37 : 47) : 0, atkM = this.clock - i.atkAt < Math.max(260, i.atkDur || 0), pl2 = 0, play2 = false, jy2 = 0;
         let m = this.organic(i, o.facing, { moving: i.moving, atkT: this.clock - i.atkAt, atkImpact: i.atkImpact, atkDur: i.atkDur, breath: a.sitting ? 8e-3 : 0.011 });
@@ -19451,7 +19514,7 @@ function ROXQM(f, c, s, l, def, ex) {
           s === "down" || s === "dq" ? __hz = hz : hz();
         }
         let cr = mnt && a.crouching ? 1 : 0;
-        nt(n, u, r.x + m.dx + cr * (l ? -3 : 3), r.y + 6 + m.dy - moff + cr * 17 + jy2, l, $a * m.sx, $a * m.sy * (1 - cr * 0.1), m.rot + cr * (l ? -0.12 : 0.12));
+        nt(n, u, r.x + m.dx + cr * (l ? -3 : 3), r.y + 6 + m.dy - moff - thr + cr * 17 + jy2, l, $a * m.sx, $a * m.sy * (1 - cr * 0.1), m.rot + cr * (l ? -0.12 : 0.12));
         __hz && __hz();
         a.ps.equipment.headTop === "poring_saltitante" && drawPoring(n, r.x + m.dx, r.y + 6 + m.dy - moff + (a.sitting ? 13 : 0), 1, this.clock, s, l);
         if (mnt && !d) { const sd = { down: [0, -58, -9, -50], dq: [l ? -34 : 34, -62, l ? 8 : -8, -52], side: [l ? -44 : 44, -68, l ? -7 : 7, -50], uq: [l ? -18 : 18, -70, l ? 5 : -5, -54], up: [0, -72, 0, -56] }[s] || [0, -60, 0, -50], bob = i.moving ? Math.sin(i.phase * 6.283) * 1.6 : Math.sin(this.clock / 600) * 0.6; n.save(); n.lineCap = "round"; for (const hs of s === "down" || s === "up" ? [-1, 1] : [1]) { const hxp = r.x + sd[2] * (s === "down" || s === "up" ? -hs * 0.8 : 1) , hyp = r.y + sd[3] + bob, mxp = r.x + sd[0] + (s === "down" || s === "up" ? hs * 4 : 0), myp = r.y + sd[1] + 21; n.strokeStyle = "#3a1e0e"; n.lineWidth = 2.6; n.beginPath(); n.moveTo(hxp, hyp); n.quadraticCurveTo((hxp + mxp) / 2, Math.max(hyp, myp) + 6 + bob, mxp, myp); n.stroke(); n.strokeStyle = "#a8683a"; n.lineWidth = 1.2; n.stroke(); n.fillStyle = "#e8d49a"; n.fillRect(mxp - 1.5, myp - 1.5, 3, 3); n.fillStyle = "#f2d6b0"; n.beginPath(); n.arc(hxp, hyp, 2.4, 0, 6.283); n.fill(); } n.restore(); }

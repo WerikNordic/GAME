@@ -26,6 +26,7 @@
     return { main, extra, cover: (xt && COSX.topCover[h]) || main === "helm" || main === "helmH" || main === "hood" || main === "furhood" || main === "hood2" };
   }
   function finish(cfg, e, T, cls, C, deco) {
+    if (e.adm) { const WH = hx(0xf6f2ea), GDc = hx(0xf2c448); cfg.top = WH; cfg.sleeve = WH; cfg.belt = GDc; cfg.bracer = GDc; cfg.glove = WH; cfg.pants = hx(0xf0ece2); cfg.metalTop = 0; cfg.metalLimb = 0; if (cfg.robe) cfg.robeCol = WH; cfg.topTex = (mx, my, mz) => my < -.8 ? GDc : (mz > 0 && Math.abs(mx) < .05 ? GDc : 0); deco = () => { }; C.pack = false; }
     const hp = headPlan(e, cls, T), hf = hairFn(e, hx(e.hair), hp.cover);
     { const mk = [COSX.marks[e.low], COSX.marks[e.mid]].filter(Boolean); if (mk.length) cfg.faceExtra = (az, el) => { for (const f of mk) { const r = f(az, el); if (r) return r; } return 0; }; if (e.eyePat) cfg.eyePat = e.eyePat; if (e.eye2 != null) cfg.eye2 = hx(e.eye2); }
     cfg.hairFn = (E, S, o) => hf(E, S, o);

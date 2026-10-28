@@ -1,3 +1,8 @@
+## v227
+- ADM: trono de luz exclusivo ao sentar; roupa toda branca/dourada (sem marrom nem bolsa); cabelo branco longo.
+- @go N (cidades) e @warp mapa (campos de monstros).
+- Painel de buffs na direita (vertical) com benefício e tempo; bênção da curandeira dura 3 min.
+
 ## v226
 - ADM: nick amarelo "[ADM] Nome", velocidade +100%, cabelo branco, elmo dourado novo, asas emplumadas arredondadas.
 - /aura liga/desliga o visual ADM (aparece como player). @item aceita código/nome (código aparece no clique direito do item). @class=nome e @classe nome.
