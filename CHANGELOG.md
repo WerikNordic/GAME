@@ -1,3 +1,6 @@
+## v218 — Cartas de conjuração à venda
+- Carta Fen, Carta Borboleta Sangrenta e Manto de Orleans à venda na Utilidades (90k/110k/120k Zens). Aba "Boca" do espelho renomeada para "Barba/Máscara". Estilista conferida: abre sem erros.
+
 ## v217 — Conjuração ininterrupta
 - Novos itens: Carta Fen (+25% cast), Carta Borboleta Sangrenta (+30%), Manto de Orleans (+15%): equipados, o dano não interrompe a conjuração. Disponíveis por @item (carta_fen, carta_borboleta, manto_orleans).
 
