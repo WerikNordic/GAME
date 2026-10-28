@@ -9151,7 +9151,8 @@ Error generating stack: ` + n.message + `
     Wa.manto_orleans = { id: "manto_orleans", name: "Manto de Orleans", kind: "armor", rarity: "epic", reqLevel: 1, stack: 1, sell: 5000, desc: "Impede a interrup\u00E7\u00E3o da conjura\u00E7\u00E3o, mas aumenta o tempo de conjura\u00E7\u00E3o em 15%.", script: "Conjura\u00E7\u00E3o ininterrupt\u00E1vel; +15% tempo de conjura\u00E7\u00E3o", bonus: { def: 4 }, cast: { uninterrupt: true, mul: 0.15 } };
     Wa.faca_aprendiz = { id: "faca_aprendiz", name: "Faca de Aprendiz", kind: "weapon", weaponType: "dagger", rarity: "common", reqLevel: 1, stack: 1, sell: 2, weight: 10, desc: "Uma faca simples. Todo aprendiz come\xE7a com uma.", bonus: { atk: 2 } }, Wa.camisa_algodao = { id: "camisa_algodao", name: "Camisa de Algod\xE3o", kind: "armor", rarity: "common", reqLevel: 1, stack: 1, sell: 2, desc: "Camisa leve de algod\xE3o.", bonus: { def: 1, maxHp: 6 } };
     Ce.aprendiz = { id: "aprendiz", names: ["Aprendiz", "Aprendiz", "Aprendiz", "Aprendiz", "Aprendiz", "Aprendiz"], role: "Sem classe", color: 12632256, desc: "Todo heroi come\xE7a aqui. No n\xEDvel de classe 10, procure o L\xEDder de Classe em uma cidade principal.", base: { str: 5, agi: 5, vit: 5, int: 3, dex: 4, luk: 3 }, hpMult: 1, mpMult: 0.9, attackStat: "str", weapons: ["axe", "sword", "dagger", "club", "staff", "spear", "bow", "fist", "mace"], startWeapon: "faca_aprendiz", basic: { range: 52, cooldown: 560, magic: false, ranged: false, arc: 110 }, skills: [{ id: "golpe_firme", name: "Golpe Firme", tier: 0, kind: "cone", mp: 4, cooldown: 2200, mult: 1.6, range: 62, radius: 0, arc: 110, light: 16766080, desc: "Golpe forte \xE0 frente." }, { id: "folego", name: "F\xF4lego", tier: 0, kind: "buff", mp: 8, cooldown: 16e3, mult: 0, range: 0, radius: 0, buff: { atk: 0.2, ms: 8e3 }, light: 16777152, desc: "+20% de ataque por 8s." }] };
-    const SUP = {
+    globalThis.DIGP = { "0": [[0.08,0,0.92,0,1,0.1,1,0.9,0.92,1,0.08,1,0,0.9,0,0.1,0.08,0]], "1": [[0.15,0.2,0.55,0,0.55,1],[0.1,1,1,1]], "2": [[0,0.12,0.12,0,0.88,0,1,0.12,1,0.38,0,1,1,1]], "3": [[0,0,1,0,1,1,0,1],[0.3,0.5,1,0.5]], "4": [[0.72,1,0.72,0,0,0.66,1,0.66]], "5": [[1,0,0,0,0,0.48,0.88,0.48,1,0.58,1,0.9,0.9,1,0,1]], "6": [[0.95,0,0.1,0,0,0.1,0,0.9,0.1,1,0.9,1,1,0.9,1,0.58,0.9,0.5,0,0.5]], "7": [[0,0,1,0,0.38,1]], "8": [[0.08,0,0.92,0,1,0.1,1,0.9,0.92,1,0.08,1,0,0.9,0,0.1,0.08,0],[0,0.5,1,0.5]], "9": [[0.05,1,0.9,1,1,0.9,1,0.1,0.9,0,0.1,0,0,0.1,0,0.42,0.1,0.5,1,0.5]], "+": [[0.5,0.2,0.5,0.8],[0.1,0.5,0.9,0.5]] };
+const SUP = {
       berserker: { id: "sup_berserker", name: "Impacto de Tyr (Suprema)", kind: "nova", mp: 60, cooldown: 45e3, mult: 6.5, radius: 190, stunMs: 1800, light: 16729156, desc: "Habilidade suprema: o machado de Tyr racha o chão e esmaga todos ao redor." },
       escudeiro: { id: "sup_escudeiro", name: "Mammonita Dourada (Suprema)", kind: "nova", mp: 55, cooldown: 42e3, mult: 5.2, radius: 200, stunMs: 2400, light: 16766720, desc: "Habilidade suprema: chuva de ouro que esmaga e atordoa a área." },
       cacador: { id: "sup_cacador", name: "Assalto do Falcão (Suprema)", kind: "volley", mp: 55, cooldown: 40e3, mult: 3.2, range: 340, count: 9, light: 16773296, desc: "Habilidade suprema: o falcão e nove flechas varrem a frente." },
@@ -20384,11 +20385,26 @@ function ROXQM(f, c, s, l, def, ex) {
           }
           let isNum = /^[\d.,+]+$/.test(n.text), txt = /^\d+$/.test(n.text) ? Number(n.text).toLocaleString("pt-BR") : n.text, hx0 = /^#[0-9a-f]{6}$/i.test(n.color) ? n.color : "#ffffff", cr = parseInt(hx0.slice(1, 3), 16), cg = parseInt(hx0.slice(3, 5), 16), cb = parseInt(hx0.slice(5, 7), 16), heal = !n.crit && cg > cr + 40 && cg > cb, red = !n.crit && cr > cg + 80 && cr > cb + 80, top, bot;
           n.crit ? (top = "#fff860", bot = "#f0d010") : heal ? (top = "#7aff5a", bot = "#14c814") : red ? (top = "#ff7a6a", bot = "#e01818") : cr > 240 && cg > 240 && cb > 240 ? (top = "#ffffff", bot = "#c4c8d8") : (top = n.color, bot = n.color);
-          let sx = isNum ? 0.7 : 1;
-          t.save(), t.translate(l, c), t.scale(sx, 1), t.font = `${isNum ? "500" : "bold"} ${Math.round(d * (isNum ? 1.12 : 1))}px "Arial Narrow", "Helvetica Neue", Arial, ${ms}`, t.textAlign = "center", t.textBaseline = "middle", t.lineJoin = "round", "letterSpacing" in t && (t.letterSpacing = isNum ? Math.max(1, d * 0.06) + "px" : "0px");
-          t.lineWidth = Math.max(2.4, d * 0.13), t.strokeStyle = "rgba(0,0,0,0.98)", t.strokeText(txt, 0, 1);
-          let f = t.createLinearGradient(0, -d * 0.5, 0, d * 0.5);
-          f.addColorStop(0, top), f.addColorStop(1, bot), t.fillStyle = f, t.fillText(txt, 0, 0), t.restore();
+          if (isNum) {
+            let H = d * 1.05, W = H * 0.56, sw = H * 0.25, adv = W + sw * 1.15, G = globalThis.DIGP, tot = 0, wd = [];
+            for (let ch of txt) { let w2 = ch === "." || ch === "," ? sw * 1.6 : ch === "+" ? W : adv; wd.push(w2), tot += w2; }
+            let x0 = l - tot / 2 + sw * 0.5, i0 = 0;
+            t.save(), t.lineJoin = "miter", t.lineCap = "butt", t.miterLimit = 3;
+            let mid = (cb2) => { let xx = x0; for (let q = 0; q < txt.length; q++) { cb2(txt[q], xx, wd[q]); xx += wd[q]; } };
+            let path = (ch, xx, wq) => {
+              if (ch === "." || ch === ",") { t.beginPath(), t.rect(xx, c + H * 0.5 - sw * 0.95, sw * 0.95, sw * 0.95); return "r"; }
+              let g = globalThis.DIGP[ch]; if (!g) return null; t.beginPath();
+              for (let sp of g) { for (let k2 = 0; k2 < sp.length; k2 += 2) { let px = xx + sp[k2] * W, py = c - H * 0.5 + sp[k2 + 1] * H; k2 ? t.lineTo(px, py) : t.moveTo(px, py); } }
+              return "s";
+            };
+            mid((ch, xx, wq) => { let r = path(ch, xx, wq); r === "s" ? (t.lineWidth = sw + Math.max(2.4, H * 0.16), t.strokeStyle = "#000", t.stroke()) : r === "r" && (t.lineWidth = Math.max(2.4, H * 0.16), t.strokeStyle = "#000", t.stroke(), t.fillStyle = "#000", t.fill()); });
+            let gf = t.createLinearGradient(0, c - H * 0.5, 0, c + H * 0.5); gf.addColorStop(0, bot), gf.addColorStop(1, bot);
+            mid((ch, xx, wq) => { let r = path(ch, xx, wq); r === "s" ? (t.lineWidth = sw, t.strokeStyle = bot, t.stroke()) : r === "r" && (t.fillStyle = bot, t.fill()); });
+            let gt = t.createLinearGradient(0, c - H * 0.5, 0, c + H * 0.5); gt.addColorStop(0, top), gt.addColorStop(0.65, top), gt.addColorStop(1, bot);
+            t.save(), t.translate(-sw * 0.06, -H * 0.02), mid((ch, xx, wq) => { let r = path(ch, xx, wq); r === "s" ? (t.lineWidth = sw * 0.62, t.strokeStyle = gt, t.stroke()) : r === "r" && (t.fillStyle = top, t.fill()); }), t.restore(), t.restore();
+          } else {
+            t.save(), t.translate(l, c), t.font = `bold ${Math.round(d)}px ${ms}`, t.textAlign = "center", t.textBaseline = "middle", t.lineJoin = "round", t.lineWidth = Math.max(3, d * 0.2), t.strokeStyle = "rgba(0,0,0,0.97)", t.strokeText(txt, 0, 1), t.fillStyle = n.color, t.fillText(txt, 0, 0), t.restore();
+          }
           if (s && n.sub) {
             let f = Math.max(13, d * 0.62), u = c + d * 0.78;
             t.font = `900 ${Math.round(f)}px Impact, "Arial Black", ${ms}`, t.lineWidth = Math.max(3, f * 0.2), t.strokeStyle = "rgba(8,6,10,0.95)", t.strokeText(n.sub, l, u), t.fillStyle = "#fff0b0", t.fillText(n.sub, l, u);

@@ -687,3 +687,6 @@
 
 ## v240
 - Números de dano no estilo Ragnarok: finos/estreitos, contorno preto fino, sem brilho/raios. Normal branco, crítico amarelo, cura verde, dano recebido vermelho.
+
+## v241
+- Números de dano com dígitos próprios, grossos e quadrados como no Ragnarok (traço grosso, contorno preto, sombra interna): branco/crítico amarelo/cura verde/dano recebido vermelho.
