@@ -104,7 +104,6 @@
     }
     if (Math.abs(az) < .06 && el > .42 && el < .56) return dk(cfg.skin, .82);
     if (Math.abs(az) < .04 && el > .5 && el < .56) return mix(cfg.skin, [255, 255, 255], .35);
-    if (Math.abs(az) < .12 && el > .78 && el < .86) return cfg.mood === 2 ? [130, 30, 40] : [170, 76, 80];
     if (cfg.paint && Math.abs(Math.abs(az) - .78) < .05 && el > .15 && el < .5) return cfg.paint;
     return 0;
   };

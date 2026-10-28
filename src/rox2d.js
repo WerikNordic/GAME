@@ -283,7 +283,7 @@
       E({ x: 0, y: tz + 51.8 + b, z: tz + 5.8, rx: 2.4, ry: 2.2, rz: 1, col: TR, metal: 1 });
       if (belly) E({ x: 0, y: tz + 45 + b, z: tz + 5.4, rx: 8.6, ry: 7.4, rz: 4.4, col: tun });
       if (!robe) E({ x: -8, y: tz + 54 + b, z: tz + 3.6, rx: 2.4, ry: 3, rz: 2, col: dk(hx(e.boots), 1.1) });
-      if (e.pointyEars) for (const sg of [-1, 1]) S({ pts: [[sg * 8.6, hy + 1, o.hz], [sg * 12.4, hy - 2.4, o.hz], [sg * 14.4, hy - 5, o.hz]], w: [3.2, .8], col: hx(e.skin) });
+      if (false) for (const sg of [-1, 1]) S({ pts: [[sg * 8.6, hy + 1, o.hz], [sg * 12.4, hy - 2.4, o.hz], [sg * 14.4, hy - 5, o.hz]], w: [3.2, .8], col: hx(e.skin) });
     });
   };
   // ---------- entrada ----------
