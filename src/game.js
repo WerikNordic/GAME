@@ -17851,6 +17851,18 @@ function ROXQM(f, c, s, l, def, ex) {
     skald: [null, { tunic: 3877456, cape: 2365000, pauld: 4864600 }, { tunic: 2364980, trim: 12607743, cape: 1182242, pauld: 6961808, head: "hood", aura: 11559039 }],
     thay: [null, { tunic: 13654560, trim: 16765514, pauld: 16765514 }, { tunic: 12065820, trim: 16765514, cape: 8006156, pauld: 16765514, head: "circlet", aura: 16742954 }]
   };
+  (() => {
+    const TR3 = {
+      berserker: { tunic: 10560792, trim: 16765514, pauld: 16766720, cape: 16316664, head: "crowngold", aura: 16742970 },
+      escudeiro: { tunic: 8010768, trim: 16766720, pauld: 16766720, cape: 9055770, head: "crowngold", aura: 16766720 },
+      cacador: { tunic: 1718818, trim: 16766720, pauld: 12106240, cape: 2378282, head: "hood", aura: 9437064 },
+      volva: { tunic: 3807328, trim: 16766720, pauld: 16766720, cape: 6959768, head: "crowngold", aura: 11167999 },
+      valquiria: { tunic: 16316664, trim: 16766720, pauld: 16766720, cape: 11540520, head: "wings", wingsBack: [16777215, 16771488], aura: 16771744 },
+      skald: { tunic: 1710624, trim: 9013654, pauld: 3355456, cape: 2631720, head: "hood2", aura: 8388736 },
+      thay: { tunic: 14177296, trim: 16766720, pauld: 16766720, cape: 10027008, head: "circlet", aura: 16742954 }
+    };
+    for (const k in TR3) { const T = TIERLOOK[k]; if (T[2]) { T[2] = { ...T[2] }; delete T[2].aura; } T[3] = TR3[k]; }
+  })();
   function R4(e) {
     e.adm && (e = { ...e, base: "aprendiz", ti: 2 });
     const base0 = (q) => ["aprendiz", "berserker", "escudeiro", "cacador", "volva", "valquiria", "skald", "thay"].includes(q.base);
@@ -17859,7 +17871,7 @@ function ROXQM(f, c, s, l, def, ex) {
     t.cls = e.base;
     if (["aprendiz", "berserker", "escudeiro", "cacador", "volva", "valquiria", "skald", "thay"].includes(e.base)) {
       t.head = "none", delete t.cape, delete t.quiver;
-      let tp = TIERLOOK[e.base]?.[Math.min(2, e.ti || 0)];
+      let tp = TIERLOOK[e.base]?.[Math.min(3, e.ti || 0)];
       tp && Object.assign(t, tp), t.ti = e.ti || 0; e.adm && Object.assign(t, { adm: 1, tunic: 16119280, trim: 15252024, pauld: 15252024, cape: 16448240, pants: 15987690, boots: 15255648, hair: 16316664, hc: void 0, head: "admhelm", eqHead: "admhelm", eqBack: true, wingsBack: [16777215, 16769184], aura: 16769184, epic: true });
     }
     e.ep && (t.epic = true);
@@ -19784,7 +19796,7 @@ function ROXQM(f, c, s, l, def, ex) {
       this.speechBalloon("\uD83D\uDED2 " + w.ps.vend.title, p.x, p.y - 96, 1);
     }
     drawCart() {
-      let w = this.store.world, ps = w?.ps; if (!w || !(ps.cart?.on ?? true) || w.isDead()) return;
+      let w = this.store.world, ps = w?.ps; ps && !ps.cart && (ps.cart = { on: true, color: 9066026, deco: "none" }); if (!w || !(ps.cart?.on ?? true) || w.isDead()) return;
       let o = w.player, n = this.ctx, c = this._cart || (this._cart = { x: o.pos.x - 56, y: o.pos.y, dx: 0, dy: 1, rot: 0 });
       let l0 = this._cartLast, vx = o.pos.x - (l0?.x ?? o.pos.x), vy = o.pos.y - (l0?.y ?? o.pos.y); this._cartLast = { x: o.pos.x, y: o.pos.y };
       let mvd = Math.hypot(vx, vy);
@@ -19792,7 +19804,7 @@ function ROXQM(f, c, s, l, def, ex) {
       let tx = o.pos.x - c.dx * 58, ty = o.pos.y - c.dy * 58;
       Math.hypot(tx - c.x, ty - c.y) > 300 ? (c.x = tx, c.y = ty) : (c.x += (tx - c.x) * 0.5, c.y += (ty - c.y) * 0.5);
       c.rot += mvd * 0.11;
-      let p = ce(c.x, c.y), pp = ce(o.pos.x, o.pos.y), col = ps.cart.color ?? 9066026, hx = (v) => "#" + (v >>> 0).toString(16).padStart(6, "0"), dk = (v, f) => hx(((v >> 16 & 255) * f | 0) << 16 | ((v >> 8 & 255) * f | 0) << 8 | (v & 255) * f | 0), lt = (v, f) => hx((Math.min(255, (v >> 16 & 255) * f) | 0) << 16 | (Math.min(255, (v >> 8 & 255) * f) | 0) << 8 | (Math.min(255, (v & 255) * f) | 0));
+      let p = ce(c.x, c.y), pp = ce(o.pos.x, o.pos.y), col = ps.cart?.color ?? 9066026, hx = (v) => "#" + (v >>> 0).toString(16).padStart(6, "0"), dk = (v, f) => hx(((v >> 16 & 255) * f | 0) << 16 | ((v >> 8 & 255) * f | 0) << 8 | (v & 255) * f | 0), lt = (v, f) => hx((Math.min(255, (v >> 16 & 255) * f) | 0) << 16 | (Math.min(255, (v >> 8 & 255) * f) | 0) << 8 | (Math.min(255, (v & 255) * f) | 0));
       let sx = pp.x - p.x, sy = pp.y - p.y, side = Math.abs(sx) > Math.abs(sy) * 0.9, fl = sx < 0 ? -1 : 1, hand = { x: sx, y: sy - 20 };
       n.save(), n.translate(p.x, p.y);
       n.fillStyle = "rgba(0,0,0,0.3)", n.beginPath(), n.ellipse(0, 1, side ? 34 : 28, side ? 7 : 8, 0, 0, 7), n.fill();

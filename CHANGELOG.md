@@ -1,3 +1,8 @@
+## v230 — Visual por tier + correção do carrinho
+- CORREÇÃO: Mercador que nunca abriu o carrinho ficava invisível (erro ao desenhar). Agora o carrinho é criado automaticamente.
+- Transclasses (tier 3) com visual próprio por classe: Lord vermelho/dourado com capa branca, Sumo Sacerdote branco/dourado com estola vermelha, Arquimago roxo/dourado, Algoz preto/cinza, Monge laranja/dourado etc.
+- Aura brilhante só nas transclasses.
+
 ## v229 — Classes (1ª etapa)
 - Habilidades da sua lista adicionadas por linha (prefixo doc_): Espadachim/Cavaleiro/Templário/Lord/Paladino → berserker; Mago/Bruxo/Sábio/Arquimago/Professor → volva; Arqueiro/Caçador/Bardo/Sniper/Menestrel → cacador; Noviço/Sacerdote/Sumo Sacerdote → valquiria; Gatuno/Mercenário/Arruaceiro/Algoz/Desordeiro → skald; Mercador/Ferreiro/Alquimista/Mestre-Ferreiro/Criador → escudeiro; Monge/Mestre → thay.
 - Reaproveitam os efeitos existentes (cone, linha, nova, meteoro, buff, cura); efeitos exclusivos por habilidade ainda não.
