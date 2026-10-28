@@ -690,3 +690,7 @@
 
 ## v241
 - Números de dano com dígitos próprios, grossos e quadrados como no Ragnarok (traço grosso, contorno preto, sombra interna): branco/crítico amarelo/cura verde/dano recebido vermelho.
+
+## v242
+- Tabela de 10 elementos (neutro, água, terra, fogo, vento, veneno, sombra, sagrado, fantasma, morto-vivo; gelo mantido) com eficácia; bestiário lista todos.
+- Crítico agora ignora a DEF do alvo; SOR dá +0,3% de crítico por ponto.

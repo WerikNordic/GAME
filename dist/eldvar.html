@@ -9561,7 +9561,7 @@ const SUP = {
   }
   function Ua(e) {
     let t = Ce[e.line], a = Vu(e), n = tp(e), o = n[t.attackStat], r = [1, 1, 1.12, 1.22, 1.32, 1.45][Math.min(5, e.tier)] ?? 1, i = ey(e), s = (c, d) => c * (1 + (i[d] ?? 0)), l = (o * 2 + (t.attackStat === "dex" ? 0 : n.dex * 0.4) + e.level) * r + a.atk;
-    return { maxHp: Math.round(s(Math.round((40 + n.vit * 10 + e.level * 12) * t.hpMult * r) + a.maxHp, "maxHp")), maxMp: Math.round(s(Math.round((15 + n.int * 5 + e.level * 3) * t.mpMult * r) + a.maxMp, "maxMp")), atk: Math.round(s(l, "atk")), matk: Math.round(s((n.int * 2 + n.dex * 0.3 + e.level) * r + a.matk, "matk")), def: Math.round(s(n.vit * 0.8 + e.level * 0.5 + a.def, "def")), crit: Math.min(0.5, s(n.luk * 4e-3 + a.crit, "crit")), dodge: Math.min(0.4, n.agi * 4e-3), speed: s(150 + Math.min(60, n.agi * 1.2) + a.speed, "speed") * (admOn() ? 2 : 1), attackCooldown: Math.max(300, Math.round(t.basic.cooldown * (1 - n.agi * 3e-3))) };
+    return { maxHp: Math.round(s(Math.round((40 + n.vit * 10 + e.level * 12) * t.hpMult * r) + a.maxHp, "maxHp")), maxMp: Math.round(s(Math.round((15 + n.int * 5 + e.level * 3) * t.mpMult * r) + a.maxMp, "maxMp")), atk: Math.round(s(l, "atk")), matk: Math.round(s((n.int * 2 + n.dex * 0.3 + e.level) * r + a.matk, "matk")), def: Math.round(s(n.vit * 0.8 + e.level * 0.5 + a.def, "def")), crit: Math.min(0.5, s(n.luk * 3e-3 + a.crit, "crit")), dodge: Math.min(0.4, n.agi * 4e-3), speed: s(150 + Math.min(60, n.agi * 1.2) + a.speed, "speed") * (admOn() ? 2 : 1), attackCooldown: Math.max(300, Math.round(t.basic.cooldown * (1 - n.agi * 3e-3))) };
   }
   function no(e) {
     let t = Ua(e);
@@ -9598,7 +9598,8 @@ const SUP = {
   }
   var ny = (e) => e.base > 0 || e.job > 0 ? `Voc\xEA caiu em batalha. Perdeu ${e.base} de EXP de base e ${e.job} de EXP de classe.` : "Voc\xEA caiu em batalha.", U8 = (e) => 100 / (100 + Math.max(0, e) * 1.5);
   function ap(e, t, a, n, o) {
-    let r = 0.9 + n() * 0.2, i = n() < o, s = e * t * r * U8(a);
+    let r = 0.9 + n() * 0.2, i = n() < o, s = e * t * r;
+    s = e * t * r * (i ? 1 : U8(a));
     return i && (s *= 1.5), { amount: Math.max(1, Math.round(s)), crit: i };
   }
   var oy = (e, t) => t() < e;
@@ -10063,7 +10064,7 @@ const SUP = {
   function oo(e) {
     return Object.prototype.hasOwnProperty.call(Qu, e) ? Qu[e] : void 0;
   }
-  var X8 = { neutro: {}, fogo: { gelo: 1.5, terra: 0.75, fogo: 0.5 }, gelo: { terra: 1.5, fogo: 0.75, gelo: 0.5 }, terra: { fogo: 1.5, gelo: 0.75, terra: 0.5 }, sagrado: { sombra: 1.75, sagrado: 0.5 }, vento: { terra: 1.25, vento: 0.5 }, sombra: { sagrado: 1.25, sombra: 0.5 } }, Ku = (e, t) => X8[e]?.[t] ?? 1;
+  var X8 = { neutro: { fantasma: 0.7 }, fogo: { gelo: 1.5, terra: 1.5, morto_vivo: 1.4, veneno: 1.25, agua: 0.6, fogo: 0.5 }, gelo: { terra: 1.5, vento: 1.25, fogo: 0.75, gelo: 0.5, agua: 0.5 }, agua: { fogo: 1.5, terra: 1.25, vento: 0.6, agua: 0.5 }, terra: { fogo: 1.5, gelo: 0.75, vento: 1.5, veneno: 1.25, terra: 0.5 }, vento: { agua: 1.5, gelo: 1.25, terra: 0.6, vento: 0.5 }, veneno: { terra: 1.25, agua: 1.15, morto_vivo: 0.5, sombra: 0.8, veneno: 0.3 }, sagrado: { sombra: 1.75, morto_vivo: 1.75, fantasma: 1.25, sagrado: 0.5 }, vento_: {}, sombra: { sagrado: 1.25, sombra: 0.5, morto_vivo: 0.5 }, fantasma: { fantasma: 1.5, neutro: 1.2, sagrado: 0.75 }, morto_vivo: { sagrado: 0.5, morto_vivo: 0.5, sombra: 1.25 } }, Ku = (e, t) => X8[e]?.[t] ?? 1;
   var $8 = "volva", Q8 = [{ id: "hidromel", output: "hidromel_curativo", qty: 1, base: 40, minSkill: 1, ingredients: [{ item: "vasilha_mistura", qty: 1 }, { item: "erva_vermelha", qty: 1 }] }, { id: "infusao", output: "infusao_runica", qty: 1, base: 35, minSkill: 1, ingredients: [{ item: "vasilha_mistura", qty: 1 }, { item: "erva_azul", qty: 1 }] }, { id: "elixir", output: "elixir_eir", qty: 1, base: 12, minSkill: 4, ingredients: [{ item: "vasilha_mistura", qty: 1 }, { item: "erva_espinhosa", qty: 2 }, { item: "erva_vermelha", qty: 1 }] }], K8 = (e) => Q8.find((t) => t.id === e), F8 = (e) => Math.max(1, Math.min(10, e.jobLevel));
   function Z8(e, t, a, n) {
     return Math.max(5, Math.min(95, Math.round(e.base + 3 * t + 0.4 * a + 0.3 * n)));
@@ -23268,7 +23269,7 @@ function ROXQM(f, c, s, l, def, ex) {
     }), (0, De.jsxs)("ul", { className: "derived", children: [(0, De.jsxs)("li", { children: ["Vida m\xE1x.: ", (0, De.jsx)("b", { children: a.maxHp })] }), (0, De.jsxs)("li", { children: ["Mana m\xE1x.: ", (0, De.jsx)("b", { children: a.maxMp })] }), (0, De.jsxs)("li", { children: ["Ataque: ", (0, De.jsx)("b", { children: a.atk })] }), (0, De.jsxs)("li", { children: ["Atq. m\xE1gico: ", (0, De.jsx)("b", { children: a.matk })] }), (0, De.jsxs)("li", { children: ["Defesa: ", (0, De.jsx)("b", { children: a.def })] }), (0, De.jsxs)("li", { children: ["Cr\xEDtico: ", (0, De.jsxs)("b", { children: [(a.crit * 100).toFixed(1), "%"] })] }), (0, De.jsxs)("li", { children: ["Esquiva: ", (0, De.jsxs)("b", { children: [(a.dodge * 100).toFixed(1), "%"] })] }), (0, De.jsxs)("li", { children: ["Velocidade: ", (0, De.jsx)("b", { children: Math.round(a.speed) })] })] })] });
   }
   var Ln = oe(St(), 1);
-  var Rh = { humanoide: "Humanoide", besta: "Bruto", morto_vivo: "Morto-vivo", gigante: "Gigante", elemental: "Elemental", construto: "Construto", planta: "Planta", demonio: "Dem\xF4nio", amorfo: "Amorfo" }, qh = { neutro: "Neutro", fogo: "Fogo", gelo: "Gelo", terra: "Terra", sombra: "Sombra", sagrado: "Sagrado" }, n5 = { pequeno: "Pequeno", medio: "M\xE9dio", grande: "Grande" }, Lh = ["neutro", "fogo", "gelo", "terra", "sombra", "sagrado"], HS = { passive: "Passivo", aggressive: "Agressivo", plant: "Planta (im\xF3vel)", assist: "Assistente" }, PS = (e) => Math.round(e * 1e4) / 100;
+  var Rh = { humanoide: "Humanoide", besta: "Bruto", morto_vivo: "Morto-vivo", gigante: "Gigante", elemental: "Elemental", construto: "Construto", planta: "Planta", demonio: "Dem\xF4nio", amorfo: "Amorfo" }, qh = { neutro: "Neutro", fogo: "Fogo", gelo: "Gelo", agua: "\u00C1gua", terra: "Terra", vento: "Vento", veneno: "Veneno", sombra: "Sombra", sagrado: "Sagrado", fantasma: "Fantasma", morto_vivo: "Morto-vivo" }, n5 = { pequeno: "Pequeno", medio: "M\xE9dio", grande: "Grande" }, Lh = ["neutro", "fogo", "gelo", "agua", "terra", "vento", "veneno", "sombra", "sagrado", "fantasma", "morto_vivo"], HS = { passive: "Passivo", aggressive: "Agressivo", plant: "Planta (im\xF3vel)", assist: "Assistente" }, PS = (e) => Math.round(e * 1e4) / 100;
   function GS(e) {
     let t = Uu(e.id, e.shape), a = {};
     for (let i of Lh) a[i] = Math.round(Ku(i, t.element) * 100);
