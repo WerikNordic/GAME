@@ -97,6 +97,12 @@
     if (kind === "goat") { S({ pts: [[0, hy + 8.4, hz + 6.4], [0, hy + 13.4, hz + 6.8], [0, hy + 17, hz + 6]], w: [4.4, 1.6], col: b }); S({ pts: [[-3, hy + 6.8, hz + 7.2], [3, hy + 6.8, hz + 7.2]], w: 2, col: b }); }
     if (kind === "full") { E({ x: 0, y: hy + 6.6, z: hz + 3.6, rx: 7.8, ry: 5.2, rz: 5.8, p: 3, col: b, tex: (mx, my, mz) => (mz > 0 && my < -.35) ? null : (Math.sin(mx * 22 + my * 8) > .7 ? b2 : 0) }); S({ pts: [[0, hy + 10, hz + 5], [0, hy + 15.6, hz + 5.6]], w: [8, 5], col: b }); }
     if (kind === "stubble") E({ x: 0, y: hy + 6.4, z: hz + 3.6, rx: 7.6, ry: 4.6, rz: 5.6, p: 3, col: b, tex: (mx, my, mz) => (mz > 0 && my < -.3) ? null : (Math.sin(mx * 60 + my * 45) > .1 ? b : null) });
+    if (kind === "spade") { S({ pts: [[0, hy + 8, hz + 5], [0, hy + 15, hz + 6.6], [0, hy + 25, hz + 5.2]], w: [9, 9.5, .8], col: fur2 }); }
+    if (kind === "mutton") { for (const sg of [-1, 1]) S({ pts: [[sg * 8, hy + 1, hz + 1.4], [sg * 7.6, hy + 6, hz + 3.6], [sg * 4, hy + 9, hz + 5.6]], w: [3.4, 4.6, 2], col: fur2 }); S({ pts: [[-4, hy + 7, hz + 7], [4, hy + 7, hz + 7]], w: 2.4, col: b }); }
+    if (kind === "wild") { for (let i = 0; i < 9; i++) { const a = (i - 4) * .5; S({ pts: [[Math.sin(a) * 3, hy + 7.5, hz + 5], [Math.sin(a) * 8, hy + 14 + (i % 3) * 3, hz + 5.5], [Math.sin(a) * 12, hy + 22 + (i % 2) * 5, hz + 3.6]], w: [4.4, 1], col: fur2 }); } }
+    if (kind === "anchor") { S({ pts: [[0, hy + 8, hz + 5], [0, hy + 14, hz + 6.4]], w: [5.5, 4], col: fur2 }); for (const sg of [-1, 1]) S({ pts: [[sg * 2.4, hy + 7, hz + 6.4], [sg * 6, hy + 11, hz + 5.4], [sg * 8.4, hy + 7, hz + 3.6]], w: [2.6, 1.2], col: b }); }
+    if (kind === "twin") { for (const sg of [-1, 1]) { S({ pts: [[sg * 2.8, hy + 8, hz + 5.6], [sg * 3.2, hy + 18, hz + 6], [sg * 3, hy + 30, hz + 5.2]], w: [4.4, 3, 1.8], col: (q) => Math.sin(q * 46) > .2 ? b2 : b }); E({ x: sg * 3, y: hy + 30, z: hz + 5.2, rx: 2.2, ry: 1.6, rz: 2.2, p: 3, col: C3(0xd8b050), metal: 1 }); } S({ pts: [[0, hy + 8, hz + 5.4], [0, hy + 12, hz + 6.4]], w: [7, 4], col: fur2 }); }
+    if (kind === "chinstrap") { S({ pts: [[-8, hy + 1, hz + 2], [-6, hy + 7, hz + 4.6], [0, hy + 9.4, hz + 6.4], [6, hy + 7, hz + 4.6], [8, hy + 1, hz + 2]], w: [2.2, 2.6, 2.8, 2.6, 2.2], col: b }); }
     if (kind === "flame") { S({ pts: [[0, hy + 8, hz + 5], [0, hy + 16, hz + 6.4], [0, hy + 24, hz + 5.6]], w: [10, 8, 2.6], col: (q) => q > .6 ? C3(0xffe070) : C3(0xff6a20), bias: .8 }); }
   });
   beardX("xl_barba_viking", "Barba Viking Longa", "uncommon", "hair", "long");
@@ -109,6 +115,14 @@
   beardX("xl_barba_branca", "Barba do Ancião", "rare", 0xeaeaf0, "long", 0xffffff);
   beardX("xl_barba_gelo", "Barba de Gelo", "epic", 0xbfe8ff, "full", 0xeaf8ff);
   beardX("xl_barba_fogo", "Barba de Fogo", "legendary", 0xff6a20, "flame");
+  beardX("xl_barba_espada", "Barba em Ponta", "uncommon", "hair", "spade");
+  beardX("xl_costeleta", "Costeletas Largas", "common", "hair", "mutton");
+  beardX("xl_barba_selvagem", "Barba Selvagem", "rare", "hair", "wild");
+  beardX("xl_barba_ancora", "Barba Âncora", "common", "hair", "anchor");
+  beardX("xl_barba_gemea", "Tranças Gêmeas com Argolas", "epic", "hair", "twin");
+  beardX("xl_barba_contorno", "Barba de Contorno", "common", "hair", "chinstrap");
+  beardX("xl_barba_negra", "Barba Negra de Hel", "rare", 0x1a1a22, "wild", 0x3a3a48);
+  beardX("xl_barba_cobre", "Barba de Cobre", "rare", 0xb8642c, "spade", 0xd88844);
   beardX("xl_barba_ruiva", "Barba Ruiva Trançada", "rare", 0xb4501c, "braid", 0xd8742c);
   const scarfX = (id, name, rar, c, c2) => regL(id, name, rar, (E, S, o) => { const { hy, hz, bob, tz } = o, cc = C3(c), cd = C3(c2); E({ x: 0, y: tz + 33.4 + bob, z: tz + .6, rx: 7, ry: 3.2, rz: 5.4, p: 3, col: cc, tex: (mx, my) => Math.sin(mx * 22) > .5 ? lt(cc, .16) : (Math.abs(my) < .15 ? cd : 0) }); S({ pts: [[3, tz + 35, tz + 4], [6 + Math.sin(o.t * 2), tz + 44 + bob, tz + 3], [7 + Math.sin(o.t * 2 + 1), tz + 52 + bob, tz + 1]], w: [4, 2.2], col: (q) => (q > .78 ? cd : cc) }); });
   scarfX("xl_cachecol_vermelho", "Cachecol Vermelho de Lã", "common", 0xb83a2a, 0xe8d8b8);

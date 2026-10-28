@@ -7,6 +7,7 @@
 - Mercador: carrinho puxado e no chão; Alt+W abre janela de estoque; só esses itens vendem via Comércio; loja trava movimento com botão Fechar.
 - MVP: respawn 3–5 h mesmo saindo do mapa, posições aleatórias; monstros espalhados.
 - Habilidade suprema para cada uma das 7 classes (ao fim da lista, exige classe avançada).
+- 8 novas barbas (ponta, costeletas, selvagem, âncora, tranças gêmeas, contorno, negra, cobre) — não consegui confirmar visualmente.
 - Pendente: reforma completa das classes, visuais por tier, homúnculos, barbas, balanceamento de boss.
 
 ## v227
