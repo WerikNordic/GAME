@@ -18,7 +18,7 @@
   const ATK = { berserker: "slash", escudeiro: "slash", cacador: "shoot", volva: "cast", valquiria: "stab", skald: "quick", thay: "punch", aprendiz: "quick" };
   const FAM = { berserker: "p", escudeiro: "p", cacador: "a", volva: "m", valquiria: "m", skald: "a", thay: "a", aprendiz: "a" };
   function headPlan(e, cls, T) {
-    let h = e.head || "none"; const por = h === "poring"; const xt = !!COSX.top[h]; if (!xt && !/^(circlet|wings|horns|helm|hood|hood2|beanie|wreath|bandana|feathercap|crown|crowngold|santa)$/.test(h)) h = "none"; const SIG = "none";
+    let h = e.head || "none"; const por = h === "poring"; const xt = !!COSX.top[h]; if (!xt && !/^(circlet|admhelm|wings|horns|helm|hood|hood2|beanie|wreath|bandana|feathercap|crown|crowngold|santa)$/.test(h)) h = "none"; const SIG = "none";
     let main = SIG, extra = null;
     if (h === "none") { } else if (h === "circlet" || h === "wings") extra = h; else if (h === "horns") main = "helmH"; else if (h === "helm") main = "helm"; else if (h === "hood") main = (SIG === "hood" || SIG === "furhood") ? SIG : "hood"; else main = h;
     if (xt) main = "x:" + h;

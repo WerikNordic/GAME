@@ -91,6 +91,17 @@
       S({ pts: [[0, hy - 6, hz + 9.4], [0, hy + 2.6, hz + 9.6]], w: 1.7, col: st, metal: 1 });
       for (const sg of [-1, 1]) { E({ x: sg * 8.6, y: hy + 1.2, z: hz + 1, rx: 1.7, ry: 4.8, rz: 5.4, p: 3.2, col: st, metal: 1, tex: (mx, my) => Math.abs(my) > .86 ? G : 0 }); }
       if (kind === "helmH") for (const sg of [-1, 1]) S({ pts: [[sg * 9.6, hy - 7, hz], [sg * 14.2, hy - 9, hz], [sg * 15.6, hy - 14, hz], [sg * 13.6, hy - 19, hz]], w: [4.4, 1.2], col: hx(0xf0e6c8) });
+    } else if (kind === "admhelm") { // elmo ADM: diadema dourado, espigões e asas de têmpora
+      const W = hx(0xfff8e0), GD = hx(0xf2c448);
+      E({ x: 0, y: hy - 5, z: hz, rx: 10, ry: 1.5, rz: 9.6, col: GD, metal: 1 });
+      E({ x: 0, y: hy - 7.4, z: hz, rx: 9.4, ry: 1.1, rz: 9, col: W, metal: 1 });
+      S({ pts: [[0, hy - 6, hz + 9.3], [0, hy - 10, hz + 9.6], [0, hy - 13.5, hz + 8.6]], w: [3.6, 2.8, .6], col: GD, metal: 1 });
+      E({ x: 0, y: hy - 8.8, z: hz + 10.2, rx: 1.7, ry: 2.2, rz: 1, col: hx(0x7fe8ff), bias: .9, metal: 1 });
+      for (const sg of [-1, 1]) {
+        S({ pts: [[sg * 5.2, hy - 6.2, hz + 8], [sg * 6.2, hy - 9.4, hz + 7.4], [sg * 7, hy - 11.6, hz + 6]], w: [2.6, 2, .5], col: GD, metal: 1 });
+        for (let i = 0; i < 3; i++) S({ pts: [[sg * 9.6, hy - 3.4 - i * 1.5, hz + 1], [sg * (13.6 + i * 1.4), hy - 6.5 - i * 2.2, hz - 2.5], [sg * (16.4 + i * 3), hy - 7.5 - i * 4.2, hz - 7]], w: [3.6, 3, 1], col: i % 2 ? W : GD, metal: 1 });
+      }
+      S({ pts: [[0, hy - 7, hz - 8], [0, hy - 14, hz - 12], [0, hy - 18, hz - 18]], w: [3, 3.4, 1], col: W });
     } else if (kind === "hood" || kind === "furhood") { // capuz
       const cl = kind === "hood" ? C.hoodC : hx(0x8a8e96);
       E({ x: 0, y: hy - 1, z: hz - .8, rx: 9.7, ry: 11.2, rz: 9.7, p: 3.4, col: cl, tex: (mx, my, mz) => { const az = Math.atan2(mx, mz), el = Math.asin(clamp(my, -1, 1)); if (mz > 0 && Math.abs(mx) < .64 && my > -.36 && my < .6) return null; if (mz > .2 && Math.abs(az) < 1.12 && el > -.42 && el < 1 && (Math.abs(az) > .94 || el < -.3)) return C.hoodTrim; return kind === "hood" ? (Math.sin(az * 10 + el * 3) > .72 ? lt(cl, .14) : (Math.sin(az * 7) < -.8 ? dk(cl, .6) : 0)) : (Math.sin(az * 14 + my * 10) > .4 ? hx(0xb0b4bc) : (Math.sin(az * 9) < -.6 ? hx(0x62666e) : 0)); } });
@@ -163,8 +174,20 @@
       S({ pts: [[-6, tz + 36 + bob, tz - 2], [6, tz + 50 + bob, tz + 4]], w: 1.5, col: hx(0x4a3220) });
     }
     if (e.wingsBack) {
-      const wa = hx(e.wingsBack[0]), wb = hx(e.wingsBack[1]); const WT = [[13, -18], [19, -12], [22, -4], [21, 5], [17, 12]];
-      for (const sg of [-1, 1]) for (let L = 1; L >= 0; L--) WT.forEach((w, i) => { const k = L ? .72 : 1, rt = [sg * 4, tz + 37 + bob, tz - 5.5 - L * .6], tp = [sg * (4 + w[0] * k), tz + 37 + bob + w[1] * k + (L ? 3 : 0) + Math.sin(t * 3 + i) * .5, tz - 7 - L]; S({ pts: [rt, [(rt[0] + tp[0]) / 2, (rt[1] + tp[1]) / 2 + 2, rt[2] - .5], tp], w: [5.2, 1.6], col: L ? wb : wa, bias: -.05 }); });
+      const wa = hx(e.wingsBack[0]), wb = hx(e.wingsBack[1]), flap = Math.sin(t * 2.2) * 1.6;
+      const arm = [[3, 0], [12, -10], [24, -15], [35, -11]];
+      const pa = (u) => { const f = u * (arm.length - 1), i = Math.min(arm.length - 2, Math.floor(f)), k = f - i; return [arm[i][0] + (arm[i + 1][0] - arm[i][0]) * k, arm[i][1] + (arm[i + 1][1] - arm[i][1]) * k]; };
+      for (const sg of [-1, 1]) {
+        const R0 = [sg * 3, tz + 37 + bob, tz - 5.5];
+        S({ pts: arm.map((q, i) => [sg * q[0], tz + 37 + bob + q[1] + (i > 1 ? flap : 0), tz - 5.8]), w: [3.4, 2.4], col: wb, bias: -.05 });
+        const rows = [{ n: 9, len: 30, ang0: -.2, ang1: 1.35, col: wa, dz: 0 }, { n: 8, len: 22, ang0: -.05, ang1: 1.4, col: wb, dz: -.6 }, { n: 6, len: 14, ang0: .1, ang1: 1.45, col: wa, dz: -1.2 }];
+        rows.forEach((rw, ri) => { for (let i = 0; i < rw.n; i++) {
+          const u = i / (rw.n - 1), bp = pa(.12 + u * .88 * (ri === 2 ? .8 : 1)), ang = rw.ang0 + u * (rw.ang1 - rw.ang0), ln = rw.len * (1 - Math.abs(u - .35) * .55) * (1 + (ri ? 0 : .12));
+          const bx = bp[0], by = bp[1] + (u > .3 ? flap * u : 0), dx = Math.cos(ang) * ln, dy = Math.sin(ang) * ln;
+          const rt = [sg * bx, tz + 37 + bob + by, tz - 6.2 + rw.dz], md = [sg * (bx + dx * .55 + 1.5), tz + 37 + bob + by + dy * .55, tz - 6.6 + rw.dz], tp = [sg * (bx + dx), tz + 37 + bob + by + dy + 1.5, tz - 7 + rw.dz];
+          S({ pts: [rt, md, tp], w: [4.2, 4.8, 2.6], col: rw.col, bias: -.05 });
+        } });
+      }
     }
   }
   //__DESIGNS__

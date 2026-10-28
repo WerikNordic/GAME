@@ -9447,7 +9447,7 @@ Error generating stack: ` + n.message + `
   }
   function Ua(e) {
     let t = Ce[e.line], a = Vu(e), n = tp(e), o = n[t.attackStat], r = [1, 1, 1.12, 1.22, 1.32, 1.45][Math.min(5, e.tier)] ?? 1, i = ey(e), s = (c, d) => c * (1 + (i[d] ?? 0)), l = (o * 2 + (t.attackStat === "dex" ? 0 : n.dex * 0.4) + e.level) * r + a.atk;
-    return { maxHp: Math.round(s(Math.round((40 + n.vit * 10 + e.level * 12) * t.hpMult * r) + a.maxHp, "maxHp")), maxMp: Math.round(s(Math.round((15 + n.int * 5 + e.level * 3) * t.mpMult * r) + a.maxMp, "maxMp")), atk: Math.round(s(l, "atk")), matk: Math.round(s((n.int * 2 + n.dex * 0.3 + e.level) * r + a.matk, "matk")), def: Math.round(s(n.vit * 0.8 + e.level * 0.5 + a.def, "def")), crit: Math.min(0.5, s(n.luk * 4e-3 + a.crit, "crit")), dodge: Math.min(0.4, n.agi * 4e-3), speed: s(150 + Math.min(60, n.agi * 1.2) + a.speed, "speed"), attackCooldown: Math.max(300, Math.round(t.basic.cooldown * (1 - n.agi * 3e-3))) };
+    return { maxHp: Math.round(s(Math.round((40 + n.vit * 10 + e.level * 12) * t.hpMult * r) + a.maxHp, "maxHp")), maxMp: Math.round(s(Math.round((15 + n.int * 5 + e.level * 3) * t.mpMult * r) + a.maxMp, "maxMp")), atk: Math.round(s(l, "atk")), matk: Math.round(s((n.int * 2 + n.dex * 0.3 + e.level) * r + a.matk, "matk")), def: Math.round(s(n.vit * 0.8 + e.level * 0.5 + a.def, "def")), crit: Math.min(0.5, s(n.luk * 4e-3 + a.crit, "crit")), dodge: Math.min(0.4, n.agi * 4e-3), speed: s(150 + Math.min(60, n.agi * 1.2) + a.speed, "speed") * (admOn() ? 2 : 1), attackCooldown: Math.max(300, Math.round(t.basic.cooldown * (1 - n.agi * 3e-3))) };
   }
   function no(e) {
     let t = Ua(e);
@@ -11755,6 +11755,7 @@ Error generating stack: ` + n.message + `
   }
   var UT_BUY = { carta_fen: 90000, carta_borboleta: 110000, manto_orleans: 120000, pocao_vermelha: 35, pocao_laranja: 110, pocao_branca: 320, pocao_azul: 280, asa_mosca: 60, asa_borboleta: 180, flecha_ferro: 3, flecha_prata: 8, flecha_brasa: 6, flecha_vento: 6, flecha_geada: 6, flecha_pedra: 5, hidromel_curativo: 25, hidromel_forte: 70, infusao_runica: 30 }, UT_STOCK = Object.keys(UT_BUY);
   var VIP_EXTRA = { elixir_eir: 260, carne_assada: 12, bencao_freyja: 900 }, VIP_PASS = [{ d: 7, c: 15e3 }, { d: 30, c: 50e3 }], VIP_HAIR = [16729156, 16766720, 3329330, 4251856, 11141375, 16744448, 15132390, 65535, 16711935, 255], VIP_DYE = [16729156, 16766720, 3329330, 4251856, 11141375, 16744448, 15132390, 65535, 16711935, 255, 2105376, 16777215];
+  function admOn() { return window.__admin === true && !window.__noAdm; }
   function isVip(p) { return window.__admin === true || !!(p && p.vipUntil > Date.now()); }
   var VIP_PRICE = (id) => Math.max(1, Math.round((UT_BUY[id] ?? VIP_EXTRA[id] ?? 10) * 0.65));
   function utilBuyFn(e, t, a, vip) {
@@ -12487,10 +12488,11 @@ Error generating stack: ` + n.message + `
       this.refresh();
     }
     admCmd(txt) {
+      txt = txt.replace(/^(@\w+)\s*=\s*/, "$1 ");
       let [cmd, ...args] = txt.slice(1).split(/\s+/), c = cmd.toLowerCase(), ps = this.ps, say = (m, tone = "good") => (this.pushLog(m, "system", tone), true);
       if (!["ajuda", "adm", "lvlup", "joblv", "item", "zeny", "heal", "god", "goto", "ban", "unban", "skillpts", "statpts", "mvp", "ir", "classe", "class", "allstatus"].includes(c)) return false;
       if (!(window.__admin === true)) return say("Comando restrito a administradores.", "bad");
-      if (c === "ajuda" || c === "adm") return say("ADM: @lvlup 0-99 \u00B7 @joblv N \u00B7 @item id|nome [qtd] \u00B7 @zeny [N] \u00B7 @classe nome \u00B7 @allstatus \u00B7 @heal \u00B7 @god \u00B7 @goto mapa \u00B7 @statpts N \u00B7 @skillpts N \u00B7 @ban e-mail \u00B7 @unban e-mail");
+      if (c === "ajuda" || c === "adm") return say("ADM: /aura (liga/desliga) \u00B7 @lvlup 0-99 \u00B7 @joblv N \u00B7 @item c\u00F3digo|nome [qtd] \u00B7 @classe nome \u00B7 @zeny [N] \u00B7 @classe nome \u00B7 @allstatus \u00B7 @heal \u00B7 @god \u00B7 @goto mapa \u00B7 @statpts N \u00B7 @skillpts N \u00B7 @ban e-mail \u00B7 @unban e-mail");
       if (c === "lvlup") {
         let n = parseInt(args[0]);
         if (!(n >= 0 && n <= 99)) return say("Uso: @lvlup 0 a 99", "bad");
@@ -12551,6 +12553,7 @@ Error generating stack: ` + n.message + `
     sendChat(t) {
       if (!this.ps) return;
       { let dm = t.trim().match(/^\/(denunciar|report)\s+(\S+)\s+([\s\S]{3,})$/i); if (dm) { sbRpc("mp_report", { p_id: MP.pid + ":" + (this.activeSlot ?? 0), p_name: this.ps.name, p_target: dm[2], p_reason: dm[3] }).then((r) => { this.pushLog(r?.ok ? `Den\u00FAncia sobre ${dm[2]} enviada \u00E0 modera\u00E7\u00E3o.` : r?.error ?? "Sem conex\u00E3o com o servidor.", "system", r?.ok ? "good" : "bad"), this.refresh(); }); return; } if (/^\/(denunciar|report)\b/i.test(t.trim())) { this.pushLog("Uso: /denunciar nome motivo", "system", "info"), this.refresh(); return; } }
+      if (/^\/aura\b/i.test(t.trim())) { if (window.__admin !== true) this.pushLog("Comando restrito a administradores.", "system", "bad"); else window.__noAdm = !window.__noAdm, this.pushLog(window.__noAdm ? "Aura ADM oculta: voc\u00EA aparece como player." : "Aura ADM ativada.", "system", "good"), this.refresh(); return; }
       if (/^[@\/]afk\b/i.test(t.trim())) {
         this.goAfk();
         return;
@@ -13841,7 +13844,7 @@ Error generating stack: ` + n.message + `
       let d = document.createElement("div");
       d.id = "item-info-box";
       d.style.cssText = "position:fixed;z-index:200;max-width:280px;padding:10px 12px;background:linear-gradient(#3a2814,#1c1208);border:2px solid " + (so[it2.rarity] || "#8a6a3a") + ";border-radius:6px;color:#f1e3c3;font:13px/1.45 system-ui,sans-serif;box-shadow:0 6px 22px #000b;pointer-events:none";
-      d.innerHTML = `<div style="font-weight:700;font-size:14px;color:#ffd77a">${esc(it2.name)}</div><div style="opacity:.75;font-size:11px;margin-bottom:5px">${esc(LM[it2.rarity] || "")} \u00B7 ${esc(kindTxt)}${it2.reqLevel > 1 ? " \u00B7 N\u00EDvel " + it2.reqLevel : ""}</div>` + (bon.length ? `<div style="color:#9fe39a;margin-bottom:4px">${bon.map(esc).join("<br>")}</div>` : "") + (it2.script ? `<div style="color:#9fd0ff;margin-bottom:4px">${esc(String(it2.script).replace(/;\s*/g, " \u00B7 "))}</div>` : "") + `<div style="opacity:.9">${esc(it2.desc || "Sem efeitos especiais.")}</div><div style="margin-top:6px;border-top:1px solid #6a4a28;padding-top:4px">Peso: <b>${it2.weight ?? "0"}</b>${it2.sell ? " \u00B7 Venda: <b>" + it2.sell + "</b>" : ""}</div>`;
+      d.innerHTML = `<div style="font-weight:700;font-size:14px;color:#ffd77a">${esc(it2.name)}</div><div style="opacity:.75;font-size:11px;margin-bottom:5px">${esc(LM[it2.rarity] || "")} \u00B7 ${esc(kindTxt)}${window.__admin === true ? " \u00B7 c\u00F3digo: " + esc(it2.id) : ""}${it2.reqLevel > 1 ? " \u00B7 N\u00EDvel " + it2.reqLevel : ""}</div>` + (bon.length ? `<div style="color:#9fe39a;margin-bottom:4px">${bon.map(esc).join("<br>")}</div>` : "") + (it2.script ? `<div style="color:#9fd0ff;margin-bottom:4px">${esc(String(it2.script).replace(/;\s*/g, " \u00B7 "))}</div>` : "") + `<div style="opacity:.9">${esc(it2.desc || "Sem efeitos especiais.")}</div><div style="margin-top:6px;border-top:1px solid #6a4a28;padding-top:4px">Peso: <b>${it2.weight ?? "0"}</b>${it2.sell ? " \u00B7 Venda: <b>" + it2.sell + "</b>" : ""}</div>`;
       document.body.appendChild(d);
       let r = d.getBoundingClientRect();
       d.style.left = Math.max(8, Math.min(innerWidth - r.width - 8, ev.clientX + 12)) + "px", d.style.top = Math.max(8, Math.min(innerHeight - r.height - 8, ev.clientY + 12)) + "px";
@@ -18568,6 +18571,17 @@ var ROX2 = (() => {
       S({ pts: [[0, hy - 6, hz + 9.4], [0, hy + 2.6, hz + 9.6]], w: 1.7, col: st, metal: 1 });
       for (const sg of [-1, 1]) { E({ x: sg * 8.6, y: hy + 1.2, z: hz + 1, rx: 1.7, ry: 4.8, rz: 5.4, p: 3.2, col: st, metal: 1, tex: (mx, my) => Math.abs(my) > .86 ? G : 0 }); }
       if (kind === "helmH") for (const sg of [-1, 1]) S({ pts: [[sg * 9.6, hy - 7, hz], [sg * 14.2, hy - 9, hz], [sg * 15.6, hy - 14, hz], [sg * 13.6, hy - 19, hz]], w: [4.4, 1.2], col: hx(0xf0e6c8) });
+    } else if (kind === "admhelm") { // elmo ADM: diadema dourado, espigões e asas de têmpora
+      const W = hx(0xfff8e0), GD = hx(0xf2c448);
+      E({ x: 0, y: hy - 5, z: hz, rx: 10, ry: 1.5, rz: 9.6, col: GD, metal: 1 });
+      E({ x: 0, y: hy - 7.4, z: hz, rx: 9.4, ry: 1.1, rz: 9, col: W, metal: 1 });
+      S({ pts: [[0, hy - 6, hz + 9.3], [0, hy - 10, hz + 9.6], [0, hy - 13.5, hz + 8.6]], w: [3.6, 2.8, .6], col: GD, metal: 1 });
+      E({ x: 0, y: hy - 8.8, z: hz + 10.2, rx: 1.7, ry: 2.2, rz: 1, col: hx(0x7fe8ff), bias: .9, metal: 1 });
+      for (const sg of [-1, 1]) {
+        S({ pts: [[sg * 5.2, hy - 6.2, hz + 8], [sg * 6.2, hy - 9.4, hz + 7.4], [sg * 7, hy - 11.6, hz + 6]], w: [2.6, 2, .5], col: GD, metal: 1 });
+        for (let i = 0; i < 3; i++) S({ pts: [[sg * 9.6, hy - 3.4 - i * 1.5, hz + 1], [sg * (13.6 + i * 1.4), hy - 6.5 - i * 2.2, hz - 2.5], [sg * (16.4 + i * 3), hy - 7.5 - i * 4.2, hz - 7]], w: [3.6, 3, 1], col: i % 2 ? W : GD, metal: 1 });
+      }
+      S({ pts: [[0, hy - 7, hz - 8], [0, hy - 14, hz - 12], [0, hy - 18, hz - 18]], w: [3, 3.4, 1], col: W });
     } else if (kind === "hood" || kind === "furhood") { // capuz
       const cl = kind === "hood" ? C.hoodC : hx(0x8a8e96);
       E({ x: 0, y: hy - 1, z: hz - .8, rx: 9.7, ry: 11.2, rz: 9.7, p: 3.4, col: cl, tex: (mx, my, mz) => { const az = Math.atan2(mx, mz), el = Math.asin(clamp(my, -1, 1)); if (mz > 0 && Math.abs(mx) < .64 && my > -.36 && my < .6) return null; if (mz > .2 && Math.abs(az) < 1.12 && el > -.42 && el < 1 && (Math.abs(az) > .94 || el < -.3)) return C.hoodTrim; return kind === "hood" ? (Math.sin(az * 10 + el * 3) > .72 ? lt(cl, .14) : (Math.sin(az * 7) < -.8 ? dk(cl, .6) : 0)) : (Math.sin(az * 14 + my * 10) > .4 ? hx(0xb0b4bc) : (Math.sin(az * 9) < -.6 ? hx(0x62666e) : 0)); } });
@@ -18640,8 +18654,20 @@ var ROX2 = (() => {
       S({ pts: [[-6, tz + 36 + bob, tz - 2], [6, tz + 50 + bob, tz + 4]], w: 1.5, col: hx(0x4a3220) });
     }
     if (e.wingsBack) {
-      const wa = hx(e.wingsBack[0]), wb = hx(e.wingsBack[1]); const WT = [[13, -18], [19, -12], [22, -4], [21, 5], [17, 12]];
-      for (const sg of [-1, 1]) for (let L = 1; L >= 0; L--) WT.forEach((w, i) => { const k = L ? .72 : 1, rt = [sg * 4, tz + 37 + bob, tz - 5.5 - L * .6], tp = [sg * (4 + w[0] * k), tz + 37 + bob + w[1] * k + (L ? 3 : 0) + Math.sin(t * 3 + i) * .5, tz - 7 - L]; S({ pts: [rt, [(rt[0] + tp[0]) / 2, (rt[1] + tp[1]) / 2 + 2, rt[2] - .5], tp], w: [5.2, 1.6], col: L ? wb : wa, bias: -.05 }); });
+      const wa = hx(e.wingsBack[0]), wb = hx(e.wingsBack[1]), flap = Math.sin(t * 2.2) * 1.6;
+      const arm = [[3, 0], [12, -10], [24, -15], [35, -11]];
+      const pa = (u) => { const f = u * (arm.length - 1), i = Math.min(arm.length - 2, Math.floor(f)), k = f - i; return [arm[i][0] + (arm[i + 1][0] - arm[i][0]) * k, arm[i][1] + (arm[i + 1][1] - arm[i][1]) * k]; };
+      for (const sg of [-1, 1]) {
+        const R0 = [sg * 3, tz + 37 + bob, tz - 5.5];
+        S({ pts: arm.map((q, i) => [sg * q[0], tz + 37 + bob + q[1] + (i > 1 ? flap : 0), tz - 5.8]), w: [3.4, 2.4], col: wb, bias: -.05 });
+        const rows = [{ n: 9, len: 30, ang0: -.2, ang1: 1.35, col: wa, dz: 0 }, { n: 8, len: 22, ang0: -.05, ang1: 1.4, col: wb, dz: -.6 }, { n: 6, len: 14, ang0: .1, ang1: 1.45, col: wa, dz: -1.2 }];
+        rows.forEach((rw, ri) => { for (let i = 0; i < rw.n; i++) {
+          const u = i / (rw.n - 1), bp = pa(.12 + u * .88 * (ri === 2 ? .8 : 1)), ang = rw.ang0 + u * (rw.ang1 - rw.ang0), ln = rw.len * (1 - Math.abs(u - .35) * .55) * (1 + (ri ? 0 : .12));
+          const bx = bp[0], by = bp[1] + (u > .3 ? flap * u : 0), dx = Math.cos(ang) * ln, dy = Math.sin(ang) * ln;
+          const rt = [sg * bx, tz + 37 + bob + by, tz - 6.2 + rw.dz], md = [sg * (bx + dx * .55 + 1.5), tz + 37 + bob + by + dy * .55, tz - 6.6 + rw.dz], tp = [sg * (bx + dx), tz + 37 + bob + by + dy + 1.5, tz - 7 + rw.dz];
+          S({ pts: [rt, md, tp], w: [4.2, 4.8, 2.6], col: rw.col, bias: -.05 });
+        } });
+      }
     }
   }
   //__DESIGNS__
@@ -18902,7 +18928,7 @@ var ROX2 = (() => {
   const ATK = { berserker: "slash", escudeiro: "slash", cacador: "shoot", volva: "cast", valquiria: "stab", skald: "quick", thay: "punch", aprendiz: "quick" };
   const FAM = { berserker: "p", escudeiro: "p", cacador: "a", volva: "m", valquiria: "m", skald: "a", thay: "a", aprendiz: "a" };
   function headPlan(e, cls, T) {
-    let h = e.head || "none"; const por = h === "poring"; const xt = !!COSX.top[h]; if (!xt && !/^(circlet|wings|horns|helm|hood|hood2|beanie|wreath|bandana|feathercap|crown|crowngold|santa)$/.test(h)) h = "none"; const SIG = "none";
+    let h = e.head || "none"; const por = h === "poring"; const xt = !!COSX.top[h]; if (!xt && !/^(circlet|admhelm|wings|horns|helm|hood|hood2|beanie|wreath|bandana|feathercap|crown|crowngold|santa)$/.test(h)) h = "none"; const SIG = "none";
     let main = SIG, extra = null;
     if (h === "none") { } else if (h === "circlet" || h === "wings") extra = h; else if (h === "horns") main = "helmH"; else if (h === "helm") main = "helm"; else if (h === "hood") main = (SIG === "hood" || SIG === "furhood") ? SIG : "hood"; else main = h;
     if (xt) main = "x:" + h;
@@ -19761,7 +19787,7 @@ function ROXQM(f, c, s, l, def, ex) {
   }
   function cs(e) {
     let t = e.equipment.weapon ? $(e.equipment.weapon)?.weaponType : void 0, a = (n) => n ? $(n)?.headStyle : void 0;
-    return { base: e.line, hair: kh(e.name), gear: "none", top: a(e.equipment.headTop), mid: a(e.equipment.headMid), low: a(e.equipment.headLow), bk: e.equipment.back ? $(e.equipment.back)?.backStyle : void 0, sx: e.gender === "f" ? "f" : void 0, dye: e.equipment.armor === "vestido_noiva" ? 16316664 : e.equipment.armor === "smoking_noivo" ? 2236962 : e.dye ?? 0, hs: e.style?.hairStyle, hc: e.style?.hairColor, ti: e.tier || 0, ep: e.level >= 99 ? 1 : 0, adm: window.__admin === true ? 1 : 0 };
+    return { base: e.line, hair: kh(e.name), gear: "none", top: a(e.equipment.headTop), mid: a(e.equipment.headMid), low: a(e.equipment.headLow), bk: e.equipment.back ? $(e.equipment.back)?.backStyle : void 0, sx: e.gender === "f" ? "f" : void 0, dye: e.equipment.armor === "vestido_noiva" ? 16316664 : e.equipment.armor === "smoking_noivo" ? 2236962 : e.dye ?? 0, hs: e.style?.hairStyle, hc: e.style?.hairColor, ti: e.tier || 0, ep: e.level >= 99 ? 1 : 0, adm: admOn() ? 1 : 0 };
   }
   var FIXYAW = Math.PI / 4, CAM0 = (() => {
     try {
@@ -19781,19 +19807,20 @@ function ROXQM(f, c, s, l, def, ex) {
     thay: [null, { tunic: 13654560, trim: 16765514, pauld: 16765514 }, { tunic: 12065820, trim: 16765514, cape: 8006156, pauld: 16765514, head: "circlet", aura: 16742954 }]
   };
   function R4(e) {
+    const base0 = (q) => ["aprendiz", "berserker", "escudeiro", "cacador", "volva", "valquiria", "skald", "thay"].includes(q.base);
     /^guilda_/.test(e.base) && (e = { ...e, base: e.base.slice(7), ti: 2 });
     let t = { ...I0[e.base] ?? I0.berserker };
     t.cls = e.base;
     if (["aprendiz", "berserker", "escudeiro", "cacador", "volva", "valquiria", "skald", "thay"].includes(e.base)) {
       t.head = "none", delete t.cape, delete t.quiver;
       let tp = TIERLOOK[e.base]?.[Math.min(2, e.ti || 0)];
-      tp && Object.assign(t, tp), t.ti = e.ti || 0; e.adm && Object.assign(t, { tunic: 16119280, trim: 15252024, pauld: 15252024, cape: 16448240, pants: 15987690, boots: 15255648, head: "circlet", eqHead: "circlet", eqBack: true, wingsBack: [16777215, 16769184], aura: 16769184, epic: true });
+      tp && Object.assign(t, tp), t.ti = e.ti || 0; e.adm && Object.assign(t, { tunic: 16119280, trim: 15252024, pauld: 15252024, cape: 16448240, pants: 15987690, boots: 15255648, hair: 16316664, hc: void 0, head: "admhelm", eqHead: "admhelm", eqBack: true, wingsBack: [16777215, 16769184], aura: 16769184, epic: true });
     }
     e.ep && (t.epic = true);
     if (e.mid && ROX2.COSX.eyes[e.mid]) { const ey = ROX2.COSX.eyes[e.mid]; t.eye = ey.col; t.eyePat = ey.pat; if (ey.col2 != null) t.eye2 = ey.col2; e = { ...e, mid: void 0 }; }
     else if (e.mid && e.mid.startsWith("eye_")) { t.eye = EYEC[e.mid]; e = { ...e, mid: void 0 }; }
     if (e.bk && !BACKS[e.bk] && ROX2.COSX.back[e.bk]) { t.eqBack = true; t.bkx = e.bk; delete t.cape; delete t.quiver; delete t.wingsBack; }
-    return e.hair !== void 0 && !Number.isNaN(e.hair) && (t.hair = xh[e.hair % xh.length]), e.hs && (t.hairStyle = e.hs, /^v\d+$/.test(e.hs) && HV50[Number(e.hs.slice(1)) - 1] && (t.hvp = HV50[Number(e.hs.slice(1)) - 1], t.hairStyle = "short")), e.hc !== void 0 && !Number.isNaN(e.hc) && (t.hair = e.hc, t.eye === void 0 && (t.eye = (((e.hc >> 16 & 255) + 40 > 255 ? 255 : (e.hc >> 16 & 255) + 40) << 16) | (((e.hc >> 8 & 255) + 40 > 255 ? 255 : (e.hc >> 8 & 255) + 40) << 8) | ((e.hc & 255) + 40 > 255 ? 255 : (e.hc & 255) + 40))), e.gear && (t.gear = e.gear), e.top && (t.head = e.top, t.eqHead = e.top), e.mid && (t.mid = e.mid), e.low && (t.low = e.low), e.sx === "f" && (t.slim = true, e.hs || (t.hairStyle = "long")), e.bk && BACKS[e.bk] && (t.eqBack = true, BACKS[e.bk].type === "cape" ? t.cape = BACKS[e.bk].c : BACKS[e.bk].type === "quiver" ? t.quiver = true : t.wingsBack = [BACKS[e.bk].c, BACKS[e.bk].c2]), t;
+    return e.adm && base0(e) && (e = { ...e, hair: void 0, hc: 16316664, top: "admhelm", mid: void 0 }), e.hair !== void 0 && !Number.isNaN(e.hair) && (t.hair = xh[e.hair % xh.length]), e.hs && (t.hairStyle = e.hs, /^v\d+$/.test(e.hs) && HV50[Number(e.hs.slice(1)) - 1] && (t.hvp = HV50[Number(e.hs.slice(1)) - 1], t.hairStyle = "short")), e.hc !== void 0 && !Number.isNaN(e.hc) && (t.hair = e.hc, t.eye === void 0 && (t.eye = (((e.hc >> 16 & 255) + 40 > 255 ? 255 : (e.hc >> 16 & 255) + 40) << 16) | (((e.hc >> 8 & 255) + 40 > 255 ? 255 : (e.hc >> 8 & 255) + 40) << 8) | ((e.hc & 255) + 40 > 255 ? 255 : (e.hc & 255) + 40))), e.gear && (t.gear = e.gear), e.top && (t.head = e.top, t.eqHead = e.top), e.mid && (t.mid = e.mid), e.low && (t.low = e.low), e.sx === "f" && (t.slim = true, e.hs || (t.hairStyle = "long")), e.bk && BACKS[e.bk] && (t.eqBack = true, BACKS[e.bk].type === "cape" ? t.cape = BACKS[e.bk].c : BACKS[e.bk].type === "quiver" ? t.quiver = true : t.wingsBack = [BACKS[e.bk].c, BACKS[e.bk].c2]), t;
   }
   {
     {
@@ -21534,7 +21561,7 @@ function ROXQM(f, c, s, l, def, ex) {
       if (!a) return;
       let n = this.ctx, o = a.player, r = ce(o.pos.x, o.pos.y), i = this.animOf("p", o.pos.x, o.pos.y, t), { dir: s, flip: l } = Kl(o.facing), c = a.isDead(), d = Km(this.clock - i.atkAt, i.atkImpact, i.atkDur), f = a.sitting || a.crouching ? -2 : i.moving ? Math.floor(i.phase * ea) : -1, u = fa(po({ ...cs(a.ps), cw: this.capeSw(r.x, a) }), s, f, d, i.atkStyle);
       a.ps.mount && a.ps.mountOwned && !c && !d && (u = fa(po(cs(a.ps)), s, -2, 0, i.atkStyle));
-      window.__admin === true && !c && this.admAura(r);
+      admOn() && !c && this.admAura(r);
       if (n.save(), n.globalAlpha = c ? 0.3 : 1, c) n.translate(r.x, r.y), n.rotate(Math.PI / 2), N4(() => nt(n, u, 0, 0, l, $a, $a));
       else {
         const wd0 = a.waterDepth(o.pos.x, o.pos.y), __body = () => {
@@ -21561,7 +21588,7 @@ function ROXQM(f, c, s, l, def, ex) {
       if (n.restore(), !c) {
         a.ps.pet && a.ps.petData || (window.__petHit = null);
         let m = a.sitting ? -14 : 0;
-        window.__admin === true ? this.text("\u265B [ADM] " + a.ps.name, r.x, r.y + 16, 12, "#ffd34d") : this.nameOn("p") && this.text(a.ps.name, r.x, r.y + 16, 12, "#ffffff");
+        admOn() ? this.text("[ADM] " + a.ps.name, r.x, r.y + 16, 12, "#ffe14a") : this.nameOn("p") && this.text(a.ps.name, r.x, r.y + 16, 12, "#ffffff");
         let p = a.derived();
         this.bar(r.x, r.y - 52 + m, 38, Math.max(0, a.ps.hp / p.maxHp), "#58d468"), a.speech && a.time < a.speech.until ? this.speechBalloon(a.speech.text, r.x, r.y - 70 + m, Math.min(1, (a.speech.until - a.time) / 500)) : a.emote && a.time < a.emote.until && (emoKind(a.emote.text) ? this.emoBubble(emoKind(a.emote.text), r.x, r.y - 82 + m - Math.sin(this.clock / 260) * 2, Math.min(1, (a.emote.until - a.time) / 400), a.emote.until - a.time) : this.balloon(a.emote.text, r.x, r.y - 82 + m - Math.sin(this.clock / 260) * 2, Math.min(1, (a.emote.until - a.time) / 400)));
       }

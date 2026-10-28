@@ -1,3 +1,7 @@
+## v226
+- ADM: nick amarelo "[ADM] Nome", velocidade +100%, cabelo branco, elmo dourado novo, asas emplumadas arredondadas.
+- /aura liga/desliga o visual ADM (aparece como player). @item aceita código/nome (código aparece no clique direito do item). @class=nome e @classe nome.
+
 ## v223
 - Poring saltitante equipado aparece no Alt+Q; líder/VIP/provador ao lado da curandeira, estilista ao norte.
 - Isenborg sem ruas quadriculadas; ruas pavimentadas sem decoração (só canteiros).
