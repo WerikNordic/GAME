@@ -719,3 +719,9 @@
 - Rates mantidas em 1x (EXP/drop). Dificuldade estilo Ragnarok: TTK 4s (nv1) -> 14s (nv30+) e 14% -> 40% da vida por monstro (exige pocao/descanso); nivel 99 so com muito grind (kills p/ subir = 25 + 0,8*nivel, ~10 a 95).
 - Chefes: 5x HP, 0,8x ATQ do normal (35-110s); EXP de chefe proporcional.
 - Variacao relativa entre monstros so aplicada onde ha amostra suficiente (>=6 monstros), corrigindo oscilacoes de dificuldade entre niveis.
+
+## v248 (balanceamento calibrado com bot no motor real)
+- Novo: tests/balance/defs.mjs (bot enfrenta CADA um dos 279 monstros/chefes com 3 classes, com skills, equipamento por nivel e pocoes), bot.mjs (cadeia de lutas por classe x nivel) e calib3.mjs (gera fatores por monstro).
+- A formula anterior (v245-247) estava errada: no motor real o jogo era bem mais facil (luta de ~5s, 5-10% de vida). Agora cada monstro tem fator [HP, ATQ] medido (BAL); monstros/elites com ATQ>1,8x ou HP>2,5x do tipico do nivel sao limitados (chefes ATQ 1,5x).
+- Resultado medido (837 lutas): 0 mortes, 0 monstros impossiveis, TTK mediano 6s (nv1-10) a 15s (nv21-30) e ~10-12s depois; perda mediana 16-26% da vida por luta; chefes 31-66s com 2-5 pocoes.
+- Achados do teste: monstro "javali_rubro"/"yeti_nevasca" pareciam invenciveis, mas era artefato da arena de teste (obstaculos); nao eram bug do jogo.
