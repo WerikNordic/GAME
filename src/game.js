@@ -12777,7 +12777,7 @@ Error generating stack: ` + n.message + `
       if (p.silver < 5000 || It(p.inventory, "vasilha_mistura") < 1 || It(p.inventory, "erva_azul") < 3 || It(p.inventory, "infusao_runica") < 2) return this.toast("Precisa de 5000 Zens, 1 Vasilha de Mistura, 3 Ervas Azuis e 2 Infus\u00F5es R\u00FAnicas.", "bad"), void this.refresh();
       Ea(p.inventory, "vasilha_mistura", 1), Ea(p.inventory, "erva_azul", 3), Ea(p.inventory, "infusao_runica", 2), p.silver -= 5000;
       let ks = Object.keys(HOM_KINDS), k = ks[Math.floor(Math.random() * ks.length)];
-      p.homun = { kind: k, name: HOM_KINDS[k].name, level: 1, exp: 0, evolved: false, on: true, renamed: false };
+      p.homun = { alt: Math.random() < 0.5, kind: k, name: HOM_KINDS[k].name, level: 1, exp: 0, evolved: false, on: true, renamed: false };
       this.toast(`Nasceu ${HOM_KINDS[k].name}!`, "good"), this.pushLog(`Seu Hom\u00FAnculo nasceu: ${HOM_KINDS[k].name} \u2014 ${HOM_KINDS[k].desc}`, "system", "good"), this.saveGameQuiet(), this.refresh();
     }
     homunDo(a, v) {
@@ -19782,19 +19782,19 @@ function ROXQM(f, c, s, l, def, ex) {
       let p = ce(c.x, c.y), t = this.clock / 380, bob = Math.sin(t) * 3, sc = h.evolved ? 1.3 : 1, col = HOM_KINDS[h.kind].color, hx = (v) => "#" + (v >>> 0).toString(16).padStart(6, "0");
       this.blob(p.x, p.y + 4, 8 * sc);
       n.save(), n.translate(p.x, p.y - 20 + bob), n.scale(sc, sc);
-      const ev = !!h.evolved, E = (x, y, rx, ry, c, rot = 0) => { n.fillStyle = c, n.beginPath(), n.ellipse(x, y, rx, ry, rot, 0, 7), n.fill(); }, P = (c, pts) => { n.fillStyle = c, n.beginPath(), n.moveTo(pts[0], pts[1]); for (let q = 2; q < pts.length; q += 2) n.lineTo(pts[q], pts[q + 1]); n.closePath(), n.fill(); }, eye = (x, y, r = 2) => { E(x, y, r, r * 1.1, "#fff"), E(x + 0.5, y + 0.3, r * 0.5, r * 0.6, "#1a1a2a"); };
+      const ev = !!h.evolved, AL = !!h.alt, E = (x, y, rx, ry, c, rot = 0) => { n.fillStyle = c, n.beginPath(), n.ellipse(x, y, rx, ry, rot, 0, 7), n.fill(); }, P = (c, pts) => { n.fillStyle = c, n.beginPath(), n.moveTo(pts[0], pts[1]); for (let q = 2; q < pts.length; q += 2) n.lineTo(pts[q], pts[q + 1]); n.closePath(), n.fill(); }, eye = (x, y, r = 2) => { E(x, y, r, r * 1.1, "#fff"), E(x + 0.5, y + 0.3, r * 0.5, r * 0.6, "#1a1a2a"); };
       if (ev) E(0, 0, 19, 19, "rgba(255,230,140,0.22)");
       if (h.kind === "vitalis") {
         const fl = Math.sin(t * 6) * 0.35;
         if (ev) { for (let sd of [-1, 1]) { P("#5fbf5a", [sd * 3, -2, sd * 16, -14 + fl * 6, sd * 20, -4, sd * 12, 4]); P("#3f9a46", [sd * 3, -2, sd * 12, -9, sd * 14, -3]); } }
         else for (let sd of [-1, 1]) E(sd * 8, -3, 6, 3 + fl * 2, "rgba(220,245,255,0.7)", sd * 0.6 + fl);
-        P(ev ? "#fff7fa" : "#ffffff", [-4, 2, 4, 2, ev ? 9 : 7, 12, ev ? -9 : -7, 12]);
+        P(AL ? (ev ? "#ff8a9a" : "#e0485a") : ev ? "#fff7fa" : "#ffffff", [-4, 2, 4, 2, ev ? 9 : 7, 12, ev ? -9 : -7, 12]);
         if (ev) for (let q of [[-5, 9], [3, 10], [-1, 6]]) E(q[0], q[1], 1.6, 1.6, q[0] > 0 ? "#ff7aa8" : "#ffd24a");
-        E(0, -4, 6, 6.4, "#ffd9bd"); E(0, -8.5, 7.4, 4.8, "#4fcf5a"); E(-6.2, -4, 2.6, 5, "#4fcf5a"); E(6.2, -4, 2.6, 5, "#4fcf5a");
+        E(0, -4, 6, 6.4, "#ffd9bd"); { const hc = AL ? "#f0d060" : "#4fcf5a"; E(0, -8.5, 7.4, 4.8, hc); E(-6.2, -4, 2.6, 5, hc); E(6.2, -4, 2.6, 5, hc); }
         eye(-2.4, -3.6, 1.6), eye(2.4, -3.6, 1.6); if (ev) P("#fff", [-1, -17, 1, -17, 0, -13]), E(0, -14, 2, 2, "#ff9ec0");
       } else if (h.kind === "granito") {
         for (let sd of [-1, 1]) for (let fb of [0, 1]) E(sd * (4 + fb * 6) - 1, 8, 2.6, 3, "#8a8e96");
-        E(0, 0, 12, 8.5, "#9aa0a8"); E(0, -3, 10.5, 6.5, ev ? "#7fd8e8" : "#6a6e76");
+        E(0, 0, 12, 8.5, AL ? "#d8a060" : "#9aa0a8"); E(0, -3, 10.5, 6.5, ev ? (AL ? "#f0b070" : "#7fd8e8") : AL ? "#a8683a" : "#6a6e76");
         for (let q of [[-6, -4], [0, -7], [6, -4], [-3, -1], [4, -1]]) P(ev ? "#c8f4ff" : "#8a8e96", [q[0] - 3, q[1] + 2, q[0], q[1] - 3, q[0] + 3, q[1] + 2]);
         E(11, 0, 5.4, 4.6, "#b0b4bc"); E(14.5, 1.5, 2.2, 1.6, "#3a3e46");
         if (ev) { P("#f0c040", [9, -3, 6, -12, 12, -5]); P("#f0c040", [12, -3, 16, -11, 15, -2]); }
@@ -19804,19 +19804,19 @@ function ROXQM(f, c, s, l, def, ex) {
         const fl = Math.sin(t * 9);
         if (ev) { for (let sd of [-1, 1]) { P(sd > 0 ? "#ff4a2a" : "#3a8aff", [0, 0, sd * 20, -12 + fl * 6, sd * 24, -2, sd * 14, 6]); P(sd > 0 ? "#ffd24a" : "#9acaff", [0, 1, sd * 14, -7 + fl * 4, sd * 17, -1]); } }
         else for (let sd of [-1, 1]) P("#3a78d8", [0, 0, sd * 14, -8 + fl * 5, sd * 11, 4]);
-        E(0, 0, 8, 7.5, ev ? "#ff8a3a" : "#5a9aff"); E(0, 3, 5.5, 4, ev ? "#ffe9a0" : "#bcd8ff");
-        E(5, -7, 4.6, 4.4, ev ? "#ff8a3a" : "#5a9aff"); P("#f0b838", [8.5, -8, 17, -6.5, 8.5, -5]);
+        E(0, 0, 8, 7.5, AL ? "#9a6a3a" : ev ? "#ff8a3a" : "#5a9aff"); E(0, 3, 5.5, 4, AL ? "#e8d8b8" : ev ? "#ffe9a0" : "#bcd8ff");
+        E(5, -7, 4.6, 4.4, AL ? "#9a6a3a" : ev ? "#ff8a3a" : "#5a9aff"); P("#f0b838", [8.5, -8, 17, -6.5, 8.5, -5]);
         P(ev ? "#ffd24a" : "#3a78d8", [-2, -11, 0, -16, 2, -11]); P("#3a78d8", [-6, 4, -14, 9, -5, 8]);
         eye(5.5, -8, 1.4);
       } else {
         const sq = Math.sin(t * 3) * 0.6;
         if (ev) {
           for (let sd of [-1, 1]) { P("#e8e0cc", [sd * 5, -4, sd * 20, -16 + sq * 4, sd * 17, -6, sd * 24, -2, sd * 12, 4]); n.strokeStyle = "#cfc5ac", n.lineWidth = 1; for (let q = 0; q < 3; q++) n.beginPath(), n.moveTo(sd * 5, -3 + q), n.lineTo(sd * (14 + q * 3), -10 + q * 4 + sq * 3), n.stroke(); }
-          E(0, 0, 10, 10.5, "#5a3a78"); for (let q = -1; q <= 1; q++) { n.strokeStyle = "#e8e0cc", n.lineWidth = 1.4, n.beginPath(), n.arc(0, q * 4 + 1, 8, 0.4, 2.7), n.stroke(); }
+          E(0, 0, 10, 10.5, AL ? "#1a2a58" : "#5a3a78"); for (let q = -1; q <= 1; q++) { n.strokeStyle = "#e8e0cc", n.lineWidth = 1.4, n.beginPath(), n.arc(0, q * 4 + 1, 8, 0.4, 2.7), n.stroke(); }
           E(0, 1, 3.2 + sq * 0.4, 3.2 + sq * 0.4, "#9affea"); E(0, 1, 1.4, 1.4, "#fff");
           eye(-3.5, -4, 1.8), eye(3.5, -4, 1.8);
         } else {
-          E(0, 2 - sq, 11 + sq, 8.5 - sq, "#a8743c"); E(-3, -1, 4, 2.6, "rgba(255,225,170,0.5)", -0.4);
+          E(0, 2 - sq, 11 + sq, 8.5 - sq, AL ? "#2a3a78" : "#a8743c"); E(-3, -1, 4, 2.6, "rgba(255,225,170,0.5)", -0.4);
           eye(-3.5, 0, 2.4), eye(3.5, 0, 2.4);
         }
       }

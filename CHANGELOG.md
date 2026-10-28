@@ -1,3 +1,6 @@
+## v234
+- Homúnculos novos nascem com 50% de chance da cor alternativa: Lif loira de vestido vermelho, Amistr dourado/acobreado, Filir marrom/bege, Vanilmirth azul-escuro. Os já criados mantêm a cor padrão.
+
 ## v233
 - Efeitos visuais distintos em 5 habilidades da lista: Nevasca e Armadilha Atordoadora (gelo), Arremessar Poção e Bomba Ácida (pilar de luz), Vulcão de Flechas (meteoro). As demais ainda usam o efeito padrão do tipo.
 
