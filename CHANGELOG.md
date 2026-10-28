@@ -1,3 +1,6 @@
+## v219 — Prévia da criação de personagem
+- Personagem na criação agora preenche o quadro (antes ficava pequeno e solto).
+
 ## v218 — Cartas de conjuração à venda
 - Carta Fen, Carta Borboleta Sangrenta e Manto de Orleans à venda na Utilidades (90k/110k/120k Zens). Aba "Boca" do espelho renomeada para "Barba/Máscara". Estilista conferida: abre sem erros.
 

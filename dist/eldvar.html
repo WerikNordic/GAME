@@ -14657,7 +14657,7 @@ Error generating stack: ` + n.message + `
     }, []);
     return Hh("canvas", { ref, className: "cs-canvas", "aria-hidden": true });
   }
-  function CsPortrait({ p, scale = 2.9, w = 150, h = 210, rot = "down" }) {
+  function CsPortrait({ p, scale = 2.2, w = 150, h = 210, rot = "down" }) {
     let ref = Hl.useRef(null), key = p ? JSON.stringify([p.name, p.line, p.gender, p.style, p.dye, p.equipment]) : "";
     Hl.useEffect(() => {
       let c = ref.current;
@@ -14718,7 +14718,7 @@ Error generating stack: ` + n.message + `
     return Hh("div", { className: "cs-bg" }, Hh(CsBackdrop, {}), Hh("div", { className: "cs-win" },
       Hh("div", { className: "cs-title" }, "Cria\u00e7\u00e3o de Personagem"),
       Hh("div", { className: "cc-body" },
-        Hh("div", { className: "cc-prev" }, Hh("div", { className: "cs-frame sel" }, Hh("div", { className: "cs-tab" }, "Slot " + (slot || "\u2014")), pv_ && Hh(CsPortrait, { p: pv_, scale: 2.7, w: 170, h: 240, rot })), Hh("button", { className: "cs-btn", onClick: () => setRot((r) => r === "down" ? "dq" : r === "dq" ? "side" : r === "side" ? "uq" : r === "uq" ? "up" : "down") }, "\u27f3 girar")),
+        Hh("div", { className: "cc-prev" }, Hh("div", { className: "cs-frame sel" }, Hh("div", { className: "cs-tab" }, "Slot " + (slot || "\u2014")), pv_ && Hh(CsPortrait, { p: pv_, scale: 3.3, w: 224, h: 336, rot })), Hh("button", { className: "cs-btn", onClick: () => setRot((r) => r === "down" ? "dq" : r === "dq" ? "side" : r === "side" ? "uq" : r === "uq" ? "up" : "down") }, "\u27f3 girar")),
         Hh("div", { className: "cc-form" },
           Hh("label", null, "Nome"), Hh("input", { className: "cc-in", value: nm, maxLength: 16, autoFocus: true, placeholder: "2 a 16 caracteres", onChange: (ev) => (setNm(ev.target.value), setErr(null)), onKeyDown: (ev) => ev.key === "Enter" && valid && go() }),
           Hh("label", null, "Sexo"), Hh("div", { className: "cc-row" }, [["m", "\u2642 Masculino"], ["f", "\u2640 Feminino"]].map(([g, l]) => Hh("button", { key: g, className: "cs-btn" + (gd === g ? " on" : ""), onClick: () => (setGd(g), setHi(0)) }, l))),
@@ -22564,7 +22564,7 @@ function ROXQM(f, c, s, l, def, ex) {
       if (!i || !o) return;
       let s = () => {
         let c = i.getContext("2d");
-        c.clearRect(0, 0, i.width, i.height), c.imageSmoothingEnabled = true, c.imageSmoothingQuality = "high", nt(c, fa(r, a, -1, 0), i.width / 2, i.height - 16, false, 2.9, 2.9), o.equipment.headTop === "poring_saltitante" && drawPoring(c, i.width / 2, i.height - 16, 2.9, Date.now(), a, false);
+        c.clearRect(0, 0, i.width, i.height), c.imageSmoothingEnabled = true, c.imageSmoothingQuality = "high", nt(c, fa(r, a, -1, 0), i.width / 2, i.height - 16, false, 2.6, 2.6), o.equipment.headTop === "poring_saltitante" && drawPoring(c, i.width / 2, i.height - 16, 2.6, Date.now(), a, false);
       };
       s();
       let l = setInterval(s, 60);
