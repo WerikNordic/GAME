@@ -21458,9 +21458,9 @@ function ROXQM(f, c, s, l, def, ex) {
     }
     drawNpc(t, a, n, o) {
       let r = this.ctx, { x: i, y: s } = ce(a, n), l = this.animOf(`n:${t}`, a, n, o), c = this.store.world?.player.pos, d = l.seed ?? 0;
-      l.face === void 0 && (l.face = Math.PI / 2 + d, l.idleFace = l.face, l.nextLook = this.clock + 1500 + d * 700);
+      l.face === void 0 && (l.face = Math.PI / 2 + ((d * 7) % 0.6 - 0.3), l.idleFace = l.face, l.nextLook = this.clock + 1500 + d * 700);
       let f = l.idleFace ?? l.face;
-      c && Math.hypot(c.x - a, c.y - n) < 430 ? f = Math.atan2(c.y - n, c.x - a) : this.clock > (l.nextLook ?? 0) && (l.idleFace = (l.idleFace ?? l.face) + (Math.random() - 0.5) * 2.6, l.nextLook = this.clock + 3200 + Math.random() * 6e3, f = l.idleFace), l.face += RS(l.face, f) * (1 - Math.exp(-o / 150));
+      l.face = l.idleFace;
       t === "papainoel" && (l.face = Math.PI / 2); let sk = 0, sq = 1, hoho = false; if (t === "papainoel") { let q = this.clock % 7000; hoho = q < 1700; if (hoho) sk = -Math.abs(Math.sin(q / 85)) * 3, sq = 1 + Math.sin(q / 85) * 0.014; sk += Math.sin(this.clock / 640) * 0.7; } let { dir: u, flip: m } = Kl(l.face), p = fa(t, u, t === "papainoel" ? -2 : -1, 0), h = this.organic(l, l.face, { moving: false, breath: 0.014 });
       t === "papainoel" ? i += 9 : 0, t !== "papainoel" && (this.blob(i, s + 4, 15), nt(r, p, i + h.dx, s + 6 + h.dy - (t === "papainoel" ? 6 : 0) + sk, m, $a * h.sx * (t === "papainoel" ? 1.38 : 1), $a * h.sy * sq * (t === "papainoel" ? 1.38 : 1), h.rot)), this.nameOn(`n${t}`) && this.text(n0(t)?.name ?? t, i, s + 16, 12, "#ffffff");
       let x = this.marks.get(t);

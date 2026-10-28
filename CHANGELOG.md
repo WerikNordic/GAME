@@ -1,3 +1,6 @@
+## v222 — NPCs fixos
+- NPCs não se viram mais para o jogador nem olham aleatoriamente: ficam parados, de frente.
+
 ## v221 — Cabeça menos alta
 - Altura da cabeça reduzida (~16%), largura quase igual: proporção mais curta e natural.
 
