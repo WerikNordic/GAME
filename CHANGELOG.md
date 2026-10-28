@@ -1,3 +1,7 @@
+## v232 — Cidades
+- Cada cidade ganha até 70 peças de decoração temática em espaços livres (fora de ruas, casas e prédios): estátuas e fontes em Midgard, palmeiras e cactos em Eldvik, braseiros e runas em Kharnheim, lápides em Helvik, totens em Freyrhain, pagodes e lanternas em Skogvik etc.
+- Verificado por script: sem aumento de objetos sobre ruas ou sobrepostos.
+
 ## v231 — Homúnculos
 - Redesenhados: Lif (fada de cabelo verde → asas de folha), Amistr (quadrúpede de pedra → touro de cristal com chifres dourados), Filir (pássaro azul → ave com asas de chamas), Vanilmirth (gelatina marrom → massa roxa com asas ósseas e núcleo brilhante).
 - Nomes trocados (Vitalis/Granito/Faísca/Caos → Lif/Amistr/Filir/Vanilmirth); homúnculos já criados mantêm o nome antigo.

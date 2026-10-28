@@ -8678,6 +8678,23 @@ Error generating stack: ` + n.message + `
         s("crypt", 3900, 5000);
         break;
     }
+    {
+      const THEME = {
+        cidade_midgard: ["statue", "fountain", "bench", "banner", "planter"], cidade_ravnhaven: ["campfire", "hay", "post", "bench", "planter"],
+        cidade_isenborg: ["frosttree", "snoman", "campfire", "bench", "sleigh"], cidade_eldvik: ["palm", "cactus", "parasol", "obelisk", "bench"],
+        cidade_kharnheim: ["brazier", "runestone", "obelisk", "forge", "post"], cidade_freyrhain: ["totem", "planter", "spiritlamp", "hut", "bench"],
+        cidade_gladsheim: ["pillar", "statue", "arch", "altar", "planter"], cidade_skogvik: ["spiritlamp", "planter", "bench", "pagoda", "banner"],
+        cidade_handelsvik: ["parasol", "post", "planter", "banner", "hay"], cidade_solvik: ["fountain", "bench", "planter", "arch", "banner"],
+        cidade_helvik: ["gravestone", "spiritlamp", "broken", "altar", "gravestone"]
+      }, kinds = (THEME[id] || []).filter((q) => $m[q]), rr = Oe(String(id).length * 977 + t);
+      const hit = (x, y, r) => o.some((q) => q.x !== void 0 && q.w && x + r > q.x - 16 && x - r < q.x + q.w + 16 && y + r > q.y - 16 && y - r < q.y + q.h + 16) || p.some((q) => x + r > q.x - 20 && x - r < q.x + q.w + 20 && y + r > q.y - 20 && y - r < q.y + q.h + 20);
+      let placed = 0;
+      for (let tries = 0; tries < 900 && placed < 70 && kinds.length; tries++) {
+        const x = 400 + rr() * (t - 800), y = 420 + rr() * 5400, kd = kinds[Math.floor(rr() * kinds.length)], sz = $m[kd], r = Math.max(sz.w, sz.h) / 2 + 4;
+        if (!ok(x, y) || hit(x, y, r)) continue;
+        s(kd, x, y), placed++;
+      }
+    }
   }
   var STON = ["cidade_midgard", "cidade_gladsheim", "cidade_skogvik", "cidade_helvik"];
   function z8(e) {
