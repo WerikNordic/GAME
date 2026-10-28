@@ -1,3 +1,6 @@
+## v233
+- Efeitos visuais distintos em 5 habilidades da lista: Nevasca e Armadilha Atordoadora (gelo), Arremessar Poção e Bomba Ácida (pilar de luz), Vulcão de Flechas (meteoro). As demais ainda usam o efeito padrão do tipo.
+
 ## v232 — Cidades
 - Cada cidade ganha até 70 peças de decoração temática em espaços livres (fora de ruas, casas e prédios): estátuas e fontes em Midgard, palmeiras e cactos em Eldvik, braseiros e runas em Kharnheim, lápides em Helvik, totens em Freyrhain, pagodes e lanternas em Skogvik etc.
 - Verificado por script: sem aumento de objetos sobre ruas ou sobrepostos.
