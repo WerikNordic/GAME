@@ -10308,7 +10308,7 @@ const SUP = {
     if (a.tier > e.tier) return { ok: false, msg: "Esta habilidade ainda n\xE3o foi desbloqueada." };
     if (e.skillPoints < 1) return { ok: false, msg: "Sem pontos de habilidade." };
     let n = e.skillLevels[t] ?? 1;
-    return n >= Ll(e.tier) ? { ok: false, msg: e.tier < 2 ? "N\xEDvel m\xE1ximo. A classe Avan\xE7ada libera mais n\xEDveis." : "N\xEDvel m\xE1ximo." } : (e.skillPoints -= 1, e.skillLevels[t] = n + 1, { ok: true, msg: `${a.name} subiu para o n\xEDvel ${n + 1}.` });
+    return n >= SKMAX(a) ? { ok: false, msg: e.tier < 2 && SKMAX(a) >= 5 && a.tier < 2 ? "N\xEDvel m\xE1ximo da habilidade." : "N\xEDvel m\xE1ximo." } : (e.skillPoints -= 1, e.skillLevels[t] = n + 1, { ok: true, msg: `${a.name} subiu para o n\xEDvel ${n + 1}.` });
   }
   var fM = { common: 0.03, uncommon: 0.011, rare: 2.5e-3, epic: 9e-4, legendary: 2e-4 }, Uy = 12, mM = 32, pM = 3e3, hM = 50, nr = class {
     map;
@@ -10538,8 +10538,8 @@ const SUP = {
     }
     buffSum(t) {
       let a = 0;
-      for (let n of this.player.buffs) a += n[t] ?? 0;
-      return a;
+      for (let n of this.player.buffs) a += (t === "atk" || t === "def" || t === "spd" || t === "crit") ? Math.min(n[t] ?? 0, 0.05) : n[t] ?? 0;
+      return (t === "atk" || t === "def" || t === "spd" || t === "crit") ? Math.min(a, 0.15) : a;
     }
     updatePlayer(t) {
       let a = this.player, n = t / 1e3, o = ((dd) => ({ ...dd, speed: dd.speed * (1 + this.buffSum("spd") + (this.ps.mount ? petMountBonus(this.ps) : 0)) }))(this.derived()), r = this.overloaded() ? { ...o, speed: o.speed * Ly } : o, i = Math.hypot(this.move.x, this.move.y); r = { ...r, speed: r.speed * this.waterMul(a.pos) };
@@ -10774,7 +10774,7 @@ const SUP = {
           break;
         }
         case "buff":
-          a.buffs = a.buffs.filter((p) => p.id !== n.id), a.buffs.push({ id: n.id, atk: (n.buff?.atk ?? 0) * i, def: (n.buff?.def ?? 0) * i, spd: (n.buff?.spd ?? 0) * Math.min(i, 1.4), crit: (n.buff?.crit ?? 0) * Math.min(i, 1.4), until: this.time + (n.buff?.ms ?? 1e4) }), this.emit({ type: "fx", kind: "buff", x: a.pos.x, y: a.pos.y, angle: 0, range: 50, arc: 360, magic: true, fromPlayer: true, light: o }), this.toast(`${n.name} ativada.`, "good");
+          a.buffs = a.buffs.filter((p) => p.id !== n.id), a.buffs.push({ id: n.id, atk: n.buff?.atk ? 0.05 : 0, def: n.buff?.def ? 0.05 : 0, spd: n.buff?.spd ? 0.05 : 0, crit: n.buff?.crit ? 0.05 : 0, until: this.time + (n.buff?.ms ?? 1e4) }), this.emit({ type: "fx", kind: "buff", x: a.pos.x, y: a.pos.y, angle: 0, range: 50, arc: 360, magic: true, fromPlayer: true, light: o }), this.toast(`${n.name} ativada.`, "good");
           break;
       }
       return true;
@@ -11686,8 +11686,8 @@ const SUP = {
   var __ICODE = null;
   function itemCodes() {
     const ids = Object.keys(Wa); if (__ICODE && __ICODE.n === ids.length) return __ICODE;
-    const byId = {}, byCode = {}; let c = 1000, r = 999000;
-    for (const id of ids.sort()) { const it = Wa[id], code = it && (it.rarity === "rare" || it.rarity === "epic" || it.rarity === "legendary") ? ++r : ++c; byId[id] = code, byCode[code] = id; }
+    const byId = {}, byCode = {}; let c = 11000, r = 998;
+    for (const id of ids.sort()) { const it = Wa[id], code = it && (it.rarity === "rare" || it.rarity === "epic" || it.rarity === "legendary") && r < 10999 ? ++r : ++c; byId[id] = code, byCode[code] = id; }
     return __ICODE = { n: ids.length, byId, byCode };
   }
   function admOn() { return window.__admin === true && !window.__noAdm; }
@@ -11892,7 +11892,7 @@ const SUP = {
     if (Array.isArray(e.visited)) for (let M of e.visited) typeof M == "string" && en(M) && !p.includes(M) && p.push(M);
     let h = [];
     if (Array.isArray(e.found)) for (let M of e.found) typeof M == "string" && M.length < 60 && !h.includes(M) && h.length < 2e3 && h.push(M);
-    let x = a >= 2 ? 10 : 5, b = Array.isArray(e.skillLevels) ? e.skillLevels : [], g = Array.from({ length: 64 }, (_, M) => Ut(b[M], 1, x, 1)), y = e.skillPoints === void 0 ? Math.max(0, o - 1) + a * 9 : Ut(e.skillPoints, 0, 999, 0), v = {};
+    let x = a >= 2 ? 10 : 5, b = Array.isArray(e.skillLevels) ? e.skillLevels : [], g = Array.from({ length: 64 }, (_, M) => Ut(b[M], 1, Ce[e.line]?.skills?.[M] ? SKMAX(Ce[e.line].skills[M]) : x, 1)), y = e.skillPoints === void 0 ? Math.max(0, o - 1) + a * 9 : Ut(e.skillPoints, 0, 999, 0), v = {};
     if (Vt(e.cards)) for (let [M, T] of Object.entries(e.cards)) {
       let z = $(M);
       if (!z || !Array.isArray(T) || !Pt(z.kind)) continue;
@@ -13321,7 +13321,7 @@ const SUP = {
         let p = Ba(m), h = tn(o, m);
         return { id: m, name: p?.name ?? m, ready: h === "ready", lines: Fu(o, m).map((x) => `${x.label}: ${x.have}/${x.need}`) };
       });
-      return { ...n, dead: r.isDead(), player: l, derived: i, hud: { hp: Math.ceil(o.hp), maxHp: i.maxHp, mp: Math.floor(o.mp), maxMp: i.maxMp, exp: o.exp, expNext: o.level >= 99 ? 1 : tr(o.level), level: o.level, jobLevel: o.jobLevel, jobExp: o.jobExp, jobNext: Ki(o.jobLevel), jobCap: Dr[o.tier], className: Gx(o.line, o.tier), silver: o.silver }, skills: s.skills.map((m, p) => ({ id: m.id, kind: m.kind, name: m.name, desc: m.desc, mp: Ju(m.mp, o.skillLevels[p] ?? 1), frac: r.skillCooldownFrac(p), locked: m.tier > o.tier, level: o.skillLevels[p] ?? 1, maxLevel: Ll(o.tier) })), potions: { hp: c, mp: d }, prompt: null, boss: f ? { name: f.def.name, hp: Math.ceil(f.hp), max: f.maxHp, phase: f.phase } : null, tracker: u };
+      return { ...n, dead: r.isDead(), player: l, derived: i, hud: { hp: Math.ceil(o.hp), maxHp: i.maxHp, mp: Math.floor(o.mp), maxMp: i.maxMp, exp: o.exp, expNext: o.level >= 99 ? 1 : tr(o.level), level: o.level, jobLevel: o.jobLevel, jobExp: o.jobExp, jobNext: Ki(o.jobLevel), jobCap: Dr[o.tier], className: Gx(o.line, o.tier), silver: o.silver }, skills: s.skills.map((m, p) => ({ id: m.id, kind: m.kind, name: m.name, desc: m.desc, mp: Ju(m.mp, o.skillLevels[p] ?? 1), frac: r.skillCooldownFrac(p), locked: m.tier > o.tier, level: o.skillLevels[p] ?? 1, maxLevel: SKMAX(m) })), potions: { hp: c, mp: d }, prompt: null, boss: f ? { name: f.def.name, hp: Math.ceil(f.hp), max: f.maxHp, phase: f.phase } : null, tracker: u };
     }
   };
   function xv() {
@@ -13784,7 +13784,7 @@ const SUP = {
     return (0, Et.jsx)("div", { className: "overlay overlay-free", ref: i, role: "dialog", "aria-label": e, "data-window": o, children: (0, Et.jsxs)("div", { ref: r, className: `panel panel-float${n ? " panel-wide" : ""}`, style: s ? { left: s.x, top: s.y } : { visibility: "hidden" }, children: [(0, Et.jsxs)("header", { className: "panel-head panel-drag", onPointerDown: u, onPointerMove: m, onPointerUp: p, onPointerCancel: p, onDoubleClick: h, title: "Arraste para mover \xB7 duplo clique recentraliza", children: [(0, Et.jsx)("h2", { children: e }), t && (0, Et.jsx)("button", { className: "btn btn-small", onClick: t, "aria-label": "Fechar", children: "\u2715" })] }), (0, Et.jsx)("div", { className: "panel-body", children: a })] }) });
   }
   var _v = "\u16A0 \u16A2 \u16A6 \u16A8 \u16B1 \u16B2 \u16B7 \u16B9";
-  var LM = { common: "Comum", uncommon: "Incomum", rare: "Raro", epic: "\xC9pico", legendary: "Lend\xE1rio" }, so = { common: "#2c3b5c", uncommon: "#1c7a2c", rare: "#1b55b3", epic: "#7a2fc2", legendary: "#a85f00" }, NM = [["atk", "ATQ"], ["matk", "ATQ.M"], ["def", "DEF"], ["maxHp", "Vida"], ["maxMp", "Mana"], ["str", "FOR"], ["agi", "AGI"], ["vit", "VIT"], ["int", "INT"], ["dex", "DES"], ["luk", "SOR"], ["crit", "Cr\xEDtico", true], ["speed", "Velocidade"]];
+  var LM = { common: "Comum", uncommon: "Incomum", rare: "Raro", epic: "\xC9pico", legendary: "Lend\xE1rio" }, so = { common: "#2c3b5c", uncommon: "#1c7a2c", rare: "#c8921a", epic: "#e0a912", legendary: "#ffcf2e" }, NM = [["atk", "ATQ"], ["matk", "ATQ.M"], ["def", "DEF"], ["maxHp", "Vida"], ["maxMp", "Mana"], ["str", "FOR"], ["agi", "AGI"], ["vit", "VIT"], ["int", "INT"], ["dex", "DES"], ["luk", "SOR"], ["crit", "Cr\xEDtico", true], ["speed", "Velocidade"]];
   function Vp(e) {
     if (!e) return [];
     let t = [];
@@ -15510,7 +15510,68 @@ void main() {
         } else K < 0.0395 && l === "grass" && (g(M, w, 15261900), g(M - 1, w - 1, 12862766), g(M, w - 1, 12862766), g(M + 1, w - 1, 12862766), g(M, w - 2, 15096124));
       } else l === "snow" ? K < 0.03 ? (g(M, w, c.t[1]), g(M - 1, w - 1, 16777215), g(M, w - 1, 16777215), g(M + 1, w - 1, c.t[4])) : K < 0.036 && (g(M, w, c.accent[3]), g(M, w - 1, c.accent[0]), g(M, w - 2, 16777215), g(M - 1, w - 1, c.accent[2])) : l === "fire" ? (K < 4e-3 ? (g(M, w, 16742954), g(M, w - 1, 16765040)) : K < 0.03 && g(M, w, c.t[0]), Math.abs(Ya(T, z, 34, 13) - 0.5) < 8e-3 && Ya(T, z, 120, 15) > 0.55 && g(M, w, Ya(T, z, 11, 14) > 0.55 ? 16742954 : 787974)) : l === "forge" ? K < 4e-3 && (g(M, w, c.accent[1]), g(M - 1, w, c.accent[0])) : l === "crystal" ? K < 0.012 && (g(M, w, 14678271), g(M, w - 1, 16777215), g(M, w - 2, 16759024), g(M - 1, w - 1, 10152191), g(M + 1, w - 1, 10152191)) : l === "marble" ? K < 3e-3 && (g(M, w, c.accent[0]), g(M - 1, w, c.accent[0])) : l === "void" && K < 0.012 && (g(M, w, c.accent[Math.floor(lt(M, w, 12) * 4)]), lt(M, w, 15) < 0.2 && (g(M - 1, w, 16777215), g(M, w - 1, 16777215)));
     }
-    return r.putImageData(i, 0, 0), o;
+    return r.putImageData(i, 0, 0), groundDecals(r, e, a, n, t, v, c, l), o;
+  }
+  // ---- v250: detalhes org\u00E2nicos no ch\u00E3o (tufos, flores, pedras, folhas, rachaduras, dunas, pegadas...) por tema, sem formas geom\u00E9tricas for\u00E7adas ----
+  function groundDecals(r, e, a, n, tPx, mask, c, th) {
+    if (e.city || c.floor && th !== "marble") return;
+    let sd = 0; for (let q = 0; q < e.id.length; q++) sd = (sd * 31 + e.id.charCodeAt(q)) >>> 0;
+    const rnd = () => (sd = (sd + 0x6D2B79F5) >>> 0, ((t = Math.imul(sd ^ sd >>> 15, 1 | sd), t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t, ((t ^ t >>> 14) >>> 0) / 4294967296))); let t;
+    const hx = (v) => "#" + (v >>> 0).toString(16).padStart(6, "0"), mixc = (p, q, k) => hx(ye(p, q, k));
+    const area = a * n, free = (x, y) => x > 14 && y > 14 && x < a - 14 && y < n - 14 && !mask[(y | 0) * a + (x | 0)] && !mask[(y | 0) * a + Math.min(a - 1, (x | 0) + 6)] && !mask[Math.min(n - 1, (y | 0) + 5) * a + (x | 0)];
+    const rep = (cnt, fn) => { for (let k = 0; k < cnt; k++) { const x = 14 + rnd() * (a - 28), y = 14 + rnd() * (n - 28); free(x, y) && fn(x | 0, y | 0); } };
+    const px = (x, y, col, w = 1, h = 1) => { r.fillStyle = col, r.fillRect(x | 0, y | 0, w, h); };
+    const blob = (x, y, rx, ry, col, al) => { r.globalAlpha = al, r.fillStyle = col, r.beginPath(), r.ellipse(x, y, rx, ry, rnd() * 3, 0, 6.283), r.fill(), r.globalAlpha = 1; };
+    const T = c.t, AC = c.accent || [16777215, 16766720, 16746632, 11167487];
+    const green = th === "grass" || th === "lush" || th === "tropic" || th === "wood" || th === "ilha";
+    const k = area / 1e6 * (tPx > 0 ? (2.4 / tPx) ** 2 : 1);
+    r.save();
+    if (green) {
+      const lu = th === "lush" ? 1.5 : 1;
+      rep(900 * k * lu, (x, y) => { const dk = mixc(T[0], 0, 0.25), lt2 = mixc(T[4], 16777215, 0.1), nb = 3 + (rnd() * 3 | 0); for (let b = 0; b < nb; b++) { const lean = (rnd() - 0.5) * 3, h = 3 + rnd() * 3, bx = x + b - nb / 2; px(bx, y, dk), px(bx + lean * 0.4, y - 1, b % 2 ? lt2 : dk), px(bx + lean * 0.7, y - 2, lt2), h > 4 && px(bx + lean, y - 3, lt2), h > 5 && px(bx + lean * 1.2, y - 4, lt2); } });
+      rep(210 * k * lu, (x, y) => { const nb = 3 + (rnd() * 5 | 0), ac = AC[rnd() * AC.length | 0]; for (let b = 0; b < nb; b++) { const fx = x + (rnd() - 0.5) * 11, fy = y + (rnd() - 0.5) * 7; px(fx, fy + 1, mixc(T[0], 0, 0.1)), px(fx, fy + 2, mixc(T[1], 0, 0.1)); px(fx - 1, fy, hx(ac)), px(fx + 1, fy, hx(ac)), px(fx, fy - 1, hx(ac)), px(fx, fy, 16769024); } });
+      rep(150 * k, (x, y) => blob(x, y, 5 + rnd() * 9, 3 + rnd() * 5, mixc(T[0], 0, 0.3), 0.14));
+      rep(110 * k, (x, y) => blob(x, y, 5 + rnd() * 8, 2.5 + rnd() * 4, mixc(T[4], 16777215, 0.2), 0.1));
+      rep(90 * k, (x, y) => { const nb = 1 + (rnd() * 3 | 0); for (let b = 0; b < nb; b++) { const sx = x + b * 3 - 3, sy = y + (rnd() - 0.5) * 3, g = 8421504 + ((rnd() * 40 | 0) << 16); r.fillStyle = hx(g), r.beginPath(), r.ellipse(sx, sy, 1.7 + rnd(), 1.2, 0, 0, 6.283), r.fill(), px(sx - 1, sy - 1, "#d8d8d8"), px(sx, sy + 1, "#3c3c40"); } });
+      rep(110 * k, (x, y) => { const cols = th === "lush" ? [11819320, 13136424, 9455406, 14197320] : [10117696, 12423232, 8414000]; px(x, y, hx(cols[rnd() * cols.length | 0]), 2, 1), px(x + 1, y + 1, hx(cols[rnd() * cols.length | 0])); });
+      rep(70 * k, (x, y) => { blob(x, y, 4 + rnd() * 6, 2.5 + rnd() * 3, "#6b4a28", 0.3), rep0(x, y, 6); function rep0(cx, cy, m) { for (let q = 0; q < m; q++) px(cx + (rnd() - 0.5) * 9, cy + (rnd() - 0.5) * 4, q % 2 ? "#8a6a3c" : "#4a3018"); } });
+      if (th === "lush") rep(40 * k, (x, y) => { const cx = x, cy = y; for (let b = 0; b < 3; b++) { const mx = cx + b * 3 - 3, my = cy + (b % 2), big = b === 1; px(mx, my - 1, "#e8dcc0"), px(mx, my, "#e8dcc0"); r.fillStyle = b % 2 ? "#c8402c" : "#b8782c", r.fillRect(mx - 1, my - 2 - (big ? 1 : 0), 3, 1), px(mx, my - 3 - (big ? 1 : 0), r.fillStyle), px(mx, my - 2, "#ffffff"); } });
+      rep(60 * k, (x, y) => { r.strokeStyle = "#5a3e22", r.lineWidth = 1, r.beginPath(), r.moveTo(x, y), r.lineTo(x + 5 + rnd() * 4, y + (rnd() - 0.5) * 3), r.stroke(), r.beginPath(), r.moveTo(x + 3, y + 0.4), r.lineTo(x + 5, y - 2), r.stroke(); });
+    } else if (th === "snow") {
+      rep(620 * k, (x, y) => { blob(x, y + 1, 5 + rnd() * 8, 2 + rnd() * 3, "#9fb6d8", 0.22), blob(x, y, 5 + rnd() * 7, 2 + rnd() * 2.5, "#ffffff", 0.55); });
+      rep(60 * k, (x, y) => { const dir = rnd() * 6.283, st = 5 + (rnd() * 4 | 0); for (let q = 0; q < st; q++) { const tx = x + Math.cos(dir) * q * 4, ty = y + Math.sin(dir) * q * 2, o = q % 2 ? 1.5 : -1.5; px(tx, ty + o * 0.5, "#9fb2d0", 2, 1), px(tx, ty + o * 0.5 + 1, "#c8d6ec"); } });
+      rep(120 * k, (x, y) => { px(x, y, "#ffffff"), px(x - 1, y, "#cfe4ff"), px(x + 1, y, "#cfe4ff"), px(x, y - 1, "#cfe4ff"), px(x, y + 1, "#cfe4ff"); });
+      rep(70 * k, (x, y) => { r.fillStyle = "#6a7a92", r.beginPath(), r.ellipse(x, y, 2.4, 1.6, 0, 0, 6.283), r.fill(), px(x - 1, y - 2, "#ffffff", 3, 1), px(x - 2, y - 1, "#e8f0ff", 4, 1); });
+      rep(50 * k, (x, y) => { r.strokeStyle = "#5a4a3a", r.lineWidth = 1, r.beginPath(), r.moveTo(x, y), r.lineTo(x + 6, y - 2), r.moveTo(x + 3, y - 1), r.lineTo(x + 5, y - 4), r.stroke(), px(x + 2, y - 1, "#ffffff", 3, 1); });
+      rep(35 * k, (x, y) => { r.strokeStyle = "rgba(150,200,240,.8)", r.lineWidth = 1, r.beginPath(), r.moveTo(x, y); let cx = x, cy = y; for (let q = 0; q < 5; q++) cx += 2 + rnd() * 3, cy += (rnd() - 0.5) * 4, r.lineTo(cx, cy); r.stroke(); });
+    } else if (th === "fire" || th === "forge") {
+      rep(520 * k, (x, y) => { const pts = [[x, y]]; let cx = x, cy = y, dir = rnd() * 6.283; for (let q = 0; q < 5 + (rnd() * 5 | 0); q++) { dir += (rnd() - 0.5) * 1.2, cx += Math.cos(dir) * 4, cy += Math.sin(dir) * 2.4, pts.push([cx, cy]); } const stroke = (col, w) => { r.strokeStyle = col, r.lineWidth = w, r.beginPath(), pts.forEach(([a2, b2], q) => q ? r.lineTo(a2, b2) : r.moveTo(a2, b2)), r.stroke(); }; stroke("rgba(20,8,6,.7)", 3), stroke("#e84a14", 1.6), stroke("#ffc040", 0.7); });
+      rep(300 * k, (x, y) => blob(x, y, 5 + rnd() * 9, 2.5 + rnd() * 4, "#2a2220", 0.22));
+      rep(60 * k, (x, y) => { px(x, y, rnd() < 0.6 ? "#c8561c" : "#e0a040"); });
+      rep(130 * k, (x, y) => { r.fillStyle = "#1a1418", r.beginPath(), r.moveTo(x, y - 3), r.lineTo(x + 2, y), r.lineTo(x, y + 1), r.lineTo(x - 2, y), r.closePath(), r.fill(), px(x, y - 2, "#7a6a82"); });
+    } else if (th === "sand") {
+      rep(900 * k, (x, y) => { r.strokeStyle = rnd() < 0.5 ? "rgba(255,236,190,.55)" : "rgba(150,110,60,.35)", r.lineWidth = 1, r.beginPath(); const w = 6 + rnd() * 10; r.moveTo(x, y); for (let q = 1; q <= 6; q++) r.lineTo(x + w * q / 6, y + Math.sin(q * 1.1) * 1.2); r.stroke(); });
+      rep(170 * k, (x, y) => blob(x, y, 8 + rnd() * 12, 2 + rnd() * 3, "#a8793c", 0.16));
+      rep(80 * k, (x, y) => { r.fillStyle = "#8a7a68", r.beginPath(), r.ellipse(x, y, 2 + rnd(), 1.4, 0, 0, 6.283), r.fill(), px(x - 1, y - 1, "#d8c8a8"); });
+      rep(60 * k, (x, y) => { r.strokeStyle = "rgba(90,60,30,.5)", r.lineWidth = 1, r.beginPath(), r.moveTo(x, y); let cx = x, cy = y; for (let q = 0; q < 4; q++) cx += 2 + rnd() * 3, cy += (rnd() - 0.5) * 3, r.lineTo(cx, cy); r.stroke(); });
+      rep(12 * k, (x, y) => { r.strokeStyle = "#efe6cf", r.lineWidth = 1.4, r.beginPath(), r.moveTo(x, y), r.lineTo(x + 6, y - 1), r.stroke(), px(x - 1, y, "#efe6cf", 2, 2), px(x + 6, y - 2, "#efe6cf", 2, 2); });
+    } else if (th === "void") {
+      rep(380 * k, (x, y) => { r.strokeStyle = "rgba(190,110,255,.5)", r.lineWidth = 1, r.beginPath(); let cx = x, cy = y; r.moveTo(cx, cy); for (let q = 0; q < 5; q++) cx += (rnd() - 0.3) * 6, cy += (rnd() - 0.5) * 4, r.lineTo(cx, cy); r.stroke(); px(cx, cy, "#e6c8ff"); });
+      rep(150 * k, (x, y) => { r.fillStyle = "#c58cff", r.beginPath(), r.moveTo(x, y - 4), r.lineTo(x + 2, y), r.lineTo(x, y + 1), r.lineTo(x - 2, y), r.closePath(), r.fill(), px(x, y - 3, "#ffffff"); });
+      rep(120 * k, (x, y) => blob(x, y, 7 + rnd() * 10, 3 + rnd() * 4, "#0a0414", 0.3));
+      rep(40 * k, (x, y) => { r.strokeStyle = "rgba(220,170,255,.6)", r.lineWidth = 1; const g = 3; r.strokeRect(x, y, g * 2, g), px(x + g, y + 1, "#f0dcff"); });
+    } else if (th === "crystal") {
+      rep(240 * k, (x, y) => { const col = ["#7ae8ff", "#c88cff", "#ff9ad8"][rnd() * 3 | 0]; for (let b = 0; b < 3; b++) { const bx = x + b * 3 - 3, h = 3 + rnd() * 4; r.fillStyle = col, r.beginPath(), r.moveTo(bx, y), r.lineTo(bx + 1, y - h), r.lineTo(bx + 2, y), r.closePath(), r.fill(), px(bx + 1, y - h + 1, "#ffffff"); } });
+      rep(200 * k, (x, y) => px(x, y, "#ffffff"));
+      rep(120 * k, (x, y) => blob(x, y, 6 + rnd() * 8, 2 + rnd() * 3, "#5a78c8", 0.14));
+    } else {
+      rep(500 * k, (x, y) => { r.strokeStyle = "rgba(30,24,20,.55)", r.lineWidth = 1, r.beginPath(); let cx = x, cy = y; r.moveTo(cx, cy); for (let q = 0; q < 5; q++) cx += (rnd() - 0.3) * 6, cy += (rnd() - 0.5) * 4, r.lineTo(cx, cy); r.stroke(); });
+      rep(200 * k, (x, y) => blob(x, y, 5 + rnd() * 9, 2.5 + rnd() * 4, "#3a2e26", 0.22));
+      rep(120 * k, (x, y) => { r.fillStyle = "#8a8070", r.beginPath(), r.ellipse(x, y, 2 + rnd(), 1.4, 0, 0, 6.283), r.fill(), px(x - 1, y - 1, "#c8c0b0"); });
+      rep(110 * k, (x, y) => { const dk = "#4a4030", lt2 = "#8a8460"; for (let b = 0; b < 3; b++) { px(x + b, y, dk), px(x + b + (b - 1) * 0.5, y - 1, lt2), px(x + b + (b - 1), y - 2, lt2); } });
+      rep(30 * k, (x, y) => { r.fillStyle = "#e8e0cc", r.fillRect(x, y, 5, 1), px(x - 1, y - 1, "#e8e0cc", 2, 3), px(x + 4, y - 1, "#e8e0cc", 2, 3); });
+    }
+    r.restore();
   }
   var Qe = (e, t, a) => (e.outline(), { cv: e.toCanvas(), ax: t, ay: a, k: 1 }), n4 = (e) => {
     let t = -Math.cos(e) * 0.45 - Math.sin(e) * 0.6;
@@ -16371,7 +16432,7 @@ void main() {
       } catch {}
     }, 500);
   })();
-  typeof location < 'u' && location.search.includes('debug') && (window.__petPlay = () => { __petPlayAt = 0; petPlay(); }), (window.__icon = (id) => os(id).toDataURL()), (window.__cxIcon = (id) => cxIcon(id).toDataURL()), (window.__rox2m = () => ROX2M), (window.__Y0 = () => Y0), (window.__cxFull = (id, dir) => { const it = Wa[id], look = { base: "berserker", hair: 3, sx: "m" }; if (it.kind === "back") look.bk = it.backStyle; else if (it.kind === "headMid") look.mid = it.headStyle; else if (it.kind === "headLow") look.low = it.headStyle; else look.top = it.headStyle; return ROX2(R4(look), dir, -1, 0, "").cv.toDataURL(); }), typeof location < 'u' && location.search.includes('debug') && (window.__game = () => ({ He, Qu, WB, j, Ce, Ua, Yu, ty, I8, tr, U8, ap, Dr, Jy, Rb, Cc, _p, Ua, en, Jt, nr, He, It }), window.__defs = () => Object.values(Qu), window.__items = () => Wa, window.__maps = () => Jt, window.__data = () => ({ Or, RQ: typeof RQ < 'undefined' ? RQ : [], REALM_Q: typeof REALM_Q < 'undefined' ? REALM_Q : [], CRAFT_REC: typeof CRAFT_REC < 'undefined' ? CRAFT_REC : [], cv, Qm, D8, Q8, Ep, Ir, kp }), window.__sprDbg = () => ({ cs, po, fa, hh, R4, ea, ROXQM, O4, P0, Vl }), window.__spr2 = () => ({ O4, _4 }));
+  typeof location < 'u' && location.search.includes('debug') && (window.__petPlay = () => { __petPlayAt = 0; petPlay(); }), (window.__icon = (id) => os(id).toDataURL()), (window.__cxIcon = (id) => cxIcon(id).toDataURL()), (window.__rox2m = () => ROX2M), (window.__Y0 = () => Y0), (window.__cxFull = (id, dir) => { const it = Wa[id], look = { base: "berserker", hair: 3, sx: "m" }; if (it.kind === "back") look.bk = it.backStyle; else if (it.kind === "headMid") look.mid = it.headStyle; else if (it.kind === "headLow") look.low = it.headStyle; else look.top = it.headStyle; return ROX2(R4(look), dir, -1, 0, "").cv.toDataURL(); }), typeof location < 'u' && location.search.includes('debug') && (window.__game = () => ({ He, Qu, WB, j, Ce, Ua, Yu, ty, I8, tr, U8, ap, Dr, Jy, Rb, Cc, _p, Ua, en, Jt, nr, He, It }), window.__defs = () => Object.values(Qu), window.__items = () => Wa, window.__maps = () => Jt, window.__data = () => ({ Ce, Or, RQ: typeof RQ < 'undefined' ? RQ : [], REALM_Q: typeof REALM_Q < 'undefined' ? REALM_Q : [], CRAFT_REC: typeof CRAFT_REC < 'undefined' ? CRAFT_REC : [], cv, Qm, D8, Q8, Ep, Ir, kp }), window.__sprDbg = () => ({ cs, po, fa, hh, R4, ea, ROXQM, O4, P0, Vl }), window.__spr2 = () => ({ O4, _4 }));
   var c4 = [1, -1, 0, 0, 1, -1, 1, -1], u4 = [0, 0, 1, -1, 1, -1, -1, 1];
   function d4(e, t, a, n) {
     let o = A.RX(a).mul(A.RY(t)), r = o.r, i = 1e9, s = -1e9, l = 1e9, c = -1e9;
@@ -16428,18 +16489,12 @@ void main() {
       for (let C = 0; C < 4; C++) L(a, f.mul(A.T(Math.cos(C * 1.57 + r * 0.5) * 0.66, 0.45 + C * 0.4, Math.sin(C * 1.57 + r * 0.5) * 0.66)), 0.065, 0.065, 0.065, e.aura, { seg: 8, mat: oh });
     }
     if (e.epic) {
-      let gold = 16766784, ice = 10800127, pk = 16746200, ph = r * 0.5;
-      for (let C = 0; C < 3; C++) Xt(a, d.mul(A.T(0, 0.04 + C * 0.01, 0)), 0.95 + C * 0.28, 0.035, [gold, pk, ice][C], { seg: 36, ring: 4, mat: oh });
+      let b1 = 4235519, b2 = 9099519, b3 = 2271487, ph = r * 0.5;
+      for (let C = 0; C < 3; C++) Xt(a, d.mul(A.T(0, 0.04 + C * 0.01, 0)), 0.62 + C * 0.2, 0.03, [b1, b2, b3][C], { seg: 36, ring: 4, mat: oh });
       for (let C = 0; C < 8; C++) {
         let an = C / 8 * 6.283 + ph;
-        F(a, f.mul(A.T(Math.cos(an) * 0.95, 0, Math.sin(an) * 0.95)), 0.035, 0.035, 2.6 + (C % 2) * 1.2, C % 2 ? gold : ice, { seg: 6, mat: oh });
+        F(a, f.mul(A.T(Math.cos(an) * 0.74, 0, Math.sin(an) * 0.74)), 0.03, 0.03, 0.34 + (C % 2) * 0.2, C % 2 ? b2 : b1, { seg: 6, mat: oh });
       }
-      for (let C = 0; C < 8; C++) {
-        let an = C / 8 * 6.283 - ph * 1.4, hh = 0.5 + C % 4 * 0.5;
-        L(a, f.mul(A.T(Math.cos(an) * 0.72, hh, Math.sin(an) * 0.72)), 0.09, 0.09, 0.09, [gold, pk, ice, 16777215][C % 4], { seg: 8, mat: oh });
-      }
-      Xt(a, f.mul(A.T(0, 2.25, 0)).mul(A.RX(-0.12)), 0.42, 0.04, gold, { seg: 28, ring: 5, mat: oh }), Xt(a, f.mul(A.T(0, 2.35, 0)).mul(A.RX(0.1)), 0.3, 0.025, 16777215, { seg: 24, ring: 4, mat: oh });
-      for (let C of [-1, 1]) for (let B = 0; B < 6; B++) L(a, f.mul(A.T(C * (0.22 + B * 0.16), 1.65 - B * 0.12, -0.38)).mul(A.RZ(-C * (0.6 + B * 0.2))), 0.05, 0.62 - B * 0.06, 0.05, B % 2 ? gold : 16777215, { seg: 8, mat: oh });
     }
     if (e.quiver) {
       let C = f.mul(A.T(0.17, 1.12, -0.3)).mul(A.RZ(-0.3));
@@ -17936,6 +17991,47 @@ void main() {
   const mv = Qu.devorador_ruptura; if (mv) (mv.drops = mv.drops || []).push({ item: "manto_orleans", chance: 0.03, min: 1, max: 1 });
 })();
 (() => { if (typeof ROX2M !== "undefined" && ROX2M.setVariants) ROX2M.setVariants(Object.values(Qu).filter((d) => d.shape).sort((x, y) => (x.id < y.id ? -1 : 1))); })();
+
+// ---- v250: raros = dourados: equipamentos dropados por MVP e todos os visuais valem no m\u00EDnimo "raro" ----
+(() => {
+  const EQ = new Set(["weapon", "armor", "accessory", "headTop", "headMid", "headLow", "back"]), ord = { common: 0, uncommon: 1, rare: 2, epic: 3, legendary: 4 };
+  const up = (it) => { if (it && EQ.has(it.kind) && (ord[it.rarity] ?? 0) < 2) it.rarity = "rare"; };
+  for (const d of Object.values(Qu)) if (d.boss) for (const l of d.drops || []) up(Wa[l.item]);
+  for (const it of Object.values(Wa)) if (it.headStyle || it.backStyle) up(it);
+})();
+// ---- v250: reorganiza\u00E7\u00E3o das habilidades por classe (2 buffs por classe; Valqu\u00EDria/Novi\u00E7o com mais), n\u00EDveis m\u00E1ximos 5/10 e buffs de +5% ----
+function SKMAX(sk) { return sk ? (sk.maxLv ?? (sk.tier >= 2 ? 10 : 5)) : 5; }
+(() => {
+  const KEEP = { berserker: ["furia_lobo", "ber_pele_de_urso"], escudeiro: ["muralha", "esc_lucro_rapido"], cacador: ["cac_passo_de_sombra", "cac_olho_de_falcao"], volva: ["vol_escudo_de_runas", "vol_foco_arcano"], skald: ["ska_passos_de_sombra", "ska_lamina_envenenada"], thay: ["postura_tigre", "tha_pele_de_ferro"] };
+  const LBL = { atk: "ataque", def: "defesa", spd: "velocidade", crit: "cr\u00EDtico" };
+  for (const line of Object.keys(Ce)) {
+    const L = Ce[line], sk = L.skills || [], keep = KEEP[line];
+    sk.forEach((s, i) => {
+      if (s.kind === "buff" && keep && !keep.includes(s.id)) {
+        const b = s.buff || {}, tm = s.tier >= 2 ? 1 : 0, mult = tm ? 3.3 : 1.8, sib = (k) => sk.find((q) => q !== s && q.kind === k && q.tier === s.tier && q.range) || sk.find((q) => q.kind === k && q.range);
+        const old = s.name; delete s.buff;
+        if (b.def && !b.atk && !b.spd) { const r = sib("nova"); s.kind = "nova", s.range = r?.range ?? 0, s.radius = r?.radius ?? 150, s.mult = tm ? 1.9 : 1.0, s.stunMs = tm ? 1600 : 1100, s.desc = `${old}: golpe defensivo em \u00E1rea que repele e atordoa os inimigos pr\u00F3ximos.`; }
+        else if (b.spd && !b.atk && !b.crit) { const r = sib("line"); s.kind = "line", s.range = r?.range ?? 230, s.radius = r?.radius ?? 60, s.dash = r?.dash ?? 1, s.width = r?.width ?? 60, s.mult = tm ? 3.0 : 1.6, s.desc = `${old}: avan\u00E7o veloz que atravessa os inimigos causando dano.`; }
+        else { const r = sib("cone"); s.kind = "cone", s.range = r?.range ?? 150, s.radius = r?.radius ?? 150, s.arc = r?.arc ?? 100, s.mult = mult, s.desc = `${old}: ataque concentrado em cone contra os inimigos \u00E0 frente.`; }
+        s.cooldown = Math.max(7000, Math.min(s.cooldown, tm ? 14000 : 9000));
+      } else if (s.kind === "buff" && s.buff) {
+        for (const k of ["atk", "def", "spd", "crit"]) if (s.buff[k]) s.buff[k] = 0.05;
+        const ks = ["atk", "def", "spd", "crit"].filter((k) => s.buff[k]).map((k) => LBL[k]).join(" e ");
+        if (s.id === "doc_aumentar_agilidade") { delete s.buff.atk; s.buff.spd = 0.05; }
+        const ks2 = ["atk", "def", "spd", "crit"].filter((k) => s.buff[k]).map((k) => LBL[k]).join(" e ");
+        s.desc = `${s.name}: aumenta ${ks2} em 5% por ${Math.round((s.buff.ms || 12000) / 1000)}s.`;
+      }
+      s.maxLv = (s.kind === "buff" || s.kind === "heal") ? 5 : (s.tier >= 2 || i < 4) ? 10 : 5;
+      if (line === "aprendiz") s.maxLv = 5;
+    });
+    // balanceamento: DPS m\u00E9dio por camada alinhado entre as classes (alvo 0.34 / 0.40), ajuste limitado
+    for (const [t, tgt] of [[1, 0.34], [2, 0.40]]) {
+      const a = sk.filter((q) => q.tier === t && q.mult > 0 && !String(q.id).startsWith("sup_")); if (!a.length) continue;
+      const dps = (q) => q.mult / (Math.max(q.cooldown, 1500) / 1000) * (q.kind === "volley" ? (q.count || 3) : 1), avg = a.reduce((x, q) => x + dps(q), 0) / a.length, f = Math.max(0.8, Math.min(1.35, tgt / avg));
+      a.forEach((q) => { q.mult = Math.round(q.mult * f * 100) / 100; });
+    }
+  }
+})();
 (() => {
   // Balanceamento v245: alvos derivados de simulacao de jogador real (skills + equipamento por nivel; ver CHANGELOG).
   // [nivel, HP alvo, ATQ alvo] do monstro "tipico" do nivel; variacao relativa entre monstros e mantida (limitada).
@@ -18171,6 +18267,7 @@ function ROXQM(f, c, s, l, def, ex) {
       thay: { tunic: 14177296, trim: 16766720, pauld: 16766720, cape: 10027008, head: "circlet", aura: 16742954 }
     };
     for (const k in TR3) { const T = TIERLOOK[k]; if (T[2]) { T[2] = { ...T[2] }; delete T[2].aura; } T[3] = TR3[k]; }
+    for (const k in TIERLOOK) for (let q = 0; q < TIERLOOK[k].length; q++) if (TIERLOOK[k][q] && TIERLOOK[k][q].aura) { TIERLOOK[k][q] = { ...TIERLOOK[k][q] }; delete TIERLOOK[k][q].aura; }
   })();
   function R4(e) {
     e.adm && (e = { ...e, base: "aprendiz", ti: 2 });
@@ -19398,13 +19495,12 @@ function ROXQM(f, c, s, l, def, ex) {
     epicFx(x, y, ph) {
       let c = this.ctx, T = this.clock, k = 0.5 + 0.5 * Math.sin(T / 380);
       if (c.save(), c.globalCompositeOperation = "lighter", ph === 0) {
-        let g = c.createRadialGradient(x, y + 2, 4, x, y + 2, 78 + k * 8);
-        g.addColorStop(0, `rgba(255,214,110,${0.5 + k * 0.15})`), g.addColorStop(0.5, "rgba(255,150,90,0.22)"), g.addColorStop(1, "rgba(255,120,200,0)"), c.fillStyle = g, c.beginPath(), c.ellipse(x, y + 2, 78 + k * 8, 38 + k * 4, 0, 0, Math.PI * 2), c.fill();
-        let b = c.createLinearGradient(0, y - 190, 0, y);
-        b.addColorStop(0, "rgba(255,230,150,0)"), b.addColorStop(1, `rgba(255,220,140,${0.2 + k * 0.1})`), c.fillStyle = b, c.fillRect(x - 22, y - 190, 44, 190);
-      } else for (let i = 0; i < 22; i++) {
-        let u = (T / (1500 + i % 5 * 220) + i * 0.137) % 1, an = i * 2.4 + T / 900, rr = 14 + (i % 4) * 8 + u * 6;
-        c.fillStyle = `rgba(${i % 3 ? "255,224,130" : "255,170,230"},${(1 - u) * 0.95})`, c.beginPath(), c.arc(x + Math.cos(an) * rr, y + 2 - u * 120 + Math.sin(an) * rr * 0.4, 1.2 + (1 - u) * 1.6, 0, Math.PI * 2), c.fill();
+        let g = c.createRadialGradient(x, y + 3, 3, x, y + 3, 44 + k * 5);
+        g.addColorStop(0, `rgba(90,170,255,${0.42 + k * 0.12})`), g.addColorStop(0.6, "rgba(50,110,255,0.2)"), g.addColorStop(1, "rgba(30,80,255,0)"), c.fillStyle = g, c.beginPath(), c.ellipse(x, y + 3, 44 + k * 5, 21 + k * 2.5, 0, 0, Math.PI * 2), c.fill();
+        c.strokeStyle = `rgba(150,210,255,${0.55 + k * 0.2})`, c.lineWidth = 1.5, c.beginPath(), c.ellipse(x, y + 3, 30 + k * 3, 14 + k * 1.5, 0, 0, Math.PI * 2), c.stroke();
+      } else for (let i = 0; i < 12; i++) {
+        let u = (T / (1300 + i % 5 * 200) + i * 0.137) % 1, an = i * 2.4 + T / 900, rr = 16 + (i % 4) * 5;
+        c.fillStyle = `rgba(${i % 3 ? "130,190,255" : "200,230,255"},${(1 - u) * 0.9})`, c.beginPath(), c.arc(x + Math.cos(an) * rr, y + 3 - u * 22 + Math.sin(an) * rr * 0.4, 1 + (1 - u) * 1.3, 0, Math.PI * 2), c.fill();
       }
       c.restore();
     }
@@ -19975,13 +20071,13 @@ function ROXQM(f, c, s, l, def, ex) {
         const wd0 = a.waterDepth(o.pos.x, o.pos.y), __body = () => {
         const thr = admOn() && a.sitting && !(a.ps.mount && a.ps.mountOwned) ? 11 : 0; thr && this.admThrone(r.x, r.y);
         this.blob(r.x, r.y + 4, 15), this.useFx(r.x, r.y), a.ps.level >= 99 && this.epicFx(r.x, r.y, 0);
-        var mnt = a.ps.mount && a.ps.mountOwned, moff = mnt ? (a.sitting ? 37 : 47) : 0, atkM = this.clock - i.atkAt < Math.max(260, i.atkDur || 0), pl2 = 0, play2 = false, jy2 = 0;
+        var mnt = a.ps.mount && a.ps.mountOwned, moff = mnt ? (a.sitting ? 34 : 44) : 0, atkM = this.clock - i.atkAt < Math.max(260, i.atkDur || 0), pl2 = 0, play2 = false, jy2 = 0;
         let m = this.organic(i, o.facing, { moving: i.moving, atkT: this.clock - i.atkAt, atkImpact: i.atkImpact, atkDur: i.atkDur, breath: a.sitting ? 8e-3 : 0.011 });
         a.sitting && (m.dx = 0, m.dy = 0, m.rot *= 0.3);
         a.sitting || (m.rot += (this._cap?.a ?? 0) * (a.ps.equipment.back ? 0.25 : 1));
         var __hz = null;
         if (mnt) {
-          let mw = ROXQM("montaria", s, i.moving ? Math.floor(i.phase * ea) : -1, atkM ? 1 : 0, { id: "montaria" + (a.ps.dye || 0), color: a.ps.dye || 7238784 }), lun = atkM ? Math.sin(Math.min(1, (this.clock - i.atkAt) / Math.max(260, i.atkDur || 0)) * Math.PI) : 0;
+          let mw = ROXQM("montaria", s, i.moving ? Math.floor(i.phase * ea) : -1, atkM ? 1 : 0, { id: "montaria" + (a.ps.dye || 0), color: a.ps.dye || 3816006 }), lun = atkM ? Math.sin(Math.min(1, (this.clock - i.atkAt) / Math.max(260, i.atkDur || 0)) * Math.PI) : 0;
           let hz = () => mw && nt(n, mw, r.x, r.y + 10 - lun * 4 + (a.crouching ? 5 : 0), l, $a * 1.5 * (a.sitting ? 1.04 : 1) * (1 + lun * 0.08), $a * 1.5 * (a.sitting ? 0.78 : a.crouching ? 0.93 : 1) * (1 - lun * 0.04));
           s === "down" || s === "dq" ? __hz = hz : hz();
         }
@@ -20124,12 +20220,29 @@ function ROXQM(f, c, s, l, def, ex) {
     }
     drawFalcon() {
       let w = this.store.world; if (!w || !falconOk(w.ps) || w.isDead()) return;
-      let o = w.player, n = this.ctx, T = this.clock / 1e3, fs = w.falconStrike, k = fs ? (w.time - fs.t0) / 900 : 2, base = ce(o.pos.x, o.pos.y), px = base.x + Math.cos(T * 1.3) * 46, py = base.y - 74 + Math.sin(T * 1.3) * 14 + Math.sin(T * 5) * 2, fx = Math.cos(T * 1.3 + 1.57);
+      let o = w.player, n = this.ctx, T = this.clock / 1e3, fs = w.falconStrike, k = fs ? (w.time - fs.t0) / 900 : 2;
+      // ---- v250: falc\u00E3o em voo sincronizado, segue o personagem com mola/amortecimento, inclina nas curvas e bate asa conforme a velocidade ----
+      let F = this._fal, nowT = performance.now();
+      if (!F) F = this._fal = { x: o.pos.x - 30, y: o.pos.y + 20, z: 70, vx: 0, vy: 0, h: o.facing || 0, lt: nowT, lp: { x: o.pos.x, y: o.pos.y }, dir: { x: Math.cos(o.facing || 0), y: Math.sin(o.facing || 0) }, idle: 0, bank: 0 };
+      let dt = Math.min(3, Math.max(0.3, (nowT - F.lt) / 16.67)); F.lt = nowT;
+      let pvx = o.pos.x - F.lp.x, pvy = o.pos.y - F.lp.y, pm = Math.hypot(pvx, pvy); F.lp = { x: o.pos.x, y: o.pos.y };
+      if (pm > 0.2) { const kk = Math.min(1, 0.12 * dt); F.dir.x += (pvx / pm - F.dir.x) * kk, F.dir.y += (pvy / pm - F.dir.y) * kk; const l = Math.hypot(F.dir.x, F.dir.y) || 1; F.dir.x /= l, F.dir.y /= l; F.idle = 0; } else F.idle += dt;
+      let tx, ty, tz;
+      if (F.idle > 50) { const ang = T * 0.9; tx = o.pos.x + Math.cos(ang) * 58, ty = o.pos.y + Math.sin(ang) * 40, tz = 66 + Math.sin(T * 1.7) * 7; }
+      else { const px_ = -F.dir.y, py_ = F.dir.x, sw = Math.sin(T * 1.1) * 24; tx = o.pos.x - F.dir.x * (46 + Math.min(pm, 6) * 4) + px_ * (18 + sw), ty = o.pos.y - F.dir.y * (46 + Math.min(pm, 6) * 4) + py_ * (18 + sw), tz = 74 + Math.sin(T * 2.3) * 6; }
+      const dd0 = Math.hypot(tx - F.x, ty - F.y);
+      if (dd0 > 800) F.x = tx, F.y = ty, F.vx = F.vy = 0;
+      F.vx += ((tx - F.x) * 0.018 - F.vx * 0.13) * dt, F.vy += ((ty - F.y) * 0.018 - F.vy * 0.13) * dt;
+      let sp = Math.hypot(F.vx, F.vy); if (sp > 8) F.vx *= 8 / sp, F.vy *= 8 / sp, sp = 8;
+      F.x += F.vx * dt, F.y += F.vy * dt, F.z += (tz - F.z) * Math.min(1, 0.06 * dt);
+      const th = sp > 0.5 ? Math.atan2(F.vy, F.vx) : Math.atan2(o.pos.y - F.y, o.pos.x - F.x); let dh = ((th - F.h + 9.4248) % 6.2832) - 3.1416; F.h += dh * Math.min(1, 0.14 * dt); F.bank += ((-dh * 1.6) - F.bank) * Math.min(1, 0.15 * dt);
+      let gp = ce(F.x, F.y), px = gp.x, py = gp.y - F.z, fx = Math.cos(F.h);
       if (k >= 0 && k < 1) { let tg = ce(fs.x, fs.y), u = k < 0.5 ? k * 2 : (1 - k) * 2, e = u * u * (3 - 2 * u); px += (tg.x - px) * e, py += (tg.y - 14 - py) * e, fx = tg.x - px; }
       let sd = fx >= 0 ? 1 : -1, fl = Math.sin(T * 14) * 6;
-      this.blob(base.x + (px - base.x) * 0.2, base.y + 4, 5);
-      let fsp = null; try { fsp = typeof ROX2M !== "undefined" ? ROX2M.mon("corvo", "side", Math.floor(T * 10) % 8, 0, { id: "falcao", color: null }, { st: Math.min(3, w.ps.tier || 0) }) : null; } catch (e) { fsp = null; }
-      if (fsp) { nt(n, fsp, px, py, sd < 0, $a * 0.95, $a * 0.95); } else {
+      this.blob(gp.x, gp.y + 2, Math.max(3, 6 - F.z * 0.03));
+      const fv = Kl(k >= 0 && k < 1 ? Math.atan2(fs.y - F.y, fs.x - F.x) : F.h), flapN = Math.floor(T * (9 + sp * 1.6)) % 8;
+      let fsp = null; try { fsp = typeof ROX2M !== "undefined" ? ROX2M.mon("corvo", fv.dir, flapN, 0, { id: "falcao", color: null }, { st: Math.min(3, w.ps.tier || 0) }) : null; } catch (e) { fsp = null; }
+      if (fsp) { nt(n, fsp, px, py, fv.flip, $a * 0.95, $a * 0.95, Math.max(-0.4, Math.min(0.4, F.bank))); } else {
       n.save(), n.translate(px, py), n.scale(sd, 1);
       n.fillStyle = "#7a5a3a", n.beginPath(), n.ellipse(0, 0, 8, 4.5, 0, 0, 7), n.fill();
       n.fillStyle = "#5a3e24", n.beginPath(), n.moveTo(-1, -1), n.lineTo(-7, -9 - fl), n.lineTo(4, -2), n.fill(), n.beginPath(), n.moveTo(-1, 1), n.lineTo(-8, 8 + fl), n.lineTo(3, 2), n.fill();
@@ -20288,9 +20401,31 @@ function ROXQM(f, c, s, l, def, ex) {
       let x = this.hover?.kind === "monster" && this.hover.id === t.id;
       x && (o.save(), o.shadowColor = "#ffd34d", o.shadowBlur = 14), t.state !== "dead" && this.blob(r.x, r.y + 3, Math.max(11, t.def.radius * 1.15));
       let b = t.state === "dead" ? { dx: 0, dy: 0, rot: 0, sx: 1, sy: 1 } : this.organic(i, t.facing, { moving: i.moving, breath: f === "goblin" || f === "draugr" ? 0.014 : 0.02, windup: t.state === "windup", charge: t.state === "charge", atkT: t.state === "recover" ? 1 : void 0 });
+      t.def.boss && t.state !== "dead" && this.godFx(o, r.x, r.y, t, 0);
       { const wdM = n.map.sea && t.state !== "dead" ? n.waterDepth(t.pos.x, t.pos.y) * (t.def.aquatic ? 0.4 : 1) : 0, __m = () => nt(o, u, r.x + b.dx, r.y + 4 + b.dy, p, m * b.sx, m * b.sy, p ? -b.rot : b.rot); this.waterPass(o, r.x, r.y + 4, wdM, t.def.radius * 2.3 + 8, __m); } x && o.restore();
+      t.def.boss && t.state !== "dead" && this.godFx(o, r.x, r.y, t, 1);
       let g = Math.max(0, t.hp / t.maxHp), v = n.targetId === t.id || x || g < 1 || t.state === "chase" || t.state === "windup" || t.state === "charge" || t.state === "recover", k = r.y - (t.def.boss ? t.def.radius * 3.4 : f === "goblin" || f === "draugr" || f === "cinder" || f === "automaton" || f === "sylvan" || f === "prism" || f === "sentinel" || f === "voidling" ? 56 : t.def.radius * 2.6 + 8);
       v && this.monBar(r.x, r.y + (t.def.boss ? 14 : 10), t.def.boss ? Math.max(70, t.def.radius * 2.8) : Math.max(46, t.def.radius * 2.4), g, Math.max(0, Math.ceil(t.hp))), (t.golden || this.nameOn(`m${t.id}`)) && this.text(t.golden ? `\u2726 ${t.def.name} dourado` : t.def.name, r.x, k - 4, t.def.boss ? 14 : 11, t.golden ? "#ffd24a" : t.def.boss ? "#ffe9a8" : "#ffffff", t.def.boss || !!t.golden);
+    }
+    godFx(c, x, y, t, ph) {
+      const T = this.clock, R = Math.max(14, t.def.radius), col = t.def.color ?? 16766784, cr = col >> 16 & 255, cg = col >> 8 & 255, cb = col & 255, mix = (a) => `rgba(${Math.min(255, cr * 0.5 + 140)|0},${Math.min(255, cg * 0.5 + 120)|0},${Math.min(255, cb * 0.5 + 70)|0},${a})`, gold = (a) => `rgba(255,222,130,${a})`, k = 0.5 + 0.5 * Math.sin(T / 420), hh = R * 3.1;
+      c.save();
+      if (ph === 0) {
+        c.globalCompositeOperation = "lighter";
+        const g = c.createRadialGradient(x, y - hh * 0.45, 4, x, y - hh * 0.45, R * 3.4 + k * 8); g.addColorStop(0, mix(0.34 + k * 0.1)), g.addColorStop(0.55, mix(0.12)), g.addColorStop(1, mix(0)), c.fillStyle = g, c.beginPath(), c.ellipse(x, y - hh * 0.45, R * 3.4 + k * 8, R * 3.8 + k * 8, 0, 0, 6.283), c.fill();
+        for (let i = 0; i < 12; i++) { const a = i / 12 * 6.283 + T / 6000, L = R * (4.2 + (i % 2) * 1.4); c.fillStyle = gold(0.1 + (i % 2) * 0.05), c.beginPath(), c.moveTo(x, y - hh * 0.45), c.lineTo(x + Math.cos(a - 0.07) * L, y - hh * 0.45 + Math.sin(a - 0.07) * L * 0.8), c.lineTo(x + Math.cos(a + 0.07) * L, y - hh * 0.45 + Math.sin(a + 0.07) * L * 0.8), c.closePath(), c.fill(); }
+        c.strokeStyle = gold(0.5 + k * 0.2), c.lineWidth = 2; for (let q = 0; q < 2; q++) { c.beginPath(), c.ellipse(x, y + 3, R * (1.9 + q * 0.55), R * (0.95 + q * 0.28), 0, 0, 6.283), c.stroke(); }
+        c.fillStyle = gold(0.75); for (let i = 0; i < 12; i++) { const a = i / 12 * 6.283 + T / 2600 * (i % 2 ? 1 : -1) * 0.3; c.beginPath(), c.arc(x + Math.cos(a) * R * 2.45, y + 3 + Math.sin(a) * R * 1.2, 2.2, 0, 6.283), c.fill(); }
+      } else {
+        c.globalCompositeOperation = "lighter";
+        const hy = y - hh - 12 + Math.sin(T / 500) * 2.5;
+        c.strokeStyle = gold(0.9), c.lineWidth = 3, c.beginPath(), c.ellipse(x, hy, R * 0.95, R * 0.3, 0, 0, 6.283), c.stroke(), c.strokeStyle = "rgba(255,255,255,0.8)", c.lineWidth = 1.2, c.beginPath(), c.ellipse(x, hy, R * 0.75, R * 0.22, 0, 0, 6.283), c.stroke();
+        const g2 = c.createRadialGradient(x, hy, 2, x, hy, R * 1.2); g2.addColorStop(0, gold(0.35)), g2.addColorStop(1, gold(0)), c.fillStyle = g2, c.beginPath(), c.arc(x, hy, R * 1.2, 0, 6.283), c.fill();
+        c.font = "bold 13px serif", c.textAlign = "center", c.fillStyle = gold(0.95); const gl = ["\u16A0", "\u16A2", "\u16A6", "\u16A8", "\u16B1", "\u16B7"];
+        for (let i = 0; i < 6; i++) { const a = i / 6 * 6.283 + T / 1800; c.fillText(gl[i], x + Math.cos(a) * R * 1.7, y - hh * 0.5 + Math.sin(a) * R * 0.8 - Math.cos(a) * 4); }
+        for (let i = 0; i < 10; i++) { const u = (T / (1800 + i % 4 * 300) + i * 0.173) % 1; c.fillStyle = gold((1 - u) * 0.8), c.beginPath(), c.arc(x + Math.sin(i * 2.7 + u * 3) * R * 1.3, y - u * hh * 1.3, 1.2 + (1 - u) * 1.5, 0, 6.283), c.fill(); }
+      }
+      c.restore();
     }
     stepCritter(q) {
       const w = this.store.world; if (!w) return;
@@ -20994,7 +21129,7 @@ function ROXQM(f, c, s, l, def, ex) {
         document.activeElement?.blur(), o(false);
         return;
       }
-      j.sendChat(u), u.startsWith("/w") || u.toLowerCase().startsWith("/whisper") ? a("sussurro") : u.startsWith("/") || a((m) => m);
+      __chI = -1, __chH[__chH.length - 1] !== u && (__chH.push(u), __chH.length > 50 && __chH.shift()), j.sendChat(u), u.startsWith("/w") || u.toLowerCase().startsWith("/whisper") ? a("sussurro") : u.startsWith("/") || a((m) => m);
     };
     let [hid, setHid] = (0, ho.useState)(false);
     return (0, ho.useEffect)(() => { let h = () => setHid((v) => !v); return window.addEventListener("eldvar:chat-vis", h), () => window.removeEventListener("eldvar:chat-vis", h); }, []), (0, ho.useEffect)(() => {
@@ -21005,10 +21140,11 @@ function ROXQM(f, c, s, l, def, ex) {
     }, []), (0, ta.jsxs)("section", { className: `logp${n ? "" : " logp-closed"}`, "aria-label": "Chat e registro de mensagens", ref: l.ref, style: hid ? { ...(l.style || {}), display: "none" } : l.style, children: [(0, ta.jsxs)("header", { children: [(0, ta.jsx)("span", { className: "grip", ...l.handle, "aria-label": "Mover o chat", children: "\u283F" }), (0, ta.jsx)("div", { role: "tablist", children: qS.map(([u, m]) => (0, ta.jsx)("button", { role: "tab", "aria-selected": t === u, className: t === u ? "on" : "", onClick: () => {
       a(u), o(true);
     }, children: m }, u)) }), (0, ta.jsx)("button", { className: "logp-toggle", onClick: () => o((u) => !u), "aria-label": n ? "Recolher registro" : "Abrir registro", children: n ? "\u25BE" : "\u25B4" })] }), n && (0, ta.jsxs)(ta.Fragment, { children: [(0, ta.jsx)("div", { className: "logp-body", ref: s, role: "log", "aria-live": "polite", children: c.length === 0 ? (0, ta.jsx)("small", { className: "muted", children: "Sem mensagens." }) : c.map((u) => (0, ta.jsx)("div", { className: `ll ll-${u.tone} ll-${u.kind === "system" ? "k-system" : u.kind}`, children: u.text }, u.id)) }), (0, ta.jsx)("input", { id: "chat-input", className: "chat-in", value: r, maxLength: 200, placeholder: "Enter: falar \xB7 /ajuda para ver os comandos", onChange: (u) => i(u.target.value), onKeyDown: (u) => {
-      u.key === "Enter" ? (u.preventDefault(), f()) : u.key === "Escape" && (u.stopPropagation(), u.target.blur(), o(false));
+      u.key === "ArrowUp" ? (u.preventDefault(), __chH.length && (__chI = Math.min(__chH.length - 1, __chI + 1), i(__chH[__chH.length - 1 - __chI]))) : u.key === "ArrowDown" ? (u.preventDefault(), __chI > 0 ? (__chI--, i(__chH[__chH.length - 1 - __chI])) : (__chI = -1, i(""))) : u.key === "Enter" ? (u.preventDefault(), f()) : u.key === "Escape" && (u.stopPropagation(), u.target.blur(), o(false));
     } })] })] });
   }
   var PMID = 0;
+  var __chH = [], __chI = -1;
   function PmWin({ w, idx, onClose }) {
     let l = Fl("pm-" + idx), [name, setName] = ho.useState(w.name), [txt, setTxt] = ho.useState(""), [hist, setHist] = ho.useState([]), box = ho.useRef(null), nin = ho.useRef(null), min = ho.useRef(null);
     ho.useEffect(() => {
@@ -21124,7 +21260,7 @@ function ROXQM(f, c, s, l, def, ex) {
     }, onClick: (c) => {
       let d = i.current;
       d && Math.hypot(c.clientX - d.x, c.clientY - d.y) < 5 && !c.target.closest("button, a") && s();
-    }, children: [(0, pe.jsx)("div", { className: "hud-id", children: (0, pe.jsxs)("div", { className: "hud-id-text", children: [(0, pe.jsxs)("div", { className: "hud-name", children: [(0, pe.jsx)("strong", { children: e.player?.name }), (0, pe.jsx)("span", { children: t.className })] }), e.player?.title && (0, pe.jsxs)("div", { className: "hud-title", children: ["\xAB", e.player.title, "\xBB"] }), (0, pe.jsxs)("div", { className: "hud-lv", children: [(0, pe.jsxs)("span", { children: ["N\xEDvel base ", (0, pe.jsx)("b", { children: t.level })] }), (0, pe.jsxs)("span", { children: ["N\xEDvel de classe ", (0, pe.jsx)("b", { children: t.jobLevel })] })] })] }) }), (0, pe.jsx)(as, { kind: "hp", value: t.hp, max: t.maxHp, label: `Vida ${t.hp}/${t.maxHp} (${Math.round(t.hp / t.maxHp * 100)}%)` }), !o && (0, pe.jsxs)(pe.Fragment, { children: [(0, pe.jsx)(as, { kind: "mp", value: t.mp, max: t.maxMp, label: `Mana ${t.mp}/${t.maxMp} (${Math.round(t.mp / Math.max(1, t.maxMp) * 100)}%)` }), (0, pe.jsx)(as, { kind: "exp", value: t.exp, max: t.expNext, label: `EXP ${Math.floor(t.exp / t.expNext * 100)}%` }), (0, pe.jsx)(as, { kind: "job", value: t.jobLevel >= t.jobCap ? 1 : t.jobExp, max: t.jobLevel >= t.jobCap ? 1 : t.jobNext, label: `Classe ${t.jobLevel}/${t.jobCap}` }), e.online && (0, pe.jsxs)("div", { className: `hud-online hud-online-${e.online.status}`, role: "status", children: ["\u25CF Online \xB7 ", e.online.others + 1, " jogador(es) vis\xEDvel(is)", e.online.status !== "open" ? ` \xB7 ${e.online.status === "reconnecting" ? "reconectando\u2026" : "conectando\u2026"}` : ""] }), (0, pe.jsxs)("div", { className: "hud-line", children: [(0, pe.jsxs)("span", { className: "coin-line", children: [(0, pe.jsx)(sr, { name: "coin", size: 18 }), " Zens: ", t.silver] }), (e.player?.statPoints ?? 0) > 0 && (0, pe.jsxs)("span", { className: "hint-pts", children: ["+", e.player?.statPoints, " pontos"] })] })] })] }), e.boss && (0, pe.jsxs)("section", { className: "hud-boss", "aria-live": "polite", children: [(0, pe.jsxs)("strong", { children: [e.boss.name, e.boss.phase === 2 ? " \xB7 Fase 2" : ""] }), (0, pe.jsx)(as, { kind: "boss", value: e.boss.hp, max: e.boss.max, label: `${e.boss.hp}/${e.boss.max}` })] }), (0, pe.jsxs)("section", { className: "hud-card hud-quests", ref: n.ref, style: qHid ? { ...(n.style || {}), display: "none" } : n.style, ...n.handle, children: [(0, pe.jsx)("header", { children: e.location }), e.tracker.length === 0 ? (0, pe.jsx)("small", { className: "muted", children: e.online ? "Quests e NPCs ainda n\xE3o existem no modo online." : e.location.includes("J\xF6tunheim") ? "Sem quests ativas. Fale com Ylva." : "Sem quests ativas. Fale com Eira." }) : e.tracker.map((c) => (0, pe.jsxs)("div", { className: `q${c.ready ? " q-ready" : ""}`, children: [(0, pe.jsxs)("strong", { children: [c.name, c.ready ? " \u2714" : ""] }), c.lines.map((d, f) => (0, pe.jsx)("small", { children: d }, f)), c.ready && (0, pe.jsx)("small", { children: "Volte \xE0 Eira para entregar." })] }, c.id))] }), e.prompt && (0, pe.jsx)("div", { className: "prompt", children: e.prompt }), (0, pe.jsx)($4, {}), (0, pe.jsx)(Y4, {}), (0, pe.jsx)(PmDock, {}), (0, pe.jsx)("div", { className: "help-line", children: "Clique no ch\xE3o: andar \xB7 clique em monstro: atacar \xB7 clique em NPC: falar \xB7 Espa\xE7o atacar \xB7 F1-F9 habilidades e atalhos \xB7 F10 chat \xB7 F11 2\xAA barra (1-0) \xB7 F12 miss\xF5es \xB7 Alt+V info \xB7 Shift esquiva \xB7 5-6 po\xE7\xF5es \xB7 I invent\xE1rio \xB7 T atributos \xB7 L habilidades \xB7 B besti\xE1rio \xB7 J feitos \xB7 Enter abre/fecha o chat \xB7 Ctrl+C mensagem privada \xB7 @afk (cidades) \xB7 arraste as janelinhas para mudar de lugar \xB7 M mapa-m\xFAndi \xB7 Alt+Q equipamento \xB7 Alt+E invent\xE1rio \xB7 bot\xE3o direito arrasta: girar c\xE2mera em volta do personagem (Shift = inclinar) \xB7 Esc pausa" }), e.dead && (0, pe.jsxs)("div", { className: "death", role: "alert", children: [(0, pe.jsx)("h2", { children: "Voc\xEA caiu em batalha" }), (0, pe.jsx)("p", { children: "Os corvos de Odin o levam de volta \xE0 vila\u2026" })] })] });
+    }, children: [(0, pe.jsx)("div", { className: "hud-id", children: (0, pe.jsxs)("div", { className: "hud-id-text", children: [(0, pe.jsxs)("div", { className: "hud-name", children: [(0, pe.jsx)("strong", { children: e.player?.name }), (0, pe.jsx)("span", { children: t.className })] }), e.player?.title && (0, pe.jsxs)("div", { className: "hud-title", children: ["\xAB", e.player.title, "\xBB"] }), (0, pe.jsxs)("div", { className: "hud-lv", children: [(0, pe.jsxs)("span", { children: ["N\xEDvel base ", (0, pe.jsx)("b", { children: t.level })] }), (0, pe.jsxs)("span", { children: ["N\xEDvel de classe ", (0, pe.jsx)("b", { children: t.jobLevel })] })] })] }) }), (0, pe.jsx)(as, { kind: "hp", value: t.hp, max: t.maxHp, label: `Vida ${t.hp}/${t.maxHp} (${Math.round(t.hp / t.maxHp * 100)}%)` }), !o && (0, pe.jsxs)(pe.Fragment, { children: [(0, pe.jsx)(as, { kind: "mp", value: t.mp, max: t.maxMp, label: `Mana ${t.mp}/${t.maxMp} (${Math.round(t.mp / Math.max(1, t.maxMp) * 100)}%)` }), (0, pe.jsx)(as, { kind: "exp", value: t.exp, max: t.expNext, label: t.level >= 99 ? "EXP m\u00E1x." : `EXP ${t.exp}/${t.expNext} (${(t.exp / Math.max(1, t.expNext) * 100).toFixed(1)}%)` }), (0, pe.jsx)(as, { kind: "job", value: t.jobLevel >= t.jobCap ? 1 : t.jobExp, max: t.jobLevel >= t.jobCap ? 1 : t.jobNext, label: t.jobLevel >= t.jobCap ? `Classe ${t.jobLevel}/${t.jobCap} (m\u00E1x.)` : `Classe ${t.jobLevel}/${t.jobCap} \u00B7 ${t.jobExp}/${t.jobNext}` }), e.online && (0, pe.jsxs)("div", { className: `hud-online hud-online-${e.online.status}`, role: "status", children: ["\u25CF Online \xB7 ", e.online.others + 1, " jogador(es) vis\xEDvel(is)", e.online.status !== "open" ? ` \xB7 ${e.online.status === "reconnecting" ? "reconectando\u2026" : "conectando\u2026"}` : ""] }), (0, pe.jsxs)("div", { className: "hud-line", children: [(0, pe.jsxs)("span", { className: "coin-line", children: [(0, pe.jsx)(sr, { name: "coin", size: 18 }), " Zens: ", t.silver] }), (e.player?.statPoints ?? 0) > 0 && (0, pe.jsxs)("span", { className: "hint-pts", children: ["+", e.player?.statPoints, " pontos"] })] })] })] }), e.boss && (0, pe.jsxs)("section", { className: "hud-boss", "aria-live": "polite", children: [(0, pe.jsxs)("strong", { children: [e.boss.name, e.boss.phase === 2 ? " \xB7 Fase 2" : ""] }), (0, pe.jsx)(as, { kind: "boss", value: e.boss.hp, max: e.boss.max, label: `${e.boss.hp}/${e.boss.max}` })] }), (0, pe.jsxs)("section", { className: "hud-card hud-quests", ref: n.ref, style: qHid ? { ...(n.style || {}), display: "none" } : n.style, ...n.handle, children: [(0, pe.jsx)("header", { children: e.location }), e.tracker.length === 0 ? (0, pe.jsx)("small", { className: "muted", children: e.online ? "Quests e NPCs ainda n\xE3o existem no modo online." : e.location.includes("J\xF6tunheim") ? "Sem quests ativas. Fale com Ylva." : "Sem quests ativas. Fale com Eira." }) : e.tracker.map((c) => (0, pe.jsxs)("div", { className: `q${c.ready ? " q-ready" : ""}`, children: [(0, pe.jsxs)("strong", { children: [c.name, c.ready ? " \u2714" : ""] }), c.lines.map((d, f) => (0, pe.jsx)("small", { children: d }, f)), c.ready && (0, pe.jsx)("small", { children: "Volte \xE0 Eira para entregar." })] }, c.id))] }), e.prompt && (0, pe.jsx)("div", { className: "prompt", children: e.prompt }), (0, pe.jsx)($4, {}), (0, pe.jsx)(Y4, {}), (0, pe.jsx)(PmDock, {}), (0, pe.jsx)("div", { className: "help-line", children: "Clique no ch\xE3o: andar \xB7 clique em monstro: atacar \xB7 clique em NPC: falar \xB7 Espa\xE7o atacar \xB7 F1-F9 habilidades e atalhos \xB7 F10 chat \xB7 F11 2\xAA barra (1-0) \xB7 F12 miss\xF5es \xB7 Alt+V info \xB7 Shift esquiva \xB7 5-6 po\xE7\xF5es \xB7 I invent\xE1rio \xB7 T atributos \xB7 L habilidades \xB7 B besti\xE1rio \xB7 J feitos \xB7 Enter abre/fecha o chat \xB7 Ctrl+C mensagem privada \xB7 @afk (cidades) \xB7 arraste as janelinhas para mudar de lugar \xB7 M mapa-m\xFAndi \xB7 Alt+Q equipamento \xB7 Alt+E invent\xE1rio \xB7 bot\xE3o direito arrasta: girar c\xE2mera em volta do personagem (Shift = inclinar) \xB7 Esc pausa" }), e.dead && (0, pe.jsxs)("div", { className: "death", role: "alert", children: [(0, pe.jsx)("h2", { children: "Voc\xEA caiu em batalha" }), (0, pe.jsx)("p", { children: "Os corvos de Odin o levam de volta \xE0 vila\u2026" })] })] });
   }
   var Ah = oe(ue(), 1);
   function K4() {
@@ -21338,7 +21474,7 @@ function ROXQM(f, c, s, l, def, ex) {
     if (n.heal) L.push(["Cura", pc(n.heal * m) + " da vida m\xE1xima"]);
     if (n.buff) {
       let b = n.buff;
-      b.atk && L.push(["B\xF4nus de ataque", "+" + pc(b.atk * m)]), b.def && L.push(["B\xF4nus de defesa", "+" + pc(b.def * m)]), b.spd && L.push(["B\xF4nus de velocidade", "+" + pc(b.spd * Math.min(m, 1.4))]), b.crit && L.push(["B\xF4nus de cr\xEDtico", "+" + pc(b.crit * Math.min(m, 1.4))]), L.push(["Dura\xE7\xE3o", Math.round(b.ms / 1e3) + "s"]);
+      b.atk && L.push(["B\xF4nus de ataque", "+5%"]), b.def && L.push(["B\xF4nus de defesa", "+5%"]), b.spd && L.push(["B\xF4nus de velocidade", "+5%"]), b.crit && L.push(["B\xF4nus de cr\xEDtico", "+5%"]), L.push(["Dura\xE7\xE3o", Math.round(b.ms / 1e3) + "s"]);
     }
     n.range && L.push(["Alcance", n.range]), n.radius && L.push(["Raio", n.radius]), n.arc && n.kind === "cone" && L.push(["Arco", n.arc + "\xB0"]), n.stunMs && L.push(["Atordoa", (n.stunMs / 1e3).toFixed(1) + "s"]), n.slowMs && L.push(["Lentid\xE3o", (n.slowMs / 1e3).toFixed(1) + "s"]);
     L.push(["Custo de mana", Ju(n.mp, r)]), L.push(["Recarga", (By(n.cooldown, r) / 1e3).toFixed(1) + "s"]);
@@ -21352,9 +21488,9 @@ function ROXQM(f, c, s, l, def, ex) {
       let r = t.skillLevels[o] ?? 1, i = skLocked(t, o);
       return (0, ma.jsxs)("div", { className: "attr-row skill-row" + (i ? " skill-locked" : ""), style: { gridTemplateColumns: "auto 1fr auto auto" }, onContextMenu: (ev) => {
         ev.preventDefault(), setSelSk(selSk === o ? -1 : o);
-      }, children: [selSk === o && (0, ma.jsxs)("div", { className: "skill-bonus", style: { gridColumn: "1 / -1", order: 9 }, onClick: () => setSelSk(-1), children: [(0, ma.jsx)("b", { children: n.name + " \u2014 Nv " + r + (r >= Ll(t.tier) ? " (m\xE1x.)" : "") }), skBonus(n, r).map(([k, v], q) => (0, ma.jsxs)("div", { className: "sb-row", children: [(0, ma.jsx)("span", { children: k }), (0, ma.jsx)("b", { children: v })] }, q)), r < Ll(t.tier) && n.mult ? (0, ma.jsx)("div", { className: "sb-row sb-next", children: (0, ma.jsx)("span", { children: "Nv " + (r + 1) + ": dano " + Math.round(n.mult * jy(r + 1) * 100) + "% \xB7 mana " + Ju(n.mp, r + 1) }) }) : null] }),(0, ma.jsx)("div", { className: "skill-ico", draggable: !i, onDragStart: (s) => {
+      }, children: [selSk === o && (0, ma.jsxs)("div", { className: "skill-bonus", style: { gridColumn: "1 / -1", order: 9 }, onClick: () => setSelSk(-1), children: [(0, ma.jsx)("b", { children: n.name + " \u2014 Nv " + r + (r >= SKMAX(n) ? " (m\xE1x.)" : "") }), skBonus(n, r).map(([k, v], q) => (0, ma.jsxs)("div", { className: "sb-row", children: [(0, ma.jsx)("span", { children: k }), (0, ma.jsx)("b", { children: v })] }, q)), r < SKMAX(n) && n.mult ? (0, ma.jsx)("div", { className: "sb-row sb-next", children: (0, ma.jsx)("span", { children: "Nv " + (r + 1) + ": dano " + Math.round(n.mult * jy(r + 1) * 100) + "% \xB7 mana " + Ju(n.mp, r + 1) }) }) : null] }),(0, ma.jsx)("div", { className: "skill-ico", draggable: !i, onDragStart: (s) => {
         s.dataTransfer.setData(Qr, JSON.stringify({ t: "skill", i: o })), s.dataTransfer.effectAllowed = "copy";
-      }, title: "Arraste para a barra de atalhos \u00B7 bot\xE3o direito: ver b\xF4nus", children: (0, ma.jsx)(h0, { id: n.id, kind: n.kind, size: 36 }) }), (0, ma.jsxs)("span", { title: n.desc, children: [n.name, i ? " \u{1F512}" : "", (0, ma.jsx)("br", {}), (0, ma.jsx)("small", { className: "muted", children: n.desc })] }), (0, ma.jsxs)("b", { children: ["Nv ", r] }), (0, ma.jsx)("button", { className: "btn btn-small", disabled: t.skillPoints < 1 || i || r >= Ll(t.tier), onClick: () => j.upgradeSkillAt(o), "aria-label": `Aumentar ${n.name}`, children: "+" })] }, n.id);
+      }, title: "Arraste para a barra de atalhos \u00B7 bot\xE3o direito: ver b\xF4nus", children: (0, ma.jsx)(h0, { id: n.id, kind: n.kind, size: 36 }) }), (0, ma.jsxs)("span", { title: n.desc, children: [n.name, i ? " \u{1F512}" : "", (0, ma.jsx)("br", {}), (0, ma.jsx)("small", { className: "muted", children: n.desc })] }), (0, ma.jsxs)("b", { children: ["Nv ", r] }), (0, ma.jsx)("button", { className: "btn btn-small", disabled: t.skillPoints < 1 || i || r >= SKMAX(n), onClick: () => j.upgradeSkillAt(o), "aria-label": `Aumentar ${n.name}`, children: "+" })] }, n.id);
     })), t.line === "berserker" && Hh("div", { className: "attr-row skill-row" + (j.ps.tier >= 1 ? "" : " skill-locked"), style: { gridTemplateColumns: "1fr auto" } }, Hh("span", { title: "Habilidade passiva dos Espadachins: monte numa montaria para andar mais r\u00E1pido." }, "Montaria (passiva)", Hh("br", {}), Hh("small", { className: "muted" }, j.ps.tier < 1 ? "Dispon\u00EDvel ao virar Espadachim" : j.ps.mountOwned ? "+40% de velocidade \u00B7 tecla V" : "Fale com o NPC Montaria para receber sua montaria")), j.ps.tier >= 1 && j.ps.mountOwned && Hh("button", { className: "btn", onClick: () => { j.ps.mount = !j.ps.mount, j.refresh(); } }, j.ps.mount ? "Desmontar" : "Montar")), t.line === "cacador" && Hh("div", { className: "attr-row skill-row", style: { gridTemplateColumns: "1fr auto" } }, Hh("span", { title: "Habilidade passiva dos Ca\u00E7adores: um falc\u00E3o ataca junto com voc\u00EA." }, "Adestrar Falc\u00E3o (passiva)", Hh("br", {}), Hh("small", { className: "muted" }, j.ps.falconSkill ? (j.ps.falconTrained ? "Falc\u00E3o ativo \u00B7 /falcao" : "Aprendida \u00B7 fale com o Adestrador, nordeste de Midgard") : "Requer n\u00EDvel 10 \u00B7 1 ponto \u00B7 Adestrador de Falc\u00F5es em Midgard")), !j.ps.falconSkill && Hh("button", { className: "btn", disabled: j.ps.level < 10 || j.ps.skillPoints < 1, onClick: () => { j.ps.skillPoints -= 1, j.ps.falconSkill = true, j.pushLog("Habilidade aprendida: Adestrar Falc\u00E3o! Procure o Adestrador de Falc\u00F5es no nordeste de Midgard.", "system", "good"), j.saveGameQuiet(), j.refresh(); } }, "Aprender (1 pt)")), t.line === "escudeiro" && Hh("div", { className: "attr-row skill-row" + (j.ps.tier >= 1 ? "" : " skill-locked"), style: { gridTemplateColumns: "1fr auto" } }, Hh("span", { title: "Habilidades do Mercador." }, "Carrinho e Loja (passivas)", Hh("br", {}), Hh("small", { className: "muted" }, j.ps.tier < 1 ? "Dispon\u00EDvel ao virar Mercador" : "Carrinho: Alt+W (+1500 peso) \u00B7 Loja: /trade em cidades")), j.ps.tier >= 1 && Hh("div", { className: "row" }, Hh("button", { className: "btn", onClick: () => { j.panel = "cartcfg", j.refresh(); } }, "Carrinho"), Hh("button", { className: "btn", onClick: () => { j.vendOpenPanel(""); } }, "Loja")))] });
   }
   var Mt = oe(ue(), 1);

@@ -231,3 +231,5 @@ body.armed canvas{cursor:crosshair!important}
 .pv-card:hover{border-color:var(--ice)}.pv-card.on{border-color:var(--gold);background:var(--panel2);box-shadow:0 0 0 1px var(--gold) inset}
 .pv-card.r-rare{border-bottom:2px solid #5a8cff}.pv-card.r-epic{border-bottom:2px solid #b36bff}.pv-card.r-legendary{border-bottom:2px solid #ffb338}.pv-card img{image-rendering:pixelated}
 .panel.stylist{min-width:min(94vw,760px)}
+.hud-card .bar-exp,.hud-card .bar-job{height:14px;position:relative}
+.hud-card .bar-exp .bar-label,.hud-card .bar-job .bar-label{display:grid;font-size:9.5px}

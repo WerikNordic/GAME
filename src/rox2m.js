@@ -86,7 +86,7 @@ var ROX2M = (() => {
   S({pts:[[0,r.chY-6,r.hd[2]-5],[0,r.hd[1]-1,r.hd[2]-1.6]],w:[2.4,1.4],col:hx(0x2a1a14)})}});
  // ---------- montaria epica (cavalo de guerra com armadura dourada, manto carmesim e crina de chamas) ----------
  reg('montaria',{name:'Montaria',w:120,h:104,gy:94,sched:[['stand',2.4,6],['look',2.4,8],['snort',1.8,8],['stand',1.6,5]],build:(E,S,o)=>{
-  const r=canid(E,S,o,{...WOLF,L:36,H:15.5,W:6.6,legL:15.5,legW:3.1,col:hx(0x6e7480),col2:hx(0xaeb4c0),stride:6,lift:3.4,hw:4.8,hh:5,hl:7.2,snoutL:.8,snoutW:.62,snout:hx(0x8e94a0),eye:hx(0xff5a3a),earIn:hx(0x3a3e48),tailTip:hx(0xeef2fa),tailW:5,hHigh:.5,belly:1,paw:hx(0xe8ecf4),fangs:1});
+  const r=canid(E,S,o,{...WOLF,L:44,H:19,W:11,legL:14,legW:5.4,col:hx(0x33333e),col2:hx(0x6a6a78),stride:5,lift:3,hw:8,hh:8.4,hl:10.5,snoutL:.9,snoutW:.78,snout:hx(0x4a4a58),eye:hx(0xff2a1a),earIn:hx(0x1a1a22),tailTip:hx(0x8a8a9a),tailW:6,hHigh:.5,belly:1.25,paw:hx(0x1a1a22),fangs:1});
   const GOLD=hx(0xf2c24a),GOLD2=hx(0xb88a24),CRIM=hx(0x9a1e32),CRIM2=hx(0x6a1424),B=.2;
   const mY=(r.chY+r.hpY)/2,mZ=(r.chZ+r.hpZ)/2;
   // manto (caparison) sobre o dorso, com franjas douradas nas laterais
@@ -97,6 +97,19 @@ var ROX2M = (() => {
   // sela
   E({x:0,y:mY-8.4,z:mZ+1,rx:4.6,ry:1.6,rz:6.6,p:3,col:hx(0x4a2a18),bias:B});
   S({pts:[[0,mY-9.6,mZ+7.4],[0,mY-12.4,mZ+8.6]],w:[2.2,1.6],col:GOLD2,bias:B});S({pts:[[0,mY-9.4,mZ-5.8],[0,mY-12,mZ-7.2]],w:[2.6,1.8],col:GOLD2,bias:B});
+  // couraça de guerra: placas de aço escuro nos flancos, ombreiras com espinhos e barda no peito
+  {const ST=hx(0x50505e),ST2=hx(0x7a7a8c),SPK=hx(0xc8c8d8);
+   for(const sx of[-1,1]){
+    E({x:sx*10.4,y:mY+2.6,z:mZ+8.5,rx:2.6,ry:7.2,rz:8.4,p:3,col:ST,metal:1,bias:B});
+    E({x:sx*10.6,y:mY+2.6,z:mZ-6.5,rx:2.6,ry:7.2,rz:7.6,p:3,col:ST,metal:1,bias:B});
+    E({x:sx*11,y:mY-1.6,z:mZ+8.5,rx:1.2,ry:1.3,rz:6.5,p:3,col:ST2,metal:1,bias:B});
+    E({x:sx*10,y:r.chY-1,z:r.chZ+Lb0(r)-2,rx:3.6,ry:6.4,rz:4.2,p:3,col:ST,metal:1,bias:B});
+    for(let i=0;i<3;i++)S({pts:[[sx*(10+i*.2),r.chY-5+i*2.4,r.chZ+Lb0(r)+1.5+i],[sx*(13+i*.4),r.chY-9+i*2.6,r.chZ+Lb0(r)+4+i*1.4]],w:[1.9,.4],col:SPK,metal:1,bias:B});
+    for(let i=0;i<4;i++)S({pts:[[sx*10.8,mY-2.6,mZ-10+i*5.4],[sx*12.6,mY-6.4,mZ-10+i*5.4]],w:[1.5,.3],col:SPK,metal:1,bias:B});
+   }
+   E({x:0,y:r.chY+4,z:r.chZ+Lb0(r)+.4,rx:7.4,ry:7,rz:3.4,p:3,col:ST,metal:1,bias:B});
+   S({pts:[[0,r.chY-2,r.chZ+Lb0(r)+3.4],[0,r.chY-8,r.chZ+Lb0(r)+7]],w:[2.8,.5],col:SPK,metal:1,bias:B});
+  }
   // peitoral dourado
   E({x:0,y:r.chY+2.2,z:r.chZ+Lb0(r),rx:6.2,ry:8,rz:2.8,p:3,col:GOLD,metal:1,bias:B});
   E({x:0,y:r.chY+2.2,z:r.chZ+Lb0(r)+2.2,rx:2.2,ry:2.2,rz:1.2,p:3,col:hx(0xff4a5a),bias:.6,metal:1});
@@ -517,7 +530,7 @@ const PETSCH=[['stand',2.6,6],['sniff',2,8],['stand',1.6,5],['sit',3.4,6],['look
   else if(vr.spk===3){for(const sg of[-1,1])for(let i=0;i<3;i++){const z=bz0+big.rz*(.5-i*.5);S({pts:[[bx0+sg*big.rx*.85,big.y-big.ry*.2,z],[bx0+sg*(big.rx+6),big.y-big.ry*.8,z-2]],w:[3,.4],col:dkc})}}
  }
  // ---------- mapeamento shape -> especie ----------
- const SHAPES={wolf:['lobo',.5,1.9],frostwolf:['lobogelo',.6,1.9],hati:['warg',.35,2],boar:['javali',.5,2.0],horse:['cavalo',.25,1.7],montaria:['montaria',.25,1.7],cao:['cao',.45,1.9],gato:['gato',.5,1.9],raposa:['raposa',.35,1.9],coelho:['coelho',.4,1.9],yeti:['yeti',.7,1.35],blob:['gosma',.85,1.9],goblin:['goblin',.3,2],draugr:['draugr',.3,1.75],cinder:['imp',.55,1.7],automaton:['golemmetal',.75,1.2],sylvan:['sylvan',.7,1.3],prism:['golemprisma',.8,1.1],sentinel:['golempedra',.6,1.2],voidling:['espectro',.85,1.1],jotun:['troll',.5,1.5],grifo:['corvo',.35,1.8],corvo:['corvo',0,1.6],peixe:['peixe',.55,2.5],medusa:['medusa',.5,1.9],polvo:['polvo',.55,1.9],tubarao:['tubarao',.5,2.3],pombo:['pombo',0,2.4],lif:['lif',0,1.5],amistr:['amistr',0,1.5],filir:['filir',0,1.5],vanilmirth:['vanilmirth',0,1.5]};
+ const SHAPES={wolf:['lobo',.5,1.9],frostwolf:['lobogelo',.6,1.9],hati:['warg',.35,2],boar:['javali',.5,2.0],horse:['cavalo',.25,1.7],montaria:['montaria',.25,2.15],cao:['cao',.45,1.9],gato:['gato',.5,1.9],raposa:['raposa',.35,1.9],coelho:['coelho',.4,1.9],yeti:['yeti',.7,1.35],blob:['gosma',.85,1.9],goblin:['goblin',.3,2],draugr:['draugr',.3,1.75],cinder:['imp',.55,1.7],automaton:['golemmetal',.75,1.2],sylvan:['sylvan',.7,1.3],prism:['golemprisma',.8,1.1],sentinel:['golempedra',.6,1.2],voidling:['espectro',.85,1.1],jotun:['troll',.5,1.5],grifo:['corvo',.35,1.8],corvo:['corvo',0,1.6],peixe:['peixe',.55,2.5],medusa:['medusa',.5,1.9],polvo:['polvo',.55,1.9],tubarao:['tubarao',.5,2.3],pombo:['pombo',0,2.4],lif:['lif',0,1.5],amistr:['amistr',0,1.5],filir:['filir',0,1.5],vanilmirth:['vanilmirth',0,1.5]};
  const DIRS={down:0,dq:1,side:2,uq:3,up:4};
  const lumOf=(c)=>(c[0]+c[1]+c[2])/765;
  function mkTint(rgb,k){const tl=lumOf(rgb)||.5;return (c)=>{if(!Array.isArray(c))return c;const s=lumOf(c)/tl;return mix(c,[Math.min(255,rgb[0]*s),Math.min(255,rgb[1]*s),Math.min(255,rgb[2]*s)],k)}}

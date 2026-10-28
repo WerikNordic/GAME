@@ -746,3 +746,14 @@
 - Pombos das fontes menores (escala 0.85 → 0.5).
 - Ícones de itens agora refletem o nome: armaduras (túnica, camisa, casaco, gibão, brunea/cota de malha, couraça, placas, escamas, veste de seda, draugr, manto, vestido de noiva, smoking), acessórios (anel, aliança, brincos, broche, cinto, fivela, pulseira, medalhão, pingente, colar/pérolas, amuleto, talismã, elmo do urso, cartas), armas (machado/machadinha/dobrado/fendedor/martelo/maça, sabre, montante/claymore/lâminas, adaga/faca/punhal/presa, lança alada/divina, cajados glacial/celeste/rúnico/entalhado, luvas/manoplas/garras/punhos) e todos os consumíveis/materiais (peixes, ensopados, pão, banquetes, rum, buquê, minério, fragmento, corrente, lasca, pedra, concha, escama, pérola, âncora, mapa, cogumelo, pelo, gel). Cor por material (bronze, ferro, aço, prata, ouro, gelo, brasa…).
 - Catedral de casamento: bancos virados para o norte (para o padre).
+
+## v251
+- Falcão do Caçador: voo sincronizado — segue o personagem por mola/amortecimento (atrás/ao lado, com altitude e oscilação), inclina nas curvas, bate asa conforme a velocidade, sombra no chão, orbita quando o personagem para; ataque preservado.
+- Habilidades: nível máximo por habilidade (buffs/curas e habilidades secundárias da 1ª classe até 5; habilidades principais e da classe avançada até 10); cada classe tem apenas 2 buffs (os demais viraram ataques/defesas ofensivas); Valquíria/Noviço e evoluções mantêm mais buffs; todos os buffs dão +5% (ataque, defesa, velocidade ou crítico), com teto por buff e total; DPS médio por camada alinhado entre classes.
+- Janela "Informações básicas": barras de EXP e Classe agora mostram os valores (EXP x/y e %, Classe n/máx · exp).
+- Mapas: detalhes orgânicos no chão por tema (tufos, flores em aglomerados, pedras, folhas, cogumelos, manchas de terra, galhos; neve: dunas, pegadas, gelo rachado; fogo: rachaduras incandescentes, cinzas; areia: ondulações, rachaduras, ossos; vazio/cristal/ruína).
+- Chat: seta ↑/↓ navega pelas últimas mensagens digitadas.
+- Aura nível 99: apenas azul e só nos pés; sem auras de classe; some ao renascer (volta ao nível 1).
+- Montaria: nova montaria de guerra — corpo maior e encorpado, couraça de aço escuro com ombreiras e espinhos, olhos vermelhos.
+- @item: itens raros (dourados) numerados de 999 a 10999; equipamentos dropados por MVP e todos os visuais valem no mínimo "raro"; cores de raridade douradas.
+- MVPs: aparência divina — brilho, raios de luz, halo dourado, runas orbitando e sigilo no chão.
