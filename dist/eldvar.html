@@ -16792,6 +16792,19 @@ void main() {
     return n;
   }
   function ghBuild(n, k, o, r, a) {
+    ghBuild0(n, k, o, r, a);
+    const col = { cacador: 3827258, berserker: 10494000, escudeiro: 7090740, volva: 4860096, valquiria: 15844367, skald: 5260400, thay: 13131570 }[k] ?? 8421504, st = Y(o, 1.12);
+    for (let i = 0; i < 3; i++) O(n, S(0, 1.6 + i * 0, 54 + i * 7), 46 - i * 4, 3.2, 8, Y(st, 1 - i * 0.07), Q);
+    for (const sg of [-1, 1]) {
+      F(n, S(sg * 34, 0, 66), 3, 2.4, 22, Y(o, 0.7), { seg: 8, mat: Q }), L(n, S(sg * 34, 24, 66), 5.5, 6, 5.5, 16747050, { seg: 8, ring: 5, mat: { shine: 0.5, glow: 0.9 } }), L(n, S(sg * 34, 31, 66), 3, 5, 3, 16766000, { seg: 6, ring: 4, mat: { shine: 0.5, glow: 1 } });
+      O(n, S(sg * 66, 24, 62), 2.4, 48, 2.4, Y(o, 0.6)), O(n, S(sg * 66, 50, 62), 10, 2, 2.4, a.gold, Ve);
+      Ne(n, [[sg * 66 - 5, 48, 62.6], [sg * 66 + 5, 48, 62.6], [sg * 66 + 5, 22, 62.6], [sg * 66, 16, 62.6], [sg * 66 - 5, 22, 62.6]], col, { mat: Re }), O(n, S(sg * 66, 38, 63.2), 4, 4, 0.6, a.gold, Ve);
+      F(n, S(sg * 52, 0, 62), 7, 6, 8, 5130552, { seg: 10, mat: Q }), L(n, S(sg * 52, 9, 62), 9, 6, 9, 3827258, { seg: 8, ring: 5 }), L(n, S(sg * 49, 13, 64), 2.4, 2.4, 2.4, 16105588, { seg: 6, ring: 3 }), L(n, S(sg * 55, 12, 60), 2.4, 2.4, 2.4, 16766000, { seg: 6, ring: 3 });
+    }
+    O(n, S(0, 112, 0), 1.6, 18, 1.6, a.gold, Ve), Ne(n, [[0, 124, 0.6], [14, 120, 0.6], [0, 114, 0.6]], col, { mat: Re });
+    return n;
+  }
+  function ghBuild0(n, k, o, r, a) {
     const GL = { shine: 0.5, glow: 0.9 }, DK = 1710626, tri = (p, q, w, c) => Ne(n, [p, q, w, p], c, { mat: Re }),
       gable = (W, D, y, H, c) => { const b = W / 2, g = D / 2; tri([-b, y, g], [b, y, g], [b, y + H, 0], c), tri([-b, y, g], [b, y + H, 0], [-b, y + H, 0], c), tri([b, y, -g], [-b, y, -g], [-b, y + H, 0], Y(c, 0.8)), tri([b, y, -g], [-b, y + H, 0], [b, y + H, 0], Y(c, 0.8)), tri([b, y, g], [b, y, -g], [b, y + H, 0], Y(c, 0.9)), tri([-b, y, -g], [-b, y, g], [-b, y + H, 0], Y(c, 0.9)); },
       door = (w, h, glow, z = 35.6) => { O(n, S(0, h / 2 + 2, z), w + 4, h + 3, 1.2, DK), O(n, S(0, h / 2 + 2, z + .5), w, h, 1.2, glow, GL); };

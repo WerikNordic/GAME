@@ -1,3 +1,6 @@
+## v216 — Casas das guildas com mais detalhes
+- Escadaria, braseiros acesos, estandartes na cor da classe, arbustos floridos e bandeira no telhado nas 7 casas de guilda.
+
 ## v215 — Lote E
 - ADM: @zeny, @classe <nome>, @allstatus; roupa branca e dourada com asas, botas douradas e aura nova.
 - Guildas: casas nos cantos do mapa, maiores; só a classe correspondente entra; mestre ao lado da casa com a roupa da classe; Munin/Curandeira/Teleporte/Utilidades juntos; pai dos homúnculos só na casa dos mercadores.
