@@ -1,3 +1,8 @@
+## v229 — Classes (1ª etapa)
+- Habilidades da sua lista adicionadas por linha (prefixo doc_): Espadachim/Cavaleiro/Templário/Lord/Paladino → berserker; Mago/Bruxo/Sábio/Arquimago/Professor → volva; Arqueiro/Caçador/Bardo/Sniper/Menestrel → cacador; Noviço/Sacerdote/Sumo Sacerdote → valquiria; Gatuno/Mercenário/Arruaceiro/Algoz/Desordeiro → skald; Mercador/Ferreiro/Alquimista/Mestre-Ferreiro/Criador → escudeiro; Monge/Mestre → thay.
+- Reaproveitam os efeitos existentes (cone, linha, nova, meteoro, buff, cura); efeitos exclusivos por habilidade ainda não.
+- Limite de habilidades por classe subiu de 40 para 64 (save, recarga, atalhos).
+
 ## v228 — Lote G (parcial)
 - @nick, @kill <monstro|todos>, @item <código>; itens raros/épicos/lendários com ID 999xxx.
 - Aba de chat Batalha: dano só ali, fora do Geral. Shift não usa mais habilidades.

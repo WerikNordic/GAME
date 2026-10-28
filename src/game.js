@@ -7499,7 +7499,7 @@ Error generating stack: ` + n.message + `
   var Ui = 19, zu = () => Array.from({ length: Ui }, () => null);
   function Du(e) {
     let t = e;
-    return !t || typeof t != "object" ? false : t.t === "skill" ? Number.isInteger(t.i) && t.i >= 0 && t.i < 40 : t.t === "item" ? typeof t.id == "string" && ["consumable", "ammo"].includes($(t.id)?.kind ?? "") : false;
+    return !t || typeof t != "object" ? false : t.t === "skill" ? Number.isInteger(t.i) && t.i >= 0 && t.i < 64 : t.t === "item" ? typeof t.id == "string" && ["consumable", "ammo"].includes($(t.id)?.kind ?? "") : false;
   }
   function qx(e) {
     let t = zu();
@@ -9143,6 +9143,80 @@ Error generating stack: ` + n.message + `
       skald: { id: "sup_skald", name: "Passo das Sombras (Suprema)", kind: "chain", mp: 50, cooldown: 38e3, mult: 4.2, range: 300, jumps: 7, light: 6291600, desc: "Habilidade suprema: salta entre até 8 inimigos em lâminas sombrias." },
       thay: { id: "sup_thay", name: "Asura (Suprema)", kind: "cone", mp: 70, cooldown: 48e3, mult: 9, range: 110, arc: 140, stunMs: 1200, light: 16764006, desc: "Habilidade suprema: golpe devastador à frente." }
     };
+    const DOC = {
+      berserker: [
+        ["provocar", "Provocar", 1, "nova", 6, 9e3, 0.6, { radius: 150, stunMs: 700 }, "Provoca os inimigos ao redor, atordoando-os brevemente."],
+        ["vigor", "Vigor", 1, "buff", 14, 22e3, 0, { buff: { def: 0.35, ms: 14e3 } }, "+35% de defesa por 14s."],
+        ["golpe_fulminante", "Golpe Fulminante", 1, "cone", 10, 5e3, 2.6, { range: 74, arc: 90, stunMs: 900 }, "Golpe relâmpago que atordoa."],
+        ["impacto_tyr", "Impacto de Tyr", 1, "cone", 14, 8e3, 3.4, { range: 80, arc: 100 }, "Pancada divina com grande dano à frente."],
+        ["perfurar", "Perfurar", 1, "line", 12, 7e3, 2.4, { dash: 120, width: 40 }, "Investida que perfura os inimigos em linha."],
+        ["redencao", "Redenção", 2, "heal", 22, 16e3, 0, { heal: 0.3 }, "Luz que recupera 30% da vida."],
+        ["crux_divinum", "Crux Divinum", 2, "nova", 26, 12e3, 2.8, { radius: 150, stunMs: 1000, magic: true }, "Cruz de luz que fere e atordoa ao redor."],
+        ["dedicacao", "Dedicação", 2, "buff", 18, 26e3, 0, { buff: { def: 0.5, ms: 12e3 } }, "+50% de defesa por 12s."],
+        ["lamina_aura", "Lâmina de Aura", 2, "line", 24, 9e3, 4, { dash: 0, width: 50 }, "Onda cortante em linha."],
+        ["sacrificio_martir", "Sacrifício do Mártir", 2, "buff", 20, 30e3, 0, { buff: { atk: 0.6, ms: 12e3 } }, "+60% de ataque por 12s."],
+        ["pressao", "Pressão", 2, "cone", 28, 10e3, 4.4, { range: 90, arc: 110, stunMs: 1200 }, "Esmaga o alvo, causando dano pesado."]
+      ],
+      volva: [
+        ["lancas_fogo", "Lanças de Fogo", 1, "volley", 12, 5e3, 1.5, { range: 300, count: 5, magic: true }, "Lanças de fogo em leque."],
+        ["lancas_gelo", "Lanças de Gelo", 1, "volley", 12, 5e3, 1.4, { range: 300, count: 5, magic: true, slowMs: 2500 }, "Lanças de gelo que retardam."],
+        ["escudo_magico", "Escudo Mágico", 1, "buff", 16, 24e3, 0, { buff: { def: 0.5, ms: 14e3 } }, "+50% de defesa por 14s."],
+        ["nevasca", "Nevasca", 1, "meteor", 22, 9e3, 2.6, { range: 280, radius: 130, delay: 600, magic: true, slowMs: 3e3 }, "Tempestade de gelo em área."],
+        ["igreja_ira", "Igreja da Ira", 1, "nova", 26, 11e3, 3, { radius: 150, magic: true, stunMs: 800 }, "Explosão de ira ao redor."],
+        ["desejo_arcano", "Desejo Arcano", 2, "buff", 20, 26e3, 0, { buff: { atk: 0.5, ms: 14e3 } }, "+50% de ataque mágico por 14s."],
+        ["desencantar", "Desencantar", 2, "chain", 22, 8e3, 2.2, { range: 260, jumps: 4, magic: true }, "Drena energia saltando entre inimigos."],
+        ["amplificacao", "Amplificação Mística", 2, "buff", 24, 30e3, 0, { buff: { atk: 0.7, ms: 12e3 } }, "+70% de ataque mágico por 12s."],
+        ["ganbantein", "Ganbantein", 2, "nova", 30, 14e3, 3.4, { radius: 170, magic: true }, "Dissipa a magia ao redor causando dano."],
+        ["exalar_alma", "Exalar Alma", 2, "heal", 28, 22e3, 0, { heal: 0.4 }, "Recupera 40% da vida."],
+        ["indestrutivel", "Indestrutível", 2, "buff", 26, 32e3, 0, { buff: { def: 0.8, ms: 10e3 } }, "+80% de defesa por 10s."]
+      ],
+      cacador: [
+        ["rajada_flechas", "Rajada de Flechas", 1, "volley", 10, 4e3, 1.2, { range: 320, count: 7 }, "Sete flechas em sequência."],
+        ["concentracao", "Concentração", 1, "buff", 12, 22e3, 0, { buff: { atk: 0.35, ms: 14e3 } }, "+35% de ataque por 14s."],
+        ["ataque_falcao", "Ataque do Falcão", 1, "projectile", 14, 6e3, 3, { range: 360 }, "O falcão mergulha no alvo."],
+        ["armadilha_atordoadora", "Armadilha Atordoadora", 1, "meteor", 14, 9e3, 1.6, { range: 260, radius: 80, delay: 400, stunMs: 1600 }, "Armadilha que atordoa."],
+        ["poema_bragi", "Poema de Bragi", 2, "buff", 18, 28e3, 0, { buff: { atk: 0.4, ms: 16e3 } }, "+40% de ataque por 16s."],
+        ["nao_me_abandones", "Não Me Abandones", 2, "heal", 22, 20e3, 0, { heal: 0.3 }, "Recupera 30% da vida."],
+        ["visao_verdadeira", "Visão Verdadeira", 2, "buff", 20, 30e3, 0, { buff: { atk: 0.5, ms: 14e3 } }, "+50% de ataque por 14s."],
+        ["vulcao_flechas", "Vulcão de Flechas", 2, "meteor", 30, 12e3, 3.6, { range: 300, radius: 150, delay: 700 }, "Chuva de flechas em grande área."],
+        ["destino_cartas", "Destino das Cartas", 2, "chain", 24, 9e3, 2.8, { range: 280, jumps: 5 }, "Cartas cortantes saltam entre inimigos."]
+      ],
+      valquiria: [
+        ["cura", "Cura", 1, "heal", 10, 5e3, 0, { heal: 0.25 }, "Recupera 25% da vida."],
+        ["aumentar_agilidade", "Aumentar Agilidade", 1, "buff", 12, 24e3, 0, { buff: { atk: 0.25, ms: 18e3 } }, "+25% de ataque por 18s."],
+        ["bencao", "Bênção", 1, "buff", 14, 26e3, 0, { buff: { def: 0.35, atk: 0.2, ms: 18e3 } }, "Bênção de defesa e ataque."],
+        ["magnificat", "Magnificat", 2, "buff", 22, 30e3, 0, { buff: { atk: 0.4, ms: 14e3 } }, "+40% de ataque por 14s."],
+        ["santuario", "Santuário", 2, "heal", 28, 18e3, 0, { heal: 0.5 }, "Recupera 50% da vida."],
+        ["combo_triplo", "Combo Triplo", 2, "cone", 16, 6e3, 3.2, { range: 70, arc: 80 }, "Sequência de três golpes."],
+        ["assumptio", "Assumptio", 2, "buff", 26, 30e3, 0, { buff: { def: 0.7, ms: 12e3 } }, "+70% de defesa por 12s."],
+        ["meditatio", "Meditatio", 2, "heal", 24, 20e3, 0, { heal: 0.4 }, "Recupera 40% da vida."]
+      ],
+      skald: [
+        ["esquiva", "Perícia em Esquiva", 1, "buff", 10, 20e3, 0, { buff: { def: 0.3, ms: 14e3 } }, "+30% de defesa por 14s."],
+        ["ataque_duplo", "Ataque Duplo", 1, "cone", 8, 3e3, 2.2, { range: 60, arc: 70 }, "Dois golpes rápidos."],
+        ["esconderijo", "Esconderijo", 1, "buff", 12, 24e3, 0, { buff: { def: 0.6, ms: 8e3 } }, "Some nas sombras: +60% de defesa por 8s."],
+        ["laminas_destruidoras", "Lâminas Destruidoras", 1, "nova", 16, 8e3, 2.4, { radius: 120 }, "Lâminas giram ao redor."],
+        ["envenenar_arma", "Envenenar Arma", 1, "buff", 14, 26e3, 0, { buff: { atk: 0.35, ms: 16e3 } }, "+35% de ataque por 16s."],
+        ["plagio", "Plágio", 2, "chain", 20, 9e3, 2.4, { range: 260, jumps: 4 }, "Copia golpes saltando entre inimigos."],
+        ["remover_armadura", "Remover Armadura", 2, "cone", 18, 9e3, 2.8, { range: 66, arc: 90, stunMs: 1000 }, "Golpe que desarma e atordoa."],
+        ["edp", "Envenenar Destruidor", 2, "buff", 24, 30e3, 0, { buff: { atk: 0.6, ms: 12e3 } }, "+60% de ataque por 12s."],
+        ["impacto_psiquico", "Impacto Psíquico", 2, "nova", 26, 11e3, 3.2, { radius: 130, magic: true }, "Explosão psíquica ao redor."],
+        ["preservar", "Preservar", 2, "heal", 20, 20e3, 0, { heal: 0.3 }, "Recupera 30% da vida."]
+      ],
+      escudeiro: [
+        ["comercio", "Comércio Agressivo", 1, "cone", 8, 4e3, 1.8, { range: 62, arc: 100, stunMs: 700 }, "Golpe com o carrinho."],
+        ["desconto", "Desconto", 1, "buff", 12, 24e3, 0, { buff: { def: 0.4, ms: 14e3 } }, "+40% de defesa por 14s."],
+        ["manejo_perfeito", "Manejo Perfeito", 1, "buff", 14, 26e3, 0, { buff: { atk: 0.4, ms: 14e3 } }, "+40% de ataque por 14s."],
+        ["forjar", "Forjar", 2, "cone", 18, 7e3, 3.2, { range: 70, arc: 90 }, "Marteladas ardentes."],
+        ["preparar_pocao", "Preparar Poção", 2, "heal", 18, 14e3, 0, { heal: 0.35 }, "Recupera 35% da vida."],
+        ["arremessar_pocao", "Arremessar Poção", 2, "meteor", 20, 8e3, 2.4, { range: 260, radius: 90, delay: 400 }, "Poção explosiva em área."],
+        ["impulso_carrinho", "Impulso de Carrinho", 2, "line", 20, 8e3, 3, { dash: 170, width: 56, stunMs: 1000 }, "Disparo do carrinho que atropela."],
+        ["choque_carrinho", "Choque do Carrinho", 2, "nova", 26, 11e3, 3, { radius: 150, stunMs: 1400 }, "Choque que atordoa ao redor."],
+        ["bomba_acida", "Bomba Ácida", 2, "meteor", 24, 9e3, 3.2, { range: 260, radius: 100, delay: 500 }, "Bomba ácida em área."]
+      ]
+    };
+    for (let k in DOC) { const L = Ce[k].skills; for (const [id, name, tier, kind, mp, cooldown, mult, ex, desc] of DOC[k]) { if (L.some((x) => x.id === "doc_" + id)) continue; L.push({ id: "doc_" + id, name, tier, kind, mp, cooldown, mult, range: 0, radius: 0, light: Ce[k].color, desc, ...ex }); } }
+    Ce.thay && (Ce.thay.skills.push(...[["combo_quad", "Combo Quádruplo", 2, "cone", 20, 7e3, 4, { range: 72, arc: 80 }, "Quatro golpes em sequência."], ["esferas", "Disparo de Esferas Espirituais", 2, "volley", 22, 8e3, 1.8, { range: 280, count: 5 }, "Esferas de ki em leque."], ["zen", "Zen", 2, "buff", 24, 30e3, 0, { buff: { atk: 0.5, def: 0.4, ms: 12e3 } }, "Foco total: +50% ataque e +40% defesa por 12s."]].filter(([id]) => !Ce.thay.skills.some((x) => x.id === "doc_" + id)).map(([id, name, tier, kind, mp, cooldown, mult, ex, desc]) => ({ id: "doc_" + id, name, tier, kind, mp, cooldown, mult, range: 0, radius: 0, light: Ce.thay.color, desc, ...ex }))));
     for (let k of CLS7) { if (!SUP[k] || !Ce[k].skills || Ce[k].skills.some((x) => x.id === SUP[k].id)) continue; Ce[k].skills.push({ tier: 2, range: 0, radius: 0, ...SUP[k] }); }
     for (let k of CLS7) { let n = Ce[k].names, b = n[2]; Ce[k].names = [n[0], n[1], b, b + " Renascido", "Lorde " + b, b + " Transcendente"]; }
   })();
@@ -10265,7 +10339,7 @@ Error generating stack: ` + n.message + `
     constructor(t, a, n = Oe(Date.now() & 4294967295), o) {
       this.ps = t, (t.mount || t.mountOwned) && (t.mountOwned = true, t.mountSkill = true), t.line === "berserker" && t.tier >= 1 && (t.mountSkill = true), !t.poringOk && (t.poringOk = true, t.equipment.headTop ? He(t.inventory, "poring_saltitante", 1) : t.equipment.headTop = "poring_saltitante"), jr(t) && !t.ammoGift && (t.ammoGift = true, t.inventory.slots.some((i) => i && $(i.id)?.kind === "ammo") || He(t.inventory, "flecha_ferro", 100), t.ammo || (t.ammo = "flecha_ferro")), this.map = a, this.rng = n, this.spawnMgr = new Cl({ maxAlive: a.maxMonsters, rng: Oe(9137), now: () => this.time });
       let r = o && Ia(o.x, o.y, Uy, a.obstacles, a.width, a.height) ? { ...o } : { ...a.spawn };
-      this.player = { pos: r, facing: 0, radius: Uy, attackReadyAt: 0, skillReadyAt: new Array(40).fill(0), skillTotal: new Array(40).fill(1), dashReadyAt: 0, potionReadyAt: 0, buffs: [], deadAt: null, invulnUntil: 0, flinchUntil: 0, lastCombatAt: -99999, lastHurtAt: -99999, lastCastAt: -99999 }, a.spawns.forEach((i) => {
+      this.player = { pos: r, facing: 0, radius: Uy, attackReadyAt: 0, skillReadyAt: new Array(64).fill(0), skillTotal: new Array(64).fill(1), dashReadyAt: 0, potionReadyAt: 0, buffs: [], deadAt: null, invulnUntil: 0, flinchUntil: 0, lastCombatAt: -99999, lastHurtAt: -99999, lastCastAt: -99999 }, a.spawns.forEach((i) => {
         for (let s = 0; s < i.count; s++) {
           let l = this.slotCount++, c = oo(i.monster), d = c && xy(c, a.depth);
           if (!d) throw new Error(`Monstro desconhecido: ${i.monster}`);
@@ -11744,7 +11818,7 @@ Error generating stack: ` + n.message + `
     if (Array.isArray(e.visited)) for (let M of e.visited) typeof M == "string" && en(M) && !p.includes(M) && p.push(M);
     let h = [];
     if (Array.isArray(e.found)) for (let M of e.found) typeof M == "string" && M.length < 60 && !h.includes(M) && h.length < 2e3 && h.push(M);
-    let x = a >= 2 ? 10 : 5, b = Array.isArray(e.skillLevels) ? e.skillLevels : [], g = Array.from({ length: 40 }, (_, M) => Ut(b[M], 1, x, 1)), y = e.skillPoints === void 0 ? Math.max(0, o - 1) + a * 9 : Ut(e.skillPoints, 0, 999, 0), v = {};
+    let x = a >= 2 ? 10 : 5, b = Array.isArray(e.skillLevels) ? e.skillLevels : [], g = Array.from({ length: 64 }, (_, M) => Ut(b[M], 1, x, 1)), y = e.skillPoints === void 0 ? Math.max(0, o - 1) + a * 9 : Ut(e.skillPoints, 0, 999, 0), v = {};
     if (Vt(e.cards)) for (let [M, T] of Object.entries(e.cards)) {
       let z = $(M);
       if (!z || !Array.isArray(T) || !Pt(z.kind)) continue;
@@ -12297,14 +12371,14 @@ Error generating stack: ` + n.message + `
         let q = nz(args[0]), ids = Object.keys(Ce), hit = ids.find((id) => nz(id) === q || Ce[id].names.some((nm) => nz(nm) === q)) ?? ids.find((id) => q && (nz(id).startsWith(q) || Ce[id].names.some((nm) => nz(nm).startsWith(q))));
         if (!q || !hit) return say("Uso: @classe nome. Classes: " + ids.map((id) => Ce[id].names[1]).join(", "), "bad");
         let L = Ce[hit]; ps.line = hit, ps.tier = Math.max(2, ps.tier || 0), ps.path = hit === "escudeiro" ? (nz(args[1]).startsWith("alq") ? 2 : nz(args[1]).startsWith("fer") ? 1 : ps.path ?? 1) : ps.path ?? 0;
-        ps.skillLevels = Array.from({ length: 40 }, () => 10), ps.jobLevel = Math.max(ps.jobLevel, 50);
+        ps.skillLevels = Array.from({ length: 64 }, () => 10), ps.jobLevel = Math.max(ps.jobLevel, 50);
         let w = ps.equipment.weapon && $(ps.equipment.weapon); (!w || !L.weapons.includes(w.weaponType)) && (ps.equipment.weapon = L.startWeapon);
         let d = Ua(ps); ps.hp = d.maxHp, ps.mp = d.maxMp, this.world && (this.world.player.hp = ps.hp), this.saveGameQuiet(), this.refresh();
         return say(`Classe: ${L.names[Math.min(2, ps.tier)]}.`);
       }
       if (c === "allstatus") {
         for (let k of ["str", "agi", "vit", "int", "dex", "luk"]) ps.stats[k] = 99;
-        ps.tier = Math.max(2, ps.tier || 0), ps.level = Math.max(ps.level, 99), ps.skillLevels = Array.from({ length: 40 }, () => 10);
+        ps.tier = Math.max(2, ps.tier || 0), ps.level = Math.max(ps.level, 99), ps.skillLevels = Array.from({ length: 64 }, () => 10);
         let d = Ua(ps); ps.hp = d.maxHp, ps.mp = d.maxMp, this.saveGameQuiet(), this.refresh();
         return say("Atributos 99 e todas as habilidades no n\u00EDvel m\u00E1ximo.");
       }
