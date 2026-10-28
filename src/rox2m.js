@@ -356,7 +356,8 @@ const PETSCH=[['stand',2.6,6],['sniff',2,8],['stand',1.6,5],['sit',3.4,6],['look
   S({pts:[[-.8,y0-5.2,z0+3.5],[0,y0-4.8,z0+3.7],[.8,y0-5.2,z0+3.5]],w:[.5,.5],col:hx(0xc8506a)});
   if(ev){for(const sx of[-1,0,1])E({x:sx*2.6,y:y0-12.4+Math.abs(sx)*.6,z:z0+.4,rx:1.5,ry:1.2,rz:1.5,p:3,col:sx===0?hx(0xffd24a):hx(0xff8ab4),bias:.3});
    S({pts:[[3,y0-12,z0],[6.5,y0-15,z0-1],[8,y0-12.6,z0-1.4]],w:[2.4,.5],col:hx(0x6fd070)});}
-  for(let i=0;i<4;i++){const u=(T*.7+i*.25)%1;E({x:Math.sin(i*5+T)*10,y:y0+14-u*30,z:z0+Math.cos(i*3)*4,rx:.7,ry:.7,rz:.7,p:4,col:ev?hx(0xffe0f0):hx(0xcaffc0),bias:1})}
+  {const kq=o.k||0;if(kq!==0){const m=Math.abs(kq);for(const sx of[-1,1])E({x:sx*(kq<0?3:5.6),y:y0+1-(kq>0?kq*6:0),z:z0+(kq<0?3:5+kq*7),rx:1.2+m*1.2,ry:1.2+m*1.2,rz:1.2+m*1.2,p:3,col:ev?hx(0xffe0f0):hx(0xcaffc0),bias:1});if(kq>0)S({pts:[[0,y0-2,z0+3],[0,y0-3,z0+12+kq*8]],w:[1.4,.4],col:hx(0xe8ffd0),bias:1});}}
+ for(let i=0;i<4;i++){const u=(T*.7+i*.25)%1;E({x:Math.sin(i*5+T)*10,y:y0+14-u*30,z:z0+Math.cos(i*3)*4,rx:.7,ry:.7,rz:.7,p:4,col:ev?hx(0xffe0f0):hx(0xcaffc0),bias:1})}
  }});
  reg('amistr',{name:'Amistr',w:100,h:84,gy:74,sched:[['stand',2.4,6],['look',2.2,8],['sniff',2,8],['stand',1.4,4]],build:(E,S,o)=>{
   const ev=o.st&1,al=(o.st>>1)&1;
@@ -378,7 +379,7 @@ const PETSCH=[['stand',2.6,6],['sniff',2,8],['stand',1.6,5],['sit',3.4,6],['look
  reg('filir',{name:'Filir',w:104,h:84,gy:74,sched:[['float',3,6]],build:(E,S,o)=>{
   const ev=o.st&1,al=(o.st>>1)&1,T=o.t;
   const B1=al?hx(0x8a5a30):hx(0x2f6ee0),B2=al?hx(0xe8d8b8):hx(0x9ad4ff),B3=al?hx(0x5a3a20):hx(0x1a3a9a),BK=hx(0xf0b838);
-  const fl=Math.sin(T*(o.ph||o.k>0?18:10));const y0=o.g-28-Math.sin(T*2)*2+(o.k>0?-o.k*4:0),z0=o.sh,kk=o.k>0?o.k:0;
+  const fl=o.k>0?-.75:o.k<0?.9:Math.sin(T*(o.ph?18:10));const y0=o.g-28-Math.sin(T*2)*2+(o.k>0?o.k*7:o.k<0?o.k*5:0),z0=o.sh+(o.k>0?o.k*6:0),kk=o.k>0?o.k:0;
   const fire=(q,i)=>al?(q>.66?hx(0xfff0a0):q>.33?hx(0xffa030):hx(0xd03a10)):(i%2?(q>.5?hx(0xff7a30):hx(0xe02a18)):(q>.5?hx(0x9ae4ff):hx(0x2f8aff)));
   // asas
   for(const sx of[-1,1])for(let i=0;i<(ev?7:5);i++){const a=fl*.8;
@@ -414,7 +415,7 @@ const PETSCH=[['stand',2.6,6],['sniff',2,8],['stand',1.6,5],['sit',3.4,6],['look
    S({pts:[[0,g-hy*1.75,z0],[1.4,g-hy*2.5-1,z0]],w:[4,.9],col:J2});
    if(b==='jiggle')S({pts:[[sx*.8,g-2,z0+sx*.4],[sx*.9,g+1,z0+sx*.4]],w:[2,1],col:J});
   }else{
-   const y0=o.g-30-Math.sin(T*2)*2.6-(o.ph?Math.abs(Math.sin(o.ph))*2:0),z0=o.sh+k*3,fl=Math.sin(T*(o.ph||k?10:5));
+   const y0=o.g-30-Math.sin(T*2)*2.6-(o.ph?Math.abs(Math.sin(o.ph))*2:0),z0=o.sh+k*3,fl=k>0?-.8:k<0?.9:Math.sin(T*(o.ph?10:5));
    // asas osseas
    for(const sx of[-1,1]){for(let i=0;i<4;i++){S({pts:[[sx*7,y0-3,z0-3],[sx*(14+i*3.4),y0-12+i*3.4+fl*3.6,z0-5-i],[sx*(21+i*5),y0-8+i*6.6+fl*5,z0-6-i*1.6]],w:[1.8,.5],col:BONE});}
     S({pts:[[sx*7,y0-3,z0-4],[sx*14,y0-3+fl*2,z0-6],[sx*18,y0+4+fl*3,z0-7]],w:[9,3],col:al?hx(0x4a2a98):hx(0x5a2a78),bias:.15});}
@@ -424,7 +425,7 @@ const PETSCH=[['stand',2.6,6],['sniff',2,8],['stand',1.6,5],['sit',3.4,6],['look
    // costelas
    for(let i=0;i<4;i++){const y=y0-5+i*3.6;S({pts:[[-8.6+Math.abs(i-1.5)*1.2,y,z0+1],[0,y+1.4,z0+9.4-Math.abs(i-1.5)*.8],[8.6-Math.abs(i-1.5)*1.2,y,z0+1]],w:[1.7,1.7],col:BONE});}
    // nucleo brilhante
-   const pu=1+Math.sin(T*4)*.12;E({x:0,y:y0+1,z:z0+2.6,rx:3.3*pu,ry:3.3*pu,rz:3.3*pu,p:3,col:CORE,bias:1});E({x:0,y:y0+1,z:z0+3.6,rx:1.5,ry:1.5,rz:1.5,p:3,col:hx(0xffffff),bias:1});
+   const pu=1+Math.sin(T*4)*.12+Math.max(0,k)*.7;E({x:0,y:y0+1,z:z0+2.6,rx:3.3*pu,ry:3.3*pu,rz:3.3*pu,p:3,col:CORE,bias:1});E({x:0,y:y0+1,z:z0+3.6,rx:1.5,ry:1.5,rz:1.5,p:3,col:hx(0xffffff),bias:1});
    // cranio com olhos
    E({x:0,y:y0-9.4,z:z0+1.4,rx:6,ry:4.8,rz:5,p:3,col:BONE,tex:(mx,my,mz)=>mz>0&&my>.05&&my<.5&&Math.abs(Math.abs(mx)-.38)<.2?hx(0x14102a):(mz>0&&my>.55&&Math.abs(mx)<.14?hx(0x14102a):0)});
    for(const sx of[-1,1])E({x:sx*2.6,y:y0-9.2,z:z0+5.6,rx:1.5,ry:1.6,rz:.6,p:3,col:CORE,bias:1});

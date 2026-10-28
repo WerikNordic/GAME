@@ -7606,7 +7606,7 @@ Error generating stack: ` + n.message + `
     for (pd.exp += amt; pd.level < 99 && pd.exp >= petNeed(pd.level); ) pd.exp -= petNeed(pd.level), pd.level++, say?.(`${pd.name} subiu para o n\u00EDvel ${pd.level}!`);
   }
   function petSay(m, tone = "info") { try { j.pushLog(m, "system", tone); } catch {} }
-  var HOM_KINDS = { vitalis: { name: "Lif", color: 8050826, desc: "Cura o dono periodicamente." }, granito: { name: "Amistr", color: 10127994, desc: "Pele de pedra: +8% de vida do dono." }, faisca: { name: "Filir", color: 16765000, desc: "Ataques r\u00E1pidos." }, caos: { name: "Vanilmirth", color: 11559136, desc: "Dano imprevis\u00EDvel, de fraco a devastador." } };
+  var HOM_KINDS = { vitalis: { name: "Lif", color: 8050826, desc: "Dardo de folhas \u00E0 dist\u00E2ncia e Florescer: cura o dono e fere em \u00E1rea." }, granito: { name: "Amistr", color: 10127994, desc: "Luta de perto, +8% de vida do dono e Pisada de Pedra: atordoa em \u00E1rea." }, faisca: { name: "Filir", color: 16765000, desc: "Mergulha em ataques r\u00E1pidos e dispara Rajada de Fogo." }, caos: { name: "Vanilmirth", color: 11559136, desc: "Dano imprevis\u00EDvel e Descontrole: explos\u00E3o, cura ou gosma paralisante." } };
   function homunOk(ps) { return !!(ps && ps.line === "escudeiro" && ps.path === 2 && ps.homun); }
   function falconOk(ps) { return !!(ps && ps.line === "cacador" && ps.falconSkill && ps.falconTrained && !ps.falcaoOff); }
   function homunNeed(L) { return Math.round(50 * Math.pow(L, 1.5)); }
@@ -10529,7 +10529,7 @@ Error generating stack: ` + n.message + `
     }
     step(t) {
       let a = Math.max(0, Math.min(t, hM));
-      this.time += a, this.castState && this.tickCast(), this.ps.playTimeMs += a, this.player.buffs = this.player.buffs.filter((n) => n.until > this.time), this.player.deadAt !== null ? this.time - this.player.deadAt >= pM && this.respawnPlayer() : this.updatePlayer(a), this.updateProjectiles(a), this.updateDelayed(), this.petBite(), this.homunTick(), this.falconTick(), this.tutorial(), this.updatePendingBasic(), this.updateMonsters(a), this.updateLoot(), this.monsters = this.monsters.filter((n) => !(n.summoned && n.state === "dead" && this.time - n.diedAt > 3e3));
+      this.time += a, this.castState && this.tickCast(), this.ps.playTimeMs += a, this.player.buffs = this.player.buffs.filter((n) => n.until > this.time), this.player.deadAt !== null ? this.time - this.player.deadAt >= pM && this.respawnPlayer() : this.updatePlayer(a), this.updateProjectiles(a), this.updateDelayed(), this.petBite(), this.homunTick(a), this.falconTick(), this.tutorial(), this.updatePendingBasic(), this.updateMonsters(a), this.updateLoot(), this.monsters = this.monsters.filter((n) => !(n.summoned && n.state === "dead" && this.time - n.diedAt > 3e3));
     }
     buffSum(t) {
       let a = 0;
@@ -10814,14 +10814,57 @@ Error generating stack: ` + n.message + `
     logc(x, tone = "info") {
       this.emit({ type: "chatlog", text: x, tone });
     }
-    homunTick() {
-      let ps = this.ps;
-      if (!homunOk(ps) || !ps.homun.on || this.player.deadAt !== null || this.time < (this._homAt ?? 0)) return;
-      let h = ps.homun, st = homunStats(ps), k = h.kind;
-      this._homAt = this.time + (k === "faisca" ? 1200 : k === "caos" ? 1800 : k === "granito" ? 2000 : 2200);
-      if (k === "vitalis") { let d = Ua(ps); if (ps.hp < d.maxHp * 0.85) ps.hp = Math.min(d.maxHp, ps.hp + Math.round(d.maxHp * st.heal)), this.emit({ type: "fx", kind: "buff", x: this.player.pos.x, y: this.player.pos.y, angle: 0, range: 50, arc: 360, magic: true, fromPlayer: true, light: 8050826 }); }
-      let m = this.nearestMonster(190);
-      if (m && m.state !== "dead" && !this.inSafeZone?.(this.player.pos)) { let mul = k === "vitalis" ? 0.6 : k === "granito" ? 0.8 : k === "faisca" ? 0.9 : 0.4 + Math.random() * 2.2; this.hitMonster(m, Math.round(st.atk * mul), 1, 0, 0); }
+    homunTick(dt = 16) {
+      const ps = this.ps;
+      if (!homunOk(ps) || !ps.homun.on || this.player.deadAt !== null) { this.hm = null; return; }
+      const h = ps.homun, st = homunStats(ps), k = h.kind, ev = !!h.evolved, P = this.player.pos, now = this.time;
+      let H = this.hm || (this.hm = { x: P.x + 30, y: P.y + 20, face: 1, mode: "hover", nextAtk: now + 800, nextSk: now + 5000, nextHeal: now + 2200, aKind: 0, aEnd: 0, aDur: 1, mv: false, q: [], diveEnd: 0 });
+      if (H.q.length) { const due = H.q.filter((e) => e.at <= now); H.q = H.q.filter((e) => e.at > now); for (const e of due) e.fn(); }
+      const safe = this.inSafeZone?.(P), tgt = safe ? null : this.nearestMonster(260), alive = !!tgt && tgt.state !== "dead";
+      const hit = (m, mul, stun = 0, slow = 0) => { if (!m || m.state === "dead") return; this._hitSrc = "pet"; this.hitMonster(m, Math.max(1, Math.round(st.atk * mul)), 1, stun, slow); this._hitSrc = null; };
+      const area = (x, y, r, mul, stun = 0, slow = 0) => { for (const m of [...this.monsters]) m.state !== "dead" && Math.hypot(m.pos.x - x, m.pos.y - y) - m.def.radius <= r && hit(m, mul, stun, slow); };
+      const fx = (kind, x, y, extra) => this.emit({ type: "fx", kind, x, y, angle: 0, range: 50, arc: 360, magic: true, fromPlayer: true, ...extra });
+      const anim = (kind, ms) => { H.aKind = kind, H.aEnd = now + ms, H.aDur = ms; };
+      const go = (tx, ty, sp) => { const dx = tx - H.x, dy = ty - H.y, d = Math.hypot(dx, dy); if (d < 3) return d; const stp = Math.min(d, sp * dt / 1000); H.x += dx / d * stp, H.y += dy / d * stp; Math.abs(dx) > 1 && (H.face = dx > 0 ? 1 : -1); H.mv = true; return d; };
+      const aim = (m) => Math.atan2(m.pos.y - H.y, m.pos.x - H.x), say = (t) => this.logc?.(`${h.name}: ${t}`, "good");
+      const SP = { vitalis: 230, granito: 200, faisca: 340, caos: 220 }[k] || 220, col = { vitalis: h.alt ? 0xf2d268 : 0x7fe070, granito: h.alt ? 0xe2b678 : 0xc8d0dc, faisca: h.alt ? 0xffb040 : 0x70b8ff, caos: h.alt ? 0x6a7aff : 0xb070ff }[k];
+      H.mv = false;
+      if (Math.hypot(H.x - P.x, H.y - P.y) > 600) H.x = P.x + 30, H.y = P.y + 20;
+      // cura passiva da Lif
+      if (k === "vitalis" && now >= H.nextHeal) { H.nextHeal = now + 2200; const d = Ua(ps); if (ps.hp < d.maxHp * 0.85) ps.hp = Math.min(d.maxHp, ps.hp + Math.round(d.maxHp * st.heal)), fx("buff", P.x, P.y, { range: 50, light: col }); }
+      if (!alive) {
+        if (k === "vitalis" && now >= H.nextSk) { const d = Ua(ps); if (ps.hp < d.maxHp * 0.7) { H.nextSk = now + (ev ? 10000 : 13000); ps.hp = Math.min(d.maxHp, ps.hp + Math.round(d.maxHp * (ev ? 0.22 : 0.12))); fx("nova", P.x, P.y, { range: 100, light: col }); fx("heal", P.x, P.y, { range: 50, light: col }); anim(2, 600); say("Florescer!"); } }
+        const dd = Math.hypot(P.x + 34 - H.x, P.y + 18 - H.y); go(P.x + 34, P.y + 18, SP + Math.max(0, dd - 80) * 3.2); H.mode = "hover"; return;
+      }
+      const R = tgt.def.radius, d = Math.hypot(tgt.pos.x - H.x, tgt.pos.y - H.y);
+      if (k === "vitalis") {
+        if (d < 100) { const ux = (H.x - tgt.pos.x) / (d || 1), uy = (H.y - tgt.pos.y) / (d || 1); go(H.x + ux * 60, H.y + uy * 60, SP); } else if (d > 170) go(tgt.pos.x, tgt.pos.y, SP);
+        if (d <= 200 && now >= H.nextAtk) { H.nextAtk = now + 1100; anim(1, 420); const an = aim(tgt); fx("shot", H.x, H.y, { angle: an, range: Math.min(200, d), light: col }); hit(tgt, 0.7); }
+        if (now >= H.nextSk) { H.nextSk = now + (ev ? 10000 : 13000); anim(2, 650); const dm = Ua(ps); ps.hp = Math.min(dm.maxHp, ps.hp + Math.round(dm.maxHp * (ev ? 0.22 : 0.12))); fx("nova", P.x, P.y, { range: 110, light: col }); fx("heal", P.x, P.y, { range: 50, light: col }); area(P.x, P.y, 110, ev ? 1.3 : 0.8, 0, 600); say("Florescer!"); }
+      } else if (k === "granito") {
+        const ux = (tgt.pos.x - H.x) / (d || 1), uy = (tgt.pos.y - H.y) / (d || 1); go(tgt.pos.x - ux * (R + 24), tgt.pos.y - uy * (R + 24), SP);
+        if (d <= R + 46 && now >= H.nextAtk) { H.nextAtk = now + 1500; anim(1, 480); fx("cone", H.x, H.y, { angle: aim(tgt), range: 54, arc: 100, light: col }); hit(tgt, 1, 350); }
+        if (d <= 140 && now >= H.nextSk) { H.nextSk = now + (ev ? 9000 : 12000); anim(2, 700); const rr = ev ? 135 : 95; H.q.push({ at: now + 300, fn: () => { fx("impact", H.x, H.y, { range: rr, light: col, style: "meteor" }); fx("nova", H.x, H.y, { range: rr, light: 0xb09060 }); area(H.x, H.y, rr, ev ? 2.2 : 1.4, ev ? 1800 : 1200); } }); say(ev ? "Pisada do Touro!" : "Pisada de Pedra!"); }
+      } else if (k === "faisca") {
+        if (H.mode === "dive") {
+          go(tgt.pos.x, tgt.pos.y, 560);
+          if (d <= R + 26) { H.mode = "hover"; H.nextAtk = now + 1300; anim(1, 380); fx("impact", tgt.pos.x, tgt.pos.y, { range: 40, light: col }); hit(tgt, 0.9); H.q.push({ at: now + 140, fn: () => { fx("impact", tgt.pos.x, tgt.pos.y, { range: 36, light: 0xff7a30 }); hit(tgt, 0.9); } }); }
+          else if (now > H.diveEnd) H.mode = "hover";
+        } else {
+          const a = now / 900; go(tgt.pos.x + Math.cos(a) * 105, tgt.pos.y + Math.sin(a) * 70, SP);
+          if (now >= H.nextAtk && d <= 240) { H.mode = "dive"; H.diveEnd = now + 800; }
+        }
+        if (now >= H.nextSk) { H.nextSk = now + (ev ? 7500 : 9500); anim(2, 600); const n = ev ? 5 : 3; for (let i = 0; i < n; i++) H.q.push({ at: now + 120 + i * 140, fn: () => { if (tgt.state === "dead") return; fx("shot", H.x, H.y, { angle: aim(tgt), range: Math.min(260, Math.hypot(tgt.pos.x - H.x, tgt.pos.y - H.y)), light: i % 2 ? 0xff7a30 : col }); hit(tgt, ev ? 1.0 : 0.8); } }); ev && H.q.push({ at: now + 900, fn: () => { fx("impact", tgt.pos.x, tgt.pos.y, { range: 90, light: 0xff5a20, style: "meteor" }); area(tgt.pos.x, tgt.pos.y, 90, 1.4, 0, 0); } }); say(ev ? "Chuva de Brasas!" : "Rajada de Fogo!"); }
+      } else {
+        go(tgt.pos.x, tgt.pos.y, SP);
+        if (d <= R + 34 && now >= H.nextAtk) { H.nextAtk = now + 1300; anim(1, 450); const mul = 0.4 + Math.random() * 2.2; fx("impact", H.x, H.y, { range: 55, light: col }); area(H.x, H.y, 55, mul, Math.random() < 0.15 ? 600 : 0, Math.random() < 0.2 ? 1500 : 0); }
+        if (d <= 160 && now >= H.nextSk) {
+          H.nextSk = now + 11000; anim(2, 700); const r = Math.random();
+          if (r < 0.34) { H.q.push({ at: now + 350, fn: () => { fx("impact", H.x, H.y, { range: 125, light: col, style: "meteor" }); area(H.x, H.y, 125, ev ? 4 : 3, 0, 0); } }); say("Descontrole: explosão!"); }
+          else if (r < 0.67) { const dm = Ua(ps); ps.hp = Math.min(dm.maxHp, ps.hp + Math.round(dm.maxHp * 0.25)); fx("nova", P.x, P.y, { range: 110, light: 0x80ffe8 }); fx("heal", P.x, P.y, { range: 50, light: 0x80ffe8 }); say("Descontrole: gelatina curativa!"); }
+          else { fx("nova", H.x, H.y, { range: 150, light: col }); area(H.x, H.y, 150, 1.2, 1500, 2500); say("Descontrole: gosma paralisante!"); }
+        }
+      }
     }
     falconTick() {
       let ps = this.ps;
@@ -19784,13 +19827,14 @@ function ROXQM(f, c, s, l, def, ex) {
     }
     drawHomun() {
       let w = this.store.world; if (!w || !homunOk(w.ps) || w.isDead()) return;
-      let h = w.ps.homun, o = w.player, n = this.ctx, c = this._hm || (this._hm = { x: o.pos.x + 30, y: o.pos.y + 20 });
-      let tx = o.pos.x + 34, ty = o.pos.y + 18, dd = Math.hypot(tx - c.x, ty - c.y);
-      dd > 400 ? (c.x = tx, c.y = ty) : dd > 4 && (c.x += (tx - c.x) * 0.1, c.y += (ty - c.y) * 0.1);
+      let h = w.ps.homun, o = w.player, n = this.ctx, hmw = w.hm, c = hmw || this._hm || (this._hm = { x: o.pos.x + 30, y: o.pos.y + 20 });
+      let tx = o.pos.x + 34, ty = o.pos.y + 18, dd = hmw ? (hmw.mv ? 20 : 0) : Math.hypot(tx - c.x, ty - c.y);
+      hmw || (dd > 400 ? (c.x = tx, c.y = ty) : dd > 4 && (c.x += (tx - c.x) * 0.1, c.y += (ty - c.y) * 0.1));
       let p = ce(c.x, c.y), t = this.clock / 380, bob = Math.sin(t) * 3, sc = h.evolved ? 1.3 : 1, col = HOM_KINDS[h.kind].color, hx = (v) => "#" + (v >>> 0).toString(16).padStart(6, "0");
       this.blob(p.x, p.y + 4, 8 * sc);
-      { let hsp = null; try { const km = { vitalis: "lif", granito: "amistr", faisca: "filir", caos: "vanilmirth" }[h.kind]; hsp = typeof ROX2M !== "undefined" && km ? ROX2M.mon(km, "side", dd > 6 ? Math.floor(this.clock / 90) % 8 : -1, 0, { id: km, color: null }, { st: (h.evolved ? 1 : 0) + (h.alt ? 2 : 0), clk: this.clock, seed: 1 }) : null; } catch (e) { hsp = null; }
-        if (hsp) { const tp = ce(tx, ty); this._hmFlip = tp.x - p.x < -3 ? true : tp.x - p.x > 3 ? false : !!this._hmFlip; nt(n, hsp, p.x, p.y + 6, this._hmFlip, $a * 1.15, $a * 1.15); return; } }
+      { let hsp = null; try { const km = { vitalis: "lif", granito: "amistr", faisca: "filir", caos: "vanilmirth" }[h.kind]; let al = 0; if (hmw && hmw.aEnd > w.time) { const f = 1 - (hmw.aEnd - w.time) / hmw.aDur; al = f < 0.35 ? 2 : f < 0.7 ? 3 : 1; }
+          hsp = typeof ROX2M !== "undefined" && km ? ROX2M.mon(km, "side", dd > 6 ? Math.floor(this.clock / 90) % 8 : -1, al, { id: km, color: null }, { st: (h.evolved ? 1 : 0) + (h.alt ? 2 : 0), clk: this.clock, seed: 1 }) : null; } catch (e) { hsp = null; }
+        if (hsp) { if (hmw) this._hmFlip = hmw.face < 0; else { const tp = ce(tx, ty); this._hmFlip = tp.x - p.x < -3 ? true : tp.x - p.x > 3 ? false : !!this._hmFlip; } const hop = h.kind === "caos" && hmw?.mv ? -Math.abs(Math.sin(this.clock / 110)) * 8 : 0; nt(n, hsp, p.x, p.y + 6 + hop, this._hmFlip, $a * 1.15, $a * 1.15); return; } }
       n.save(), n.translate(p.x, p.y - 20 + bob), n.scale(sc, sc);
       const ev = !!h.evolved, AL = !!h.alt, E = (x, y, rx, ry, c, rot = 0) => { n.fillStyle = c, n.beginPath(), n.ellipse(x, y, rx, ry, rot, 0, 7), n.fill(); }, P = (c, pts) => { n.fillStyle = c, n.beginPath(), n.moveTo(pts[0], pts[1]); for (let q = 2; q < pts.length; q += 2) n.lineTo(pts[q], pts[q + 1]); n.closePath(), n.fill(); }, eye = (x, y, r = 2) => { E(x, y, r, r * 1.1, "#fff"), E(x + 0.5, y + 0.3, r * 0.5, r * 0.6, "#1a1a2a"); };
       if (ev) E(0, 0, 19, 19, "rgba(255,230,140,0.22)");

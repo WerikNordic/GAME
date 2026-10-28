@@ -1,3 +1,12 @@
+## v237 — Mecânica dos homúnculos
+- Agora andam, perseguem e lutam de verdade, cada um do seu jeito:
+  - Lif: fica à distância, dardo de folhas; Florescer cura o dono e fere em área (evoluída cura mais).
+  - Amistr: corpo a corpo, golpe em cone com atordoamento; Pisada de Pedra / Pisada do Touro atordoa em área.
+  - Filir: orbita o alvo e mergulha em ataque duplo; Rajada de Fogo (evoluída: Chuva de Brasas com explosão).
+  - Vanilmirth: pula no alvo com dano imprevisível; Descontrole sorteia explosão, cura ou gosma paralisante.
+- Poses de ataque nos modelos (preparar, golpear), pulos do Vanilmirth, efeitos coloridos por tipo, mensagens das habilidades no chat.
+- Só atacam fora de zona segura.
+
 ## v236 — Homúnculos 3D
 - Os 4 homúnculos refeitos no mesmo sistema 3D dos monstros novos (giram conforme a direção, animam andando e parados): Lif (fada com asas, vestido de pétalas; evoluída com asas de folha, flores e tranças), Amistr (quadrúpede de pedra com placas nas costas; evoluído com cristais, chifres dourados e argola), Filir (pássaro de bico longo; evoluída com asas de chamas), Vanilmirth (gelatina com olhos grandes; evoluído com crânio, costelas, núcleo brilhante e asas ósseas).
 - Cada um tem versão de cor alternativa. O desenho antigo fica só como reserva se o novo falhar.
