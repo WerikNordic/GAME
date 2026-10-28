@@ -13109,10 +13109,10 @@ Error generating stack: ` + n.message + `
   var SBU = "https://emnpakqfvargtvyffixy.supabase.co", SBK = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVtbnBha3FmdmFyZ3R2eWZmaXh5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI4NzA4MDMsImV4cCI6MjEwODQ0NjgwM30.l6568JTHkZcbHQbU9zP1UOqLgNg6w_6K8s1TOrHHZno";
   async function sbRpc(fn, args) {
     try {
-      let r = await fetch(SBU + "/rest/v1/rpc/" + fn, { method: "POST", headers: { apikey: SBK, Authorization: "Bearer " + SBK, "Content-Type": "application/json" }, body: JSON.stringify(args || {}) });
+      let r = await fetch(SBU + "/rest/v1/rpc/" + fn, { signal: (typeof AbortSignal !== "undefined" && AbortSignal.timeout) ? AbortSignal.timeout(15000) : void 0, method: "POST", headers: { apikey: SBK, Authorization: "Bearer " + SBK, "Content-Type": "application/json" }, body: JSON.stringify(args || {}) });
       return await r.json();
     } catch {
-      return { ok: false, error: "Sem conex\xE3o com o servidor. Verifique sua internet." };
+      return { ok: false, error: "Sem conex\xE3o com o servidor. Abra o arquivo no Chrome/Edge (fora do app) e verifique a internet." };
     }
   }
   async function claimNick(name, taken) {
