@@ -1,3 +1,6 @@
+## v217 — Conjuração ininterrupta
+- Novos itens: Carta Fen (+25% cast), Carta Borboleta Sangrenta (+30%), Manto de Orleans (+15%): equipados, o dano não interrompe a conjuração. Disponíveis por @item (carta_fen, carta_borboleta, manto_orleans).
+
 ## v216 — Casas das guildas com mais detalhes
 - Escadaria, braseiros acesos, estandartes na cor da classe, arbustos floridos e bandeira no telhado nas 7 casas de guilda.
 

@@ -9373,6 +9373,9 @@ Error generating stack: ` + n.message + `
     return a;
   }
   (() => {
+    Wa.carta_fen = { id: "carta_fen", name: "Carta Fen", kind: "accessory", rarity: "epic", reqLevel: 1, stack: 1, sell: 4000, desc: "Impede a interrup\u00E7\u00E3o da conjura\u00E7\u00E3o, mas aumenta o tempo de conjura\u00E7\u00E3o em 25%.", script: "Conjura\u00E7\u00E3o ininterrupt\u00E1vel; +25% tempo de conjura\u00E7\u00E3o", cast: { uninterrupt: true, mul: 0.25 } };
+    Wa.carta_borboleta = { id: "carta_borboleta", name: "Carta Borboleta Sangrenta", kind: "accessory", rarity: "epic", reqLevel: 1, stack: 1, sell: 4500, desc: "Impede a interrup\u00E7\u00E3o da conjura\u00E7\u00E3o, mas aumenta o tempo de conjura\u00E7\u00E3o em 30%.", script: "Conjura\u00E7\u00E3o ininterrupt\u00E1vel; +30% tempo de conjura\u00E7\u00E3o", cast: { uninterrupt: true, mul: 0.3 } };
+    Wa.manto_orleans = { id: "manto_orleans", name: "Manto de Orleans", kind: "armor", rarity: "epic", reqLevel: 1, stack: 1, sell: 5000, desc: "Impede a interrup\u00E7\u00E3o da conjura\u00E7\u00E3o, mas aumenta o tempo de conjura\u00E7\u00E3o em 15%.", script: "Conjura\u00E7\u00E3o ininterrupt\u00E1vel; +15% tempo de conjura\u00E7\u00E3o", bonus: { def: 4 }, cast: { uninterrupt: true, mul: 0.15 } };
     Wa.faca_aprendiz = { id: "faca_aprendiz", name: "Faca de Aprendiz", kind: "weapon", weaponType: "dagger", rarity: "common", reqLevel: 1, stack: 1, sell: 2, weight: 10, desc: "Uma faca simples. Todo aprendiz come\xE7a com uma.", bonus: { atk: 2 } }, Wa.camisa_algodao = { id: "camisa_algodao", name: "Camisa de Algod\xE3o", kind: "armor", rarity: "common", reqLevel: 1, stack: 1, sell: 2, desc: "Camisa leve de algod\xE3o.", bonus: { def: 1, maxHp: 6 } };
     Ce.aprendiz = { id: "aprendiz", names: ["Aprendiz", "Aprendiz", "Aprendiz", "Aprendiz", "Aprendiz", "Aprendiz"], role: "Sem classe", color: 12632256, desc: "Todo heroi come\xE7a aqui. No n\xEDvel de classe 10, procure o L\xEDder de Classe em uma cidade principal.", base: { str: 5, agi: 5, vit: 5, int: 3, dex: 4, luk: 3 }, hpMult: 1, mpMult: 0.9, attackStat: "str", weapons: ["axe", "sword", "dagger", "club", "staff", "spear", "bow", "fist", "mace"], startWeapon: "faca_aprendiz", basic: { range: 52, cooldown: 560, magic: false, ranged: false, arc: 110 }, skills: [{ id: "golpe_firme", name: "Golpe Firme", tier: 0, kind: "cone", mp: 4, cooldown: 2200, mult: 1.6, range: 62, radius: 0, arc: 110, light: 16766080, desc: "Golpe forte \xE0 frente." }, { id: "folego", name: "F\xF4lego", tier: 0, kind: "buff", mp: 8, cooldown: 16e3, mult: 0, range: 0, radius: 0, buff: { atk: 0.2, ms: 8e3 }, light: 16777152, desc: "+20% de ataque por 8s." }] };
     for (let k of CLS7) { let n = Ce[k].names, b = n[2]; Ce[k].names = [n[0], n[1], b, b + " Renascido", "Lorde " + b, b + " Transcendente"]; }
@@ -10779,10 +10782,15 @@ Error generating stack: ` + n.message + `
       if (this.time < (this.gcdUntil || 0)) return false;
       let r = this.ps.skillLevels?.[t] ?? 1, mp = Ju(n.mp, r);
       if (this.time < this.player.skillReadyAt[t] || this.ps.mp < mp) return false;
-      let dex = Math.min(150, tp(this.ps).dex || 0), base = Math.min(4200, 650 + mp * 38 + (n.kind === "meteor" ? 900 : 0)), eff = Math.round(base * (1 - dex / 150));
+      let dex = Math.min(150, tp(this.ps).dex || 0), base = Math.min(4200, 650 + mp * 38 + (n.kind === "meteor" ? 900 : 0)), cm = this.castGear(), eff = Math.round(base * (1 - dex / 150) * (1 + cm.mul));
       if (eff < 50) return this.castSkillNow(t), this.gcdUntil = this.time + 260, true;
       this.castState = { t, start: this.time, end: this.time + eff, aim: this.aimAng, tid: this.targetId, mp, name: n.name }, this.player.facing = this.aimAng ?? this.player.facing;
       return true;
+    }
+    castGear() {
+      let r = { un: false, mul: 0 };
+      for (let v of Object.values(this.ps.equipment || {})) { let c = typeof v == "string" ? Wa[v]?.cast : null; c && (r.un = r.un || !!c.uninterrupt, r.mul += c.mul || 0); }
+      return r;
     }
     tickCast() {
       let c = this.castState;
@@ -10795,7 +10803,7 @@ Error generating stack: ` + n.message + `
     interruptCast() {
       let c = this.castState;
       if (!c) return;
-      if (this.ps.uninterruptible || this.buffSum("noint") > 0) return;
+      if (this.ps.uninterruptible || this.castGear().un || this.buffSum("noint") > 0) return;
       this.castState = null, this.ps.mp = Math.max(0, this.ps.mp - Math.round(c.mp * 0.5)), this.toast("Conjura\u00E7\u00E3o interrompida!", "bad"), this.emit({ type: "damage", target: "player", id: 0, amount: 0, crit: false, miss: true, x: this.player.pos.x, y: this.player.pos.y });
     }
     castSkillNow(t) {
