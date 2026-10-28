@@ -694,3 +694,6 @@
 ## v242
 - Tabela de 10 elementos (neutro, água, terra, fogo, vento, veneno, sombra, sagrado, fantasma, morto-vivo; gelo mantido) com eficácia; bestiário lista todos.
 - Crítico agora ignora a DEF do alvo; SOR dá +0,3% de crítico por ponto.
+
+## v243
+- Tela de login desativada por enquanto (AUTH_ON=false); o jogo abre direto no menu. Para reativar: AUTH_ON = true.
