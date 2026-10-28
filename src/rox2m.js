@@ -86,7 +86,7 @@ var ROX2M = (() => {
   S({pts:[[0,r.chY-6,r.hd[2]-5],[0,r.hd[1]-1,r.hd[2]-1.6]],w:[2.4,1.4],col:hx(0x2a1a14)})}});
  // ---------- montaria epica (cavalo de guerra com armadura dourada, manto carmesim e crina de chamas) ----------
  reg('montaria',{name:'Montaria',w:120,h:104,gy:94,sched:[['stand',2.4,6],['look',2.4,8],['snort',1.8,8],['stand',1.6,5]],build:(E,S,o)=>{
-  const r=canid(E,S,o,{L:38,H:15,W:6,legL:21,legW:2.5,col:hx(0x8a5a3a),col2:hx(0x6a4028),stride:6.5,lift:3.6,hw:3.9,hh:4.4,hl:7.6,snoutL:.7,snoutW:.7,snout:hx(0x7a4c30),eye:hx(0xffd870),ears:1,earIn:hx(0x4a2a1c),tail:1,tailW:4.2,tailTip:hx(0x2a1a14),hHigh:-15,pitch0:-.6,belly:1,paw:hx(0xe8dcc0)});
+  const r=canid(E,S,o,{...WOLF,L:36,H:15.5,W:6.6,legL:15.5,legW:3.1,col:hx(0x6e7480),col2:hx(0xaeb4c0),stride:6,lift:3.4,hw:4.8,hh:5,hl:7.2,snoutL:.8,snoutW:.62,snout:hx(0x8e94a0),eye:hx(0xff5a3a),earIn:hx(0x3a3e48),tailTip:hx(0xeef2fa),tailW:5,hHigh:.5,belly:1,paw:hx(0xe8ecf4),fangs:1});
   const GOLD=hx(0xf2c24a),GOLD2=hx(0xb88a24),CRIM=hx(0x9a1e32),CRIM2=hx(0x6a1424),B=.2;
   const mY=(r.chY+r.hpY)/2,mZ=(r.chZ+r.hpZ)/2;
   // manto (caparison) sobre o dorso, com franjas douradas nas laterais
@@ -106,12 +106,12 @@ var ROX2M = (() => {
   S({pts:[A3(A3(hd,up,3.2),dv,-1),A3(A3(hd,dv,r.dv?9:9),up,2.6)],w:[3.4,2.4],col:GOLD,metal:1,bias:B});
   S({pts:[A3(A3(hd,up,-3.6),dv,-3.4),A3(A3(hd,up,-9),dv,-6)],w:[1.8,1.2],col:GOLD2,bias:B});
   for(const sx of[-1,1])E({x:hd[0]+sx*3.6,y:hd[1]-.4,z:hd[2]+1.4,rx:1.1,ry:2.2,rz:3,p:3,col:GOLD,metal:1,bias:B});
-  {const tt=o.t||0,sw=Math.sin(tt*3)*1.6;S({pts:[A3(hd,up,-4),A3(A3(hd,up,-9),[sw,0,-2]),A3(A3(hd,up,-13),[sw*1.6,0,-6])],w:[2.6,.8],col:hx(0xff3a4a),bias:.5})}
+  {const tt=o.t||0,sw=Math.sin(tt*3)*1.6;S({pts:[A3(hd,up,-4),A3(A3(hd,up,-9),[sw,0,-2]),A3(A3(hd,up,-13),[sw*1.6,0,-6])],w:[2.6,.8],col:hx(0x7ad0ff),bias:.5})}
   // crina de chamas
   for(let i=0;i<9;i++){const u=i/8,y=r.chY-6-u*1.5+(r.hpY-r.chY)*u*.6,z=r.chZ+5-u*(r.chZ-r.hpZ)*.3,fl=Math.sin((o.t||0)*6+i*1.3)*1.4;
-   S({pts:[[0,y,z],[fl*.5,y-3.4,z-1.8],[fl,y-6.4-(i%2)*1.6,z-3.6]],w:[2.4,.5],col:(q)=>q>.55?hx(0xfff0a0):hx(0xff8a2a),bias:.7})}
+   S({pts:[[0,y,z],[fl*.5,y-3.4,z-1.8],[fl,y-6.4-(i%2)*1.6,z-3.6]],w:[2.4,.5],col:(q)=>q>.55?hx(0xe8f6ff):hx(0x6ab8ff),bias:.7})}
   // cauda em chamas
-  {const tb=[0,r.hpY-1.2,r.hpZ-6.5];for(let i=0;i<4;i++){const f=Math.sin((o.t||0)*5+i*1.7)*2;S({pts:[tb,[f*.5,r.hpY+3,r.hpZ-10-i],[f,r.hpY+8+i*1.2,r.hpZ-13-i*1.4]],w:[2.4,.4],col:(q)=>q>.5?hx(0xfff0a0):hx(0xff6a2a),bias:.7})}}
+  {const tb=[0,r.hpY-1.2,r.hpZ-6.5];for(let i=0;i<4;i++){const f=Math.sin((o.t||0)*5+i*1.7)*2;S({pts:[tb,[f*.5,r.hpY+3,r.hpZ-10-i],[f,r.hpY+8+i*1.2,r.hpZ-13-i*1.4]],w:[2.4,.4],col:(q)=>q>.5?hx(0xe8f6ff):hx(0x5aa8ff),bias:.7})}}
   // aneis dourados nos cascos e brilho de runa
   for(let i=0;i<5;i++){const u=((o.t||0)*.7+i*.2)%1;E({x:Math.sin(i*2.4+(o.t||0))*10,y:o.g-4-u*26,z:Math.cos(i*2.4)*9,rx:.8,ry:.8,rz:.8,p:4,col:hx(0xffe08a),bias:1})}
  }});

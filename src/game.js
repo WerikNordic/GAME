@@ -8866,7 +8866,7 @@ Error generating stack: ` + n.message + `
     }
     if (e.id === "cidade_isenborg") for (let q of o.filter((z) => z.kind === "deco" && z.deco === "frosttree")) o.push({ kind: "deco", deco: "giftpile", x: q.x + q.w / 2 + 6, y: q.y + q.h + 4, w: 26, h: 20 });
     { const STR = new Set(["lamp", "bench", "brazier", "cart", "stall", "well", "planter", "tent", "campfire", "giftpile", "barrel", "spiritlamp", "post", "banner"]), pv2 = p.filter((q) => Math.min(q.w, q.h) >= 40);
-      o = o.filter((q) => !(q.kind === "deco" && STR.has(q.deco) && pv2.some((z) => q.x + q.w / 2 > z.x - 4 && q.x + q.w / 2 < z.x + z.w + 4 && q.y + q.h / 2 > z.y - 4 && q.y + q.h / 2 < z.y + z.h + 4))); }
+      o = o.filter((q) => !(q.kind === "deco" && STR.has(q.deco) && pv2.some((z) => q.x + q.w / 2 > z.x - 4 && q.x + q.w / 2 < z.x + z.w + 4 && q.y + q.h / 2 > z.y - 4 && q.y + q.h / 2 < z.y + z.h + 4))); const HSE = (q) => q.kind === "house" || q.kind === "crate" || (q.kind === "deco" && (q.deco === "hay" || q.deco === "ruinhouse")); o = o.filter((q) => !(HSE(q) && pv2.some((z) => q.x + q.w > z.x + 6 && q.x < z.x + z.w - 6 && q.y + q.h > z.y + 6 && q.y < z.y + z.h - 6))); }
     return { id: e.id, name: e.name, width: t, height: a, spawn: { x: d, y: a - 420 }, safeZone: { x: c.x, y: c.y, w: c.w, h: c.h }, obstacles: tidyCity(e.id === "cidade_eldvik" ? o.filter((q) => !(q.kind === "deco" && q.deco === "palm")) : e.id === "cidade_freyrhain" ? o.filter((q) => !(q.kind === "deco" && (q.deco === "lamp" || q.deco === "banner" || q.deco === "bench"))) : o, M), treeTheme: e.id === "cidade_eldvik" ? "dead" : void 0, critters: crit, spawns: [], maxMonsters: 0, npcs: M, pois: r, portals: [{ x: f.from, y: a - 60, w: f.to - f.from, h: 60, label: "Sa\xEDda da cidade", locked: false, toMap: e.from, toSpawn: { x: 130, y: 630 } }], bossDen: { x: t / 2, y: a / 2 + 600, r: 10 }, theme: e.theme, safeLabel: e.safeLabel, scars: [], mood: e.mood, city: true, paved: e.id === "cidade_freyrhain" ? [] : p };
   }
   var Hr = (...e) => [...new Set(["arauto", "ottar", "bruna", "brokk", "munin", "sigrun", "estilista", "provador", "utilidades", "cronista", "checkpoint", "questor", "lider", "mestre_jogos", "salavip", "aeronave", "barqueiro", "curandeira", ...e])].map((t) => ({ id: t, x: 0, y: 0 })), D8 = [{ id: "cidade_midgard", name: "Cidade de Midgard", seed: 7e3, theme: "grass", from: "campos_midgard", safeLabel: "Pra\xE7a de Midgard", npcs: Hr("eira", "curandeira", "montaria"), grand: "palace", grandName: "Sal\xE3o do Jarl" }, { id: "cidade_ravnhaven", name: "Cidade de Ravnhaven", seed: 7101, theme: "grass", from: "midgard_brumaforte", safeLabel: "Pra\xE7a do Corvo", npcs: Hr(), grand: "castle", grandName: "Fortaleza do Corvo" }, { id: "cidade_isenborg", name: "Cidade de Isenborg", seed: 7202, theme: "snow", from: "jotunheim_aldeia", safeLabel: "Pra\xE7a da Geada", npcs: Hr("ylva", "torvald", "papainoel", "paihomun"), grand: "castle", grandName: "Cidadela de Gelo", mood: [0.92, 0.96, 1] }, { id: "cidade_eldvik", name: "Cidade de Eldvik", seed: 7303, theme: "sand", from: "muspel_cinzas", safeLabel: "Pra\xE7a das Brasas", npcs: Hr(), grand: "none", mood: [1.04, 0.96, 0.84] }, { id: "cidade_kharnheim", name: "Cidade de Kharnheim", seed: 7404, theme: "forge", from: "svart_mercado", safeLabel: "Pra\xE7a da Bigorna", npcs: Hr(), grand: "palace", grandName: "Grande Sal\xE3o da Bigorna", mood: [1, 0.9, 0.85] }, { id: "cidade_freyrhain", name: "Cidade de Freyrhain", seed: 7505, theme: "lush", from: "vana_santuario", safeLabel: "Pra\xE7a das Ra\xEDzes", npcs: Hr(), grand: "palace", grandName: "Pal\xE1cio das Ra\xEDzes" }, { id: "cidade_gladsheim", name: "Cidade de Gladsheim", seed: 7606, theme: "marble", from: "asg_praca", safeLabel: "Pra\xE7a dos Aesir", npcs: Hr(), grand: "both", grandName: "Sal\xE3o dos Aesir" }, { id: "cidade_skogvik", name: "Cidade de Skogvik", seed: 7707, theme: "wood", from: "midgard_bosque", safeLabel: "Pra\xE7a das Copas", npcs: Hr(), grand: "palace", grandName: "Pagode do Conselho", mood: [0.96, 1, 0.94] }, { id: "cidade_handelsvik", name: "Cidade de Handelsvik", seed: 7808, theme: "grass", from: "midgard_lago", safeLabel: "Cais dos Mercadores", npcs: Hr(), grand: "castle", grandName: "Sal\xE3o da Guilda", mood: [1, 1, 1.04] }, { id: "cidade_solvik", name: "Cidade de Solvik", seed: 7909, theme: "tropic", from: "vana_pantano", safeLabel: "Praia das Festas", npcs: Hr(), grand: "none", mood: [1.05, 1.02, 0.96] }, { id: "cidade_helvik", name: "Cidade de Helvik", seed: 8010, theme: "dead", from: "niflheim_catacumbas", safeLabel: "Pra\xE7a dos Sussurros", npcs: Hr(), grand: "palace", grandName: "Mausol\xE9u de Hel", mood: [0.7, 0.8, 0.86] }];
@@ -8913,20 +8913,23 @@ Error generating stack: ` + n.message + `
     const inCore = (x, y, w, h) => x < core.x + core.w && x + w > core.x && y < core.y + core.h && y + h > core.y;
     const pv = (x, y, w, h) => { if (w > 0 && h > 0) m.paved.push({ x: Math.round(x), y: Math.round(y), w: Math.round(w), h: Math.round(h) }); };
     pv(gx, dy + H - 40, gw, NH - (dy + H - 40));
-    const xs = [], ys = [];
-    for (let x = 300; x < NW - 200; x += S) xs.push(x);
-    for (let y = 300; y < NH - 200; y += S) ys.push(y);
-    for (const x of xs) { if (x + SW > core.x && x < core.x + core.w) { pv(x, 0, SW, core.y), pv(x, core.y + core.h, SW, NH - core.y - core.h); } else pv(x, 0, SW, NH); }
-    for (const y of ys) { if (y + SW > core.y && y < core.y + core.h) { pv(0, y, core.x, SW), pv(core.x + core.w, y, NW - core.x - core.w, SW); } else pv(0, y, NW, SW); }
     const ob = m.obstacles, add = (o) => ob.push(o);
-    for (const x of xs) for (const y of ys) {
-      const bx = x + SW + 20, by = y + SW + 20, bw = S - SW - 40;
-      if (inCore(bx, by, bw, bw) || bx + bw > NW - 60 || by + bw > NH - 60) continue;
-      const kind = rng();
-      if (kind < 0.12) { for (let i = 0; i < 5; i++) add({ kind: "tree", x: Math.round(bx + 20 + rng() * (bw - 60)), y: Math.round(by + 20 + rng() * (bw - 60)), w: 22, h: 18 }); continue; }
-      for (let i = 0; i < 2; i++) for (let j = 0; j < 2; j++) if (rng() < 0.72) add({ kind: "house", x: Math.round(bx + 20 + i * 235 + rng() * 30), y: Math.round(by + 40 + j * 215 + rng() * 20), w: 138, h: 104 });
-      for (let i = 0; i < 3; i++) add({ kind: "tree", x: Math.round(bx + 10 + rng() * (bw - 40)), y: Math.round(by + 10 + rng() * (bw - 40)), w: 22, h: 18 });
-      add({ kind: "deco", deco: "lamp", x: x + SW + 4, y: y + SW + 4, w: $m.lamp.w, h: $m.lamp.h });
+    // periferia: espelha o desenho original da cidade (ruas e construções) em volta do núcleo, sem repetir os marcos únicos
+    {
+      const OK = new Set(["lamp", "bench", "planter", "well", "hay", "cart", "stall", "banner", "post", "barrel", "brazier", "frosttree", "palm", "cactus", "campfire", "giftpile", "spiritlamp", "runestone", "gravestone", "pillar_broken", "longhouse", "ruinhouse", "totem", "pagoda", "parasol", "tent"]);
+      const src = m.obstacles.filter((o) => o.kind === "house" || o.kind === "tree" || o.kind === "rock" || (o.kind === "deco" && OK.has(o.deco))), srcP = m.paved.slice();
+      const x1 = dx + W, y1 = dy + H, ex0 = ex.x + dx - 40, ex1 = ex.x + dx + ex.w + 40;
+      const mx = (x, w, i) => i === 0 ? x : i > 0 ? 2 * x1 - (x + w) : 2 * dx - (x + w), my = (y, h, j) => j === 0 ? y : j > 0 ? 2 * y1 - (y + h) : 2 * dy - (y + h);
+      for (let i = -1; i <= 1; i++) for (let j = -1; j <= 1; j++) {
+        if (!i && !j) continue;
+        for (const r of srcP) { const x = mx(r.x, r.w, i), y = my(r.y, r.h, j), X0 = Math.max(0, x), Y0 = Math.max(0, y), X1 = Math.min(NW, x + r.w), Y1 = Math.min(NH, y + r.h); pv(X0, Y0, X1 - X0, Y1 - Y0); }
+        for (const o of src) {
+          const x = mx(o.x, o.w, i), y = my(o.y, o.h, j); if (x < 40 || y < 40 || x + o.w > NW - 40 || y + o.h > NH - 40) continue;
+          if (o.kind !== "house" && rng() < 0.15) continue;
+          if (y + o.h > NH - 160 && x + o.w > ex0 && x < ex1) continue;
+          add({ ...o, x: Math.round(x), y: Math.round(y) });
+        }
+      }
     }
     return m;
   }
@@ -9131,6 +9134,16 @@ Error generating stack: ` + n.message + `
     Wa.manto_orleans = { id: "manto_orleans", name: "Manto de Orleans", kind: "armor", rarity: "epic", reqLevel: 1, stack: 1, sell: 5000, desc: "Impede a interrup\u00E7\u00E3o da conjura\u00E7\u00E3o, mas aumenta o tempo de conjura\u00E7\u00E3o em 15%.", script: "Conjura\u00E7\u00E3o ininterrupt\u00E1vel; +15% tempo de conjura\u00E7\u00E3o", bonus: { def: 4 }, cast: { uninterrupt: true, mul: 0.15 } };
     Wa.faca_aprendiz = { id: "faca_aprendiz", name: "Faca de Aprendiz", kind: "weapon", weaponType: "dagger", rarity: "common", reqLevel: 1, stack: 1, sell: 2, weight: 10, desc: "Uma faca simples. Todo aprendiz come\xE7a com uma.", bonus: { atk: 2 } }, Wa.camisa_algodao = { id: "camisa_algodao", name: "Camisa de Algod\xE3o", kind: "armor", rarity: "common", reqLevel: 1, stack: 1, sell: 2, desc: "Camisa leve de algod\xE3o.", bonus: { def: 1, maxHp: 6 } };
     Ce.aprendiz = { id: "aprendiz", names: ["Aprendiz", "Aprendiz", "Aprendiz", "Aprendiz", "Aprendiz", "Aprendiz"], role: "Sem classe", color: 12632256, desc: "Todo heroi come\xE7a aqui. No n\xEDvel de classe 10, procure o L\xEDder de Classe em uma cidade principal.", base: { str: 5, agi: 5, vit: 5, int: 3, dex: 4, luk: 3 }, hpMult: 1, mpMult: 0.9, attackStat: "str", weapons: ["axe", "sword", "dagger", "club", "staff", "spear", "bow", "fist", "mace"], startWeapon: "faca_aprendiz", basic: { range: 52, cooldown: 560, magic: false, ranged: false, arc: 110 }, skills: [{ id: "golpe_firme", name: "Golpe Firme", tier: 0, kind: "cone", mp: 4, cooldown: 2200, mult: 1.6, range: 62, radius: 0, arc: 110, light: 16766080, desc: "Golpe forte \xE0 frente." }, { id: "folego", name: "F\xF4lego", tier: 0, kind: "buff", mp: 8, cooldown: 16e3, mult: 0, range: 0, radius: 0, buff: { atk: 0.2, ms: 8e3 }, light: 16777152, desc: "+20% de ataque por 8s." }] };
+    const SUP = {
+      berserker: { id: "sup_berserker", name: "Impacto de Tyr (Suprema)", kind: "nova", mp: 60, cooldown: 45e3, mult: 6.5, radius: 190, stunMs: 1800, light: 16729156, desc: "Habilidade suprema: o machado de Tyr racha o chão e esmaga todos ao redor." },
+      escudeiro: { id: "sup_escudeiro", name: "Mammonita Dourada (Suprema)", kind: "nova", mp: 55, cooldown: 42e3, mult: 5.2, radius: 200, stunMs: 2400, light: 16766720, desc: "Habilidade suprema: chuva de ouro que esmaga e atordoa a área." },
+      cacador: { id: "sup_cacador", name: "Assalto do Falcão (Suprema)", kind: "volley", mp: 55, cooldown: 40e3, mult: 3.2, range: 340, count: 9, light: 16773296, desc: "Habilidade suprema: o falcão e nove flechas varrem a frente." },
+      volva: { id: "sup_volva", name: "Chuva de Meteoros (Suprema)", kind: "meteor", mp: 90, cooldown: 50e3, mult: 8, range: 300, radius: 190, delay: 1100, magic: true, vfx: "meteor", light: 16747050, desc: "Habilidade suprema: meteoros devastam uma enorme área." },
+      valquiria: { id: "sup_valquiria", name: "Santuário Divino (Suprema)", kind: "heal", mp: 80, cooldown: 60e3, mult: 0, heal: 0.8, light: 16777152, desc: "Habilidade suprema: luz de Frigg restaura 80% da vida." },
+      skald: { id: "sup_skald", name: "Passo das Sombras (Suprema)", kind: "chain", mp: 50, cooldown: 38e3, mult: 4.2, range: 300, jumps: 7, light: 6291600, desc: "Habilidade suprema: salta entre até 8 inimigos em lâminas sombrias." },
+      thay: { id: "sup_thay", name: "Asura (Suprema)", kind: "cone", mp: 70, cooldown: 48e3, mult: 9, range: 110, arc: 140, stunMs: 1200, light: 16764006, desc: "Habilidade suprema: golpe devastador à frente." }
+    };
+    for (let k of CLS7) { if (!SUP[k] || !Ce[k].skills || Ce[k].skills.some((x) => x.id === SUP[k].id)) continue; Ce[k].skills.push({ tier: 2, range: 0, radius: 0, ...SUP[k] }); }
     for (let k of CLS7) { let n = Ce[k].names, b = n[2]; Ce[k].names = [n[0], n[1], b, b + " Renascido", "Lorde " + b, b + " Transcendente"]; }
   })();
   var Gr = 99, Jx = 0.01, Jm = 0.75, tr = (e) => Math.floor(18 * Math.pow(e, 1.85)), Ki = (e) => Math.floor(12 * Math.pow(e, 1.6)), I8 = (e) => 6 + Math.floor(e / 10), ep = (e) => 2 + Math.floor((e - 1) / 10);
@@ -10113,7 +10126,7 @@ Error generating stack: ` + n.message + `
     return Math.round(t * 10) / 10;
   }
   function Rl(e) {
-    return Math.round(300 + tp(e).str * 25 + e.level * 8 + (e.cart?.on && e.line === "escudeiro" ? 1500 : 0));
+    return Math.round(300 + tp(e).str * 25 + e.level * 8 + ((e.cart?.on ?? true) && e.line === "escudeiro" && e.tier >= 1 ? 1500 : 0));
   }
   function Ny(e, t, a) {
     let n = Wa[t];
@@ -10259,6 +10272,16 @@ Error generating stack: ` + n.message + `
           this.monsters.push(this.makeMonster(d, this.pickSpawnPos(i, d), l, false));
         }
       });
+      if (!this.map.city) for (const m of this.monsters) if (!m.def.boss && m.slot >= 0 && !m.def.mini && this.rng() < 0.8) { const p3 = this.randomBossPos(m.def, 300); p3 && (m.pos = { ...p3 }, m.home = { ...p3 }, m.wander = { ...p3 }); }
+      for (const m of this.monsters) if (m.def.boss && m.slot >= 0) {
+        const key = this.map.id + ":" + m.def.id + ":" + m.slot, tb = this.ps.tombs?.[key], p2 = this.randomBossPos(m.def);
+        p2 && (m.pos = { ...p2 }, m.home = { ...p2 }, m.wander = { ...p2 });
+        if (tb && tb.until && tb.until > Date.now()) { const rem = tb.until - Date.now(); m.state = "dead", m.hp = 0, m.diedAt = this.time - 1e6, m.respawnAt = this.time + rem, this.spawnMgr.due.set(m.slot, this.time + rem); }
+      }
+    }
+    randomBossPos(def, minD = 600) {
+      for (let k = 0; k < 80; k++) { const r = { x: 200 + this.rng() * (this.map.width - 400), y: 200 + this.rng() * (this.map.height - 400) }; if (Ia(r.x, r.y, def.radius + 6, this.map.obstacles, this.map.width, this.map.height) && !this.inSafeZone(r) && this.seaOk(r.x, r.y, def) && Be(r, this.map.spawn) > minD) return r; }
+      return null;
     }
     setMove(t, a) {
       if (this.player.deadAt !== null) {
@@ -10415,7 +10438,7 @@ Error generating stack: ` + n.message + `
     }
     updatePlayer(t) {
       let a = this.player, n = t / 1e3, o = ((dd) => ({ ...dd, speed: dd.speed * (1 + this.buffSum("spd") + (this.ps.mount ? petMountBonus(this.ps) : 0)) }))(this.derived()), r = this.overloaded() ? { ...o, speed: o.speed * Ly } : o, i = Math.hypot(this.move.x, this.move.y); r = { ...r, speed: r.speed * this.waterMul(a.pos) };
-      if (this.moved = false, this.sitting && (a.deadAt !== null ? this.sitting = false : (this.clearOrders(), this.move.x = 0, this.move.y = 0, this.attackQueued = false, this.attackHeld = false, i = 0)), this.pickAt !== null && (this.path = [], this.move.x = 0, this.move.y = 0, this.attackQueued = false, this.attackHeld = false, i = 0), this.time < a.flinchUntil) return;
+      if (this.moved = false, (this.sitting || this.ps.vend?.open) && (a.deadAt !== null ? this.sitting = false : (this.clearOrders(), this.move.x = 0, this.move.y = 0, this.attackQueued = false, this.attackHeld = false, i = 0)), this.pickAt !== null && (this.path = [], this.move.x = 0, this.move.y = 0, this.attackQueued = false, this.attackHeld = false, i = 0), this.time < a.flinchUntil) return;
       if (i > 0.01) {
         this.clearOrders();
         let c = Math.min(1, i) / i, d = { x: a.pos.x, y: a.pos.y };
@@ -10916,7 +10939,7 @@ Error generating stack: ` + n.message + `
       for (let k of keys) { let q = sc[k]; this.logc(`${k === win ? "\u{1F451}" : "•"} ${nm(k)}: ${Math.round(q.tot)} pts (dano ${Math.round(q.dm)} · tank ${Math.round(q.tk)} · 1º golpe ${q.fi} · último golpe ${q.la})`, k === win ? "good" : "system"); }
       n.tombs = n.tombs || {};
       let key = this.map.id + ":" + a.id + ":" + t.slot;
-      n.tombs[key] = { key, map: this.map.id, id: a.id, slot: t.slot, name: nome, x: Math.round(t.pos.x), y: Math.round(t.pos.y), at: Date.now(), by: nm(win), mvp: win === "you" };
+      n.tombs[key] = { key, map: this.map.id, id: a.id, slot: t.slot, name: nome, x: Math.round(t.pos.x), y: Math.round(t.pos.y), at: Date.now(), until: Date.now() + 108e5 + Math.floor(Math.random() * 72e5), by: nm(win), mvp: win === "you" };
       if (win !== "you") { this.toast(`${nm(win)} levou o título de MVP.`, "info"); return; }
       this.mvpUntil = this.time + 12e3;
       let bx = Math.max(1, Math.round(a.exp * this.mods.exp)), r = Yu(n, bx);
@@ -11046,6 +11069,7 @@ Error generating stack: ` + n.message + `
         }
       }
       for (let o = 0; o < 6 && Be(n, this.player.pos) < 160; o++) n = this.pickSpawnPos(a, t.def);
+      if (t.def.boss || (!this.map.city && !t.def.mini && this.rng() < 0.8)) { const rp = this.randomBossPos(t.def, t.def.boss ? 600 : 300); rp && (n = rp); }
       t.def.boss && this.ps.tombs && delete this.ps.tombs[this.map.id + ":" + t.def.id + ":" + t.slot], t.escInit = false, t.escNext = 0, t.mv = null, t.noReach = 0, t.pos = { ...n }, t.home = { ...n }, t.wander = { ...n }, t.golden = false, t.maxHp = t.def.hp, t.hp = t.maxHp, t.state = "idle", t.phase = 1, t.speedMul = 1, t.atkMul = 1, t.stunUntil = 0, t.slowUntil = 0, t.engagedAnnounced = false, t.provoked = false, t.carried = [], t.lowHp = { fired: false }, t.fleeUntil = 0;
     }
     steer(t, a, n, o, r) {
@@ -11506,6 +11530,18 @@ Error generating stack: ` + n.message + `
   }
   var UT_BUY = { carta_fen: 90000, carta_borboleta: 110000, manto_orleans: 120000, pocao_vermelha: 35, pocao_laranja: 110, pocao_branca: 320, pocao_azul: 280, asa_mosca: 60, asa_borboleta: 180, flecha_ferro: 3, flecha_prata: 8, flecha_brasa: 6, flecha_vento: 6, flecha_geada: 6, flecha_pedra: 5, hidromel_curativo: 25, hidromel_forte: 70, infusao_runica: 30 }, UT_STOCK = Object.keys(UT_BUY);
   var VIP_EXTRA = { elixir_eir: 260, carne_assada: 12, bencao_freyja: 900 }, VIP_PASS = [{ d: 7, c: 15e3 }, { d: 30, c: 50e3 }], VIP_HAIR = [16729156, 16766720, 3329330, 4251856, 11141375, 16744448, 15132390, 65535, 16711935, 255], VIP_DYE = [16729156, 16766720, 3329330, 4251856, 11141375, 16744448, 15132390, 65535, 16711935, 255, 2105376, 16777215];
+  function freeNear(map, d) {
+    try { if (!map || !d) return d; if (Ia(d.x, d.y, 18, map.obstacles, map.width, map.height)) return d;
+      for (let r = 30; r <= 900; r += 30) for (let k = 0; k < 20; k++) { const a = k / 20 * 6.283, x = Math.round(d.x + Math.cos(a) * r), y = Math.round(d.y + Math.sin(a) * r); if (x > 40 && y > 40 && x < map.width - 40 && y < map.height - 40 && Ia(x, y, 18, map.obstacles, map.width, map.height)) return { x, y }; } } catch {}
+    return d;
+  }
+  var __ICODE = null;
+  function itemCodes() {
+    const ids = Object.keys(Wa); if (__ICODE && __ICODE.n === ids.length) return __ICODE;
+    const byId = {}, byCode = {}; let c = 1000, r = 999000;
+    for (const id of ids.sort()) { const it = Wa[id], code = it && (it.rarity === "rare" || it.rarity === "epic" || it.rarity === "legendary") ? ++r : ++c; byId[id] = code, byCode[code] = id; }
+    return __ICODE = { n: ids.length, byId, byCode };
+  }
   function admOn() { return window.__admin === true && !window.__noAdm; }
   function isVip(p) { return window.__admin === true || !!(p && p.vipUntil > Date.now()); }
   var VIP_PRICE = (id) => Math.max(1, Math.round((UT_BUY[id] ?? VIP_EXTRA[id] ?? 10) * 0.65));
@@ -12126,16 +12162,16 @@ Error generating stack: ` + n.message + `
         return;
       }
       if (t.toMap === "__back") {
-        let b = this.ps.pback?.[this.world.map.id], hc = this.world.map.homeCity, n = b && en(b.map) ? en(b.map) : en(hc || "cidade_midgard"), d = b && en(b.map) ? { x: b.x, y: b.y + 110 } : cityCenter(n);
+        let b = this.ps.pback?.[this.world.map.id], hc = this.world.map.homeCity, n = b && en(b.map) ? en(b.map) : en(hc || "cidade_midgard"), d = freeNear(n, b && en(b.map) ? { x: b.x, y: b.y + 110 } : cityCenter(n));
         this.online || (this.saveGame(), this.world = new nr(this.ps, n, void 0, d), this.dialogue = null, this.toast(n.name, "info"), this.saveGame(), this.refresh());
         return;
       }
       let a = t.requiresQuest, n = en(t.toMap);
-      if (t.locked || !n || a && !this.ps.quests.done.includes(a)) {
+      if ((t.locked || !n || a && !this.ps.quests.done.includes(a)) && !(window.__admin === true && n)) {
         this.toast(`${t.label}: a passagem est\xE1 selada. Complete a quest de Eira para abri-la.`, "info");
         return;
       }
-      let cm = this.world.map, cx = t.x + t.w / 2, cy = t.y + t.h / 2, ex = t.pbOff ? cx + t.pbOff.x : t.x < 60 ? cx + 90 : t.x + t.w > cm.width - 60 ? cx - 90 : cx, ey = t.pbOff ? cy + t.pbOff.y : t.y < 60 ? cy + 90 : t.y + t.h > cm.height - 60 ? cy - 90 : cy, back = this.ps.pback?.[cm.id], dest = back && back.map === n.id ? { x: back.x, y: back.y } : t.toSpawn && n.shift ? { x: t.toSpawn.x + n.shift.dx, y: t.toSpawn.y + n.shift.dy } : t.toSpawn ?? n.spawn;
+      let cm = this.world.map, cx = t.x + t.w / 2, cy = t.y + t.h / 2, ex = t.pbOff ? cx + t.pbOff.x : t.x < 60 ? cx + 90 : t.x + t.w > cm.width - 60 ? cx - 90 : cx, ey = t.pbOff ? cy + t.pbOff.y : t.y < 60 ? cy + 90 : t.y + t.h > cm.height - 60 ? cy - 90 : cy, back = this.ps.pback?.[cm.id], dest = freeNear(n, back && back.map === n.id ? { x: back.x, y: back.y } : t.toSpawn && n.shift ? { x: t.toSpawn.x + n.shift.dx, y: t.toSpawn.y + n.shift.dy } : t.toSpawn ?? n.spawn);
       this.ps.pback || (this.ps.pback = {}), this.ps.pback[n.id] = { map: cm.id, x: Math.round(ex), y: Math.round(ey) };
       this.online || (this.saveGame(), this.world = new nr(this.ps, n, void 0, dest), (this.ps.visited.includes(n.id) ? 0 : (this.ps.visited.push(n.id), this.pushLog(`Voc\xEA chegou a ${n.name}.`, "system"), this.toast(`${n.name}`, "info"))), this.dialogue = null, this.saveGame(), this.refresh());
     }
@@ -12241,9 +12277,9 @@ Error generating stack: ` + n.message + `
     admCmd(txt) {
       txt = txt.replace(/^(@\w+)\s*=\s*/, "$1 ");
       let [cmd, ...args] = txt.slice(1).split(/\s+/), c = cmd.toLowerCase(), ps = this.ps, say = (m, tone = "good") => (this.pushLog(m, "system", tone), true);
-      if (!["ajuda", "adm", "lvlup", "joblv", "item", "zeny", "heal", "god", "goto", "ban", "unban", "skillpts", "statpts", "mvp", "ir", "classe", "class", "allstatus", "go", "warp"].includes(c)) return false;
+      if (!["ajuda", "adm", "lvlup", "joblv", "item", "zeny", "heal", "god", "goto", "ban", "unban", "skillpts", "statpts", "mvp", "ir", "classe", "class", "allstatus", "go", "warp", "nick", "kill"].includes(c)) return false;
       if (!(window.__admin === true)) return say("Comando restrito a administradores.", "bad");
-      if (c === "ajuda" || c === "adm") return say("ADM: /aura (liga/desliga) \u00B7 @lvlup 0-99 \u00B7 @joblv N \u00B7 @item c\u00F3digo|nome [qtd] \u00B7 @classe nome \u00B7 @zeny [N] \u00B7 @classe nome \u00B7 @go 1-N (cidades) \u00B7 @warp mapa \u00B7 @allstatus \u00B7 @heal \u00B7 @god \u00B7 @goto mapa \u00B7 @statpts N \u00B7 @skillpts N \u00B7 @ban e-mail \u00B7 @unban e-mail");
+      if (c === "ajuda" || c === "adm") return say("ADM: /aura (liga/desliga) \u00B7 @lvlup 0-99 \u00B7 @joblv N \u00B7 @item c\u00F3digo|nome [qtd] \u00B7 @classe nome \u00B7 @zeny [N] \u00B7 @classe nome \u00B7 @go 1-N (cidades) \u00B7 @warp mapa \u00B7 @nick nome \u00B7 @kill monstro \u00B7 @allstatus \u00B7 @heal \u00B7 @god \u00B7 @goto mapa \u00B7 @statpts N \u00B7 @skillpts N \u00B7 @ban e-mail \u00B7 @unban e-mail");
       if (c === "lvlup") {
         let n = parseInt(args[0]);
         if (!(n >= 0 && n <= 99)) return say("Uso: @lvlup 0 a 99", "bad");
@@ -12274,6 +12310,16 @@ Error generating stack: ` + n.message + `
       }
       if (c === "heal") { let d = Ua(ps); ps.hp = d.maxHp, ps.mp = d.maxMp, this.refresh(); return say("Vida e mana restauradas."); }
       if (c === "god") { this._god = !this._god, this.world && (this.world.player.invulnUntil = this._god ? 1e15 : 0); return say(this._god ? "Modo invulnerável LIGADO." : "Modo invulnerável DESLIGADO."); }
+      if (c === "nick") {
+        const nn = args.join(" ").trim().slice(0, 16); if (nn.length < 2) return say("Uso: @nick novo-nome (2 a 16 letras)", "bad");
+        ps.name = nn, this.saveGameQuiet(), this.refresh(); return say(`Nick alterado para ${nn}.`);
+      }
+      if (c === "kill") {
+        const w = this.world; if (!w) return false; const nzk = (x) => String(x || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]/g, ""), q = nzk(args.join(" "));
+        if (!q) return say("Uso: @kill nome-do-monstro (ou @kill todos)", "bad");
+        let n = 0; for (const m of w.monsters.slice()) { if (m.state === "dead") continue; if (q === "todos" || q === "all" || nzk(m.def.name).includes(q) || nzk(m.def.id).includes(q)) { m.hp = 0, w.killMonster(m), n++; } }
+        return say(n ? `${n} monstro(s) eliminado(s).` : "Nenhum monstro com esse nome aqui.", n ? "good" : "bad");
+      }
       if (c === "go" || c === "warp") {
         const nzm = (x) => String(x || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]/g, ""), maps = Object.values(Jt);
         const cities = maps.filter((m) => /^cidade_/.test(m.id)), fields = maps.filter((m) => !/^cidade_/.test(m.id) && m.spawns && m.spawns.length && m.maxMonsters !== 0);
@@ -12290,7 +12336,7 @@ Error generating stack: ` + n.message + `
         return say(`Teleportado para ${m.name}.`);
       }
       if (c === "item") {
-        let q = (args[0] ?? "").toLowerCase(), qty = Math.max(1, Math.min(9999, parseInt(args[1]) || 1)), it = Wa[q] ?? Object.values(Wa).find((x) => x.name.toLowerCase().replace(/\s+/g, "_") === q) ?? Object.values(Wa).find((x) => x.id.includes(q) || x.name.toLowerCase().includes(q.replace(/_/g, " ")));
+        let q = (args[0] ?? "").toLowerCase(), qty = Math.max(1, Math.min(9999, parseInt(args[1]) || 1)), it = (/^\d+$/.test(q) ? Wa[itemCodes().byCode[q]] : null) ?? Wa[q] ?? Object.values(Wa).find((x) => x.name.toLowerCase().replace(/\s+/g, "_") === q) ?? Object.values(Wa).find((x) => x.id.includes(q) || x.name.toLowerCase().includes(q.replace(/_/g, " ")));
         if (!q || !it) return say("Uso: @item id-ou-nome [quantidade] (ex.: @item pocao_vermelha 50)", "bad");
         let left = He(ps.inventory, it.id, qty);
         this.refresh();
@@ -12655,8 +12701,28 @@ Error generating stack: ` + n.message + `
     cartToggle() {
       if (!this.ps) return;
       if (!this.isMerchant()) return this.toast("Só Mercadores usam o carrinho.", "bad"), void this.refresh();
-      this.ps.cart = this.ps.cart || { on: false, color: 9066026, deco: "none" };
-      this.ps.cart.on = !this.ps.cart.on, this.toast(this.ps.cart.on ? "Carrinho chamado (+1500 de peso)." : "Carrinho guardado.", "good"), this.saveGameQuiet(), this.refresh();
+      this.ps.cart = this.ps.cart || { on: true, color: 9066026, deco: "none" };
+      this.ps.cart.on = !(this.ps.cart.on ?? true), this.toast(this.ps.cart.on ? "Carrinho chamado (+1500 de peso)." : "Carrinho guardado.", "good"), this.saveGameQuiet(), this.refresh();
+    }
+    cartOpen() {
+      if (!this.ps) return;
+      if (!this.isMerchant()) return this.toast("Só Mercadores usam o carrinho.", "bad"), void this.refresh();
+      this.ps.cart = this.ps.cart || { on: true, color: 9066026, deco: "none" }, this.ps.cart.stock = this.ps.cart.stock || {};
+      this.panel = this.panel === "cartcfg" ? "none" : "cartcfg", this.refresh();
+    }
+    cartStore(id, q) {
+      if (!this.ps || !this.isMerchant()) return; const c = this.ps.cart = this.ps.cart || { on: true, color: 9066026, deco: "none" }; c.stock = c.stock || {};
+      const it = $(id); if (!it || it.bound) return this.toast("Este item não pode ir ao carrinho.", "bad"), void this.refresh();
+      q = Math.max(1, Math.min(It(this.ps.inventory, id), Math.floor(q) || 1)); if (!q || It(this.ps.inventory, id) < 1) return;
+      if (!c.stock[id] && Object.keys(c.stock).length >= 30) return this.toast("Carrinho cheio (30 tipos).", "bad"), void this.refresh();
+      Ea(this.ps.inventory, id, q), c.stock[id] = (c.stock[id] || 0) + q, this.saveGameQuiet(), this.refresh();
+    }
+    cartTake(id, q) {
+      const c = this.ps?.cart; if (!c?.stock || !c.stock[id]) return; q = Math.max(1, Math.min(c.stock[id], Math.floor(q) || c.stock[id]));
+      const left = He(this.ps.inventory, id, q), moved = q - left; if (moved <= 0) return this.toast("Mochila cheia.", "bad"), void this.refresh();
+      c.stock[id] -= moved, c.stock[id] <= 0 && delete c.stock[id];
+      const v = this.ps.vend; v && v.items[id] && (v.items[id].qty = Math.min(v.items[id].qty, c.stock[id] || 0), v.items[id].qty <= 0 && delete v.items[id]);
+      this.saveGameQuiet(), this.refresh();
     }
     cartSet(k, v) { if (!this.ps || !this.isMerchant()) return; this.ps.cart = this.ps.cart || { on: false, color: 9066026, deco: "none" }, this.ps.cart[k] = v, this.saveGameQuiet(), this.refresh(); }
     vendOpenPanel(title) {
@@ -12668,7 +12734,7 @@ Error generating stack: ` + n.message + `
     vendSet(id, price, qty) {
       let v = this.ps?.vend; if (!v || !this.isMerchant()) return;
       let it = $(id); if (!it || it.bound) return this.toast("Este item não pode ser vendido.", "bad"), void this.refresh();
-      price = Math.max(1, Math.min(9999999, Math.floor(price) || 0)), qty = Math.max(0, Math.min(It(this.ps.inventory, id), Math.floor(qty) || 0));
+      price = Math.max(1, Math.min(9999999, Math.floor(price) || 0)), qty = Math.max(0, Math.min((this.ps.cart?.stock?.[id] || 0), Math.floor(qty) || 0));
       qty ? (Object.keys(v.items).length < 12 || v.items[id]) ? v.items[id] = { price, qty } : this.toast("Máximo de 12 itens.", "bad") : delete v.items[id];
       this.saveGameQuiet(), this.refresh();
     }
@@ -12688,8 +12754,8 @@ Error generating stack: ` + n.message + `
       let id = ids[Math.floor(Math.random() * ids.length)], e = v.items[id], it = $(id), ref = Math.max(8, Cp(id) * 1.25), ratio = e.price / ref;
       if (ratio > 2.2) return;
       let chance = ratio <= 1 ? 0.7 : 0.7 * (2.2 - ratio) / 1.2; if (Math.random() > chance) return;
-      let have = It(this.ps.inventory, id), q = Math.min(e.qty, have, 1 + Math.floor(Math.random() * 3)); if (q < 1) return delete v.items[id], void this.refresh();
-      Ea(this.ps.inventory, id, q), e.qty -= q, e.qty <= 0 && delete v.items[id];
+      let stk = this.ps.cart?.stock || {}, have = stk[id] || 0, q = Math.min(e.qty, have, 1 + Math.floor(Math.random() * 3)); if (q < 1) return delete v.items[id], void this.refresh();
+      stk[id] -= q, stk[id] <= 0 && delete stk[id], e.qty -= q, e.qty <= 0 && delete v.items[id];
       let tot = e.price * q; this.ps.silver += tot, v.earned = (v.earned || 0) + tot;
       let who = ["Hild", "Orm", "Sigrun", "Bjorn", "Astrid", "Leif", "Ragna", "Torsten", "Freya", "Gunnar"][Math.floor(Math.random() * 10)];
       this.pushLog(`${who} comprou ${q}× ${it?.name ?? id} por ${tot} Zens.`, "loot", "good"), this.toast(`+${tot} Zens (${who})`, "good"), this.saveGameQuiet(), this.refresh();
@@ -13604,7 +13670,7 @@ Error generating stack: ` + n.message + `
       let d = document.createElement("div");
       d.id = "item-info-box";
       d.style.cssText = "position:fixed;z-index:200;max-width:280px;padding:10px 12px;background:linear-gradient(#3a2814,#1c1208);border:2px solid " + (so[it2.rarity] || "#8a6a3a") + ";border-radius:6px;color:#f1e3c3;font:13px/1.45 system-ui,sans-serif;box-shadow:0 6px 22px #000b;pointer-events:none";
-      d.innerHTML = `<div style="font-weight:700;font-size:14px;color:#ffd77a">${esc(it2.name)}</div><div style="opacity:.75;font-size:11px;margin-bottom:5px">${esc(LM[it2.rarity] || "")} \u00B7 ${esc(kindTxt)}${window.__admin === true ? " \u00B7 c\u00F3digo: " + esc(it2.id) : ""}${it2.reqLevel > 1 ? " \u00B7 N\u00EDvel " + it2.reqLevel : ""}</div>` + (bon.length ? `<div style="color:#9fe39a;margin-bottom:4px">${bon.map(esc).join("<br>")}</div>` : "") + (it2.script ? `<div style="color:#9fd0ff;margin-bottom:4px">${esc(String(it2.script).replace(/;\s*/g, " \u00B7 "))}</div>` : "") + `<div style="opacity:.9">${esc(it2.desc || "Sem efeitos especiais.")}</div><div style="margin-top:6px;border-top:1px solid #6a4a28;padding-top:4px">Peso: <b>${it2.weight ?? "0"}</b>${it2.sell ? " \u00B7 Venda: <b>" + it2.sell + "</b>" : ""}</div>`;
+      d.innerHTML = `<div style="font-weight:700;font-size:14px;color:#ffd77a">${esc(it2.name)}</div><div style="opacity:.75;font-size:11px;margin-bottom:5px">${esc(LM[it2.rarity] || "")} \u00B7 ${esc(kindTxt)}${window.__admin === true ? " \u00B7 c\u00F3digo: " + (itemCodes().byId[it2.id] ?? "") + " (" + esc(it2.id) + ")" : ""}${it2.reqLevel > 1 ? " \u00B7 N\u00EDvel " + it2.reqLevel : ""}</div>` + (bon.length ? `<div style="color:#9fe39a;margin-bottom:4px">${bon.map(esc).join("<br>")}</div>` : "") + (it2.script ? `<div style="color:#9fd0ff;margin-bottom:4px">${esc(String(it2.script).replace(/;\s*/g, " \u00B7 "))}</div>` : "") + `<div style="opacity:.9">${esc(it2.desc || "Sem efeitos especiais.")}</div><div style="margin-top:6px;border-top:1px solid #6a4a28;padding-top:4px">Peso: <b>${it2.weight ?? "0"}</b>${it2.sell ? " \u00B7 Venda: <b>" + it2.sell + "</b>" : ""}</div>`;
       document.body.appendChild(d);
       let r = d.getBoundingClientRect();
       d.style.left = Math.max(8, Math.min(innerWidth - r.width - 8, ev.clientX + 12)) + "px", d.style.top = Math.max(8, Math.min(innerHeight - r.height - 8, ev.clientY + 12)) + "px";
@@ -15983,6 +16049,8 @@ void main() {
     const el = document.createElement("div"); el.id = "buffhud";
     el.style.cssText = "position:fixed;right:8px;top:212px;z-index:60;display:flex;flex-direction:column;gap:5px;pointer-events:none;font:12px/1.25 system-ui,sans-serif;max-width:190px";
     document.body.appendChild(el);
+    const sb = document.createElement("button"); sb.id = "shopclose"; sb.textContent = "\uD83D\uDED2 Fechar loja"; sb.style.cssText = "position:fixed;left:50%;bottom:130px;transform:translateX(-50%);z-index:70;display:none;padding:10px 20px;font:700 15px system-ui,sans-serif;color:#fff;background:linear-gradient(#c0392b,#7a1f14);border:2px solid #ffd77a;border-radius:8px;cursor:pointer;box-shadow:0 4px 16px #000a";
+    sb.onclick = () => { try { j.vendToggle(); } catch {} }; document.body.appendChild(sb);
     const NM = { agilidade: ["Agilidade", "#7fe8ff"], bencao: ["B\u00EAn\u00E7\u00E3o", "#ffe27a"], afiar: ["Afiar", "#ff9a6a"], reforcar: ["Refor\u00E7ar", "#9ab8ff"], guilda: ["Guilda", "#c8a0ff"] };
     const fmt = (s) => { s = Math.max(0, Math.ceil(s)); return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0"); };
     setInterval(() => {
@@ -15992,6 +16060,7 @@ void main() {
           for (const b of w.player.buffs || []) { const rem = (b.until - w.time) / 1e3; if (!(rem > 0)) continue; const ben = []; if (b.atk) ben.push("ATK " + (b.atk > 0 ? "+" : "") + Math.round(b.atk * 100) + "%"); if (b.def) ben.push("DEF +" + Math.round(b.def * 100) + "%"); if (b.spd) ben.push("Velocidade +" + Math.round(b.spd * 100) + "%"); if (b.crit) ben.push("Cr\u00EDtico +" + Math.round(b.crit * 100) + "%"); const nm = NM[b.id] ?? [String(b.id).replace(/_/g, " ").replace(/^./, (c) => c.toUpperCase()), "#ffd98a"]; rows.push({ n: nm[0], c: nm[1], ben, rem }); }
           if (w.ps.blessUntil > Date.now()) rows.push({ n: "B\u00EAn\u00E7\u00E3o da Curandeira", c: "#ffe27a", ben: ["DEX +15%"], rem: (w.ps.blessUntil - Date.now()) / 1e3 });
         }
+        sb.style.display = (j.screen === "playing" && j.ps?.vend?.open) ? "block" : "none";
         el.innerHTML = rows.map((r) => `<div style="background:linear-gradient(#2a1e10ee,#150e07ee);border:1px solid ${r.c};border-left:4px solid ${r.c};border-radius:5px;padding:4px 8px;color:#f6ead0;box-shadow:0 2px 8px #0008"><div style="display:flex;justify-content:space-between;gap:8px"><b style="color:${r.c}">${r.n}</b><span style="font-variant-numeric:tabular-nums">${fmt(r.rem)}</span></div>${r.ben.length ? `<div style="opacity:.85;font-size:11px">${r.ben.join(" \u00B7 ")}</div>` : ""}</div>`).join("");
       } catch {}
     }, 500);
@@ -17688,7 +17757,7 @@ function ROXQM(f, c, s, l, def, ex) {
   }
   function cs(e) {
     let t = e.equipment.weapon ? $(e.equipment.weapon)?.weaponType : void 0, a = (n) => n ? $(n)?.headStyle : void 0;
-    return { base: e.line, hair: kh(e.name), gear: "none", top: a(e.equipment.headTop), mid: a(e.equipment.headMid), low: a(e.equipment.headLow), bk: e.equipment.back ? $(e.equipment.back)?.backStyle : void 0, sx: e.gender === "f" ? "f" : void 0, dye: e.equipment.armor === "vestido_noiva" ? 16316664 : e.equipment.armor === "smoking_noivo" ? 2236962 : e.dye ?? 0, hs: e.style?.hairStyle, hc: e.style?.hairColor, ti: e.tier || 0, ep: e.level >= 99 ? 1 : 0, adm: admOn() ? 1 : 0 };
+    return { base: (e.tier === 3 && (e.jobLevel || 1) < 10) ? "aprendiz" : e.line, hair: kh(e.name), gear: "none", top: a(e.equipment.headTop), mid: a(e.equipment.headMid), low: a(e.equipment.headLow), bk: e.equipment.back ? $(e.equipment.back)?.backStyle : void 0, sx: e.gender === "f" ? "f" : void 0, dye: e.equipment.armor === "vestido_noiva" ? 16316664 : e.equipment.armor === "smoking_noivo" ? 2236962 : e.dye ?? 0, hs: e.style?.hairStyle, hc: e.style?.hairColor, ti: e.tier || 0, ep: e.level >= 99 ? 1 : 0, adm: admOn() ? 1 : 0 };
   }
   var FIXYAW = Math.PI / 4, CAM0 = (() => {
     try {
@@ -17708,6 +17777,7 @@ function ROXQM(f, c, s, l, def, ex) {
     thay: [null, { tunic: 13654560, trim: 16765514, pauld: 16765514 }, { tunic: 12065820, trim: 16765514, cape: 8006156, pauld: 16765514, head: "circlet", aura: 16742954 }]
   };
   function R4(e) {
+    e.adm && (e = { ...e, base: "aprendiz", ti: 2 });
     const base0 = (q) => ["aprendiz", "berserker", "escudeiro", "cacador", "volva", "valquiria", "skald", "thay"].includes(q.base);
     /^guilda_/.test(e.base) && (e = { ...e, base: e.base.slice(7), ti: 2 });
     let t = { ...I0[e.base] ?? I0.berserker };
@@ -18549,7 +18619,7 @@ function ROXQM(f, c, s, l, def, ex) {
     };
     shiftUsed = false;
     onKeyUp = (t) => {
-      this.down.delete(t.code), (t.code === "ShiftLeft" || t.code === "ShiftRight") && !this.shiftUsed && !this.drag && this.store.dash();
+      this.down.delete(t.code), void 0;
     };
     onBlur = () => {
       this.down.clear(), this.ptr.held = false, this.store.setMove(0, 0), this.store.setAttackHeld(false);
@@ -19170,7 +19240,7 @@ function ROXQM(f, c, s, l, def, ex) {
         M(H.x, H.y) && (z.add(`o${q.id}`), T.push({ depth: Ja(q.x, q.y), draw: () => this.drawOther(q, t) }));
       }
       for (let q of n.critters ?? []) { this.stepCritter(q); let H = ce(q.x, q.y); M(H.x, H.y) && T.push({ depth: Ja(q.x, q.y + ((q.z || 0) > 20 ? 400 : 0)), draw: () => this.drawCritter(q) }); }
-      T.push({ depth: m, draw: () => this.drawPlayer(t) }), a.mvpUntil > a.time && T.push({ depth: m + 4e3, draw: () => this.drawMvpPlate(a.player.pos, a.mvpUntil - a.time) }), a.ps.cart?.on && a.ps.line === "escudeiro" ? T.push({ depth: this._cart ? Ja(this._cart.x, this._cart.y) : m + 1, draw: () => this.drawCart() }) : this._cart = null, a.ps.vend?.open && T.push({ depth: m + 3, draw: () => this.drawVend() }), a.ps.baby && T.push({ depth: this._bb ? Ja(this._bb.x, this._bb.y) : m + 1, draw: () => this.drawBaby() }), falconOk(a.ps) && T.push({ depth: m + 40, draw: () => this.drawFalcon() }), homunOk(a.ps) && a.ps.homun.on ? T.push({ depth: this._hm ? Ja(this._hm.x, this._hm.y) : m + 1, draw: () => this.drawHomun() }) : this._hm = null, a.ps.pet && a.ps.petData && T.push({ depth: this._pet ? Ja(this._pet.x, this._pet.y) : m + 1, draw: () => this.drawPet() }), this.store.fx && Date.now() - this.store.fx.t0 < 3800 && T.push({ depth: m + 9, draw: () => this.drawBlessing(a.player.pos) });
+      T.push({ depth: m, draw: () => this.drawPlayer(t) }), a.mvpUntil > a.time && T.push({ depth: m + 4e3, draw: () => this.drawMvpPlate(a.player.pos, a.mvpUntil - a.time) }), (a.ps.cart?.on ?? true) && a.ps.line === "escudeiro" && a.ps.tier >= 1 ? T.push({ depth: this._cart ? Ja(this._cart.x, this._cart.y) : m + 1, draw: () => this.drawCart() }) : this._cart = null, a.ps.vend?.open && T.push({ depth: m + 3, draw: () => this.drawVend() }), a.ps.baby && T.push({ depth: this._bb ? Ja(this._bb.x, this._bb.y) : m + 1, draw: () => this.drawBaby() }), falconOk(a.ps) && T.push({ depth: m + 40, draw: () => this.drawFalcon() }), homunOk(a.ps) && a.ps.homun.on ? T.push({ depth: this._hm ? Ja(this._hm.x, this._hm.y) : m + 1, draw: () => this.drawHomun() }) : this._hm = null, a.ps.pet && a.ps.petData && T.push({ depth: this._pet ? Ja(this._pet.x, this._pet.y) : m + 1, draw: () => this.drawPet() }), this.store.fx && Date.now() - this.store.fx.t0 < 3800 && T.push({ depth: m + 9, draw: () => this.drawBlessing(a.player.pos) });
       if (n.obstacles.some((q) => q.deco === "airship")) {
         let A2 = this.air;
         (!A2 || A2.map !== n) && (A2 = this.air = { map: n, x: n.width * (0.2 + Math.random() * 0.6), y: n.height * (0.2 + Math.random() * 0.6), tx: 0, ty: 0, hd: 1, last: this.clock, pick: true });
@@ -19509,7 +19579,7 @@ function ROXQM(f, c, s, l, def, ex) {
         a.sitting || (m.rot += (this._cap?.a ?? 0) * (a.ps.equipment.back ? 0.25 : 1));
         var __hz = null;
         if (mnt) {
-          let mw = ROXQM("montaria", s, i.moving ? Math.floor(i.phase * ea) : -1, atkM ? 1 : 0, { id: "montaria" + (a.ps.dye || 0), color: a.ps.dye || 9332298 }), lun = atkM ? Math.sin(Math.min(1, (this.clock - i.atkAt) / Math.max(260, i.atkDur || 0)) * Math.PI) : 0;
+          let mw = ROXQM("montaria", s, i.moving ? Math.floor(i.phase * ea) : -1, atkM ? 1 : 0, { id: "montaria" + (a.ps.dye || 0), color: a.ps.dye || 7238784 }), lun = atkM ? Math.sin(Math.min(1, (this.clock - i.atkAt) / Math.max(260, i.atkDur || 0)) * Math.PI) : 0;
           let hz = () => mw && nt(n, mw, r.x, r.y + 10 - lun * 4 + (a.crouching ? 5 : 0), l, $a * 1.5 * (a.sitting ? 1.04 : 1) * (1 + lun * 0.08), $a * 1.5 * (a.sitting ? 0.78 : a.crouching ? 0.93 : 1) * (1 - lun * 0.04));
           s === "down" || s === "dq" ? __hz = hz : hz();
         }
@@ -19623,7 +19693,7 @@ function ROXQM(f, c, s, l, def, ex) {
       let sd = fx >= 0 ? 1 : -1, fl = Math.sin(T * 14) * 6;
       this.blob(base.x + (px - base.x) * 0.2, base.y + 4, 5);
       let fsp = null; try { fsp = typeof ROX2M !== "undefined" ? ROX2M.mon("corvo", "side", Math.floor(T * 10) % 8, 0, { id: "falcao", color: null }, { st: Math.min(3, w.ps.tier || 0) }) : null; } catch (e) { fsp = null; }
-      if (fsp) { nt(n, fsp, px, py, sd < 0, $a * 0.5, $a * 0.5); } else {
+      if (fsp) { nt(n, fsp, px, py, sd < 0, $a * 0.95, $a * 0.95); } else {
       n.save(), n.translate(px, py), n.scale(sd, 1);
       n.fillStyle = "#7a5a3a", n.beginPath(), n.ellipse(0, 0, 8, 4.5, 0, 0, 7), n.fill();
       n.fillStyle = "#5a3e24", n.beginPath(), n.moveTo(-1, -1), n.lineTo(-7, -9 - fl), n.lineTo(4, -2), n.fill(), n.beginPath(), n.moveTo(-1, 1), n.lineTo(-8, 8 + fl), n.lineTo(3, 2), n.fill();
@@ -19639,26 +19709,44 @@ function ROXQM(f, c, s, l, def, ex) {
       this.speechBalloon("\uD83D\uDED2 " + w.ps.vend.title, p.x, p.y - 96, 1);
     }
     drawCart() {
-      let w = this.store.world, ps = w?.ps; if (!w || !ps.cart?.on || w.isDead()) return;
-      let o = w.player, n = this.ctx, c = this._cart || (this._cart = { x: o.pos.x - 40, y: o.pos.y + 10, dx: 0, dy: 1 });
+      let w = this.store.world, ps = w?.ps; if (!w || !(ps.cart?.on ?? true) || w.isDead()) return;
+      let o = w.player, n = this.ctx, c = this._cart || (this._cart = { x: o.pos.x - 56, y: o.pos.y, dx: 0, dy: 1, rot: 0 });
       let l0 = this._cartLast, vx = o.pos.x - (l0?.x ?? o.pos.x), vy = o.pos.y - (l0?.y ?? o.pos.y); this._cartLast = { x: o.pos.x, y: o.pos.y };
-      if (Math.hypot(vx, vy) > 0.3) { let l = Math.hypot(vx, vy); c.dx = vx / l, c.dy = vy / l; }
-      let tx = o.pos.x - c.dx * 52, ty = o.pos.y - c.dy * 52, dd = Math.hypot(tx - c.x, ty - c.y);
-      dd > 400 ? (c.x = tx, c.y = ty) : dd > 2 && (c.x += (tx - c.x) * 0.14, c.y += (ty - c.y) * 0.14);
-      let p = ce(c.x, c.y), col = ps.cart.color ?? 9066026, hx = (v) => "#" + (v >>> 0).toString(16).padStart(6, "0"), dk = (v, f) => hx(((v >> 16 & 255) * f | 0) << 16 | ((v >> 8 & 255) * f | 0) << 8 | (v & 255) * f | 0);
-      this.blob(p.x, p.y + 4, 22);
+      let mvd = Math.hypot(vx, vy);
+      if (mvd > 0.3) { let l = mvd, k = 0.22; c.dx += (vx / l - c.dx) * k, c.dy += (vy / l - c.dy) * k; let hl = Math.hypot(c.dx, c.dy) || 1; c.dx /= hl, c.dy /= hl; }
+      let tx = o.pos.x - c.dx * 58, ty = o.pos.y - c.dy * 58;
+      Math.hypot(tx - c.x, ty - c.y) > 300 ? (c.x = tx, c.y = ty) : (c.x += (tx - c.x) * 0.5, c.y += (ty - c.y) * 0.5);
+      c.rot += mvd * 0.11;
+      let p = ce(c.x, c.y), pp = ce(o.pos.x, o.pos.y), col = ps.cart.color ?? 9066026, hx = (v) => "#" + (v >>> 0).toString(16).padStart(6, "0"), dk = (v, f) => hx(((v >> 16 & 255) * f | 0) << 16 | ((v >> 8 & 255) * f | 0) << 8 | (v & 255) * f | 0), lt = (v, f) => hx((Math.min(255, (v >> 16 & 255) * f) | 0) << 16 | (Math.min(255, (v >> 8 & 255) * f) | 0) << 8 | (Math.min(255, (v & 255) * f) | 0));
+      let sx = pp.x - p.x, sy = pp.y - p.y, side = Math.abs(sx) > Math.abs(sy) * 0.9, fl = sx < 0 ? -1 : 1, hand = { x: sx, y: sy - 20 };
       n.save(), n.translate(p.x, p.y);
-      n.fillStyle = dk(col, 0.7), n.fillRect(-20, -26, 40, 18), n.fillStyle = hx(col), n.fillRect(-20, -26, 40, 12), n.strokeStyle = dk(col, 0.5), n.lineWidth = 1;
-      for (let i = -12; i <= 12; i += 12) n.beginPath(), n.moveTo(i, -26), n.lineTo(i, -8), n.stroke();
-      n.fillStyle = "#3a2a18", n.fillRect(-22, -28, 44, 3);
-      for (let sx of [-13, 13]) n.fillStyle = "#2a1c10", n.beginPath(), n.arc(sx, -4, 8, 0, 7), n.fill(), n.fillStyle = "#9a7a48", n.beginPath(), n.arc(sx, -4, 5, 0, 7), n.fill(), n.fillStyle = "#2a1c10", n.beginPath(), n.arc(sx, -4, 1.6, 0, 7), n.fill();
+      n.fillStyle = "rgba(0,0,0,0.3)", n.beginPath(), n.ellipse(0, 1, side ? 34 : 28, side ? 7 : 8, 0, 0, 7), n.fill();
+      let wheel = (x, y, r, edge) => { n.save(), n.translate(x, y); if (edge) { n.fillStyle = "#2a1c10", n.beginPath(), n.ellipse(0, 0, 4.5, r, 0, 0, 7), n.fill(), n.fillStyle = "#9a7a48", n.beginPath(), n.ellipse(0, 0, 2.2, r - 3, 0, 0, 7), n.fill(); } else { n.strokeStyle = "#2a1c10", n.lineWidth = 3.4, n.beginPath(), n.arc(0, 0, r, 0, 7), n.stroke(), n.fillStyle = "#b08a50", n.beginPath(), n.arc(0, 0, r - 2, 0, 7), n.fill(), n.strokeStyle = "#5a3c1a", n.lineWidth = 1.6; for (let k = 0; k < 6; k++) { let a = c.rot * fl + k * 1.0472; n.beginPath(), n.moveTo(0, 0), n.lineTo(Math.cos(a) * (r - 2), Math.sin(a) * (r - 2)), n.stroke(); } n.fillStyle = "#2a1c10", n.beginPath(), n.arc(0, 0, 2.2, 0, 7), n.fill(); } n.restore(); };
+      let goods = (x0, y0, wd) => { const ids = Object.keys(ps.cart?.stock || {}).length; const cols = ["#d8c08a", "#a85a3a", "#6a8a4a", "#c8a050", "#7a6aa8"]; for (let i = 0; i < Math.min(5, 1 + ids); i++) { const gx = x0 + (i + 0.5) * wd / Math.min(5, 1 + ids), gy = y0; n.fillStyle = cols[i % 5], n.beginPath(), n.ellipse(gx, gy - 4, 7, 6.5, 0, 0, 7), n.fill(), n.fillStyle = "rgba(0,0,0,0.18)", n.beginPath(), n.ellipse(gx + 2, gy - 3, 4, 5, 0, 0, 7), n.fill(); } };
+      let shaft = () => { n.lineCap = "round"; for (const off of [-3, 3]) { n.strokeStyle = "#6a4a26", n.lineWidth = 3, n.beginPath(), n.moveTo(side ? fl * 20 : off * 3, side ? -22 + off : -20), n.lineTo(hand.x + (side ? 0 : off * 2), hand.y + (side ? off : 0)), n.stroke(); } n.strokeStyle = "#3a2a18", n.lineWidth = 1, n.beginPath(), n.moveTo(side ? fl * 20 : -9, side ? -22 : -20), n.lineTo(hand.x, hand.y), n.stroke(); };
+      if (side) {
+        n.save(), n.scale(fl, 1);
+        n.fillStyle = dk(col, 0.62), n.beginPath(), n.moveTo(-26, -36), n.lineTo(24, -36), n.lineTo(20, -15), n.lineTo(-22, -15), n.closePath(), n.fill();
+        n.fillStyle = hx(col), n.fillRect(-23, -34, 44, 5), n.strokeStyle = dk(col, 0.45), n.lineWidth = 1; for (let i = 0; i < 3; i++) n.beginPath(), n.moveTo(-24 + i * 1.5, -30 + i * 5.5), n.lineTo(22 - i * 1.5, -30 + i * 5.5), n.stroke();
+        n.fillStyle = "#3a2a18", n.fillRect(-27, -38, 54, 3), n.fillRect(-27, -38, 3, 14), n.fillRect(24, -38, 3, 14);
+        n.restore(), goods(-18 * fl, -38, 36), n.save(), n.scale(fl, 1), wheel(0, -11, 11, false), n.restore();
+        shaft();
+      } else {
+        const front = sy > 0;
+        if (!front) shaft();
+        n.fillStyle = dk(col, 0.6), n.fillRect(-21, -36, 42, 21), n.fillStyle = hx(col), n.fillRect(-21, -36, 42, 9), n.strokeStyle = dk(col, 0.45), n.lineWidth = 1; for (let i = -1; i <= 1; i++) n.beginPath(), n.moveTo(i * 12, -36), n.lineTo(i * 12, -15), n.stroke();
+        n.fillStyle = "#3a2a18", n.fillRect(-23, -39, 46, 3);
+        wheel(-22, -10, 10, true), wheel(22, -10, 10, true);
+        goods(-21, -39, 42);
+        if (front) shaft();
+      }
       let d = ps.cart.deco;
-      if (d === "flag") n.fillStyle = "#4a3a28", n.fillRect(14, -58, 2, 32), n.fillStyle = "#e04848", n.beginPath(), n.moveTo(16, -58), n.lineTo(32, -52), n.lineTo(16, -46), n.fill();
-      else if (d === "lantern") n.fillStyle = "#4a3a28", n.fillRect(14, -48, 2, 22), n.fillStyle = "rgba(255,220,120,0.35)", n.beginPath(), n.arc(15, -52, 14, 0, 7), n.fill(), n.fillStyle = "#ffd34d", n.fillRect(11, -57, 8, 9);
-      else if (d === "sacks") for (let q of [-9, 6]) n.fillStyle = "#d8c08a", n.beginPath(), n.ellipse(q, -32, 9, 8, 0, 0, 7), n.fill(), n.fillStyle = "#a89058", n.fillRect(q - 3, -41, 6, 3);
-      else if (d === "barrel") n.fillStyle = "#7a4e1a", n.fillRect(-8, -46, 16, 20), n.fillStyle = "#3a2a18", n.fillRect(-8, -42, 16, 2), n.fillRect(-8, -32, 16, 2);
-      else if (d === "parasol") n.fillStyle = "#4a3a28", n.fillRect(-1, -64, 2, 38), n.fillStyle = "#4aa8e8", n.beginPath(), n.arc(0, -62, 22, Math.PI, 0), n.fill(), n.fillStyle = "#fff", n.beginPath(), n.arc(0, -62, 22, Math.PI * 1.35, Math.PI * 1.65), n.lineTo(0, -62), n.fill();
-      else if (d === "chest") n.fillStyle = "#b8872a", n.fillRect(-10, -42, 20, 16), n.fillStyle = "#ffd34d", n.fillRect(-2, -38, 4, 5);
+      if (d === "flag") n.fillStyle = "#4a3a28", n.fillRect(14, -66, 2, 32), n.fillStyle = "#e04848", n.beginPath(), n.moveTo(16, -66), n.lineTo(32, -60), n.lineTo(16, -54), n.fill();
+      else if (d === "lantern") n.fillStyle = "#4a3a28", n.fillRect(14, -56, 2, 22), n.fillStyle = "rgba(255,220,120,0.35)", n.beginPath(), n.arc(15, -60, 14, 0, 7), n.fill(), n.fillStyle = "#ffd34d", n.fillRect(11, -65, 8, 9);
+      else if (d === "sacks") for (let q of [-9, 6]) n.fillStyle = "#d8c08a", n.beginPath(), n.ellipse(q, -44, 9, 8, 0, 0, 7), n.fill(), n.fillStyle = "#a89058", n.fillRect(q - 3, -53, 6, 3);
+      else if (d === "barrel") n.fillStyle = "#7a4e1a", n.fillRect(-8, -56, 16, 20), n.fillStyle = "#3a2a18", n.fillRect(-8, -52, 16, 2), n.fillRect(-8, -42, 16, 2);
+      else if (d === "parasol") n.fillStyle = "#4a3a28", n.fillRect(-1, -74, 2, 38), n.fillStyle = "#4aa8e8", n.beginPath(), n.arc(0, -72, 22, Math.PI, 0), n.fill(), n.fillStyle = "#fff", n.beginPath(), n.arc(0, -72, 22, Math.PI * 1.35, Math.PI * 1.65), n.lineTo(0, -72), n.fill();
+      else if (d === "chest") n.fillStyle = "#b8872a", n.fillRect(-10, -52, 20, 16), n.fillStyle = "#ffd34d", n.fillRect(-2, -48, 4, 5);
       n.restore();
     }
     drawPet() {
@@ -20264,6 +20352,7 @@ function ROXQM(f, c, s, l, def, ex) {
           this.ring(o, r, i.color, 140), this.ring(o, r, "#ffffff", 80), this.sfx.play("ultimate"), this.burst(o, r, 40, [i.color, "#ffffff", "#ffd34d"]);
           break;
         case "levelUp":
+          if (this._lvT && performance.now() - this._lvT < 700) break; this._lvT = performance.now();
           this.ring(o, r, "#ffd34d", 90), this.floatText(o, r, "N\xCDVEL!", "#ffd34d", 24, 60), this.sfx.play("levelup"), this.burst(o, r, 26, ["#ffd34d", "#fff2a8", "#ffffff"], 150, 2.6, 900, -60, 20), this.add({ k: "pillar", x: o, y: r, color: "255,220,120", h: 420, t0: this.clock, dur: 1100 });
           break;
         case "jobLevelUp":
@@ -20396,9 +20485,9 @@ function ROXQM(f, c, s, l, def, ex) {
     return { ref: t, handle: s, style: l, moved: a !== null };
   }
   var ho = oe(St(), 1);
-  var ta = oe(ue(), 1), qS = [["geral", "Geral"], ["sussurro", "Privado"], ["grupo", "Grupo"], ["guilda", "Guilda"]];
+  var ta = oe(ue(), 1), qS = [["geral", "Geral"], ["sussurro", "Privado"], ["grupo", "Grupo"], ["guilda", "Guilda"], ["batalha", "Batalha"]];
   function Y4() {
-    let e = ge(), [t, a] = (0, ho.useState)("geral"), [n, o] = (0, ho.useState)(true), [r, i] = (0, ho.useState)(""), s = (0, ho.useRef)(null), l = Fl("hud-chat"), c = e.log.filter((u) => t === "geral" ? u.kind !== "sussurro" && u.kind !== "grupo" && u.kind !== "guilda" : u.kind === t), d = c.length ? c[c.length - 1].id : 0;
+    let e = ge(), [t, a] = (0, ho.useState)("geral"), [n, o] = (0, ho.useState)(true), [r, i] = (0, ho.useState)(""), s = (0, ho.useRef)(null), l = Fl("hud-chat"), c = e.log.filter((u) => t === "geral" ? u.kind !== "sussurro" && u.kind !== "grupo" && u.kind !== "guilda" && u.kind !== "combat" : u.kind === t), d = c.length ? c[c.length - 1].id : 0;
     (0, ho.useEffect)(() => {
       let u = s.current;
       u && (u.scrollTop = u.scrollHeight);
@@ -20940,10 +21029,14 @@ function ROXQM(f, c, s, l, def, ex) {
     return Hh(Yt, { id: "homun", title: "\u2697 Hom\u00FAnculo", onClose: () => j.closePanel() }, body);
   }
   function CartPanel() {
-    let t = ge().player; if (!t) return null;
-    let c = t.cart || { on: false, color: 9066026, deco: "none" };
-    return Hh(Yt, { id: "cartcfg", title: "\uD83D\uDED2 Carrinho do Mercador", onClose: () => j.closePanel() },
-      Hh("div", { className: "row wrap" }, Hh("button", { className: "btn btn-primary", onClick: () => j.cartToggle() }, c.on ? "Guardar carrinho" : "Chamar carrinho (Alt+W)"), Hh("small", { className: "muted" }, "+1500 de capacidade de peso")),
+    let t = ge().player, [qs, setQs] = (0, xo.useState)({}); if (!t) return null;
+    let c = t.cart || { on: true, color: 9066026, deco: "none" }, stock = c.stock || {}, on = c.on ?? true;
+    let inv = /* @__PURE__ */ new Map(); for (let i of t.inventory.slots) i && inv.set(i.id, (inv.get(i.id) ?? 0) + i.qty);
+    let list = [...inv.entries()].filter(([i]) => $(i) && !$(i).bound), sk = Object.keys(stock);
+    return Hh(Yt, { id: "cartcfg", title: "\uD83D\uDED2 Carrinho do Mercador (Alt+W)", onClose: () => j.closePanel(), wide: true },
+      Hh("div", { className: "row wrap" }, Hh("button", { className: "btn", onClick: () => j.cartToggle() }, on ? "Guardar carrinho" : "Chamar carrinho"), Hh("button", { className: "btn btn-primary", onClick: () => j.vendOpenPanel() }, "Abrir loja (Com\u00E9rcio)"), Hh("small", { className: "muted" }, "+1500 de peso. S\u00F3 o que est\u00E1 no carrinho pode ser vendido.")),
+      Hh("h4", null, "No carrinho (", sk.length, "/30)"), Hh("div", { className: "refine-list", style: { maxHeight: 170, overflow: "auto" } }, sk.length ? null : Hh("small", { className: "muted" }, "Vazio. Guarde itens da mochila abaixo."), ...sk.map((k) => { let it = $(k); return it && Hh("div", { key: k, className: "eq-row" }, Hh(Aa, { id: k, size: 28 }), Hh("div", null, Hh("b", { style: { color: so[it.rarity] } }, it.name, " \u00D7", stock[k])), Hh("button", { className: "btn btn-small", onClick: () => j.cartTake(k, stock[k]) }, "Retirar tudo")); })),
+      Hh("h4", null, "Mochila"), Hh("div", { className: "refine-list", style: { maxHeight: 200, overflow: "auto" } }, ...list.map(([i, q]) => { let it = $(i); return Hh("div", { key: i, className: "eq-row" }, Hh(Aa, { id: i, size: 28 }), Hh("div", null, Hh("b", { style: { color: so[it.rarity] } }, it.name, " \u00D7", q)), Hh("div", { className: "row wrap" }, Hh("input", { type: "number", min: 1, max: q, placeholder: "qtd", value: qs[i] ?? "", style: { width: 60 }, onChange: (e) => setQs({ ...qs, [i]: e.target.value }) }), Hh("button", { className: "btn btn-small", onClick: () => j.cartStore(i, +(qs[i] || q)) }, "Guardar"))); })),
       Hh("h4", null, "Cor"), Hh("div", { className: "sty-sw" }, ...CART_COLS.map((h) => Hh("button", { key: h, className: `sw${c.color === h ? " on" : ""}`, style: { background: Q0(h) }, onClick: () => j.cartSet("color", h) }))),
       Hh("h4", null, "Enfeite"), Hh("div", { className: "sty-row sty-grid" }, ...CART_DECO.map(([k, n]) => Hh("button", { key: k, className: `btn btn-small${c.deco === k ? " on" : ""}`, onClick: () => j.cartSet("deco", k) }, n))));
   }
@@ -20952,13 +21045,13 @@ function ROXQM(f, c, s, l, def, ex) {
     if (!t) return null;
     let v = t.vend || { title: "", items: {}, open: false, earned: 0 };
     let inv = /* @__PURE__ */ new Map();
-    for (let i of t.inventory.slots) i && inv.set(i.id, (inv.get(i.id) ?? 0) + i.qty);
+    for (let [i, q] of Object.entries(t.cart?.stock || {})) inv.set(i, q);
     let list = [...inv.entries()].filter(([i]) => $(i) && !$(i).bound);
     return Hh(Yt, { id: "vendor", title: "\uD83D\uDED2 Loja do Mercador (/trade)", onClose: () => j.closePanel(), wide: true },
       Hh("div", { className: "row wrap" }, Hh("span", null, "T\u00EDtulo:"), Hh("input", { value: v.title, maxLength: 30, onChange: (e) => j.vendTitle(e.target.value), style: { width: 220 } }), Hh("button", { className: "btn btn-primary", onClick: () => j.vendToggle() }, v.open ? "Fechar loja" : "Abrir loja"), Hh("small", { className: "muted" }, "Ganhos: ", v.earned ?? 0, " Zens")),
-      Hh("small", { className: "muted" }, "Clientes aparecem enquanto você fica parado numa cidade. Pre\u00E7os justos (at\u00E9 ~2× o valor) vendem mais r\u00E1pido."),
+      Hh("small", { className: "muted" }, "Ao abrir a loja voc\u00EA fica parado at\u00E9 fech\u00E1-la. Pre\u00E7os justos (at\u00E9 ~2× o valor) vendem mais r\u00E1pido."),
       Hh("h4", null, "\u00C0 venda"), Hh("div", { className: "refine-list" }, ...Object.keys(v.items).map((k) => { let it = $(k); return it && Hh("div", { key: k, className: "eq-row" }, Hh(Aa, { id: k, size: 28 }), Hh("div", null, Hh("b", null, it.name, " \u00D7", v.items[k].qty), Hh("small", null, v.items[k].price, " Zens cada")), Hh("button", { className: "btn btn-small", onClick: () => j.vendSet(k, 1, 0) }, "Retirar")); })),
-      Hh("h4", null, "Mochila"), Hh("div", { className: "refine-list", style: { maxHeight: 220, overflow: "auto" } }, ...list.map(([i, q]) => { let it = $(i), dp = Math.max(1, Math.round(Math.max(8, Cp(i) * 1.25))); return Hh("div", { key: i, className: "eq-row" }, Hh(Aa, { id: i, size: 28 }), Hh("div", null, Hh("b", { style: { color: so[it.rarity] } }, it.name, " \u00D7", q), Hh("small", null, "Valor ref.: ", dp)), Hh("div", { className: "row wrap" }, Hh("input", { type: "number", min: 1, placeholder: String(dp), value: pr[i] ?? "", style: { width: 80 }, onChange: (e) => setPr({ ...pr, [i]: e.target.value }) }), Hh("input", { type: "number", min: 1, max: q, placeholder: "qtd", value: qt[i] ?? "", style: { width: 60 }, onChange: (e) => setQt({ ...qt, [i]: e.target.value }) }), Hh("button", { className: "btn btn-small", onClick: () => j.vendSet(i, +(pr[i] || dp), +(qt[i] || q)) }, "Listar"))); })));
+      Hh("h4", null, "Itens do carrinho (guarde itens com Alt+W)"), Hh("div", { className: "refine-list", style: { maxHeight: 220, overflow: "auto" } }, list.length ? null : Hh("small", { className: "muted" }, "Carrinho vazio: abra o carrinho (Alt+W) e guarde itens para vender."), ...list.map(([i, q]) => { let it = $(i), dp = Math.max(1, Math.round(Math.max(8, Cp(i) * 1.25))); return Hh("div", { key: i, className: "eq-row" }, Hh(Aa, { id: i, size: 28 }), Hh("div", null, Hh("b", { style: { color: so[it.rarity] } }, it.name, " \u00D7", q), Hh("small", null, "Valor ref.: ", dp)), Hh("div", { className: "row wrap" }, Hh("input", { type: "number", min: 1, placeholder: String(dp), value: pr[i] ?? "", style: { width: 80 }, onChange: (e) => setPr({ ...pr, [i]: e.target.value }) }), Hh("input", { type: "number", min: 1, max: q, placeholder: "qtd", value: qt[i] ?? "", style: { width: 60 }, onChange: (e) => setQt({ ...qt, [i]: e.target.value }) }), Hh("button", { className: "btn btn-small", onClick: () => j.vendSet(i, +(pr[i] || dp), +(qt[i] || q)) }, "Listar"))); })));
   }
   function AirshipPanel({ boat }) {
     let t = ge().player;
@@ -21125,7 +21218,7 @@ function ROXQM(f, c, s, l, def, ex) {
     return (0, ps.useEffect)(() => {
       let a = (n) => {
         let o = n.target;
-        if (n.altKey && !n.ctrlKey && !n.repeat && n.code === "KeyW" && j.getSnapshot().screen === "playing") { n.preventDefault(), j.cartToggle(); return; }
+        if (n.altKey && !n.ctrlKey && !n.repeat && n.code === "KeyW" && j.getSnapshot().screen === "playing") { n.preventDefault(), j.cartOpen(); return; }
         if (n.altKey && !n.ctrlKey && !n.repeat && (n.code === "KeyC") && o && o.closest && o.closest(".pm-win") && j.getSnapshot().screen === "playing") { n.preventDefault(), window.dispatchEvent(new CustomEvent("eldvar:pm-open", { detail: { name: "" } })), document.activeElement?.blur?.(); return; }
         if (!(o && (o.tagName === "INPUT" || o.tagName === "TEXTAREA" || o.tagName === "SELECT"))) {
           if (n.altKey && !n.ctrlKey && !n.repeat && (n.code === "KeyC" || "cC".includes(n.key)) && j.getSnapshot().screen === "playing") n.preventDefault(), window.dispatchEvent(new CustomEvent("eldvar:pm-open", { detail: { name: "" } })), setTimeout(() => { let pm = document.querySelector(".pm-win"); !pm && document.activeElement?.blur?.(); }, 60);

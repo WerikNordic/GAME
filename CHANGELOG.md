@@ -1,3 +1,14 @@
+## v228 — Lote G (parcial)
+- @nick, @kill <monstro|todos>, @item <código>; itens raros/épicos/lendários com ID 999xxx.
+- Aba de chat Batalha: dano só ali, fora do Geral. Shift não usa mais habilidades.
+- ADM com visual fixo (aprendiz + branco/dourado), livre em todos os portais.
+- Renascer volta à skin de aprendiz. Falcão maior. Montaria = lobo gigante.
+- Cidades: casas removidas do calçamento; borda expandida segue o padrão original; portais de guilda corrigidos.
+- Mercador: carrinho puxado e no chão; Alt+W abre janela de estoque; só esses itens vendem via Comércio; loja trava movimento com botão Fechar.
+- MVP: respawn 3–5 h mesmo saindo do mapa, posições aleatórias; monstros espalhados.
+- Habilidade suprema para cada uma das 7 classes (ao fim da lista, exige classe avançada).
+- Pendente: reforma completa das classes, visuais por tier, homúnculos, barbas, balanceamento de boss.
+
 ## v227
 - ADM: trono de luz exclusivo ao sentar; roupa toda branca/dourada (sem marrom nem bolsa); cabelo branco longo.
 - @go N (cidades) e @warp mapa (campos de monstros).
