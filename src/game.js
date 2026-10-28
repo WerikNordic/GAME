@@ -11673,7 +11673,7 @@ const SUP = {
     let o = Ap(t) * a;
     return e.silver < o ? { ok: false, msg: `Zens insuficientes (${o} necess\xE1ria).` } : Fi(e.inventory, t, a) ? (He(e.inventory, t, a), e.silver -= o, { ok: true, msg: `Comprou ${a}\xD7 ${n.name} por ${o} Zens.` }) : { ok: false, msg: "Mochila cheia." };
   }
-  var UT_BUY = { carta_fen: 90000, carta_borboleta: 110000, manto_orleans: 120000, pocao_vermelha: 35, pocao_laranja: 110, pocao_branca: 320, pocao_azul: 280, asa_mosca: 60, asa_borboleta: 180, flecha_ferro: 3, flecha_prata: 8, flecha_brasa: 6, flecha_vento: 6, flecha_geada: 6, flecha_pedra: 5, hidromel_curativo: 25, hidromel_forte: 70, infusao_runica: 30 }, UT_STOCK = Object.keys(UT_BUY);
+  var UT_BUY = { pocao_vermelha: 35, pocao_laranja: 110, pocao_branca: 320, pocao_azul: 280, asa_mosca: 60, asa_borboleta: 180, flecha_ferro: 3, flecha_prata: 8, flecha_brasa: 6, flecha_vento: 6, flecha_geada: 6, flecha_pedra: 5, hidromel_curativo: 25, hidromel_forte: 70, infusao_runica: 30 }, UT_STOCK = Object.keys(UT_BUY);
   var VIP_EXTRA = { elixir_eir: 260, carne_assada: 12, bencao_freyja: 900 }, VIP_PASS = [{ d: 7, c: 15e3 }, { d: 30, c: 50e3 }], VIP_HAIR = [16729156, 16766720, 3329330, 4251856, 11141375, 16744448, 15132390, 65535, 16711935, 255], VIP_DYE = [16729156, 16766720, 3329330, 4251856, 11141375, 16744448, 15132390, 65535, 16711935, 255, 2105376, 16777215];
   function freeNear(map, d) {
     try { if (!map || !d) return d; if (Ia(d.x, d.y, 18, map.obstacles, map.width, map.height)) return d;
@@ -11840,7 +11840,7 @@ const SUP = {
         return { ok: true, msg: "" };
     }
   }
-  var AUTH_ON = false;
+  var AUTH_ON = true;
   try {
     window.__acct = window.localStorage.getItem("eldvar.session") || "", window.__tok = window.localStorage.getItem("eldvar.token") || "";
   } catch {
@@ -14338,7 +14338,7 @@ const SUP = {
     let t = Hv.get(e);
     if (t) return t;
     if (e === "poring_saltitante") { try { let cv = document.createElement("canvas"); cv.width = cv.height = 48; let g = cv.getContext("2d"); g.translate(24, 28); g.scale(1.9, 1.9); let gr = g.createRadialGradient(-3, -5, 1, 0, 0, 12); gr.addColorStop(0, "#ffd6e2"), gr.addColorStop(0.6, "#ff9cb8"), gr.addColorStop(1, "#e0688a"); g.fillStyle = gr, g.strokeStyle = "#a83a60", g.lineWidth = 1.4, g.beginPath(), g.ellipse(0, 0, 11, 9, 0, 0, 7), g.fill(), g.stroke(); g.fillStyle = "rgba(255,255,255,.75)", g.beginPath(), g.ellipse(-4, -4, 3, 1.8, -0.5, 0, 7), g.fill(); g.fillStyle = "#2a1a20", g.beginPath(), g.ellipse(-3.6, 0, 1.3, 2, 0, 0, 7), g.ellipse(3.6, 0, 1.3, 2, 0, 0, 7), g.fill(); g.strokeStyle = "#2a1a20", g.lineWidth = 1, g.beginPath(), g.arc(0, 3, 2, 0.2, 2.9), g.stroke(); Hv.set(e, cv); return cv; } catch (err) { } }
-    if (CX_[e]) { try { t = cxIcon(e); Hv.set(e, t); return t; } catch (err) { } }
+    { const w0 = $(e); if (CX_[e] || (w0 && (w0.headStyle || w0.backStyle) && w0.kind !== "weapon")) { try { t = cxIcon(e); Hv.set(e, t); return t; } catch (err) { } } }
     let a = new Me(ir, ir), n = $(e);
     return n ? n.kind === "weapon" ? jM(a, n) : n.kind === "armor" ? BM(a, n) : n.kind === "accessory" ? IM(a, n) : n.kind === "back" ? BKI(a, n) : n.kind === "headTop" || n.kind === "headMid" || n.kind === "headLow" ? UM(a, n) : n.kind === "consumable" ? VM(a, n) : n.kind === "card" ? XM(a, n) : n.kind === "ammo" ? $M(a, n) : n.kind === "quest" ? Ov(a) : n.socket || he(n.id, "runa") ? QM(a, n) : YM(a, n) : Ov(a), (() => { let m_ = /_t(\d+)$/.exec(e); if (!m_) return; let ti_ = (+m_[1] - 16) / 8, k_ = ti_ >= 9 ? 5 : ti_ >= 6 ? 4 : ti_ >= 3 ? 3 : ti_ >= 1 ? 2 : 1, pc_ = P(ti_ >= 6 ? 16777215 : 15254090); for (let q_ = 0; q_ < k_; q_++) a.dot(3 + q_ * 3, 29, pc_), a.dot(3 + q_ * 3, 30, pc_); })(), a.outline(), t = a.toCanvas(), Hv.set(e, t), t;
   }
@@ -16210,7 +16210,7 @@ void main() {
       } catch {}
     }, 500);
   })();
-  typeof location < 'u' && location.search.includes('debug') && (window.__petPlay = () => { __petPlayAt = 0; petPlay(); }), (window.__cxIcon = (id) => cxIcon(id).toDataURL()), (window.__rox2m = () => ROX2M), (window.__cxFull = (id, dir) => { const it = Wa[id], look = { base: "berserker", hair: 3, sx: "m" }; if (it.kind === "back") look.bk = it.backStyle; else look.top = it.headStyle; return ROX2(R4(look), dir, -1, 0, "").cv.toDataURL(); }), typeof location < 'u' && location.search.includes('debug') && (window.__game = () => ({ He, Qu, WB, j, Ce, Ua, Yu, ty, I8, tr, U8, ap, Dr, Jy, Rb, Cc, _p, Ua, en, Jt, nr, He, It }), window.__defs = () => Object.values(Qu), window.__items = () => Wa, window.__maps = () => Jt, window.__data = () => ({ Or, RQ: typeof RQ < 'undefined' ? RQ : [], REALM_Q: typeof REALM_Q < 'undefined' ? REALM_Q : [], CRAFT_REC: typeof CRAFT_REC < 'undefined' ? CRAFT_REC : [], cv, Qm, D8, Q8, Ep, Ir, kp }), window.__sprDbg = () => ({ cs, po, fa, hh, R4, ea, ROXQM, O4, P0, Vl }), window.__spr2 = () => ({ O4, _4 }));
+  typeof location < 'u' && location.search.includes('debug') && (window.__petPlay = () => { __petPlayAt = 0; petPlay(); }), (window.__cxIcon = (id) => cxIcon(id).toDataURL()), (window.__rox2m = () => ROX2M), (window.__cxFull = (id, dir) => { const it = Wa[id], look = { base: "berserker", hair: 3, sx: "m" }; if (it.kind === "back") look.bk = it.backStyle; else if (it.kind === "headMid") look.mid = it.headStyle; else if (it.kind === "headLow") look.low = it.headStyle; else look.top = it.headStyle; return ROX2(R4(look), dir, -1, 0, "").cv.toDataURL(); }), typeof location < 'u' && location.search.includes('debug') && (window.__game = () => ({ He, Qu, WB, j, Ce, Ua, Yu, ty, I8, tr, U8, ap, Dr, Jy, Rb, Cc, _p, Ua, en, Jt, nr, He, It }), window.__defs = () => Object.values(Qu), window.__items = () => Wa, window.__maps = () => Jt, window.__data = () => ({ Or, RQ: typeof RQ < 'undefined' ? RQ : [], REALM_Q: typeof REALM_Q < 'undefined' ? REALM_Q : [], CRAFT_REC: typeof CRAFT_REC < 'undefined' ? CRAFT_REC : [], cv, Qm, D8, Q8, Ep, Ir, kp }), window.__sprDbg = () => ({ cs, po, fa, hh, R4, ea, ROXQM, O4, P0, Vl }), window.__spr2 = () => ({ O4, _4 }));
   var c4 = [1, -1, 0, 0, 1, -1, 1, -1], u4 = [0, 0, 1, -1, 1, -1, -1, 1];
   function d4(e, t, a, n) {
     let o = A.RX(a).mul(A.RY(t)), r = o.r, i = 1e9, s = -1e9, l = 1e9, c = -1e9;
@@ -17725,6 +17725,51 @@ void main() {
     for (const [iid, c] of Object.entries(CX_)) { const w = Wa[iid], r = RI[c.rar] ?? 0, pool = MT[r], k = n++; const a = pool[k % 5], b2 = pool[(k + 2) % 5], big = r >= 2;
       RQ.push({ id: "vx_" + c.id, kind: "look", name: w.name, desc: "", need: big ? [[a, 6 + r * 2], [b2, 3 + r], [MT[3][k % 5], 1 + (r > 2 ? 1 : 0)]] : [[a, 8 + r * 6], [b2, 4 + r * 4]], reward: iid }); } }
 (() => { let prev = 0; for (const d of Object.values(Qu).filter((x) => x.boss && x.id !== "jormungandr").sort((x, y) => x.level - y.level)) { if (d.hp < prev * 1.05) d.hp = Math.round(prev * 1.05); prev = d.hp; } })();
+(() => {
+  // v249: visuais exclusivos (nao dropam; so por receita), sem repeticoes, cada um com bonus balanceado por tema/raridade.
+  for (const k of ["gold", "ice", "ember", "violet", "green"]) { const w = Wa["olhos_" + (k === "green" ? "esmeralda" : k === "gold" ? "ouro" : k === "ice" ? "gelo" : k === "ember" ? "brasa" : "violeta")]; if (w) w.headStyle = "eyeL_" + k; }
+  if (Wa.oculos_de_forja) Wa.oculos_de_forja.headStyle = "lg_visor_ferreiro";
+  if (Wa.mascara_de_couro) Wa.mascara_de_couro.headStyle = "lg_bandido";
+  if (Wa.aljava_prata) Wa.aljava_prata.backStyle = "lg_aljava_rubra";
+  const SC = /caveira|hel|surt|espinhos|demonio|diabrete|oni|presas|peste|negr|obsidiana|sombra|void|dragao|osso|brasa|chama|fogo|cicatriz|corvo|bandagem|respirador|lobo|pintura_(vermelha|caveira)|ember|ruby|dragon|snake|wolf|cat|onyx|caveira/;
+  const DV = /aureola|halo|solar|freyja|serafim|anjo|celeste|ouro|dourad|fenix|odin|star|rune|runic|runas|real|jarl|prata|louro|valquiria|tiara|circlet|coroa|gold|ice|gelo|neve|silver|sapphire|violet|valkyrie|cisne|coruja|aguia|fada/;
+  const CT = /gato|coelho|raposa|laco|pintinho|cogumelo|ursinho|borboleta|sardas|rosa|rose|focinho|gorro|guirlanda|flor|poring|green|lime|turq|hazel|amber|cat/;
+  const TH = { scary: ["str", "dex"], divine: ["int", "vit"], cute: ["luk", "agi"], util: ["vit", "dex"] };
+  const PW = { common: 1, uncommon: 1, rare: 2, epic: 2, legendary: 3 };
+  for (const w of Object.values(Wa)) {
+    if (!(w.cosmetic && (w.kind === "headTop" || w.kind === "headMid" || w.kind === "headLow" || w.kind === "back")) || w.bound) continue;
+    const key = (w.id + " " + (w.headStyle || w.backStyle || "")).toLowerCase();
+    const th = SC.test(key) ? "scary" : DV.test(key) ? "divine" : CT.test(key) ? "cute" : "util";
+    const [a, b] = TH[th], pw = PW[w.rarity] || 1, bo = {};
+    bo[a] = pw; if (w.rarity !== "common") bo[b] = Math.max(1, pw - 1);
+    if (w.rarity === "uncommon") bo.def = 1;
+    if (w.rarity === "epic") bo.maxHp = 40;
+    if (w.rarity === "legendary") { bo.maxHp = 80; if (th === "scary") bo.crit = 0.02; else if (th === "divine") bo.maxMp = 40; else bo.speed = 6; }
+    w.bonus = bo; w.exclusive = true; w.sell = 0; w.theme = th;
+    const NM = { str: "FOR", dex: "DES", int: "INT", vit: "VIT", luk: "SOR", agi: "AGI", def: "Defesa", maxHp: "Vida", maxMp: "Mana", crit: "Crítico", speed: "Veloc." };
+    w.desc = String(w.desc || "").replace(/ ?Apenas visual\.?/, "") + " Visual exclusivo (" + ({ scary: "sombrio", divine: "divino", cute: "fofo", util: "clássico" })[th] + "): " + Object.entries(bo).map(([k, v]) => NM[k] + " +" + (k === "crit" ? Math.round(v * 100) + "%" : v)).join(", ") + ". Não dropa de monstros.";
+  }
+  // equipamentos gerados: o visual acompanha o tier (nao repete 4 formas em 1320 itens)
+  const pool = Object.values(Wa).filter((w) => w.id.startsWith("cx_xt_") || (w.cosmetic && w.kind === "headTop" && !w.bound && !w.id.startsWith("cx_"))).map((w) => w.headStyle);
+  const ord = { common: 0, uncommon: 1, rare: 2, epic: 3, legendary: 4 };
+  const pl = Object.values(Wa).filter((w) => w.id.startsWith("cx_xt_")).sort((x, y) => (ord[x.rarity] ?? 0) - (ord[y.rarity] ?? 0)).map((w) => w.headStyle);
+  void pool;
+  for (const w of Object.values(Wa)) {
+    const m = /^g_h_(\d)_(\d+)_(\d)$/.exec(w.id); if (!m || !pl.length) continue;
+    const k = +m[1], ti = +m[2], i = Math.min(pl.length - 1, Math.floor(((ti * 4 + k) / 132) * pl.length));
+    w.headStyle = pl[i];
+  }
+})();
+(() => {
+  // v249: Fen (peixe) dropa as cartas de conjuracao; Manto de Orleans dropa de MVP; nada disso e vendido em NPC.
+  const ref = Qu.peixe_lanterna;
+  if (ref) {
+    Qu.fen = { ...ref, id: "fen", name: "Fen", level: 24, hp: 6200, atk: 150, def: 28, exp: 520, color: 0x3a6a8a, speed: 80, silver: [60, 120], drops: [{ item: "carta_fen", chance: 0.008, min: 1, max: 1 }, { item: "carta_borboleta", chance: 0.006, min: 1, max: 1 }, { item: "pocao_azul", chance: 0.08, min: 1, max: 2 }], respawnMs: 90000 };
+    const m = Jt.mar_naufragio, base = m && m.spawns && m.spawns[0];
+    if (m && base) m.spawns.push({ monster: "fen", x: Math.round(m.width * 0.5), y: Math.round(m.height * 0.55), radius: 420, count: 3 });
+  }
+  const mv = Qu.devorador_ruptura; if (mv) (mv.drops = mv.drops || []).push({ item: "manto_orleans", chance: 0.03, min: 1, max: 1 });
+})();
 (() => {
   // Balanceamento v245: alvos derivados de simulacao de jogador real (skills + equipamento por nivel; ver CHANGELOG).
   // [nivel, HP alvo, ATQ alvo] do monstro "tipico" do nivel; variacao relativa entre monstros e mantida (limitada).
@@ -21335,7 +21380,7 @@ function ROXQM(f, c, s, l, def, ex) {
       })), Hh("div", { className: "row" }, Hh("button", { className: "btn btn-small", onClick: () => run("sair") }, "Sair do grupo"), isLeader && Hh("button", { className: "btn btn-small", onClick: () => run("dissolver") }, "Dissolver"), Hh("small", { className: "muted" }, "Convidar: /grupo convidar NOME \u00B7 B\u00F4nus de EXP +10% por membro no mapa"))));
   }
   function PV_() {
-    let t = ge().player, a = (0, xo.useRef)(null), [hs, setHs] = (0, xo.useState)(t?.style?.hairStyle), [hc, setHc] = (0, xo.useState)(t?.style?.hairColor), [dye, setDye] = (0, xo.useState)(t?.dye ?? 0), [dir, setDir] = (0, xo.useState)("down"), [eq, setEq] = (0, xo.useState)({}), [tab, setTab] = (0, xo.useState)("hair");
+    let t = ge().player, a = (0, xo.useRef)(null), [hs, setHs] = (0, xo.useState)(t?.style?.hairStyle), [hc, setHc] = (0, xo.useState)(t?.style?.hairColor), [dye, setDye] = (0, xo.useState)(t?.dye ?? 0), [dir, setDir] = (0, xo.useState)("down"), [eq, setEq] = (0, xo.useState)({}), [tab, setTab] = (0, xo.useState)("top");
     let all = Object.values(Wa).filter((x) => !x.gen), byKind = (k) => all.filter((x) => x.kind === k), wpn = [], seen = /* @__PURE__ */ new Set();
     for (let x of all) if (x.kind === "weapon" && x.weaponType && !seen.has(x.weaponType)) seen.add(x.weaponType), wpn.push(x);
     let f = t ? { ...t, dye, style: { hairStyle: hs, hairColor: hc }, equipment: { ...t.equipment, ...eq } } : null, key = f ? po(cs(f)) : "";
@@ -21348,11 +21393,9 @@ function ROXQM(f, c, s, l, def, ex) {
       loop(); let b = setTimeout(x, 250); return () => (alive = false, cancelAnimationFrame(raf), clearTimeout(b));
     }, [key, dir]);
     if (!t || !f) return null;
-    let setSlot = (k, id) => setEq((q) => ({ ...q, [k]: q[k] === id ? void 0 : id })), tabs = [["hair", "Cabelo"], ["top", "Cabe\u00E7a"], ["mid", "Rosto"], ["low", "Barba/M\u00E1scara"], ["back", "Costas"], ["dye", "Cores"]];
+    let setSlot = (k, id) => setEq((q) => ({ ...q, [k]: q[k] === id ? void 0 : id })), tabs = [["top", "Cabe\u00E7a"], ["mid", "Rosto"], ["low", "Barba/M\u00E1scara"]];
     let items = (k, list) => Hh("div", { className: "pv-win" }, Hh("h4", null, "Itens (", list.length, ") \u00B7 2 cliques para equipar/desequipar"), Hh("div", { className: "pv-grid" }, ...list.map((x) => Hh("div", { key: x.id, role: "button", tabIndex: 0, title: x.name, className: `pv-card r-${x.rarity}${eq[k] === x.id ? " on" : ""}`, onDoubleClick: () => setSlot(k, x.id), onKeyDown: (ev) => { ev.key === "Enter" && setSlot(k, x.id); } }, Hh(Aa, { id: x.id, size: 44 }), Hh("span", null, x.name))), list.length === 0 && Hh("span", { className: "muted" }, "Nenhum.")));
-    let body = tab === "hair" ? Hh("div", null, Hh("h4", null, "Corte (todos)"), Hh("div", { className: "sty-row sty-grid" }, ...zp.filter((h) => h.id !== "short" && h.id !== "long").map((h) => Hh("button", { key: h.id, className: `btn btn-small${hs === h.id ? " on" : ""}`, onClick: () => setHs(h.id) }, h.name))), Hh("h4", null, "Cor do cabelo"), Hh("div", { className: "sty-sw" }, ...Dp.map((h) => Hh("button", { key: h, className: `sw${hc === h ? " on" : ""}`, style: { background: Q0(h) }, onClick: () => setHc(h) }))))
-      : tab === "top" ? items("headTop", byKind("headTop")) : tab === "mid" ? items("headMid", byKind("headMid")) : tab === "low" ? items("headLow", byKind("headLow")) : tab === "back" ? items("back", byKind("back"))
-      : Hh("div", null, Hh("h4", null, "Cor da roupa"), Hh("div", { className: "sty-sw" }, ...Op.map((h) => Hh("button", { key: h, className: `sw${dye === h ? " on" : ""}${h === 0 ? " orig" : ""}`, style: h ? { background: Q0(h) } : void 0, onClick: () => setDye(h) }))));
+    let body = tab === "mid" ? items("headMid", byKind("headMid")) : tab === "low" ? items("headLow", byKind("headLow")) : items("headTop", byKind("headTop"));
     return Hh("div", { className: "overlay", role: "dialog", "aria-modal": "true", "aria-label": "Teste de Visuais" }, Hh("div", { className: "panel stylist" },
       Hh("header", { className: "panel-head" }, Hh("h2", null, "Teste de Visuais"), Hh("button", { className: "btn btn-small", onClick: () => j.closePanel(), "aria-label": "Fechar" }, "\u2715")),
       Hh("div", { className: "sty-body" }, Hh("div", { className: "sty-prev" }, Hh("canvas", { ref: a, width: 220, height: 300 }), Hh("button", { className: "btn btn-small", onClick: () => setDir((h) => h === "down" ? "dq" : h === "dq" ? "side" : h === "side" ? "uq" : h === "uq" ? "up" : "down") }, "\u27F3 Girar")),

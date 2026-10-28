@@ -11922,7 +11922,7 @@ const SUP = {
     let o = Ap(t) * a;
     return e.silver < o ? { ok: false, msg: `Zens insuficientes (${o} necess\xE1ria).` } : Fi(e.inventory, t, a) ? (He(e.inventory, t, a), e.silver -= o, { ok: true, msg: `Comprou ${a}\xD7 ${n.name} por ${o} Zens.` }) : { ok: false, msg: "Mochila cheia." };
   }
-  var UT_BUY = { carta_fen: 90000, carta_borboleta: 110000, manto_orleans: 120000, pocao_vermelha: 35, pocao_laranja: 110, pocao_branca: 320, pocao_azul: 280, asa_mosca: 60, asa_borboleta: 180, flecha_ferro: 3, flecha_prata: 8, flecha_brasa: 6, flecha_vento: 6, flecha_geada: 6, flecha_pedra: 5, hidromel_curativo: 25, hidromel_forte: 70, infusao_runica: 30 }, UT_STOCK = Object.keys(UT_BUY);
+  var UT_BUY = { pocao_vermelha: 35, pocao_laranja: 110, pocao_branca: 320, pocao_azul: 280, asa_mosca: 60, asa_borboleta: 180, flecha_ferro: 3, flecha_prata: 8, flecha_brasa: 6, flecha_vento: 6, flecha_geada: 6, flecha_pedra: 5, hidromel_curativo: 25, hidromel_forte: 70, infusao_runica: 30 }, UT_STOCK = Object.keys(UT_BUY);
   var VIP_EXTRA = { elixir_eir: 260, carne_assada: 12, bencao_freyja: 900 }, VIP_PASS = [{ d: 7, c: 15e3 }, { d: 30, c: 50e3 }], VIP_HAIR = [16729156, 16766720, 3329330, 4251856, 11141375, 16744448, 15132390, 65535, 16711935, 255], VIP_DYE = [16729156, 16766720, 3329330, 4251856, 11141375, 16744448, 15132390, 65535, 16711935, 255, 2105376, 16777215];
   function freeNear(map, d) {
     try { if (!map || !d) return d; if (Ia(d.x, d.y, 18, map.obstacles, map.width, map.height)) return d;
@@ -12089,7 +12089,7 @@ const SUP = {
         return { ok: true, msg: "" };
     }
   }
-  var AUTH_ON = false;
+  var AUTH_ON = true;
   try {
     window.__acct = window.localStorage.getItem("eldvar.session") || "", window.__tok = window.localStorage.getItem("eldvar.token") || "";
   } catch {
@@ -14587,7 +14587,7 @@ const SUP = {
     let t = Hv.get(e);
     if (t) return t;
     if (e === "poring_saltitante") { try { let cv = document.createElement("canvas"); cv.width = cv.height = 48; let g = cv.getContext("2d"); g.translate(24, 28); g.scale(1.9, 1.9); let gr = g.createRadialGradient(-3, -5, 1, 0, 0, 12); gr.addColorStop(0, "#ffd6e2"), gr.addColorStop(0.6, "#ff9cb8"), gr.addColorStop(1, "#e0688a"); g.fillStyle = gr, g.strokeStyle = "#a83a60", g.lineWidth = 1.4, g.beginPath(), g.ellipse(0, 0, 11, 9, 0, 0, 7), g.fill(), g.stroke(); g.fillStyle = "rgba(255,255,255,.75)", g.beginPath(), g.ellipse(-4, -4, 3, 1.8, -0.5, 0, 7), g.fill(); g.fillStyle = "#2a1a20", g.beginPath(), g.ellipse(-3.6, 0, 1.3, 2, 0, 0, 7), g.ellipse(3.6, 0, 1.3, 2, 0, 0, 7), g.fill(); g.strokeStyle = "#2a1a20", g.lineWidth = 1, g.beginPath(), g.arc(0, 3, 2, 0.2, 2.9), g.stroke(); Hv.set(e, cv); return cv; } catch (err) { } }
-    if (CX_[e]) { try { t = cxIcon(e); Hv.set(e, t); return t; } catch (err) { } }
+    { const w0 = $(e); if (CX_[e] || (w0 && (w0.headStyle || w0.backStyle) && w0.kind !== "weapon")) { try { t = cxIcon(e); Hv.set(e, t); return t; } catch (err) { } } }
     let a = new Me(ir, ir), n = $(e);
     return n ? n.kind === "weapon" ? jM(a, n) : n.kind === "armor" ? BM(a, n) : n.kind === "accessory" ? IM(a, n) : n.kind === "back" ? BKI(a, n) : n.kind === "headTop" || n.kind === "headMid" || n.kind === "headLow" ? UM(a, n) : n.kind === "consumable" ? VM(a, n) : n.kind === "card" ? XM(a, n) : n.kind === "ammo" ? $M(a, n) : n.kind === "quest" ? Ov(a) : n.socket || he(n.id, "runa") ? QM(a, n) : YM(a, n) : Ov(a), (() => { let m_ = /_t(\d+)$/.exec(e); if (!m_) return; let ti_ = (+m_[1] - 16) / 8, k_ = ti_ >= 9 ? 5 : ti_ >= 6 ? 4 : ti_ >= 3 ? 3 : ti_ >= 1 ? 2 : 1, pc_ = P(ti_ >= 6 ? 16777215 : 15254090); for (let q_ = 0; q_ < k_; q_++) a.dot(3 + q_ * 3, 29, pc_), a.dot(3 + q_ * 3, 30, pc_); })(), a.outline(), t = a.toCanvas(), Hv.set(e, t), t;
   }
@@ -16459,7 +16459,7 @@ void main() {
       } catch {}
     }, 500);
   })();
-  typeof location < 'u' && location.search.includes('debug') && (window.__petPlay = () => { __petPlayAt = 0; petPlay(); }), (window.__cxIcon = (id) => cxIcon(id).toDataURL()), (window.__rox2m = () => ROX2M), (window.__cxFull = (id, dir) => { const it = Wa[id], look = { base: "berserker", hair: 3, sx: "m" }; if (it.kind === "back") look.bk = it.backStyle; else look.top = it.headStyle; return ROX2(R4(look), dir, -1, 0, "").cv.toDataURL(); }), typeof location < 'u' && location.search.includes('debug') && (window.__game = () => ({ He, Qu, WB, j, Ce, Ua, Yu, ty, I8, tr, U8, ap, Dr, Jy, Rb, Cc, _p, Ua, en, Jt, nr, He, It }), window.__defs = () => Object.values(Qu), window.__items = () => Wa, window.__maps = () => Jt, window.__data = () => ({ Or, RQ: typeof RQ < 'undefined' ? RQ : [], REALM_Q: typeof REALM_Q < 'undefined' ? REALM_Q : [], CRAFT_REC: typeof CRAFT_REC < 'undefined' ? CRAFT_REC : [], cv, Qm, D8, Q8, Ep, Ir, kp }), window.__sprDbg = () => ({ cs, po, fa, hh, R4, ea, ROXQM, O4, P0, Vl }), window.__spr2 = () => ({ O4, _4 }));
+  typeof location < 'u' && location.search.includes('debug') && (window.__petPlay = () => { __petPlayAt = 0; petPlay(); }), (window.__cxIcon = (id) => cxIcon(id).toDataURL()), (window.__rox2m = () => ROX2M), (window.__cxFull = (id, dir) => { const it = Wa[id], look = { base: "berserker", hair: 3, sx: "m" }; if (it.kind === "back") look.bk = it.backStyle; else if (it.kind === "headMid") look.mid = it.headStyle; else if (it.kind === "headLow") look.low = it.headStyle; else look.top = it.headStyle; return ROX2(R4(look), dir, -1, 0, "").cv.toDataURL(); }), typeof location < 'u' && location.search.includes('debug') && (window.__game = () => ({ He, Qu, WB, j, Ce, Ua, Yu, ty, I8, tr, U8, ap, Dr, Jy, Rb, Cc, _p, Ua, en, Jt, nr, He, It }), window.__defs = () => Object.values(Qu), window.__items = () => Wa, window.__maps = () => Jt, window.__data = () => ({ Or, RQ: typeof RQ < 'undefined' ? RQ : [], REALM_Q: typeof REALM_Q < 'undefined' ? REALM_Q : [], CRAFT_REC: typeof CRAFT_REC < 'undefined' ? CRAFT_REC : [], cv, Qm, D8, Q8, Ep, Ir, kp }), window.__sprDbg = () => ({ cs, po, fa, hh, R4, ea, ROXQM, O4, P0, Vl }), window.__spr2 = () => ({ O4, _4 }));
   var c4 = [1, -1, 0, 0, 1, -1, 1, -1], u4 = [0, 0, 1, -1, 1, -1, -1, 1];
   function d4(e, t, a, n) {
     let o = A.RX(a).mul(A.RY(t)), r = o.r, i = 1e9, s = -1e9, l = 1e9, c = -1e9;
@@ -19061,7 +19061,7 @@ var ROX2 = (() => {
   paint("xl_pintura_runas", "Runas de Guerreiro", "epic", (az, el, c) => (Math.abs(az - .62) < .03 && el > -.1 && el < .3) || (Math.abs(az + .62) < .03 && el > -.1 && el < .3) || (Math.abs(Math.abs(az) - .62) < .1 && Math.abs(el - .1) < .03) ? c : 0, [100, 230, 255]);
   // ---------- ROSTO (olhos e óculos) ----------
   const EC = [["gold", "Dourados", 0xf0b800, "uncommon"], ["ice", "de Gelo", 0x80e0ff, "uncommon"], ["ember", "de Brasa", 0xff5a20, "uncommon"], ["violet", "Violeta", 0xb070ff, "rare"], ["green", "Esmeralda", 0x38d078, "uncommon"], ["sapphire", "de Safira", 0x3a70ff, "uncommon"], ["ruby", "de Rubi", 0xe0204a, "rare"], ["amber", "de Âmbar", 0xe8902a, "common"], ["silver", "de Prata", 0xc8d0e0, "uncommon"], ["rose", "Rosados", 0xff80b0, "common"], ["turq", "Turquesa", 0x30d8c8, "uncommon"], ["lime", "de Lima", 0xa8e830, "common"], ["onyx", "de Ônix", 0x3a3a48, "rare"], ["hazel", "Castanhos Claros", 0x9a6a38, "common"], ["storm", "de Tempestade", 0x7088a8, "rare"]];
-  for (const [k, n, c, r] of EC) regE("eye_" + k, "Olhos " + n, r, c, 0);
+  for (const [k, n, c, r] of EC) regE("eye_" + k, "Olhos " + n + (["gold", "ice", "ember", "violet", "green"].includes(k) ? " Radiantes" : ""), r, c, ["gold", "ice", "ember", "violet", "green"].includes(k) ? "glow" : 0);
   regE("eye_cat", "Olhos de Gato Dourados", "epic", 0xf0c000, "slit");
   regE("eye_wolf", "Olhos de Lobo", "epic", 0xe8c020, "slit");
   regE("eye_dragon", "Olhos de Dragão Rubro", "legendary", 0xff3010, "slit");
@@ -19163,6 +19163,79 @@ var ROX2 = (() => {
   quivX("xb_aljava_couro", "Aljava de Couro Batido", "common", 0x6a4a2a, [0xd04830, 0xf0e8d0]);
   quivX("xb_aljava_prata", "Aljava de Prata Élfica", "epic", 0xc8d0e0, [0x7ae8ff, 0xffffff]);
   quivX("xb_aljava_falcao", "Aljava do Falcoeiro", "rare", 0x4a5a3a, [0xe8d8b0, 0x8a6a3a]);
+
+  // ===== v249: itens legados com visual proprio (fora do catalogo) =====
+  const noCat = (grp, fn) => { const arr = CAT[grp], n = arr.length; fn(); arr.length = n; };
+  noCat("mid", () => regM("lg_visor_ferreiro", "Visor de Ferreiro", "uncommon", (E, S, o) => { const { hy, hz } = o, fe = C3(0x4a4a54);
+    for (const sg of [-1, 1]) E({ x: sg * 3.6, y: hy - .2, z: hz + 8.2, rx: 3, ry: 2.5, rz: .8, p: 3, col: C3(0xff8a2a), bias: .6 });
+    S({ pts: [[-7, hy - 3, hz + 8], [7, hy - 3, hz + 8]], w: 1.1, col: fe, metal: 1 }); S({ pts: [[-7, hy + 2.6, hz + 8], [7, hy + 2.6, hz + 8]], w: 1.1, col: fe, metal: 1 });
+    S({ pts: [[-7, hy - .2, hz + 7.6], [-9.4, hy - .2, hz + 2]], w: 1, col: fe }); S({ pts: [[7, hy - .2, hz + 7.6], [9.4, hy - .2, hz + 2]], w: 1, col: fe }); }));
+  noCat("low", () => regL("lg_bandido", "Lenço de Bandoleiro", "uncommon", (E, S, o) => { const { hy, hz } = o;
+    E({ x: 0, y: hy + 6.4, z: hz + 4.2, rx: 7.2, ry: 3.8, rz: 4.8, p: 3, col: C3(0x8a2a3a), tex: (mx, my, mz) => (mz > .1 && Math.sin(mx * 18) * Math.sin(my * 18) > .55) ? C3(0xe8d8b0) : 0 });
+    S({ pts: [[7, hy + 3, hz + 2], [11, hy + 6, hz - 2], [10, hy + 12, hz - 3]], w: [2.4, 1], col: C3(0x8a2a3a) }); }));
+  noCat("back", () => regB("lg_aljava_rubra", "Aljava Rubra de Bronze", "rare", (E, S, o) => { const { bob, tz } = o;
+    S({ pts: [[-4, tz + 34 + bob, tz - 7], [-3, tz + 54 + bob, tz - 8]], w: [5.6, 5], col: C3(0x8a2a2a), bias: -.05 });
+    for (let i = 0; i < 5; i++) { S({ pts: [[-5.4 + i * 1.5, tz + 34 + bob, tz - 7.5], [-6.6 + i * 2.1, tz + 26 + bob, tz - 8.5]], w: 1.1, col: C3(0xe8e0c8) }); E({ x: -6.6 + i * 2.1, y: tz + 25.4 + bob, z: tz - 8.5, rx: 1.5, ry: 1.9, rz: .8, p: 3, col: C3(0xd8a040), metal: 1 }); }
+    S({ pts: [[-6, tz + 36 + bob, tz - 2], [6, tz + 50 + bob, tz + 4]], w: 1.5, col: C3(0x3a2418) }); }, { quiver: 1 }));
+  // ===== v249: visuais novos: assustadores, divinos e fofos =====
+  regT("xt_caveira_hel", "Elmo de Caveira de Hel", "epic", (E, S, o) => { const { hy, hz, t } = o, bn = C3(0xe8e0c8);
+    E({ x: 0, y: hy - 4.4, z: hz - .4, rx: 10, ry: 6.6, rz: 9.6, p: 2.4, col: bn, tex: (mx, my, mz) => (mz > .2 && my > -.1 && my < .5 && Math.abs(Math.abs(mx) - .38) < .17) ? C3(0x14101a) : 0 });
+    for (const sg of [-1, 1]) E({ x: sg * 3.8, y: hy - 1.6, z: hz + 8.6, rx: 1.4, ry: 1.4, rz: .6, col: C3(0x7affb0), bias: .5 + Math.sin(t * 4) * .3 });
+    for (const sg of [-1, 1]) S({ pts: [[sg * 8, hy - 7, hz - 1], [sg * 13, hy - 10, hz - 1], [sg * 14, hy - 16, hz]], w: [3.4, .6], col: bn }); }, 1);
+  regT("xt_chifres_surt", "Chifres Infernais de Surt", "legendary", (E, S, o) => { const { hy, hz, t } = o;
+    E({ x: 0, y: hy - 6.2, z: hz, rx: 9.6, ry: 1.6, rz: 9.2, p: 3, col: C3(0x1a0c10), metal: 1 });
+    for (const sg of [-1, 1]) { S({ pts: [[sg * 7, hy - 7, hz], [sg * 12, hy - 9, hz], [sg * 15, hy - 16, hz + 1], [sg * 12.4, hy - 26 + Math.sin(t * 3) * .5, hz + 2]], w: [4.6, .6], col: (q) => q > .5 ? C3(0xff7a20) : C3(0x3a1018), bias: .35 }); }
+    for (let i = 0; i < 4; i++) { const u = (t * .7 + i * .25) % 1; E({ x: Math.sin(i * 5 + t) * 5, y: hy - 8 - u * 14, z: hz, rx: .7, ry: .7, rz: .7, col: C3(0xffb050), bias: 1 - u * .6 }); } });
+  regT("xt_coroa_espinhos", "Coroa de Espinhos Sombria", "rare", (E, S, o) => { const { hy, hz } = o;
+    E({ x: 0, y: hy - 6.8, z: hz, rx: 9.4, ry: 1.2, rz: 9, p: 3, col: C3(0x241a2a), metal: 1 });
+    for (let i = 0; i < 11; i++) { const a = i / 11 * TAU, x = Math.cos(a) * 8.6, z = Math.sin(a) * 8.2, h = 4 + (i % 3) * 2.6; S({ pts: [[x, hy - 7, hz + z], [x * 1.18, hy - 7 - h, hz + z * 1.18]], w: [2, .3], col: C3(0x3a2a44), metal: 1 }); if (i % 4 === 0) E({ x: x * 1.18, y: hy - 7.4 - h, z: hz + z * 1.18, rx: .8, ry: .8, rz: .8, col: C3(0xd0204a), bias: .6 }); } });
+  regT("xt_halo_serafim", "Halo do Serafim", "legendary", (E, S, o) => { const { hy, hz, t } = o;
+    for (let i = 0; i < 34; i++) { const a = i / 34 * TAU; E({ x: Math.cos(a) * 8.2, y: hy - 17 + Math.sin(a) * 1.4 + Math.sin(t * 2) * .5, z: hz - 2 + Math.sin(a) * 8.2, rx: .9, ry: .9, rz: .9, col: C3(i % 2 ? 0xfff4b0 : 0xffffff), bias: 1 }); }
+    for (let i = 0; i < 6; i++) { const u = (t * .4 + i / 6) % 1; E({ x: Math.cos(i * 1.7) * 7, y: hy - 17 - u * 8, z: hz - 2 + Math.sin(i * 1.7) * 7, rx: .6, ry: .6, rz: .6, col: C3(0xffffff), bias: 1 - u }); } });
+  regT("xt_coroa_solar", "Coroa Solar de Sól", "legendary", (E, S, o) => { const { hy, hz, t } = o;
+    E({ x: 0, y: hy - 7, z: hz, rx: 9.2, ry: 1.6, rz: 8.8, p: 3, col: C3(0xf6c840), metal: 1 });
+    for (let i = 0; i < 12; i++) { const a = i / 12 * TAU, x = Math.cos(a) * 8.6, z = Math.sin(a) * 8.2, h = (i % 2 ? 9 : 5.6) + Math.sin(t * 3 + i) * .6; S({ pts: [[x, hy - 8, hz + z], [x * 1.12, hy - 8 - h, hz + z * 1.12]], w: [2.6, .4], col: i % 2 ? C3(0xfff0a0) : C3(0xf6a020), metal: 1, bias: .5 }); }
+    E({ x: 0, y: hy - 8, z: hz + 9, rx: 2.2, ry: 2.2, rz: 1, col: C3(0xff6a20), bias: .8 }); });
+  regT("xt_tiara_freyja", "Tiara de Âmbar de Freyja", "epic", (E, S, o) => { const { hy, hz, t } = o;
+    S({ pts: [[-9, hy - 3.6, hz + 3], [-6, hy - 7.8, hz + 7.6], [0, hy - 9.6, hz + 9.2], [6, hy - 7.8, hz + 7.6], [9, hy - 3.6, hz + 3]], w: 1.8, col: C3(0xf0d890), metal: 1 });
+    E({ x: 0, y: hy - 10.8, z: hz + 9, rx: 2, ry: 2.8, rz: 1.2, col: C3(0xff9a30), bias: .7 });
+    for (const sg of [-1, 1]) { E({ x: sg * 5.6, y: hy - 8.6, z: hz + 7.6, rx: 1.1, ry: 1.4, rz: .8, col: C3(0xffd070), bias: .6 }); S({ pts: [[sg * 9, hy - 3.6, hz + 3], [sg * 11, hy + 1 + Math.sin(t * 2) * .4, hz + 1]], w: [1.2, .4], col: C3(0xf0d890) }); } });
+  regT("xt_raposa", "Orelhas de Raposa Ártica", "rare", (E, S, o) => { const { hy, hz, t } = o;
+    E({ x: 0, y: hy - 5.6, z: hz, rx: 9.6, ry: 1.2, rz: 9.2, p: 3, col: C3(0xe8f0f8) });
+    for (const sg of [-1, 1]) { S({ pts: [[sg * 4.4, hy - 6, hz - 1], [sg * 6.6, hy - 13.4 + Math.sin(t * 2 + sg) * .4, hz - 2]], w: [6, .6], col: C3(0xf4f8ff) }); S({ pts: [[sg * 4.8, hy - 6.6, hz - .4], [sg * 6.2, hy - 11.4, hz - 1.4]], w: [3.2, .4], col: C3(0x8ab0d0) }); S({ pts: [[sg * 6.4, hy - 12, hz - 2], [sg * 6.8, hy - 14.2, hz - 2]], w: [1.6, .3], col: C3(0x4a5a6a) }); } });
+  regT("xt_laco", "Laço Gigante de Cetim", "uncommon", (E, S, o) => { const { hy, hz } = o, c = C3(0xff6a9a), c2 = C3(0xd03a70);
+    for (const sg of [-1, 1]) E({ x: sg * 5.2, y: hy - 9.4, z: hz - 1, rx: 4.6, ry: 3.4, rz: 1.8, p: 2.6, col: c });
+    E({ x: 0, y: hy - 9.4, z: hz - 1, rx: 1.8, ry: 1.8, rz: 1.8, col: c2 });
+    S({ pts: [[-1, hy - 8, hz - 1], [-3, hy - 3, hz - 3]], w: [1.4, .6], col: c2 }); S({ pts: [[1, hy - 8, hz - 1], [3, hy - 3, hz - 3]], w: [1.4, .6], col: c2 }); });
+  regT("xt_pintinho", "Chapéu de Pintinho", "uncommon", (E, S, o) => { const { hy, hz, t } = o;
+    E({ x: 0, y: hy - 8.6, z: hz - .4, rx: 9.2, ry: 6.4, rz: 8.8, p: 2.2, col: C3(0xffe45a) });
+    E({ x: 0, y: hy - 4.6, z: hz + 9.4, rx: 2.8, ry: 1.2, rz: 1.8, p: 2.6, col: C3(0xff9a2a) });
+    for (const sg of [-1, 1]) E({ x: sg * 3.4, y: hy - 9.6, z: hz + 7.6, rx: 1.2, ry: 1.4, rz: .8, col: C3(0x1a1418) });
+    S({ pts: [[0, hy - 14, hz - 1], [1 + Math.sin(t * 3) * .6, hy - 18, hz - 1]], w: [1.4, .4], col: C3(0xffd040) }); });
+  regT("xt_cogumelo", "Cogumelo Encantado", "rare", (E, S, o) => { const { hy, hz, t } = o;
+    E({ x: 0, y: hy - 9.6, z: hz - .6, rx: 11.6, ry: 5.2, rz: 11, p: 2.2, col: C3(0xe0383a), tex: (mx, my, mz) => (Math.sin(mx * 11 + 1) * Math.sin(mz * 11) > .62 && my < 0) ? C3(0xfff4e8) : 0 });
+    E({ x: 0, y: hy - 6, z: hz - .6, rx: 8.4, ry: 1.6, rz: 8, p: 2.6, col: C3(0xf0e4d0) });
+    for (let i = 0; i < 3; i++) { const u = (t * .5 + i / 3) % 1; E({ x: Math.cos(i * 2.4) * 8, y: hy - 14 - u * 8, z: hz + Math.sin(i * 2.4) * 8, rx: .6, ry: .6, rz: .6, col: C3(0xc8ffd8), bias: 1 - u }); } });
+  regL("xl_mascara_oni", "Máscara Oni de Surt", "epic", (E, S, o) => { const { hy, hz } = o;
+    E({ x: 0, y: hy + 5.6, z: hz + 4.4, rx: 7, ry: 4.6, rz: 3.6, p: 2.6, col: C3(0xa81c28), metal: 1 });
+    for (const sg of [-1, 1]) { S({ pts: [[sg * 2.4, hy + 7.8, hz + 7.6], [sg * 3.6, hy + 11.4, hz + 7.4]], w: [1.6, .4], col: C3(0xfff4e0) }); S({ pts: [[sg * 6.4, hy + 1.6, hz + 5], [sg * 8, hy - 2.4, hz + 6]], w: [2.4, .5], col: C3(0xe8d8b0) }); }
+    S({ pts: [[-5, hy + 6.6, hz + 7.8], [0, hy + 8.6, hz + 8.4], [5, hy + 6.6, hz + 7.8]], w: 1, col: C3(0x1a0c10) }); });
+  regL("xl_focinho_gato", "Focinho de Gatinho", "uncommon", (E, S, o) => { const { hy, hz } = o;
+    E({ x: 0, y: hy + 5.4, z: hz + 8.6, rx: 1.3, ry: 1, rz: .8, col: C3(0xff8aa8) });
+    S({ pts: [[0, hy + 6.2, hz + 8.6], [-1.6, hy + 8, hz + 8.4]], w: .6, col: C3(0x3a2a30) }); S({ pts: [[0, hy + 6.2, hz + 8.6], [1.6, hy + 8, hz + 8.4]], w: .6, col: C3(0x3a2a30) });
+    for (const sg of [-1, 1]) for (let i = 0; i < 3; i++) S({ pts: [[sg * 3, hy + 6 + i * .8, hz + 8], [sg * 9.4, hy + 3.6 + i * 2.2, hz + 4.6]], w: .35, col: C3(0xf4f0f0) }); });
+  regB("xb_asas_demonio", "Asas de Demônio de Muspelheim", "legendary", (E, S, o) => { const { bob, tz, t } = o, fl = Math.sin(t * 2.4) * .8;
+    for (const sg of [-1, 1]) { const root = [sg * 3.6, tz + 40 + bob, tz - 6], el = [sg * 14, tz + 50 + bob + fl, tz - 9], tip = [sg * 28, tz + 40 + bob + fl * 2, tz - 10];
+      S({ pts: [root, el, tip], w: [2.4, .6], col: C3(0x2a0c10), metal: 1 });
+      for (let k = 0; k < 4; k++) { const f = k / 3, end = [sg * (26 - f * 18), tz + 22 + f * 6 + bob + fl, tz - 9]; S({ pts: [k ? el : tip, end], w: [1.2, .4], col: C3(0x3a1014) }); S({ pts: [[(root[0] + end[0]) / 2, (root[1] + end[1]) / 2, tz - 8], [end[0], end[1] + 1, end[2]]], w: [5, 1.4], col: (q) => q > .5 ? C3(0xc0301c) : C3(0x6a1416), bias: .2 }); } } });
+  regB("xb_asas_serafim", "Seis Asas do Serafim", "legendary", (E, S, o) => { const { bob, tz, t } = o, fl = Math.sin(t * 2) * .8;
+    for (const sg of [-1, 1]) for (let r = 0; r < 3; r++) { const dy = 48 - r * 9, len = 26 - r * 5; for (let k = 0; k < 5; k++) { const f = k / 4; S({ pts: [[sg * 3.6, tz + dy + bob, tz - 6 - r * .3], [sg * (len - f * 8), tz + dy - 6 - f * 12 + bob + fl * (1 - r * .2), tz - 9 - r * .3]], w: [3.4, 1.2], col: k % 2 ? C3(0xfff4c0) : C3(0xffffff), bias: .5 }); } } });
+  noCat("back", () => 0);
+  regB("xb_mochila_ursinho", "Mochila de Ursinho de Pelúcia", "uncommon", (E, S, o) => { const { bob, tz } = o, c = C3(0xb07a48);
+    E({ x: 0, y: tz + 42 + bob, z: tz - 8, rx: 6.6, ry: 8, rz: 3.6, p: 2.4, col: c });
+    for (const sg of [-1, 1]) { E({ x: sg * 4.4, y: tz + 51 + bob, z: tz - 7.6, rx: 2, ry: 2, rz: 1.4, col: c }); E({ x: sg * 4.4, y: tz + 51 + bob, z: tz - 6.6, rx: 1, ry: 1, rz: .6, col: C3(0xf0d0a8) }); E({ x: sg * 2.2, y: tz + 44 + bob, z: tz - 4.4, rx: 1, ry: 1, rz: .6, col: C3(0x1a1418) }); }
+    E({ x: 0, y: tz + 41 + bob, z: tz - 4.6, rx: 2.6, ry: 2.2, rz: 1, col: C3(0xf0d0a8) }); E({ x: 0, y: tz + 42 + bob, z: tz - 3.6, rx: .8, ry: .6, rz: .5, col: C3(0x2a1c18) }); });
+  noCat("eyes", () => { for (const [k, , c] of EC.filter((x) => ["gold", "ice", "ember", "violet", "green"].includes(x[0])).map((x) => [x[0], x[1], x[2]])) regE("eyeL_" + k, "Olhos legado " + k, "common", c, 0); });
   // ---------- classes ----------
   const GOLD0 = hx(0xe8b838), STEEL = hx(0xdce4f2), STEEL2 = hx(0xb4c0d8), WOOD = hx(0x6a4220);
   const rv = (mx, my, x, y, r = .075) => Math.hypot(mx - x, my - y) < r;
@@ -19991,6 +20064,51 @@ const PETSCH=[['stand',2.6,6],['sniff',2,8],['stand',1.6,5],['sit',3.4,6],['look
     for (const [iid, c] of Object.entries(CX_)) { const w = Wa[iid], r = RI[c.rar] ?? 0, pool = MT[r], k = n++; const a = pool[k % 5], b2 = pool[(k + 2) % 5], big = r >= 2;
       RQ.push({ id: "vx_" + c.id, kind: "look", name: w.name, desc: "", need: big ? [[a, 6 + r * 2], [b2, 3 + r], [MT[3][k % 5], 1 + (r > 2 ? 1 : 0)]] : [[a, 8 + r * 6], [b2, 4 + r * 4]], reward: iid }); } }
 (() => { let prev = 0; for (const d of Object.values(Qu).filter((x) => x.boss && x.id !== "jormungandr").sort((x, y) => x.level - y.level)) { if (d.hp < prev * 1.05) d.hp = Math.round(prev * 1.05); prev = d.hp; } })();
+(() => {
+  // v249: visuais exclusivos (nao dropam; so por receita), sem repeticoes, cada um com bonus balanceado por tema/raridade.
+  for (const k of ["gold", "ice", "ember", "violet", "green"]) { const w = Wa["olhos_" + (k === "green" ? "esmeralda" : k === "gold" ? "ouro" : k === "ice" ? "gelo" : k === "ember" ? "brasa" : "violeta")]; if (w) w.headStyle = "eyeL_" + k; }
+  if (Wa.oculos_de_forja) Wa.oculos_de_forja.headStyle = "lg_visor_ferreiro";
+  if (Wa.mascara_de_couro) Wa.mascara_de_couro.headStyle = "lg_bandido";
+  if (Wa.aljava_prata) Wa.aljava_prata.backStyle = "lg_aljava_rubra";
+  const SC = /caveira|hel|surt|espinhos|demonio|diabrete|oni|presas|peste|negr|obsidiana|sombra|void|dragao|osso|brasa|chama|fogo|cicatriz|corvo|bandagem|respirador|lobo|pintura_(vermelha|caveira)|ember|ruby|dragon|snake|wolf|cat|onyx|caveira/;
+  const DV = /aureola|halo|solar|freyja|serafim|anjo|celeste|ouro|dourad|fenix|odin|star|rune|runic|runas|real|jarl|prata|louro|valquiria|tiara|circlet|coroa|gold|ice|gelo|neve|silver|sapphire|violet|valkyrie|cisne|coruja|aguia|fada/;
+  const CT = /gato|coelho|raposa|laco|pintinho|cogumelo|ursinho|borboleta|sardas|rosa|rose|focinho|gorro|guirlanda|flor|poring|green|lime|turq|hazel|amber|cat/;
+  const TH = { scary: ["str", "dex"], divine: ["int", "vit"], cute: ["luk", "agi"], util: ["vit", "dex"] };
+  const PW = { common: 1, uncommon: 1, rare: 2, epic: 2, legendary: 3 };
+  for (const w of Object.values(Wa)) {
+    if (!(w.cosmetic && (w.kind === "headTop" || w.kind === "headMid" || w.kind === "headLow" || w.kind === "back")) || w.bound) continue;
+    const key = (w.id + " " + (w.headStyle || w.backStyle || "")).toLowerCase();
+    const th = SC.test(key) ? "scary" : DV.test(key) ? "divine" : CT.test(key) ? "cute" : "util";
+    const [a, b] = TH[th], pw = PW[w.rarity] || 1, bo = {};
+    bo[a] = pw; if (w.rarity !== "common") bo[b] = Math.max(1, pw - 1);
+    if (w.rarity === "uncommon") bo.def = 1;
+    if (w.rarity === "epic") bo.maxHp = 40;
+    if (w.rarity === "legendary") { bo.maxHp = 80; if (th === "scary") bo.crit = 0.02; else if (th === "divine") bo.maxMp = 40; else bo.speed = 6; }
+    w.bonus = bo; w.exclusive = true; w.sell = 0; w.theme = th;
+    const NM = { str: "FOR", dex: "DES", int: "INT", vit: "VIT", luk: "SOR", agi: "AGI", def: "Defesa", maxHp: "Vida", maxMp: "Mana", crit: "Crítico", speed: "Veloc." };
+    w.desc = String(w.desc || "").replace(/ ?Apenas visual\.?/, "") + " Visual exclusivo (" + ({ scary: "sombrio", divine: "divino", cute: "fofo", util: "clássico" })[th] + "): " + Object.entries(bo).map(([k, v]) => NM[k] + " +" + (k === "crit" ? Math.round(v * 100) + "%" : v)).join(", ") + ". Não dropa de monstros.";
+  }
+  // equipamentos gerados: o visual acompanha o tier (nao repete 4 formas em 1320 itens)
+  const pool = Object.values(Wa).filter((w) => w.id.startsWith("cx_xt_") || (w.cosmetic && w.kind === "headTop" && !w.bound && !w.id.startsWith("cx_"))).map((w) => w.headStyle);
+  const ord = { common: 0, uncommon: 1, rare: 2, epic: 3, legendary: 4 };
+  const pl = Object.values(Wa).filter((w) => w.id.startsWith("cx_xt_")).sort((x, y) => (ord[x.rarity] ?? 0) - (ord[y.rarity] ?? 0)).map((w) => w.headStyle);
+  void pool;
+  for (const w of Object.values(Wa)) {
+    const m = /^g_h_(\d)_(\d+)_(\d)$/.exec(w.id); if (!m || !pl.length) continue;
+    const k = +m[1], ti = +m[2], i = Math.min(pl.length - 1, Math.floor(((ti * 4 + k) / 132) * pl.length));
+    w.headStyle = pl[i];
+  }
+})();
+(() => {
+  // v249: Fen (peixe) dropa as cartas de conjuracao; Manto de Orleans dropa de MVP; nada disso e vendido em NPC.
+  const ref = Qu.peixe_lanterna;
+  if (ref) {
+    Qu.fen = { ...ref, id: "fen", name: "Fen", level: 24, hp: 6200, atk: 150, def: 28, exp: 520, color: 0x3a6a8a, speed: 80, silver: [60, 120], drops: [{ item: "carta_fen", chance: 0.008, min: 1, max: 1 }, { item: "carta_borboleta", chance: 0.006, min: 1, max: 1 }, { item: "pocao_azul", chance: 0.08, min: 1, max: 2 }], respawnMs: 90000 };
+    const m = Jt.mar_naufragio, base = m && m.spawns && m.spawns[0];
+    if (m && base) m.spawns.push({ monster: "fen", x: Math.round(m.width * 0.5), y: Math.round(m.height * 0.55), radius: 420, count: 3 });
+  }
+  const mv = Qu.devorador_ruptura; if (mv) (mv.drops = mv.drops || []).push({ item: "manto_orleans", chance: 0.03, min: 1, max: 1 });
+})();
 (() => {
   // Balanceamento v245: alvos derivados de simulacao de jogador real (skills + equipamento por nivel; ver CHANGELOG).
   // [nivel, HP alvo, ATQ alvo] do monstro "tipico" do nivel; variacao relativa entre monstros e mantida (limitada).
@@ -23601,7 +23719,7 @@ function ROXQM(f, c, s, l, def, ex) {
       })), Hh("div", { className: "row" }, Hh("button", { className: "btn btn-small", onClick: () => run("sair") }, "Sair do grupo"), isLeader && Hh("button", { className: "btn btn-small", onClick: () => run("dissolver") }, "Dissolver"), Hh("small", { className: "muted" }, "Convidar: /grupo convidar NOME \u00B7 B\u00F4nus de EXP +10% por membro no mapa"))));
   }
   function PV_() {
-    let t = ge().player, a = (0, xo.useRef)(null), [hs, setHs] = (0, xo.useState)(t?.style?.hairStyle), [hc, setHc] = (0, xo.useState)(t?.style?.hairColor), [dye, setDye] = (0, xo.useState)(t?.dye ?? 0), [dir, setDir] = (0, xo.useState)("down"), [eq, setEq] = (0, xo.useState)({}), [tab, setTab] = (0, xo.useState)("hair");
+    let t = ge().player, a = (0, xo.useRef)(null), [hs, setHs] = (0, xo.useState)(t?.style?.hairStyle), [hc, setHc] = (0, xo.useState)(t?.style?.hairColor), [dye, setDye] = (0, xo.useState)(t?.dye ?? 0), [dir, setDir] = (0, xo.useState)("down"), [eq, setEq] = (0, xo.useState)({}), [tab, setTab] = (0, xo.useState)("top");
     let all = Object.values(Wa).filter((x) => !x.gen), byKind = (k) => all.filter((x) => x.kind === k), wpn = [], seen = /* @__PURE__ */ new Set();
     for (let x of all) if (x.kind === "weapon" && x.weaponType && !seen.has(x.weaponType)) seen.add(x.weaponType), wpn.push(x);
     let f = t ? { ...t, dye, style: { hairStyle: hs, hairColor: hc }, equipment: { ...t.equipment, ...eq } } : null, key = f ? po(cs(f)) : "";
@@ -23614,11 +23732,9 @@ function ROXQM(f, c, s, l, def, ex) {
       loop(); let b = setTimeout(x, 250); return () => (alive = false, cancelAnimationFrame(raf), clearTimeout(b));
     }, [key, dir]);
     if (!t || !f) return null;
-    let setSlot = (k, id) => setEq((q) => ({ ...q, [k]: q[k] === id ? void 0 : id })), tabs = [["hair", "Cabelo"], ["top", "Cabe\u00E7a"], ["mid", "Rosto"], ["low", "Barba/M\u00E1scara"], ["back", "Costas"], ["dye", "Cores"]];
+    let setSlot = (k, id) => setEq((q) => ({ ...q, [k]: q[k] === id ? void 0 : id })), tabs = [["top", "Cabe\u00E7a"], ["mid", "Rosto"], ["low", "Barba/M\u00E1scara"]];
     let items = (k, list) => Hh("div", { className: "pv-win" }, Hh("h4", null, "Itens (", list.length, ") \u00B7 2 cliques para equipar/desequipar"), Hh("div", { className: "pv-grid" }, ...list.map((x) => Hh("div", { key: x.id, role: "button", tabIndex: 0, title: x.name, className: `pv-card r-${x.rarity}${eq[k] === x.id ? " on" : ""}`, onDoubleClick: () => setSlot(k, x.id), onKeyDown: (ev) => { ev.key === "Enter" && setSlot(k, x.id); } }, Hh(Aa, { id: x.id, size: 44 }), Hh("span", null, x.name))), list.length === 0 && Hh("span", { className: "muted" }, "Nenhum.")));
-    let body = tab === "hair" ? Hh("div", null, Hh("h4", null, "Corte (todos)"), Hh("div", { className: "sty-row sty-grid" }, ...zp.filter((h) => h.id !== "short" && h.id !== "long").map((h) => Hh("button", { key: h.id, className: `btn btn-small${hs === h.id ? " on" : ""}`, onClick: () => setHs(h.id) }, h.name))), Hh("h4", null, "Cor do cabelo"), Hh("div", { className: "sty-sw" }, ...Dp.map((h) => Hh("button", { key: h, className: `sw${hc === h ? " on" : ""}`, style: { background: Q0(h) }, onClick: () => setHc(h) }))))
-      : tab === "top" ? items("headTop", byKind("headTop")) : tab === "mid" ? items("headMid", byKind("headMid")) : tab === "low" ? items("headLow", byKind("headLow")) : tab === "back" ? items("back", byKind("back"))
-      : Hh("div", null, Hh("h4", null, "Cor da roupa"), Hh("div", { className: "sty-sw" }, ...Op.map((h) => Hh("button", { key: h, className: `sw${dye === h ? " on" : ""}${h === 0 ? " orig" : ""}`, style: h ? { background: Q0(h) } : void 0, onClick: () => setDye(h) }))));
+    let body = tab === "mid" ? items("headMid", byKind("headMid")) : tab === "low" ? items("headLow", byKind("headLow")) : items("headTop", byKind("headTop"));
     return Hh("div", { className: "overlay", role: "dialog", "aria-modal": "true", "aria-label": "Teste de Visuais" }, Hh("div", { className: "panel stylist" },
       Hh("header", { className: "panel-head" }, Hh("h2", null, "Teste de Visuais"), Hh("button", { className: "btn btn-small", onClick: () => j.closePanel(), "aria-label": "Fechar" }, "\u2715")),
       Hh("div", { className: "sty-body" }, Hh("div", { className: "sty-prev" }, Hh("canvas", { ref: a, width: 220, height: 300 }), Hh("button", { className: "btn btn-small", onClick: () => setDir((h) => h === "down" ? "dq" : h === "dq" ? "side" : h === "side" ? "uq" : h === "uq" ? "up" : "down") }, "\u27F3 Girar")),

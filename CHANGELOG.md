@@ -725,3 +725,11 @@
 - A formula anterior (v245-247) estava errada: no motor real o jogo era bem mais facil (luta de ~5s, 5-10% de vida). Agora cada monstro tem fator [HP, ATQ] medido (BAL); monstros/elites com ATQ>1,8x ou HP>2,5x do tipico do nivel sao limitados (chefes ATQ 1,5x).
 - Resultado medido (837 lutas): 0 mortes, 0 monstros impossiveis, TTK mediano 6s (nv1-10) a 15s (nv21-30) e ~10-12s depois; perda mediana 16-26% da vida por luta; chefes 31-66s com 2-5 pocoes.
 - Achados do teste: monstro "javali_rubro"/"yeti_nevasca" pareciam invenciveis, mas era artefato da arena de teste (obstaculos); nao eram bug do jogo.
+
+## v249 (login, cartas, visuais)
+- Login reativado.
+- Carta da Fen, Carta da Borboleta e Manto de Orleans saíram das lojas: as cartas dropam do peixe Fen (Mar do Naufrágio) e o manto do MVP Devorador da Ruptura.
+- Teste de Visuais: só itens de cabeça (topo, rosto, barba/máscara), sem cabelo/tintura/costas.
+- Auditoria de visuais: 200 visuais, todos com imagem própria (0 repetidos). Corrigidos 5 pares de olhos iguais, óculos de forja, máscara de couro e aljava de prata duplicados; ícones antigos (gorro, guirlanda, elmos…) que apareciam como um elmo cinza agora mostram o visual real; equipamentos gerados de cabeça acompanham o tier em vez de repetir 4 formas.
+- 15 visuais novos: sombrios (Elmo de Caveira de Hel, Chifres de Surt, Coroa de Espinhos, Máscara Oni, Asas de Demônio), divinos (Halo do Serafim, Coroa Solar, Tiara de Freyja, Seis Asas do Serafim) e fofos (Orelhas de Raposa, Laço Gigante, Chapéu de Pintinho, Cogumelo Encantado, Focinho de Gatinho, Mochila de Ursinho).
+- Todo visual é exclusivo (não dropa; só por receita) e tem bônus por tema/raridade: sombrio FOR/DES(+crítico), divino INT/VIT(+vida/mana), fofo SOR/AGI(+veloc.), clássico VIT/DES. Máx. +3 num atributo (lendário), comum +1.

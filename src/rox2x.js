@@ -147,7 +147,7 @@
   paint("xl_pintura_runas", "Runas de Guerreiro", "epic", (az, el, c) => (Math.abs(az - .62) < .03 && el > -.1 && el < .3) || (Math.abs(az + .62) < .03 && el > -.1 && el < .3) || (Math.abs(Math.abs(az) - .62) < .1 && Math.abs(el - .1) < .03) ? c : 0, [100, 230, 255]);
   // ---------- ROSTO (olhos e óculos) ----------
   const EC = [["gold", "Dourados", 0xf0b800, "uncommon"], ["ice", "de Gelo", 0x80e0ff, "uncommon"], ["ember", "de Brasa", 0xff5a20, "uncommon"], ["violet", "Violeta", 0xb070ff, "rare"], ["green", "Esmeralda", 0x38d078, "uncommon"], ["sapphire", "de Safira", 0x3a70ff, "uncommon"], ["ruby", "de Rubi", 0xe0204a, "rare"], ["amber", "de Âmbar", 0xe8902a, "common"], ["silver", "de Prata", 0xc8d0e0, "uncommon"], ["rose", "Rosados", 0xff80b0, "common"], ["turq", "Turquesa", 0x30d8c8, "uncommon"], ["lime", "de Lima", 0xa8e830, "common"], ["onyx", "de Ônix", 0x3a3a48, "rare"], ["hazel", "Castanhos Claros", 0x9a6a38, "common"], ["storm", "de Tempestade", 0x7088a8, "rare"]];
-  for (const [k, n, c, r] of EC) regE("eye_" + k, "Olhos " + n, r, c, 0);
+  for (const [k, n, c, r] of EC) regE("eye_" + k, "Olhos " + n + (["gold", "ice", "ember", "violet", "green"].includes(k) ? " Radiantes" : ""), r, c, ["gold", "ice", "ember", "violet", "green"].includes(k) ? "glow" : 0);
   regE("eye_cat", "Olhos de Gato Dourados", "epic", 0xf0c000, "slit");
   regE("eye_wolf", "Olhos de Lobo", "epic", 0xe8c020, "slit");
   regE("eye_dragon", "Olhos de Dragão Rubro", "legendary", 0xff3010, "slit");
@@ -249,3 +249,76 @@
   quivX("xb_aljava_couro", "Aljava de Couro Batido", "common", 0x6a4a2a, [0xd04830, 0xf0e8d0]);
   quivX("xb_aljava_prata", "Aljava de Prata Élfica", "epic", 0xc8d0e0, [0x7ae8ff, 0xffffff]);
   quivX("xb_aljava_falcao", "Aljava do Falcoeiro", "rare", 0x4a5a3a, [0xe8d8b0, 0x8a6a3a]);
+
+  // ===== v249: itens legados com visual proprio (fora do catalogo) =====
+  const noCat = (grp, fn) => { const arr = CAT[grp], n = arr.length; fn(); arr.length = n; };
+  noCat("mid", () => regM("lg_visor_ferreiro", "Visor de Ferreiro", "uncommon", (E, S, o) => { const { hy, hz } = o, fe = C3(0x4a4a54);
+    for (const sg of [-1, 1]) E({ x: sg * 3.6, y: hy - .2, z: hz + 8.2, rx: 3, ry: 2.5, rz: .8, p: 3, col: C3(0xff8a2a), bias: .6 });
+    S({ pts: [[-7, hy - 3, hz + 8], [7, hy - 3, hz + 8]], w: 1.1, col: fe, metal: 1 }); S({ pts: [[-7, hy + 2.6, hz + 8], [7, hy + 2.6, hz + 8]], w: 1.1, col: fe, metal: 1 });
+    S({ pts: [[-7, hy - .2, hz + 7.6], [-9.4, hy - .2, hz + 2]], w: 1, col: fe }); S({ pts: [[7, hy - .2, hz + 7.6], [9.4, hy - .2, hz + 2]], w: 1, col: fe }); }));
+  noCat("low", () => regL("lg_bandido", "Lenço de Bandoleiro", "uncommon", (E, S, o) => { const { hy, hz } = o;
+    E({ x: 0, y: hy + 6.4, z: hz + 4.2, rx: 7.2, ry: 3.8, rz: 4.8, p: 3, col: C3(0x8a2a3a), tex: (mx, my, mz) => (mz > .1 && Math.sin(mx * 18) * Math.sin(my * 18) > .55) ? C3(0xe8d8b0) : 0 });
+    S({ pts: [[7, hy + 3, hz + 2], [11, hy + 6, hz - 2], [10, hy + 12, hz - 3]], w: [2.4, 1], col: C3(0x8a2a3a) }); }));
+  noCat("back", () => regB("lg_aljava_rubra", "Aljava Rubra de Bronze", "rare", (E, S, o) => { const { bob, tz } = o;
+    S({ pts: [[-4, tz + 34 + bob, tz - 7], [-3, tz + 54 + bob, tz - 8]], w: [5.6, 5], col: C3(0x8a2a2a), bias: -.05 });
+    for (let i = 0; i < 5; i++) { S({ pts: [[-5.4 + i * 1.5, tz + 34 + bob, tz - 7.5], [-6.6 + i * 2.1, tz + 26 + bob, tz - 8.5]], w: 1.1, col: C3(0xe8e0c8) }); E({ x: -6.6 + i * 2.1, y: tz + 25.4 + bob, z: tz - 8.5, rx: 1.5, ry: 1.9, rz: .8, p: 3, col: C3(0xd8a040), metal: 1 }); }
+    S({ pts: [[-6, tz + 36 + bob, tz - 2], [6, tz + 50 + bob, tz + 4]], w: 1.5, col: C3(0x3a2418) }); }, { quiver: 1 }));
+  // ===== v249: visuais novos: assustadores, divinos e fofos =====
+  regT("xt_caveira_hel", "Elmo de Caveira de Hel", "epic", (E, S, o) => { const { hy, hz, t } = o, bn = C3(0xe8e0c8);
+    E({ x: 0, y: hy - 4.4, z: hz - .4, rx: 10, ry: 6.6, rz: 9.6, p: 2.4, col: bn, tex: (mx, my, mz) => (mz > .2 && my > -.1 && my < .5 && Math.abs(Math.abs(mx) - .38) < .17) ? C3(0x14101a) : 0 });
+    for (const sg of [-1, 1]) E({ x: sg * 3.8, y: hy - 1.6, z: hz + 8.6, rx: 1.4, ry: 1.4, rz: .6, col: C3(0x7affb0), bias: .5 + Math.sin(t * 4) * .3 });
+    for (const sg of [-1, 1]) S({ pts: [[sg * 8, hy - 7, hz - 1], [sg * 13, hy - 10, hz - 1], [sg * 14, hy - 16, hz]], w: [3.4, .6], col: bn }); }, 1);
+  regT("xt_chifres_surt", "Chifres Infernais de Surt", "legendary", (E, S, o) => { const { hy, hz, t } = o;
+    E({ x: 0, y: hy - 6.2, z: hz, rx: 9.6, ry: 1.6, rz: 9.2, p: 3, col: C3(0x1a0c10), metal: 1 });
+    for (const sg of [-1, 1]) { S({ pts: [[sg * 7, hy - 7, hz], [sg * 12, hy - 9, hz], [sg * 15, hy - 16, hz + 1], [sg * 12.4, hy - 26 + Math.sin(t * 3) * .5, hz + 2]], w: [4.6, .6], col: (q) => q > .5 ? C3(0xff7a20) : C3(0x3a1018), bias: .35 }); }
+    for (let i = 0; i < 4; i++) { const u = (t * .7 + i * .25) % 1; E({ x: Math.sin(i * 5 + t) * 5, y: hy - 8 - u * 14, z: hz, rx: .7, ry: .7, rz: .7, col: C3(0xffb050), bias: 1 - u * .6 }); } });
+  regT("xt_coroa_espinhos", "Coroa de Espinhos Sombria", "rare", (E, S, o) => { const { hy, hz } = o;
+    E({ x: 0, y: hy - 6.8, z: hz, rx: 9.4, ry: 1.2, rz: 9, p: 3, col: C3(0x241a2a), metal: 1 });
+    for (let i = 0; i < 11; i++) { const a = i / 11 * TAU, x = Math.cos(a) * 8.6, z = Math.sin(a) * 8.2, h = 4 + (i % 3) * 2.6; S({ pts: [[x, hy - 7, hz + z], [x * 1.18, hy - 7 - h, hz + z * 1.18]], w: [2, .3], col: C3(0x3a2a44), metal: 1 }); if (i % 4 === 0) E({ x: x * 1.18, y: hy - 7.4 - h, z: hz + z * 1.18, rx: .8, ry: .8, rz: .8, col: C3(0xd0204a), bias: .6 }); } });
+  regT("xt_halo_serafim", "Halo do Serafim", "legendary", (E, S, o) => { const { hy, hz, t } = o;
+    for (let i = 0; i < 34; i++) { const a = i / 34 * TAU; E({ x: Math.cos(a) * 8.2, y: hy - 17 + Math.sin(a) * 1.4 + Math.sin(t * 2) * .5, z: hz - 2 + Math.sin(a) * 8.2, rx: .9, ry: .9, rz: .9, col: C3(i % 2 ? 0xfff4b0 : 0xffffff), bias: 1 }); }
+    for (let i = 0; i < 6; i++) { const u = (t * .4 + i / 6) % 1; E({ x: Math.cos(i * 1.7) * 7, y: hy - 17 - u * 8, z: hz - 2 + Math.sin(i * 1.7) * 7, rx: .6, ry: .6, rz: .6, col: C3(0xffffff), bias: 1 - u }); } });
+  regT("xt_coroa_solar", "Coroa Solar de Sól", "legendary", (E, S, o) => { const { hy, hz, t } = o;
+    E({ x: 0, y: hy - 7, z: hz, rx: 9.2, ry: 1.6, rz: 8.8, p: 3, col: C3(0xf6c840), metal: 1 });
+    for (let i = 0; i < 12; i++) { const a = i / 12 * TAU, x = Math.cos(a) * 8.6, z = Math.sin(a) * 8.2, h = (i % 2 ? 9 : 5.6) + Math.sin(t * 3 + i) * .6; S({ pts: [[x, hy - 8, hz + z], [x * 1.12, hy - 8 - h, hz + z * 1.12]], w: [2.6, .4], col: i % 2 ? C3(0xfff0a0) : C3(0xf6a020), metal: 1, bias: .5 }); }
+    E({ x: 0, y: hy - 8, z: hz + 9, rx: 2.2, ry: 2.2, rz: 1, col: C3(0xff6a20), bias: .8 }); });
+  regT("xt_tiara_freyja", "Tiara de Âmbar de Freyja", "epic", (E, S, o) => { const { hy, hz, t } = o;
+    S({ pts: [[-9, hy - 3.6, hz + 3], [-6, hy - 7.8, hz + 7.6], [0, hy - 9.6, hz + 9.2], [6, hy - 7.8, hz + 7.6], [9, hy - 3.6, hz + 3]], w: 1.8, col: C3(0xf0d890), metal: 1 });
+    E({ x: 0, y: hy - 10.8, z: hz + 9, rx: 2, ry: 2.8, rz: 1.2, col: C3(0xff9a30), bias: .7 });
+    for (const sg of [-1, 1]) { E({ x: sg * 5.6, y: hy - 8.6, z: hz + 7.6, rx: 1.1, ry: 1.4, rz: .8, col: C3(0xffd070), bias: .6 }); S({ pts: [[sg * 9, hy - 3.6, hz + 3], [sg * 11, hy + 1 + Math.sin(t * 2) * .4, hz + 1]], w: [1.2, .4], col: C3(0xf0d890) }); } });
+  regT("xt_raposa", "Orelhas de Raposa Ártica", "rare", (E, S, o) => { const { hy, hz, t } = o;
+    E({ x: 0, y: hy - 5.6, z: hz, rx: 9.6, ry: 1.2, rz: 9.2, p: 3, col: C3(0xe8f0f8) });
+    for (const sg of [-1, 1]) { S({ pts: [[sg * 4.4, hy - 6, hz - 1], [sg * 6.6, hy - 13.4 + Math.sin(t * 2 + sg) * .4, hz - 2]], w: [6, .6], col: C3(0xf4f8ff) }); S({ pts: [[sg * 4.8, hy - 6.6, hz - .4], [sg * 6.2, hy - 11.4, hz - 1.4]], w: [3.2, .4], col: C3(0x8ab0d0) }); S({ pts: [[sg * 6.4, hy - 12, hz - 2], [sg * 6.8, hy - 14.2, hz - 2]], w: [1.6, .3], col: C3(0x4a5a6a) }); } });
+  regT("xt_laco", "Laço Gigante de Cetim", "uncommon", (E, S, o) => { const { hy, hz } = o, c = C3(0xff6a9a), c2 = C3(0xd03a70);
+    for (const sg of [-1, 1]) E({ x: sg * 5.2, y: hy - 9.4, z: hz - 1, rx: 4.6, ry: 3.4, rz: 1.8, p: 2.6, col: c });
+    E({ x: 0, y: hy - 9.4, z: hz - 1, rx: 1.8, ry: 1.8, rz: 1.8, col: c2 });
+    S({ pts: [[-1, hy - 8, hz - 1], [-3, hy - 3, hz - 3]], w: [1.4, .6], col: c2 }); S({ pts: [[1, hy - 8, hz - 1], [3, hy - 3, hz - 3]], w: [1.4, .6], col: c2 }); });
+  regT("xt_pintinho", "Chapéu de Pintinho", "uncommon", (E, S, o) => { const { hy, hz, t } = o;
+    E({ x: 0, y: hy - 8.6, z: hz - .4, rx: 9.2, ry: 6.4, rz: 8.8, p: 2.2, col: C3(0xffe45a) });
+    E({ x: 0, y: hy - 4.6, z: hz + 9.4, rx: 2.8, ry: 1.2, rz: 1.8, p: 2.6, col: C3(0xff9a2a) });
+    for (const sg of [-1, 1]) E({ x: sg * 3.4, y: hy - 9.6, z: hz + 7.6, rx: 1.2, ry: 1.4, rz: .8, col: C3(0x1a1418) });
+    S({ pts: [[0, hy - 14, hz - 1], [1 + Math.sin(t * 3) * .6, hy - 18, hz - 1]], w: [1.4, .4], col: C3(0xffd040) }); });
+  regT("xt_cogumelo", "Cogumelo Encantado", "rare", (E, S, o) => { const { hy, hz, t } = o;
+    E({ x: 0, y: hy - 9.6, z: hz - .6, rx: 11.6, ry: 5.2, rz: 11, p: 2.2, col: C3(0xe0383a), tex: (mx, my, mz) => (Math.sin(mx * 11 + 1) * Math.sin(mz * 11) > .62 && my < 0) ? C3(0xfff4e8) : 0 });
+    E({ x: 0, y: hy - 6, z: hz - .6, rx: 8.4, ry: 1.6, rz: 8, p: 2.6, col: C3(0xf0e4d0) });
+    for (let i = 0; i < 3; i++) { const u = (t * .5 + i / 3) % 1; E({ x: Math.cos(i * 2.4) * 8, y: hy - 14 - u * 8, z: hz + Math.sin(i * 2.4) * 8, rx: .6, ry: .6, rz: .6, col: C3(0xc8ffd8), bias: 1 - u }); } });
+  regL("xl_mascara_oni", "Máscara Oni de Surt", "epic", (E, S, o) => { const { hy, hz } = o;
+    E({ x: 0, y: hy + 5.6, z: hz + 4.4, rx: 7, ry: 4.6, rz: 3.6, p: 2.6, col: C3(0xa81c28), metal: 1 });
+    for (const sg of [-1, 1]) { S({ pts: [[sg * 2.4, hy + 7.8, hz + 7.6], [sg * 3.6, hy + 11.4, hz + 7.4]], w: [1.6, .4], col: C3(0xfff4e0) }); S({ pts: [[sg * 6.4, hy + 1.6, hz + 5], [sg * 8, hy - 2.4, hz + 6]], w: [2.4, .5], col: C3(0xe8d8b0) }); }
+    S({ pts: [[-5, hy + 6.6, hz + 7.8], [0, hy + 8.6, hz + 8.4], [5, hy + 6.6, hz + 7.8]], w: 1, col: C3(0x1a0c10) }); });
+  regL("xl_focinho_gato", "Focinho de Gatinho", "uncommon", (E, S, o) => { const { hy, hz } = o;
+    E({ x: 0, y: hy + 5.4, z: hz + 8.6, rx: 1.3, ry: 1, rz: .8, col: C3(0xff8aa8) });
+    S({ pts: [[0, hy + 6.2, hz + 8.6], [-1.6, hy + 8, hz + 8.4]], w: .6, col: C3(0x3a2a30) }); S({ pts: [[0, hy + 6.2, hz + 8.6], [1.6, hy + 8, hz + 8.4]], w: .6, col: C3(0x3a2a30) });
+    for (const sg of [-1, 1]) for (let i = 0; i < 3; i++) S({ pts: [[sg * 3, hy + 6 + i * .8, hz + 8], [sg * 9.4, hy + 3.6 + i * 2.2, hz + 4.6]], w: .35, col: C3(0xf4f0f0) }); });
+  regB("xb_asas_demonio", "Asas de Demônio de Muspelheim", "legendary", (E, S, o) => { const { bob, tz, t } = o, fl = Math.sin(t * 2.4) * .8;
+    for (const sg of [-1, 1]) { const root = [sg * 3.6, tz + 40 + bob, tz - 6], el = [sg * 14, tz + 50 + bob + fl, tz - 9], tip = [sg * 28, tz + 40 + bob + fl * 2, tz - 10];
+      S({ pts: [root, el, tip], w: [2.4, .6], col: C3(0x2a0c10), metal: 1 });
+      for (let k = 0; k < 4; k++) { const f = k / 3, end = [sg * (26 - f * 18), tz + 22 + f * 6 + bob + fl, tz - 9]; S({ pts: [k ? el : tip, end], w: [1.2, .4], col: C3(0x3a1014) }); S({ pts: [[(root[0] + end[0]) / 2, (root[1] + end[1]) / 2, tz - 8], [end[0], end[1] + 1, end[2]]], w: [5, 1.4], col: (q) => q > .5 ? C3(0xc0301c) : C3(0x6a1416), bias: .2 }); } } });
+  regB("xb_asas_serafim", "Seis Asas do Serafim", "legendary", (E, S, o) => { const { bob, tz, t } = o, fl = Math.sin(t * 2) * .8;
+    for (const sg of [-1, 1]) for (let r = 0; r < 3; r++) { const dy = 48 - r * 9, len = 26 - r * 5; for (let k = 0; k < 5; k++) { const f = k / 4; S({ pts: [[sg * 3.6, tz + dy + bob, tz - 6 - r * .3], [sg * (len - f * 8), tz + dy - 6 - f * 12 + bob + fl * (1 - r * .2), tz - 9 - r * .3]], w: [3.4, 1.2], col: k % 2 ? C3(0xfff4c0) : C3(0xffffff), bias: .5 }); } } });
+  noCat("back", () => 0);
+  regB("xb_mochila_ursinho", "Mochila de Ursinho de Pelúcia", "uncommon", (E, S, o) => { const { bob, tz } = o, c = C3(0xb07a48);
+    E({ x: 0, y: tz + 42 + bob, z: tz - 8, rx: 6.6, ry: 8, rz: 3.6, p: 2.4, col: c });
+    for (const sg of [-1, 1]) { E({ x: sg * 4.4, y: tz + 51 + bob, z: tz - 7.6, rx: 2, ry: 2, rz: 1.4, col: c }); E({ x: sg * 4.4, y: tz + 51 + bob, z: tz - 6.6, rx: 1, ry: 1, rz: .6, col: C3(0xf0d0a8) }); E({ x: sg * 2.2, y: tz + 44 + bob, z: tz - 4.4, rx: 1, ry: 1, rz: .6, col: C3(0x1a1418) }); }
+    E({ x: 0, y: tz + 41 + bob, z: tz - 4.6, rx: 2.6, ry: 2.2, rz: 1, col: C3(0xf0d0a8) }); E({ x: 0, y: tz + 42 + bob, z: tz - 3.6, rx: .8, ry: .6, rz: .5, col: C3(0x2a1c18) }); });
+  noCat("eyes", () => { for (const [k, , c] of EC.filter((x) => ["gold", "ice", "ember", "violet", "green"].includes(x[0])).map((x) => [x[0], x[1], x[2]])) regE("eyeL_" + k, "Olhos legado " + k, "common", c, 0); });
