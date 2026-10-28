@@ -740,3 +740,9 @@
 - Buffs (ex.: Agilidade da curandeira) persistem ao trocar de mapa, com o tempo restante corrigido.
 - Música: cada cidade (e a aldeia de Jotunheim) tem melodia própria escrita à mão (2 frases de 4 compassos); 12/12 sequências de notas distintas.
 - Mapas: Mestre de Jogos de Freyrhain estava preso por totens; removidos os totens ao redor. Validação de 110 mapas: todos os portais e NPCs alcançáveis, sem sobreposição de portais/NPCs.
+
+## v250
+- Pet: brincadeira reescrita em 3D com física — a bolinha tem altura (z), gravidade, quique com perda de energia, rolagem com atrito, colide com paredes/árvores/prédios; o pet persegue, chuta (direção puxada para o dono), pula com sombra dinâmica; o jogador também chuta a bolinha ao esbarrar. Removidas as animações enlatadas que causavam o bug.
+- Pombos das fontes menores (escala 0.85 → 0.5).
+- Ícones de itens agora refletem o nome: armaduras (túnica, camisa, casaco, gibão, brunea/cota de malha, couraça, placas, escamas, veste de seda, draugr, manto, vestido de noiva, smoking), acessórios (anel, aliança, brincos, broche, cinto, fivela, pulseira, medalhão, pingente, colar/pérolas, amuleto, talismã, elmo do urso, cartas), armas (machado/machadinha/dobrado/fendedor/martelo/maça, sabre, montante/claymore/lâminas, adaga/faca/punhal/presa, lança alada/divina, cajados glacial/celeste/rúnico/entalhado, luvas/manoplas/garras/punhos) e todos os consumíveis/materiais (peixes, ensopados, pão, banquetes, rum, buquê, minério, fragmento, corrente, lasca, pedra, concha, escama, pérola, âncora, mapa, cogumelo, pelo, gel). Cor por material (bronze, ferro, aço, prata, ouro, gelo, brasa…).
+- Catedral de casamento: bancos virados para o norte (para o padre).

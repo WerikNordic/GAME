@@ -7580,7 +7580,7 @@ Error generating stack: ` + n.message + `
   var EMO_CMD = { feliz: "feliz", rir: "rir", haha: "rir", kkk: "joy", joy: "joy", amor: "amor", coracao: "coracao", piscar: "piscar", legal: "legal", cool: "legal", triste: "triste", chorar: "chorar", bravo: "bravo", surpreso: "surpreso", dormir: "dormir", pensar: "pensar", suor: "suor", timido: "timido", abraco: "abraco", estrela: "estrela", joia: "joia", ola: "ola", palmas: "palmas", paz: "paz", forca: "forca", oracao: "oracao", fogo: "fogo", musica: "musica", brindar2: "brindar", duvida: "duvida", exclama: "exclama", caveira: "caveira", nao: "nao", danca2: "danca" };
   var Hu = { ok: "OK", lv: "\u2665", love: "\u2665", gg: "GG", heh: "^^", hmm: "...", swt: "'-'", sob: "T_T", no: "X", thx: "Obg", hi: "Oi", zz: "Zzz", "!": "!", "?": "?", omg: "O_O", grr: ">:(", lol: "XD", bye: "Tchau", gl: "GL" }, S8 = ["Servidor: /quem (jogadores online) \u00B7 /guilda criar|convidar NOME|aceitar|recusar|sair|expulsar NOME|dissolver \u00B7 /grupo criar|convidar|aceitar|sair|expulsar \u00B7 /g msg (guilda) \u00B7 /p msg (grupo) \u00B7 /denunciar NOME motivo \u00B7 grupo d\u00E1 +10% EXP por membro perto (at\u00E9 +50%)", "Montaria/pet: /montar \xB7 /desmontar (voc\u00EA s\u00F3 desce com este comando, mesmo ap\u00F3s sair do jogo) \xB7 /pet (chama ou guarda o lobo)", "Social: /amigo add NOME \xB7 /amigos \xB7 /casar nome \xB7 /abracar \xB7 /brindar \xB7 /danca \xB7 /caminho (n\xEDvel 70) \xB7 /cozinhar \xB7 /jogos (janela dos minigames)", "Minigames (nas cidades): /dados aposta \xB7 /corrida barco(1-3) aposta \xB7 /pescar + /puxar \xB7 N\xEDvel 99: tecla U = Ultimate", "Comandos: /sentar (/sit) \xB7 /levantar (/stand) \xB7 /onde (/where) \xB7 /quem (/who) \xB7 /exp \xB7 /hora (/time)", "@afk (nas cidades principais): sai do jogo e deixa o personagem na cidade \xB7 /boss: testa o boss mundial", "/nomes (/showname) liga/desliga nomes \xB7 /efeitos (/effect) liga/desliga n\xFAmeros de dano \xB7 /refresh \xB7 /criar", "Chat: /w nome msg \xB7 /p msg (grupo) \xB7 /g msg (guilda) \xB7 Alt+C: mensagem privada em janela", "Emotes: " + Object.keys(Hu).filter((e) => e !== "love").map((e) => "/" + e).join(" ") + " \xB7 /rps (pedra, papel ou tesoura) \xB7 /emotes (\xEDcones)", "Teclas: Insert senta \xB7 Alt+E mochila \xB7 Alt+S habilidades \xB7 Alt+A atributos \xB7 F1\u2013F12 habilidades e atalhos"], w8 = 200;
   var HAND_OPEN = `url("data:image/svg+xml,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><g stroke="#2a1a0a" stroke-width="1.4" stroke-linejoin="round" fill="#f3d3a4"><rect x="8" y="14" width="16" height="12" rx="4"/><rect x="8.5" y="5" width="3.2" height="12" rx="1.6"/><rect x="12.3" y="3" width="3.2" height="13" rx="1.6"/><rect x="16.1" y="3.5" width="3.2" height="13" rx="1.6"/><rect x="19.9" y="5.5" width="3.2" height="11" rx="1.6"/><path d="M8.5 17 L4.5 12.5 Q3.5 10.8 5.2 10.3 Q6.6 10 7.6 11.4 L10 15 Z"/></g></svg>')}") 16 16, grab`, HAND_CLOSED = `url("data:image/svg+xml,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><g stroke="#2a1a0a" stroke-width="1.4" stroke-linejoin="round" fill="#f3d3a4"><rect x="7.5" y="13" width="17" height="13" rx="5"/><rect x="8.5" y="10" width="3.4" height="7" rx="1.7"/><rect x="12.4" y="9" width="3.4" height="7" rx="1.7"/><rect x="16.3" y="9.3" width="3.4" height="7" rx="1.7"/><rect x="20.2" y="10.4" width="3.4" height="6.5" rx="1.7"/><path d="M8 19 L5.5 16.5 Q4.8 15 6.2 14.6 Q7.4 14.4 8.3 15.4 L10 17.5 Z"/></g></svg>')}") 16 16, grabbing`;
-  var __petPlayAt = 0, __petPlayKind = 0, __petPlayDir = 1;
+  var __petPlayAt = 0, __petPlayKind = 0, __petPlayDir = 1, __petBallReq = 0;
   function petAnim(pl, kind, fallbackFace) {
     const D = __petPlayDir, o = { face: fallbackFace, ox: 0, jy: 0, rot: 0, run: false, carry: false, stick: null, fx: kind };
     if (kind === 0) { o.face = [0, 0.8, 1.57, 2.4, 3.14, 2.4, 1.57, 0.8][Math.floor(pl / 170) % 8]; o.jy = -Math.abs(Math.sin(pl / 130)) * 20; }
@@ -7618,8 +7618,8 @@ Error generating stack: ` + n.message + `
     if (!pd) return;
     let now = Date.now();
     if (now - __petPlayAt < 4000) return petSay(`${pd.name} ainda est\u00E1 se divertindo...`);
-    __petPlayAt = now, pd.joy = Math.min(100, (pd.joy ?? 50) + 8), pd.plays = (pd.plays ?? 0) + 1, __petPlayKind = pd.plays % 5, __petPlayDir = Math.cos(j.world?.player?.facing ?? 0) >= 0 ? 1 : -1;
-    petSay(`${pd.name} ${["pula de alegria", "gira atr\u00E1s do pr\u00F3prio rabo", "corre para buscar o graveto", "rola no ch\u00E3o", "uiva para a lua"][__petPlayKind]}! \u2665 Felicidade ${pd.joy}%.`, "good");
+    __petPlayAt = now, __petBallReq = now, pd.joy = Math.min(100, (pd.joy ?? 50) + 8), pd.plays = (pd.plays ?? 0) + 1, __petPlayKind = -1, __petPlayDir = Math.cos(j.world?.player?.facing ?? 0) >= 0 ? 1 : -1;
+    petSay(`${pd.name} corre atr\u00E9s da bolinha! \u2665 Felicidade ${pd.joy}%.`, "good");
     try { j.saveGameQuiet(); } catch {}
   }
   function petBox(id, w) {
@@ -9009,7 +9009,7 @@ Error generating stack: ` + n.message + `
     D("viprug", 1000, 700, 180, 700, { walk: true }), D("viprug", 1000, 1200, 180, 500, { walk: true }), D("viprugc", 1000, 330, 300, 240, { walk: true }), D("vipportal", 1000, H - 90, 140, 140, { walk: true });
     D("vipdais", 1000, 150, 520, 140);
     for (const x of [420, 1580]) for (const y of [300, 520, 740, 960, 1180]) D("vipcol", x, y, 30, 30);
-    for (const y of [560, 680, 800, 920, 1040]) for (const x of [700, 1300, 540, 1460]) D("vipsofa", x, y, 120, 44);
+    for (const y of [560, 680, 800, 920, 1040]) for (const x of [700, 1300, 540, 1460]) D("vipsofa_n", x, y, 120, 44);
     D("brazier", 760, 250, 18, 18), D("brazier", 1240, 250, 18, 18), D("vipgold", 780, 115, 70, 44), D("vipgold", 1220, 115, 70, 44);
     D("vipbar", 1640, 250, 230, 50); D("viptable", 1500, 330, 56, 56);
     for (const [x, y] of [[190, 300], [190, 700], [190, 1100], [W - 190, 700], [W - 190, 1100], [900, 1400], [1100, 1400]]) D("vipplant", x, y, 28, 28);
@@ -14140,8 +14140,59 @@ const SUP = {
       e.ellipse(t + (n - t) * c, a + (o - a) * c, r / 2, r / 2, i, { flat: l % 2 ? "m" : "l" });
     }
   }
+  function niWeapon(e, t, a) {
+    const nm = niNorm(t.name), n = P(a), o = P(Xp), r = P(15254090), i = P(5913378), W = 16777215, dk = P(ye(a, 0, 0.3)), has = (...q) => q.some((x) => nm.includes(x));
+    const type = t.weaponType;
+    if (type === "axe" || type === "mace") {
+      if (has("martelo")) { an(e, 8, 28, 22, 8, 3, o), e.poly([[15, 4], [29, 10], [26, 17], [12, 11]], n, { sep: true }), e.poly([[15, 4], [12, 11], [10, 9], [13, 3]], dk, { sep: true }), e.line(16, 6, 26, 11, W); has("divino") && (e.dot(8, 6, 16771488), e.dot(26, 3, 16771488)); return true; }
+      if (has("maca")) { an(e, 8, 28, 21, 11, 3, o), e.ellipse(23, 9, 6.5, 6.5, n, { sep: true }); for (const [x, y] of [[23, 1], [30, 9], [23, 17], [16, 9], [28, 4], [18, 4], [28, 14], [18, 14]]) e.dot(x, y, W), e.dot(x, y + (y < 9 ? 1 : -1), 12632256); e.dot(21, 7, W); has("estrelada") && e.ellipse(23, 9, 2, 2, r, { sep: true }); return true; }
+      if (has("dobrado", "berserker")) { an(e, 8, 28, 22, 6, 3, o), e.poly([[17, 3], [28, 5], [27, 14], [19, 12]], n, { sep: true }), e.poly([[11, 8], [15, 14], [27, 15], [21, 8]].map(([x, y]) => [x - 5, y + 2]), n, { sep: true }), e.dot(25, 7, W), e.dot(10, 14, W); return true; }
+      if (has("fendedor")) { an(e, 7, 29, 21, 8, 3, o), e.poly([[15, 2], [30, 4], [29, 19], [20, 16], [17, 11]], n, { sep: true }), e.line(18, 5, 28, 6, W), e.dot(27, 15, 5913378), e.dot(22, 12, 5913378); return true; }
+      if (has("machadinha")) { an(e, 8, 28, 21, 11, 3, o), e.poly([[19, 6], [27, 8], [26, 15], [20, 14], [22, 10]], n, { sep: true }), e.dot(25, 10, W); return true; }
+      return false;
+    }
+    if (type === "sword") {
+      if (has("sabre")) { e.poly([[26, 2], [29, 8], [24, 16], [15, 22], [12, 20], [20, 13], [24, 7]], n, { sep: true }), e.line(27, 4, 22, 13, W), e.poly([[7, 17], [14, 24], [12, 26], [5, 19]], r, { sep: true }), an(e, 9, 23, 4, 28, 3, i); return true; }
+      if (has("montante", "claymore", "longa", "runica", "divina", "sombria")) {
+        const dark = has("sombria"), c = dark ? P(3809320) : n;
+        e.poly([[27, 1], [31, 4], [14, 22], [10, 19]], c, { sep: true }), e.line(28, 2, 12, 19, dark ? 8019136 : W), e.poly([[5, 17], [14, 26], [12, 28], [3, 19]], r, { sep: true }), an(e, 9, 23, 4, 29, 3, i), e.ellipse(3, 29, 2.2, 2.2, r, { sep: true });
+        if (has("runica")) { for (const [x, y] of [[24, 6], [20, 10], [16, 14]]) e.dot(x, y, 5163263); }
+        if (has("divina")) { e.poly([[1, 13], [7, 18], [4, 21]], P(16770000), { sep: true }), e.poly([[13, 25], [19, 30], [15, 31]], P(16770000), { sep: true }), e.dot(29, 2, 16771488), e.dot(26, 3, 16771488); }
+        if (dark) { e.dot(24, 6, 12517568), e.dot(18, 12, 12517568); }
+        return true;
+      }
+      return false;
+    }
+    if (type === "dagger") {
+      if (has("faca")) { e.poly([[22, 5], [25, 8], [14, 18], [12, 16]], n, { sep: true }), e.line(23, 6, 14, 16, W), an(e, 12, 17, 7, 26, 4, P(9071178)), e.dot(9, 24, 15254090); return true; }
+      if (has("presa")) { e.poly([[24, 3], [27, 10], [20, 19], [13, 22], [18, 15], [22, 9]], P(16118496), { sep: true }), e.line(24, 5, 15, 20, 12632256), e.rect(8, 21, 8, 5, i, { sep: true }); return true; }
+      if (has("punhal")) { e.poly([[24, 2], [27, 5], [15, 19], [12, 17]], n, { sep: true }), e.line(25, 3, 14, 17, W), e.line(20, 7, 16, 10, ye(a, 0, 0.4)), e.poly([[7, 16], [17, 24], [15, 26], [5, 18]], r, { sep: true }), an(e, 9, 23, 5, 28, 3, i), e.ellipse(5, 28, 2, 2, P(14172204), { sep: true }); return true; }
+      if (has("sombria")) { e.poly([[22, 4], [26, 6], [14, 19], [11, 16]], P(3809320), { sep: true }), e.line(23, 5, 14, 16, 8019136), e.poly([[8, 16], [15, 22], [13, 24], [6, 18]], P(4864622), { sep: true }), an(e, 9, 22, 5, 27, 3, i); return true; }
+      return false;
+    }
+    if (type === "spear") {
+      if (has("alada", "divina")) { an(e, 5, 29, 24, 8, 2, o), e.poly([[27, 1], [30, 8], [24, 8]], n, { sep: true }), e.poly([[23, 9], [14, 4], [17, 11], [14, 13], [21, 13]], P(has("divina") ? 16770000 : 16316664), { sep: true }), e.poly([[25, 9], [31, 4], [29, 12], [31, 15], [26, 14]], P(has("divina") ? 16770000 : 16316664), { sep: true }); has("divina") && e.dot(27, 3, 16777215); return true; }
+      return false;
+    }
+    if (type === "staff") {
+      const gl = has("glacial", "gelo"), st = has("celeste"), rn = has("runico", "arcano"), ent = has("entalhado"), bet = has("betula");
+      if (gl || st || rn || ent || bet) {
+        an(e, 6, 29, 21, 10, 3, bet ? P(15790320) : o);
+        if (ent) for (const k of [14, 19, 24]) e.line(k - 2, 31 - k + 3, k + 2, 31 - k - 2, 5913378);
+        if (gl) e.poly([[23, 1], [28, 6], [26, 12], [20, 12], [18, 6]], P(9492724), { sep: true }), e.poly([[23, 1], [23, 11], [20, 7]], P(15794175), { flat: "h" });
+        else if (st) e.poly([[23, 1], [25, 6], [30, 7], [26, 10], [27, 15], [23, 12], [19, 15], [20, 10], [16, 7], [21, 6]], P(16770000), { sep: true }), e.dot(23, 8, W);
+        else if (rn) e.ellipse(23, 7, 5.5, 5.5, P(has("arcano") ? 9062600 : 6957200), { sep: true }), e.line(21, 5, 25, 9, 5163263), e.line(25, 5, 21, 9, 5163263), e.dot(21, 4, W);
+        else e.ellipse(23, 7, 5, 5, P(ent ? 10119738 : 15790320), { sep: true }), e.dot(21, 5, W);
+        e.poly([[17, 12], [20, 10], [22, 14]], r, { sep: true });
+        return true;
+      }
+      return false;
+    }
+    return false;
+  }
   function jM(e, t) {
-    let a = Mn(t.id), n = P(a), o = P(Xp), r = P(15254090), i = P(5913378);
+    let a = niCol(niNorm(t.name), t.id)[0], n = P(a), o = P(Xp), r = P(15254090), i = P(5913378);
+    if (niWeapon(e, t, a)) return;
     switch (t.weaponType) {
       case "mace":
       case "axe": {
@@ -14173,6 +14224,12 @@ const SUP = {
         break;
       }
       case "fist": {
+        { const nn_ = niNorm(t.name);
+          if (nn_.includes("garras")) { for (const [x0, x1] of [[8, 4], [15, 14], [22, 25]]) e.poly([[x0 - 2, 28], [x0 + 2, 28], [x0 + 1, 18], [x1, 4], [x0 - 1, 17]], n, { sep: true }); e.rect(5, 24, 22, 5, i, { sep: true }), e.dot(8, 26, 16777215), e.dot(24, 26, 16777215); break; }
+          if (nn_.includes("punhos")) { e.poly([[4, 16], [28, 16], [28, 24], [4, 24]], n, { sep: true }); for (const x of [8, 14, 20, 25]) e.ellipse(x, 20, 3, 3.5, P(2760752), { flat: "o" }), e.poly([[x - 2, 16], [x, 10], [x + 2, 16]], r, { sep: true }); break; }
+          if (nn_.includes("luvas")) { e.poly([[8, 14], [24, 14], [26, 26], [10, 28], [6, 22]], P(10119738), { sep: true }); for (const k of [9, 13, 17, 21]) e.rect(k - 1.5, 6 + Math.abs(k - 15) / 2, 3.4, 9, P(10119738), { sep: true }); e.poly([[5, 17], [9, 15], [10, 22], [6, 22]], P(ye(10119738, 0, 0.15)), { sep: true }), e.rect(8, 24, 17, 4, i, { sep: true }); break; }
+          if (nn_.includes("manoplas")) { e.poly([[7, 13], [25, 13], [27, 21], [22, 24], [10, 24], [5, 21]], n, { sep: true }); for (const k of [9, 14, 19, 24]) e.rect(k - 2, 8, 4, 6, P(ye(a, 16777215, 0.2)), { sep: true }), e.dot(k, 10, 16777215); e.rect(8, 24, 16, 5, o, { sep: true }), e.line(8, 26, 24, 26, 16777215); break; }
+        }
         e.poly([[7, 13], [25, 13], [27, 21], [22, 26], [10, 26], [5, 21]], n, { sep: true });
         for (let k of [9, 14, 19, 24]) e.rect(k - 2, 9, 4, 5, r, { sep: true });
         e.line(9, 22, 23, 22, i);
@@ -14337,12 +14394,111 @@ const SUP = {
     e.ellipse(7, 6, 2.5, 3, P(12890240), { sep: true }), e.ellipse(25, 28, 2.5, 3, P(12890240), { sep: true }), e.ellipse(22, 22, 3.4, 3.4, P(12073522), { sep: true });
   }
   var Hv = /* @__PURE__ */ new Map();
+  // ---- v250: ícones por nome (cada item com a imagem do que o nome diz) ----
+  var NI_MC = [["bronze", 0xb87333], ["ferro", 0x8a929c], ["aco", 0xb4c0cc], ["prata", 0xdfe4ec], ["ouro", 0xf0c040], ["gelo", 0x90d8f4], ["geada", 0xa8e0f0], ["brasa", 0xe85a28], ["tyr", 0xe8d8a0], ["sombras", 0x4a3a6e], ["valquiria", 0xf4ecc8], ["runico", 0x9a70e0], ["obsidiana", 0x2a2438], ["draugr real", 0x6a8a7a], ["matilha", 0x8a6a4a], ["jarnvid", 0x6a7078], ["fonte ardente", 0xe0602a], ["garm", 0x7a1a1a], ["einherjar", 0xe8e0b0], ["crepusculo", 0x9a5a9a], ["ragnarok", 0x7a2a9a], ["la", 0xd8d0b8], ["algodao", 0xf0ece0], ["lunar", 0x9a9ad8], ["midgard", 0x4a9ae0], ["inverno", 0x80b8e0], ["urso", 0x7a5a3a], ["capitao", 0x2a3a6a], ["orleans", 0x6a2a8a], ["perola", 0xf0f0f8], ["glacial", 0x90d8f4], ["celeste", 0xa0c8ff], ["divin", 0xf0e8a0]];
+  var NI_GEM = { bronze: 0x58c040, ferro: 0xd82828, aco: 0x3a78e0, prata: 0xa060e0, ouro: 0xd82828, gelo: 0xf0faff, brasa: 0xff8800, tyr: 0x58c040 };
+  function niNorm(s) { return s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase(); }
+  function niCol(nm, id) { for (const [k, c] of NI_MC) if (nm.includes(k)) return [c, k]; return [Mn(id), ""]; }
+  function niFish(e, c, c2, sz = 1) {
+    const x0 = 16, y0 = 17;
+    e.poly([[x0 + 8 * sz, y0], [x0 + 14 * sz, y0 - 6 * sz], [x0 + 14 * sz, y0 + 6 * sz]], P(ye(c, 0, 0.15)), { sep: true });
+    e.ellipse(x0 - 1, y0, 11 * sz, 6.5 * sz, P(c), { sep: true }), e.ellipse(x0 - 2, y0 + 2.5 * sz, 8 * sz, 3 * sz, P(c2), { flat: "l" });
+    e.poly([[x0 - 3, y0 - 6 * sz], [x0 + 3, y0 - 6 * sz], [x0 + 1, y0 - 10 * sz]], P(ye(c, 0, 0.25)), { sep: true });
+    e.dot(x0 - 8, y0 - 1, 16777215), e.dot(x0 - 8, y0, 1052688), e.line(x0 - 5, y0 - 4, x0 - 5, y0 + 4, ye(c, 0, 0.4));
+  }
+  function niBowl(e, c, fill) { e.ellipse(16, 17, 12, 4, P(fill), { sep: true }), e.poly([[4, 17], [28, 17], [24, 27], [8, 27]], P(c), { sep: true }), e.line(5, 18, 27, 18, ye(c, 16777215, 0.35)); }
+  function niPlate(e) { e.ellipse(16, 24, 14, 4.5, P(14606046), { sep: true }), e.ellipse(16, 23.5, 10, 2.8, P(11447982), { flat: "o" }); }
+  function niTorso(e, c, o = {}) { const pts = o.long ? [[10, 5], [22, 5], [28, 10], [26, 16], [24, 14], [25, 29], [7, 29], [8, 14], [6, 16], [4, 10]] : [[10, 6], [22, 6], [28, 10], [25, 15], [23, 13], [23, 27], [9, 27], [9, 13], [7, 15], [4, 10]]; e.poly(pts, P(c), { sep: true }); }
+  function niItem(e, it) {
+    const id = it.id, nm = niNorm(it.name), k = it.kind, [mc, mk] = niCol(nm, id), dk = ye(mc, 0, 0.4), lt = ye(mc, 16777215, 0.4), gem = NI_GEM[mk] ?? 14172204;
+    const has = (...t) => t.some((a) => nm.includes(a));
+    // ---------- consumíveis / materiais por id ----------
+    const M = {
+      peixe_pequeno: () => niFish(e, 8037784, 13224392, 0.8),
+      salmao: () => niFish(e, 15629144, 16764110, 1),
+      salmao_grelhado: () => { niPlate(e); e.ellipse(16, 18, 11, 5, P(11630648), { sep: true }), e.poly([[25, 18], [30, 13], [30, 23]], P(10119738), { sep: true }), [10, 14, 18, 22].forEach((x) => e.line(x, 14, x - 2, 22, 7227706)), e.dot(8, 17, 16777215), e.dot(8, 18, 1052688); },
+      ensopado_peixe: () => { niBowl(e, 9071178, 14715952); e.poly([[17, 14], [26, 9], [26, 18]], P(8037784), { sep: true }), e.ellipse(14, 16, 5, 2, P(8037784), { flat: "l" }); },
+      ensopado_vigoroso: () => { niBowl(e, 6965802, 11030056); e.ellipse(11, 16, 3, 2, P(14172204), { flat: "l" }), e.ellipse(18, 15, 3, 2, P(8433474), { flat: "l" }), e.ellipse(22, 17, 2.5, 1.6, P(15245408), { flat: "l" }); [11, 17, 22].forEach((x) => e.line(x, 8, x + 1, 12, 15790320)); },
+      pao_de_runas: () => { e.ellipse(16, 19, 13, 8, P(13405762), { sep: true }), e.ellipse(14, 15, 8, 3, P(15245408), { flat: "l" }); e.line(11, 16, 11, 21, 8404992), e.line(11, 18, 14, 16, 8404992), e.line(17, 16, 17, 22, 8404992), e.line(17, 19, 21, 17, 8404992); e.dot(21, 14, 5163263); },
+      banquete_nordico: () => { niPlate(e); e.ellipse(14, 17, 8, 5, P(11028524), { sep: true }), e.ellipse(12, 15, 4, 2, P(14191192), { flat: "l" }), e.rect(22, 10, 7, 11, P(11831882), { sep: true }), e.rect(22, 10, 7, 3, P(16774352), { sep: true }); },
+      banquete_do_jarl: () => { niPlate(e); e.ellipse(16, 17, 11, 6, P(11028524), { sep: true }), e.ellipse(13, 14, 5, 2, P(14191192), { flat: "l" }), e.poly([[8, 10], [10, 5], [13, 9], [16, 3], [19, 9], [22, 5], [24, 10]], P(15254090), { sep: true }), e.dot(16, 6, 14172204); },
+      rum_naufrago: () => { e.poly([[13, 9], [19, 9], [19, 14], [24, 17], [24, 28], [8, 28], [8, 17], [13, 14]], P(3813648), { sep: true }), e.rect(14, 4, 4, 6, P(9071178), { sep: true }), e.rect(10, 18, 12, 7, P(15527155), { sep: true }), e.line(12, 21, 20, 21, 8404992), e.dot(16, 23, 14172204), e.line(10, 12, 12, 16, 8421504); },
+      buque_flores: () => { e.poly([[12, 18], [20, 18], [17, 29], [15, 29]], P(5812810), { sep: true }); [[10, 10, 14172204], [16, 7, 16777215], [22, 10, 16746496], [13, 15, 16756832], [19, 15, 14172204]].forEach(([x, y, c]) => { e.ellipse(x, y, 4, 4, P(c), { sep: true }), e.dot(x, y, 15245408); }); e.poly([[12, 23], [20, 23], [22, 26], [10, 26]], P(14172204), { sep: true }); },
+      min_jarnvid: () => { e.poly([[5, 24], [8, 12], [16, 6], [25, 11], [28, 22], [20, 27]], P(6975608), { sep: true }), e.poly([[9, 13], [16, 8], [17, 14], [11, 17]], P(10132122), { flat: "l" }); [[12, 20], [20, 16], [22, 22]].forEach(([x, y]) => e.dot(x, y, 15254090)); },
+      fragmento_fim: () => { e.poly([[16, 3], [22, 12], [20, 28], [14, 28], [10, 12]], P(6038647), { sep: true }), e.poly([[16, 5], [19, 12], [16, 12]], P(11230975), { flat: "h" }), e.poly([[8, 22], [4, 14], [10, 18]], P(4863624), { sep: true }), e.poly([[24, 24], [28, 16], [22, 20]], P(4863624), { sep: true }); },
+      corrente_fenrir: () => { [[5, 10], [11, 14], [17, 18]].forEach(([x, y], i) => { e.ellipse(x + 3, y, 5, 3.4, P(i % 2 ? 11379104 : 9145232), { sep: true }), e.ellipse(x + 3, y, 2.4, 1.4, P(2105376), { flat: "o" }); }); e.poly([[20, 20], [27, 17], [26, 23], [23, 27], [22, 22]], P(8355711), { sep: true }), e.line(23, 20, 26, 23, 16777215); },
+      lasca_loki: () => { e.poly([[6, 27], [12, 14], [22, 4], [26, 6], [20, 16], [12, 28]], P(3809320), { sep: true }), e.line(22, 5, 12, 25, 14172204), e.line(24, 7, 15, 22, 16746496); },
+      pedra_evolucao: () => { e.ellipse(16, 17, 11, 11, P(6975608), { sep: true }), e.ellipse(16, 17, 7, 7, P(10127615), { sep: true }); e.line(16, 12, 20, 16, 16777215), e.line(20, 16, 14, 21, 16777215), e.dot(12, 14, 16777215); },
+      concha_coral: () => { e.poly([[16, 26], [4, 12], [9, 7], [16, 10], [23, 7], [28, 12]], P(16756832), { sep: true }); [10, 13, 16, 19, 22].forEach((x) => e.line(16, 26, x === 16 ? 16 : x < 16 ? x - 3 : x + 3, 11, 14172204)); e.rect(12, 25, 8, 3, P(13400976), { sep: true }); },
+      escama_marinha: () => { e.poly([[16, 4], [26, 12], [24, 24], [16, 29], [8, 24], [6, 12]], P(2996400), { sep: true }), e.poly([[16, 6], [22, 12], [16, 14], [10, 12]], P(8434144), { flat: "h" }); e.line(16, 14, 16, 27, 1741424), e.line(10, 18, 22, 18, 1741424); },
+      perola_negra: () => { e.ellipse(16, 17, 10, 10, P(1710640), { sep: true }), e.ellipse(13, 13, 3.5, 2.5, P(10132184), { flat: "h" }), e.dot(12, 12, 16777215), e.ellipse(19, 21, 4, 2, P(4864640), { flat: "l" }); },
+      ancora_enferrujada: () => { e.line(16, 6, 16, 25, 9061418), e.line(17, 6, 17, 25, 9061418), e.ellipse(16, 5, 3, 3, P(9061418), { sep: true }), e.ellipse(16, 5, 1, 1, P(2105376), { flat: "o" }), e.line(10, 10, 22, 10, 9061418), e.line(10, 11, 22, 11, 9061418), e.poly([[5, 17], [7, 17], [12, 24], [16, 26], [20, 24], [25, 17], [27, 17], [24, 26], [16, 29], [8, 26]], P(9061418), { sep: true }), e.dot(10, 22, 12084786), e.dot(22, 20, 12084786); },
+      mapa_tesouro: () => { e.poly([[4, 6], [14, 4], [28, 6], [27, 13], [29, 21], [26, 27], [14, 25], [5, 28], [7, 20], [4, 14]], P(14606006), { sep: true }), e.line(8, 20, 12, 16, 8404992), e.line(12, 16, 17, 19, 8404992), e.line(17, 19, 21, 12, 8404992), e.line(20, 10, 24, 14, 14172204), e.line(24, 10, 20, 14, 14172204); e.dot(9, 9, 9071178), e.dot(12, 9, 9071178); },
+      cogumelo_rubro: () => { e.rect(13, 16, 7, 11, P(15788240), { sep: true }), e.ellipse(16, 14, 12, 8, P(14172204), { sep: true }), e.rect(4, 14, 24, 3, P(14172204), { sep: true }); [[10, 11], [16, 8], [21, 12], [14, 14]].forEach(([x, y]) => e.dot(x, y, 16777215)), e.dot(11, 11, 16777215), e.dot(17, 8, 16777215); },
+      pelo_macio: () => { e.ellipse(16, 17, 12, 9, P(16764108), { sep: true }); [[7, 12], [12, 9], [19, 9], [24, 13], [9, 22], [23, 22]].forEach(([x, y]) => e.ellipse(x, y, 4, 3.5, P(16764108), { sep: true })); e.ellipse(14, 15, 5, 3, P(16772306), { flat: "h" }); },
+      gel_verde: () => { e.poly([[16, 6], [24, 12], [28, 23], [22, 28], [10, 28], [4, 23], [8, 12]], P(5812810), { sep: true }), e.ellipse(12, 13, 4, 2.4, P(10156468), { flat: "h" }), e.dot(13, 19, 1052688), e.dot(20, 19, 1052688); }
+    };
+    if (M[id]) { M[id](); return true; }
+    if (k === "consumable" || k === "material" || k === "quest" || k === "card" || k === "ammo") return false;
+    // ---------- armaduras ----------
+    if (k === "armor") {
+      const cloth = has("tunica", "camisa", "casaco", "gibao", "veste", "vestido", "smoking", "couro");
+      if (has("vestido")) {
+        e.poly([[12, 4], [20, 4], [21, 13], [11, 13]], P(16119280), { sep: true }), e.poly([[11, 13], [21, 13], [29, 29], [3, 29]], P(16316664), { sep: true }), e.rect(11, 12, 10, 2, P(15254090), { sep: true });
+        e.poly([[14, 4], [18, 4], [16, 8]], P(15254090), { flat: "h" }); [8, 13, 19, 24].forEach((x) => e.line(16, 14, x, 28, 13421800)); for (let x = 5; x <= 27; x += 3) e.dot(x, 28, 15254090); e.line(12, 6, 8, 10, 16777215), e.line(20, 6, 24, 10, 16777215);
+        return true;
+      }
+      if (has("smoking")) {
+        niTorso(e, 1710638), e.poly([[13, 6], [19, 6], [16, 21]], P(16316664), { sep: true }), e.poly([[13, 6], [10, 11], [16, 21], [14, 11]], P(3158064), { flat: "m" }), e.poly([[19, 6], [22, 11], [16, 21], [18, 11]], P(3158064), { flat: "m" });
+        e.poly([[12, 8], [16, 10], [20, 8], [20, 12], [16, 10], [12, 12]], P(14172204), { sep: true }), e.dot(16, 15, 8421504), e.dot(16, 18, 8421504); return true;
+      }
+      if (has("manto")) {
+        const c = has("runico") ? 6957200 : has("arcano") ? 9062600 : mc;
+        e.poly([[9, 5], [23, 5], [28, 28], [4, 28]], P(c), { sep: true }), e.poly([[11, 5], [21, 5], [20, 10], [12, 10]], P(15254090), { sep: true }), e.dot(16, 9, 16777215), e.line(16, 11, 16, 27, ye(c, 0, 0.4));
+        if (has("runico")) e.line(12, 16, 16, 13, 10127615), e.line(16, 13, 20, 16, 10127615), e.line(16, 13, 16, 24, 10127615), e.line(12, 20, 20, 20, 10127615);
+        return true;
+      }
+      if (has("casaco")) { niTorso(e, mc, { long: true }), e.line(16, 7, 16, 28, dk), [11, 16, 21].forEach((y) => e.dot(18, y, 15254090)), e.poly([[12, 5], [16, 11], [10, 11]], P(lt), { flat: "h" }), e.poly([[20, 5], [16, 11], [22, 11]], P(lt), { flat: "h" }), e.rect(8, 19, 16, 2, P(dk), { sep: true }); return true; }
+      if (has("camisa")) { niTorso(e, 15789280), e.poly([[12, 6], [16, 11], [20, 6], [18, 5], [14, 5]], P(13421768), { sep: true }), [13, 17, 21].forEach((y) => e.dot(16, y, 9474192)), e.line(16, 11, 16, 26, 11382189); return true; }
+      if (has("tunica")) { niTorso(e, mc), e.rect(9, 19, 14, 3, P(5913378), { sep: true }), e.rect(14, 18, 4, 5, P(15254090), { flat: "m" }), e.line(13, 6, 16, 10, dk), e.line(19, 6, 16, 10, dk); return true; }
+      if (has("couro reforcado")) { niTorso(e, 10119738), e.line(16, 8, 16, 26, 5913378), [10, 14, 18, 22].forEach((y) => { e.dot(12, y, 15254090), e.dot(20, y, 15254090); }), e.rect(9, 19, 14, 3, P(5913378), { sep: true }); return true; }
+      if (has("gibao")) { e.poly([[9, 5], [13, 5], [16, 10], [19, 5], [23, 5], [25, 14], [23, 27], [9, 27], [7, 14]], P(mc), { sep: true }), e.poly([[13, 5], [16, 10], [19, 5]], P(15254090), { flat: "h" }); for (let y = 11; y < 26; y += 4) e.line(13, y, 19, y + 2, lt), e.line(19, y, 13, y + 2, lt); e.line(9, 8, 5, 14, dk), e.line(23, 8, 27, 14, dk); return true; }
+      if (has("veste de seda", "veste")) { e.poly([[11, 5], [21, 5], [27, 12], [24, 15], [24, 29], [8, 29], [8, 15], [5, 12]], P(mc), { sep: true }), e.line(12, 5, 20, 20, dk), e.line(20, 5, 12, 20, dk), e.rect(8, 18, 16, 3, P(14172204), { sep: true }), e.poly([[14, 21], [18, 21], [19, 28], [13, 28]], P(14172204), { flat: "m" }), e.line(9, 24, 23, 24, lt); return true; }
+      if (has("bruna", "brunea", "cota")) { niTorso(e, mc); for (let y = 8; y < 27; y += 3) for (let x = 6 + (y / 3 % 2) * 1.5; x < 27; x += 3) { if ((y < 14 ? x > 5 && x < 27 : x > 9 && x < 23)) e.dot(Math.round(x), y, ((x + y) % 2) ? lt : dk); } e.rect(9, 20, 14, 2, P(5913378), { sep: true }); return true; }
+      if (has("couraca")) { e.poly([[8, 6], [24, 6], [27, 13], [23, 27], [9, 27], [5, 13]], P(mc), { sep: true }), e.line(16, 7, 16, 26, dk), e.ellipse(16, 12, 5, 4, P(lt), { flat: "h" }); [[10, 9], [22, 9], [10, 22], [22, 22]].forEach(([x, y]) => e.dot(x, y, 16777215)); e.line(9, 18, 23, 18, dk); return true; }
+      if (has("peitoral")) { e.poly([[8, 6], [24, 6], [27, 12], [24, 15], [24, 27], [8, 27], [8, 15], [5, 12]], P(mc), { sep: true }); for (let y = 9, r = 0; y < 27; y += 4, r++) for (let x = (r % 2) ? 12 : 10; x < 24; x += 4) e.ellipse(x, y, 2.4, 2.4, P(r % 2 ? lt : mc), { flat: "l" }), e.dot(x, y + 2, dk); return true; }
+      if (has("draugr")) { e.poly([[6, 5], [10, 9], [22, 9], [26, 5], [28, 12], [24, 15], [24, 27], [8, 27], [8, 15], [4, 12]], P(ye(mc, 4863624, 0.45)), { sep: true }), e.ellipse(16, 15, 5, 5, P(15790320), { sep: true }), e.rect(13, 17, 6, 4, P(15790320), { sep: true }), e.dot(14, 14, 1052688), e.dot(18, 14, 1052688), e.dot(14, 14, 1052688), e.line(14, 20, 14, 18, 1052688), e.line(18, 20, 18, 18, 1052688); e.poly([[5, 5], [7, 1], [9, 6]], P(15790320), { flat: "h" }), e.poly([[27, 5], [25, 1], [23, 6]], P(15790320), { flat: "h" }); return true; }
+      if (has("armadura", "placas")) { e.ellipse(6, 10, 5, 4, P(mc), { sep: true }), e.ellipse(26, 10, 5, 4, P(mc), { sep: true }), e.poly([[8, 7], [24, 7], [24, 27], [8, 27]], P(mc), { sep: true }); for (const y of [13, 18, 23]) e.line(9, y, 23, y, dk); e.line(16, 8, 16, 26, dk), e.dot(12, 10, 16777215), e.dot(20, 10, 16777215); return true; }
+      return false;
+    }
+    // ---------- acessórios ----------
+    if (k === "accessory") {
+      const chain = () => { e.line(5, 4, 16, 16, 13152368), e.line(27, 4, 16, 16, 13152368); };
+      if (has("alianca")) { e.ellipse(12, 19, 8, 7, P(mc), { sep: true }), e.ellipse(12, 19, 5, 4.4, P(2760752), { flat: "o" }), e.ellipse(21, 14, 8, 7, P(mc), { sep: true }), e.ellipse(21, 14, 5, 4.4, P(2760752), { flat: "o" }), e.dot(18, 9, 16777215); return true; }
+      if (has("anel")) { e.ellipse(16, 20, 9, 8, P(mc), { sep: true }), e.ellipse(16, 20, 5.5, 4.8, P(2760752), { flat: "o" }), e.poly([[12, 9], [20, 9], [22, 14], [16, 18], [10, 14]], P(gem), { sep: true }), e.dot(14, 11, 16777215); return true; }
+      if (has("brincos")) { for (const x of [10, 22]) { e.ellipse(x, 6, 2, 2, P(mc), { sep: true }), e.line(x, 8, x, 12, 13152368), e.poly([[x, 12], [x + 4, 18], [x, 26], [x - 4, 18]], P(gem), { sep: true }), e.dot(x - 1, 16, 16777215); } return true; }
+      if (has("broche")) { e.ellipse(16, 16, 11, 11, P(mc), { sep: true }), e.ellipse(16, 16, 8, 8, P(dk), { flat: "o" }), e.poly([[16, 9], [22, 16], [16, 23], [10, 16]], P(gem), { sep: true }), e.dot(14, 13, 16777215), e.line(7, 26, 25, 26, 13152368); return true; }
+      if (has("cinto")) { e.poly([[2, 11], [30, 11], [30, 21], [2, 21]], P(10119738), { sep: true }), e.line(2, 13, 30, 13, 7358026), e.line(2, 19, 30, 19, 7358026), e.rect(11, 8, 10, 16, P(mc), { sep: true }), e.rect(14, 12, 4, 8, P(2760752), { flat: "o" }), e.line(16, 12, 16, 20, 13152368); return true; }
+      if (has("fivela")) { e.rect(5, 7, 22, 18, P(mc), { sep: true }), e.rect(9, 11, 14, 10, P(2760752), { flat: "o" }), e.rect(15, 8, 3, 16, P(lt), { sep: true }), e.dot(7, 9, 16777215), e.dot(25, 23, dk); return true; }
+      if (has("pulseira")) { e.ellipse(16, 17, 12, 9, P(mc), { sep: true }), e.ellipse(16, 17, 8, 5.5, P(2760752), { flat: "o" }); [[7, 14], [12, 9], [20, 9], [25, 14]].forEach(([x, y]) => e.dot(x, y, 16777215)); e.ellipse(16, 25, 3, 2.4, P(gem), { sep: true }); return true; }
+      if (has("medalhao")) { chain(), e.ellipse(16, 21, 9, 9, P(mc), { sep: true }), e.ellipse(16, 21, 6, 6, P(dk), { flat: "o" }), e.poly([[16, 17], [20, 21], [16, 25], [12, 21]], P(lt), { sep: true }), e.dot(13, 17, 16777215); return true; }
+      if (has("pingente")) { chain(), e.poly([[16, 14], [21, 21], [16, 29], [11, 21]], P(gem === 14172204 ? 10127615 : gem), { sep: true }), e.dot(14, 19, 16777215), e.ellipse(16, 14, 2, 2, P(mc), { sep: true }); return true; }
+      if (has("colar")) { const pearl = has("perola"); for (let i = 0; i <= 10; i++) { const t = i / 10, x = 5 + t * 22, y = 6 + Math.sin(t * Math.PI) * 16; e.ellipse(x, y, pearl ? 2.3 : 1.7, pearl ? 2.3 : 1.7, P(pearl ? 15790328 : mc), pearl ? { sep: true } : { flat: "h" }); } e.ellipse(16, 25, 2.4, 2.4, P(gem), { sep: true }); return true; }
+      if (has("amuleto")) { chain(), e.poly([[10, 15], [22, 15], [22, 23], [16, 29], [10, 23]], P(mc), { sep: true }), e.poly([[12, 17], [20, 17], [20, 22], [16, 26], [12, 22]], P(dk), { flat: "o" }), e.line(16, 18, 16, 24, lt), e.line(13, 20, 19, 20, lt); return true; }
+      if (has("talisma")) { chain(), e.poly([[16, 14], [19, 19], [24, 20], [20, 23], [21, 28], [16, 25], [11, 28], [12, 23], [8, 20], [13, 19]], P(mc), { sep: true }), e.dot(16, 21, 16777215), e.dot(16, 22, gem); return true; }
+      if (id.startsWith("carta_")) { XM(e, it); return true; }
+      if (has("elmo")) { e.ellipse(7, 8, 4, 4, P(8018490), { sep: true }), e.ellipse(25, 8, 4, 4, P(8018490), { sep: true }), e.ellipse(7, 8, 2, 2, P(14172204), { flat: "o" }), e.ellipse(25, 8, 2, 2, P(14172204), { flat: "o" }), e.ellipse(16, 17, 12, 11, P(8018490), { sep: true }), e.ellipse(16, 21, 6, 5, P(13405762), { sep: true }), e.ellipse(16, 19, 2.4, 1.6, P(1052688), { flat: "o" }), e.dot(11, 14, 1052688), e.dot(21, 14, 1052688), e.rect(5, 11, 22, 2, P(11379104), { sep: true }); return true; }
+      return false;
+    }
+    return false;
+  }
   function os(e) {
     let t = Hv.get(e);
     if (t) return t;
     if (e === "poring_saltitante") { try { let cv = document.createElement("canvas"); cv.width = cv.height = 48; let g = cv.getContext("2d"); g.translate(24, 28); g.scale(1.9, 1.9); let gr = g.createRadialGradient(-3, -5, 1, 0, 0, 12); gr.addColorStop(0, "#ffd6e2"), gr.addColorStop(0.6, "#ff9cb8"), gr.addColorStop(1, "#e0688a"); g.fillStyle = gr, g.strokeStyle = "#a83a60", g.lineWidth = 1.4, g.beginPath(), g.ellipse(0, 0, 11, 9, 0, 0, 7), g.fill(), g.stroke(); g.fillStyle = "rgba(255,255,255,.75)", g.beginPath(), g.ellipse(-4, -4, 3, 1.8, -0.5, 0, 7), g.fill(); g.fillStyle = "#2a1a20", g.beginPath(), g.ellipse(-3.6, 0, 1.3, 2, 0, 0, 7), g.ellipse(3.6, 0, 1.3, 2, 0, 0, 7), g.fill(); g.strokeStyle = "#2a1a20", g.lineWidth = 1, g.beginPath(), g.arc(0, 3, 2, 0.2, 2.9), g.stroke(); Hv.set(e, cv); return cv; } catch (err) { } }
     { const w0 = $(e); if (CX_[e] || (w0 && (w0.headStyle || w0.backStyle) && w0.kind !== "weapon")) { try { t = cxIcon(e); Hv.set(e, t); return t; } catch (err) { } } }
     let a = new Me(ir, ir), n = $(e);
+    if (n && n.kind !== "weapon" && n.kind !== "back" && !/^head/.test(n.kind)) { let ok_ = false; try { ok_ = niItem(a, n); } catch (err) { console.warn("niItem", e, err); } if (ok_) { let m_ = /_t(\d+)$/.exec(e); if (m_) { let ti_ = (+m_[1] - 16) / 8, k_ = ti_ >= 9 ? 5 : ti_ >= 6 ? 4 : ti_ >= 3 ? 3 : ti_ >= 1 ? 2 : 1, pc_ = P(ti_ >= 6 ? 16777215 : 15254090); for (let q_ = 0; q_ < k_; q_++) a.dot(3 + q_ * 3, 29, pc_), a.dot(3 + q_ * 3, 30, pc_); } return a.outline(), t = a.toCanvas(), Hv.set(e, t), t; } }
     return n ? n.kind === "weapon" ? jM(a, n) : n.kind === "armor" ? BM(a, n) : n.kind === "accessory" ? IM(a, n) : n.kind === "back" ? BKI(a, n) : n.kind === "headTop" || n.kind === "headMid" || n.kind === "headLow" ? UM(a, n) : n.kind === "consumable" ? VM(a, n) : n.kind === "card" ? XM(a, n) : n.kind === "ammo" ? $M(a, n) : n.kind === "quest" ? Ov(a) : n.socket || he(n.id, "runa") ? QM(a, n) : YM(a, n) : Ov(a), (() => { let m_ = /_t(\d+)$/.exec(e); if (!m_) return; let ti_ = (+m_[1] - 16) / 8, k_ = ti_ >= 9 ? 5 : ti_ >= 6 ? 4 : ti_ >= 3 ? 3 : ti_ >= 1 ? 2 : 1, pc_ = P(ti_ >= 6 ? 16777215 : 15254090); for (let q_ = 0; q_ < k_; q_++) a.dot(3 + q_ * 3, 29, pc_), a.dot(3 + q_ * 3, 30, pc_); })(), a.outline(), t = a.toCanvas(), Hv.set(e, t), t;
   }
   var CXB_ = {};
@@ -16215,7 +16371,7 @@ void main() {
       } catch {}
     }, 500);
   })();
-  typeof location < 'u' && location.search.includes('debug') && (window.__petPlay = () => { __petPlayAt = 0; petPlay(); }), (window.__cxIcon = (id) => cxIcon(id).toDataURL()), (window.__rox2m = () => ROX2M), (window.__Y0 = () => Y0), (window.__cxFull = (id, dir) => { const it = Wa[id], look = { base: "berserker", hair: 3, sx: "m" }; if (it.kind === "back") look.bk = it.backStyle; else if (it.kind === "headMid") look.mid = it.headStyle; else if (it.kind === "headLow") look.low = it.headStyle; else look.top = it.headStyle; return ROX2(R4(look), dir, -1, 0, "").cv.toDataURL(); }), typeof location < 'u' && location.search.includes('debug') && (window.__game = () => ({ He, Qu, WB, j, Ce, Ua, Yu, ty, I8, tr, U8, ap, Dr, Jy, Rb, Cc, _p, Ua, en, Jt, nr, He, It }), window.__defs = () => Object.values(Qu), window.__items = () => Wa, window.__maps = () => Jt, window.__data = () => ({ Or, RQ: typeof RQ < 'undefined' ? RQ : [], REALM_Q: typeof REALM_Q < 'undefined' ? REALM_Q : [], CRAFT_REC: typeof CRAFT_REC < 'undefined' ? CRAFT_REC : [], cv, Qm, D8, Q8, Ep, Ir, kp }), window.__sprDbg = () => ({ cs, po, fa, hh, R4, ea, ROXQM, O4, P0, Vl }), window.__spr2 = () => ({ O4, _4 }));
+  typeof location < 'u' && location.search.includes('debug') && (window.__petPlay = () => { __petPlayAt = 0; petPlay(); }), (window.__icon = (id) => os(id).toDataURL()), (window.__cxIcon = (id) => cxIcon(id).toDataURL()), (window.__rox2m = () => ROX2M), (window.__Y0 = () => Y0), (window.__cxFull = (id, dir) => { const it = Wa[id], look = { base: "berserker", hair: 3, sx: "m" }; if (it.kind === "back") look.bk = it.backStyle; else if (it.kind === "headMid") look.mid = it.headStyle; else if (it.kind === "headLow") look.low = it.headStyle; else look.top = it.headStyle; return ROX2(R4(look), dir, -1, 0, "").cv.toDataURL(); }), typeof location < 'u' && location.search.includes('debug') && (window.__game = () => ({ He, Qu, WB, j, Ce, Ua, Yu, ty, I8, tr, U8, ap, Dr, Jy, Rb, Cc, _p, Ua, en, Jt, nr, He, It }), window.__defs = () => Object.values(Qu), window.__items = () => Wa, window.__maps = () => Jt, window.__data = () => ({ Or, RQ: typeof RQ < 'undefined' ? RQ : [], REALM_Q: typeof REALM_Q < 'undefined' ? REALM_Q : [], CRAFT_REC: typeof CRAFT_REC < 'undefined' ? CRAFT_REC : [], cv, Qm, D8, Q8, Ep, Ir, kp }), window.__sprDbg = () => ({ cs, po, fa, hh, R4, ea, ROXQM, O4, P0, Vl }), window.__spr2 = () => ({ O4, _4 }));
   var c4 = [1, -1, 0, 0, 1, -1, 1, -1], u4 = [0, 0, 1, -1, 1, -1, -1, 1];
   function d4(e, t, a, n) {
     let o = A.RX(a).mul(A.RY(t)), r = o.r, i = 1e9, s = -1e9, l = 1e9, c = -1e9;
@@ -19296,7 +19452,7 @@ function ROXQM(f, c, s, l, def, ex) {
         {
           let isFly = ph < 0.46 || ph >= 0.78, pk = !isFly && Math.sin(t * 3.2 + b * 2) > 0.25, psp = null;
           try { psp = typeof ROX2M !== "undefined" ? ROX2M.mon("pombo", "side", isFly ? Math.floor(t * 15 + b * 3) % 8 : -1, pk ? 3 : 0, { id: "pombo" + (b % 2), color: null }, { st: (b % 2 ? 1 : 0) | (isFly ? 4 : 0) }) : null; } catch (e) { psp = null; }
-          if (psp) { nt(n, psp, bx, by + 9 * z + (isFly ? 0 : 0), dir < 0, $a * z * 0.85, $a * z * 0.85); continue; }
+          if (psp) { nt(n, psp, bx, by + 9 * z + (isFly ? 0 : 0), dir < 0, $a * z * 0.5, $a * z * 0.5); continue; }
         }
         {
           let dk = b % 2 ? "#4a4a5a" : "#7a5a3c", md = b % 2 ? "#6a6c80" : "#a07a50", lt = b % 2 ? "#d8dae6" : "#efe0c4", hy = drink ? 4 + Math.sin(t * 9 + b) * 1.3 : -2.4;
@@ -20053,6 +20209,45 @@ function ROXQM(f, c, s, l, def, ex) {
               if (Math.hypot(tx - pt.x, ty - pt.y) < 9) wd.arr || (wd.arr = nowT), nowT - wd.arr > wd.stay && (pt.wander = null, pt.nextW = nowT + 600 + Math.random() * 2600);
             }
           } else pt.wander = null;
+          // ---- v250: brincadeira em 3D com f\u00EDsica (bolinha quica, rola, bate em obst\u00E1culos; o pet persegue, chuta e pula) ----
+          if (__petBallReq) { const fa_ = o.facing; __petBallReq = 0, this._ball = { x: o.pos.x + Math.cos(fa_) * 30, y: o.pos.y + Math.sin(fa_) * 30, z: 26, vx: Math.cos(fa_) * 3.4, vy: Math.sin(fa_) * 3.4, vz: 5.2, t0: nowT, spin: 0, kt: 0, bn: 0 }; }
+          let bl = this._ball;
+          if (bl && (nowT - bl.t0 > 22000 || Math.hypot(bl.x - o.pos.x, bl.y - o.pos.y) > 1500)) bl = this._ball = null;
+          if (pt.z === void 0) pt.z = 0, pt.vz = 0;
+          if (bl) {
+            const mp = a.map, ob0 = mp.obstacles;
+            bl.vz -= 0.42 * fdt, bl.z += bl.vz * fdt;
+            if (bl.z <= 0) { bl.z = 0; if (Math.abs(bl.vz) > 1.4) { bl.vz = -bl.vz * 0.64, bl.vx *= 0.9, bl.vy *= 0.9, bl.bn++; } else bl.vz = 0; }
+            const rolling = bl.z <= 0 && bl.vz === 0, fr = Math.pow(rolling ? 0.955 : 0.993, fdt);
+            bl.vx *= fr, bl.vy *= fr;
+            let nx = bl.x + bl.vx * fdt, ny = bl.y + bl.vy * fdt;
+            if (nx < 10) nx = 10, bl.vx = Math.abs(bl.vx) * 0.7; else if (nx > mp.width - 10) nx = mp.width - 10, bl.vx = -Math.abs(bl.vx) * 0.7;
+            if (ny < 10) ny = 10, bl.vy = Math.abs(bl.vy) * 0.7; else if (ny > mp.height - 10) ny = mp.height - 10, bl.vy = -Math.abs(bl.vy) * 0.7;
+            for (let q = 0; q < ob0.length; q++) {
+              const ob = ob0[q];
+              if (ob.walk || !(ob.w > 0) || ob.x > nx + 80 || ob.x + ob.w < nx - 80 || ob.y > ny + 80 || ob.y + ob.h < ny - 80) continue;
+              if (bl.z > 46) continue;
+              const R = 5;
+              if (nx > ob.x - R && nx < ob.x + ob.w + R && ny > ob.y - R && ny < ob.y + ob.h + R) {
+                const dl = nx - (ob.x - R), dr = ob.x + ob.w + R - nx, dt = ny - (ob.y - R), db = ob.y + ob.h + R - ny, mn = Math.min(dl, dr, dt, db);
+                if (mn === dl) nx = ob.x - R, bl.vx = -Math.abs(bl.vx) * 0.62; else if (mn === dr) nx = ob.x + ob.w + R, bl.vx = Math.abs(bl.vx) * 0.62; else if (mn === dt) ny = ob.y - R, bl.vy = -Math.abs(bl.vy) * 0.62; else ny = ob.y + ob.h + R, bl.vy = Math.abs(bl.vy) * 0.62;
+                bl.vz = Math.max(bl.vz, 1.2);
+              }
+            }
+            bl.x = nx, bl.y = ny, bl.spin += (Math.hypot(bl.vx, bl.vy) * 0.12 + 0.02) * fdt;
+            // jogador chuta a bolinha ao esbarrar
+            const pdx = bl.x - o.pos.x, pdy = bl.y - o.pos.y, pdd = Math.hypot(pdx, pdy);
+            if (pdd < 24 && bl.z < 24 && nowT - bl.kt > 350) { bl.kt = nowT, bl.vx = pdx / (pdd || 1) * 4.2, bl.vy = pdy / (pdd || 1) * 4.2, bl.vz = 4.2; }
+            // o pet persegue a bolinha, chuta e pula
+            tx = bl.x, ty = bl.y, spd = Math.min(3.6, 1.6 + Math.hypot(bl.vx, bl.vy) * 0.5), hd = null;
+            const pbx = bl.x - pt.x, pby = bl.y - pt.y, pbd = Math.hypot(pbx, pby);
+            if (pbd < 17 && bl.z < 16 + Math.max(0, pt.z) && nowT - bl.kt > 450) {
+              bl.kt = nowT; const dpl = Math.hypot(o.pos.x - bl.x, o.pos.y - bl.y), ka = dpl > 170 ? Math.atan2(o.pos.y - bl.y, o.pos.x - bl.x) + (Math.random() - 0.5) * 1.2 : Math.atan2(pby, pbx) + (Math.random() - 0.5) * 1.6, ks = dpl > 170 ? 3.4 + Math.random() * 2.2 : 2.6 + Math.random() * 2.2;
+              bl.vx = Math.cos(ka) * ks, bl.vy = Math.sin(ka) * ks, bl.vz = 3.6 + Math.random() * 2.6, pt.vz = 3.4, pt.hop = nowT;
+            }
+            if (pt.z <= 0 && pbd < 60 && bl.z > 12 && bl.vz < 0 && Math.random() < 0.06) pt.vz = 3.6;
+          }
+          pt.vz -= 0.4 * fdt, pt.z += pt.vz * fdt, pt.z <= 0 && (pt.z = 0, pt.vz = 0);
           let dx = tx - pt.x, dy = ty - pt.y, dd = Math.hypot(dx, dy);
           if (hd && dd < 10 && !hd.arr) hd.arr = nowT;
           if (dd > 520) pt.x = tx, pt.y = ty, pt.v = 0;
@@ -20062,16 +20257,18 @@ function ROXQM(f, c, s, l, def, ex) {
             let st = pt.v * fdt * Math.max(0.35, 1 - Math.abs(da) * 0.35);
             pt.x += Math.cos(pt.f) * st, pt.y += Math.sin(pt.f) * st;
           } else pt.v *= 0.7;
-          let pl = Date.now() - __petPlayAt, play = pl >= 0 && pl < (__petPlayKind === 2 ? 2700 : 2600), pa = play ? petAnim(pl, __petPlayKind, pt.f) : null, pm = (dd > 9 && pt.v > 0.25 && !play) || !!(pa && pa.run), pr = ce(pt.x, pt.y), { dir: pd2, flip: pf } = Kl(pa ? pa.face : pt.f), PS = 0.64, ps2 = ROXQM("wolf", pd2, pm ? Math.floor(this.clock / 90 % ea) : -1, 0, { id: "filhote", color: 13026744 }), jy = pa ? pa.jy : 0, pox = pa ? pa.ox : 0;
+          let pl = 0, play = false, pa = null, pm = (dd > 9 && pt.v > 0.25 && !play) || !!(pa && pa.run), pr = ce(pt.x, pt.y), { dir: pd2, flip: pf } = Kl(pa ? pa.face : pt.f), PS = 0.64, ps2 = ROXQM("wolf", pd2, pm ? Math.floor(this.clock / 90 % ea) : -1, 0, { id: "filhote", color: 13026744 }), jy = -(pt.z || 0), pox = 0;
           if (ps2) {
-            this.blob(pr.x + pox, pr.y + 3, 8 + (play ? jy * 0.1 : 0));
+            this.blob(pr.x + pox, pr.y + 3, Math.max(4, 8 - (pt.z || 0) * 0.18));
             nt(n, ps2, pr.x + pox, pr.y + 4 + jy, pf, $a * PS, $a * PS, pa ? pa.rot : 0);
             if (pa && (pa.stick || pa.carry)) { const sxp = pa.carry ? pr.x + pox + (__petPlayDir > 0 ? -12 : 12) : pr.x + (pa.stick.x), syp = pa.carry ? pr.y - 12 + jy : pr.y - 8 + pa.stick.y; n.save(); n.translate(sxp, syp); n.rotate(pa.carry ? 0.3 : pa.stick.r); n.fillStyle = "#6a4020"; n.fillRect(-9, -1.5, 18, 3); n.fillStyle = "#8a5a2c"; n.fillRect(-9, -1.5, 18, 1); n.restore(); }
             if (pa && pa.fx === 3) for (let q = 0; q < 5; q++) { const tt = ((pl / 500 + q / 5) % 1); n.fillStyle = `rgba(190,170,130,${0.5 * (1 - tt)})`; n.beginPath(); n.arc(pr.x + pox + (q - 2) * 7 * (0.6 + tt), pr.y + 2 - tt * 10, 2 + tt * 3, 0, 6.283); n.fill(); }
             (() => { let np = this.toScreenPt(this.ptr.x, this.ptr.y); Math.hypot(np.x - (pr.x + pox), np.y - (pr.y - 8)) < 28 && this.text(pd.name, pr.x + pox, pr.y - 32, 11, "#ffe9a8"); })();
             if (play && pa.fx === 4) for (let q = 0; q < 4; q++) { let tt = (pl / 1100 + q / 4) % 1; this.text(["\u266A", "\u266B"][q % 2], pr.x + pox + (__petPlayDir > 0 ? 14 : -14) + Math.sin(q * 2.1 + pl / 260) * 10, pr.y - 30 - tt * 38, 13, `rgba(255,236,160,${1 - tt})`); }
             else if (play) for (let q = 0; q < 3; q++) { let tt = (pl / 900 + q / 3) % 1; this.text("\u2665", pr.x + pox + Math.sin(q * 2.1 + pl / 300) * 12, pr.y - 34 - tt * 30, 12, `rgba(255,120,160,${1 - tt})`); }
-            window.__petHit = { x: pr.x + pox, y: pr.y - 10, r: 30 };
+            if (bl) { const bp = ce(bl.x, bl.y), bz = bl.z, sh = Math.max(0.35, 1 - bz / 90); n.fillStyle = `rgba(0,0,0,${0.32 * sh})`, n.beginPath(), n.ellipse(bp.x, bp.y + 1, 6.5 * sh, 3 * sh, 0, 0, 6.283), n.fill(); n.save(), n.translate(bp.x, bp.y - 5 - bz), n.rotate(bl.spin); const gr = n.createRadialGradient(-2, -2, 1, 0, 0, 6.5); gr.addColorStop(0, "#ff9a8a"), gr.addColorStop(1, "#c42828"), n.fillStyle = gr, n.beginPath(), n.arc(0, 0, 6, 0, 6.283), n.fill(), n.fillStyle = "#fff", n.fillRect(-6, -1, 12, 2), n.strokeStyle = "rgba(60,0,0,.5)", n.lineWidth = 1, n.beginPath(), n.arc(0, 0, 6, 0, 6.283), n.stroke(), n.restore(); }
+            if (pt.hop && nowT - pt.hop < 900) for (let q = 0; q < 2; q++) { const tt = (nowT - pt.hop) / 900; this.text("\u2665", pr.x + (q ? 9 : -9), pr.y - 34 - tt * 26, 11, `rgba(255,120,160,${1 - tt})`); }
+            window.__petHit = { x: pr.x + pox, y: pr.y - 10, r: 30 }, window.__pet3d = { bl, pt };
           }
       }
     }
