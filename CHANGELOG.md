@@ -1,3 +1,6 @@
+## v238
+- Removido o contador "N HITS": aparece só o número de dano de cada golpe.
+
 ## v237 — Mecânica dos homúnculos
 - Agora andam, perseguem e lutam de verdade, cada um do seu jeito:
   - Lif: fica à distância, dardo de folhas; Florescer cura o dono e fere em área (evoluída cura mais).
