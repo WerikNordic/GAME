@@ -714,3 +714,8 @@
 - Regen de MP agora tambem proporcional ao MP maximo (+0,8%/s).
 - Multiplicador de dano por classe (CLSDMG): berserker 1.1, escudeiro 1.3, cacador .93, volva .72, valquiria 1, skald .88, thay 1.
 - Alvos de monstros (TG) recalculados: todas as classes ficam com TTK 3-15s e 9-36% de vida por luta; chefes 30-70s.
+
+## v247 (dificuldade media/hard, rates 1x)
+- Rates mantidas em 1x (EXP/drop). Dificuldade estilo Ragnarok: TTK 4s (nv1) -> 14s (nv30+) e 14% -> 40% da vida por monstro (exige pocao/descanso); nivel 99 so com muito grind (kills p/ subir = 25 + 0,8*nivel, ~10 a 95).
+- Chefes: 5x HP, 0,8x ATQ do normal (35-110s); EXP de chefe proporcional.
+- Variacao relativa entre monstros so aplicada onde ha amostra suficiente (>=6 monstros), corrigindo oscilacoes de dificuldade entre niveis.

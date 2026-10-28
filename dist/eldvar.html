@@ -19994,7 +19994,7 @@ const PETSCH=[['stand',2.6,6],['sniff',2,8],['stand',1.6,5],['sit',3.4,6],['look
 (() => {
   // Balanceamento v245: alvos derivados de simulacao de jogador real (skills + equipamento por nivel; ver CHANGELOG).
   // [nivel, HP alvo, ATQ alvo] do monstro "tipico" do nivel; variacao relativa entre monstros e mantida (limitada).
-  const TG = [[1, 205, 11], [5, 576, 22], [10, 1968, 42], [15, 3368, 63], [20, 5319, 81], [25, 6894, 122], [30, 12456, 175], [40, 18171, 306], [50, 24759, 491], [60, 38205, 784], [70, 48267, 1100], [80, 63630, 1430], [90, 76752, 1841], [99, 88749, 2278]];
+  const TG = [[1, 269, 10], [5, 725, 23], [10, 2405, 48], [15, 4041, 79], [20, 6304, 107], [25, 9447, 159], [30, 19376, 225], [40, 28266, 393], [50, 38514, 631], [60, 59430, 1008], [70, 75082, 1414], [80, 98980, 1838], [90, 119392, 2366], [99, 138054, 2929]];
   const itp = (L, k) => { if (L <= TG[0][0]) return TG[0][k]; for (let i = 1; i < TG.length; i++) if (L <= TG[i][0]) { const [a, x, y] = [TG[i - 1][0], TG[i - 1][k], TG[i][k]], b = TG[i][0], u = (L - a) / (b - a); return Math.exp(Math.log(x) + (Math.log(y) - Math.log(x)) * u); } return TG[TG.length - 1][k]; };
   const trL = (L) => Math.floor(18 * Math.pow(L, 1.85));
   const all = Object.values(Qu).filter((d) => d.id !== "jormungandr" && d.hp <= 4e5);
@@ -20005,9 +20005,9 @@ const PETSCH=[['stand',2.6,6],['sniff',2,8],['stand',1.6,5],['sit',3.4,6],['look
   const avgHp = new Map(), avgAtk = new Map();
   for (const d of all) { avgHp.set(d.id, avg(d.level, "hp")); avgAtk.set(d.id, avg(d.level, "atk")); }
   for (const d of all) {
-    const L = Math.max(1, Math.min(99, d.level)), o = orig.get(d.id), kills = 12 + 0.35 * L;
-    if (d.boss) { d.hp = Math.round(itp(L, 1) * 5 * clampR(o.hp / Math.max(1, d.hp) || 1)), d.atk = Math.round(itp(L, 2) * 1.0), d.exp = Math.round(trL(L) / kills * 8); continue; }
-    const rh = clampR(o.hp / avgHp.get(d.id)), ra = clampR(o.atk / avgAtk.get(d.id));
+    const L = Math.max(1, Math.min(99, d.level)), o = orig.get(d.id), kills = 25 + 0.8 * L;
+    if (d.boss) { d.hp = Math.round(itp(L, 1) * 5), d.atk = Math.round(itp(L, 2) * 0.8), d.exp = Math.round(trL(L) / kills * 10); continue; }
+    const dense = norm.filter((q) => Math.abs(q.level - L) <= 4).length >= 6, rh = dense ? clampR(o.hp / avgHp.get(d.id)) : 1, ra = dense ? clampR(o.atk / avgAtk.get(d.id)) : 1;
     d.hp = Math.max(20, Math.round(itp(L, 1) * rh)), d.atk = Math.max(3, Math.round(itp(L, 2) * ra)), d.exp = Math.max(1, Math.round(trL(L) / kills * rh));
   }
 })();
