@@ -11658,7 +11658,7 @@ Error generating stack: ` + n.message + `
         return { ok: true, msg: "" };
     }
   }
-  var AUTH_ON = false;
+  var AUTH_ON = true;
   try {
     window.__acct = window.localStorage.getItem("eldvar.session") || "", window.__tok = window.localStorage.getItem("eldvar.token") || "";
   } catch {
