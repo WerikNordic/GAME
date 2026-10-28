@@ -1,3 +1,7 @@
+## v220 — Cabeça menor e chão mais nítido
+- Cabeça dos personagens ~13% menor.
+- Chão de todos os mapas com ~1,6x mais resolução nos mapas grandes (cidades, campos): calçada e grama mais detalhadas.
+
 ## v219 — Prévia da criação de personagem
 - Personagem na criação agora preenche o quadro (antes ficava pequeno e solto).
 

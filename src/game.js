@@ -14982,7 +14982,7 @@ void main() {
     }
     return M0 = "cpu", mk(e, t);
   }
-  var Zp = 2.4, zpOf = (e) => e.theme === "snow" ? Math.max(1.7, 1.7 * Math.sqrt(e.width * e.height / 33e6)) : Math.max(Zp, Zp * Math.sqrt(e.width * e.height / 33e6));
+  var Zp = 2.4, zpOf = (e) => Math.max(1.7, Math.sqrt(e.width * e.height / 14e6));
   function lt(e, t, a = 0) {
     let n = e * 374761393 + t * 668265263 + a * 2147483647 | 0;
     return n = (n ^ n >>> 13) * 1274126177 | 0, ((n ^ n >>> 16) >>> 0) / 4294967296;

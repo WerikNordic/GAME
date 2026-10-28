@@ -73,7 +73,7 @@
     const sh = (x, y, z) => { const k = w(y); return [x + P.sx * k + (hd(y) ? P.hx : 0), y + (hd(y) ? P.hy : 0), z + P.lean * k + (hd(y) ? P.hz : 0) + (P.gz || 0)]; };
     for (const [kk, o] of out) { if (kk === "e") { const r = sh(o.x, o.y, o.z); o.x = r[0]; o.y = r[1]; o.z = r[2]; } else o.pts = o.pts.map((p) => sh(p[0], p[1], p[2])); }
   }
-  const HS = .94, LS = .7, NECK = 32, HB = 29.5;
+  const HS = .82, LS = .7, NECK = 32, HB = 29.5;
   const ty = (y) => y <= HB ? NECK - (NECK - y) * HS : y >= 55 ? 74 - (74 - y) * LS : y;
   function chibi(out) {
     for (const [k, o] of out) {
