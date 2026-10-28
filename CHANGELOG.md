@@ -1,3 +1,6 @@
+## v235
+- Cada habilidade da lista (doc_) ganhou cor de efeito própria (fogo laranja, gelo azul, luz dourada, veneno verde, sombra roxa etc.), em vez da cor única da classe. Formas de animação continuam as do tipo (cone, nova, linha...).
+
 ## v234
 - Homúnculos novos nascem com 50% de chance da cor alternativa: Lif loira de vestido vermelho, Amistr dourado/acobreado, Filir marrom/bege, Vanilmirth azul-escuro. Os já criados mantêm a cor padrão.
 
