@@ -19720,6 +19720,7 @@ const PETSCH=[['stand',2.6,6],['sniff',2,8],['stand',1.6,5],['sit',3.4,6],['look
   { const MT = [["pele_lobo","presa_javali","sucata_goblin","erva_vermelha","erva_azul"],["pelo_yeti","osso_gelido","presa_gelo","gema_azul","erva_espinhosa"],["pelagem_lunar","runa_forca","runa_vigor","runa_mente","gema_azul"],["runa_egide","coracao_de_gelo","pelagem_lunar","runa_mente","runa_forca"]], RI = { common: 0, uncommon: 1, rare: 1, epic: 2, legendary: 3 }; let n = 0;
     for (const [iid, c] of Object.entries(CX_)) { const w = Wa[iid], r = RI[c.rar] ?? 0, pool = MT[r], k = n++; const a = pool[k % 5], b2 = pool[(k + 2) % 5], big = r >= 2;
       RQ.push({ id: "vx_" + c.id, kind: "look", name: w.name, desc: "", need: big ? [[a, 6 + r * 2], [b2, 3 + r], [MT[3][k % 5], 1 + (r > 2 ? 1 : 0)]] : [[a, 8 + r * 6], [b2, 4 + r * 4]], reward: iid }); } }
+(() => { let prev = 0; for (const d of Object.values(Qu).filter((x) => x.boss && x.id !== "jormungandr").sort((x, y) => x.level - y.level)) { if (d.hp < prev * 1.05) d.hp = Math.round(prev * 1.05); prev = d.hp; } })();
 var QCACHE = /* @__PURE__ */ new Map();
 function ROXQM(f, c, s, l, def, ex) {
   if (!["wolf", "frostwolf", "hati", "boar", "horse", "montaria", "cao", "gato", "raposa", "coelho", "yeti", "blob", "goblin", "draugr", "cinder", "automaton", "sylvan", "prism", "sentinel", "voidling", "jotun", "grifo", "corvo", "peixe", "medusa", "polvo", "tubarao"].includes(f) || typeof ROX === "undefined" || typeof location < "u" && /[?&]old\b/.test(location.search)) return null;

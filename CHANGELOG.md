@@ -8,6 +8,7 @@
 - MVP: respawn 3–5 h mesmo saindo do mapa, posições aleatórias; monstros espalhados.
 - Habilidade suprema para cada uma das 7 classes (ao fim da lista, exige classe avançada).
 - 8 novas barbas (ponta, costeletas, selvagem, âncora, tranças gêmeas, contorno, negra, cobre) — não consegui confirmar visualmente.
+- Bosses: HP agora cresce sempre com o nível (Hvalgrim e Leviatã estavam abaixo dos anteriores). Werikr não mudou.
 - Pendente: reforma completa das classes, visuais por tier, homúnculos, barbas, balanceamento de boss.
 
 ## v227
