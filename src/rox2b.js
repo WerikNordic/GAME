@@ -61,10 +61,10 @@
         o.bob = kf(u, [[0, 0], [.16, 1], [.3, -1.8], [.5, -1.2], [1, 0]]); o.leg[1].z = kf(u, [[0, 0], [.3, 8], [.6, 8], [1, 0]]); o.leg[0].z = kf(u, [[0, 0], [.3, -5], [.6, -4], [1, 0]]); o.leg[0].x = o.leg[1].x = 1.8; o.sx = kf(u, [[0, 0], [.16, 1], [.3, -1.2], [1, 0]]);
       }
     } else if (anim === 5) {
-      o.bob = -7 + (PA ? 0 : MG ? 1.2 + 1.2 * S(t * 2.618) : 0) + br * .25;
-      if (PA) { o.lean = -.4; o.leg[0] = { z: 8.5, l: 0, ky: 6.5, kz: .6, x: 1.4, kx: .4 }; o.leg[1] = { z: 8.5, l: 0, ky: 6.5, kz: .6, x: 1.4, kx: .4 }; o.arm[0] = { x: 8.4, y: 9.2, z: 5.6 }; o.arm[1] = { x: 8.4, y: 9.2, z: 5.6 }; o.hx = S(t * 2.618) * 1; o.hz = -.2; }
-      else if (AS) { o.lean = -1.6; o.sx = -.6; o.leg[0] = { z: 8.5, l: 0, ky: 6.5, kz: .6, x: 1.5, kx: .4 }; o.leg[1] = { z: 8.5, l: 0, ky: 6.5, kz: .6, x: 1.5, kx: .4 }; o.arm[1] = { x: 8.6, y: 9.4, z: 3.6 }; o.arm[0] = { x: 8.6, y: 9.4, z: 3.6 }; o.hy = .8 + S(t * 2.618) * .4; o.hx = S(t * 2.618) * 1.6; o.hz = 1; }
-      else { o.lean = .2; o.leg[0] = { z: 8.5, l: 0, ky: 6.5, kz: .6, x: 1.5, kx: .4 }; o.leg[1] = { z: 8.5, l: 0, ky: 6.5, kz: .6, x: 1.5, kx: .4 }; o.arm[0] = { x: 8.4, y: 9.2, z: 5.6 }; o.arm[1] = { x: 8.4, y: 9.2, z: 5.6 }; o.hy = .4 + S(t * 2.618) * .4; o.mood = 0; }
+      o.sit = 1; o.bob = -7 + (PA ? 0 : MG ? 1.2 + 1.2 * S(t * 2.618) : 0) + br * .25;
+      if (PA) { o.lean = -.4; o.leg[0] = { z: 8.5, l: 0, ky: 6.5, kz: .6, x: 1.4, kx: .4 }; o.leg[1] = { z: 8.5, l: 0, ky: 6.5, kz: .6, x: 1.4, kx: .4 }; o.arm[0] = { x: 8.2, y: 11.4, z: 8.6 }; o.arm[1] = { x: 8.2, y: 11.4, z: 8.6 }; o.hx = S(t * 2.618) * 1; o.hz = -.2; }
+      else if (AS) { o.lean = -1.6; o.sx = -.6; o.leg[0] = { z: 8.5, l: 0, ky: 6.5, kz: .6, x: 1.5, kx: .4 }; o.leg[1] = { z: 8.5, l: 0, ky: 6.5, kz: .6, x: 1.5, kx: .4 }; o.arm[1] = { x: 8.6, y: 11.6, z: 6.4 }; o.arm[0] = { x: 8.6, y: 11.6, z: 6.4 }; o.hy = .8 + S(t * 2.618) * .4; o.hx = S(t * 2.618) * 1.6; o.hz = 1; }
+      else { o.lean = .2; o.leg[0] = { z: 8.5, l: 0, ky: 6.5, kz: .6, x: 1.5, kx: .4 }; o.leg[1] = { z: 8.5, l: 0, ky: 6.5, kz: .6, x: 1.5, kx: .4 }; o.arm[0] = { x: 8.2, y: 11.4, z: 8.6 }; o.arm[1] = { x: 8.2, y: 11.4, z: 8.6 }; o.hy = .4 + S(t * 2.618) * .4; o.mood = 0; }
     }
     return o;
   }
@@ -129,7 +129,8 @@
       if (cfg.greaves) S({ pts: [[an[0], an[1] - 8, an[2]], [an[0], an[1] - 3, an[2]]], w: 7.2, col: cfg.greaves });
     }
     const tz = lz, bk = cfg.bulk || 1;
-    if (cfg.robe) E({ x: 0, y: 48 + bob, z: tz, rx: 10.5 * (cfg.hipw || 1), ry: 20, rz: 7, p: 2.6, col: cfg.robeCol, tex: cfg.robeTex });
+    if (cfg.robe && P.sit) { const hw = 10.2 * (cfg.hipw || 1); E({ x: 0, y: 47 + bob, z: tz, rx: hw, ry: 9, rz: 6.6, p: 2.6, col: cfg.robeCol, tex: cfg.robeTex }); E({ x: 0, y: 58.2 + bob * .3, z: tz + 6.8, rx: hw * .94, ry: 3.6, rz: 8.4, p: 2.6, col: cfg.robeCol, tex: cfg.robeTex }); E({ x: 0, y: 62.4 + bob * .2, z: tz + 14.2, rx: hw * .86, ry: 4.6, rz: 3.2, p: 2.6, col: cfg.robeCol, tex: cfg.robeTex }); E({ x: 0, y: 64.8, z: tz + 8.4, rx: hw * .8, ry: 2, rz: 10, p: 2.6, col: cfg.robeCol, tex: cfg.robeTex }); }
+    else if (cfg.robe) E({ x: 0, y: 48 + bob, z: tz, rx: 10.5 * (cfg.hipw || 1), ry: 20, rz: 7, p: 2.6, col: cfg.robeCol, tex: cfg.robeTex });
     E({ x: 0, y: 43 + bob, z: tz, rx: 8.8 * bk, ry: 10.2, rz: 5.8 * bk, p: 3, col: cfg.top, tex: cfg.topTex, metal: cfg.metalTop });
     if (cfg.skirt) E({ x: 0, y: 54 + bob, z: tz, rx: 9.5 * (cfg.hipw || 1), ry: 5, rz: 6.4, p: 2.4, col: cfg.skirt, tex: cfg.skirtTex });
     E({ x: 0, y: 51.6 + bob, z: tz, rx: 9 * (cfg.hipw || 1), ry: 1.9, rz: 6, p: 3, col: cfg.belt });
@@ -147,7 +148,6 @@
     if (cfg.wpn) cfg.wpn(E, S, { R: hands[1], L: hands[0], P, t, tz, bob, unarmed: !P.armed });
     const hy = 22 + bob, hz = tz;
     E({ x: 0, y: hy, z: hz, rx: 7.4, ry: 10, rz: 7.9, p: 4.8, col: sk, soft: 1, tex: FEATURES(cfg) });
-    for (const sg of [-1, 1]) E({ x: sg * 8.2, y: hy + 1.5, z: hz, rx: 1.6, ry: 2.6, rz: 1.8, col: sk });
     E({ x: 0, y: hy + 4.6, z: hz - .6, rx: 5.8, ry: 6.2, rz: 6.6, p: 3.8, col: sk, soft: 1 });
     if (cfg.hairFn) cfg.hairFn(E, S, { hy, hz, bob, tz, t, P });
     if (cfg.deco) cfg.deco(E, S, { hy, hz, bob, tz, t, P });

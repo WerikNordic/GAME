@@ -1,3 +1,17 @@
+## v215 — Lote E
+- ADM: @zeny, @classe <nome>, @allstatus; roupa branca e dourada com asas, botas douradas e aura nova.
+- Guildas: casas nos cantos do mapa, maiores; só a classe correspondente entra; mestre ao lado da casa com a roupa da classe; Munin/Curandeira/Teleporte/Utilidades juntos; pai dos homúnculos só na casa dos mercadores.
+- Neve: sempre nevando, chão liso (sem quadradinhos, resolução maior) e pegadas leves (a pé e montado). Deserto: sem barracas, poeira leve.
+- Avisos de dia/noite/clima ocultos; cronista sem presente diário.
+- Casting (Mago/Noviço e evoluções): tempo = base × (1 − DEX/150), instantâneo com 150 DEX, dano interrompe (perde metade do SP), barra de conjuração, atraso pós-cast.
+- Montaria nova: cavalo de guerra com armadura dourada, manto carmesim, crina/cauda de chamas; cabeça visível de frente; personagem agacha junto ao pegar item.
+- Pet: Shift+direito leva até o ponto andando, fica 3 s e volta; parado, faz ações espontâneas (andar, cheirar, sentar, ir longe).
+- Mãozinha abre/fecha ao pegar item; botão direito em item mostra bônus, descrição e peso.
+- Sons de monstros mais orgânicos (formantes, vibrato, respiração).
+- Personagens/NPCs e cidade ~22% maiores (zoom base); prévia maior no Alt+Q e na seleção de personagem.
+- Sem boca e sem orelhas; sentar revisto (braços mais longos, manto cai sobre as pernas); pássaros da fonte redesenhados.
+- Autosave a cada 20 s e ao fechar/trocar de aba.
+
 ## v214 — Pixels dos personagens mais nítidos
 - Sprites de personagens/NPCs renderizados com ~1,6x mais resolução (mesmo tamanho na tela), contorno reforçado: mais detalhe, menos serrilhado.
 

@@ -84,6 +84,38 @@ var ROX2M = (() => {
   const r=canid(E,S,o,{L:38,H:15,W:6,legL:21,legW:2.5,col:hx(0x8a5a3a),col2:hx(0x6a4028),stride:6.5,lift:3.6,hw:3.9,hh:4.4,hl:7.6,snoutL:.7,snoutW:.7,snout:hx(0x7a4c30),eye:hx(0x1a1210),ears:1,earIn:hx(0x4a2a1c),tail:1,tailW:4.2,tailTip:hx(0x2a1a14),hHigh:-15,pitch0:-.6,belly:1,paw:hx(0xe8dcc0)});
   const nb=[0,r.chY-15*.3-1,r.chZ+38*.08];for(let i=0;i<6;i++){const u=i/5,p0=L3(nb,r.hd,.12+u*.7);S({pts:[[p0[0],p0[1]-1,p0[2]-1.2],[p0[0],p0[1]+3.4,p0[2]-3.6]],w:[3.2,1],col:hx(0x2a1a14)})}
   S({pts:[[0,r.chY-6,r.hd[2]-5],[0,r.hd[1]-1,r.hd[2]-1.6]],w:[2.4,1.4],col:hx(0x2a1a14)})}});
+ // ---------- montaria epica (cavalo de guerra com armadura dourada, manto carmesim e crina de chamas) ----------
+ reg('montaria',{name:'Montaria',w:120,h:104,gy:94,sched:[['stand',2.4,6],['look',2.4,8],['snort',1.8,8],['stand',1.6,5]],build:(E,S,o)=>{
+  const r=canid(E,S,o,{L:38,H:15,W:6,legL:21,legW:2.5,col:hx(0x8a5a3a),col2:hx(0x6a4028),stride:6.5,lift:3.6,hw:3.9,hh:4.4,hl:7.6,snoutL:.7,snoutW:.7,snout:hx(0x7a4c30),eye:hx(0xffd870),ears:1,earIn:hx(0x4a2a1c),tail:1,tailW:4.2,tailTip:hx(0x2a1a14),hHigh:-15,pitch0:-.6,belly:1,paw:hx(0xe8dcc0)});
+  const GOLD=hx(0xf2c24a),GOLD2=hx(0xb88a24),CRIM=hx(0x9a1e32),CRIM2=hx(0x6a1424),B=.2;
+  const mY=(r.chY+r.hpY)/2,mZ=(r.chZ+r.hpZ)/2;
+  // manto (caparison) sobre o dorso, com franjas douradas nas laterais
+  E({x:0,y:mY-5.2,z:mZ,rx:7.4,ry:3.4,rz:14.5,p:3,col:CRIM,bias:B});
+  for(const sx of[-1,1]){S({pts:[[sx*6.4,mY-3.6,mZ+11],[sx*7.6,mY+3.4,mZ+10],[sx*7.8,mY+9.4,mZ+9]],w:[3.4,2.4],col:CRIM,bias:B});S({pts:[[sx*6.4,mY-3.6,mZ-11],[sx*7.6,mY+3.4,mZ-10],[sx*7.8,mY+9.4,mZ-9]],w:[3.4,2.4],col:CRIM,bias:B});
+   S({pts:[[sx*7.9,mY+9,mZ-10],[sx*8,mY+9.4,mZ+10]],w:[1.4,1.4],col:GOLD,bias:B});S({pts:[[sx*6.9,mY-5.8,mZ-13],[sx*7.1,mY-5.6,mZ+13]],w:[1.1,1.1],col:GOLD,bias:B});
+   for(let i=0;i<5;i++){const z=mZ-9+i*4.5;E({x:sx*8,y:mY+9.8,z,rx:.8,ry:1.2,rz:.8,p:3,col:GOLD,bias:B})}}
+  // sela
+  E({x:0,y:mY-8.4,z:mZ+1,rx:4.6,ry:1.6,rz:6.6,p:3,col:hx(0x4a2a18),bias:B});
+  S({pts:[[0,mY-9.6,mZ+7.4],[0,mY-12.4,mZ+8.6]],w:[2.2,1.6],col:GOLD2,bias:B});S({pts:[[0,mY-9.4,mZ-5.8],[0,mY-12,mZ-7.2]],w:[2.6,1.8],col:GOLD2,bias:B});
+  // peitoral dourado
+  E({x:0,y:r.chY+2.2,z:r.chZ+Lb0(r),rx:6.2,ry:8,rz:2.8,p:3,col:GOLD,metal:1,bias:B});
+  E({x:0,y:r.chY+2.2,z:r.chZ+Lb0(r)+2.2,rx:2.2,ry:2.2,rz:1.2,p:3,col:hx(0xff4a5a),bias:.6,metal:1});
+  S({pts:[[-5.4,r.chY-3,r.chZ+Lb0(r)-1],[0,r.chY-5.4,r.chZ+Lb0(r)+.4],[5.4,r.chY-3,r.chZ+Lb0(r)-1]],w:[1.8,1.8],col:GOLD2,bias:B});
+  // testeira + penacho
+  const hd=r.hd,dv=r.dv,up=r.up;
+  S({pts:[A3(A3(hd,up,3.2),dv,-1),A3(A3(hd,dv,r.dv?9:9),up,2.6)],w:[3.4,2.4],col:GOLD,metal:1,bias:B});
+  S({pts:[A3(A3(hd,up,-3.6),dv,-3.4),A3(A3(hd,up,-9),dv,-6)],w:[1.8,1.2],col:GOLD2,bias:B});
+  for(const sx of[-1,1])E({x:hd[0]+sx*3.6,y:hd[1]-.4,z:hd[2]+1.4,rx:1.1,ry:2.2,rz:3,p:3,col:GOLD,metal:1,bias:B});
+  {const tt=o.t||0,sw=Math.sin(tt*3)*1.6;S({pts:[A3(hd,up,-4),A3(A3(hd,up,-9),[sw,0,-2]),A3(A3(hd,up,-13),[sw*1.6,0,-6])],w:[2.6,.8],col:hx(0xff3a4a),bias:.5})}
+  // crina de chamas
+  for(let i=0;i<9;i++){const u=i/8,y=r.chY-6-u*1.5+(r.hpY-r.chY)*u*.6,z=r.chZ+5-u*(r.chZ-r.hpZ)*.3,fl=Math.sin((o.t||0)*6+i*1.3)*1.4;
+   S({pts:[[0,y,z],[fl*.5,y-3.4,z-1.8],[fl,y-6.4-(i%2)*1.6,z-3.6]],w:[2.4,.5],col:(q)=>q>.55?hx(0xfff0a0):hx(0xff8a2a),bias:.7})}
+  // cauda em chamas
+  {const tb=[0,r.hpY-1.2,r.hpZ-6.5];for(let i=0;i<4;i++){const f=Math.sin((o.t||0)*5+i*1.7)*2;S({pts:[tb,[f*.5,r.hpY+3,r.hpZ-10-i],[f,r.hpY+8+i*1.2,r.hpZ-13-i*1.4]],w:[2.4,.4],col:(q)=>q>.5?hx(0xfff0a0):hx(0xff6a2a),bias:.7})}}
+  // aneis dourados nos cascos e brilho de runa
+  for(let i=0;i<5;i++){const u=((o.t||0)*.7+i*.2)%1;E({x:Math.sin(i*2.4+(o.t||0))*10,y:o.g-4-u*26,z:Math.cos(i*2.4)*9,rx:.8,ry:.8,rz:.8,p:4,col:hx(0xffe08a),bias:1})}
+ }});
+ function Lb0(r){return 8.4}
 const PETSCH=[['stand',2.6,6],['sniff',2,8],['stand',1.6,5],['sit',3.4,6],['look',2.2,8],['sit',2,5],['stand',1.2,4]];
  reg('cao',{name:'Cao',w:80,h:60,gy:52,sched:PETSCH,build:(E,S,o)=>canid(E,S,o,{L:20,H:8.5,W:4.2,legL:6.4,legW:1.9,col:hx(0xb08850),col2:hx(0xd8c8a0),stride:4.4,lift:2.2,hw:3.1,hh:2.9,hl:3.4,snoutL:.55,snoutW:.55,snout:hx(0xd8c8a0),eye:hx(0x1a1210),ears:1,earL:.8,earIn:hx(0x8a6a40),tail:1,tailW:2.4,tailTip:hx(0xd8c8a0),hHigh:.6,belly:1})});
  reg('gato',{name:'Gato',w:70,h:56,gy:48,sched:PETSCH,build:(E,S,o)=>canid(E,S,o,{L:15,H:6,W:3,legL:4.6,legW:1.3,col:hx(0x8a8f96),col2:hx(0xc4c8cc),stride:3.4,lift:1.6,hw:2.8,hh:2.6,hl:2.6,snoutL:.15,snoutW:.8,snout:hx(0xe0d4d4),eye:hx(0xe8d040),ears:1,earL:.9,earIn:hx(0xd8a0a8),tail:1,tailW:1.4,tailTip:hx(0x5a5e66),hHigh:.2,belly:1})});
@@ -297,7 +329,7 @@ const PETSCH=[['stand',2.6,6],['sniff',2,8],['stand',1.6,5],['sit',3.4,6],['look
   for(const sx of[-1,1])S({pts:[[sx*2,y0+6,z0],[sx*2,y0+10,z0+2+(kk>0?2:0)],[sx*2.4,y0+12,z0+3]],w:[1.4,1],col:hx(0xe0a838)});
   for(let i=0;i<3;i++){const u=(o.t*.8+i*.33)%1;E({x:Math.sin(i*5)*12,y:o.g-u*20,z:-5,rx:.8,ry:.8,rz:.8,p:4,col:hx(0x9a8aff),bias:1})}}});
  // ---------- mapeamento shape -> especie ----------
- const SHAPES={wolf:['lobo',.5,1.9],frostwolf:['lobogelo',.6,1.9],hati:['warg',.35,2],boar:['javali',.5,2.0],horse:['cavalo',.25,1.7],cao:['cao',.45,1.9],gato:['gato',.5,1.9],raposa:['raposa',.35,1.9],coelho:['coelho',.4,1.9],yeti:['yeti',.7,1.35],blob:['gosma',.85,1.9],goblin:['goblin',.3,2],draugr:['draugr',.3,1.75],cinder:['imp',.55,1.7],automaton:['golemmetal',.75,1.2],sylvan:['sylvan',.7,1.3],prism:['golemprisma',.8,1.1],sentinel:['golempedra',.6,1.2],voidling:['espectro',.85,1.1],jotun:['troll',.5,1.5],grifo:['corvo',.35,1.8],corvo:['corvo',0,1.6],peixe:['peixe',.55,2.5],medusa:['medusa',.5,1.9],polvo:['polvo',.55,1.9],tubarao:['tubarao',.5,2.3]};
+ const SHAPES={wolf:['lobo',.5,1.9],frostwolf:['lobogelo',.6,1.9],hati:['warg',.35,2],boar:['javali',.5,2.0],horse:['cavalo',.25,1.7],montaria:['montaria',.25,1.7],cao:['cao',.45,1.9],gato:['gato',.5,1.9],raposa:['raposa',.35,1.9],coelho:['coelho',.4,1.9],yeti:['yeti',.7,1.35],blob:['gosma',.85,1.9],goblin:['goblin',.3,2],draugr:['draugr',.3,1.75],cinder:['imp',.55,1.7],automaton:['golemmetal',.75,1.2],sylvan:['sylvan',.7,1.3],prism:['golemprisma',.8,1.1],sentinel:['golempedra',.6,1.2],voidling:['espectro',.85,1.1],jotun:['troll',.5,1.5],grifo:['corvo',.35,1.8],corvo:['corvo',0,1.6],peixe:['peixe',.55,2.5],medusa:['medusa',.5,1.9],polvo:['polvo',.55,1.9],tubarao:['tubarao',.5,2.3]};
  const DIRS={down:0,dq:1,side:2,uq:3,up:4};
  const lumOf=(c)=>(c[0]+c[1]+c[2])/765;
  function mkTint(rgb,k){const tl=lumOf(rgb)||.5;return (c)=>{if(!Array.isArray(c))return c;const s=lumOf(c)/tl;return mix(c,[Math.min(255,rgb[0]*s),Math.min(255,rgb[1]*s),Math.min(255,rgb[2]*s)],k)}}

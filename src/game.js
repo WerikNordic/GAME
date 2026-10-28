@@ -7579,6 +7579,7 @@ Error generating stack: ` + n.message + `
   function emoCanvas(k) { return EMO_CACHE[k] ?? (EMO_CACHE[k] = emoMake(k)); }
   var EMO_CMD = { feliz: "feliz", rir: "rir", haha: "rir", kkk: "joy", joy: "joy", amor: "amor", coracao: "coracao", piscar: "piscar", legal: "legal", cool: "legal", triste: "triste", chorar: "chorar", bravo: "bravo", surpreso: "surpreso", dormir: "dormir", pensar: "pensar", suor: "suor", timido: "timido", abraco: "abraco", estrela: "estrela", joia: "joia", ola: "ola", palmas: "palmas", paz: "paz", forca: "forca", oracao: "oracao", fogo: "fogo", musica: "musica", brindar2: "brindar", duvida: "duvida", exclama: "exclama", caveira: "caveira", nao: "nao", danca2: "danca" };
   var Hu = { ok: "OK", lv: "\u2665", love: "\u2665", gg: "GG", heh: "^^", hmm: "...", swt: "'-'", sob: "T_T", no: "X", thx: "Obg", hi: "Oi", zz: "Zzz", "!": "!", "?": "?", omg: "O_O", grr: ">:(", lol: "XD", bye: "Tchau", gl: "GL" }, S8 = ["Servidor: /quem (jogadores online) \u00B7 /guilda criar|convidar NOME|aceitar|recusar|sair|expulsar NOME|dissolver \u00B7 /grupo criar|convidar|aceitar|sair|expulsar \u00B7 /g msg (guilda) \u00B7 /p msg (grupo) \u00B7 /denunciar NOME motivo \u00B7 grupo d\u00E1 +10% EXP por membro perto (at\u00E9 +50%)", "Montaria/pet: /montar \xB7 /desmontar (voc\u00EA s\u00F3 desce com este comando, mesmo ap\u00F3s sair do jogo) \xB7 /pet (chama ou guarda o lobo)", "Social: /amigo add NOME \xB7 /amigos \xB7 /casar nome \xB7 /abracar \xB7 /brindar \xB7 /danca \xB7 /caminho (n\xEDvel 70) \xB7 /cozinhar \xB7 /jogos (janela dos minigames)", "Minigames (nas cidades): /dados aposta \xB7 /corrida barco(1-3) aposta \xB7 /pescar + /puxar \xB7 N\xEDvel 99: tecla U = Ultimate", "Comandos: /sentar (/sit) \xB7 /levantar (/stand) \xB7 /onde (/where) \xB7 /quem (/who) \xB7 /exp \xB7 /hora (/time)", "@afk (nas cidades principais): sai do jogo e deixa o personagem na cidade \xB7 /boss: testa o boss mundial", "/nomes (/showname) liga/desliga nomes \xB7 /efeitos (/effect) liga/desliga n\xFAmeros de dano \xB7 /refresh \xB7 /criar", "Chat: /w nome msg \xB7 /p msg (grupo) \xB7 /g msg (guilda) \xB7 Alt+C: mensagem privada em janela", "Emotes: " + Object.keys(Hu).filter((e) => e !== "love").map((e) => "/" + e).join(" ") + " \xB7 /rps (pedra, papel ou tesoura) \xB7 /emotes (\xEDcones)", "Teclas: Insert senta \xB7 Alt+E mochila \xB7 Alt+S habilidades \xB7 Alt+A atributos \xB7 F1\u2013F12 habilidades e atalhos"], w8 = 200;
+  var HAND_OPEN = `url("data:image/svg+xml,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><g stroke="#2a1a0a" stroke-width="1.4" stroke-linejoin="round" fill="#f3d3a4"><rect x="8" y="14" width="16" height="12" rx="4"/><rect x="8.5" y="5" width="3.2" height="12" rx="1.6"/><rect x="12.3" y="3" width="3.2" height="13" rx="1.6"/><rect x="16.1" y="3.5" width="3.2" height="13" rx="1.6"/><rect x="19.9" y="5.5" width="3.2" height="11" rx="1.6"/><path d="M8.5 17 L4.5 12.5 Q3.5 10.8 5.2 10.3 Q6.6 10 7.6 11.4 L10 15 Z"/></g></svg>')}") 16 16, grab`, HAND_CLOSED = `url("data:image/svg+xml,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><g stroke="#2a1a0a" stroke-width="1.4" stroke-linejoin="round" fill="#f3d3a4"><rect x="7.5" y="13" width="17" height="13" rx="5"/><rect x="8.5" y="10" width="3.4" height="7" rx="1.7"/><rect x="12.4" y="9" width="3.4" height="7" rx="1.7"/><rect x="16.3" y="9.3" width="3.4" height="7" rx="1.7"/><rect x="20.2" y="10.4" width="3.4" height="6.5" rx="1.7"/><path d="M8 19 L5.5 16.5 Q4.8 15 6.2 14.6 Q7.4 14.4 8.3 15.4 L10 17.5 Z"/></g></svg>')}") 16 16, grabbing`;
   var __petPlayAt = 0, __petPlayKind = 0, __petPlayDir = 1;
   function petAnim(pl, kind, fallbackFace) {
     const D = __petPlayDir, o = { face: fallbackFace, ox: 0, jy: 0, rot: 0, run: false, carry: false, stick: null, fx: kind };
@@ -14399,7 +14400,7 @@ Error generating stack: ` + n.message + `
     }, []);
     return Hh("canvas", { ref, className: "cs-canvas", "aria-hidden": true });
   }
-  function CsPortrait({ p, scale = 2.3, w = 150, h = 210, rot = "down" }) {
+  function CsPortrait({ p, scale = 2.9, w = 150, h = 210, rot = "down" }) {
     let ref = Hl.useRef(null), key = p ? JSON.stringify([p.name, p.line, p.gender, p.style, p.dye, p.equipment]) : "";
     Hl.useEffect(() => {
       let c = ref.current;
@@ -14563,7 +14564,7 @@ Error generating stack: ` + n.message + `
       if (!def || this.volume <= 0) return;
       let k = Math.max(0, 1 - dist / 950);
       if (k <= 0.03) return;
-      this.vm = 0.35 + 0.9 * k, this.play(`v_${voiceOf(def)}_${kind}`, id * 7919 + 13), this.vm = 1;
+      this.vm = 0.35 + 0.9 * k, this._voc = true, this.play(`v_${voiceOf(def)}_${kind}`, id * 7919 + 13), this._voc = false, this.vm = 1;
     }
     play(t, sd) {
       if (this.volume <= 0) return;
@@ -14589,8 +14590,20 @@ Error generating stack: ` + n.message + `
           } else {
             src = n.createOscillator(), src.type = r.t ?? "sine", src.frequency.setValueAtTime(r.f * jt, l), r.to && src.frequency.exponentialRampToValueAtTime(r.to * jt, l + r.d);
           }
-          let out = src;
-          if (r.fl) {
+          let out = src, voc = this._voc && !r.n && (r.t === "sawtooth" || r.t === "square" || r.t === "triangle");
+          if (voc) {
+            try {
+              let q1 = n.createBiquadFilter(), q2 = n.createBiquadFilter(), q3 = n.createBiquadFilter(), mx = n.createGain(), f0 = r.f * jt, lf = n.createOscillator(), lg = n.createGain();
+              q1.type = q2.type = q3.type = "bandpass", q1.frequency.value = (420 + (sv >>> 4) % 420) * (0.8 + Math.random() * 0.4), q1.Q.value = 4, q2.frequency.value = (1100 + (sv >>> 9) % 900) * (0.85 + Math.random() * 0.3), q2.Q.value = 5, q3.frequency.value = 2600 + (sv >>> 13) % 900, q3.Q.value = 3;
+              lf.frequency.value = 4.5 + Math.random() * 4, lg.gain.value = f0 * (0.02 + Math.random() * 0.03), lf.connect(lg), lg.connect(src.frequency), lf.start(l), lf.stop(l + r.d + 0.06);
+              src.frequency.cancelScheduledValues(l), src.frequency.setValueAtTime(f0 * (0.96 + Math.random() * 0.08), l), r.to && src.frequency.exponentialRampToValueAtTime(r.to * jt * (0.94 + Math.random() * 0.12), l + r.d);
+              let g1 = n.createGain(), g2 = n.createGain(), g3 = n.createGain();
+              g1.gain.value = 1.5, g2.gain.value = 0.9, g3.gain.value = 0.35, src.connect(q1), src.connect(q2), src.connect(q3), q1.connect(g1), q2.connect(g2), q3.connect(g3), g1.connect(mx), g2.connect(mx), g3.connect(mx), mx.gain.value = 1.4, out = mx;
+              let hs = n.createBufferSource(), hg = n.createGain(), hf = n.createBiquadFilter();
+              hs.buffer = this.nb, hs.loop = true, hs.playbackRate.value = jt, hf.type = "bandpass", hf.frequency.value = 1800 + Math.random() * 1500, hf.Q.value = 0.8, hg.gain.setValueAtTime(1e-4, l), hg.gain.exponentialRampToValueAtTime(Math.max(1e-4, (r.g ?? 0.2) * 0.35 * this.volume * (this.vm ?? 1)), l + Math.min(0.03, r.d * 0.4)), hg.gain.exponentialRampToValueAtTime(1e-4, l + r.d), hs.connect(hf), hf.connect(hg), hg.connect(n.destination), hs.start(l), hs.stop(l + r.d + 0.05);
+            } catch { out = src; }
+          }
+          if (r.fl && !voc) {
             let f = n.createBiquadFilter();
             f.type = r.fl, f.Q.value = r.fq ?? 1, f.frequency.setValueAtTime(r.ff * SF, l), r.fto && f.frequency.exponentialRampToValueAtTime(r.fto * SF, l + r.d), src.connect(f), out = f;
           }
@@ -17440,7 +17453,7 @@ void main() {
       RQ.push({ id: "vx_" + c.id, kind: "look", name: w.name, desc: "", need: big ? [[a, 6 + r * 2], [b2, 3 + r], [MT[3][k % 5], 1 + (r > 2 ? 1 : 0)]] : [[a, 8 + r * 6], [b2, 4 + r * 4]], reward: iid }); } }
 var QCACHE = /* @__PURE__ */ new Map();
 function ROXQM(f, c, s, l, def, ex) {
-  if (!["wolf", "frostwolf", "hati", "boar", "horse", "cao", "gato", "raposa", "coelho", "yeti", "blob", "goblin", "draugr", "cinder", "automaton", "sylvan", "prism", "sentinel", "voidling", "jotun", "grifo", "corvo", "peixe", "medusa", "polvo", "tubarao"].includes(f) || typeof ROX === "undefined" || typeof location < "u" && /[?&]old\b/.test(location.search)) return null;
+  if (!["wolf", "frostwolf", "hati", "boar", "horse", "montaria", "cao", "gato", "raposa", "coelho", "yeti", "blob", "goblin", "draugr", "cinder", "automaton", "sylvan", "prism", "sentinel", "voidling", "jotun", "grifo", "corvo", "peixe", "medusa", "polvo", "tubarao"].includes(f) || typeof ROX === "undefined" || typeof location < "u" && /[?&]old\b/.test(location.search)) return null;
   if (typeof ROX2M !== "undefined" && !(typeof location < "u" && /[?&]old2\b/.test(location.search))) { try { const r2 = ROX2M.mon(f, c, s, l, def, ex); if (r2) return r2; } catch (err) { if (!window.__rox2merr) { window.__rox2merr = 1; console.warn("ROX2M", err); } } }
   let key = `${f}:${def.id}:${c}:${s}:${l}`, h = QCACHE.get(key);
   if (h) return h;
@@ -17642,7 +17655,7 @@ function ROXQM(f, c, s, l, def, ex) {
     if (["aprendiz", "berserker", "escudeiro", "cacador", "volva", "valquiria", "skald", "thay"].includes(e.base)) {
       t.head = "none", delete t.cape, delete t.quiver;
       let tp = TIERLOOK[e.base]?.[Math.min(2, e.ti || 0)];
-      tp && Object.assign(t, tp), t.ti = e.ti || 0; e.adm && Object.assign(t, { tunic: 16119280, trim: 15252024, pauld: 15252024, cape: 16448240, pants: 15987690, boots: 14166064, head: "circlet", eqHead: "circlet", eqBack: true, wingsBack: [16777215, 16769184], aura: 16769184, epic: true });
+      tp && Object.assign(t, tp), t.ti = e.ti || 0; e.adm && Object.assign(t, { tunic: 16119280, trim: 15252024, pauld: 15252024, cape: 16448240, pants: 15987690, boots: 15255648, head: "circlet", eqHead: "circlet", eqBack: true, wingsBack: [16777215, 16769184], aura: 16769184, epic: true });
     }
     e.ep && (t.epic = true);
     if (e.mid && ROX2.COSX.eyes[e.mid]) { const ey = ROX2.COSX.eyes[e.mid]; t.eye = ey.col; t.eyePat = ey.pat; if (ey.col2 != null) t.eye2 = ey.col2; e = { ...e, mid: void 0 }; }
@@ -18521,6 +18534,7 @@ function ROXQM(f, c, s, l, def, ex) {
       return o;
     }
     onPointerDown = (t) => {
+      t.button === 0 && this.hover?.kind === "loot" && (this._grabUntil = Date.now() + 320);
       if (t.button === 0 && window.__petHit && this.store.ps?.petData) { let hp0 = window.__petHit, np0 = this.toScreenPt(t.clientX, t.clientY); if (Math.hypot(np0.x - hp0.x, np0.y - hp0.y) <= hp0.r) { petPlay(); return; } }
       if (t.button === 2 && t.pointerType === "mouse") {
         if (t.shiftKey && this.store.ps?.petData && this._pet) { let sp = this.toScreenPt(t.clientX, t.clientY), wp = Gu(sp.x, sp.y); this._petHold = { x: wp.x, y: wp.y, t0: Date.now(), arr: 0 }, this._pet && (this._pet.wander = null); return; }
@@ -18630,7 +18644,7 @@ function ROXQM(f, c, s, l, def, ex) {
     }
     resize() {
       let t = this.host.getBoundingClientRect();
-      this.w = Math.max(320, Math.floor(t.width)), this.h = Math.max(240, Math.floor(t.height)), this.dpr = Math.min(2, window.devicePixelRatio || 1), this.canvas.width = Math.floor(this.w * this.dpr), this.canvas.height = Math.floor(this.h * this.dpr), this.baseZoom = Math.max(1, Math.min(2, Math.min(this.w, this.h) / 470)), this.zoom = this.baseZoom * this.zoomMul;
+      this.w = Math.max(320, Math.floor(t.width)), this.h = Math.max(240, Math.floor(t.height)), this.dpr = Math.min(2, window.devicePixelRatio || 1), this.canvas.width = Math.floor(this.w * this.dpr), this.canvas.height = Math.floor(this.h * this.dpr), this.baseZoom = Math.max(1.22, Math.min(2.5, Math.min(this.w, this.h) / 380)), this.zoom = this.baseZoom * this.zoomMul;
     }
     frame = (t) => {
       this.raf = requestAnimationFrame(this.frame);
@@ -18679,7 +18693,7 @@ function ROXQM(f, c, s, l, def, ex) {
           break;
         }
       }
-      this.canvas.style.cursor = this.hover?.kind === "monster" ? "crosshair" : this.hover?.kind === "loot" ? "pointer" : this.hover ? "pointer" : "default";
+      this.canvas.style.cursor = this.hover?.kind === "monster" ? "crosshair" : this.hover?.kind === "loot" ? (Date.now() < (this._grabUntil || 0) ? HAND_CLOSED : HAND_OPEN) : this.hover ? "pointer" : "default";
     }
     startFade(t, a, n, o = "0,0,0") {
       this.fade = { from: t, to: a, t0: this.clock, dur: n, color: o };
@@ -18909,13 +18923,23 @@ function ROXQM(f, c, s, l, def, ex) {
           bx = sx + (ex - sx) * u, by = sy + (ey - sy) * u * u, dir = ex > sx ? 1 : -1;
         }
         let z = Math.max(0.6, R / 38);
-        n.save(), n.translate(bx, by), n.scale(dir * z, z), n.fillStyle = b % 2 ? "#3a3a46" : "#6b5a48", n.strokeStyle = n.fillStyle, n.lineWidth = 1.5, n.beginPath(), n.ellipse(0, 0, 5, 3, 0, 0, 6.283), n.fill();
-        let hy = drink ? 3 + Math.sin(t * 9 + b) * 1.2 : -1;
-        n.beginPath(), n.arc(5, hy, 2.2, 0, 6.283), n.fill(), n.fillStyle = "#e8a23a", n.beginPath(), n.moveTo(7, hy - 0.6), n.lineTo(10, hy + 0.4), n.lineTo(7, hy + 1), n.fill(), n.fillStyle = n.strokeStyle;
-        if (drink) {
-          n.beginPath(), n.moveTo(-5, 0), n.lineTo(-9, -1), n.lineTo(-5, 1.5), n.fill(), n.strokeStyle = "#2a2a30", n.beginPath(), n.moveTo(-1, 3), n.lineTo(-1, 6), n.moveTo(2, 3), n.lineTo(2, 6), n.stroke();
-        } else {
-          n.beginPath(), n.moveTo(-1, 0), n.quadraticCurveTo(-3, -8 * flap - 2, -7, -6 * flap), n.quadraticCurveTo(0, -3 * flap, 3, -1), n.fill(), n.beginPath(), n.moveTo(-1, 0), n.quadraticCurveTo(-1, 6 * flap + 2, -5, 7 * flap), n.quadraticCurveTo(1, 3 * flap, 3, 1), n.fill();
+        {
+          let dk = b % 2 ? "#4a4a5a" : "#7a5a3c", md = b % 2 ? "#6a6c80" : "#a07a50", lt = b % 2 ? "#d8dae6" : "#efe0c4", hy = drink ? 4 + Math.sin(t * 9 + b) * 1.3 : -2.4;
+          n.save(), n.translate(bx, by), n.scale(dir * z * 1.45, z * 1.45), n.lineJoin = "round", n.lineCap = "round";
+          n.fillStyle = "rgba(0,0,0,.18)", n.beginPath(), n.ellipse(0, drink ? 7.5 : 9, 5.5, 1.4, 0, 0, 6.283), n.fill();
+          if (drink) n.strokeStyle = "#6a4a2a", n.lineWidth = 1, n.beginPath(), n.moveTo(-1, 3.4), n.lineTo(-1.4, 7), n.moveTo(2, 3.4), n.lineTo(2.2, 7), n.moveTo(-2.4, 7), n.lineTo(-.4, 7), n.moveTo(1.2, 7), n.lineTo(3.4, 7), n.stroke();
+          n.fillStyle = dk, n.beginPath(), n.moveTo(-4, drink ? -.4 : 0), n.lineTo(-11, drink ? -1.8 : -2.6), n.lineTo(-10.4, drink ? 1 : -.4), n.lineTo(-11.4, drink ? 2 : .8), n.lineTo(-4, 2.4), n.closePath(), n.fill();
+          let g = n.createLinearGradient(0, -4, 0, 4.4);
+          g.addColorStop(0, md), g.addColorStop(.55, md), g.addColorStop(1, lt), n.fillStyle = g, n.beginPath(), n.ellipse(0, 0, 6.4, 4.2, drink ? .25 : 0, 0, 6.283), n.fill();
+          n.fillStyle = md, n.beginPath(), n.arc(5, hy, 2.9, 0, 6.283), n.fill(), n.fillStyle = lt, n.beginPath(), n.arc(5.5, hy + 1.2, 1.7, 0, 3.1416), n.fill();
+          n.fillStyle = "#e8a23a", n.beginPath(), n.moveTo(7.4, hy - .9), n.lineTo(10.4, hy + .3), n.lineTo(7.4, hy + 1.3), n.closePath(), n.fill();
+          n.fillStyle = "#14101a", n.beginPath(), n.arc(5.7, hy - .7, .62, 0, 6.283), n.fill(), n.fillStyle = "#fff", n.fillRect(5.9, hy - 1.05, .35, .35);
+          if (drink) n.fillStyle = dk, n.beginPath(), n.ellipse(-1.4, .2, 3.8, 2.3, -.15, 0, 6.283), n.fill();
+          else {
+            let wa = -flap * 8.6;
+            n.fillStyle = dk, n.beginPath(), n.moveTo(-1.5, -1.2), n.quadraticCurveTo(-4, wa - 3, -10, wa * .9 - 1.6), n.quadraticCurveTo(-6.4, wa * .35, -7.6, wa * .5 + 1.2), n.quadraticCurveTo(-3, 0, 2.4, -.4), n.closePath(), n.fill();
+            n.fillStyle = md, n.beginPath(), n.moveTo(-1.5, -.8), n.quadraticCurveTo(-3, wa * .6 - 1, -6.6, wa * .62), n.quadraticCurveTo(-3.4, 0, 1.6, -.2), n.closePath(), n.fill();
+          }
         }
         n.restore();
       }
@@ -19370,15 +19394,19 @@ function ROXQM(f, c, s, l, def, ex) {
       else {
         const wd0 = a.waterDepth(o.pos.x, o.pos.y), __body = () => {
         this.blob(r.x, r.y + 4, 15), a.ps.level >= 99 && this.epicFx(r.x, r.y, 0);
-        var mnt = a.ps.mount && a.ps.mountOwned, moff = mnt ? (a.sitting ? 30 : 38) : 0, atkM = this.clock - i.atkAt < Math.max(260, i.atkDur || 0), pl2 = 0, play2 = false, jy2 = 0;
+        var mnt = a.ps.mount && a.ps.mountOwned, moff = mnt ? (a.sitting ? 37 : 47) : 0, atkM = this.clock - i.atkAt < Math.max(260, i.atkDur || 0), pl2 = 0, play2 = false, jy2 = 0;
         let m = this.organic(i, o.facing, { moving: i.moving, atkT: this.clock - i.atkAt, atkImpact: i.atkImpact, atkDur: i.atkDur, breath: a.sitting ? 8e-3 : 0.011 });
         a.sitting && (m.dx = 0, m.dy = 0, m.rot *= 0.3);
         a.sitting || (m.rot += (this._cap?.a ?? 0) * (a.ps.equipment.back ? 0.25 : 1));
+        var __hz = null;
         if (mnt) {
-          let mw = ROXQM("horse", s, i.moving ? Math.floor(i.phase * ea) : -1, atkM ? 1 : 0, { id: "montaria" + (a.ps.dye || 0), color: a.ps.dye || 9332298 }), lun = atkM ? Math.sin(Math.min(1, (this.clock - i.atkAt) / Math.max(260, i.atkDur || 0)) * Math.PI) : 0;
-          mw && nt(n, mw, r.x, r.y + 10 - lun * 4, l, $a * 1.2 * (a.sitting ? 1.04 : 1) * (1 + lun * 0.08), $a * 1.2 * (a.sitting ? 0.78 : 1) * (1 - lun * 0.04));
+          let mw = ROXQM("montaria", s, i.moving ? Math.floor(i.phase * ea) : -1, atkM ? 1 : 0, { id: "montaria" + (a.ps.dye || 0), color: a.ps.dye || 9332298 }), lun = atkM ? Math.sin(Math.min(1, (this.clock - i.atkAt) / Math.max(260, i.atkDur || 0)) * Math.PI) : 0;
+          let hz = () => mw && nt(n, mw, r.x, r.y + 10 - lun * 4 + (a.crouching ? 5 : 0), l, $a * 1.5 * (a.sitting ? 1.04 : 1) * (1 + lun * 0.08), $a * 1.5 * (a.sitting ? 0.78 : a.crouching ? 0.93 : 1) * (1 - lun * 0.04));
+          s === "down" || s === "dq" ? __hz = hz : hz();
         }
-        nt(n, u, r.x + m.dx, r.y + 6 + m.dy - moff + jy2, l, $a * m.sx, $a * m.sy, m.rot);
+        let cr = mnt && a.crouching ? 1 : 0;
+        nt(n, u, r.x + m.dx + cr * (l ? -3 : 3), r.y + 6 + m.dy - moff + cr * 17 + jy2, l, $a * m.sx, $a * m.sy * (1 - cr * 0.1), m.rot + cr * (l ? -0.12 : 0.12));
+        __hz && __hz();
         a.ps.equipment.headTop === "poring_saltitante" && drawPoring(n, r.x + m.dx, r.y + 6 + m.dy - moff + (a.sitting ? 13 : 0), 1, this.clock, s, l);
         if (mnt && !d) { const sd = { down: [0, -58, -9, -50], dq: [l ? -34 : 34, -62, l ? 8 : -8, -52], side: [l ? -44 : 44, -68, l ? -7 : 7, -50], uq: [l ? -18 : 18, -70, l ? 5 : -5, -54], up: [0, -72, 0, -56] }[s] || [0, -60, 0, -50], bob = i.moving ? Math.sin(i.phase * 6.283) * 1.6 : Math.sin(this.clock / 600) * 0.6; n.save(); n.lineCap = "round"; for (const hs of s === "down" || s === "up" ? [-1, 1] : [1]) { const hxp = r.x + sd[2] * (s === "down" || s === "up" ? -hs * 0.8 : 1) , hyp = r.y + sd[3] + bob, mxp = r.x + sd[0] + (s === "down" || s === "up" ? hs * 4 : 0), myp = r.y + sd[1] + 21; n.strokeStyle = "#3a1e0e"; n.lineWidth = 2.6; n.beginPath(); n.moveTo(hxp, hyp); n.quadraticCurveTo((hxp + mxp) / 2, Math.max(hyp, myp) + 6 + bob, mxp, myp); n.stroke(); n.strokeStyle = "#a8683a"; n.lineWidth = 1.2; n.stroke(); n.fillStyle = "#e8d49a"; n.fillRect(mxp - 1.5, myp - 1.5, 3, 3); n.fillStyle = "#f2d6b0"; n.beginPath(); n.arc(hxp, hyp, 2.4, 0, 6.283); n.fill(); } n.restore(); }
         a.ps.level >= 99 && this.epicFx(r.x, r.y, 1);
@@ -19821,8 +19849,8 @@ function ROXQM(f, c, s, l, def, ex) {
         let age = (this.clock - f.t) / 9000;
         if (age >= 1) continue;
         this.onGround(f.x, f.y, 0, () => {
-          a.fillStyle = `rgba(120,150,190,${0.28 * (1 - age)})`, a.beginPath(), a.ellipse(0, 0, f.big ? 5.5 : 3.6, f.big ? 3.4 : 2.2, f.ang, 0, 6.283), a.fill();
-          a.fillStyle = `rgba(255,255,255,${0.35 * (1 - age)})`, a.beginPath(), a.ellipse(-1, -1, f.big ? 4 : 2.6, f.big ? 2.2 : 1.4, f.ang, 0, 6.283), a.fill();
+          a.fillStyle = `rgba(96,126,176,${0.5 * (1 - age)})`, a.beginPath(), a.ellipse(0, 0, f.big ? 11 : 7, f.big ? 6.4 : 4.2, f.ang, 0, 6.283), a.fill();
+          a.fillStyle = `rgba(250,253,255,${0.55 * (1 - age)})`, a.beginPath(), a.ellipse(-1.6, -1.6, f.big ? 8.4 : 5.2, f.big ? 4.2 : 2.6, f.ang, 0, 6.283), a.fill();
         });
       }
       this._fp = fp.filter((f) => this.clock - f.t < 9000);
@@ -20412,7 +20440,7 @@ function ROXQM(f, c, s, l, def, ex) {
       if (!i || !o) return;
       let s = () => {
         let c = i.getContext("2d");
-        c.clearRect(0, 0, i.width, i.height), c.imageSmoothingEnabled = true, c.imageSmoothingQuality = "high", nt(c, fa(r, a, -1, 0), i.width / 2, i.height - 18, false, 2.2, 2.2), o.equipment.headTop === "poring_saltitante" && drawPoring(c, i.width / 2, i.height - 18, 2.2, Date.now(), a, false);
+        c.clearRect(0, 0, i.width, i.height), c.imageSmoothingEnabled = true, c.imageSmoothingQuality = "high", nt(c, fa(r, a, -1, 0), i.width / 2, i.height - 16, false, 2.9, 2.9), o.equipment.headTop === "poring_saltitante" && drawPoring(c, i.width / 2, i.height - 16, 2.9, Date.now(), a, false);
       };
       s();
       let l = setInterval(s, 60);
