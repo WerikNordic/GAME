@@ -328,6 +328,25 @@ const PETSCH=[['stand',2.6,6],['sniff',2,8],['stand',1.6,5],['sit',3.4,6],['look
   for(const k2 of[-1,0,1])S({pts:[[0,y0+3,z0-7],[k2*2,y0+8,z0-14],[k2*3.4,y0+12,z0-18]],w:[3,1.6],col:c});
   for(const sx of[-1,1])S({pts:[[sx*2,y0+6,z0],[sx*2,y0+10,z0+2+(kk>0?2:0)],[sx*2.4,y0+12,z0+3]],w:[1.4,1],col:hx(0xe0a838)});
   for(let i=0;i<3;i++){const u=(o.t*.8+i*.33)%1;E({x:Math.sin(i*5)*12,y:o.g-u*20,z:-5,rx:.8,ry:.8,rz:.8,p:4,col:hx(0x9a8aff),bias:1})}}});
+ // ---------- pombo da fonte (st: bit0 = pomba branca, bit2 = voando; k>0 = bicando/bebendo) ----------
+ reg('pombo',{name:'Pombo',w:44,h:40,gy:34,sched:[['stand',2,4]],build:(E,S,o)=>{const st=o.st||0,dv=st&1,fly=st&4;
+  const c=dv?hx(0xf2f0ec):hx(0x7d8396),c2=dv?hx(0xffffff):hx(0xa8aec4),wg=dv?hx(0xe2dfd8):hx(0x5f667c),nk=dv?hx(0xfff6e8):hx(0x4aa88a),nk2=dv?hx(0xffffff):hx(0xa05ac8);
+  const kk=Math.max(0,o.k||0),fl=fly?Math.sin(o.ph||0):0;const y0=o.g-(fly?13:8)+(fly?-Math.abs(fl)*1.2:0);
+  E({x:0,y:y0,z:-.5,rx:3.5,ry:3.6,rz:6.2,p:3,col:c,tex:fur(c,c2,2)});
+  E({x:0,y:y0+1.4,z:1.5,rx:2.9,ry:2.4,rz:4,p:3,col:c2,bias:1});
+  const hy=y0-4.6+kk*5.2,hz=5.6+kk*3.4;
+  E({x:0,y:y0-2.2+kk*1.2,z:3.6+kk*1.2,rx:2.5,ry:2.9,rz:2.7,p:3,col:nk,tex:fur(nk,nk2,2)});
+  E({x:0,y:hy,z:hz,rx:2,ry:2,rz:2.1,p:3,col:dv?c:hx(0x8f95aa),tex:fur(c,c2,1)});
+  S({pts:[[0,hy+.2,hz+1.8],[0,hy+.6+kk*.4,hz+3.4],[0,hy+.9+kk*.5,hz+3.8]],w:[1.5,.5],col:hx(dv?0xe8a070:0x3a3440)});
+  for(const sx of[-1,1])E({x:sx*1.6,y:hy-.6,z:hz+.9,rx:.5,ry:.5,rz:.4,p:3,col:hx(0xe85a28),bias:1});
+  for(const sx of[-1,1])E({x:sx*1.1,y:hy-.5,z:hz+1.1,rx:.28,ry:.28,rz:.28,p:3,col:hx(0x10080c),bias:1});
+  S({pts:[[0,y0+.4,-5],[0,y0+1.2,-9],[0,y0+2.2,-12]],w:[4.4,2.6],col:wg});
+  S({pts:[[0,y0+.1,-5.4],[.8,y0+.9,-9],[1.6,y0+1.8,-12]],w:[3,1.8],col:dv?c2:hx(0x484e62)});
+  if(fly){for(const sx of[-1,1])for(let i=0;i<4;i++){S({pts:[[sx*2.6,y0-2.2,1.6-i*.7],[sx*(8+i*2.2),y0-2.8-fl*(5+i*1.6),.6-i*1.6],[sx*(13+i*3.2),y0-.6-fl*(11+i*2.4),-1-i*2.2]],w:[4,1.2],col:i%2?wg:c})}}
+  else{for(const sx of[-1,1])S({pts:[[sx*3.3,y0-1.8,2.6],[sx*4.2,y0+.8,-2],[sx*3.5,y0+2.4,-8]],w:[3,1.6],col:wg});
+   for(const sx of[-1,1])S({pts:[[sx*1.6,y0+3,0],[sx*1.8,y0+5.4,.4],[sx*2,o.g-.4,.8]],w:[1.1,.9],col:hx(0xd2606a)});
+   for(const sx of[-1,1])S({pts:[[sx*2,o.g-.4,.6],[sx*2.2,o.g-.2,3],[sx*2.4,o.g,4.4]],w:[1,.7],col:hx(0xd2606a)})}
+ }});
  // ---------- homunculos (st: bit0 = evoluido, bit1 = cor alternativa) ----------
  reg('lif',{name:'Lif',w:76,h:84,gy:74,sched:[['float',3,6]],build:(E,S,o)=>{
   const ev=o.st&1,al=(o.st>>1)&1,T=o.t;
@@ -435,7 +454,7 @@ const PETSCH=[['stand',2.6,6],['sniff',2,8],['stand',1.6,5],['sit',3.4,6],['look
   }
  }});
  // ---------- mapeamento shape -> especie ----------
- const SHAPES={wolf:['lobo',.5,1.9],frostwolf:['lobogelo',.6,1.9],hati:['warg',.35,2],boar:['javali',.5,2.0],horse:['cavalo',.25,1.7],montaria:['montaria',.25,1.7],cao:['cao',.45,1.9],gato:['gato',.5,1.9],raposa:['raposa',.35,1.9],coelho:['coelho',.4,1.9],yeti:['yeti',.7,1.35],blob:['gosma',.85,1.9],goblin:['goblin',.3,2],draugr:['draugr',.3,1.75],cinder:['imp',.55,1.7],automaton:['golemmetal',.75,1.2],sylvan:['sylvan',.7,1.3],prism:['golemprisma',.8,1.1],sentinel:['golempedra',.6,1.2],voidling:['espectro',.85,1.1],jotun:['troll',.5,1.5],grifo:['corvo',.35,1.8],corvo:['corvo',0,1.6],peixe:['peixe',.55,2.5],medusa:['medusa',.5,1.9],polvo:['polvo',.55,1.9],tubarao:['tubarao',.5,2.3],lif:['lif',0,1.5],amistr:['amistr',0,1.5],filir:['filir',0,1.5],vanilmirth:['vanilmirth',0,1.5]};
+ const SHAPES={wolf:['lobo',.5,1.9],frostwolf:['lobogelo',.6,1.9],hati:['warg',.35,2],boar:['javali',.5,2.0],horse:['cavalo',.25,1.7],montaria:['montaria',.25,1.7],cao:['cao',.45,1.9],gato:['gato',.5,1.9],raposa:['raposa',.35,1.9],coelho:['coelho',.4,1.9],yeti:['yeti',.7,1.35],blob:['gosma',.85,1.9],goblin:['goblin',.3,2],draugr:['draugr',.3,1.75],cinder:['imp',.55,1.7],automaton:['golemmetal',.75,1.2],sylvan:['sylvan',.7,1.3],prism:['golemprisma',.8,1.1],sentinel:['golempedra',.6,1.2],voidling:['espectro',.85,1.1],jotun:['troll',.5,1.5],grifo:['corvo',.35,1.8],corvo:['corvo',0,1.6],peixe:['peixe',.55,2.5],medusa:['medusa',.5,1.9],polvo:['polvo',.55,1.9],tubarao:['tubarao',.5,2.3],pombo:['pombo',0,2.4],lif:['lif',0,1.5],amistr:['amistr',0,1.5],filir:['filir',0,1.5],vanilmirth:['vanilmirth',0,1.5]};
  const DIRS={down:0,dq:1,side:2,uq:3,up:4};
  const lumOf=(c)=>(c[0]+c[1]+c[2])/765;
  function mkTint(rgb,k){const tl=lumOf(rgb)||.5;return (c)=>{if(!Array.isArray(c))return c;const s=lumOf(c)/tl;return mix(c,[Math.min(255,rgb[0]*s),Math.min(255,rgb[1]*s),Math.min(255,rgb[2]*s)],k)}}

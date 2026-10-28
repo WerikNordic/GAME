@@ -19210,6 +19210,11 @@ function ROXQM(f, c, s, l, def, ex) {
         }
         let z = Math.max(0.6, R / 38);
         {
+          let isFly = ph < 0.46 || ph >= 0.78, pk = !isFly && Math.sin(t * 3.2 + b * 2) > 0.25, psp = null;
+          try { psp = typeof ROX2M !== "undefined" ? ROX2M.mon("pombo", "side", isFly ? Math.floor(t * 15 + b * 3) % 8 : -1, pk ? 3 : 0, { id: "pombo" + (b % 2), color: null }, { st: (b % 2 ? 1 : 0) | (isFly ? 4 : 0) }) : null; } catch (e) { psp = null; }
+          if (psp) { nt(n, psp, bx, by + 9 * z + (isFly ? 0 : 0), dir < 0, $a * z * 0.85, $a * z * 0.85); continue; }
+        }
+        {
           let dk = b % 2 ? "#4a4a5a" : "#7a5a3c", md = b % 2 ? "#6a6c80" : "#a07a50", lt = b % 2 ? "#d8dae6" : "#efe0c4", hy = drink ? 4 + Math.sin(t * 9 + b) * 1.3 : -2.4;
           n.save(), n.translate(bx, by), n.scale(dir * z * 1.45, z * 1.45), n.lineJoin = "round", n.lineCap = "round";
           n.fillStyle = "rgba(0,0,0,.18)", n.beginPath(), n.ellipse(0, drink ? 7.5 : 9, 5.5, 1.4, 0, 0, 6.283), n.fill();
@@ -20377,11 +20382,18 @@ function ROXQM(f, c, s, l, def, ex) {
             }
             t.restore();
           }
-          if (t.font = `bold ${Math.round(d)}px ${ms}`, t.textAlign = "center", t.textBaseline = "middle", t.lineJoin = "round", t.lineWidth = Math.max(3, d * 0.2), t.strokeStyle = n.crit ? "rgba(70,40,0,0.95)" : "rgba(0,0,0,0.95)", t.strokeText(n.text, l, c), n.crit) {
-            let f = t.createLinearGradient(0, c - d / 2, 0, c + d / 2);
-            f.addColorStop(0, "#fff7b0"), f.addColorStop(0.5, "#ffe640"), f.addColorStop(1, "#e89a00"), t.fillStyle = f;
-          } else t.fillStyle = n.color;
-          if (t.fillText(n.text, l, c), s && n.sub) {
+          let isNum = /^\d+$/.test(n.text), txt = isNum ? Number(n.text).toLocaleString("pt-BR") : n.text, hx0 = /^#[0-9a-f]{6}$/i.test(n.color) ? n.color : "#ffffff", cr = parseInt(hx0.slice(1, 3), 16), cg = parseInt(hx0.slice(3, 5), 16), cb = parseInt(hx0.slice(5, 7), 16), lt = (v) => Math.round(v + (255 - v) * 0.6), dkc = (v) => Math.round(v * 0.62);
+          t.font = `${isNum ? "900" : "bold"} ${Math.round(d)}px ${isNum ? 'Impact, "Arial Black", ' : ""}${ms}`, t.textAlign = "center", t.textBaseline = "middle", t.lineJoin = "round", "letterSpacing" in t && (t.letterSpacing = isNum ? Math.max(1, d * 0.05) + "px" : "0px");
+          let gl = n.crit ? "255,170,40" : cr + "," + cg + "," + cb;
+          t.save(), t.shadowColor = "rgba(" + gl + ",0.85)", t.shadowBlur = n.crit ? d * 0.55 : d * 0.32, t.lineWidth = Math.max(4, d * 0.3), t.strokeStyle = "rgba(" + gl + ",0.28)", t.strokeText(txt, l, c), t.restore();
+          t.lineWidth = Math.max(3.5, d * 0.24), t.strokeStyle = n.crit ? "rgba(60,26,0,0.97)" : "rgba(" + Math.round(cr * 0.14) + "," + Math.round(cg * 0.14) + "," + Math.round(cb * 0.14 + 6) + ",0.97)", t.strokeText(txt, l, c + d * 0.04);
+          t.lineWidth = Math.max(1.6, d * 0.1), t.strokeStyle = n.crit ? "rgba(255,140,20,0.9)" : "rgba(" + dkc(cr) + "," + dkc(cg) + "," + dkc(cb) + ",0.95)", t.strokeText(txt, l, c);
+          {
+            let f = t.createLinearGradient(0, c - d * 0.5, 0, c + d * 0.5);
+            n.crit ? (f.addColorStop(0, "#fffbd0"), f.addColorStop(0.42, "#ffe848"), f.addColorStop(0.8, "#ff9c10"), f.addColorStop(1, "#d86a00")) : (f.addColorStop(0, "rgb(" + lt(cr) + "," + lt(cg) + "," + lt(cb) + ")"), f.addColorStop(0.5, n.color), f.addColorStop(1, "rgb(" + dkc(cr) + "," + dkc(cg) + "," + dkc(cb) + ")")), t.fillStyle = f;
+          }
+          t.fillText(txt, l, c), t.fillStyle = "rgba(255,255,255,0.35)", t.save(), t.beginPath(), t.rect(l - d * 3, c - d * 0.55, d * 6, d * 0.42), t.clip(), t.fillText(txt, l, c - d * 0.02), t.restore(), "letterSpacing" in t && (t.letterSpacing = "0px");
+          if (s && n.sub) {
             let f = Math.max(13, d * 0.62), u = c + d * 0.78;
             t.font = `900 ${Math.round(f)}px Impact, "Arial Black", ${ms}`, t.lineWidth = Math.max(3, f * 0.2), t.strokeStyle = "rgba(8,6,10,0.95)", t.strokeText(n.sub, l, u), t.fillStyle = "#fff0b0", t.fillText(n.sub, l, u);
           }
