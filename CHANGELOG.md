@@ -684,3 +684,6 @@
 ## v239
 - Números de dano redesenhados: fonte pesada (Impact), gradiente claro→cor, contorno duplo, brilho colorido, reflexo no topo, separador de milhar; crítico dourado/laranja com raios.
 - Pássaros da fonte refeitos no padrão ROX2M (modelo 3D procedural "pombo"): pombo cinza e pomba branca, voo com batida de asas, pouso, bicada/bebida; fallback ao desenho antigo.
+
+## v240
+- Números de dano no estilo Ragnarok: finos/estreitos, contorno preto fino, sem brilho/raios. Normal branco, crítico amarelo, cura verde, dano recebido vermelho.
