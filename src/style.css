@@ -233,3 +233,8 @@ body.armed canvas{cursor:crosshair!important}
 .panel.stylist{min-width:min(94vw,760px)}
 .hud-card .bar-exp,.hud-card .bar-job{height:14px;position:relative}
 .hud-card .bar-exp .bar-label,.hud-card .bar-job .bar-label{display:grid;font-size:9.5px}
+
+.skill-tabs{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0 6px}
+.skill-tab{opacity:.75}
+.skill-tab.active{opacity:1;background:var(--gold-d);color:#fff;border-color:var(--gold)}
+.skill-tab.locked{filter:grayscale(.6)}

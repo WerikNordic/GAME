@@ -757,3 +757,12 @@
 - Montaria: nova montaria de guerra — corpo maior e encorpado, couraça de aço escuro com ombreiras e espinhos, olhos vermelhos.
 - @item: itens raros (dourados) numerados de 999 a 10999; equipamentos dropados por MVP e todos os visuais valem no mínimo "raro"; cores de raridade douradas.
 - MVPs: aparência divina — brilho, raios de luz, halo dourado, runas orbitando e sigilo no chão.
+
+## v252
+- Boss mundial (Werikr): vida 4.000.000 → 2.000.000; a vida só diminui por dano de jogadores (removido o desgaste simulado e a regeneração). Ao morrer: explosão no mapa (bola de fogo, ondas de choque, pilar de luz, fagulhas, fumaça), a música (rock do boss e música do mapa) some aos poucos, e a barra de vida/avisos do boss somem da tela de todos.
+- Armas: a descrição de toda arma passa a listar as classes que podem usá-la ("Classes: Espadachim, Mercador (e evoluções)").
+- ADM: novo comando `@mudar nome para NOVO NOME` (e `@mudar nome NOVO`); o trono agora acompanha a direção do ADM sentado — encosto atrás do personagem de frente; de costas o encosto fica à frente (translúcido); de lado/diagonal, deslocado para trás.
+- Combate: ao matar um monstro o personagem não escolhe outro alvo sozinho (alvo e ataque segurado são limpos).
+- Habilidades: janela com abas por classe/evolução (Aprendiz, 1ª classe, 2ª classe...), cada uma com suas habilidades separadas.
+- Mapas de campo: agora têm estrutura — grade irregular de "salas" separadas por barreiras (cercas vivas de árvores nos mapas de floresta, cordilheiras de pedra nos demais), ligadas por portões (pilares, estandartes, acampamentos de guarda), estradas sinuosas ligando entradas, portais, salas e ninhos, e anéis de pedra com aberturas em volta de parte dos ninhos de monstros. A conectividade (portais e ninhos alcançáveis) é verificada na geração; se uma barreira isolasse algo ela é descartada.
+- Novo mapa: Lighthalzen, Cidade Fantasma (depois do Palco do Ragnarök): ~390 espectros nível 99, clones das 7 classes (Espadachim, Mercador, Arqueiro, Mago, Noviço, Gatuno, Thay), humanoides translúcidos com visual e arma da classe, muito fortes; casas em ruínas, lampiões de espíritos, barreiras e estradas.
