@@ -1,0 +1,11 @@
+ELDVAR - versao para PC
+
+A) Gerar o instalador (.exe):
+   1. Instale o Node.js (https://nodejs.org)
+   2. Dois cliques em INSTALAR.bat
+   3. O instalador "Eldvar Setup ... .exe" (e uma versao portatil) aparece na pasta release
+
+B) Só jogar agora: dois cliques em JOGAR_SEM_INSTALAR.bat
+
+Atualizar o jogo: troque app/index.html pelo novo eldvar.html (renomeado) e rode INSTALAR.bat de novo.
+F11 = tela cheia. Precisa de internet para contas/ranking/boss mundial.
