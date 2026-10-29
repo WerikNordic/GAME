@@ -773,3 +773,9 @@
 
 ## v254
 - Montaria redesenhada: corcel de guerra prateado de verdade (corpo, pescoço arqueado, cabeça de cavalo, patas com cascos, crina e cauda azul-gelo fluidas), manta carmesim com friso dourado, sela, peitoral e arreios dourados — combina com o cavaleiro. Animação de andar/ataque/idle própria. Cor padrão sem tingir; tinta (dye) continua tingindo suavemente.
+
+## v255
+- Montaria: ao sentar, o cavalo agora deita de verdade (pernas dobradas), em vez de só agachar; cabeça e focinho com proporção realista; andar de frente/costas com passadas altas, balanço do corpo, cabeça e cauda.
+- Fonte da cidade refeita em 3D: degraus, bacia com friso dourado e pilastras, pedestal, 2ª bacia com 8 bicas de dragão, coluna e orbe dourado com anéis. Animação: 8 jatos em arco com fluxo, chafariz central, cortina de transbordo, ondulações, brilhos e neblina.
+- Pássaros das fontes: cada fonte tem seu próprio ritmo e horário (não sincronizados).
+- Desempenho: corrigido um travamento de vários segundos ao entrar em cidades (geração do chão testava todas as ruas por pixel; agora usa índice espacial — 26s → 0,6s no teste). Sprites da montaria são pré-carregados em segundo plano (evita engasgo ao montar/andar pela 1ª vez).

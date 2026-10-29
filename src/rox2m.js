@@ -89,51 +89,59 @@ var ROX2M = (() => {
   const IV=hx(0xeeeae2),IV2=hx(0xc4c6d2),SH=hx(0xd9dbe6),GOLD=hx(0xf2c24a),GOLD2=hx(0xb88a24),CRIM=hx(0xa3233a),HOOF=hx(0x4a4650),MAN=(q)=>q>.55?hx(0xe8f4ff):hx(0x9cc2f4),B=.2;
   const g=o.g,T=o.t||0,walk=o.ph?1:0,ph=o.ph||0,k=o.k||0,b=o.beh||'',w=o.bw||0,legL=20;
   const coat=(mx,my,mz)=>Math.sin(mx*9+my*5+mz*4)>.8?IV2:0;
-  const breathe=Math.sin(T*2.6)*.4*(1-walk),trot=Math.sin(ph*2)*.55*walk,lunge=Math.max(0,k)*3,crouch=Math.max(0,-k)*2;
-  const cY=g-legL-8+breathe-trot+crouch,hY=g-legL-8.4+trot*.6+crouch*.5,cZ=9+o.sh+lunge,hZ=-10+o.sh;
+  const lie=b==='lie'?1:0,breathe=Math.sin(T*2.6)*.4*(1-walk),fb=o.fb||0,bnc=Math.abs(Math.sin(ph))*walk*(1.7+fb*2.2),sway=Math.sin(ph)*walk*(1.4+fb*1.5),trot=Math.sin(ph*2)*.55*walk,lunge=Math.max(0,k)*3,crouch=Math.max(0,-k)*2;
+  const cY=lie?g-11:g-legL-8+breathe-trot+crouch-bnc,hY=lie?g-10:g-legL-8.4+trot*.6+crouch*.5-bnc*.8,cZ=9+o.sh+lunge,hZ=-10+o.sh,cX=sway,hX=-sway*.7;
   // tronco
-  E({x:0,y:cY,z:cZ,rx:7.4,ry:8.8,rz:10.5,p:3,col:IV,tex:coat});
-  E({x:0,y:hY-1,z:hZ,rx:7.6,ry:8.6,rz:10,p:3,col:IV,tex:coat});
-  S({pts:[[0,cY,cZ-6],[0,(cY+hY)/2+.8,(cZ+hZ)/2],[0,hY,hZ+6]],w:[16,16],col:IV});
-  E({x:0,y:hY-3.6,z:hZ-4.5,rx:6.4,ry:6.2,rz:6,p:3,col:IV});
-  E({x:0,y:(cY+hY)/2+5.5,z:(cZ+hZ)/2,rx:5.4,ry:3.4,rz:9,p:3,col:SH});
+  E({x:cX,y:cY,z:cZ,rx:7.4,ry:8.8,rz:10.5,p:3,col:IV,tex:coat});
+  E({x:hX,y:hY-1,z:hZ,rx:7.6,ry:8.6,rz:10,p:3,col:IV,tex:coat});
+  S({pts:[[cX,cY,cZ-6],[(cX+hX)/2,(cY+hY)/2+.8,(cZ+hZ)/2],[hX,hY,hZ+6]],w:[16,16],col:IV});
+  E({x:hX,y:hY-3.6,z:hZ-4.5,rx:6.4,ry:6.2,rz:6,p:3,col:IV});
+  E({x:(cX+hX)/2,y:(cY+hY)/2+5.5,z:(cZ+hZ)/2,rx:5.4,ry:3.4,rz:9,p:3,col:SH});
   // pernas
   for(const [sx,front,po] of [[-1,1,0],[1,1,Math.PI],[-1,0,Math.PI],[1,0,0]]){
-   const x=sx*4,jz=front?cZ+2.6:hZ-.5,jy=(front?cY:hY)+4.6;
-   const phs=ph+po,sw=Math.sin(phs)*6.5*walk,lf=Math.max(0,Math.cos(phs))*3.8*walk;
-   let fz=jz+sw+(front&&k>0?k*5:0),fy=g-lf-.6-(front&&k>0?k*7:0);
-   const foot=[x,fy-1.8,fz];let pts;
-   if(front){const kn=[x,jy+(fy-jy)*.48,(jz+fz)/2+.8+lf*.3];pts=[[x,jy,jz],kn,[x,fy-3.6,fz-.4]]}
-   else{const st=[x,jy+(fy-jy)*.3,(jz+fz)/2+3.2],hk=[x,fy-(fy-jy)*.3,(jz+fz)/2-3.4-lf*.4];pts=[[x,jy,jz],st,hk,[x,fy-3.6,fz-.2]]}
+   const bx=front?cX:hX,x=bx+sx*4,jz=front?cZ+2.6:hZ-.5,jy=(front?cY:hY)+4.6;
+   const phs=ph+po,sw=Math.sin(phs)*6.5*(1+fb*.8)*walk,lf=Math.max(0,Math.cos(phs))*5.4*(1+fb*1.1)*walk,ox=sx*lf*.3;
+   let pts,foot,fz=jz,fy=g;
+   if(lie){
+    if(front){const kz=jz+5.5;pts=[[x,jy,jz],[x,g-3.2,kz],[x*1.05,g-2.4,kz+6]];foot=[x*1.05,g-2.2,kz+8];fz=kz+7;fy=g-1.6}
+    else{pts=[[x,jy,jz],[sx*8.6,g-4.4,jz-1],[sx*8.8,g-2.6,jz-9]];foot=[sx*8.8,g-2.4,jz-11];fz=jz-10;fy=g-1.6}
+    S({pts,w:[front?4.6:5.2,2.3],col:IV});S({pts:[pts[2],foot],w:[2.2,2.6],col:IV});
+    S({pts:[[foot[0],foot[1]-.2,foot[2]-.5],[foot[0],foot[1]-.1,foot[2]]],w:[3,3],col:GOLD,bias:B});
+    E({x:foot[0],y:foot[1]+.6,z:foot[2]+1,rx:2.4,ry:1.4,rz:2.6,p:4,col:HOOF});continue}
+   fz=jz+sw+(front&&k>0?k*5:0);fy=g-lf-.6-(front&&k>0?k*7:0);
+   foot=[x+ox,fy-1.8,fz];
+   if(front){const kn=[x+ox*.6,jy+(fy-jy)*.48,(jz+fz)/2+.8+lf*.35];pts=[[x,jy,jz],kn,[x+ox,fy-3.6,fz-.4]]}
+   else{const st=[x+ox*.3,jy+(fy-jy)*.3,(jz+fz)/2+3.2],hk=[x+ox*.7,fy-(fy-jy)*.3,(jz+fz)/2-3.4-lf*.4];pts=[[x,jy,jz],st,hk,[x+ox,fy-3.6,fz-.2]]}
    S({pts,w:[front?4.6:5.2,2.3],col:IV});
    S({pts:[pts[pts.length-1],foot],w:[2.2,2.6],col:IV});
-   S({pts:[[x,fy-3.4,fz-.1],[x,fy-3.0,fz]],w:[3,3],col:GOLD,bias:B});
-   E({x,y:fy-.8,z:fz+.4,rx:2.5,ry:1.5,rz:3,p:4,col:HOOF});
+   S({pts:[[x+ox,fy-3.4,fz-.1],[x+ox,fy-3.0,fz]],w:[3,3],col:GOLD,bias:B});
+   E({x:x+ox,y:fy-.8,z:fz+.4,rx:2.5,ry:1.5,rz:3,p:4,col:HOOF});
   }
   // pescoco arqueado
   const look=b==='look'?Math.sin(T*1.5)*4*w:0,snort=b==='snort'?Math.abs(Math.sin(T*8))*1.4*w:0;
-  const nb=[0,cY-5,cZ+5],nm=[look*.3,cY-15,cZ+10.5],P=[look,cY-24.5+snort-lunge*.3,cZ+14.5+lunge*.5];
-  S({pts:[nb,nm,P],w:[11,6],col:IV,tex:coat});
+  const nod=Math.sin(ph*2)*walk*(1.3+fb*1.2),hs=-sway*.8;
+  const nb=[cX,cY-5,cZ+5],nm=[look*.3+cX*.6,cY-(lie?13:15),cZ+10.5],P=[look+hs,cY-(lie?21:24.5)+snort-lunge*.3+nod,cZ+(lie?13:14.5)+lunge*.5];
+  S({pts:[nb,nm,P],w:[11,6.2],col:IV,tex:coat});
   // cabeca de cavalo: cranio, face afilada, focinho
   const dv=[look*.02,.74,.67],up=[0,-.67,.74];
   const at=(d,u,l=0)=>[P[0]+dv[0]*d+up[0]*u+l,P[1]+dv[1]*d+up[1]*u,P[2]+dv[2]*d+up[2]*u];
-  E({x:at(2,0)[0],y:at(2,0)[1],z:at(2,0)[2],rx:4,ry:4.6,rz:5,p:3,col:IV});
-  S({pts:[at(3,.2),at(12,-.6)],w:[6.6,4],col:IV});
-  const mz=at(13.4,-.7);E({x:mz[0],y:mz[1],z:mz[2],rx:2.9,ry:2.8,rz:2.8,p:3,col:hx(0xe2ddd4)});
-  const nz=at(14.6,-1.4);for(const sx of[-1,1])E({x:nz[0]+sx*1.2,y:nz[1],z:nz[2],rx:.7,ry:.6,rz:.5,p:4,col:hx(0x6a5a60)});
-  for(const sx of[-1,1]){const e=at(3.6,1.6,sx*3.9);E({x:e[0],y:e[1],z:e[2],rx:1.1,ry:1.2,rz:.9,p:3,col:hx(0x241812),bias:1});
+  E({x:at(2,0)[0],y:at(2,0)[1],z:at(2,0)[2],rx:3.7,ry:4.1,rz:4.3,p:3,col:IV});
+  S({pts:[at(3,.2),at(9.4,-.3)],w:[5.2,3.2],col:IV});
+  const mz=at(10.2,-.4);E({x:mz[0],y:mz[1],z:mz[2],rx:2.25,ry:2.2,rz:2.2,p:3,col:hx(0xe2ddd4)});
+  const nz=at(11.3,-1);for(const sx of[-1,1])E({x:nz[0]+sx*1.2,y:nz[1],z:nz[2],rx:.7,ry:.6,rz:.5,p:4,col:hx(0x6a5a60)});
+  for(const sx of[-1,1]){const e=at(3.4,1.4,sx*3.5);E({x:e[0],y:e[1],z:e[2],rx:1.1,ry:1.2,rz:.9,p:3,col:hx(0x241812),bias:1});
    const eb=at(0,4.4,sx*2.2),et=at(-1.6,9,sx*2.6);S({pts:[eb,et],w:[2.2,.6],col:IV});S({pts:[A3(eb,[0,0,.5]),A3(et,[0,0,.2])],w:[1,.4],col:hx(0xd8aab0),bias:.3})}
   // arreios dourados
-  const nbd=at(10.6,-.4),brw=at(1.6,3.4);
-  S({pts:[A3(nbd,[-3.4,0,0]),A3(nbd,[3.4,0,0])],w:[1.5,1.5],col:GOLD,metal:1,bias:B});
-  S({pts:[A3(brw,[-4.4,0,0]),A3(brw,[4.4,0,0])],w:[1.5,1.5],col:GOLD,metal:1,bias:B});
+  const nbd=at(8.4,-.3),brw=at(1.6,3.4);
+  S({pts:[A3(nbd,[-2.7,0,0]),A3(nbd,[2.7,0,0])],w:[1.5,1.5],col:GOLD,metal:1,bias:B});
+  S({pts:[A3(brw,[-3.8,0,0]),A3(brw,[3.8,0,0])],w:[1.5,1.5],col:GOLD,metal:1,bias:B});
   E({x:brw[0],y:brw[1]-.2,z:brw[2]+.5,rx:1.2,ry:1.2,rz:.9,p:3,col:hx(0xff4a6a),bias:.8,metal:1});
   // crina azul-gelo + topete
   for(let i=0;i<10;i++){const u=i/9,q=u<.5?L3(nb,nm,u*2):L3(nm,P,(u-.5)*2),fl=Math.sin(T*3+i*.9)*1;
    S({pts:[[q[0],q[1]-4.6,q[2]-.8],[q[0]+fl*.4,q[1]-.4,q[2]-3.6],[q[0]+fl,q[1]+4.6+(i%2)*1.4,q[2]-6.4]],w:[4.6,.9],col:MAN,bias:1})}
   {const sw=Math.sin(T*3)*1.2;S({pts:[at(0,5),A3(at(2,6.6),[sw*.5,0,0]),A3(at(5.4,5.6),[sw,0,0])],w:[3,.7],col:MAN,bias:1})}
   // cauda longa e fluida
-  {const tb=[0,hY-7,hZ-8.6],sw=Math.sin(T*(walk?6:2.4))*(walk?2.4:1.2);
+  {const tb=[hX,hY-7,hZ-8.6],sw=Math.sin(T*(walk?6:2.4)+ph)*(walk?3.2:1.2);
    for(let i=0;i<5;i++){const f=sw+(i-2)*.9;S({pts:[tb,[f*.5,hY-3,hZ-13-i*.5],[f,hY+4+i,hZ-15-i],[f*1.4,hY+12+i*1.4,hZ-15.4-i*1.2]],w:[3,.5],col:MAN,bias:.6})}}
   // manta carmesim com friso dourado
   const mY=(cY+hY)/2,mZ=(cZ+hZ)/2,top=mY-8.4;
@@ -556,7 +564,7 @@ const PETSCH=[['stand',2.6,6],['sniff',2,8],['stand',1.6,5],['sit',3.4,6],['look
  const DIRS={down:0,dq:1,side:2,uq:3,up:4};
  const lumOf=(c)=>(c[0]+c[1]+c[2])/765;
  function mkTint(rgb,k){const tl=lumOf(rgb)||.5;return (c)=>{if(!Array.isArray(c))return c;const s=lumOf(c)/tl;return mix(c,[Math.min(255,rgb[0]*s),Math.min(255,rgb[1]*s),Math.min(255,rgb[2]*s)],k)}}
- function mpose(anim,t,sp,pose){const o={ph:0,bob:0,k:0,sh:0,t,beh:'',bw:0,bt:0};
+ function mpose(anim,t,sp,pose){const o={ph:0,bob:0,k:0,sh:0,t,beh:'',bw:0,bt:0,fb:pose.fb||0};
   if(anim===1){o.ph=pose.ph;o.bob=Math.abs(Math.sin(o.ph))*.9}
   else if(anim===2){o.k=pose.k}
   else if(pose.beh){o.beh=pose.beh;o.bt=pose.bt;o.bw=pose.bw}
@@ -587,8 +595,10 @@ const PETSCH=[['stand',2.6,6],['sniff',2,8],['stand',1.6,5],['sit',3.4,6],['look
   const di=DIRS[dir]??0;let pose,tk;
   if(lvl>0){const q={1:.42,2:.2,3:.46}[Math.min(3,lvl)];const kc=q<.35?-q/.35*.4:q<.5?-.4+(q-.35)/.15*1.4:1-(q-.5)/.5;pose={anim:2,k:clamp(kc,-.4,1),t:.3};tk='a'+lvl}
   else if(frame>=0){pose={anim:1,ph:frame/8*TAU,t:frame*.125};tk='w'+frame}
+  else if(extra&&extra.lie){pose={anim:0,beh:'lie',bt:.5,bw:1,t:.3};tk='lie'}
   else if(extra&&extra.clk!=null&&spec.sched){const ip=idlePose(spec,extra.clk,extra.seed||0);pose={anim:0,...ip};tk='i'+ip.beh+ip.qi}
   else{pose={anim:0,t:.3};tk='i'}
+  pose.fb=dir==='down'||dir==='up'?1:(dir==='dq'||dir==='uq'?.55:0);
   const st=(extra&&extra.st)||0,col=(def&&def.color)||null;
   const key=f+':'+(def&&def.id||'')+':'+dir+':'+tk+':'+st;let r=CACHE.get(key);if(r)return r;
   if(CACHE.size>2400)CACHE.clear();

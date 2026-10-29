@@ -15822,9 +15822,12 @@ void main() {
       if (w < 0 || M < 0 || w >= a || M >= n) return;
       let z = (M * a + w) * 4, [I, J, D] = hk(T);
       s[z] = I, s[z + 1] = J, s[z + 2] = D, s[z + 3] = 255;
-    }, y = (w, M) => {
+    }, pgm = null, y = (w, M) => {
       let T = 1e9;
-      for (let z of p) w < z.x - 160 || w > z.x + z.w + 160 || M < z.y - 160 || M > z.y + z.h + 160 || (T = Math.min(T, Jv(w, M, z, Math.min(h, z.w / 2, z.h / 2))));
+      if (!pgm) { pgm = new Map(); for (let z of p) { let x0 = Math.floor((z.x - 160) / 160), x1 = Math.floor((z.x + z.w + 160) / 160), y0 = Math.floor((z.y - 160) / 160), y1 = Math.floor((z.y + z.h + 160) / 160); for (let cx = x0; cx <= x1; cx++) for (let cy = y0; cy <= y1; cy++) { let kk = (cx + 64) * 4096 + cy + 64, ls = pgm.get(kk); ls ? ls.push(z) : pgm.set(kk, [z]); } } }
+      let ls = pgm.get((Math.floor(w / 160) + 64) * 4096 + Math.floor(M / 160) + 64);
+      if (!ls) return T;
+      for (let z of ls) w < z.x - 160 || w > z.x + z.w + 160 || M < z.y - 160 || M > z.y + z.h + 160 || (T = Math.min(T, Jv(w, M, z, Math.min(h, z.w / 2, z.h / 2))));
       return T;
     }, v = new Uint8Array(a * n), k = e.obstacles.filter((w) => w.kind === "deco" && (w.deco === "altar" || w.deco === "campfire")).map((w) => {
       let M = w.deco === "altar" ? 78 : 44;
@@ -17527,13 +17530,22 @@ void main() {
     switch (t) {
       case "gh_cacador": case "gh_berserker": case "gh_escudeiro": case "gh_volva": case "gh_valquiria": case "gh_skald": case "gh_thay":
         return ghBuild(n, t.slice(3), o, r, a);
-      case "fountain":
-        F(n, S(0, 0, 0), 30, 28, 10, o, { seg: 20, mat: Q }), F(n, S(0, 8, 0), 25, 25, 3, i, { seg: 20, mat: { shine: 0.9, glow: 0.2 } }), F(n, S(0, 0, 0), 5, 4, 34, o, { seg: 10 }), F(n, S(0, 30, 0), 14, 10, 4, o, { seg: 14, mat: Q }), L(n, S(0, 34, 0), 11, 1.5, 11, i, { seg: 14, ring: 4, mat: { shine: 0.9, glow: 0.2 } });
-        for (let s = 0; s < 6; s++) {
-          let l = s / 6 * 6.28;
-          L(n, S(Math.cos(l) * 8, 44 - Math.abs(Math.sin(l * 2)) * 4, Math.sin(l) * 8), 1.8, 4, 1.8, 14677247, { seg: 6, ring: 4, mat: on });
-        }
-        return L(n, S(0, 49, 0), 3, 4, 3, 14677247, { seg: 6, ring: 4, mat: on }), n;
+      case "fountain": {
+        let dk = Y(o, 0.74), lt = Y(o, 1.2), gd = a.gold, wt = i;
+        F(n, S(0, 0, 0), 39, 38, 2.6, dk, { seg: 26, mat: Q }), F(n, S(0, 2.6, 0), 35, 34, 2.6, o, { seg: 26, mat: Q });
+        F(n, S(0, 5.2, 0), 30.5, 29.5, 10, o, { seg: 26, mat: Q });
+        Xt(n, S(0, 15.2, 0), 29.6, 2.1, lt, { seg: 32, ring: 6, mat: Q }), Xt(n, S(0, 9.6, 0), 30, 0.75, gd, { seg: 32, ring: 5, mat: Ve });
+        for (let k = 0; k < 12; k++) { let l = k / 12 * 6.2832; O(n, S(Math.cos(l) * 29.9, 10.4, Math.sin(l) * 29.9).mul(A.RY(-l)), 2.2, 8.4, 4.6, dk, Q), L(n, S(Math.cos(l) * 31.3, 9.6, Math.sin(l) * 31.3), 1.2, 1.2, 1.2, gd, { seg: 6, ring: 4, mat: Ve }); }
+        F(n, S(0, 13.2, 0), 27.6, 27.6, 1.2, wt, { seg: 30, mat: sh });
+        F(n, S(0, 13, 0), 9, 6.4, 11, o, { seg: 18, mat: Q }), Xt(n, S(0, 14.4, 0), 8.2, 1, gd, { seg: 20, ring: 5, mat: Ve }), Xt(n, S(0, 23, 0), 6.6, 1.3, lt, { seg: 18, ring: 5, mat: Q });
+        for (let k = 0; k < 4; k++) { let l = k / 4 * 6.2832 + 0.4; L(n, S(Math.cos(l) * 8, 19, Math.sin(l) * 8), 2.2, 4.4, 2.2, dk, { seg: 8, ring: 6, mat: Q }); }
+        F(n, S(0, 24, 0), 17, 11.5, 5, o, { seg: 22, mat: Q }), Xt(n, S(0, 29, 0), 16.5, 1.5, lt, { seg: 24, ring: 6, mat: Q }), Xt(n, S(0, 26, 0), 15, 0.6, gd, { seg: 24, ring: 5, mat: Ve });
+        F(n, S(0, 28.2, 0), 15.2, 15.2, 0.9, wt, { seg: 24, mat: sh });
+        for (let k = 0; k < 8; k++) { let l = k / 8 * 6.2832; L(n, S(Math.cos(l) * 16.2, 27.4, Math.sin(l) * 16.2), 2.3, 1.8, 2.3, gd, { seg: 8, ring: 6, mat: Ve }), L(n, S(Math.cos(l) * 17.8, 27, Math.sin(l) * 17.8), 1.2, 1, 1.2, Y(gd, 0.85), { seg: 6, ring: 4, mat: Ve }); }
+        F(n, S(0, 28.6, 0), 3.8, 2.4, 11, o, { seg: 12, mat: Q }), Xt(n, S(0, 33, 0), 3.4, 0.9, gd, { seg: 14, ring: 5, mat: Ve }), F(n, S(0, 39, 0), 2.6, 3.4, 2.2, dk, { seg: 12, mat: Q });
+        L(n, S(0, 45.2, 0), 4.6, 4.6, 4.6, gd, { seg: 16, ring: 12, mat: Ve }), Xt(n, S(0, 45.2, 0).mul(A.RX(0.5)), 7, 0.55, gd, { seg: 22, ring: 5, mat: Ve }), Xt(n, S(0, 45.2, 0).mul(A.RX(-0.5)).mul(A.RY(1.2)), 7, 0.55, Y(gd, 0.9), { seg: 22, ring: 5, mat: Ve });
+        return L(n, S(0, 51.5, 0), 1.6, 2.6, 1.6, 14677247, { seg: 8, ring: 6, mat: on }), n;
+      }
       case "dryfountain": {
         let dk = Y(o, 0.62);
         F(n, S(0, 0, 0), 30, 28, 10, dk, { seg: 20, mat: Q }), F(n, S(0, 8, 0), 25, 25, 3, 4864046, { seg: 20 }), F(n, S(0, 0, 0), 5, 4, 30, dk, { seg: 10 }), F(n, S(0, 28, 0), 12, 8, 3, dk, { seg: 14, mat: Q });
@@ -20011,51 +20023,59 @@ var ROX2M = (() => {
   const IV=hx(0xeeeae2),IV2=hx(0xc4c6d2),SH=hx(0xd9dbe6),GOLD=hx(0xf2c24a),GOLD2=hx(0xb88a24),CRIM=hx(0xa3233a),HOOF=hx(0x4a4650),MAN=(q)=>q>.55?hx(0xe8f4ff):hx(0x9cc2f4),B=.2;
   const g=o.g,T=o.t||0,walk=o.ph?1:0,ph=o.ph||0,k=o.k||0,b=o.beh||'',w=o.bw||0,legL=20;
   const coat=(mx,my,mz)=>Math.sin(mx*9+my*5+mz*4)>.8?IV2:0;
-  const breathe=Math.sin(T*2.6)*.4*(1-walk),trot=Math.sin(ph*2)*.55*walk,lunge=Math.max(0,k)*3,crouch=Math.max(0,-k)*2;
-  const cY=g-legL-8+breathe-trot+crouch,hY=g-legL-8.4+trot*.6+crouch*.5,cZ=9+o.sh+lunge,hZ=-10+o.sh;
+  const lie=b==='lie'?1:0,breathe=Math.sin(T*2.6)*.4*(1-walk),fb=o.fb||0,bnc=Math.abs(Math.sin(ph))*walk*(1.7+fb*2.2),sway=Math.sin(ph)*walk*(1.4+fb*1.5),trot=Math.sin(ph*2)*.55*walk,lunge=Math.max(0,k)*3,crouch=Math.max(0,-k)*2;
+  const cY=lie?g-11:g-legL-8+breathe-trot+crouch-bnc,hY=lie?g-10:g-legL-8.4+trot*.6+crouch*.5-bnc*.8,cZ=9+o.sh+lunge,hZ=-10+o.sh,cX=sway,hX=-sway*.7;
   // tronco
-  E({x:0,y:cY,z:cZ,rx:7.4,ry:8.8,rz:10.5,p:3,col:IV,tex:coat});
-  E({x:0,y:hY-1,z:hZ,rx:7.6,ry:8.6,rz:10,p:3,col:IV,tex:coat});
-  S({pts:[[0,cY,cZ-6],[0,(cY+hY)/2+.8,(cZ+hZ)/2],[0,hY,hZ+6]],w:[16,16],col:IV});
-  E({x:0,y:hY-3.6,z:hZ-4.5,rx:6.4,ry:6.2,rz:6,p:3,col:IV});
-  E({x:0,y:(cY+hY)/2+5.5,z:(cZ+hZ)/2,rx:5.4,ry:3.4,rz:9,p:3,col:SH});
+  E({x:cX,y:cY,z:cZ,rx:7.4,ry:8.8,rz:10.5,p:3,col:IV,tex:coat});
+  E({x:hX,y:hY-1,z:hZ,rx:7.6,ry:8.6,rz:10,p:3,col:IV,tex:coat});
+  S({pts:[[cX,cY,cZ-6],[(cX+hX)/2,(cY+hY)/2+.8,(cZ+hZ)/2],[hX,hY,hZ+6]],w:[16,16],col:IV});
+  E({x:hX,y:hY-3.6,z:hZ-4.5,rx:6.4,ry:6.2,rz:6,p:3,col:IV});
+  E({x:(cX+hX)/2,y:(cY+hY)/2+5.5,z:(cZ+hZ)/2,rx:5.4,ry:3.4,rz:9,p:3,col:SH});
   // pernas
   for(const [sx,front,po] of [[-1,1,0],[1,1,Math.PI],[-1,0,Math.PI],[1,0,0]]){
-   const x=sx*4,jz=front?cZ+2.6:hZ-.5,jy=(front?cY:hY)+4.6;
-   const phs=ph+po,sw=Math.sin(phs)*6.5*walk,lf=Math.max(0,Math.cos(phs))*3.8*walk;
-   let fz=jz+sw+(front&&k>0?k*5:0),fy=g-lf-.6-(front&&k>0?k*7:0);
-   const foot=[x,fy-1.8,fz];let pts;
-   if(front){const kn=[x,jy+(fy-jy)*.48,(jz+fz)/2+.8+lf*.3];pts=[[x,jy,jz],kn,[x,fy-3.6,fz-.4]]}
-   else{const st=[x,jy+(fy-jy)*.3,(jz+fz)/2+3.2],hk=[x,fy-(fy-jy)*.3,(jz+fz)/2-3.4-lf*.4];pts=[[x,jy,jz],st,hk,[x,fy-3.6,fz-.2]]}
+   const bx=front?cX:hX,x=bx+sx*4,jz=front?cZ+2.6:hZ-.5,jy=(front?cY:hY)+4.6;
+   const phs=ph+po,sw=Math.sin(phs)*6.5*(1+fb*.8)*walk,lf=Math.max(0,Math.cos(phs))*5.4*(1+fb*1.1)*walk,ox=sx*lf*.3;
+   let pts,foot,fz=jz,fy=g;
+   if(lie){
+    if(front){const kz=jz+5.5;pts=[[x,jy,jz],[x,g-3.2,kz],[x*1.05,g-2.4,kz+6]];foot=[x*1.05,g-2.2,kz+8];fz=kz+7;fy=g-1.6}
+    else{pts=[[x,jy,jz],[sx*8.6,g-4.4,jz-1],[sx*8.8,g-2.6,jz-9]];foot=[sx*8.8,g-2.4,jz-11];fz=jz-10;fy=g-1.6}
+    S({pts,w:[front?4.6:5.2,2.3],col:IV});S({pts:[pts[2],foot],w:[2.2,2.6],col:IV});
+    S({pts:[[foot[0],foot[1]-.2,foot[2]-.5],[foot[0],foot[1]-.1,foot[2]]],w:[3,3],col:GOLD,bias:B});
+    E({x:foot[0],y:foot[1]+.6,z:foot[2]+1,rx:2.4,ry:1.4,rz:2.6,p:4,col:HOOF});continue}
+   fz=jz+sw+(front&&k>0?k*5:0);fy=g-lf-.6-(front&&k>0?k*7:0);
+   foot=[x+ox,fy-1.8,fz];
+   if(front){const kn=[x+ox*.6,jy+(fy-jy)*.48,(jz+fz)/2+.8+lf*.35];pts=[[x,jy,jz],kn,[x+ox,fy-3.6,fz-.4]]}
+   else{const st=[x+ox*.3,jy+(fy-jy)*.3,(jz+fz)/2+3.2],hk=[x+ox*.7,fy-(fy-jy)*.3,(jz+fz)/2-3.4-lf*.4];pts=[[x,jy,jz],st,hk,[x+ox,fy-3.6,fz-.2]]}
    S({pts,w:[front?4.6:5.2,2.3],col:IV});
    S({pts:[pts[pts.length-1],foot],w:[2.2,2.6],col:IV});
-   S({pts:[[x,fy-3.4,fz-.1],[x,fy-3.0,fz]],w:[3,3],col:GOLD,bias:B});
-   E({x,y:fy-.8,z:fz+.4,rx:2.5,ry:1.5,rz:3,p:4,col:HOOF});
+   S({pts:[[x+ox,fy-3.4,fz-.1],[x+ox,fy-3.0,fz]],w:[3,3],col:GOLD,bias:B});
+   E({x:x+ox,y:fy-.8,z:fz+.4,rx:2.5,ry:1.5,rz:3,p:4,col:HOOF});
   }
   // pescoco arqueado
   const look=b==='look'?Math.sin(T*1.5)*4*w:0,snort=b==='snort'?Math.abs(Math.sin(T*8))*1.4*w:0;
-  const nb=[0,cY-5,cZ+5],nm=[look*.3,cY-15,cZ+10.5],P=[look,cY-24.5+snort-lunge*.3,cZ+14.5+lunge*.5];
-  S({pts:[nb,nm,P],w:[11,6],col:IV,tex:coat});
+  const nod=Math.sin(ph*2)*walk*(1.3+fb*1.2),hs=-sway*.8;
+  const nb=[cX,cY-5,cZ+5],nm=[look*.3+cX*.6,cY-(lie?13:15),cZ+10.5],P=[look+hs,cY-(lie?21:24.5)+snort-lunge*.3+nod,cZ+(lie?13:14.5)+lunge*.5];
+  S({pts:[nb,nm,P],w:[11,6.2],col:IV,tex:coat});
   // cabeca de cavalo: cranio, face afilada, focinho
   const dv=[look*.02,.74,.67],up=[0,-.67,.74];
   const at=(d,u,l=0)=>[P[0]+dv[0]*d+up[0]*u+l,P[1]+dv[1]*d+up[1]*u,P[2]+dv[2]*d+up[2]*u];
-  E({x:at(2,0)[0],y:at(2,0)[1],z:at(2,0)[2],rx:4,ry:4.6,rz:5,p:3,col:IV});
-  S({pts:[at(3,.2),at(12,-.6)],w:[6.6,4],col:IV});
-  const mz=at(13.4,-.7);E({x:mz[0],y:mz[1],z:mz[2],rx:2.9,ry:2.8,rz:2.8,p:3,col:hx(0xe2ddd4)});
-  const nz=at(14.6,-1.4);for(const sx of[-1,1])E({x:nz[0]+sx*1.2,y:nz[1],z:nz[2],rx:.7,ry:.6,rz:.5,p:4,col:hx(0x6a5a60)});
-  for(const sx of[-1,1]){const e=at(3.6,1.6,sx*3.9);E({x:e[0],y:e[1],z:e[2],rx:1.1,ry:1.2,rz:.9,p:3,col:hx(0x241812),bias:1});
+  E({x:at(2,0)[0],y:at(2,0)[1],z:at(2,0)[2],rx:3.7,ry:4.1,rz:4.3,p:3,col:IV});
+  S({pts:[at(3,.2),at(9.4,-.3)],w:[5.2,3.2],col:IV});
+  const mz=at(10.2,-.4);E({x:mz[0],y:mz[1],z:mz[2],rx:2.25,ry:2.2,rz:2.2,p:3,col:hx(0xe2ddd4)});
+  const nz=at(11.3,-1);for(const sx of[-1,1])E({x:nz[0]+sx*1.2,y:nz[1],z:nz[2],rx:.7,ry:.6,rz:.5,p:4,col:hx(0x6a5a60)});
+  for(const sx of[-1,1]){const e=at(3.4,1.4,sx*3.5);E({x:e[0],y:e[1],z:e[2],rx:1.1,ry:1.2,rz:.9,p:3,col:hx(0x241812),bias:1});
    const eb=at(0,4.4,sx*2.2),et=at(-1.6,9,sx*2.6);S({pts:[eb,et],w:[2.2,.6],col:IV});S({pts:[A3(eb,[0,0,.5]),A3(et,[0,0,.2])],w:[1,.4],col:hx(0xd8aab0),bias:.3})}
   // arreios dourados
-  const nbd=at(10.6,-.4),brw=at(1.6,3.4);
-  S({pts:[A3(nbd,[-3.4,0,0]),A3(nbd,[3.4,0,0])],w:[1.5,1.5],col:GOLD,metal:1,bias:B});
-  S({pts:[A3(brw,[-4.4,0,0]),A3(brw,[4.4,0,0])],w:[1.5,1.5],col:GOLD,metal:1,bias:B});
+  const nbd=at(8.4,-.3),brw=at(1.6,3.4);
+  S({pts:[A3(nbd,[-2.7,0,0]),A3(nbd,[2.7,0,0])],w:[1.5,1.5],col:GOLD,metal:1,bias:B});
+  S({pts:[A3(brw,[-3.8,0,0]),A3(brw,[3.8,0,0])],w:[1.5,1.5],col:GOLD,metal:1,bias:B});
   E({x:brw[0],y:brw[1]-.2,z:brw[2]+.5,rx:1.2,ry:1.2,rz:.9,p:3,col:hx(0xff4a6a),bias:.8,metal:1});
   // crina azul-gelo + topete
   for(let i=0;i<10;i++){const u=i/9,q=u<.5?L3(nb,nm,u*2):L3(nm,P,(u-.5)*2),fl=Math.sin(T*3+i*.9)*1;
    S({pts:[[q[0],q[1]-4.6,q[2]-.8],[q[0]+fl*.4,q[1]-.4,q[2]-3.6],[q[0]+fl,q[1]+4.6+(i%2)*1.4,q[2]-6.4]],w:[4.6,.9],col:MAN,bias:1})}
   {const sw=Math.sin(T*3)*1.2;S({pts:[at(0,5),A3(at(2,6.6),[sw*.5,0,0]),A3(at(5.4,5.6),[sw,0,0])],w:[3,.7],col:MAN,bias:1})}
   // cauda longa e fluida
-  {const tb=[0,hY-7,hZ-8.6],sw=Math.sin(T*(walk?6:2.4))*(walk?2.4:1.2);
+  {const tb=[hX,hY-7,hZ-8.6],sw=Math.sin(T*(walk?6:2.4)+ph)*(walk?3.2:1.2);
    for(let i=0;i<5;i++){const f=sw+(i-2)*.9;S({pts:[tb,[f*.5,hY-3,hZ-13-i*.5],[f,hY+4+i,hZ-15-i],[f*1.4,hY+12+i*1.4,hZ-15.4-i*1.2]],w:[3,.5],col:MAN,bias:.6})}}
   // manta carmesim com friso dourado
   const mY=(cY+hY)/2,mZ=(cZ+hZ)/2,top=mY-8.4;
@@ -20478,7 +20498,7 @@ const PETSCH=[['stand',2.6,6],['sniff',2,8],['stand',1.6,5],['sit',3.4,6],['look
  const DIRS={down:0,dq:1,side:2,uq:3,up:4};
  const lumOf=(c)=>(c[0]+c[1]+c[2])/765;
  function mkTint(rgb,k){const tl=lumOf(rgb)||.5;return (c)=>{if(!Array.isArray(c))return c;const s=lumOf(c)/tl;return mix(c,[Math.min(255,rgb[0]*s),Math.min(255,rgb[1]*s),Math.min(255,rgb[2]*s)],k)}}
- function mpose(anim,t,sp,pose){const o={ph:0,bob:0,k:0,sh:0,t,beh:'',bw:0,bt:0};
+ function mpose(anim,t,sp,pose){const o={ph:0,bob:0,k:0,sh:0,t,beh:'',bw:0,bt:0,fb:pose.fb||0};
   if(anim===1){o.ph=pose.ph;o.bob=Math.abs(Math.sin(o.ph))*.9}
   else if(anim===2){o.k=pose.k}
   else if(pose.beh){o.beh=pose.beh;o.bt=pose.bt;o.bw=pose.bw}
@@ -20509,8 +20529,10 @@ const PETSCH=[['stand',2.6,6],['sniff',2,8],['stand',1.6,5],['sit',3.4,6],['look
   const di=DIRS[dir]??0;let pose,tk;
   if(lvl>0){const q={1:.42,2:.2,3:.46}[Math.min(3,lvl)];const kc=q<.35?-q/.35*.4:q<.5?-.4+(q-.35)/.15*1.4:1-(q-.5)/.5;pose={anim:2,k:clamp(kc,-.4,1),t:.3};tk='a'+lvl}
   else if(frame>=0){pose={anim:1,ph:frame/8*TAU,t:frame*.125};tk='w'+frame}
+  else if(extra&&extra.lie){pose={anim:0,beh:'lie',bt:.5,bw:1,t:.3};tk='lie'}
   else if(extra&&extra.clk!=null&&spec.sched){const ip=idlePose(spec,extra.clk,extra.seed||0);pose={anim:0,...ip};tk='i'+ip.beh+ip.qi}
   else{pose={anim:0,t:.3};tk='i'}
+  pose.fb=dir==='down'||dir==='up'?1:(dir==='dq'||dir==='uq'?.55:0);
   const st=(extra&&extra.st)||0,col=(def&&def.color)||null;
   const key=f+':'+(def&&def.id||'')+':'+dir+':'+tk+':'+st;let r=CACHE.get(key);if(r)return r;
   if(CACHE.size>2400)CACHE.clear();
@@ -20652,6 +20674,16 @@ function SKMAX(sk) { return sk ? (sk.maxLv ?? (sk.tier >= 2 ? 10 : 5)) : 5; }
 })();
 var CLSDMG = { berserker: 1.1, escudeiro: 1.3, cacador: 0.93, volva: 0.72, valquiria: 1, skald: 0.88, thay: 1, aprendiz: 1 }; // equilibrio de DPS entre classes (simulacao v246)
 var QCACHE = /* @__PURE__ */ new Map();
+function warmMount(dye) {
+  const key = "w" + (dye || 0);
+  if (window.__mwarm === key || typeof ROX2M === "undefined") return;
+  window.__mwarm = key;
+  const jobs = [], dirs = ["down", "dq", "side", "uq", "up"], def = { id: "montaria" + (dye || 0), color: dye || null };
+  for (const d of dirs) { for (let f = -1; f < 8; f++) jobs.push([d, f, 0, void 0]); jobs.push([d, -1, 1, void 0]); jobs.push([d, -1, 0, { lie: 1 }]); }
+  let i = 0;
+  const step = () => { if (window.__mwarm !== key) return; const t0 = performance.now(); while (i < jobs.length && performance.now() - t0 < 6) { const j = jobs[i++]; try { ROX2M.mon("montaria", j[0], j[1], j[2], def, j[3]); } catch (e) { } } i < jobs.length && setTimeout(step, 40); };
+  setTimeout(step, 400);
+}
 function ROXQM(f, c, s, l, def, ex) {
   if (!["wolf", "frostwolf", "hati", "boar", "horse", "montaria", "cao", "gato", "raposa", "coelho", "yeti", "blob", "goblin", "draugr", "cinder", "automaton", "sylvan", "prism", "sentinel", "voidling", "jotun", "grifo", "corvo", "peixe", "medusa", "polvo", "tubarao"].includes(f) || typeof ROX === "undefined" || typeof location < "u" && /[?&]old\b/.test(location.search)) return null;
   if (typeof ROX2M !== "undefined" && !(typeof location < "u" && /[?&]old2\b/.test(location.search))) { try { const r2 = ROX2M.mon(f, c, s, l, def, ex); if (r2) return r2; } catch (err) { if (!window.__rox2merr) { window.__rox2merr = 1; console.warn("ROX2M", err); } } }
@@ -22115,34 +22147,63 @@ function ROXQM(f, c, s, l, def, ex) {
       this.blob(n, o + 4, 14), nt(a, l, n + Math.sin(c) * 0.5, o + 6, i, $a * (1 - u * 0.5), $a * (1 + u - (t.ph < 0 ? 0 : 0.02 * Math.abs(Math.cos(c)))), t.ph < 0 ? 0 : Math.sin(c) * 0.028 + f * 0.05);
     }
     fountainLife(f, c, T) {
-      let n = this.ctx, e = ce(f.x + f.w / 2 + 100, f.y + f.h / 2), sc = Math.hypot(e.x - c.x, e.y - c.y) / 100, R = f.w * 0.36 * sc, ry = R * 0.5, top = c.y - R * 0.95, t = T / 1000;
+      let n = this.ctx, e = ce(f.x + f.w / 2 + 100, f.y + f.h / 2), sc = Math.hypot(e.x - c.x, e.y - c.y) / 100, R = f.w * 0.36 * sc, t = T / 1000, pu = R / 19.3, HV = 0.9, FS = ((Math.sin(f.x * 12.9898 + f.y * 78.233) * 43758.5453) % 1 + 1) % 1;
+      const P = (r, a, h) => ({ x: c.x + Math.cos(a) * r * pu, y: c.y - h * pu * HV + Math.sin(a) * r * pu * 0.5 });
       n.save();
       n.globalCompositeOperation = "source-over";
-      for (let k = 0; k < 3; k++) {
-        let ph = (t * 0.55 + k / 3) % 1;
-        n.strokeStyle = "rgba(200,235,255," + (0.5 * (1 - ph)).toFixed(3) + ")", n.lineWidth = 1.4, n.beginPath(), n.ellipse(c.x, c.y - R * 0.18, R * (0.2 + 0.75 * ph), ry * (0.2 + 0.75 * ph) , 0, 0, 6.283), n.stroke();
+      // ondulacoes nas duas bacias
+      for (let [h, rm, kk, nn] of [[13.8, 26.5, 0.5, 4], [28.8, 14.2, 0.8, 3]]) for (let k = 0; k < nn; k++) {
+        let ph = (t * kk + k / nn + FS) % 1, p0 = P(0, 0, h);
+        n.strokeStyle = "rgba(210,240,255," + (0.55 * (1 - ph)).toFixed(3) + ")", n.lineWidth = 1.3, n.beginPath(), n.ellipse(p0.x, p0.y, rm * pu * (0.12 + 0.88 * ph), rm * pu * (0.12 + 0.88 * ph) * 0.5, 0, 0, 6.283), n.stroke();
       }
-      for (let k = 0; k < 46; k++) {
-        let ph = (t * 0.9 + k * 0.137) % 1, ang = k * 2.399 + Math.floor(t * 0.9 + k * 0.137) * 0.7, spread = (0.25 + (k % 5) * 0.16) * R, x = c.x + Math.cos(ang) * spread * ph, y = top + (ph * ph * 4 - ph * 1.4) * R * 0.9 * 0.55 + Math.sin(ang) * spread * ph * 0.5 + ph * R * 0.9;
-        y = top + R * 0.02 - Math.sin(ph * 3.1416) * R * 0.55 * (0.5 + (k % 5) * 0.12) + ph * ph * (R * 0.95) + Math.sin(ang) * spread * ph * 0.5;
-        n.globalAlpha = 0.85 * (1 - ph * 0.4), n.fillStyle = k % 3 ? "#cfeaff" : "#ffffff", n.fillRect(x, y, 2, 2.6);
+      // oito jatos em arco das bicas dragao ate a bacia de baixo
+      n.lineCap = "round";
+      for (let k = 0; k < 8; k++) {
+        let a0 = k / 8 * 6.2832 + 0.08 * Math.sin(t * 0.7), pts = [], pulse = 0.88 + 0.12 * Math.sin(t * 3 + k * 1.7 + FS * 6);
+        for (let u = 0; u <= 1.001; u += 0.1) { let r = 17.8 + 7.4 * u * pulse, h = 27.2 + 6.8 * u - 20 * u * u * (1.05 - 0.05 * pulse); pts.push(P(r, a0, Math.max(14.2, h))); }
+        n.strokeStyle = "rgba(170,220,255,0.55)", n.lineWidth = Math.max(1.6, 2.4 * pu), n.setLineDash([]), n.beginPath(), pts.forEach((q, j) => j ? n.lineTo(q.x, q.y) : n.moveTo(q.x, q.y)), n.stroke();
+        n.strokeStyle = "rgba(255,255,255,0.85)", n.lineWidth = Math.max(1, 1.1 * pu), n.setLineDash([3 * pu, 5 * pu]), n.lineDashOffset = -t * 26 * pu - k * 3, n.beginPath(), pts.forEach((q, j) => j ? n.lineTo(q.x, q.y) : n.moveTo(q.x, q.y)), n.stroke(), n.setLineDash([]);
+        let L0 = pts[pts.length - 1], sp = (t * 2.2 + k * 0.37 + FS * 5) % 1;
+        n.strokeStyle = "rgba(230,248,255," + (0.7 * (1 - sp)).toFixed(3) + ")", n.lineWidth = 1.2, n.beginPath(), n.ellipse(L0.x, L0.y, 3 * pu + sp * 7 * pu, (3 * pu + sp * 7 * pu) * 0.5, 0, 0, 6.283), n.stroke();
+        for (let q = 0; q < 3; q++) { let ph = (t * 1.6 + q / 3 + k * 0.21) % 1, dx = (Math.cos(a0) + (q - 1) * 0.5) * ph * 5 * pu, dy = -Math.sin(ph * 3.14) * 5.2 * pu; n.globalAlpha = 0.8 * (1 - ph), n.fillStyle = "#fff", n.fillRect(L0.x + dx, L0.y + dy, 1.8, 1.8); }
+        n.globalAlpha = 1;
+      }
+      // jato central em chafariz: sobe do orbe e cai na bacia de cima
+      let top0 = P(0, 0, 50.5);
+      n.strokeStyle = "rgba(190,230,255,0.5)", n.lineWidth = Math.max(1.4, 2 * pu), n.beginPath(), n.moveTo(top0.x, top0.y), n.lineTo(top0.x, top0.y - (6 + Math.sin(t * 5) * 1.2) * pu), n.stroke();
+      for (let k = 0; k < 40; k++) {
+        let ph = (t * 0.85 + k * 0.137 + FS) % 1, ang = k * 2.399 + Math.floor(t * 0.85 + k * 0.137 + FS) * 0.7, sp = (0.3 + (k % 5) * 0.2) * 9, hh = 50.5 + 7 * Math.sin(ph * 3.1416) * (0.6 + (k % 4) * 0.15) - ph * ph * 22.5, q = P(sp * ph * (1 + (k % 3) * 0.1), ang, Math.max(28.6, hh));
+        n.globalAlpha = 0.85 * (1 - ph * 0.5), n.fillStyle = k % 3 ? "#cfeaff" : "#ffffff", n.fillRect(q.x, q.y, 2, 2.6);
       }
       n.globalAlpha = 1;
+      // cortina que transborda da bacia de cima
+      for (let k = 0; k < 14; k++) {
+        let a0 = k / 14 * 6.2832 + 0.2, u = (t * 0.9 + k * 0.31 + FS) % 1, q0 = P(15.8, a0, 28.2), q1 = P(16.4, a0, 28.2 - 14.8 * u * u);
+        n.strokeStyle = "rgba(220,244,255," + (0.5 * (1 - u * 0.6)).toFixed(3) + ")", n.lineWidth = 1.2, n.beginPath(), n.moveTo(q1.x, q1.y - 3 * pu), n.lineTo(q1.x, q1.y), n.stroke();
+      }
+      // brilhos na agua e neblina
+      for (let k = 0; k < 9; k++) {
+        let tw = Math.sin(t * 2.4 + k * 2.1 + FS * 9), q = P(8 + (k * 7) % 17, k * 2.7 + t * 0.12, 13.8);
+        tw > 0.55 && (n.globalAlpha = (tw - 0.55) * 2, n.fillStyle = "#fff", n.fillRect(q.x - 1, q.y - 0.5, 3, 1), n.fillRect(q.x, q.y - 1.5, 1, 3));
+      }
+      n.globalAlpha = 1;
+      for (let k = 0; k < 3; k++) { let q = P(6 + k * 6, k * 2.1 + t * 0.2, 17 + k * 2 + 3 * Math.sin(t + k)), g2 = n.createRadialGradient(q.x, q.y, 0, q.x, q.y, 14 * pu); g2.addColorStop(0, "rgba(235,248,255,0.12)"), g2.addColorStop(1, "rgba(235,248,255,0)"), n.fillStyle = g2, n.fillRect(q.x - 14 * pu, q.y - 14 * pu, 28 * pu, 28 * pu); }
       let rimR = R * 0.98;
+      let tf = t + FS * 977, pm = 0.7 + FS * 0.7;
       for (let b = 0; b < 3; b++) {
-        let cyc0 = Math.floor((t + b * 9) / (60 + b * 17)), hr = (q) => { const v = Math.sin(cyc0 * 12.9898 + b * 78.233 + q * 37.719) * 43758.5453; return v - Math.floor(v); }, per = 60 + b * 17 + hr(1) * 60, ph = ((t + b * 9) % per) / per, bx, by, drink = 0, flap = Math.sin(t * 22 + b), dir = 1, side = hr(2) > .5 ? 1 : -1;
+        let bper = (60 + b * 17) * pm, cyc0 = Math.floor((tf + b * 9) / bper), hr = (q) => { const v = Math.sin(cyc0 * 12.9898 + b * 78.233 + q * 37.719 + FS * 311.7) * 43758.5453; return v - Math.floor(v); }, per = bper, ph = ((tf + b * 9) % per) / per, bx, by, drink = 0, flap = Math.sin(t * 22 + b), dir = 1, side = hr(2) > .5 ? 1 : -1;
         let ca = t * 0.5 + b * 2.1;
         if (hr(3) > (b === 0 ? 0.3 : 0.16)) continue;
         if (ph < 0.38) {
           let u0 = ph / 0.38, fr = Math.pow(1 - u0, 1.6), r2 = rimR * (1.764 + 5 * fr), a = ca + ph * 5;
           bx = c.x + Math.cos(a) * r2, by = c.y - R * (1.5 + 3.8 * fr) + Math.sin(a) * r2 * 0.4, dir = Math.sin(a) > 0 ? -1 : 1;
         } else if (ph < 0.46) {
-          let u = (ph - 0.38) / 0.08, a = ca + 0.38 * 5, r2 = rimR * (2.6 - 0.38 * 2.2), sx = c.x + Math.cos(a) * r2, sy = c.y - R * 1.5 + Math.sin(a) * r2 * 0.4, ex = c.x + Math.cos(b * 2.1 + 0.8) * rimR * 0.9, ey = c.y + Math.sin(b * 2.1 + 0.8) * rimR * 0.45 - R * 0.28;
+          let u = (ph - 0.38) / 0.08, a = ca + 0.38 * 5, r2 = rimR * (2.6 - 0.38 * 2.2), sx = c.x + Math.cos(a) * r2, sy = c.y - R * 1.5 + Math.sin(a) * r2 * 0.4, ex = c.x + Math.cos(b * 2.1 + 0.8) * rimR * 0.9, ey = c.y + Math.sin(b * 2.1 + 0.8) * rimR * 0.45 - R * 0.5;
           bx = sx + (ex - sx) * u, by = sy + (ey - sy) * u, dir = ex > sx ? 1 : -1;
         } else if (ph < 0.78) {
-          bx = c.x + Math.cos(b * 2.1 + 0.8) * rimR * 0.9, by = c.y + Math.sin(b * 2.1 + 0.8) * rimR * 0.45 - R * 0.28, drink = 1, flap = 0, dir = Math.cos(b * 2.1 + 0.8) > 0 ? -1 : 1;
+          bx = c.x + Math.cos(b * 2.1 + 0.8) * rimR * 0.9, by = c.y + Math.sin(b * 2.1 + 0.8) * rimR * 0.45 - R * 0.5, drink = 1, flap = 0, dir = Math.cos(b * 2.1 + 0.8) > 0 ? -1 : 1;
         } else {
-          let u = (ph - 0.78) / 0.22, sx = c.x + Math.cos(b * 2.1 + 0.8) * rimR * 0.9, sy = c.y + Math.sin(b * 2.1 + 0.8) * rimR * 0.45 - R * 0.28, ex = sx + side * R * (5 + b * 1.6), ey = sy - R * 6.2;
+          let u = (ph - 0.78) / 0.22, sx = c.x + Math.cos(b * 2.1 + 0.8) * rimR * 0.9, sy = c.y + Math.sin(b * 2.1 + 0.8) * rimR * 0.45 - R * 0.5, ex = sx + side * R * (5 + b * 1.6), ey = sy - R * 6.2;
           bx = sx + (ex - sx) * u, by = sy + (ey - sy) * u * u, dir = ex > sx ? 1 : -1;
         }
         let z = Math.max(0.6, R / 38);
@@ -22680,14 +22741,14 @@ function ROXQM(f, c, s, l, def, ex) {
         const wd0 = a.waterDepth(o.pos.x, o.pos.y), __body = () => {
         const thr = admOn() && a.sitting && !(a.ps.mount && a.ps.mountOwned) ? 11 : 0; thr && this.admThrone(r.x, r.y, 1, s, l);
         this.blob(r.x, r.y + 4, 15), this.useFx(r.x, r.y), a.ps.level >= 99 && this.epicFx(r.x, r.y, 0);
-        var mnt = a.ps.mount && a.ps.mountOwned, moff = mnt ? (a.sitting ? 34 : 44) : 0, atkM = this.clock - i.atkAt < Math.max(260, i.atkDur || 0), pl2 = 0, play2 = false, jy2 = 0;
+        var mnt = a.ps.mount && a.ps.mountOwned, __wm = mnt && warmMount(a.ps.dye), moff = mnt ? (a.sitting ? 22 : 44) : 0, atkM = this.clock - i.atkAt < Math.max(260, i.atkDur || 0), pl2 = 0, play2 = false, jy2 = 0;
         let m = this.organic(i, o.facing, { moving: i.moving, atkT: this.clock - i.atkAt, atkImpact: i.atkImpact, atkDur: i.atkDur, breath: a.sitting ? 8e-3 : 0.011 });
         a.sitting && (m.dx = 0, m.dy = 0, m.rot *= 0.3);
         a.sitting || (m.rot += (this._cap?.a ?? 0) * (a.ps.equipment.back ? 0.25 : 1));
         var __hz = null;
         if (mnt) {
-          let mw = ROXQM("montaria", s, i.moving ? Math.floor(i.phase * ea) : -1, atkM ? 1 : 0, { id: "montaria" + (a.ps.dye || 0), color: a.ps.dye || null }), lun = atkM ? Math.sin(Math.min(1, (this.clock - i.atkAt) / Math.max(260, i.atkDur || 0)) * Math.PI) : 0;
-          let hz = () => mw && nt(n, mw, r.x, r.y + 10 - lun * 4 + (a.crouching ? 5 : 0), l, $a * 1.5 * (a.sitting ? 1.04 : 1) * (1 + lun * 0.08), $a * 1.5 * (a.sitting ? 0.78 : a.crouching ? 0.93 : 1) * (1 - lun * 0.04));
+          let mw = ROXQM("montaria", s, i.moving ? Math.floor(i.phase * ea) : -1, atkM ? 1 : 0, { id: "montaria" + (a.ps.dye || 0), color: a.ps.dye || null }, a.sitting ? { lie: 1 } : void 0), lun = atkM ? Math.sin(Math.min(1, (this.clock - i.atkAt) / Math.max(260, i.atkDur || 0)) * Math.PI) : 0;
+          let hz = () => mw && nt(n, mw, r.x, r.y + 10 - lun * 4 + (a.crouching ? 5 : 0), l, $a * 1.5 * 1 * (1 + lun * 0.08), $a * 1.5 * (a.crouching ? 0.93 : 1) * (1 - lun * 0.04));
           s === "down" || s === "dq" ? __hz = hz : hz();
         }
         let cr = mnt && a.crouching ? 1 : 0;
