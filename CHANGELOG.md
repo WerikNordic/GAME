@@ -783,3 +783,7 @@
 ## v256
 - Montaria agora é uma criatura mitológica: Dragão de Guerra (Nidhogg domado) — escamas de obsidiana, chifres, asas, cauda com lâmina, couraça de aço com bandas laminadas e friso dourado, peitoral com gema, ombreiras, joelheiras e manta carmesim com sela. Anda, deita (ao sentar), ataca com mordida e solta brasas ao bufar.
 - Desktop: atalho "Eldvar" na Área de Trabalho (instalador cria sozinho; sem instalar use CRIAR_ATALHO.bat). Ícone .ico.
+
+## v257
+- Montaria: o personagem não some mais no meio das asas (asas em camada separada, mais baixas e recolhidas); removidas as "bolas" das articulações e do peito (joelhos, ombros, placa), trocadas por faixas de armadura.
+- Novo ícone do jogo e do atalho: dragão de guerra sob a lua com anel de runas e moldura dourada. Também é o ícone da aba do navegador.

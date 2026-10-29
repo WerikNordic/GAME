@@ -18222,7 +18222,7 @@ function warmMount(dye) {
   if (window.__mwarm === key || typeof ROX2M === "undefined") return;
   window.__mwarm = key;
   const jobs = [], dirs = ["down", "dq", "side", "uq", "up"], def = { id: "montaria" + (dye || 0), color: dye || null };
-  for (const d of dirs) { for (let f = -1; f < 8; f++) jobs.push([d, f, 0, void 0]); jobs.push([d, -1, 1, void 0]); jobs.push([d, -1, 0, { lie: 1 }]); }
+  for (const d of dirs) { const fr = d === "down" || d === "dq" ? ["body", "wings"] : [""]; for (const ly of fr) { for (let f = -1; f < 8; f++) jobs.push([d, f, 0, { lie: 0, layer: ly }]); jobs.push([d, -1, 1, { lie: 0, layer: ly }]); jobs.push([d, -1, 0, { lie: 1, layer: ly }]); } }
   let i = 0;
   const step = () => { if (window.__mwarm !== key) return; const t0 = performance.now(); while (i < jobs.length && performance.now() - t0 < 6) { const j = jobs[i++]; try { ROX2M.mon("montaria", j[0], j[1], j[2], def, j[3]); } catch (e) { } } i < jobs.length && setTimeout(step, 40); };
   setTimeout(step, 400);
@@ -20290,9 +20290,9 @@ function ROXQM(f, c, s, l, def, ex) {
         a.sitting || (m.rot += (this._cap?.a ?? 0) * (a.ps.equipment.back ? 0.25 : 1));
         var __hz = null;
         if (mnt) {
-          let mw = ROXQM("montaria", s, i.moving ? Math.floor(i.phase * ea) : -1, atkM ? 1 : 0, { id: "montaria" + (a.ps.dye || 0), color: a.ps.dye || null }, a.sitting ? { lie: 1 } : void 0), lun = atkM ? Math.sin(Math.min(1, (this.clock - i.atkAt) / Math.max(260, i.atkDur || 0)) * Math.PI) : 0;
+          let mw = ROXQM("montaria", s, i.moving ? Math.floor(i.phase * ea) : -1, atkM ? 1 : 0, { id: "montaria" + (a.ps.dye || 0), color: a.ps.dye || null }, { lie: a.sitting ? 1 : 0, layer: s === "down" || s === "dq" ? "body" : "" }), lun = atkM ? Math.sin(Math.min(1, (this.clock - i.atkAt) / Math.max(260, i.atkDur || 0)) * Math.PI) : 0;
           let hz = () => mw && nt(n, mw, r.x, r.y + 10 - lun * 4 + (a.crouching ? 5 : 0), l, $a * 1.5 * 1 * (1 + lun * 0.08), $a * 1.5 * (a.crouching ? 0.93 : 1) * (1 - lun * 0.04));
-          s === "down" || s === "dq" ? __hz = hz : hz();
+          if (s === "down" || s === "dq") { let mwW = ROXQM("montaria", s, i.moving ? Math.floor(i.phase * ea) : -1, atkM ? 1 : 0, { id: "montaria" + (a.ps.dye || 0), color: a.ps.dye || null }, a.sitting ? { lie: 1, layer: "wings" } : { layer: "wings" }); mwW && nt(n, mwW, r.x, r.y + 10 - lun * 4 + (a.crouching ? 5 : 0), l, $a * 1.5 * (1 + lun * 0.08), $a * 1.5 * (a.crouching ? 0.93 : 1) * (1 - lun * 0.04)); __hz = hz; } else hz();
         }
         let cr = mnt && a.crouching ? 1 : 0;
         nt(n, u, r.x + m.dx + cr * (l ? -3 : 3), r.y + 6 + m.dy - moff - thr + cr * 17 + jy2, l, $a * m.sx, $a * m.sy * (1 - cr * 0.1), m.rot + cr * (l ? -0.12 : 0.12));

@@ -86,6 +86,7 @@ var ROX2M = (() => {
   S({pts:[[0,r.chY-6,r.hd[2]-5],[0,r.hd[1]-1,r.hd[2]-1.6]],w:[2.4,1.4],col:hx(0x2a1a14)})}});
  // ---------- montaria: Dragao de Guerra (Nidhogg domado) — escamas de obsidiana, couraca de aco e ouro, asas dobradas, chifres, cauda com lamina ----------
  reg('montaria',{name:'Montaria',w:160,h:132,gy:116,sched:[['stand',2.4,6],['look',2.4,8],['snort',1.8,8],['stand',1.6,5]],build:(E,S,o)=>{
+  let WL=false;const E0=E,S0=S,LY=o.layer||'';E=(q)=>{if(LY==='wings'?WL:(LY==='body'?!WL:true))E0(q)};S=(q)=>{if(LY==='wings'?WL:(LY==='body'?!WL:true))S0(q)};
   const SC=hx(0x26464e),SC2=hx(0x3f7274),SCD=hx(0x132a30),BEL=hx(0xc2ad72),STL=hx(0x8590a2),STL2=hx(0xc0cadb),STD=hx(0x3e4656),PL=hx(0x66708a),GOLD=hx(0xf2c24a),GOLD2=hx(0xb88a24),CRIM=hx(0xa3233a),CRIM2=hx(0x7c1c32),EYE=hx(0xffa42e),HORN=hx(0xeadfc4),LEA=hx(0x5a2e1c),B=.2;
   const g=o.g,T=o.t||0,walk=o.ph?1:0,ph=o.ph||0,k=o.k||0,b=o.beh||'',w=o.bw||0,legL=18.6,fb=o.fb||0;
   const scl=(mx,my,mz)=>{const v=Math.sin(mx*13+my*9)*Math.sin(mz*11+my*7);return v>.42?SC2:(v<-.5?SCD:0)};
@@ -111,10 +112,9 @@ var ROX2M = (() => {
    if(front){kn=[x+ox*.6,jy+(fy-jy)*.46,(jz+fz)/2-1.4+lf*.3];pts=[[x,jy,jz],kn,[x+ox,fy-3.4,fz-.4]]}
    else{const st=[x+ox*.3,jy+(fy-jy)*.3,(jz+fz)/2+3.4],hk=[x+ox*.7,fy-(fy-jy)*.32,(jz+fz)/2-3.6-lf*.4];kn=st;pts=[[x,jy,jz],st,hk,[x+ox,fy-3.4,fz-.2]]}
    S({pts,w:[front?6.2:6.8,3.2],col:SC});
-   E({x:x+ox,y:fy-1,z:fz+.8,rx:3.2,ry:1.6,rz:3.8,p:4,col:SCD});claws(x+ox,fy-1,fz);
-   E({x:kn[0]+sx*1.1,y:kn[1],z:kn[2]+(front?-1:1.2),rx:1.7,ry:2.4,rz:2.3,p:3,col:PL,bias:B});
-   S({pts:[[kn[0]+sx*.2,kn[1]-.4,kn[2]-3.6],[kn[0]+sx*.2,kn[1]-.4,kn[2]+3.6]],w:[1.2,1.2],col:GOLD,bias:B});
-   S({pts:[pts[pts.length-1],[x+ox,fy-1.6,fz]],w:[3.6,3.6],col:PL,bias:B});
+   E({x:x+ox,y:fy-.8,z:fz+1,rx:3,ry:1,rz:3.8,p:4,col:SCD});claws(x+ox,fy-1,fz);
+   S({pts:[L3(kn,pts[pts.length-1],.18),L3(kn,pts[pts.length-1],.82)],w:[4.6,3.8],col:PL,bias:B});
+   S({pts:[L3(kn,pts[pts.length-1],.2),L3(kn,pts[pts.length-1],.2)],w:[5.2,5.2],col:GOLD,bias:B});S({pts:[L3(kn,pts[pts.length-1],.8),L3(kn,pts[pts.length-1],.8)],w:[4,4],col:GOLD,bias:B});
   }
   // cauda longa com espinhos e lamina
   {const tb=[hX,hY-3,hZ-8],sw=Math.sin(T*(walk?5:1.8)+ph)*(walk?4:2.2),yl=lie?g-4:hY+1;
@@ -124,6 +124,7 @@ var ROX2M = (() => {
    S({pts:[[t3[0],t3[1]-.4,t3[2]-1],[t3[0],t3[1]-.4,t3[2]-5],[t3[0],t3[1]-.4,t3[2]-10]],w:[4.2,.3],col:STL2,metal:1,bias:B});
    S({pts:[[t3[0],t3[1],t3[2]-.2],[t3[0],t3[1],t3[2]+.8]],w:[3.8,3.8],col:GOLD,metal:1,bias:B});}
   // asas dobradas (batem de leve ao andar)
+  WL=true;
   for(const sx of[-1,1]){
    const an=[hX*.5+sx*6.4,top+1.6,mZ-6],el=[sx*10,top-3.4+fl,mZ-8],wr=[sx*9.8,top-8.6+fl*1.4,hZ+1],tip=[sx*9,top-3.6+fl*.8,hZ-13],ed=[sx*7.6,top+2,hZ-3];
    const Pa=(u)=>u<.5?L3(an,el,u*2):L3(el,wr,(u-.5)*2),Pb=(u)=>L3(ed,tip,u);
@@ -131,6 +132,7 @@ var ROX2M = (() => {
    S({pts:[an,el,wr],w:[3.2,1.7],col:SC,bias:.14});
    for(const u of[.35,.7,1]){S({pts:[wr,L3(wr,Pb(u),.5),Pb(u)],w:[1.4,.6],col:SC,bias:.16})}
    S({pts:[wr,[sx*10.2,top-11+fl*1.4,hZ-1.6]],w:[1.6,.3],col:HORN,bias:.2});}
+  WL=false;
   // pescoco serpentino
   const look=b==='look'?Math.sin(T*1.5)*4*w:0,snort=b==='snort'?Math.abs(Math.sin(T*8))*1.4*w:0,nod=Math.sin(ph*2)*walk*(1.2+fb*1.1),hs=-sway*.8;
   const nb=[cX,cY-5,cZ+6],nm=[look*.3+cX*.6,cY-(lie?11:13),cZ+(lie?15:16)],P=[look+hs,cY-(lie?15:20)+snort-lunge*.3+nod,cZ+(lie?22:23)+lunge*.5];
@@ -164,14 +166,14 @@ var ROX2M = (() => {
    S({pts:[[sx*9.3,top+10,mZ-8.6],[sx*9.3,top+10.4,mZ+7]],w:[1.2,1.2],col:GOLD,bias:B});
    for(let i=0;i<4;i++){S({pts:[[cX+sx*8.9,cY-3+i*2.9,cZ-3.4],[cX+sx*9,cY-3+i*2.9,cZ+9.2]],w:[3.2,3.2],col:i%2?STD:PL,bias:B});S({pts:[[cX+sx*9.5,cY-1.6+i*2.9,cZ-3.4],[cX+sx*9.6,cY-1.6+i*2.9,cZ+9.2]],w:[.8,.8],col:GOLD,bias:B})}
    for(let i=0;i<4;i++){S({pts:[[hX+sx*9.1,hY-4+i*2.8,hZ-5.6],[hX+sx*9.2,hY-4+i*2.8,hZ+7.6]],w:[3.1,3.1],col:i%2?STD:PL,bias:B});S({pts:[[hX+sx*9.7,hY-2.6+i*2.8,hZ-5.6],[hX+sx*9.8,hY-2.6+i*2.8,hZ+7.6]],w:[.8,.8],col:GOLD,bias:B})}
-   E({x:cX+sx*8.4,y:cY-7.2,z:cZ+3.6,rx:1.8,ry:2,rz:3.2,p:3,col:STD,bias:B});S({pts:[[cX+sx*9.4,cY-8.6,cZ+4.6],[cX+sx*12.2,cY-15.4,cZ+2.4]],w:[2.4,.3],col:STL2,metal:1,bias:B});
+   for(let i=0;i<3;i++)S({pts:[[cX+sx*(7.6+i*.5),cY-9.2+i*1.9,cZ-.6],[cX+sx*(7.8+i*.5),cY-9.2+i*1.9,cZ+7.2]],w:[2.8,2.8],col:i%2?STD:PL,bias:B});S({pts:[[cX+sx*9.4,cY-8.6,cZ+4.6],[cX+sx*12.2,cY-15.4,cZ+2.4]],w:[2.4,.3],col:STL2,metal:1,bias:B});
    S({pts:[[cX+sx*8.2,cY-9,cZ+1.4],[cX+sx*8.2,cY-9,cZ+7.4]],w:[1.5,1.5],col:GOLD,bias:B});}
   E({x:0,y:top-.8,z:mZ-.5,rx:4.8,ry:1.7,rz:6.8,p:3,col:LEA,bias:B});
   S({pts:[[0,top-1.6,mZ+5.6],[0,top-4.4,mZ+6.6]],w:[2.4,1.6],col:GOLD2,bias:B});S({pts:[[0,top-1.4,mZ-6.2],[0,top-3.8,mZ-7.4]],w:[2.6,1.8],col:GOLD2,bias:B});
   for(let i=0;i<5;i++){const z=i<3?cZ+4-i*3.6:hZ+9-(i-3)*5.4,xx=i<3?cX:hX;E({x:xx,y:top+.4,z,rx:5.4,ry:1.5,rz:2.5,p:3,col:i%2?PL:STD,bias:B});S({pts:[[xx,top-.6,z],[xx,top-4.6,z-1.6]],w:[2,.3],col:GOLD,metal:1,bias:B})}
-  E({x:cX,y:cY+1.4,z:cZ+10.6,rx:6.6,ry:6.6,rz:2,p:3,col:PL,bias:B});
+  for(let i=0;i<4;i++){S({pts:[[cX-6.2+Math.abs(i-1.5)*.5,cY-3.6+i*3,cZ+10.2],[cX+6.2-Math.abs(i-1.5)*.5,cY-3.6+i*3,cZ+10.2]],w:[3.2,3.2],col:i%2?STD:PL,bias:B})}
   S({pts:[[cX-6.8,cY-1.4,cZ+11.6],[cX,cY-.8,cZ+13],[cX+6.8,cY-1.4,cZ+11.6]],w:[1.4,1.4],col:GOLD,metal:1,bias:B});S({pts:[[cX-6.2,cY+3.8,cZ+11.8],[cX,cY+4.6,cZ+13.2],[cX+6.2,cY+3.8,cZ+11.8]],w:[1.4,1.4],col:GOLD,metal:1,bias:B});
-  E({x:cX,y:cY+1.4,z:cZ+13,rx:2.2,ry:2.2,rz:1.1,p:3,col:hx(0xff4a6a),bias:.8,metal:1});
+  S({pts:[[cX,cY-.4,cZ+13],[cX,cY+3,cZ+13]],w:[3,3],col:hx(0xff4a6a),bias:.8,metal:1});
   {const pl=Math.sin(T*3)*1.2;S({pts:[at(-2,-5.4),A3(at(-4.6,-8.4),[pl*.5,0,0]),A3(at(-8,-10.2),[pl*1.3,0,-2])],w:[2.6,.7],col:CRIM,bias:.4})}
  }});
 const PETSCH=[['stand',2.6,6],['sniff',2,8],['stand',1.6,5],['sit',3.4,6],['look',2.2,8],['sit',2,5],['stand',1.2,4]];
@@ -586,7 +588,7 @@ const PETSCH=[['stand',2.6,6],['sniff',2,8],['stand',1.6,5],['sit',3.4,6],['look
   return o}
  function draw(spec,dirIdx,pose,opt){
   const S0=opt.S,vrr=opt.vr||null,pdT=vrr?Math.ceil(38*opt.S):0,pdX=vrr?Math.ceil(22*opt.S):0,w=Math.ceil(spec.w*S0)+pdX*2,h=Math.ceil(spec.h*S0)+pdT,gy=Math.round(spec.gy*S0)+pdT;const K=Ctx(dirIdx*Math.PI/4);const I=new Img(w,h);
-  const o=mpose(pose.anim,pose.t,spec,pose);o.g=spec.gy;o.st=opt.st||0;const out=[];const tf=opt.tint;
+  const o=mpose(pose.anim,pose.t,spec,pose);o.g=spec.gy;o.st=opt.st||0;o.layer=opt.layer||'';const out=[];const tf=opt.tint;
   const E_=q=>{if(q.p===undefined)q.p=3.2;if(tf&&!q.bias){q.col=tf(q.col);if(q.tex){const f0=q.tex;q.tex=(a,b,c,d,e,g)=>{const r=f0(a,b,c,d,e,g);return Array.isArray(r)?tf(r):r}}}out.push(['e',q])};
   const S_=q=>{if(tf&&!q.bias){if(typeof q.col==='function'){const f0=q.col;q.col=(a,b)=>{const r=f0(a,b);return Array.isArray(r)?tf(r):r}}else q.col=tf(q.col)}out.push(['s',q])};
   spec.build(E_,S_,o);if(vrr)applyVar(out,spec,vrr,o);
@@ -615,11 +617,11 @@ const PETSCH=[['stand',2.6,6],['sniff',2,8],['stand',1.6,5],['sit',3.4,6],['look
   else{pose={anim:0,t:.3};tk='i'}
   pose.fb=dir==='down'||dir==='up'?1:(dir==='dq'||dir==='uq'?.55:0);
   const st=(extra&&extra.st)||0,col=(def&&def.color)||null;
-  const key=f+':'+(def&&def.id||'')+':'+dir+':'+tk+':'+st;let r=CACHE.get(key);if(r)return r;
+  const ly=(extra&&extra.layer)||'',key=f+':'+(def&&def.id||'')+':'+dir+':'+tk+':'+st+':'+ly;let r=CACHE.get(key);if(r)return r;
   if(CACHE.size>2400)CACHE.clear();
   const rgb=col!=null?[(col>>16)&255,(col>>8)&255,col&255]:null;
   const S0=(extra&&extra.S)||m[2]||2.2,KS=.88;
-  const img=draw(spec,di,pose,{S:S0,st,tint:rgb&&m[1]>0?mkTint(rgb,m[1]):null,vr:(def&&def.hp!==undefined&&VAR.get(def.id))||null});
+  const img=draw(spec,di,pose,{S:S0,st,layer:ly,tint:rgb&&m[1]>0?mkTint(rgb,m[1]):null,vr:(def&&def.hp!==undefined&&VAR.get(def.id))||null});
   const cv=document.createElement('canvas');cv.width=img.w;cv.height=img.h;cv.getContext('2d').putImageData(new ImageData(img.d,img.w,img.h),0,0);
   r={cv,ax:img.w/2*KS,ay:img.gy*KS,k:KS,key};CACHE.set(key,r);return r;
  }
