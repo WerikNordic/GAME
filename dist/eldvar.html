@@ -20865,7 +20865,7 @@ function ROXQM(f, c, s, l, def, ex) {
     {
       const WJ = {}; for (const [ln, cd] of Object.entries(Ce)) if (ln !== "aprendiz") for (const wt of cd.weapons || []) (WJ[wt] ??= []).push(ln);
       for (const it of Object.values(Wa)) if (it.kind === "weapon" && it.weaponType && !it.allowedJobs?.length && WJ[it.weaponType]) it.allowedJobs = WJ[it.weaponType];
-      for (const it of Object.values(Wa)) if (it.kind === "weapon" && it.weaponType && !(it.desc || "").includes("Classes:")) { const L = [...(it.allowedJobs?.length ? it.allowedJobs : WJ[it.weaponType] || [])]; Ce.aprendiz?.weapons?.includes(it.weaponType) && !L.includes("aprendiz") && L.unshift("aprendiz"); L.length && (it.desc = (it.desc || "") + " Classes: " + L.map((a) => j8[a] || a).join(", ") + (L.length && !(L.length === 1 && L[0] === "aprendiz") ? " (e evolu\u00e7\u00f5es)." : ".")); }
+      for (const it of Object.values(Wa)) if (it.kind === "weapon" && it.weaponType && !(it.desc || "").includes("Classes:")) { const L = [...(it.allowedJobs?.length ? it.allowedJobs : WJ[it.weaponType] || [])]; Ce.aprendiz?.weapons?.includes(it.weaponType) && (it.reqLevel ?? 1) <= 12 && !L.includes("aprendiz") && L.unshift("aprendiz"); L.length && (it.desc = (it.desc || "") + " Classes: " + L.map((a) => j8[a] || a).join(", ") + (L.length && !(L.length === 1 && L[0] === "aprendiz") ? " (e evolu\u00e7\u00f5es)." : ".")); }
     }
     {
       const cb = Jt.campos_midgard.portals.find((q) => q.toMap === "midgard_brumaforte");
