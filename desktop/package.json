@@ -17,11 +17,37 @@
   "build": {
     "appId": "com.werik.eldvar",
     "productName": "Eldvar",
-    "files": ["main.js", "app/**/*", "icon.png"],
-    "directories": { "output": "release" },
-    "win": { "target": ["nsis", "portable"], "icon": "icon.png" },
-    "nsis": { "oneClick": false, "allowToChangeInstallationDirectory": true, "createDesktopShortcut": true },
-    "mac": { "target": "dmg", "category": "public.app-category.games" },
-    "linux": { "target": ["AppImage"], "category": "Game" }
+    "files": [
+      "main.js",
+      "preload.js",
+      "launcher.html",
+      "app/**/*",
+      "icon.png"
+    ],
+    "directories": {
+      "output": "release"
+    },
+    "win": {
+      "target": [
+        "nsis",
+        "portable"
+      ],
+      "icon": "icon.png"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true
+    },
+    "mac": {
+      "target": "dmg",
+      "category": "public.app-category.games"
+    },
+    "linux": {
+      "target": [
+        "AppImage"
+      ],
+      "category": "Game"
+    }
   }
 }

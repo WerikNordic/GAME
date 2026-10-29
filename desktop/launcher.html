@@ -1,0 +1,52 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><title>Eldvar Launcher</title>
+<style>
+:root{--bg:#0b1018;--panel:#141c2b;--line:#2b3850;--text:#e8ecf4;--muted:#8e9ab0;--gold:#e0b84f;--gold-d:#a88427;--good:#6fe08a;--bad:#ff7b72}
+*{box-sizing:border-box}body{margin:0;height:100vh;background:radial-gradient(900px 500px at 70% -10%,#1d2a45,transparent),var(--bg);color:var(--text);font:14px "Segoe UI",system-ui,sans-serif;display:grid;grid-template-columns:300px 1fr;user-select:none}
+aside{padding:28px 24px;border-right:1px solid var(--line);display:flex;flex-direction:column;gap:14px;background:#0d1422}
+h1{font:700 26px Georgia,serif;color:var(--gold);margin:0;letter-spacing:.04em;line-height:1.1}
+.sub{color:var(--muted);font-size:12px;letter-spacing:.14em;text-transform:uppercase}
+.rune{font-size:34px;color:var(--gold);letter-spacing:.3em}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:12px 14px}
+.row{display:flex;justify-content:space-between;gap:8px;margin:3px 0}.row b{color:var(--gold)}
+button{font:600 14px inherit;font-family:inherit;border:1px solid var(--gold-d);background:#1b2438;color:var(--text);padding:11px 14px;border-radius:6px;cursor:pointer}
+button:hover:not(:disabled){border-color:var(--gold);background:#222d47}button:disabled{opacity:.45;cursor:default}
+.play{background:linear-gradient(#e8c25a,#b8902f);color:#1a1405;border-color:#e0b84f;font-size:17px;padding:15px;letter-spacing:.06em}
+.play:hover:not(:disabled){background:linear-gradient(#f2d070,#c79c35)}
+.bar{height:10px;background:#0a0f19;border:1px solid var(--line);border-radius:5px;overflow:hidden;display:none}.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--gold-d),var(--gold));transition:width .2s}
+main{padding:26px 30px;overflow:auto}main h2{margin:0 0 10px;font:600 15px inherit;font-family:inherit;color:var(--gold);letter-spacing:.1em;text-transform:uppercase}
+pre{white-space:pre-wrap;font:13px/1.55 "Segoe UI",system-ui,sans-serif;color:#cfd6e6;margin:0;user-select:text}
+.status{font-size:13px;min-height:18px}.ok{color:var(--good)}.err{color:var(--bad)}
+label{display:flex;gap:8px;align-items:center;color:var(--muted);font-size:12px}a{color:var(--gold);cursor:pointer;font-size:12px}
+</style></head><body>
+<aside>
+ <div class="rune">ᛖᛚᛞᚹᚨᚱ</div><h1>Eldvar</h1><div class="sub">As Crônicas do Fim</div>
+ <div class="card"><div class="row"><span>Versão instalada</span><b id="lv">—</b></div><div class="row"><span>Versão online</span><b id="rv">—</b></div></div>
+ <div class="status" id="st">Verificando atualizações…</div>
+ <div class="bar" id="bar"><i id="fill"></i></div>
+ <button id="upd" disabled>Atualizar jogo</button>
+ <button class="play" id="play">JOGAR</button>
+ <div style="color:var(--muted);font-size:12px;line-height:1.5">Para criar sua conta ou entrar, clique em <b>JOGAR</b> e use as opções <b>Criar conta</b> / <b>Entrar</b> na tela inicial do jogo.</div>
+ <div style="flex:1"></div>
+ <label><input type="checkbox" id="auto"> Atualizar automaticamente ao abrir</label>
+ <div style="display:flex;justify-content:space-between"><a id="rep">Reparar / baixar de novo</a><a id="site">Página do jogo</a></div>
+</aside>
+<main><h2>Novidades</h2><pre id="notes">Carregando…</pre></main>
+<script>
+const $=(i)=>document.getElementById(i);let busy=false,newer=false;
+const set=(t,c)=>{$('st').textContent=t;$('st').className='status '+(c||'')};
+function view(l,r){$('lv').textContent='v'+l.version;if(r)$('rv').textContent='v'+r.version;$('notes').textContent=(r&&r.notes)||l.notes||'Sem notas.'}
+async function check(){
+  const c=await launcher.check();
+  if(!c.ok){set('Sem conexão com o servidor de atualização — você pode jogar a versão instalada.','err');view(c.local);return false}
+  view(c.local,c.remote);newer=c.newer;
+  if(c.newer){set('Nova versão disponível!','ok');$('upd').disabled=false}else{set('Seu jogo está atualizado.','ok');$('upd').disabled=true}
+  return c.newer}
+async function update(force){
+  if(busy)return;busy=true;$('upd').disabled=true;$('play').disabled=true;$('bar').style.display='block';set('Atualizando…');
+  const r=await launcher.update(force);busy=false;$('play').disabled=false;
+  if(r.ok){set('Atualizado para v'+r.version+'!','ok');$('bar').style.display='none';await check()}else{set('Falha: '+r.error,'err');$('upd').disabled=false;$('bar').style.display='none'}}
+launcher.onProgress((p)=>{$('fill').style.width=p.pct+'%';set('Atualizando… '+p.step+' ('+p.pct+'%)')});
+$('upd').onclick=()=>update();$('rep').onclick=()=>update(true);$('play').onclick=()=>launcher.play();
+$('auto').onchange=(e)=>launcher.setAuto(e.target.checked);$('site').onclick=async()=>launcher.openLink((await launcher.state()).site);
+(async()=>{const s=await launcher.state();$('auto').checked=s.auto;view(s.local);const n=await check();if(n&&s.auto)update()})();
+</script></body></html>

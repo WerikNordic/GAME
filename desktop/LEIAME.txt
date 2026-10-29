@@ -9,3 +9,10 @@ B) Só jogar agora: dois cliques em JOGAR_SEM_INSTALAR.bat
 
 Atualizar o jogo: troque app/index.html pelo novo eldvar.html (renomeado) e rode INSTALAR.bat de novo.
 F11 = tela cheia. Precisa de internet para contas/ranking/boss mundial.
+
+== VERSÃO COMPLETA (launcher) ==
+Ao abrir o Eldvar aparece o Launcher: mostra a versão instalada/online, as novidades,
+botão "Atualizar jogo" (baixa a versão mais nova do GitHub), "JOGAR" e opção de atualizar
+automaticamente. Criar conta / Entrar: clique em JOGAR e use as opções na tela inicial do jogo.
+Sem internet você ainda joga a versão instalada.
+Para o dev: após cada build rode `node desktop/mkver.mjs` e envie public/index.html + public/version.json.
