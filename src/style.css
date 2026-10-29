@@ -238,3 +238,6 @@ body.armed canvas{cursor:crosshair!important}
 .skill-tab{opacity:.75}
 .skill-tab.active{opacity:1;background:var(--gold-d);color:#fff;border-color:var(--gold)}
 .skill-tab.locked{filter:grayscale(.6)}
+.hud-name{flex-wrap:wrap;justify-content:flex-start;align-items:baseline;gap:0 8px;min-width:0;max-width:100%}
+.hud-name strong{white-space:nowrap}
+.hud-name span{white-space:normal;overflow-wrap:anywhere;min-width:0;flex:1 1 auto}

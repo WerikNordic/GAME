@@ -767,3 +767,6 @@
 - Mapas de campo: agora têm estrutura — grade irregular de "salas" separadas por barreiras (cercas vivas de árvores nos mapas de floresta, cordilheiras de pedra nos demais), ligadas por portões (pilares, estandartes, acampamentos de guarda), estradas sinuosas ligando entradas, portais, salas e ninhos, e anéis de pedra com aberturas em volta de parte dos ninhos de monstros. A conectividade (portais e ninhos alcançáveis) é verificada na geração; se uma barreira isolasse algo ela é descartada.
 - Novo mapa: Lighthalzen, Cidade Fantasma (depois do Palco do Ragnarök): ~390 espectros nível 99, clones das 7 classes (Espadachim, Mercador, Arqueiro, Mago, Noviço, Gatuno, Thay), humanoides translúcidos com visual e arma da classe, muito fortes; casas em ruínas, lampiões de espíritos, barreiras e estradas.
 - v252 launcher: desktop/ agora tem launcher (atualização, JOGAR), public/version.json
+
+## v253
+- Painel de Informações básicas: o nome da classe (ex.: "Cavaleiro de Midgard Transcendente") não é mais cortado; quebra de linha abaixo do nome.
