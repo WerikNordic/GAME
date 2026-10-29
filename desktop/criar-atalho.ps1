@@ -8,7 +8,7 @@ $s = $ws.CreateShortcut((Join-Path $desk 'Eldvar.lnk'))
 $s.TargetPath = $exe
 $s.Arguments = '"' + $dir + '"'
 $s.WorkingDirectory = $dir
-$s.IconLocation = (Join-Path $dir 'icon.ico')
+$s.IconLocation = (Join-Path $dir 'eldvar.ico')
 $s.Description = 'Eldvar - As Cronicas do Fim'
 $s.Save()
 Write-Host ('Atalho criado em: ' + $desk)

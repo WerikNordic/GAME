@@ -23,7 +23,7 @@
       "launcher.html",
       "app/**/*",
       "icon.png",
-      "icon.ico"
+      "eldvar.ico"
     ],
     "directories": {
       "output": "release"
@@ -33,7 +33,7 @@
         "nsis",
         "portable"
       ],
-      "icon": "icon.ico"
+      "icon": "eldvar.ico"
     },
     "nsis": {
       "oneClick": false,
