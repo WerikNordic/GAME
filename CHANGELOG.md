@@ -786,4 +786,4 @@
 
 ## v257
 - Montaria: o personagem não some mais no meio das asas (asas em camada separada, mais baixas e recolhidas); removidas as "bolas" das articulações e do peito (joelhos, ombros, placa), trocadas por faixas de armadura.
-- Novo ícone do jogo e do atalho: dragão de guerra sob a lua com anel de runas e moldura dourada. Também é o ícone da aba do navegador.
+- Novo ícone do jogo e do atalho: Yggdrasil (a árvore do mundo) dourada sobre um eclipse de Ragnarök, anel de runas e moldura dourada, sem a montaria. Também é o ícone da aba do navegador.
