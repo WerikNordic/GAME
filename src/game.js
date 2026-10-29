@@ -20284,7 +20284,7 @@ function ROXQM(f, c, s, l, def, ex) {
         const wd0 = a.waterDepth(o.pos.x, o.pos.y), __body = () => {
         const thr = admOn() && a.sitting && !(a.ps.mount && a.ps.mountOwned) ? 11 : 0; thr && this.admThrone(r.x, r.y, 1, s, l);
         this.blob(r.x, r.y + 4, 15), this.useFx(r.x, r.y), a.ps.level >= 99 && this.epicFx(r.x, r.y, 0);
-        var mnt = a.ps.mount && a.ps.mountOwned, __wm = mnt && warmMount(a.ps.dye), moff = mnt ? (a.sitting ? 22 : 44) : 0, atkM = this.clock - i.atkAt < Math.max(260, i.atkDur || 0), pl2 = 0, play2 = false, jy2 = 0;
+        var mnt = a.ps.mount && a.ps.mountOwned, __wm = mnt && warmMount(a.ps.dye), moff = mnt ? (a.sitting ? 24 : 47) : 0, atkM = this.clock - i.atkAt < Math.max(260, i.atkDur || 0), pl2 = 0, play2 = false, jy2 = 0;
         let m = this.organic(i, o.facing, { moving: i.moving, atkT: this.clock - i.atkAt, atkImpact: i.atkImpact, atkDur: i.atkDur, breath: a.sitting ? 8e-3 : 0.011 });
         a.sitting && (m.dx = 0, m.dy = 0, m.rot *= 0.3);
         a.sitting || (m.rot += (this._cap?.a ?? 0) * (a.ps.equipment.back ? 0.25 : 1));

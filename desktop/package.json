@@ -1,7 +1,7 @@
 {
   "name": "eldvar",
   "version": "1.0.0",
-  "description": "Eldvar: As Crônicas do Fim",
+  "description": "Eldvar: As Cr\u00f4nicas do Fim",
   "author": "Werik",
   "main": "main.js",
   "scripts": {
@@ -22,7 +22,8 @@
       "preload.js",
       "launcher.html",
       "app/**/*",
-      "icon.png"
+      "icon.png",
+      "icon.ico"
     ],
     "directories": {
       "output": "release"
@@ -32,12 +33,14 @@
         "nsis",
         "portable"
       ],
-      "icon": "icon.png"
+      "icon": "icon.ico"
     },
     "nsis": {
       "oneClick": false,
       "allowToChangeInstallationDirectory": true,
-      "createDesktopShortcut": true
+      "createDesktopShortcut": "always",
+      "createStartMenuShortcut": true,
+      "runAfterFinish": true
     },
     "mac": {
       "target": "dmg",

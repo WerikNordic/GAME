@@ -16,3 +16,7 @@ botão "Atualizar jogo" (baixa a versão mais nova do GitHub), "JOGAR" e opção
 automaticamente. Criar conta / Entrar: clique em JOGAR e use as opções na tela inicial do jogo.
 Sem internet você ainda joga a versão instalada.
 Para o dev: após cada build rode `node desktop/mkver.mjs` e envie public/index.html + public/version.json.
+
+== ATALHO NA AREA DE TRABALHO ==
+- Instalador (INSTALAR.bat -> release\Eldvar Setup.exe): cria o atalho "Eldvar" na Area de Trabalho automaticamente.
+- Sem instalar: dê 2 cliques em CRIAR_ATALHO.bat (ou JOGAR_SEM_INSTALAR.bat, que também cria) — aparece o atalho "Eldvar".

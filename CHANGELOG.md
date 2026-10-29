@@ -779,3 +779,7 @@
 - Fonte da cidade refeita em 3D: degraus, bacia com friso dourado e pilastras, pedestal, 2ª bacia com 8 bicas de dragão, coluna e orbe dourado com anéis. Animação: 8 jatos em arco com fluxo, chafariz central, cortina de transbordo, ondulações, brilhos e neblina.
 - Pássaros das fontes: cada fonte tem seu próprio ritmo e horário (não sincronizados).
 - Desempenho: corrigido um travamento de vários segundos ao entrar em cidades (geração do chão testava todas as ruas por pixel; agora usa índice espacial — 26s → 0,6s no teste). Sprites da montaria são pré-carregados em segundo plano (evita engasgo ao montar/andar pela 1ª vez).
+
+## v256
+- Montaria agora é uma criatura mitológica: Dragão de Guerra (Nidhogg domado) — escamas de obsidiana, chifres, asas, cauda com lâmina, couraça de aço com bandas laminadas e friso dourado, peitoral com gema, ombreiras, joelheiras e manta carmesim com sela. Anda, deita (ao sentar), ataca com mordida e solta brasas ao bufar.
+- Desktop: atalho "Eldvar" na Área de Trabalho (instalador cria sozinho; sem instalar use CRIAR_ATALHO.bat). Ícone .ico.
