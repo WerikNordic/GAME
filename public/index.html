@@ -20006,51 +20006,73 @@ var ROX2M = (() => {
   const r=canid(E,S,o,{L:38,H:15,W:6,legL:21,legW:2.5,col:hx(0x8a5a3a),col2:hx(0x6a4028),stride:6.5,lift:3.6,hw:3.9,hh:4.4,hl:7.6,snoutL:.7,snoutW:.7,snout:hx(0x7a4c30),eye:hx(0x1a1210),ears:1,earIn:hx(0x4a2a1c),tail:1,tailW:4.2,tailTip:hx(0x2a1a14),hHigh:-15,pitch0:-.6,belly:1,paw:hx(0xe8dcc0)});
   const nb=[0,r.chY-15*.3-1,r.chZ+38*.08];for(let i=0;i<6;i++){const u=i/5,p0=L3(nb,r.hd,.12+u*.7);S({pts:[[p0[0],p0[1]-1,p0[2]-1.2],[p0[0],p0[1]+3.4,p0[2]-3.6]],w:[3.2,1],col:hx(0x2a1a14)})}
   S({pts:[[0,r.chY-6,r.hd[2]-5],[0,r.hd[1]-1,r.hd[2]-1.6]],w:[2.4,1.4],col:hx(0x2a1a14)})}});
- // ---------- montaria epica (cavalo de guerra com armadura dourada, manto carmesim e crina de chamas) ----------
- reg('montaria',{name:'Montaria',w:120,h:104,gy:94,sched:[['stand',2.4,6],['look',2.4,8],['snort',1.8,8],['stand',1.6,5]],build:(E,S,o)=>{
-  const r=canid(E,S,o,{...WOLF,L:44,H:19,W:11,legL:14,legW:5.4,col:hx(0x33333e),col2:hx(0x6a6a78),stride:5,lift:3,hw:8,hh:8.4,hl:10.5,snoutL:.9,snoutW:.78,snout:hx(0x4a4a58),eye:hx(0xff2a1a),earIn:hx(0x1a1a22),tailTip:hx(0x8a8a9a),tailW:6,hHigh:.5,belly:1.25,paw:hx(0x1a1a22),fangs:1});
-  const GOLD=hx(0xf2c24a),GOLD2=hx(0xb88a24),CRIM=hx(0x9a1e32),CRIM2=hx(0x6a1424),B=.2;
-  const mY=(r.chY+r.hpY)/2,mZ=(r.chZ+r.hpZ)/2;
-  // manto (caparison) sobre o dorso, com franjas douradas nas laterais
-  E({x:0,y:mY-5.2,z:mZ,rx:7.4,ry:3.4,rz:14.5,p:3,col:CRIM,bias:B});
-  for(const sx of[-1,1]){S({pts:[[sx*6.4,mY-3.6,mZ+11],[sx*7.6,mY+3.4,mZ+10],[sx*7.8,mY+9.4,mZ+9]],w:[3.4,2.4],col:CRIM,bias:B});S({pts:[[sx*6.4,mY-3.6,mZ-11],[sx*7.6,mY+3.4,mZ-10],[sx*7.8,mY+9.4,mZ-9]],w:[3.4,2.4],col:CRIM,bias:B});
-   S({pts:[[sx*7.9,mY+9,mZ-10],[sx*8,mY+9.4,mZ+10]],w:[1.4,1.4],col:GOLD,bias:B});S({pts:[[sx*6.9,mY-5.8,mZ-13],[sx*7.1,mY-5.6,mZ+13]],w:[1.1,1.1],col:GOLD,bias:B});
-   for(let i=0;i<5;i++){const z=mZ-9+i*4.5;E({x:sx*8,y:mY+9.8,z,rx:.8,ry:1.2,rz:.8,p:3,col:GOLD,bias:B})}}
-  // sela
-  E({x:0,y:mY-8.4,z:mZ+1,rx:4.6,ry:1.6,rz:6.6,p:3,col:hx(0x4a2a18),bias:B});
-  S({pts:[[0,mY-9.6,mZ+7.4],[0,mY-12.4,mZ+8.6]],w:[2.2,1.6],col:GOLD2,bias:B});S({pts:[[0,mY-9.4,mZ-5.8],[0,mY-12,mZ-7.2]],w:[2.6,1.8],col:GOLD2,bias:B});
-  // couraça de guerra: placas de aço escuro nos flancos, ombreiras com espinhos e barda no peito
-  {const ST=hx(0x50505e),ST2=hx(0x7a7a8c),SPK=hx(0xc8c8d8);
-   for(const sx of[-1,1]){
-    E({x:sx*10.4,y:mY+2.6,z:mZ+8.5,rx:2.6,ry:7.2,rz:8.4,p:3,col:ST,metal:1,bias:B});
-    E({x:sx*10.6,y:mY+2.6,z:mZ-6.5,rx:2.6,ry:7.2,rz:7.6,p:3,col:ST,metal:1,bias:B});
-    E({x:sx*11,y:mY-1.6,z:mZ+8.5,rx:1.2,ry:1.3,rz:6.5,p:3,col:ST2,metal:1,bias:B});
-    E({x:sx*10,y:r.chY-1,z:r.chZ+Lb0(r)-2,rx:3.6,ry:6.4,rz:4.2,p:3,col:ST,metal:1,bias:B});
-    for(let i=0;i<3;i++)S({pts:[[sx*(10+i*.2),r.chY-5+i*2.4,r.chZ+Lb0(r)+1.5+i],[sx*(13+i*.4),r.chY-9+i*2.6,r.chZ+Lb0(r)+4+i*1.4]],w:[1.9,.4],col:SPK,metal:1,bias:B});
-    for(let i=0;i<4;i++)S({pts:[[sx*10.8,mY-2.6,mZ-10+i*5.4],[sx*12.6,mY-6.4,mZ-10+i*5.4]],w:[1.5,.3],col:SPK,metal:1,bias:B});
-   }
-   E({x:0,y:r.chY+4,z:r.chZ+Lb0(r)+.4,rx:7.4,ry:7,rz:3.4,p:3,col:ST,metal:1,bias:B});
-   S({pts:[[0,r.chY-2,r.chZ+Lb0(r)+3.4],[0,r.chY-8,r.chZ+Lb0(r)+7]],w:[2.8,.5],col:SPK,metal:1,bias:B});
+ // ---------- montaria: corcel de guerra prateado (pelagem marfim, manta carmesim com bordado dourado, crina azul-gelo) ----------
+ reg('montaria',{name:'Montaria',w:128,h:116,gy:104,sched:[['stand',2.4,6],['look',2.4,8],['snort',1.8,8],['stand',1.6,5]],build:(E,S,o)=>{
+  const IV=hx(0xeeeae2),IV2=hx(0xc4c6d2),SH=hx(0xd9dbe6),GOLD=hx(0xf2c24a),GOLD2=hx(0xb88a24),CRIM=hx(0xa3233a),HOOF=hx(0x4a4650),MAN=(q)=>q>.55?hx(0xe8f4ff):hx(0x9cc2f4),B=.2;
+  const g=o.g,T=o.t||0,walk=o.ph?1:0,ph=o.ph||0,k=o.k||0,b=o.beh||'',w=o.bw||0,legL=20;
+  const coat=(mx,my,mz)=>Math.sin(mx*9+my*5+mz*4)>.8?IV2:0;
+  const breathe=Math.sin(T*2.6)*.4*(1-walk),trot=Math.sin(ph*2)*.55*walk,lunge=Math.max(0,k)*3,crouch=Math.max(0,-k)*2;
+  const cY=g-legL-8+breathe-trot+crouch,hY=g-legL-8.4+trot*.6+crouch*.5,cZ=9+o.sh+lunge,hZ=-10+o.sh;
+  // tronco
+  E({x:0,y:cY,z:cZ,rx:7.4,ry:8.8,rz:10.5,p:3,col:IV,tex:coat});
+  E({x:0,y:hY-1,z:hZ,rx:7.6,ry:8.6,rz:10,p:3,col:IV,tex:coat});
+  S({pts:[[0,cY,cZ-6],[0,(cY+hY)/2+.8,(cZ+hZ)/2],[0,hY,hZ+6]],w:[16,16],col:IV});
+  E({x:0,y:hY-3.6,z:hZ-4.5,rx:6.4,ry:6.2,rz:6,p:3,col:IV});
+  E({x:0,y:(cY+hY)/2+5.5,z:(cZ+hZ)/2,rx:5.4,ry:3.4,rz:9,p:3,col:SH});
+  // pernas
+  for(const [sx,front,po] of [[-1,1,0],[1,1,Math.PI],[-1,0,Math.PI],[1,0,0]]){
+   const x=sx*4,jz=front?cZ+2.6:hZ-.5,jy=(front?cY:hY)+4.6;
+   const phs=ph+po,sw=Math.sin(phs)*6.5*walk,lf=Math.max(0,Math.cos(phs))*3.8*walk;
+   let fz=jz+sw+(front&&k>0?k*5:0),fy=g-lf-.6-(front&&k>0?k*7:0);
+   const foot=[x,fy-1.8,fz];let pts;
+   if(front){const kn=[x,jy+(fy-jy)*.48,(jz+fz)/2+.8+lf*.3];pts=[[x,jy,jz],kn,[x,fy-3.6,fz-.4]]}
+   else{const st=[x,jy+(fy-jy)*.3,(jz+fz)/2+3.2],hk=[x,fy-(fy-jy)*.3,(jz+fz)/2-3.4-lf*.4];pts=[[x,jy,jz],st,hk,[x,fy-3.6,fz-.2]]}
+   S({pts,w:[front?4.6:5.2,2.3],col:IV});
+   S({pts:[pts[pts.length-1],foot],w:[2.2,2.6],col:IV});
+   S({pts:[[x,fy-3.4,fz-.1],[x,fy-3.0,fz]],w:[3,3],col:GOLD,bias:B});
+   E({x,y:fy-.8,z:fz+.4,rx:2.5,ry:1.5,rz:3,p:4,col:HOOF});
   }
-  // peitoral dourado
-  E({x:0,y:r.chY+2.2,z:r.chZ+Lb0(r),rx:6.2,ry:8,rz:2.8,p:3,col:GOLD,metal:1,bias:B});
-  E({x:0,y:r.chY+2.2,z:r.chZ+Lb0(r)+2.2,rx:2.2,ry:2.2,rz:1.2,p:3,col:hx(0xff4a5a),bias:.6,metal:1});
-  S({pts:[[-5.4,r.chY-3,r.chZ+Lb0(r)-1],[0,r.chY-5.4,r.chZ+Lb0(r)+.4],[5.4,r.chY-3,r.chZ+Lb0(r)-1]],w:[1.8,1.8],col:GOLD2,bias:B});
-  // testeira + penacho
-  const hd=r.hd,dv=r.dv,up=r.up;
-  S({pts:[A3(A3(hd,up,3.2),dv,-1),A3(A3(hd,dv,r.dv?9:9),up,2.6)],w:[3.4,2.4],col:GOLD,metal:1,bias:B});
-  S({pts:[A3(A3(hd,up,-3.6),dv,-3.4),A3(A3(hd,up,-9),dv,-6)],w:[1.8,1.2],col:GOLD2,bias:B});
-  for(const sx of[-1,1])E({x:hd[0]+sx*3.6,y:hd[1]-.4,z:hd[2]+1.4,rx:1.1,ry:2.2,rz:3,p:3,col:GOLD,metal:1,bias:B});
-  {const tt=o.t||0,sw=Math.sin(tt*3)*1.6;S({pts:[A3(hd,up,-4),A3(A3(hd,up,-9),[sw,0,-2]),A3(A3(hd,up,-13),[sw*1.6,0,-6])],w:[2.6,.8],col:hx(0x7ad0ff),bias:.5})}
-  // crina de chamas
-  for(let i=0;i<9;i++){const u=i/8,y=r.chY-6-u*1.5+(r.hpY-r.chY)*u*.6,z=r.chZ+5-u*(r.chZ-r.hpZ)*.3,fl=Math.sin((o.t||0)*6+i*1.3)*1.4;
-   S({pts:[[0,y,z],[fl*.5,y-3.4,z-1.8],[fl,y-6.4-(i%2)*1.6,z-3.6]],w:[2.4,.5],col:(q)=>q>.55?hx(0xe8f6ff):hx(0x6ab8ff),bias:.7})}
-  // cauda em chamas
-  {const tb=[0,r.hpY-1.2,r.hpZ-6.5];for(let i=0;i<4;i++){const f=Math.sin((o.t||0)*5+i*1.7)*2;S({pts:[tb,[f*.5,r.hpY+3,r.hpZ-10-i],[f,r.hpY+8+i*1.2,r.hpZ-13-i*1.4]],w:[2.4,.4],col:(q)=>q>.5?hx(0xe8f6ff):hx(0x5aa8ff),bias:.7})}}
-  // aneis dourados nos cascos e brilho de runa
-  for(let i=0;i<5;i++){const u=((o.t||0)*.7+i*.2)%1;E({x:Math.sin(i*2.4+(o.t||0))*10,y:o.g-4-u*26,z:Math.cos(i*2.4)*9,rx:.8,ry:.8,rz:.8,p:4,col:hx(0xffe08a),bias:1})}
+  // pescoco arqueado
+  const look=b==='look'?Math.sin(T*1.5)*4*w:0,snort=b==='snort'?Math.abs(Math.sin(T*8))*1.4*w:0;
+  const nb=[0,cY-5,cZ+5],nm=[look*.3,cY-15,cZ+10.5],P=[look,cY-24.5+snort-lunge*.3,cZ+14.5+lunge*.5];
+  S({pts:[nb,nm,P],w:[11,6],col:IV,tex:coat});
+  // cabeca de cavalo: cranio, face afilada, focinho
+  const dv=[look*.02,.74,.67],up=[0,-.67,.74];
+  const at=(d,u,l=0)=>[P[0]+dv[0]*d+up[0]*u+l,P[1]+dv[1]*d+up[1]*u,P[2]+dv[2]*d+up[2]*u];
+  E({x:at(2,0)[0],y:at(2,0)[1],z:at(2,0)[2],rx:4,ry:4.6,rz:5,p:3,col:IV});
+  S({pts:[at(3,.2),at(12,-.6)],w:[6.6,4],col:IV});
+  const mz=at(13.4,-.7);E({x:mz[0],y:mz[1],z:mz[2],rx:2.9,ry:2.8,rz:2.8,p:3,col:hx(0xe2ddd4)});
+  const nz=at(14.6,-1.4);for(const sx of[-1,1])E({x:nz[0]+sx*1.2,y:nz[1],z:nz[2],rx:.7,ry:.6,rz:.5,p:4,col:hx(0x6a5a60)});
+  for(const sx of[-1,1]){const e=at(3.6,1.6,sx*3.9);E({x:e[0],y:e[1],z:e[2],rx:1.1,ry:1.2,rz:.9,p:3,col:hx(0x241812),bias:1});
+   const eb=at(0,4.4,sx*2.2),et=at(-1.6,9,sx*2.6);S({pts:[eb,et],w:[2.2,.6],col:IV});S({pts:[A3(eb,[0,0,.5]),A3(et,[0,0,.2])],w:[1,.4],col:hx(0xd8aab0),bias:.3})}
+  // arreios dourados
+  const nbd=at(10.6,-.4),brw=at(1.6,3.4);
+  S({pts:[A3(nbd,[-3.4,0,0]),A3(nbd,[3.4,0,0])],w:[1.5,1.5],col:GOLD,metal:1,bias:B});
+  S({pts:[A3(brw,[-4.4,0,0]),A3(brw,[4.4,0,0])],w:[1.5,1.5],col:GOLD,metal:1,bias:B});
+  E({x:brw[0],y:brw[1]-.2,z:brw[2]+.5,rx:1.2,ry:1.2,rz:.9,p:3,col:hx(0xff4a6a),bias:.8,metal:1});
+  // crina azul-gelo + topete
+  for(let i=0;i<10;i++){const u=i/9,q=u<.5?L3(nb,nm,u*2):L3(nm,P,(u-.5)*2),fl=Math.sin(T*3+i*.9)*1;
+   S({pts:[[q[0],q[1]-4.6,q[2]-.8],[q[0]+fl*.4,q[1]-.4,q[2]-3.6],[q[0]+fl,q[1]+4.6+(i%2)*1.4,q[2]-6.4]],w:[4.6,.9],col:MAN,bias:1})}
+  {const sw=Math.sin(T*3)*1.2;S({pts:[at(0,5),A3(at(2,6.6),[sw*.5,0,0]),A3(at(5.4,5.6),[sw,0,0])],w:[3,.7],col:MAN,bias:1})}
+  // cauda longa e fluida
+  {const tb=[0,hY-7,hZ-8.6],sw=Math.sin(T*(walk?6:2.4))*(walk?2.4:1.2);
+   for(let i=0;i<5;i++){const f=sw+(i-2)*.9;S({pts:[tb,[f*.5,hY-3,hZ-13-i*.5],[f,hY+4+i,hZ-15-i],[f*1.4,hY+12+i*1.4,hZ-15.4-i*1.2]],w:[3,.5],col:MAN,bias:.6})}}
+  // manta carmesim com friso dourado
+  const mY=(cY+hY)/2,mZ=(cZ+hZ)/2,top=mY-8.4;
+  E({x:0,y:top+1.2,z:mZ-1,rx:8.2,ry:3.4,rz:11.5,p:3,col:CRIM,bias:B});
+  for(const sx of[-1,1]){
+   S({pts:[[sx*7.4,top+1.4,mZ-10],[sx*8.8,top+7.5,mZ-9.4],[sx*9,top+12.5,mZ-8.8]],w:[3.8,2.6],col:CRIM,bias:B});
+   S({pts:[[sx*7.4,top+1.4,mZ+8],[sx*8.8,top+7.5,mZ+7.4],[sx*9,top+12.5,mZ+6.8]],w:[3.8,2.6],col:CRIM,bias:B});
+   S({pts:[[sx*9.1,top+12.2,mZ-9],[sx*9.1,top+12.6,mZ+7]],w:[1.2,1.2],col:GOLD,bias:B});
+   for(let i=0;i<6;i++)E({x:sx*9.1,y:top+13.4,z:mZ-8+i*3,rx:.7,ry:1.1,rz:.7,p:3,col:GOLD,bias:B})}
+  E({x:0,y:top-.8,z:mZ-.5,rx:4.8,ry:1.7,rz:6.8,p:3,col:hx(0x4a2a18),bias:B});
+  S({pts:[[0,top-1.6,mZ+5.6],[0,top-4.2,mZ+6.6]],w:[2.4,1.6],col:GOLD2,bias:B});S({pts:[[0,top-1.4,mZ-6.2],[0,top-3.6,mZ-7.4]],w:[2.6,1.8],col:GOLD2,bias:B});
+  // peitoral dourado com gema
+  E({x:0,y:cY+.6,z:cZ+9.8,rx:5.6,ry:4.8,rz:2,p:3,col:GOLD,metal:1,bias:B});
+  E({x:0,y:cY+.4,z:cZ+11.6,rx:1.8,ry:1.8,rz:.9,p:3,col:hx(0xff4a6a),bias:.7,metal:1});
+  S({pts:[[-6,cY-5.4,cZ+7.6],[0,cY-7.2,cZ+9.6],[6,cY-5.4,cZ+7.6]],w:[1.7,1.7],col:GOLD2,bias:B});
+  for(const sx of[-1,1])S({pts:[[sx*7,cY-5.6,cZ+6],[sx*8.8,top+2,mZ+6]],w:[1.5,1.2],col:GOLD2,bias:B});
  }});
- function Lb0(r){return 8.4}
 const PETSCH=[['stand',2.6,6],['sniff',2,8],['stand',1.6,5],['sit',3.4,6],['look',2.2,8],['sit',2,5],['stand',1.2,4]];
  reg('cao',{name:'Cao',w:80,h:60,gy:52,sched:PETSCH,build:(E,S,o)=>canid(E,S,o,{L:20,H:8.5,W:4.2,legL:6.4,legW:1.9,col:hx(0xb08850),col2:hx(0xd8c8a0),stride:4.4,lift:2.2,hw:3.1,hh:2.9,hl:3.4,snoutL:.55,snoutW:.55,snout:hx(0xd8c8a0),eye:hx(0x1a1210),ears:1,earL:.8,earIn:hx(0x8a6a40),tail:1,tailW:2.4,tailTip:hx(0xd8c8a0),hHigh:.6,belly:1})});
  reg('gato',{name:'Gato',w:70,h:56,gy:48,sched:PETSCH,build:(E,S,o)=>canid(E,S,o,{L:15,H:6,W:3,legL:4.6,legW:1.3,col:hx(0x8a8f96),col2:hx(0xc4c8cc),stride:3.4,lift:1.6,hw:2.8,hh:2.6,hl:2.6,snoutL:.15,snoutW:.8,snout:hx(0xe0d4d4),eye:hx(0xe8d040),ears:1,earL:.9,earIn:hx(0xd8a0a8),tail:1,tailW:1.4,tailTip:hx(0x5a5e66),hHigh:.2,belly:1})});
@@ -22664,7 +22686,7 @@ function ROXQM(f, c, s, l, def, ex) {
         a.sitting || (m.rot += (this._cap?.a ?? 0) * (a.ps.equipment.back ? 0.25 : 1));
         var __hz = null;
         if (mnt) {
-          let mw = ROXQM("montaria", s, i.moving ? Math.floor(i.phase * ea) : -1, atkM ? 1 : 0, { id: "montaria" + (a.ps.dye || 0), color: a.ps.dye || 3816006 }), lun = atkM ? Math.sin(Math.min(1, (this.clock - i.atkAt) / Math.max(260, i.atkDur || 0)) * Math.PI) : 0;
+          let mw = ROXQM("montaria", s, i.moving ? Math.floor(i.phase * ea) : -1, atkM ? 1 : 0, { id: "montaria" + (a.ps.dye || 0), color: a.ps.dye || null }), lun = atkM ? Math.sin(Math.min(1, (this.clock - i.atkAt) / Math.max(260, i.atkDur || 0)) * Math.PI) : 0;
           let hz = () => mw && nt(n, mw, r.x, r.y + 10 - lun * 4 + (a.crouching ? 5 : 0), l, $a * 1.5 * (a.sitting ? 1.04 : 1) * (1 + lun * 0.08), $a * 1.5 * (a.sitting ? 0.78 : a.crouching ? 0.93 : 1) * (1 - lun * 0.04));
           s === "down" || s === "dq" ? __hz = hz : hz();
         }

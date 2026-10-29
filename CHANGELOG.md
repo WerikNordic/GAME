@@ -770,3 +770,6 @@
 
 ## v253
 - Painel de Informações básicas: o nome da classe (ex.: "Cavaleiro de Midgard Transcendente") não é mais cortado; quebra de linha abaixo do nome.
+
+## v254
+- Montaria redesenhada: corcel de guerra prateado de verdade (corpo, pescoço arqueado, cabeça de cavalo, patas com cascos, crina e cauda azul-gelo fluidas), manta carmesim com friso dourado, sela, peitoral e arreios dourados — combina com o cavaleiro. Animação de andar/ataque/idle própria. Cor padrão sem tingir; tinta (dye) continua tingindo suavemente.
