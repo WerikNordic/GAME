@@ -1,5 +1,5 @@
 {
  "version": 259,
- "date": "2026-11-03T15:49:42.495Z",
+ "date": "2026-11-03T18:25:14.222Z",
  "notes": "v259\n- Chão pintado: grama, trilhas, margens e bordas do mapa com transições suaves (sem o pontilhado de antes) e menos tufos e florzinhas espalhados.\n- Sombras de nuvens passando pelo chão durante o dia.\n\nv258\n- Visual: sombras projetadas em personagens e criaturas (alongam no entardecer); gradação de cor dia/entardecer/noite com vinheta suave.\n- Interface em madeira escura e pergaminho nórdico (painéis, chat, HUD, abas, botões) e brilho dourado de destaque no herói.\n- Árvores, casas e objetos agora projetam sombra direcional; chão com resolução maior no computador (mais nítido).\n\nv257\n- Montaria: o personagem não some mais no meio das asas (asas em camada separada, mais baixas e recolhidas); removidas as \"bolas\" das articulações e do peito (joelhos, ombros, placa), trocadas por faixas de armadura.\n- Novo ícone do jogo e do atalho: Yggdrasil (a árvore do mundo) dourada sobre um eclipse de Ragnarök, anel de runas e moldura dourada, sem a montaria. Também é o ícone da aba do navegador."
 }

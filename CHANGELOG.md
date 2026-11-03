@@ -796,3 +796,9 @@
 ## v259
 - Chão pintado: grama, trilhas, margens e bordas do mapa com transições suaves (sem o pontilhado de antes) e menos tufos e florzinhas espalhados.
 - Sombras de nuvens passando pelo chão durante o dia.
+
+## v260 — Modo 3D
+- Novo Modo 3D (ligado por padrão; /3d liga ou desliga): o chão de cada mapa vira um terreno 3D com luz do sol e da lua, sombras reais, sombras de nuvens e luz quente de lampiões, fogueiras e portais à noite.
+- Grama 3D com folhas que balançam ao vento nos campos e florestas.
+- Herói em 2.5D: modelo 3D com capa de pano, manto de pele, trança, barba, machado e escudo, desenhado em pixel art em tempo real, com animação de andar e golpe e sombra no chão. Cores da roupa pela classe e cabelo pela aparência.
+- Montado, sentado ou caído, o herói volta ao visual clássico. Interiores e mar aberto continuam no visual clássico.
