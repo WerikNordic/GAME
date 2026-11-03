@@ -15880,7 +15880,7 @@ void main() {
       } else if (l === "snow") {
         let sn = Math.max(0, Math.min(1, (J - 0.2) * 1.5 + (lt(M, w, 91) - 0.5) * 0.12));
         D = sn < 0.5 ? ye(c.t[2], c.t[3], sn * 2) : ye(c.t[3], c.t[4], (sn - 0.5) * 2), lt(M, w, 92) < 0.012 && (D = 16777215);
-      } else D = c.t[R(J, I, M, w)];
+      } else { let gv = Math.max(0, Math.min(3.999, (J - 0.22) / 0.56 * 4 + (lt(M >> 2, w >> 2, 21) - 0.5) * 0.18)), g0 = Math.floor(gv); D = ye(c.t[g0], c.t[g0 + 1], gv - g0); }
       let Z = 0, q = 1e9, H = 16;
       let wbx = f.length ? (Ya(T, z, 24, 6) - 0.5) * 12 : 0, wby = f.length ? (Ya(T, z, 24, 7) - 0.5) * 12 : 0;
       for (let W of f) {
@@ -15889,7 +15889,7 @@ void main() {
       }
       if (q < H + t * 2.4) {
         let W = q - H;
-        W < -t * 1.1 ? (D = c.path[Math.max(0, Math.min(3, Math.floor((J - 0.3) / 0.4 * 4 + (I - 0.5) * 0.8)))], lt(M, w, 41) < 0.05 && (D = c.path[lt(M, w, 42) < 0.5 ? 0 : 3]), Z = 1) : W < 0 ? (D = c.path[0], Z = 1) : I < (1 - W / (t * 2.4)) * 0.85 && (D = c.t[0], Z = 1);
+        W < -t * 1.1 ? ((() => { let pv = Math.max(0, Math.min(2.999, (J - 0.3) / 0.4 * 3)), p0 = Math.floor(pv); D = ye(c.path[p0], c.path[p0 + 1], pv - p0); })(), lt(M, w, 41) < 0.012 && (D = c.path[lt(M, w, 42) < 0.5 ? 0 : 3]), Z = 1) : W < 0 ? (D = c.path[0], Z = 1) : (D = ye(D, c.path[1], 0.75 * (1 - W / (t * 2.4))), W < t * 1.2 && (Z = 1));
       }
       for (let W of k) {
         let C = T - W.x, B = z - W.y, ee = C * C + B * B;
@@ -15901,10 +15901,10 @@ void main() {
       if (V < 0) {
         let B = Math.floor(w / 5), ee = (B & 1) * 4, ne = ((M + ee) % 9 + 9) % 9, Te = w % 5, Ae = Math.floor((M + ee) / 9), Qt = lt(Ae, B, 51);
         D = ne === 0 || Te === 0 ? c.pave[0] : (Te === 1 || ne === 1) && Qt > 0.2 ? c.pave[4] : c.pave[1 + Math.floor(Qt * 3)], lt(M, w, 52) < 0.04 && (D = c.pave[0]), V > -t * 1.2 ? D = c.pave[0] : V > -t * 2.4 && (D = ye(D, c.pave[0], 0.35)), Z = 1;
-      } else V < t * 1.6 ? (D = c.pave[0], Z = 1) : V < t * 3.6 && I > 0.55 && (D = ye(D, c.pave[0], 0.4));
+      } else V < t * 1.6 ? (D = c.pave[0], Z = 1) : V < t * 3.6 && (D = ye(D, c.pave[0], 0.22 * (1 - (V - t * 1.6) / (t * 2))));
       for (let W of u) {
         let C = Jv(T, z, W, Math.min(38, W.h / 2, W.w / 2));
-        if (!(C > t * 4.2)) if (C > 0) C < t * 1.4 ? (D = ye(c.shore, 0, 0.45), Z = 1) : C < t * 4.2 && I < 1 - (C - t * 1.4) / (t * 2.8) && (D = ye(c.shore, c.t[1], lt(M, w, 61) * 0.5), Z = 1);
+        if (!(C > t * 4.2)) if (C > 0) C < t * 1.4 ? (D = ye(c.shore, 0, 0.45), Z = 1) : C < t * 4.2 && (D = ye(D, ye(c.shore, c.t[1], 0.3), Math.max(0, 1 - (C - t * 1.4) / (t * 2.8))), Z = 1);
         else {
           let B = -C, ee = Math.max(0, Math.min(1, (z - W.y) / W.h)), ne = Math.max(0, Math.min(3, Math.floor(ee * 2.2 + (J - 0.5) * 1.4 + (I - 0.5) * 0.7)));
           D = c.water[ne];
@@ -15932,7 +15932,7 @@ void main() {
         let W = Math.hypot(T - x.x, z - x.y);
         if (W < x.r + 44) {
           let C = 1 - W / (x.r + 44);
-          I < C * 1.3 && (D = ye(D, 1182758, 0.7)), Z = 1;
+          D = ye(D, 1182758, 0.7 * Math.min(1, C * 1.3)), Z = 1;
           let B = Math.abs(W - (x.r - 40));
           B < t * 0.8 && (D = 9083630), (Math.atan2(z - x.y, T - x.x) + Math.PI) % (Math.PI / 10) < 0.05 && B < t * 3 && W < x.r - 34 && (D = 11845887), Math.abs(Ya(T, z, 34, 11) - 0.5) < 0.018 && W > 36 && (D = 6977744);
         }
@@ -15940,17 +15940,17 @@ void main() {
       let ae = Math.min(T, z, e.width - T, e.height - z);
       if (ae < 96 && !e.sea) {
         let W = 1 - ae / 96;
-        I < W * 0.95 && (D = ye(D, l === "snow" ? 1714768 : 529420, 0.5));
+        D = ye(D, l === "snow" ? 1714768 : 529420, 0.55 * Math.min(1, W * W * 1.1));
       }
       if (v[w * a + M] = Z, g(M, w, D), Z || ae < 44 || c.floor && l !== "forge" && l !== "marble") continue;
       let K = lt(M, w, 9);
       if (l === "grass" || l === "lush") {
         let W = l === "lush" ? 1.8 : 1;
-        if (K < 0.034 * W) g(M, w, c.t[0]), g(M, w - 1, c.t[4]), g(M - 1, w - 2, c.t[3]), g(M + 1, w - 2, c.t[3]);
-        else if (K < 0.0385 * W) {
+        if (K < 0.011 * W) g(M, w, c.t[0]), g(M, w - 1, c.t[4]), g(M - 1, w - 2, c.t[3]), g(M + 1, w - 2, c.t[3]);
+        else if (K < 0.0128 * W) {
           let C = Math.floor(lt(M, w, 10) * 4), B = c.accent[C];
           g(M, w, 15906864), g(M - 1, w, B), g(M, w - 1, B), g(M - 1, w - 1, B), g(M, w + 0, 15906864);
-        } else K < 0.0395 && l === "grass" && (g(M, w, 15261900), g(M - 1, w - 1, 12862766), g(M, w - 1, 12862766), g(M + 1, w - 1, 12862766), g(M, w - 2, 15096124));
+        } else K < 0.0133 && l === "grass" && (g(M, w, 15261900), g(M - 1, w - 1, 12862766), g(M, w - 1, 12862766), g(M + 1, w - 1, 12862766), g(M, w - 2, 15096124));
       } else l === "snow" ? K < 0.03 ? (g(M, w, c.t[1]), g(M - 1, w - 1, 16777215), g(M, w - 1, 16777215), g(M + 1, w - 1, c.t[4])) : K < 0.036 && (g(M, w, c.accent[3]), g(M, w - 1, c.accent[0]), g(M, w - 2, 16777215), g(M - 1, w - 1, c.accent[2])) : l === "fire" ? (K < 4e-3 ? (g(M, w, 16742954), g(M, w - 1, 16765040)) : K < 0.03 && g(M, w, c.t[0]), Math.abs(Ya(T, z, 34, 13) - 0.5) < 8e-3 && Ya(T, z, 120, 15) > 0.55 && g(M, w, Ya(T, z, 11, 14) > 0.55 ? 16742954 : 787974)) : l === "forge" ? K < 4e-3 && (g(M, w, c.accent[1]), g(M - 1, w, c.accent[0])) : l === "crystal" ? K < 0.012 && (g(M, w, 14678271), g(M, w - 1, 16777215), g(M, w - 2, 16759024), g(M - 1, w - 1, 10152191), g(M + 1, w - 1, 10152191)) : l === "marble" ? K < 3e-3 && (g(M, w, c.accent[0]), g(M - 1, w, c.accent[0])) : l === "void" && K < 0.012 && (g(M, w, c.accent[Math.floor(lt(M, w, 12) * 4)]), lt(M, w, 15) < 0.2 && (g(M - 1, w, 16777215), g(M, w - 1, 16777215)));
     }
     return r.putImageData(i, 0, 0), groundDecals(r, e, a, n, t, v, c, l), o;
@@ -15971,8 +15971,8 @@ void main() {
     r.save();
     if (green) {
       const lu = th === "lush" ? 1.5 : 1;
-      rep(900 * k * lu, (x, y) => { const dk = mixc(T[0], 0, 0.25), lt2 = mixc(T[4], 16777215, 0.1), nb = 3 + (rnd() * 3 | 0); for (let b = 0; b < nb; b++) { const lean = (rnd() - 0.5) * 3, h = 3 + rnd() * 3, bx = x + b - nb / 2; px(bx, y, dk), px(bx + lean * 0.4, y - 1, b % 2 ? lt2 : dk), px(bx + lean * 0.7, y - 2, lt2), h > 4 && px(bx + lean, y - 3, lt2), h > 5 && px(bx + lean * 1.2, y - 4, lt2); } });
-      rep(210 * k * lu, (x, y) => { const nb = 3 + (rnd() * 5 | 0), ac = AC[rnd() * AC.length | 0]; for (let b = 0; b < nb; b++) { const fx = x + (rnd() - 0.5) * 11, fy = y + (rnd() - 0.5) * 7; px(fx, fy + 1, mixc(T[0], 0, 0.1)), px(fx, fy + 2, mixc(T[1], 0, 0.1)); px(fx - 1, fy, hx(ac)), px(fx + 1, fy, hx(ac)), px(fx, fy - 1, hx(ac)), px(fx, fy, 16769024); } });
+      rep(380 * k * lu, (x, y) => { const dk = mixc(T[0], 0, 0.25), lt2 = mixc(T[4], 16777215, 0.1), nb = 3 + (rnd() * 3 | 0); for (let b = 0; b < nb; b++) { const lean = (rnd() - 0.5) * 3, h = 3 + rnd() * 3, bx = x + b - nb / 2; px(bx, y, dk), px(bx + lean * 0.4, y - 1, b % 2 ? lt2 : dk), px(bx + lean * 0.7, y - 2, lt2), h > 4 && px(bx + lean, y - 3, lt2), h > 5 && px(bx + lean * 1.2, y - 4, lt2); } });
+      rep(85 * k * lu, (x, y) => { const nb = 3 + (rnd() * 5 | 0), ac = AC[rnd() * AC.length | 0]; for (let b = 0; b < nb; b++) { const fx = x + (rnd() - 0.5) * 11, fy = y + (rnd() - 0.5) * 7; px(fx, fy + 1, mixc(T[0], 0, 0.1)), px(fx, fy + 2, mixc(T[1], 0, 0.1)); px(fx - 1, fy, hx(ac)), px(fx + 1, fy, hx(ac)), px(fx, fy - 1, hx(ac)), px(fx, fy, 16769024); } });
       rep(150 * k, (x, y) => blob(x, y, 5 + rnd() * 9, 3 + rnd() * 5, mixc(T[0], 0, 0.3), 0.14));
       rep(110 * k, (x, y) => blob(x, y, 5 + rnd() * 8, 2.5 + rnd() * 4, mixc(T[4], 16777215, 0.2), 0.1));
       rep(90 * k, (x, y) => { const nb = 1 + (rnd() * 3 | 0); for (let b = 0; b < nb; b++) { const sx = x + b * 3 - 3, sy = y + (rnd() - 0.5) * 3, g = 8421504 + ((rnd() * 40 | 0) << 16); r.fillStyle = hx(g), r.beginPath(), r.ellipse(sx, sy, 1.7 + rnd(), 1.2, 0, 0, 6.283), r.fill(), px(sx - 1, sy - 1, "#d8d8d8"), px(sx, sy + 1, "#3c3c40"); } });
@@ -23431,6 +23431,20 @@ function ROXQM(f, c, s, l, def, ex) {
         if (warm > 0.01) c.fillStyle = "rgba(255,196,110," + (0.3 * warm).toFixed(3) + ")", c.fillRect(0, 0, w, h);
         if (dusk > 0.01) { let g = c.createLinearGradient(0, 0, 0, h); g.addColorStop(0, "rgba(110,70,200," + (0.75 * dusk).toFixed(3) + ")"), g.addColorStop(1, "rgba(255,130,60," + (0.8 * dusk).toFixed(3) + ")"), c.fillStyle = g, c.fillRect(0, 0, w, h); }
         if (dl < 0.35) { c.globalCompositeOperation = "multiply"; let nt0 = 1 - dl / 0.35; c.fillStyle = "rgba(" + Math.round(255 - 120 * nt0) + "," + Math.round(255 - 95 * nt0) + "," + Math.round(255 - 30 * nt0) + ",1)", c.fillRect(0, 0, w, h); }
+        // sombras de nuvens passando pelo chao (dia, ao ar livre)
+        if (dl > 0.35 && t && !t.indoor && !t.city && !(t.sea && t.sea.all)) {
+          let z = this.zoom || 1, TW = 2600, TH = 2000, dk = Math.min(1, (dl - 0.35) / 0.4), drift = this.clock * 0.011;
+          c.globalCompositeOperation = "multiply";
+          for (let i = 0; i < 7; i++) {
+            let bx = (i * 1213 + 311) % TW, by = (i * 787 + 97) % TH, r = (300 + (i * 137) % 260) * z;
+            let wx = ((bx + drift - (this.camX || 0)) % TW + TW) % TW - TW * 0.25, wy = ((by + drift * 0.45 - (this.camY || 0)) % TH + TH) % TH - TH * 0.25;
+            let sx = wx * z, sy = wy * z;
+            if (sx < -r || sy < -r || sx > w + r || sy > h + r) continue;
+            let g = c.createRadialGradient(sx, sy, 0, sx, sy, r), a0 = 0.26 * dk;
+            g.addColorStop(0, "rgba(70,80,120," + a0.toFixed(3) + ")"), g.addColorStop(0.55, "rgba(70,80,120," + (a0 * 0.6).toFixed(3) + ")"), g.addColorStop(1, "rgba(70,80,120,0)");
+            c.fillStyle = g, c.save(), c.translate(sx, sy), c.scale(1.6, 0.8), c.translate(-sx, -sy), c.fillRect(sx - r, sy - r, r * 2, r * 2), c.restore();
+          }
+        }
         // vinheta suave que concentra o olhar no heroi
         c.globalCompositeOperation = "source-over";
         let v = c.createRadialGradient(w / 2, h / 2, Math.min(w, h) * 0.38, w / 2, h / 2, Math.hypot(w, h) * 0.58), va = 0.3 + 0.25 * (1 - dl);

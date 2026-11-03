@@ -792,3 +792,7 @@
 - Visual: sombras projetadas em personagens e criaturas (alongam no entardecer); gradação de cor dia/entardecer/noite com vinheta suave.
 - Interface em madeira escura e pergaminho nórdico (painéis, chat, HUD, abas, botões) e brilho dourado de destaque no herói.
 - Árvores, casas e objetos agora projetam sombra direcional; chão com resolução maior no computador (mais nítido).
+
+## v259
+- Chão pintado: grama, trilhas, margens e bordas do mapa com transições suaves (sem o pontilhado de antes) e menos tufos e florzinhas espalhados.
+- Sombras de nuvens passando pelo chão durante o dia.
