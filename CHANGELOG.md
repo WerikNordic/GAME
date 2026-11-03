@@ -806,3 +806,7 @@
 ## v261
 - Modo 3D no padrão da demo: árvores 3D de folhagem pintada (folhosas e pinheiros, com neve nos mapas gelados) que projetam sombra real no chão e no herói.
 - Acabamento de câmera no computador: desfoque de maquete nas bordas, brilho nas luzes, curva de cor e vinheta aplicados à imagem inteira.
+
+## v262
+- Modo 3D: monstros dos primeiros mapas em 2.5D, no mesmo padrão do herói (modelo 3D desenhado em pixel art, com contorno e animações de andar, respirar, preparar golpe, atacar e investida): lobos (inclusive lobos de gelo e Hati), javalis, goblins, guardiões de raiz/ents e brotos espinhosos. Cor e tamanho vêm de cada monstro.
+- Desempenho: sombras das árvores e grama montadas por pedaços perto da câmera (sem travar ao entrar em mapas grandes).

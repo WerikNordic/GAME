@@ -21917,7 +21917,8 @@ precision highp float;precision highp int;in vec2 vUV;in float vK;uniform sample
     function chunk(cx, cz) {
       const key = cx + "," + cz; let c = chunks.get(key); if (c) return c;
       const v = []; let sd = (cx * 73856093 ^ cz * 19349663) >>> 0; const rnd = () => (sd = (sd * 1664525 + 1013904223) >>> 0) / 4294967296;
-      const blocked = (x, z) => { for (const o of mapRef.obstacles) { if (o.kind !== "house" && o.kind !== "water" && o.kind !== "wall") continue; if (x > o.x - 6 && x < o.x + o.w + 6 && z > o.y - 6 && z < o.y + o.h + 6) return true; } return false; };
+      const near = mapRef.obstacles.filter((o) => (o.kind === "house" || o.kind === "water" || o.kind === "wall") && o.x - 6 < (cx + 1) * CK && o.x + o.w + 6 > cx * CK && o.y - 6 < (cz + 1) * CK && o.y + o.h + 6 > cz * CK);
+      const blocked = (x, z) => { for (const o of near) { if (x > o.x - 6 && x < o.x + o.w + 6 && z > o.y - 6 && z < o.y + o.h + 6) return true; } return false; };
       const n = MOB ? 420 : 820;
       for (let k = 0; k < n; k++) {
         const x = (cx + rnd()) * CK, z = (cz + rnd()) * CK; if (x < 4 || z < 4 || x > mapRef.width - 4 || z > mapRef.height - 4) continue;
@@ -21950,7 +21951,7 @@ precision highp float;precision highp int;in vec2 vUV;in float vK;uniform sample
         g.strokeStyle = `rgb(${255 * l | 0},${255 * l | 0},${255 * l | 0})`; g.lineWidth = rr(2.5, 4.5); g.lineCap = "round"; g.beginPath(); g.moveTo(x, y); g.quadraticCurveTo((x + ex) / 2 + rr(-8, 8), (y + ey) / 2, ex, ey); g.stroke(); }
       return c;
     }
-    function treeMesh(kind, seed, ox, oz, snow) {
+    function treeMesh(kind, seed, ox, oz, snow, lod = 1) {
       const v = [], s = TK; let sd = (seed * 9301 + 49297) % 233280 || 7; const rnd = () => (sd = (sd * 16807) % 2147483647) / 2147483647, rr = (a, b) => a + (b - a) * rnd();
       const hue = rnd();
       const tri = (a, b, c, col, na, nb, nc) => { for (const [p, n] of [[a, na], [b, nb || na], [c, nc || na]]) v.push(p[0], p[1], p[2], col[0], col[1], col[2], 0, 0, n[0], n[1], n[2], 0); };
@@ -21964,15 +21965,15 @@ precision highp float;precision highp int;in vec2 vUV;in float vK;uniform sample
         for (let b = 0; b < 3; b++) { const a = b * 2.1 + hue * 3; trunk(ox + .1 * k, 2.4 * k, oz, .14 * k, .07 * k, 1.4 * k, bark, 6, [Math.cos(a) * 1.1 * k, Math.sin(a) * 1.1 * k]); }
         const base = mix(hex(0x3b6b2a), hex(0x4f7d2c), hue), hi = mix(hex(0x9dbb54), hex(0xb8c45e), hue);
         const cl = [[0, 4.3, 0, 2.2], [1.2, 3.7, .6, 1.6], [-1.1, 3.8, -.4, 1.65], [.3, 5.4, -.3, 1.5], [-.5, 4.6, 1.0, 1.4], [.9, 4.8, -1.0, 1.3]], cx = ox + .15 * k, cz = oz - .1 * k;
-        for (const [a, b, c, r] of cl) { const cc = [cx + a * k, b * k, cz + c * k], R = r * k, n = Math.round(26 * r * r * .55);
+        for (const [a, b, c, r] of cl) { const cc = [cx + a * k, b * k, cz + c * k], R = r * k, n = Math.max(2, Math.round(26 * r * r * .55 * lod));
           for (let i = 0; i < n; i++) { const d = norm([rr(-1, 1), rr(-.7, 1), rr(-1, 1)]), rad = R * Math.pow(rr(.55, 1), .6), p = [cc[0] + d[0] * rad, cc[1] + d[1] * rad * .82, cc[2] + d[2] * rad];
-            const nn = norm([p[0] - cx, (p[1] - 4.3 * k) * 1.1 + .35 * k, p[2] - cz]), lit = clamp(.5 + .5 * nn[1], 0, 1); card(p, mix(base, hi, clamp(lit * .55 + rnd() * .25, 0, 1)), nn, rr(1.05, 1.55) * k, 0); } }
+            const nn = norm([p[0] - cx, (p[1] - 4.3 * k) * 1.1 + .35 * k, p[2] - cz]), lit = clamp(.5 + .5 * nn[1], 0, 1); card(p, mix(base, hi, clamp(lit * .55 + rnd() * .25, 0, 1)), nn, rr(1.05, 1.55) * k * (lod < 1 ? 1.7 : 1), 0); } }
       } else {
         const k = s * rr(1.0, 1.2); trunk(ox, -.3 * k, oz, .3 * k, .12 * k, 6.2 * k, hex(0x4b3222), 8, [0, 0]);
         let base = mix(hex(0x1f4a30), hex(0x27553a), hue), hi = mix(hex(0x5e8a52), hex(0x6f9a58), hue); if (snow) { hi = [.86, .9, .95]; }
-        for (let L = 0; L < 7; L++) { const f = L / 6, ly = (1.7 + f * 4.9) * k, R = (2.5 - f * 2.0) * k, n = Math.round(20 - f * 12);
+        for (let L = 0; L < 7; L++) { const f = L / 6, ly = (1.7 + f * 4.9) * k, R = (2.5 - f * 2.0) * k, n = Math.max(2, Math.round((20 - f * 12) * lod));
           for (let i = 0; i < n; i++) { const a = i / n * 6.283 + rr(-.2, .2) + L, rad = R * rr(.55, 1), p = [ox + Math.cos(a) * rad, ly + rr(-.25, .25) * k - rad * .25, oz + Math.sin(a) * rad];
-            card(p, mix(base, hi, clamp(.35 + f * .35 + rnd() * .25 + (snow ? .2 : 0), 0, 1)), norm([Math.cos(a), .75, Math.sin(a)]), rr(.9, 1.25) * k * (1 - f * .3), 1); }
+            card(p, mix(base, hi, clamp(.35 + f * .35 + rnd() * .25 + (snow ? .2 : 0), 0, 1)), norm([Math.cos(a), .75, Math.sin(a)]), rr(.9, 1.25) * k * (1 - f * .3) * (lod < 1 ? 1.6 : 1), 1); }
           card([ox, ly - .1 * k, oz], base, [0, 1, 0], R * .9, 1); }
         card([ox, 7 * k, oz], hi, [0, 1, 0], .8 * k, 1);
       }
@@ -22008,13 +22009,153 @@ precision highp float;precision highp int;in vec2 vUV;in float vK;uniform sample
       for (let y = 0; y < TBH; y++) im.data.set(px.subarray((TBH - 1 - y) * TBW * 4, (TBH - y) * TBW * 4), y * TBW * 4);
       g.putImageData(im, 0, 0); c = { cv: cvs, ax: TAX, ay: TAY, k: 1, e3d: true }; treeCache.set(key, c); return c;
     }
+    let treeIdx = new Map(), treeCh = new Map();
     function buildTreeShadows(map) {
-      const v = []; let n = 0;
-      for (const o of map.obstacles) { if (o.kind !== "tree") continue; const c = Sh(o.x, o.y, 11), m = c < .5 ? 0 : c < .82 ? 1 : 2, kind = treeKind(map.treeTheme ?? map.theme ?? "grass", m); if (!kind) continue;
-        const sv = Math.floor(Sh(o.x, o.y, 7) * 4); const t = treeMesh(kind, sv * 131 + 7, o.x + o.w / 2, o.y + o.h / 2, /snow|frost|ice/.test(map.treeTheme ?? map.theme ?? "")); for (let i = 0; i < t.length; i++) v.push(t[i]); if (++n > 900) break; }
-      if (VT) { gl.deleteVertexArray(VT.a); gl.deleteBuffer(VT.b); } VT = vao(v, false);
+      for (const c of treeCh.values()) { gl.deleteVertexArray(c.a); gl.deleteBuffer(c.b); } treeCh.clear(); treeIdx.clear();
+      const th = map.treeTheme ?? map.theme ?? "grass";
+      for (const o of map.obstacles) { if (o.kind !== "tree") continue; const c = Sh(o.x, o.y, 11), m = c < .5 ? 0 : c < .82 ? 1 : 2, kind = treeKind(th, m); if (!kind) continue;
+        const x = o.x + o.w / 2, z = o.y + o.h / 2, key = Math.floor(x / CK) + "," + Math.floor(z / CK); let L = treeIdx.get(key); if (!L) treeIdx.set(key, L = []); L.push([kind, Math.floor(Sh(o.x, o.y, 7) * 4), x, z]); }
+      treeSnow = /snow|frost|ice/.test(th);
     }
+    let treeSnow = false;
+    function treeChunk(gx, gz) { const key = gx + "," + gz; let c = treeCh.get(key); if (c) return c; const L = treeIdx.get(key); if (!L) return null; const v = []; for (const [kind, sv, x, z] of L) { const t = treeMesh(kind, sv * 131 + 7, x, z, treeSnow, .3); for (let i = 0; i < t.length; i++) v.push(t[i]); } c = vao(v, false); treeCh.set(key, c); return c; }
 
+    // ---------- monstros 3D (modelos por forma, renderizados como sprites em pixel art) ----------
+    const MM = (() => {
+      const I = () => new Float32Array([1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1]);
+      const T = (x, y, z) => { const m = I(); m[12] = x; m[13] = y; m[14] = z; return m; };
+      const RX = (a) => { const c = Math.cos(a), s = Math.sin(a), m = I(); m[5] = c; m[6] = s; m[9] = -s; m[10] = c; return m; };
+      const RY = (a) => { const c = Math.cos(a), s = Math.sin(a), m = I(); m[0] = c; m[2] = -s; m[8] = s; m[10] = c; return m; };
+      const RZ = (a) => { const c = Math.cos(a), s = Math.sin(a), m = I(); m[0] = c; m[1] = s; m[4] = -s; m[5] = c; return m; };
+      const SC = (x, y, z) => { const m = I(); m[0] = x; m[5] = y; m[10] = z; return m; };
+      const X = (...ms) => ms.reduce((a, b) => M.mul(a, b));
+      function Model() { const parts = {}; const add = (b, v) => { (parts[b] = parts[b] || []).push(...v); };
+        return { parts,
+          ell(b, cx, cy, cz, rx, ry, rz, colF, su = 12, sv = 8, opt = {}) { const V = []; for (let j = 0; j <= sv; j++) { V.push([]); const th = j / sv * Math.PI; for (let i = 0; i <= su; i++) { const ph = i / su * Math.PI * 2, n = [Math.sin(th) * Math.cos(ph), Math.cos(th), Math.sin(th) * Math.sin(ph)];
+            const p = [cx + n[0] * rx, cy + n[1] * ry, cz + n[2] * rz]; const nn = norm([n[0] / rx, n[1] / ry, n[2] / rz]); V[j].push({ p, n: nn, c: typeof colF === "function" ? colF(p, nn, n) : colF }); } }
+            const out = []; for (let j = 0; j < sv; j++) for (let i = 0; i < su; i++) { const a = V[j][i], q = V[j][i + 1], c = V[j + 1][i], d = V[j + 1][i + 1]; out.push(a, c, q, q, c, d); } add(b, out); },
+          tube(b, pts, colF, seg = 8) { const R = []; for (const [x, y, z, rx, rz] of pts) { const ring = []; for (let i = 0; i <= seg; i++) { const a = i / seg * Math.PI * 2; ring.push({ p: [x + Math.cos(a) * rx, y, z + Math.sin(a) * rz], n: norm([Math.cos(a) / rx, 0, Math.sin(a) / rz]), c: typeof colF === "function" ? colF(y) : colF }); } R.push(ring); }
+            const out = []; for (let j = 0; j < R.length - 1; j++) for (let i = 0; i < seg; i++) { const a = R[j][i], q = R[j][i + 1], c = R[j + 1][i], d = R[j + 1][i + 1]; out.push(a, q, c, q, d, c); } add(b, out); },
+          cone(b, x, y, z, r, h, col, dir = [0, 1, 0], seg = 6) { const out = []; const d = norm(dir); const up = Math.abs(d[1]) < .9 ? [0, 1, 0] : [1, 0, 0]; const u = norm(cross(d, up)), v = cross(d, u); const tip = [x + d[0] * h, y + d[1] * h, z + d[2] * h];
+            for (let i = 0; i < seg; i++) { const a0 = i / seg * 6.283, a1 = (i + 1) / seg * 6.283; const p0 = [x + (u[0] * Math.cos(a0) + v[0] * Math.sin(a0)) * r, y + (u[1] * Math.cos(a0) + v[1] * Math.sin(a0)) * r, z + (u[2] * Math.cos(a0) + v[2] * Math.sin(a0)) * r];
+              const p1 = [x + (u[0] * Math.cos(a1) + v[0] * Math.sin(a1)) * r, y + (u[1] * Math.cos(a1) + v[1] * Math.sin(a1)) * r, z + (u[2] * Math.cos(a1) + v[2] * Math.sin(a1)) * r]; const n = norm(cross(sub(p1, p0), sub(tip, p0))); out.push({ p: p0, n, c: col }, { p: p1, n, c: col }, { p: tip, n, c: col }); } add(b, out); },
+          bake() { const B = {}; for (const k in parts) { const L = parts[k], f = new Float32Array(L.length * 9); L.forEach((v, i) => { f.set(v.p, i * 9); f.set(v.n, i * 9 + 3); f.set(v.c, i * 9 + 6); }); B[k] = f; } return B; } };
+      }
+      const nz = (p, s) => vnoise(p[0] * s + p[2] * s * .7 + 3.1, p[1] * s + 1.7);
+      const lighten = (c, k) => mix(c, [1, 1, 1], k), darken = (c, k) => scl(c, 1 - k);
+      // ---- construtores por forma (unidades: raio do monstro = 1) ----
+      const build = {
+        wolf(col) { const m = Model(), fur = col, belly = lighten(col, .35), back = darken(col, .35), eye = [.95, .8, .3];
+          m.ell("body", 0, 1.35, 0, .62, .6, 1.25, (p, n) => mix(mix(fur, back, clamp(n[1] * 1.2, 0, 1) * .6), belly, clamp(-n[1] * 1.3, 0, 1) * .7), 12, 8);
+          m.ell("body", 0, 1.55, .85, .66, .66, .62, (p, n) => mix(fur, belly, clamp(-n[1] + .1 + n[2] * .3, 0, 1) * .6), 12, 8);
+          m.ell("head", 0, .1, .35, .45, .42, .5, (p, n) => mix(fur, back, clamp(n[1], 0, 1) * .45), 12, 8); m.ell("head", 0, -.04, .85, .2, .18, .38, belly, 8, 6); m.ell("head", 0, .02, 1.22, .08, .07, .06, [.08, .06, .06], 6, 4);
+          for (const s of [-1, 1]) { m.cone("head", s * .24, .38, .2, .12, .38, back, [s * .25, 1, -.15]); m.ell("head", s * .19, .2, .74, .06, .05, .04, eye, 6, 4); }
+          m.tube("tail", [[0, 0, 0, .14, .14], [0, -.35, -.25, .18, .18], [0, -.8, -.45, .15, .15], [0, -1.1, -.5, .06, .06]], (y) => y < -.8 ? belly : fur, 7);
+          for (const k of ["fl", "fr", "bl", "br"]) { m.tube(k + "1", [[0, 0, 0, .2, .22], [0, -.45, 0, .14, .15], [0, -.7, 0, .11, .12]], fur, 7); m.tube(k + "2", [[0, 0, 0, .11, .12], [0, -.55, .04, .09, .1]], darken(fur, .1), 7); m.ell(k + "2", 0, -.6, .1, .12, .07, .17, back, 8, 5); }
+          return m.bake(); },
+        boar(col) { const m = Model(), hide = col, dark = darken(col, .45), snout = lighten(col, .25), tusk = [.95, .92, .82];
+          m.ell("body", 0, 1.3, 0, .82, .72, 1.25, (p, n) => mix(hide, dark, clamp(n[1] * 1.2 - .1, 0, 1) * .55), 12, 8);
+          for (let i = 0; i < 9; i++) m.cone("body", 0, 1.95 - Math.abs(i - 4) * .03, -.8 + i * .2, .09, .32, dark, [0, 1, -.2]);
+          m.ell("head", 0, 0, .3, .55, .5, .6, hide, 12, 8); m.tube("head", [[0, -.1, .7, .26, .22], [0, -.12, 1.08, .24, .2]], snout, 8); m.ell("head", 0, -.12, 1.1, .24, .2, .05, darken(snout, .3), 8, 5);
+          for (const s of [-1, 1]) { m.cone("head", s * .2, -.24, .95, .06, .4, tusk, [s * .3, .9, .45]); m.cone("head", s * .3, .38, .1, .13, .3, dark, [s * .4, 1, -.3]); m.ell("head", s * .26, .16, .66, .06, .05, .04, [.15, .05, .03], 6, 4); }
+          m.tube("tail", [[0, 0, 0, .06, .06], [0, -.25, -.1, .04, .04]], dark, 6);
+          for (const k of ["fl", "fr", "bl", "br"]) { m.tube(k + "1", [[0, 0, 0, .22, .24], [0, -.4, 0, .16, .17]], hide, 7); m.tube(k + "2", [[0, 0, 0, .14, .15], [0, -.4, 0, .12, .12]], dark, 7); m.ell(k + "2", 0, -.42, .04, .13, .06, .15, [.12, .1, .08], 6, 4); }
+          return m.bake(); },
+        goblin(col) { const m = Model(), skin = col, skinD = darken(col, .3), cloth = [.42, .3, .18], leather = [.3, .2, .12], metal = [.6, .62, .66];
+          m.ell("pelvis", 0, 0, 0, .42, .32, .32, cloth, 10, 6); m.tube("pelvis", [[0, -.05, 0, .46, .36], [0, -.45, 0, .5, .4]], (y) => y < -.38 ? leather : cloth, 10);
+          m.ell("chest", 0, .45, 0, .48, .55, .38, (p, n) => mix(skin, skinD, clamp(.4 - n[1], 0, 1) * .5), 10, 8); m.tube("chest", [[0, .7, 0, .5, .4], [0, .25, 0, .46, .36]], leather, 10);
+          m.ell("head", 0, .55, .05, .62, .55, .55, (p, n) => mix(skin, skinD, clamp(-n[1] * .6 + .2, 0, 1)), 12, 9); m.ell("head", 0, .45, .58, .14, .2, .16, skinD, 8, 6);
+          for (const s of [-1, 1]) { m.cone("head", s * .55, .65, 0, .16, .75, skin, [s, .25, -.15]); m.ell("head", s * .22, .66, .45, .1, .09, .06, [.95, .85, .2], 6, 4); m.ell("head", s * .22, .66, .5, .04, .05, .02, [.05, .03, .03], 5, 3); }
+          m.ell("head", 0, .22, .42, .25, .07, .08, [.2, .05, .05], 8, 4);
+          for (const s of ["L", "R"]) { m.tube("ua" + s, [[0, 0, 0, .15, .15], [0, -.45, 0, .12, .12]], skin, 7); m.tube("fa" + s, [[0, 0, 0, .12, .12], [0, -.42, 0, .1, .1]], skin, 7); m.ell("fa" + s, 0, -.5, 0, .14, .14, .14, skinD, 7, 5);
+            m.tube("th" + s, [[0, 0, 0, .17, .17], [0, -.45, 0, .14, .14]], skinD, 7); m.tube("sh" + s, [[0, 0, 0, .13, .13], [0, -.42, 0, .11, .11]], skin, 7); m.ell("sh" + s, 0, -.5, .1, .16, .09, .24, leather, 7, 5); }
+          m.tube("club", [[0, .1, 0, .07, .07], [0, -1.1, 0, .16, .16]], [.45, .3, .16], 7); m.ell("club", 0, -1.15, 0, .2, .2, .2, [.4, .27, .14], 7, 5); for (let i = 0; i < 4; i++) m.cone("club", Math.cos(i * 1.57) * .18, -1.05, Math.sin(i * 1.57) * .18, .05, .2, metal, [Math.cos(i * 1.57), -.2, Math.sin(i * 1.57)]);
+          return m.bake(); },
+        sylvan(col) { const m = Model(), bark = [.36, .25, .16], barkD = [.22, .15, .1], leaf = col, leafL = lighten(col, .3), glow = [.75, 1, .55];
+          m.tube("body", [[0, 0, 0, .45, .4], [0, .6, 0, .52, .46], [0, 1.3, 0, .48, .42], [0, 1.7, 0, .38, .34]], (y) => ((y * 7) % 1 + 1) % 1 < .3 ? barkD : bark, 9);
+          for (let i = 0; i < 16; i++) { const a = i / 16 * 6.283, r = .4 + (i % 3) * .1; m.ell("body", Math.cos(a) * r * .9, 1.95 + (i % 4) * .1, Math.sin(a) * r * .8, .38, .3, .34, (p, n) => mix(leaf, leafL, clamp(n[1] * .7 + nz(p, 3) * .4, 0, 1)), 8, 6); }
+          m.ell("body", 0, 2.25, 0, .5, .35, .45, leafL, 10, 6);
+          for (const s of [-1, 1]) m.ell("body", s * .17, 1.35, .42, .09, .06, .04, glow, 6, 4);
+          m.ell("body", 0, 1.1, .44, .16, .05, .03, barkD, 6, 4);
+          for (const s of ["L", "R"]) { m.tube("ua" + s, [[0, 0, 0, .14, .14], [0, -.6, 0, .1, .1]], bark, 7); m.tube("fa" + s, [[0, 0, 0, .1, .1], [0, -.55, 0, .06, .06]], barkD, 6); for (let k = 0; k < 3; k++) m.cone("fa" + s, 0, -.5, 0, .04, .3, bark, [(k - 1) * .6, -1, .3]); m.ell("fa" + s, 0, -.2, 0, .2, .14, .2, leaf, 6, 5);
+            m.tube("th" + s, [[0, 0, 0, .2, .2], [0, -.45, 0, .18, .18]], bark, 7); m.tube("sh" + s, [[0, 0, 0, .18, .18], [0, -.4, .05, .24, .22]], barkD, 7); for (let k = 0; k < 3; k++) m.cone("sh" + s, (k - 1) * .12, -.4, .1, .07, .35, barkD, [(k - 1) * .6, -.4, 1]); }
+          return m.bake(); },
+        blob(col) { const m = Model(), g1 = col, g2 = lighten(col, .35), g3 = darken(col, .4), thorn = [.86, .82, .6];
+          m.ell("body", 0, .7, 0, 1, .72, .95, (p, n) => mix(mix(g3, g1, clamp(n[1] * .5 + .6, 0, 1)), g2, clamp(n[1] - .35, 0, 1) * .9), 14, 9);
+          for (let i = 0; i < 14; i++) { const a = i * 2.4, e = .3 + (i % 5) * .12; const d = norm([Math.cos(a) * Math.cos(e), Math.sin(e) + .2, Math.sin(a) * Math.cos(e)]); m.cone("body", d[0] * .9, .7 + d[1] * .62, d[2] * .85, .08, .38, thorn, d); }
+          m.ell("body", .2, 1.42, 0, .25, .07, .14, g2, 8, 4); m.ell("body", -.15, 1.44, .05, .2, .06, .12, lighten(g2, .2), 8, 4);
+          for (const s of [-1, 1]) { m.ell("body", s * .3, .82, .82, .13, .16, .06, [.06, .07, .05], 8, 6); m.ell("body", s * .3 + .05, .88, .87, .045, .05, .02, [1, 1, 1], 5, 3); }
+          return m.bake(); }
+      };
+      build.frostwolf = build.wolf; build.hati = build.wolf;
+      const cache = new Map();
+      function model(shape, color) { const k = shape + ":" + color; let b = cache.get(k); if (!b) { const f = build[shape]; if (!f) return null; b = f(hex(color)); cache.set(k, b); } return b; }
+      // poses: devolve matrizes por parte (local, raio=1). st: {ph (0..1 andar), mv, atk:-1|0..1 (preparo->golpe), idle (0..1)}
+      function pose(shape, st) {
+        const w = st.ph * Math.PI * 2, mv = st.mv ? 1 : 0, br = Math.sin(st.idle * Math.PI * 2) * .03, a = st.atk;
+        if (shape === "wolf" || shape === "frostwolf" || shape === "hati" || shape === "boar") {
+          const boar = shape === "boar"; const bob = mv ? Math.abs(Math.sin(w)) * .12 : br; let lunge = 0, headP = 0;
+          if (a >= 0) { if (a < .5) { lunge = -.25 * (a / .5); headP = .35 * (a / .5); } else { const k = (a - .5) / .5; lunge = Math.sin(k * Math.PI) * (boar ? .9 : .7) - .25 * (1 - k); headP = .35 - .7 * Math.sin(k * Math.PI); } }
+          const root = X(T(0, bob, lunge), RX(-mv * .05));
+          const sw = (ph) => mv ? Math.sin(w + ph) * .6 : 0, kn = (ph) => mv ? Math.max(0, Math.sin(w + ph + .8)) * .9 : .05;
+          const L = boar ? { fx: .4, bx: .45, fz: .8, bz: -.75, hy: 1.15 } : { fx: .32, bx: .32, fz: .85, bz: -.85, hy: 1.2 };
+          const out = { body: root, head: X(root, T(0, 1.55 + (boar ? -.1 : 0), boar ? 1.15 : 1.35), RX(headP + (mv ? Math.sin(w * 2) * .05 : 0))), tail: X(root, T(0, 1.55, -1.15), RY(Math.sin(st.idle * 6.28 * (mv ? 3 : 1)) * .35), RX(-.6)) };
+          for (const [k, x, z, ph] of [["fl", L.fx, L.fz, 0], ["fr", -L.fx, L.fz, Math.PI], ["bl", L.bx, L.bz, Math.PI], ["br", -L.bx, L.bz, 0]]) { const up = X(root, T(x, L.hy, z), RX(sw(ph))); out[k + "1"] = up; out[k + "2"] = X(up, T(0, boar ? -.4 : -.7, 0), RX(z > 0 ? -kn(ph) * .4 : kn(ph))); }
+          return out; }
+        if (shape === "goblin" || shape === "sylvan") {
+          const syl = shape === "sylvan", bob = mv ? Math.abs(Math.sin(w)) * .08 : br, sw = mv ? Math.sin(w) * .55 : 0;
+          let shR = -.2 - sw * .6, elR = -.3, twist = -sw * .15;
+          if (a >= 0) { if (a < .5) { const k = a / .5; shR = -2.6 * k; elR = -.4 - .5 * k; twist = .4 * k; } else { const k = (a - .5) / .5, e = 1 - Math.pow(1 - k, 3); shR = -2.6 + 2.2 * e; elR = -.9 + .7 * e; twist = .4 - .8 * e; } }
+          const hip = syl ? 1.0 : .95, root = X(T(0, hip + bob, 0)), chest = X(root, T(0, syl ? 0 : .15, 0), RY(twist), RX(mv * .08));
+          const o = { pelvis: root, chest, body: root, head: X(chest, T(0, syl ? 0 : .95, 0), RX(Math.sin(st.idle * 6.28) * .04)) };
+          const sx = syl ? .6 : .55, sy = syl ? 1.45 : .78;
+          o.uaR = X(chest, T(-sx, sy, 0), RZ(.15), RX(shR)); o.faR = X(o.uaR, T(0, syl ? -.6 : -.45, 0), RX(elR)); o.club = X(o.faR, T(0, -.5, 0), RX(1.3));
+          o.uaL = X(chest, T(sx, sy, 0), RZ(-.15), RX(sw * .6)); o.faL = X(o.uaL, T(0, syl ? -.6 : -.45, 0), RX(-.35));
+          for (const [s, x, ph] of [["L", .22, 0], ["R", -.22, Math.PI]]) { const leg = mv ? Math.sin(w + ph) * .7 : 0; o["th" + s] = X(root, T(x * (syl ? 1.3 : 1), syl ? .05 : -.2, 0), RX(-leg)); o["sh" + s] = X(o["th" + s], T(0, -.45, 0), RX(mv ? Math.max(0, -Math.sin(w + ph + .5)) * 1.1 + .1 : .05)); }
+          if (syl) delete o.club;
+          return o; }
+        // blob
+        const hop = mv ? Math.abs(Math.sin(w)) * .4 : 0, sq = mv ? Math.cos(w * 2) * .12 : Math.sin(st.idle * 6.28) * .05; let lunge = 0; if (a >= 0) lunge = a < .5 ? -.2 * a / .5 : Math.sin((a - .5) / .5 * Math.PI) * .7;
+        return { body: X(T(0, hop, lunge), SC(1 + sq * .6, 1 - sq, 1 + sq * .6)) };
+      }
+      function skin(shape, color, st, k, yaw, out) { const B = model(shape, color); if (!B) return false; const P = pose(shape, st); const root = X(SC(-k, k, k), RY(yaw));
+        for (const name in B) { const pm = P[name] || P.body || P.chest; if (!pm) continue; const m = M.mul(root, pm), f = B[name];
+          for (let i = 0; i < f.length; i += 9) { const x = f[i], y = f[i + 1], z = f[i + 2], nx = f[i + 3], ny = f[i + 4], nzv = f[i + 5]; const q = [m[0] * nx + m[4] * ny + m[8] * nzv, m[1] * nx + m[5] * ny + m[9] * nzv, m[2] * nx + m[6] * ny + m[10] * nzv], l = Math.hypot(q[0], q[1], q[2]) || 1;
+            out.push(m[0] * x + m[4] * y + m[8] * z + m[12], m[1] * x + m[5] * y + m[9] * z + m[13], m[2] * x + m[6] * y + m[10] * z + m[14], f[i + 6], f[i + 7], f[i + 8], 0, 0, q[0] / l, q[1] / l, q[2] / l, 0); } }
+        return true; }
+      return { skin, has: (s) => !!build[s] };
+    })();
+    const monCache = new Map(); let bakesThisFrame = 0, lastBakeFrame = -1;
+    const MSZ = { wolf: 1.1, frostwolf: 1.1, hati: 1.1, boar: 1.0, goblin: .95, sylvan: 1.4, blob: 1.3 };
+    function monSprite(m, anim, clock, frameNo) {
+      if (!on || broken || !gl || !TB_FB) return null; const d = m.def, shape = d.shape; if (!MM.has(shape) || m.state === "dead" || d.ghostLine || d.boss && shape !== "hati") return null;
+      if (frameNo !== lastBakeFrame) { lastBakeFrame = frameNo; bakesThisFrame = 0; }
+      const mv = !!anim.moving, dir = ((Math.round((m.facing || 0) / (Math.PI * 2) * 12) % 12) + 12) % 12, yb = Math.round(_8 / (Math.PI * 2) * 24), tb = Math.round(zr * 20);
+      let anm = "i", fr = 0, atk = -1;
+      if (m.state === "windup") { anm = "w"; atk = .35; } else if (m.state === "recover" || m.state === "attack") { anm = "a"; atk = .8; } else if (m.state === "charge") { anm = "c"; fr = Math.floor((clock / 70) % 6); } else if (mv) { anm = "m"; fr = Math.floor(anim.phase * 6) % 6; } else { fr = Math.floor((clock / 600 + (anim.seed || 0)) % 2); }
+      const key = shape + d.color + ":" + d.radius + ":" + dir + ":" + anm + fr + ":" + yb + ":" + tb; let c = monCache.get(key); if (c) return c;
+      if (bakesThisFrame >= 6) return null; bakesThisFrame++;
+      if (monCache.size > 900) monCache.clear();
+      const k = d.radius * (MSZ[shape] || 1);
+      const st = { ph: anm === "c" ? fr / 6 : anm === "m" ? fr / 6 : 0, mv: anm === "m" || anm === "c", atk, idle: fr * .25 };
+      const verts = []; if (!MM.skin(shape, d.color, st, k, Math.PI / 2 - dir / 12 * Math.PI * 2, verts)) return null;
+      const [Pa, Pb, Pc, Pd] = Pu(); const sx = 2 / TBW, sy = 2 / TBH, q2 = 1 / 900;
+      const TV = new Float32Array([sx * Pa, -sy * Pb, -Pb * q2, 0, 0, sy, -1.15 * q2, 0, sx * Pc, -sy * Pd, -Pd * q2, 0, (TAX - TBW / 2) * sx, 1 - sy * TAY, 0, 1]);
+      const V = vao(verts, false);
+      gl.bindFramebuffer(gl.FRAMEBUFFER, TB_FB); gl.viewport(0, 0, TBW, TBH); gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT); gl.enable(gl.DEPTH_TEST); gl.disable(gl.BLEND);
+      gl.useProgram(P1); gl.uniformMatrix4fv(ul(P1, "uVP"), false, TV); gl.uniform1i(ul(P1, "uNoSh"), 1); gl.uniform3fv(ul(P1, "uSun"), norm([-.5, .78, -.38])); gl.uniform3fv(ul(P1, "uSunCol"), [1, .9, .74]); gl.uniform3fv(ul(P1, "uSky"), [.55, .66, .86]); gl.uniform3fv(ul(P1, "uGnd"), [.4, .33, .24]);
+      gl.uniform1f(ul(P1, "uAmbK"), .68); gl.uniform1f(ul(P1, "uNight"), 0); gl.uniform1i(ul(P1, "uNL"), 0); gl.uniform1f(ul(P1, "uFlash"), 0); gl.uniform3fv(ul(P1, "uView"), norm([0, 1, 1.4]));
+      gl.uniform1i(ul(P1, "uMode"), 10); gl.bindVertexArray(V.a); gl.drawArrays(gl.TRIANGLES, 0, V.n);
+      const px = new Uint8Array(TBW * TBH * 4); gl.readPixels(0, 0, TBW, TBH, gl.RGBA, gl.UNSIGNED_BYTE, px); gl.bindFramebuffer(gl.FRAMEBUFFER, null); gl.uniform1i(ul(P1, "uNoSh"), 0); gl.deleteVertexArray(V.a); gl.deleteBuffer(V.b);
+      // recorte + contorno
+      let x0 = TBW, y0 = TBH, x1 = -1, y1 = -1; const A = (x, y) => x >= 0 && y >= 0 && x < TBW && y < TBH ? px[((TBH - 1 - y) * TBW + x) * 4 + 3] : 0;
+      for (let y = 0; y < TBH; y++) for (let x = 0; x < TBW; x++) if (A(x, y) > 127) { if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y; }
+      if (x1 < 0) return null; x0 = Math.max(0, x0 - 1); y0 = Math.max(0, y0 - 1); x1 = Math.min(TBW - 1, x1 + 1); y1 = Math.min(TBH - 1, y1 + 1);
+      const w = x1 - x0 + 1, h = y1 - y0 + 1, cvs = document.createElement("canvas"); cvs.width = w; cvs.height = h; const g = cvs.getContext("2d"), im = g.createImageData(w, h), D = im.data;
+      for (let y = y0; y <= y1; y++) for (let x = x0; x <= x1; x++) { const si = ((TBH - 1 - y) * TBW + x) * 4, di = ((y - y0) * w + (x - x0)) * 4;
+        if (px[si + 3] > 127) { D[di] = px[si]; D[di + 1] = px[si + 1]; D[di + 2] = px[si + 2]; D[di + 3] = 255; } else if (A(x + 1, y) > 127 || A(x - 1, y) > 127 || A(x, y + 1) > 127 || A(x, y - 1) > 127) { D[di] = 10; D[di + 1] = 7; D[di + 2] = 8; D[di + 3] = 255; } }
+      g.putImageData(im, 0, 0); c = { cv: cvs, ax: TAX - x0, ay: TAY - y0 - 4, k: 1, key: "e3d" + key }; monCache.set(key, c); return c;
+    }
     // ---------- composição final (cena 3D + camada 2D) com pós-processamento ----------
     const POST = !MOB; let PP = null, SCF = null, SCT = null, SCD = null, OVT = null, SW = 0, SH2 = 0;
     const PVS = `#version 300 es
@@ -22077,9 +22218,10 @@ void main(){vec2 px=1./uRes;float band=smoothstep(.26,.5,abs(vUV.y-.5));float r=
         const vis = []; const x0 = Math.floor((Rx - 200) / CK), x1 = Math.floor((Rx + cw / s + 200) / CK);
         // região visível em coordenadas de mundo: usar os 4 cantos da tela
         let mnx = 1e9, mxx = -1e9, mnz = 1e9, mxz = -1e9; for (const [sx, sy] of [[0, 0], [cw, 0], [0, ch], [cw, ch]]) { const w = Gu(Rx + sx / s, Ry + sy / s); mnx = Math.min(mnx, w.x); mxx = Math.max(mxx, w.x); mnz = Math.min(mnz, w.y); mxz = Math.max(mxz, w.y); }
-        for (let gx = Math.floor((mnx - 60) / CK); gx <= Math.floor((mxx + 60) / CK); gx++) for (let gz = Math.floor((mnz - 60) / CK); gz <= Math.floor((mxz + 60) / CK); gz++) { if (gx < 0 || gz < 0 || gx * CK > map.width || gz * CK > map.height) continue; vis.push(chunk(gx, gz)); }
+        let gb = 0; for (let gx = Math.floor((mnx - 60) / CK); gx <= Math.floor((mxx + 60) / CK); gx++) for (let gz = Math.floor((mnz - 60) / CK); gz <= Math.floor((mxz + 60) / CK); gz++) { if (gx < 0 || gz < 0 || gx * CK > map.width || gz * CK > map.height) continue; if (!chunks.has(gx + "," + gz)) { if (gb >= 3) continue; gb++; } vis.push(chunk(gx, gz)); }
         gl.uniform1i(ul(P2, "uMode"), 6); for (const c of vis) { gl.bindVertexArray(c.a); gl.drawArrays(gl.TRIANGLES, 0, c.n); }
-        if (VT && VT.n) { gl.uniform3fv(ul(P2, "uRight"), [LV[0], LV[4], LV[8]]); gl.uniform3fv(ul(P2, "uUp"), [LV[1], LV[5], LV[9]]); gl.activeTexture(gl.TEXTURE2); gl.bindTexture(gl.TEXTURE_2D, leafTex); gl.uniform1i(ul(P2, "uLeaf"), 2); gl.uniform1i(ul(P2, "uMode"), 5); gl.bindVertexArray(VT.a); gl.drawArrays(gl.TRIANGLES, 0, VT.n); }
+        { gl.uniform3fv(ul(P2, "uRight"), [LV[0], LV[4], LV[8]]); gl.uniform3fv(ul(P2, "uUp"), [LV[1], LV[5], LV[9]]); gl.activeTexture(gl.TEXTURE2); gl.bindTexture(gl.TEXTURE_2D, leafTex); gl.uniform1i(ul(P2, "uLeaf"), 2); gl.uniform1i(ul(P2, "uMode"), 5);
+          let built = 0; for (let gx = Math.floor((mnx - 260) / CK); gx <= Math.floor((mxx + 260) / CK); gx++) for (let gz = Math.floor((mnz - 260) / CK); gz <= Math.floor((mxz + 260) / CK); gz++) { const key = gx + "," + gz; if (!treeCh.has(key) && built > 2) continue; if (!treeCh.has(key)) built++; const c = treeChunk(gx, gz); if (c && c.n) { gl.bindVertexArray(c.a); gl.drawArrays(gl.TRIANGLES, 0, c.n); } } }
         if (VH.n) { gl.uniform1i(ul(P2, "uMode"), 10); gl.bindVertexArray(VH.a); gl.drawArrays(gl.TRIANGLES, 0, VH.n); }
         // cena
         if (POST) { ensureSC(W, H); gl.bindFramebuffer(gl.FRAMEBUFFER, SCF); } else gl.bindFramebuffer(gl.FRAMEBUFFER, null); gl.viewport(0, 0, W, H); gl.clearColor(.055 + .03 * dl, .1 + .05 * dl, .1 + .06 * dl, 1); gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
@@ -22119,7 +22261,7 @@ void main(){vec2 px=1./uRes;float band=smoothstep(.26,.5,abs(vUV.y-.5));float r=
       } catch (e) { console.error("Modo 3D desativado:", e); broken = true; if (cv) cv.style.display = "none"; r.canvas.style.opacity = "1"; return false; }
     }
     function drawHero(r, ctx, c0) { if (!heroReady || !r._e3dHero) return false; const h = { cx: c0 ? c0.x : r._e3dHero.cx, cy: c0 ? c0.y - HC : r._e3dHero.cy }; ctx.save(); ctx.imageSmoothingEnabled = false; ctx.drawImage(heroCanvas, h.cx - TWW / 2, h.cy - THW / 2, TWW, THW); ctx.restore(); return true; }
-    return { frame, drawHero, treeSprite, isOn: () => on && !broken, setOn, toggle() { setOn(!on); return on; }, heroOk: () => heroReady };
+    return { frame, drawHero, treeSprite, monSprite, isOn: () => on && !broken, setOn, toggle() { setOn(!on); return on; }, heroOk: () => heroReady };
   })();
   var B4 = '"Cinzel Decorative", "Uncial Antiqua", Georgia, serif', ms = 'Arial, "Helvetica Neue", Helvetica, sans-serif', X0 = 30, CS = { common: "#d9d9d9", uncommon: "#6fe08a", rare: "#5aa9ff", epic: "#c07bff", legendary: "#ffb02e" }, $a = 0.74, monScale = (d) => (d.boss ? 1.5 + Math.max(0, d.radius - 26) / 28 : d.radius <= 14 ? 0.62 : d.radius <= 17 ? 0.78 : d.radius <= 20 ? 0.96 : 1.2) * (d.boss ? 1.12 : 1.22), Cn = 188, $r = 124, I4 = (e) => Math.max(0, Math.min(1, e)), TS = (e) => e * e * (3 - 2 * e), RS = (e, t) => {
     let a = (t - e) % (Math.PI * 2);
@@ -23599,6 +23741,7 @@ void main(){vec2 px=1./uRes;float band=smoothstep(.26,.5,abs(vUV.y-.5));float r=
       if (!n) return;
       let o = this.ctx, r = ce(t.pos.x, t.pos.y), i = this.animOf(`m${t.id}`, t.pos.x, t.pos.y, a), s = i.moving ? Math.floor(i.phase * ea) : -1, l = t.state === "windup" ? 2 : t.state === "charge" ? 3 : 0, { dir: c, flip: d } = Kl(t.facing), f = t.def.shape, u, m = monScale(t.def), p = d;
       t.def.ghostLine ? (u = ghostSpr(t, c, s), p = d) : f === "xx" ? u = Xr(f, c, s, l) ?? fa(f, c, s, l) : (u = ROXQM(f, c, s, l, t.def, s < 0 && l === 0 && t.state !== "dead" ? { clk: this.clock, seed: (typeof t.id === "number" ? t.id : String(t.id).split("").reduce((q, ch) => q + ch.charCodeAt(0), 0)) % 97 } : void 0) ?? Xr(f, c, s, l) ?? us(f, s, l, c), p = mo ? d : Xi(t.facing).x < 0);
+      if (this.e3dOn) { let s3 = E3D.monSprite(t, i, this.clock, this.clock); s3 && (u = s3, m = 1, p = false); }
       let h = `${f}:${c}:${s}:${l}:${u && u.key || ""}`;
       t.def.boss && f === "jotun" && t.def.id !== "hrimgar" && (u = ds(u, `bs${t.def.id}:${s}:${l}`, t.def.color, 0.78)), t.state === "windup" ? u = ds(u, h, 16724016, 0.5) : n.time < t.stunUntil ? u = ds(u, h, 16769126, 0.5) : n.time < t.slowUntil ? u = ds(u, h, 7321855, 0.45) : t.phase === 2 && (u = ds(u, h, 16736352, 0.28)), t.state === "charge" && (m *= 1.08);
       let x = this.hover?.kind === "monster" && this.hover.id === t.id;
