@@ -21856,6 +21856,7 @@ void main(){
  vec3 base;vec3 n=normalize(vN);float bias=.0015;
  if(uMode==4){base=pow(texture(uGround,vUV).rgb,vec3(2.2));n=vec3(0.,1.,0.);}
  else base=pow(vC,vec3(2.2));
+ if(uMode==10){vec3 fn=normalize(cross(dFdx(vW),dFdy(vW)));if(dot(n,fn)<0.)n=-n;}
  bool leaf=uMode==5&&vK!=0.;if(leaf){vec4 t=texture(uLeaf,vUV);if(t.a<.5)discard;base*=pow(t.rgb,vec3(2.2))*1.15;}
  float sh=shadowF(uMode==10?.004:bias);
  float cl=vn(vW.xz*.0016+vec2(uTime*.01,uTime*.006))*.7+vn(vW.xz*.004-uTime*.008)*.3;float cloud=1.-smoothstep(.52,.72,cl)*.22*(1.-uNight);
@@ -21868,6 +21869,7 @@ void main(){
   vec3 a2=mix(uGnd,uSky,n.y*.5+.5)*uAmbK*1.25;col=base*(a2+uSunCol*band*.95)+base*uSunCol*rim*smoothstep(0.,.3,dot(n,uSun)+.3)+uSky*rim*.1*uAmbK;
   col=mix(col,col*vec3(1.6,.55,.5)+vec3(.12,0.,0.),uFlash*.7);}
  col+=lamps(base)*(uMode==10?1.2:1.);
+ if(uMode==10&&vK>0.)col=mix(col,base*1.35+vec3(.06,.04,.01),clamp(vK,0.,1.));
  o=vec4(pow(clamp(col,0.,1.),vec3(1./2.2)),1.);}`;
     const SFS = `#version 300 es
 precision highp float;precision highp int;in vec2 vUV;in float vK;uniform sampler2D uLeaf;uniform int uMode;out vec4 o;void main(){if(uMode==5&&vK!=0.&&texture(uLeaf,vUV).a<.5)discard;o=vec4(1);}`;
@@ -21897,6 +21899,8 @@ precision highp float;precision highp int;in vec2 vUV;in float vK;uniform sample
       TB_CT = gl.createTexture(); gl.bindTexture(gl.TEXTURE_2D, TB_CT); gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA8, TBW, TBH, 0, gl.RGBA, gl.UNSIGNED_BYTE, null); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
       TB_DR = gl.createRenderbuffer(); gl.bindRenderbuffer(gl.RENDERBUFFER, TB_DR); gl.renderbufferStorage(gl.RENDERBUFFER, gl.DEPTH_COMPONENT24, TBW, TBH);
       TB_FB = gl.createFramebuffer(); gl.bindFramebuffer(gl.FRAMEBUFFER, TB_FB); gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, TB_CT, 0); gl.framebufferRenderbuffer(gl.FRAMEBUFFER, gl.DEPTH_ATTACHMENT, gl.RENDERBUFFER, TB_DR); gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+      { const ct = gl.createTexture(); gl.bindTexture(gl.TEXTURE_2D, ct); gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA8, OBM, OBM, 0, gl.RGBA, gl.UNSIGNED_BYTE, null); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST); const dr = gl.createRenderbuffer(); gl.bindRenderbuffer(gl.RENDERBUFFER, dr); gl.renderbufferStorage(gl.RENDERBUFFER, gl.DEPTH_COMPONENT24, OBM, OBM);
+        OB_FB = gl.createFramebuffer(); gl.bindFramebuffer(gl.FRAMEBUFFER, OB_FB); gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, ct, 0); gl.framebufferRenderbuffer(gl.FRAMEBUFFER, gl.DEPTH_ATTACHMENT, gl.RENDERBUFFER, dr); gl.bindFramebuffer(gl.FRAMEBUFFER, null); }
       initPost();
       heroCanvas = document.createElement("canvas"); heroCanvas.width = TW; heroCanvas.height = TH; heroCtx = heroCanvas.getContext("2d"); heroImg = heroCtx.createImageData(TW, TH); heroPix = new Uint8Array(TW * TH * 4);
     }
@@ -21939,7 +21943,8 @@ precision highp float;precision highp int;in vec2 vUV;in float vK;uniform sample
     }
     // ---------- árvores 3D (folhagem em cartões pintados) ----------
     let leafTex = null, TB_FB = null, TB_CT = null, TB_DR = null, treeCache = new Map(), treeShadow = null, VT = null;
-    const TBW = 240, TBH = 260, TAX = 120, TAY = 232, TK = 19;
+    const TBW = 240, TBH = 260, TAX = 120, TAY = 232, TK = 19, TBW0 = TBW, TBH0 = TBH, TAX0 = TAX, TAY0 = TAY, OBM = 640;
+    let OB_FB = null;
     const TREE_THEMES = { grass: "broad", lush: "broad", meadow: "broad", forest: "broad", snow: "pine", frost: "pine", ice: "pine", mountain: "pine", marsh: "broad", swamp: "broad" };
     function treeKind(theme, variant) { const k = TREE_THEMES[theme || "grass"]; if (!k) return null; if (k === "pine") return "pine"; return variant === 2 ? "pine" : "broad"; }
     function leafAtlas() {
@@ -22013,12 +22018,18 @@ precision highp float;precision highp int;in vec2 vUV;in float vK;uniform sample
     function buildTreeShadows(map) {
       for (const c of treeCh.values()) { gl.deleteVertexArray(c.a); gl.deleteBuffer(c.b); } treeCh.clear(); treeIdx.clear();
       const th = map.treeTheme ?? map.theme ?? "grass";
-      for (const o of map.obstacles) { if (o.kind !== "tree") continue; const c = Sh(o.x, o.y, 11), m = c < .5 ? 0 : c < .82 ? 1 : 2, kind = treeKind(th, m); if (!kind) continue;
-        const x = o.x + o.w / 2, z = o.y + o.h / 2, key = Math.floor(x / CK) + "," + Math.floor(z / CK); let L = treeIdx.get(key); if (!L) treeIdx.set(key, L = []); L.push([kind, Math.floor(Sh(o.x, o.y, 7) * 4), x, z]); }
+      const d0 = map.theme ?? "grass", add = (key, e) => { let L = treeIdx.get(key); if (!L) treeIdx.set(key, L = []); L.push(e); };
+      for (const o of map.obstacles) { const x = o.x + o.w / 2, z = o.y + o.h / 2, key = Math.floor(x / CK) + "," + Math.floor(z / CK);
+        if (o.kind === "house") { add(key, ["obj", { kind: "house", theme: d0, variant: Math.abs(Math.round(o.x / 13) * 7 + Math.round(o.y / 17) * 3) % 5 }, x, z, 1]); continue; }
+        if (o.kind === "deco") { if (o.walk || /^vip(rug|portal)/.test(o.deco ?? "") || o.deco === "airship") continue; add(key, ["obj", { kind: "deco", theme: d0, variant: /^ruin/.test(o.deco ?? "") ? Math.abs(Math.round(o.x / 10) * 7 + Math.round(o.y / 10) * 13) % 8 : o.deco === "longhouse" ? Math.abs(Math.round(o.x / 10) + Math.round(o.y / 10) * 3) % 6 : o.deco === "colossus" ? o.sv ?? Math.abs(Math.round(o.x / 7) * 5 + Math.round(o.y / 11) * 3) % 5 : 0, deco: o.deco }, x, z, 1]); continue; }
+        if (o.kind === "rock" || o.kind === "crate") { const c = Sh(o.x, o.y, 11); add(key, ["obj", o.kind === "rock" ? { kind: "rock", theme: d0, variant: c < .5 ? 0 : 1 } : { kind: c < .5 ? "crate" : "barrel", theme: d0, variant: 0 }, x, z, 1]); continue; }
+        if (o.kind !== "tree") continue; const c = Sh(o.x, o.y, 11), m = c < .5 ? 0 : c < .82 ? 1 : 2, kind = treeKind(th, m);
+        if (!kind) { add(key, ["obj", { kind: "tree", theme: th, variant: m }, x, z, 1.15 + .5 * Sh(o.x, o.y, 29)]); continue; }
+        add(key, [kind, Math.floor(Sh(o.x, o.y, 7) * 4), x, z]); }
       treeSnow = /snow|frost|ice/.test(th);
     }
     let treeSnow = false;
-    function treeChunk(gx, gz) { const key = gx + "," + gz; let c = treeCh.get(key); if (c) return c; const L = treeIdx.get(key); if (!L) return null; const v = []; for (const [kind, sv, x, z] of L) { const t = treeMesh(kind, sv * 131 + 7, x, z, treeSnow, .3); for (let i = 0; i < t.length; i++) v.push(t[i]); } c = vao(v, false); treeCh.set(key, c); return c; }
+    function treeChunk(gx, gz) { const key = gx + "," + gz; let c = treeCh.get(key); if (c) return c; const L = treeIdx.get(key); if (!L) return null; const v = []; for (const [kind, sv, x, z, sc] of L) { if (kind === "obj") { objWorld(sv, x, z, sc, v); continue; } const t = treeMesh(kind, sv * 131 + 7, x, z, treeSnow, .3); for (let i = 0; i < t.length; i++) v.push(t[i]); } c = vao(v, false); treeCh.set(key, c); return c; }
 
     // ---------- monstros 3D (modelos por forma, renderizados como sprites em pixel art) ----------
     const MM = (() => {
@@ -22215,11 +22226,12 @@ precision highp float;precision highp int;in vec2 vUV;in float vK;uniform sample
       const b = bakeVerts(verts, fsc); if (!b) return null; c = { cv: b.cv, ax: b.ax, ay: b.ay - 4, k: 1 / fsc, key: "e3d" + key, e3d: true }; monCache.set(key, c); return c;
     }
     // renderiza vértices (espaço local, base no chão) num sprite recortado com contorno
-    function bakeVerts(verts, fsc, mode = 10, lodTree) {
+    function bakeVerts(verts, fsc, mode = 10, lodTree, tg) {
+      const TBW = tg ? tg.w : TBW0, TBH = tg ? tg.h : TBH0, TAX = tg ? tg.ax : TAX0, TAY = tg ? tg.ay : TAY0;
       const [Pa, Pb, Pc, Pd] = Pu(); const sx = 2 / TBW * fsc, sy = 2 / TBH * fsc, q2 = 1 / 900;
       const TV = new Float32Array([sx * Pa, -sy * Pb, -Pb * q2, 0, 0, sy, -1.15 * q2, 0, sx * Pc, -sy * Pd, -Pd * q2, 0, (TAX - TBW / 2) * 2 / TBW, 1 - 2 / TBH * TAY, 0, 1]);
       const V = vao(verts, false);
-      gl.bindFramebuffer(gl.FRAMEBUFFER, TB_FB); gl.viewport(0, 0, TBW, TBH); gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT); gl.enable(gl.DEPTH_TEST); gl.disable(gl.BLEND);
+      gl.bindFramebuffer(gl.FRAMEBUFFER, tg ? OB_FB : TB_FB); gl.viewport(0, 0, TBW, TBH); gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT); gl.enable(gl.DEPTH_TEST); gl.disable(gl.BLEND);
       gl.useProgram(P1); gl.uniformMatrix4fv(ul(P1, "uVP"), false, TV); gl.uniform1i(ul(P1, "uNoSh"), 1); gl.uniform3fv(ul(P1, "uSun"), norm([-.5, .78, -.38])); gl.uniform3fv(ul(P1, "uSunCol"), [1, .9, .74]); gl.uniform3fv(ul(P1, "uSky"), [.55, .66, .86]); gl.uniform3fv(ul(P1, "uGnd"), [.4, .33, .24]);
       gl.uniform1f(ul(P1, "uAmbK"), .68); gl.uniform1f(ul(P1, "uNight"), 0); gl.uniform1i(ul(P1, "uNL"), 0); gl.uniform1f(ul(P1, "uFlash"), 0); gl.uniform3fv(ul(P1, "uView"), norm([0, 1, 1.4]));
       if (mode === 5) { const [rv, uv] = basisOf(TV); gl.uniform3fv(ul(P1, "uRight"), rv); gl.uniform3fv(ul(P1, "uUp"), uv); gl.activeTexture(gl.TEXTURE2); gl.bindTexture(gl.TEXTURE_2D, leafTex); gl.uniform1i(ul(P1, "uLeaf"), 2); }
@@ -22233,6 +22245,38 @@ precision highp float;precision highp int;in vec2 vUV;in float vK;uniform sample
         if (px[si + 3] > 127) { D[di] = px[si]; D[di + 1] = px[si + 1]; D[di + 2] = px[si + 2]; D[di + 3] = 255; } else if (mode !== 5 && (A(x + 1, y) > 127 || A(x - 1, y) > 127 || A(x, y + 1) > 127 || A(x, y - 1) > 127)) { D[di] = 10; D[di + 1] = 7; D[di + 2] = 8; D[di + 3] = 255; } }
       g.putImageData(im, 0, 0); return { cv: cvs, ax: (TAX - x0) / fsc, ay: (TAY - y0) / fsc };
     }
+    // ---- objetos estáticos (casas, decorações, árvores temáticas): malhas do jogo → pipeline 3D ----
+    const objCache = new Map(), objMesh = new Map(), EMPTY = (() => { const c = document.createElement("canvas"); c.width = c.height = 1; return { cv: c, ax: 0, ay: 0, k: 1, key: "e3d0" }; })();
+    function meshOf(spec) { const n = gh(spec); let o = objMesh.get(n); if (o === void 0) { try { o = x4(spec) || null; } catch (e) { o = null; } objMesh.set(n, o); } return o; }
+    function objXf(ds) {
+      const r = A.RX(Math.asin(Math.min(.95, Math.max(.2, zr)))).mul(A.RY(-(_8 + Math.PI / 4))).r, [Pa, Pb, Pc, Pd] = Pu(), S = M4 * ds, det = Pa * Pd - Pc * Pb;
+      const sol = (sx, sy) => [(Pd * sx - Pc * sy) / det, (-Pb * sx + Pa * sy) / det], ex = sol(r[0] * S, -r[3] * S), ez = sol(r[2] * S, -r[5] * S);
+      return { Xx: ex[0], Zx: ex[1], Xz: ez[0], Zz: ez[1], hS: r[4] * S, dG: ex[0] * ez[1] - ez[0] * ex[1] };
+    }
+    function objVerts(mesh, xf, ox, oz, sc, out) {
+      const { Xx, Zx, Xz, Zz, hS, dG } = xf;
+      for (const t of mesh.tris) { const gw = t.mat && t.mat.glow > 0 ? Math.min(1, t.mat.glow * 1.4) : 0, c = t.col;
+        const W = t.p.map((p) => [ox + (Xx * p[0] + Xz * p[2]) * sc, hS * p[1] * sc, oz + (Zx * p[0] + Zz * p[2]) * sc]), fn = norm(cross(sub(W[1], W[0]), sub(W[2], W[0])));
+        for (let i = 0; i < 3; i++) { const n = t.n && t.n[i] ? t.n[i] : null; let nx = 0, ny = 0, nz = 0, L = 0;
+          if (n) { nx = (Zz * n[0] - Zx * n[2]) / dG; ny = n[1] / hS; nz = (-Xz * n[0] + Xx * n[2]) / dG; L = Math.hypot(nx, ny, nz); }
+          if (!(L > 1e-6) || !isFinite(L)) { nx = fn[0]; ny = fn[1]; nz = fn[2]; L = Math.hypot(nx, ny, nz) || 1; if (!isFinite(nx)) { nx = 0; ny = 1; nz = 0; L = 1; } }
+          out.push(W[i][0], W[i][1], W[i][2], c[0], c[1], c[2], 0, 0, nx / L, ny / L, nz / L, gw); } }
+      return out;
+    }
+    let objBakes = 0, objBakeFrame = -1;
+    function objSprite(spec, frameNo) {
+      if (!on || broken || !gl || !OB_FB) return null;
+      const ds = spec.kind === "deco" ? DSC[spec.deco ?? ""] ?? 1 : spec.kind === "house" ? 1.3 : 1, yb = Math.round(_8 / (Math.PI * 2) * 24), tb = Math.round(zr * 20), key = gh(spec) + ":" + yb + ":" + tb;
+      let c = objCache.get(key); if (c) return c;
+      if (frameNo !== objBakeFrame) { objBakeFrame = frameNo; objBakes = 0; } if (objBakes >= 4) return EMPTY;
+      const mesh = meshOf(spec); if (!mesh || !mesh.tris || !mesh.tris.length) { objCache.set(key, null); return null; }
+      objBakes++; if (objCache.size > 400) objCache.clear();
+      const v = objVerts(mesh, objXf(ds), 0, 0, 1, []), [Pa, Pb, Pc, Pd] = Pu(); let x0 = 1e9, x1 = -1e9, y0 = 1e9, y1 = -1e9;
+      for (let i = 0; i < v.length; i += 12) { const X = v[i], h = v[i + 1], Z = v[i + 2], sx = Pa * X + Pc * Z, sy = Pb * X + Pd * Z - h; if (sx < x0) x0 = sx; if (sx > x1) x1 = sx; if (sy < y0) y0 = sy; if (sy > y1) y1 = sy; }
+      const W = x1 - x0 + 6, H = y1 - y0 + 6, fsc = Math.min(1, (OBM - 2) / W, (OBM - 2) / H), tg = { w: Math.min(OBM, Math.ceil(W * fsc) + 2), h: Math.min(OBM, Math.ceil(H * fsc) + 2), ax: (-x0 + 3) * fsc, ay: (-y0 + 3) * fsc };
+      const b = bakeVerts(v, fsc, 10, false, tg); c = b ? { cv: b.cv, ax: b.ax, ay: b.ay, k: 1 / fsc, key: "e3do" + key, e3d: true } : null; objCache.set(key, c); return c;
+    }
+    function objWorld(spec, x, z, sc, out) { const mesh = meshOf(spec); if (!mesh || !mesh.tris) return out; const ds = spec.kind === "deco" ? DSC[spec.deco ?? ""] ?? 1 : spec.kind === "house" ? 1.3 : 1; return objVerts(mesh, objXf(ds), x, z, sc || 1, out); }
     function canBake(frameNo) { if (!on || broken || !gl || !TB_FB) return false; if (frameNo !== lastBakeFrame) { lastBakeFrame = frameNo; bakesThisFrame = 0; } return bakesThisFrame < 8; }
     // ---- humanos (NPCs, moradores, outros jogadores) ----
     const humCache = new Map(), humModels = new Map();
@@ -22383,7 +22427,7 @@ void main(){vec2 px=1./uRes;float band=smoothstep(.26,.5,abs(vUV.y-.5));float r=
       } catch (e) { console.error("Modo 3D desativado:", e); broken = true; if (cv) cv.style.display = "none"; r.canvas.style.opacity = "1"; return false; }
     }
     function drawHero(r, ctx, c0) { if (!heroReady || !r._e3dHero) return false; const h = { cx: c0 ? c0.x : r._e3dHero.cx, cy: c0 ? c0.y - HC : r._e3dHero.cy }; ctx.save(); ctx.imageSmoothingEnabled = false; ctx.drawImage(heroCanvas, h.cx - TWW / 2, h.cy - THW / 2, TWW, THW); ctx.restore(); return true; }
-    return { frame, drawHero, treeSprite, monSprite, humSprite, critSprite, propSprite, isOn: () => on && !broken, setOn, toggle() { setOn(!on); return on; }, heroOk: () => heroReady };
+    return { frame, drawHero, treeSprite, monSprite, humSprite, critSprite, propSprite, objSprite, isOn: () => on && !broken, setOn, toggle() { setOn(!on); return on; }, heroOk: () => heroReady };
   })();
   var B4 = '"Cinzel Decorative", "Uncial Antiqua", Georgia, serif', ms = 'Arial, "Helvetica Neue", Helvetica, sans-serif', X0 = 30, CS = { common: "#d9d9d9", uncommon: "#6fe08a", rare: "#5aa9ff", epic: "#c07bff", legendary: "#ffb02e" }, $a = 0.74, monScale = (d) => (d.boss ? 1.5 + Math.max(0, d.radius - 26) / 28 : d.radius <= 14 ? 0.62 : d.radius <= 17 ? 0.78 : d.radius <= 20 ? 0.96 : 1.2) * (d.boss ? 1.12 : 1.22), Cn = 188, $r = 124, I4 = (e) => Math.max(0, Math.min(1, e)), TS = (e) => e * e * (3 - 2 * e), RS = (e, t) => {
     let a = (t - e) % (Math.PI * 2);
@@ -22769,7 +22813,7 @@ void main(){vec2 px=1./uRes;float band=smoothstep(.26,.5,abs(vUV.y-.5));float r=
       let a = this.ctx, n = this.scenery, o = [];
       for (let r of t.obstacles) {
         if (r.kind === "water") continue;
-        let i = r.x + r.w / 2, s = ce(i, r.y + r.h * 0.5 + Math.min(r.h, r.w) * 0.35), l = Ja(i, r.y + r.h * 0.5 + Math.min(r.h, r.w) * 0.35), c = Sh(r.x, r.y, 11), d = t.theme ?? "grass", f = ce(i, r.y + r.h / 2), u = (m) => mo ? O4(m, this.yawNow, this.tilt) : null;
+        let i = r.x + r.w / 2, s = ce(i, r.y + r.h * 0.5 + Math.min(r.h, r.w) * 0.35), l = Ja(i, r.y + r.h * 0.5 + Math.min(r.h, r.w) * 0.35), c = Sh(r.x, r.y, 11), d = t.theme ?? "grass", f = ce(i, r.y + r.h / 2), u = (m) => this.e3dOn ? E3D.objSprite(m, this.clock) ?? (mo ? O4(m, this.yawNow, this.tilt) : null) : mo ? O4(m, this.yawNow, this.tilt) : null;
         if (r.kind === "house") {
           let m = s.x - 55, p = s.y + 4;
           o.push({ depth: l, sx: s.x, sy: p, tall: true, draw: () => {
@@ -22791,12 +22835,12 @@ void main(){vec2 px=1./uRes;float band=smoothstep(.26,.5,abs(vUV.y-.5));float r=
             p ? (r.deco === "santachair" ? (() => { let q = this.clock % 7000, ho = q < 1700, dy = Math.sin(this.clock / 640) * 0.6 - (ho ? Math.abs(Math.sin(q / 85)) * 2.4 : 0); nt(a, p, f.x, f.y + dy, false, 1, 1 + (ho ? Math.sin(q / 85) * 0.012 : Math.sin(this.clock / 900) * 0.004)); ho && this.text("Ho ho ho!", f.x + 6, f.y - 188 + Math.sin(this.clock / 120) * 2, 17, "#ff6a6a", true); })() : nt(a, p, f.x, f.y)) : m && nt(a, m, s.x, s.y + 4), r.deco === "bench" && this.benchMark(f.x, f.y - 16);
           } });
         } else if (r.kind === "crate") o.push({ depth: l, sx: s.x, sy: s.y, draw: () => {
-          let m3 = this.e3dOn ? E3D.propSprite(c < 0.5 ? "crate" : "barrel", 0, this.clock) : null; if (m3) { nt(a, m3, f.x, f.y); return; }
+          if (this.e3dOn && E3D.isOn()) { let m3 = E3D.objSprite({ kind: c < 0.5 ? "crate" : "barrel", theme: d, variant: 0 }, this.clock); m3 && nt(a, m3, f.x, f.y); return; }
           let m = u({ kind: c < 0.5 ? "crate" : "barrel", theme: d, variant: 0 });
           m ? nt(a, m, f.x, f.y) : nt(a, c < 0.5 ? n.crate : n.barrel, s.x, s.y + 4);
         } });
         else if (r.kind === "rock") o.push({ depth: l, sx: s.x, sy: s.y, draw: () => {
-          let m3 = this.e3dOn ? E3D.propSprite("rock", c < 0.5 ? 0 : 1, this.clock) : null; if (m3) { nt(a, m3, f.x, f.y); return; }
+          if (this.e3dOn && E3D.isOn()) { let m3 = E3D.objSprite({ kind: "rock", theme: d, variant: c < 0.5 ? 0 : 1 }, this.clock); m3 && nt(a, m3, f.x, f.y, c < 0.25); return; }
           let m = u({ kind: "rock", theme: d, variant: c < 0.5 ? 0 : 1 });
           m ? nt(a, m, f.x, f.y, c < 0.25) : nt(a, n.rocks[c < 0.5 ? 0 : 1], s.x, s.y + 4, c < 0.25);
         } });
@@ -23207,7 +23251,7 @@ void main(){vec2 px=1./uRes;float band=smoothstep(.26,.5,abs(vUV.y-.5));float r=
         let ang = Math.atan2(A2.ty - A2.y, A2.tx - A2.x), spd = 70;
         A2.x += Math.cos(ang) * spd * dt2, A2.y += Math.sin(ang) * spd * dt2;
         Math.abs(Math.cos(ang)) > 0.2 && (A2.hd = Math.cos(ang) > 0 ? 1 : -1);
-        let gp = ce(A2.x, A2.y), bob = Math.sin(this.clock / 900) * 6, mdl = mo ? O4({ kind: "deco", theme: n.theme ?? "grass", variant: 0, deco: "airship" }, this.yawNow, this.tilt) : null;
+        let gp = ce(A2.x, A2.y), bob = Math.sin(this.clock / 900) * 6, mdl = this.e3dOn && E3D.objSprite({ kind: "deco", theme: n.theme ?? "grass", variant: 0, deco: "airship" }, this.clock) || (mo ? O4({ kind: "deco", theme: n.theme ?? "grass", variant: 0, deco: "airship" }, this.yawNow, this.tilt) : null);
         M(gp.x, gp.y - 200) && T.push({ depth: 1e9, draw: () => {
           i.save(), i.globalAlpha = 0.22, i.fillStyle = "#000", i.beginPath(), i.ellipse(gp.x, gp.y, 70, 24, 0, 0, 6.283), i.fill(), i.globalAlpha = 1;
           mdl && (i.translate(gp.x, gp.y - 70 + bob), i.scale(A2.hd, 1), i.drawImage(mdl.cv, -mdl.ax * mdl.k, -mdl.ay * mdl.k, mdl.cv.width * mdl.k, mdl.cv.height * mdl.k)), i.restore();

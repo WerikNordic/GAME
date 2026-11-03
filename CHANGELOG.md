@@ -816,3 +816,8 @@
 - NPCs, moradores e outros jogadores em 2.5D (modelo humano com roupas e cabelos variados; jogadores com as cores da classe).
 - Bichos de cenário (cães, gatos, raposas, coelhos, corvos, gaivotas e abutres), pedras, caixas e barris em 2.5D.
 - Herói 2.5D também sentado e caído.
+
+## v264
+- Modo 3D: casas, fonte, estátuas, barracas, lampiões, bancos, castelos, palácios, templos, ruínas e todas as demais decorações agora no mesmo estilo 2.5D (sombreado em faixas, contorno e luz própria em runas, vitrais e chamas).
+- Árvores de todos os temas (fogo, cristal, vazio, mármore, areia, tropical e morto) e pedras com a cor de cada região no novo estilo.
+- Todos esses objetos projetam sombra real no chão, com o sol e as nuvens.
