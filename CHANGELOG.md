@@ -821,3 +821,8 @@
 - Modo 3D: casas, fonte, estátuas, barracas, lampiões, bancos, castelos, palácios, templos, ruínas e todas as demais decorações agora no mesmo estilo 2.5D (sombreado em faixas, contorno e luz própria em runas, vitrais e chamas).
 - Árvores de todos os temas (fogo, cristal, vazio, mármore, areia, tropical e morto) e pedras com a cor de cada região no novo estilo.
 - Todos esses objetos projetam sombra real no chão, com o sol e as nuvens.
+
+## v265
+- Modo 3D: itens no chão viraram objetos 3D (feitos a partir do próprio ícone, em blocos), virados para a câmera e balançando de leve, com o brilho da raridade por baixo.
+- Túmulos de chefe em 3D: lápide de pedra com cruz, base e musgo.
+- Portais ganharam um arco de pedra 3D com runas acesas e véu de luz azul, com sombra no chão.
