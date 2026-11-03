@@ -15518,7 +15518,7 @@ void main() {
     }
     return M0 = "cpu", mk(e, t);
   }
-  var Zp = 2.4, zpOf = (e) => Math.max(1.7, Math.sqrt(e.width * e.height / 14e6));
+  var Zp = 2.4, zpOf = (e) => Math.max(typeof navigator !== "undefined" && navigator.maxTouchPoints > 0 ? 1.7 : 1.3, Math.sqrt(e.width * e.height / (typeof navigator !== "undefined" && navigator.maxTouchPoints > 0 ? 14e6 : 20e6)));
   function lt(e, t, a = 0) {
     let n = e * 374761393 + t * 668265263 + a * 2147483647 | 0;
     return n = (n ^ n >>> 13) * 1274126177 | 0, ((n ^ n >>> 16) >>> 0) / 4294967296;
@@ -18255,6 +18255,12 @@ function ROXQM(f, c, s, l, def, ex) {
     R.width = y, R.height = v;
     let w = R.getContext("2d"), M = w.createRadialGradient(-h, -b, 0, -h, -b, u);
     M.addColorStop(0, "rgba(10,14,8,0.42)"), M.addColorStop(0.6, "rgba(10,14,8,0.24)"), M.addColorStop(1, "rgba(10,14,8,0)"), w.save(), w.translate(-h, -b), w.scale(1, a), w.translate(h, b), w.fillStyle = M, !(e.kind === "deco" && /^vip(rug|portal)/.test(e.deco ?? "")) && w.fillRect(-h - u, -b - u, u * 2, u * 2), w.restore();
+    if (!(e.kind === "deco" && /^vip(rug|portal|)/.test(e.deco ?? "")) && e.kind !== "water") try {
+      // sombra projetada direcional (luz a noroeste): alonga para sudeste
+      let sx = u * (e.kind === "tree" ? 0.62 : e.kind === "house" ? 0.55 : 0.42), sy = m * 0.22, sr = u * (e.kind === "tree" ? 1.05 : 0.95), g2 = w.createRadialGradient(0, 0, 0, 0, 0, sr);
+      g2.addColorStop(0, "rgba(8,10,22,0.34)"), g2.addColorStop(0.55, "rgba(8,10,22,0.2)"), g2.addColorStop(1, "rgba(8,10,22,0)");
+      w.save(), w.translate(-h + sx, -b + sy), w.rotate(0.32), w.scale(1.25, a * 0.62), w.fillStyle = g2, w.fillRect(-sr, -sr, sr * 2, sr * 2), w.restore();
+    } catch (e2) {}
     let T = mh(k);
     return w.drawImage(T, 0, 0), { cv: R, ax: -h / Rt, ay: -b / Rt, k: 1 / Rt };
   }

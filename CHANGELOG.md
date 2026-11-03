@@ -791,3 +791,4 @@
 ## v258
 - Visual: sombras projetadas em personagens e criaturas (alongam no entardecer); gradação de cor dia/entardecer/noite com vinheta suave.
 - Interface em madeira escura e pergaminho nórdico (painéis, chat, HUD, abas, botões) e brilho dourado de destaque no herói.
+- Árvores, casas e objetos agora projetam sombra direcional; chão com resolução maior no computador (mais nítido).
