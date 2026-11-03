@@ -835,3 +835,9 @@
 - Modo 3D agora também nos interiores (casas de guilda, Salão VIP, igreja) e nos mapas de mar aberto e submersos, sem sombra de nuvem dentro de casa.
 - Criaturas marinhas em 2.5D: peixes (piranha, peixe-lanterna, peixe abissal), tubarões (cinzento, martelo e o Leviatã), águas-vivas/medusas e polvos/kraken, nadando com cauda e barbatanas animadas.
 - Werikr, a Serpente do Fim, refeita em 3D: corpo enrolado ondulando com espinhos de osso e olhos pelo corpo, crânio coroado de chifres, boca circular cheia de dentes e tentáculos com olhos; fica avermelhada ao preparar o ataque.
+
+## v268
+- Modo 3D igual ao protótipo: o chão foi repintado no estilo do protótipo, suave e sem ladrilhos de pixel: grama com manchas de cor, trilhas de terra com borda macia, areia de praia e margens.
+- Água nova com ondulação animada, reflexo do céu e brilho do sol em lagos e no mar.
+- Calçamento das cidades e pisos de interiores desenhados com nitidez (pedras e lajotas), sem borrão.
+- Câmera mais alta e mais aberta no modo 3D, como no protótipo (mostra mais do mapa ao redor).
