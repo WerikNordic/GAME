@@ -826,3 +826,7 @@
 - Modo 3D: itens no chão viraram objetos 3D (feitos a partir do próprio ícone, em blocos), virados para a câmera e balançando de leve, com o brilho da raridade por baixo.
 - Túmulos de chefe em 3D: lápide de pedra com cruz, base e musgo.
 - Portais ganharam um arco de pedra 3D com runas acesas e véu de luz azul, com sombra no chão.
+
+## v266
+- Modo 3D: montaria agora é um corvo de guerra 3D (sela vermelha com dourado, pernas que andam, asas e bico que bica no ataque), com o herói 3D montado em cima; a cor segue o tingimento.
+- Filhote de lobo, falcão do Caçador e os quatro homúnculos (Lif, Amistr, Filir e Vanilmirth, com cores de evoluído e alternativa) em 2.5D.

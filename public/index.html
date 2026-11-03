@@ -21828,7 +21828,7 @@ function ROXQM(f, c, s, l, def, ex) {
     const MOB = typeof navigator !== "undefined" && navigator.maxTouchPoints > 0;
     let VE = null, mapRef = null, groundTex = null, groundData = null, gdW = 0, gdH = 0, chunks = new Map(), VQ = null, VH = null, heroCache = new Map();
     let SMt = null, SFB = null, SMS = MOB ? 1536 : 2048, HFB = null, HCT = null, HDR = null;
-    const TW = MOB ? 88 : 104, TH = Math.round(TW * 1.33), TWW = 104, THW = Math.round(TWW * 1.33), HC = 52;
+    const TW = MOB ? 132 : 156, TH = Math.round(TW * 1.33), TWW = 156, THW = Math.round(TWW * 1.33), HC = 82;
     let heroCanvas = null, heroCtx = null, heroImg = null, heroReady = false, heroPix = null;
     function setOn(v) { on = v; if (!v && host) { const c2 = host.querySelector("canvas.game-canvas"); c2 && (c2.style.opacity = "1"); } try { localStorage.setItem("eldvar.3d", v ? "1" : "0"); } catch (e) { } if (cv) cv.style.display = v ? "block" : "none"; }
     const VS = `#version 300 es
@@ -22165,6 +22165,21 @@ precision highp float;precision highp int;in vec2 vUV;in float vK;uniform sample
           return m.bake(); }
       });
       build.frostwolf = build.wolf; build.hati = build.wolf;
+      build.raven = function (col) { const m = Model(), b = col, bD = darken(col, .45), sheen = mix(col, [.3, .4, .7], .35), beak = [.32, .3, .3], leg = [.55, .48, .32], red = [.62, .12, .1], gold = [.9, .72, .3];
+        m.ell("body", 0, 1.35, -.05, .58, .5, .85, (p, n) => mix(mix(b, sheen, clamp(n[1], 0, 1) * .5), bD, clamp(-n[1], 0, 1) * .5), 12, 8);
+        m.ell("body", 0, 1.35, .45, .5, .5, .45, (p, n) => mix(b, bD, clamp(-n[1] * .8, 0, 1)), 10, 7);
+        m.tube("body", [[0, 1.55, .55, .26, .26], [0, 1.85, .68, .22, .22], [0, 2.05, .75, .2, .2]], b, 8);
+        m.ell("body", 0, 1.83, -.08, .5, .1, .52, red, 10, 5); m.ell("body", 0, 1.86, -.08, .42, .08, .44, mix(red, [1, .3, .2], .2), 10, 5);
+        for (const sx of [-1, 1]) { m.tube("body", [[sx * .52, 1.82, -.08, .03, .3], [sx * .54, 1.5, -.08, .03, .3]], gold, 6); m.ell("body", sx * .55, 1.42, -.08, .05, .1, .06, gold, 6, 4); }
+        m.ell("body", 0, 1.94, -.42, .3, .14, .1, darken(red, .2), 8, 5); m.ell("body", 0, 1.94, .3, .14, .16, .1, gold, 8, 5);
+        m.ell("head", 0, 0, 0, .3, .28, .33, (p, n) => mix(b, sheen, clamp(n[1], 0, 1) * .5), 10, 7); m.cone("head", 0, -.04, .25, .12, .55, beak, [0, -.22, 1], 6);
+        for (const sx of [-1, 1]) m.ell("head", sx * .18, .07, .14, .045, .045, .03, [.95, .8, .25], 5, 3);
+        m.cone("head", 0, .22, -.05, .08, .3, bD, [0, .6, -1], 5); m.cone("head", 0, .18, .05, .07, .25, bD, [0, 1, -.6], 5);
+        for (const s2 of ["L", "R"]) { const sx = s2 === "L" ? 1 : -1; m.ell("wing" + s2, 0, 0, 0, .1, .34, .72, (p, n) => mix(bD, sheen, clamp(n[1], 0, 1) * .4), 8, 6); for (let i = 0; i < 3; i++) m.cone("wing" + s2, 0, -.15 + i * .08, -.55, .09, .45, bD, [sx * .05, -.15, -1], 4); }
+        for (let i = -2; i <= 2; i++) m.cone("tail", 0, 0, 0, .1, .75, i % 2 ? bD : b, [i * .22, .35, -1], 5);
+        for (const s2 of ["L", "R"]) { m.ell("leg" + s2 + "1", 0, -.12, 0, .2, .3, .22, b, 8, 6); m.tube("leg" + s2 + "1", [[0, -.3, 0, .09, .09], [0, -.55, 0, .07, .07]], leg, 6);
+          m.tube("leg" + s2 + "2", [[0, 0, 0, .07, .07], [0, -.5, 0, .06, .06]], leg, 6); for (const a of [-.5, 0, .5]) m.cone("leg" + s2 + "2", 0, -.5, 0, .045, .32, leg, [Math.sin(a), -.1, Math.cos(a)], 4); m.cone("leg" + s2 + "2", 0, -.5, 0, .04, .2, leg, [0, -.1, -1], 4); }
+        return m.bake(); };
       const cache = new Map();
       function model(shape, color) { const k = shape + ":" + color; let b = cache.get(k); if (!b) { const f = build[shape]; if (!f) return null; b = f(hex(color)); cache.set(k, b); } return b; }
       // poses: devolve matrizes por parte (local, raio=1). st: {ph (0..1 andar), mv, atk:-1|0..1 (preparo->golpe), idle (0..1)}
@@ -22173,6 +22188,12 @@ precision highp float;precision highp int;in vec2 vUV;in float vK;uniform sample
       const HCF = { goblin: [.95, .15, .95, .55, .78, .45, .45, .22, -.2, .45, -.5], sylvan: [1.0, 0, 0, .6, 1.45, .6, .6, .29, .05, .45, -.5], draugr: [1.15, .1, 1.12, .58, .95, .5, .45, .22, -.15, .5, -.5], yeti: [1.0, .15, 1.2, .85, 1.0, .75, .7, .3, -.2, .42, -.7],
         jotun: [1.3, .15, 1.4, .8, 1.1, .65, .6, .3, -.25, .6, -.62], sentinel: [.95, .15, 1.2, .9, 1.0, .7, .65, .3, -.2, .42, -.7], automaton: [1.05, .1, 1.15, .68, .95, .6, .55, .22, -.2, .5, -.6] };
       function pose(shape, st) {
+        if (shape === "raven") { const w = st.ph * Math.PI * 2, mv = st.mv ? 1 : 0, t = st.idle * 6.283, a = st.atk, bob = mv ? Math.abs(Math.sin(w)) * .1 : Math.sin(t) * .02, lie = st.lie ? 1 : 0;
+          const root = X(T(0, bob - lie * .55, 0), RX(mv * .06)); let peck = a >= 0 ? Math.sin(Math.min(1, a) * Math.PI) * .9 : 0;
+          const o = { body: root, head: X(root, T(0, 2.12 + (mv ? Math.sin(w * 2) * .04 : 0), .82 + (mv ? Math.sin(w * 2) * .06 : 0) + peck * .25), RX((mv ? Math.sin(w * 2) * .12 : Math.sin(t) * .05) + peck * .6)),
+            wingL: X(root, T(.52, 1.45, -.05), RZ(-(a >= 0 ? .5 : mv ? .08 + Math.sin(w * 2) * .05 : .04))), wingR: X(root, T(-.52, 1.45, -.05), RZ(a >= 0 ? .5 : mv ? .08 + Math.sin(w * 2) * .05 : .04)), tail: X(root, T(0, 1.5, -.75), RX(-.1 + Math.sin(t * 1.3) * .06)) };
+          for (const [s2, x, ph] of [["L", .26, 0], ["R", -.26, Math.PI]]) { const sw = mv ? Math.sin(w + ph) * .75 : 0; o["leg" + s2 + "1"] = X(root, T(x, 1.05, .05), RX(-sw - lie * 1.3)); o["leg" + s2 + "2"] = X(o["leg" + s2 + "1"], T(0, -.55, 0), RX(mv ? Math.max(0, Math.sin(w + ph + .6)) * 1.1 + .1 : .1 + lie * 2.2)); }
+          return o; }
         const w = st.ph * Math.PI * 2, mv = st.mv ? 1 : 0, br = Math.sin(st.idle * Math.PI * 2) * .03, a = st.atk, t = st.idle * 6.283;
         const q = QC[shape];
         if (q) { const boar = shape === "boar"; const bob = mv ? Math.abs(Math.sin(w)) * .12 : br; let lunge = 0, headP = 0;
@@ -22336,12 +22357,12 @@ precision highp float;precision highp int;in vec2 vUV;in float vK;uniform sample
       const b = bakeVerts(v, 1); if (!b) return null; c = { cv: b.cv, ax: b.ax, ay: b.ay, k: 1, key: "e3dh" + key }; humCache.set(key, c); return c;
     }
     // ---- bichos de cenário ----
-    const CRIT = { cao: ["wolf", 0x8a6a4a, .7], gato: ["wolf", 0x6a6a72, .45], raposa: ["wolf", 0xc8662a, .6], coelho: ["blob", 0xc8b8a0, .45], corvo: ["bird", 0x22222a, .55], gaivota: ["bird", 0xe8e8ec, .55], abutre: ["bird", 0x4a3a30, .8] };
+    const CRIT = { filhote: ["wolf", 0xc6c4b8, .62], falcao: ["bird", 0x7a5a3a, .8], cao: ["wolf", 0x8a6a4a, .7], gato: ["wolf", 0x6a6a72, .45], raposa: ["wolf", 0xc8662a, .6], coelho: ["blob", 0xc8b8a0, .45], corvo: ["bird", 0x22222a, .55], gaivota: ["bird", 0xe8e8ec, .55], abutre: ["bird", 0x4a3a30, .8] };
     function critSprite(q, clock, frameNo) {
-      const cdef = CRIT[q.kind]; if (!cdef) return null; const [shape, colr, sc] = cdef, col = q.col || colr, mv = q.st === 1 || q.st === 2, bird = shape === "bird", fly = bird && (q.z || 0) > 4;
+      const cdef = q.def || CRIT[q.kind]; if (!cdef) return null; const [shape, colr, sc] = cdef, col = q.col || colr, mv = q.st === 1 || q.st === 2, bird = shape === "bird", fly = bird && (q.z || 0) > 4;
       const dir = ((Math.round((q.fa || 0) / (Math.PI * 2) * 12) % 12) + 12) % 12, yb = Math.round(_8 / (Math.PI * 2) * 24), tb = Math.round(zr * 20), fr = mv || fly ? Math.floor(clock / (q.st === 2 ? 70 : 110) % 6) : Math.floor(clock / 800 % 2);
       const key = shape + col + ":" + dir + ":" + (fly ? "f" : mv ? "m" : "i") + fr + ":" + yb + ":" + tb + ":" + sc; let c = monCache.get(key); if (c) return c;
-      if (!canBake(frameNo)) return null; bakesThisFrame++;
+      if (!canBake(frameNo)) return EMPTY; bakesThisFrame++;
       const v = []; if (!MM.skin(shape, col, { ph: fr / 6, mv: mv && !bird, atk: -1, idle: fr / 6, fly }, 13 * sc, Math.PI / 2 - dir / 12 * Math.PI * 2, v)) return null;
       const b = bakeVerts(v, 1); if (!b) return null; c = { cv: b.cv, ax: b.ax, ay: b.ay, k: 1, key: "e3dc" + key }; monCache.set(key, c); return c;
     }
@@ -22408,13 +22429,16 @@ void main(){vec2 px=1./uRes;float band=smoothstep(.26,.5,abs(vUV.y-.5));float r=
         for (const p of map.portals || []) lights.push([p.x + p.w / 2, p.y + p.h / 2, 130, .5 + .4 * night, [.7, .6, 1.4]]);
         lights.sort((a, b) => Math.hypot(a[0] - P.x, a[1] - P.y) - Math.hypot(b[0] - P.x, b[1] - P.y)); lights.length = Math.min(12, lights.length);
         // herói
-        const ps = world.ps, pl = world.player, hero = !(ps.mount && ps.mountOwned);
+        const ps = world.ps, pl = world.player, mnt = !!(ps.mount && ps.mountOwned), hero = true;
         const anim = r.animOf ? r.anims && r.anims.get("p") : null;
         const hv = [];
         if (hero) {
           let hairInt = 0xb8481c; try { const ap = cs(ps); if (typeof ps.hc === "number") hairInt = ps.hc; else if (ap && typeof ap.hair === "number" && typeof xh !== "undefined") hairInt = xh[ap.hair % xh.length]; } catch (e) { }
           const H3 = heroFor(ps, hairInt), a2 = anim || {}, clk = r.clock, at = clk - (a2.atkAt || -1e9), dur = Math.max(260, a2.atkDur || 0);
-          const dd = world.isDead(), si = !!(world.sitting || world.crouching); H3.skin({ x: P.x, y: 0, z: P.y, k: 19, yaw: Math.PI / 2 - (pl.facing || 0), walk: (a2.phase || 0) * 2, moving: !!a2.moving && !dd && !si, atk: at < dur && !dd ? at / dur : -1, spin: -1, t: time, hurt: 0, sit: si && !dd, dead: dd }, hv);
+          const dd = world.isDead(), si = !!(world.sitting || world.crouching), mk = mnt && !dd, yaw0 = Math.PI / 2 - (pl.facing || 0), mvv = !!a2.moving && !dd && !si;
+          let ry = 0; if (mk) { const mvx = [], kM = 23, ph = (a2.phase || 0), bob = mvv ? Math.abs(Math.sin(ph * Math.PI * 2)) * .1 * kM : 0; MM.skin("raven", ps.dye || 0x1c1c26, { ph, mv: mvv, atk: at < dur ? at / dur : -1, idle: (time * .25) % 1, lie: si }, kM, yaw0, mvx);
+            for (let i = 0; i < mvx.length; i += 12) { mvx[i] += P.x; mvx[i + 2] += P.y; } for (let i = 0; i < mvx.length; i++) hv.push(mvx[i]); ry = (si ? 1.87 - .55 : 1.87) * kM - 13 + bob; }
+          H3.skin({ x: P.x, y: ry, z: P.y, k: 19, yaw: yaw0, walk: (a2.phase || 0) * 2, moving: mvv && !mk, atk: at < dur && !dd ? at / dur : -1, spin: -1, t: time, hurt: 0, sit: (si || mk) && !dd, dead: dd }, hv);
         }
         upd(VH, hv);
         // sombras: luz ortográfica ao redor da câmera
@@ -23618,7 +23642,7 @@ void main(){vec2 px=1./uRes;float band=smoothstep(.26,.5,abs(vUV.y-.5));float r=
     drawPlayer(t) {
       let a = this.store.world;
       if (!a) return;
-      if (this.e3dOn && E3D.heroOk() && !(a.ps.mount && a.ps.mountOwned)) { let r0 = ce(a.player.pos.x, a.player.pos.y); this.animOf("p", a.player.pos.x, a.player.pos.y, t); this.useFx(r0.x, r0.y), a.ps.level >= 99 && this.epicFx(r0.x, r0.y, 0), E3D.drawHero(this, this.ctx, r0); return; }
+      if (this.e3dOn && E3D.heroOk()) { let r0 = ce(a.player.pos.x, a.player.pos.y); this.animOf("p", a.player.pos.x, a.player.pos.y, t); this.useFx(r0.x, r0.y), a.ps.level >= 99 && this.epicFx(r0.x, r0.y, 0), E3D.drawHero(this, this.ctx, r0); return; }
       let n = this.ctx, o = a.player, r = ce(o.pos.x, o.pos.y), i = this.animOf("p", o.pos.x, o.pos.y, t), { dir: s, flip: l } = Kl(o.facing), c = a.isDead(), d = Km(this.clock - i.atkAt, i.atkImpact, i.atkDur), f = a.sitting || a.crouching ? -2 : i.moving ? Math.floor(i.phase * ea) : -1, u = fa(po({ ...cs(a.ps), cw: this.capeSw(r.x, a) }), s, f, d, i.atkStyle);
       a.ps.mount && a.ps.mountOwned && !c && !d && (u = fa(po(cs(a.ps)), s, -2, 0, i.atkStyle));
       admOn() && !c && this.admAura(r);
@@ -23731,6 +23755,9 @@ void main(){vec2 px=1./uRes;float band=smoothstep(.26,.5,abs(vUV.y-.5));float r=
       hmw || (dd > 400 ? (c.x = tx, c.y = ty) : dd > 4 && (c.x += (tx - c.x) * 0.1, c.y += (ty - c.y) * 0.1));
       let p = ce(c.x, c.y), t = this.clock / 380, bob = Math.sin(t) * 3, sc = h.evolved ? 1.3 : 1, col = HOM_KINDS[h.kind].color, hx = (v) => "#" + (v >>> 0).toString(16).padStart(6, "0");
       this.blob(p.x, p.y + 4, 8 * sc);
+      if (this.e3dOn && E3D.isOn()) { const HK = { vitalis: ["sylvan", h.alt ? 0xf0d060 : 0x4fcf5a, .75], granito: ["boar", h.alt ? 0xd8a060 : h.evolved ? 0x7fd8e8 : 0x9aa0a8, .7], faisca: ["bird", h.alt ? 0x9a6a3a : h.evolved ? 0xff8a3a : 0x5a9aff, 1.15], caos: ["blob", h.alt ? 0x2a3a78 : h.evolved ? 0x5a3a78 : 0xa8743c, .8] }[h.kind];
+        if (HK) { const tp = { x: tx, y: ty }, fa = hmw ? (hmw.fa ?? (hmw.face < 0 ? Math.PI : 0)) : dd > 4 ? Math.atan2(tp.y - c.y, tp.x - c.x) : this._hmFa ?? 0; this._hmFa = fa; const fly = HK[0] === "bird";
+          const h3 = E3D.critSprite({ def: [HK[0], HK[1], HK[2] * sc], fa, st: dd > 6 ? 1 : 0, z: fly ? 20 : 0 }, this.clock, this.clock); if (h3) { nt(n, h3, p.x, p.y + 4 + (fly ? -16 + bob : 0)); return; } } }
       { let hsp = null; try { const km = { vitalis: "lif", granito: "amistr", faisca: "filir", caos: "vanilmirth" }[h.kind]; let al = 0; if (hmw && hmw.aEnd > w.time) { const f = 1 - (hmw.aEnd - w.time) / hmw.aDur; al = f < 0.35 ? 2 : f < 0.7 ? 3 : 1; }
           hsp = typeof ROX2M !== "undefined" && km ? ROX2M.mon(km, "side", dd > 6 ? Math.floor(this.clock / 90) % 8 : -1, al, { id: km, color: null }, { st: (h.evolved ? 1 : 0) + (h.alt ? 2 : 0), clk: this.clock, seed: 1 }) : null; } catch (e) { hsp = null; }
         if (hsp) { if (hmw) this._hmFlip = hmw.face < 0; else { const tp = ce(tx, ty); this._hmFlip = tp.x - p.x < -3 ? true : tp.x - p.x > 3 ? false : !!this._hmFlip; } const hop = h.kind === "caos" && hmw?.mv ? -Math.abs(Math.sin(this.clock / 110)) * 8 : 0; nt(n, hsp, p.x, p.y + 6 + hop, this._hmFlip, $a * 1.15, $a * 1.15); return; } }
@@ -23799,7 +23826,8 @@ void main(){vec2 px=1./uRes;float band=smoothstep(.26,.5,abs(vUV.y-.5));float r=
       this.blob(gp.x, gp.y + 2, Math.max(3, 6 - F.z * 0.03));
       const fv = Kl(k >= 0 && k < 1 ? Math.atan2(fs.y - F.y, fs.x - F.x) : F.h), flapN = Math.floor(T * (9 + sp * 1.6)) % 8;
       let fsp = null; try { fsp = typeof ROX2M !== "undefined" ? ROX2M.mon("corvo", fv.dir, flapN, 0, { id: "falcao", color: null }, { st: Math.min(3, w.ps.tier || 0) }) : null; } catch (e) { fsp = null; }
-      if (fsp) { nt(n, fsp, px, py, fv.flip, $a * 0.95, $a * 0.95, Math.max(-0.4, Math.min(0.4, F.bank))); } else {
+      const f3 = this.e3dOn && E3D.isOn() ? E3D.critSprite({ kind: "falcao", fa: k >= 0 && k < 1 ? Math.atan2(fs.y - F.y, fs.x - F.x) : F.h, st: 1, z: 30 }, this.clock, this.clock) : null;
+      if (f3) nt(n, f3, px, py + 8); else if (fsp) { nt(n, fsp, px, py, fv.flip, $a * 0.95, $a * 0.95, Math.max(-0.4, Math.min(0.4, F.bank))); } else {
       n.save(), n.translate(px, py), n.scale(sd, 1);
       n.fillStyle = "#7a5a3a", n.beginPath(), n.ellipse(0, 0, 8, 4.5, 0, 0, 7), n.fill();
       n.fillStyle = "#5a3e24", n.beginPath(), n.moveTo(-1, -1), n.lineTo(-7, -9 - fl), n.lineTo(4, -2), n.fill(), n.beginPath(), n.moveTo(-1, 1), n.lineTo(-8, 8 + fl), n.lineTo(3, 2), n.fill();
@@ -23928,9 +23956,10 @@ void main(){vec2 px=1./uRes;float band=smoothstep(.26,.5,abs(vUV.y-.5));float r=
             pt.x += Math.cos(pt.f) * st, pt.y += Math.sin(pt.f) * st;
           } else pt.v *= 0.7;
           let pl = 0, play = false, pa = null, pm = (dd > 9 && pt.v > 0.25 && !play) || !!(pa && pa.run), pr = ce(pt.x, pt.y), { dir: pd2, flip: pf } = Kl(pa ? pa.face : pt.f), PS = 0.64, ps2 = ROXQM("wolf", pd2, pm ? Math.floor(this.clock / 90 % ea) : -1, 0, { id: "filhote", color: 13026744 }), jy = -(pt.z || 0), pox = 0;
-          if (ps2) {
+          const pc3 = this.e3dOn && E3D.isOn() ? E3D.critSprite({ kind: "filhote", fa: pt.f, st: pm ? 1 : 0, z: 0 }, this.clock, this.clock) : null;
+          if (ps2 || pc3) {
             this.blob(pr.x + pox, pr.y + 3, Math.max(4, 8 - (pt.z || 0) * 0.18));
-            nt(n, ps2, pr.x + pox, pr.y + 4 + jy, pf, $a * PS, $a * PS, pa ? pa.rot : 0);
+            pc3 ? nt(n, pc3, pr.x + pox, pr.y + 2 + jy) : nt(n, ps2, pr.x + pox, pr.y + 4 + jy, pf, $a * PS, $a * PS, pa ? pa.rot : 0);
             if (pa && (pa.stick || pa.carry)) { const sxp = pa.carry ? pr.x + pox + (__petPlayDir > 0 ? -12 : 12) : pr.x + (pa.stick.x), syp = pa.carry ? pr.y - 12 + jy : pr.y - 8 + pa.stick.y; n.save(); n.translate(sxp, syp); n.rotate(pa.carry ? 0.3 : pa.stick.r); n.fillStyle = "#6a4020"; n.fillRect(-9, -1.5, 18, 3); n.fillStyle = "#8a5a2c"; n.fillRect(-9, -1.5, 18, 1); n.restore(); }
             if (pa && pa.fx === 3) for (let q = 0; q < 5; q++) { const tt = ((pl / 500 + q / 5) % 1); n.fillStyle = `rgba(190,170,130,${0.5 * (1 - tt)})`; n.beginPath(); n.arc(pr.x + pox + (q - 2) * 7 * (0.6 + tt), pr.y + 2 - tt * 10, 2 + tt * 3, 0, 6.283); n.fill(); }
             (() => { let np = this.toScreenPt(this.ptr.x, this.ptr.y); Math.hypot(np.x - (pr.x + pox), np.y - (pr.y - 8)) < 28 && this.text(pd.name, pr.x + pox, pr.y - 32, 11, "#ffe9a8"); })();
