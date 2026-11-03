@@ -1,4 +1,5 @@
 ## v258
+- Interface em madeira escura e pergaminho nórdico; contorno dourado no herói.
 - Visual: sombras projetadas em personagens e criaturas (alongam no entardecer).
 - Gradação de cor: dia dourado, entardecer laranja/violeta, noite azul-lunar e vinheta suave.
 

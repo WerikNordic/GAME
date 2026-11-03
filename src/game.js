@@ -20311,7 +20311,7 @@ function ROXQM(f, c, s, l, def, ex) {
         a.ps.level >= 99 && this.epicFx(r.x, r.y, 1);
         thr && (s === "up" || s === "uq") && this.admThrone(r.x, r.y, 2, s, l);
         };
-        this.waterPass(n, r.x, r.y + 6, wd0, 42, __body);
+        this.waterPass(n, r.x, r.y + 6, wd0, 42, () => { let cf = this.ctx; try { cf.filter = "drop-shadow(0 0 1.2px rgba(255,236,170,0.95)) drop-shadow(0 0 3px rgba(255,200,90,0.45))"; } catch (e) {} try { __body(); } finally { try { cf.filter = "none"; } catch (e) {} } });
       }
       if (n.restore(), !c) {
         a.ps.pet && a.ps.petData || (window.__petHit = null);
