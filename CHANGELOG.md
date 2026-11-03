@@ -802,3 +802,7 @@
 - Grama 3D com folhas que balançam ao vento nos campos e florestas.
 - Herói em 2.5D: modelo 3D com capa de pano, manto de pele, trança, barba, machado e escudo, desenhado em pixel art em tempo real, com animação de andar e golpe e sombra no chão. Cores da roupa pela classe e cabelo pela aparência.
 - Montado, sentado ou caído, o herói volta ao visual clássico. Interiores e mar aberto continuam no visual clássico.
+
+## v261
+- Modo 3D no padrão da demo: árvores 3D de folhagem pintada (folhosas e pinheiros, com neve nos mapas gelados) que projetam sombra real no chão e no herói.
+- Acabamento de câmera no computador: desfoque de maquete nas bordas, brilho nas luzes, curva de cor e vinheta aplicados à imagem inteira.
