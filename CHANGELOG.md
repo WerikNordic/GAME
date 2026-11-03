@@ -1,3 +1,7 @@
+## v258
+- Visual: sombras projetadas em personagens e criaturas (alongam no entardecer).
+- Gradação de cor: dia dourado, entardecer laranja/violeta, noite azul-lunar e vinheta suave.
+
 ## v238
 - Removido o contador "N HITS": aparece só o número de dano de cada golpe.
 

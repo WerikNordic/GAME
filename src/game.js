@@ -19817,6 +19817,15 @@ function ROXQM(f, c, s, l, def, ex) {
     }
     blob(t, a, n) {
       let o = this.ctx, r = n * Math.max(0.3, this.tilt) * 0.9, i = o.createRadialGradient(t, a, 0, t, a, n);
+      try {
+        // sombra projetada: sol ao noroeste; a sombra alonga no entardecer e some de noite
+        let dl = this.evView ? this.evView.daylight : 1, ln = (1.15 - 0.55 * dl) * Math.min(1, 0.35 + dl * 1.1), sc = n * (1.5 + 1.6 * ln), al = 0.34 * Math.min(1, dl * 1.4);
+        if (n >= 5 && al > 0.02) {
+          let ex = t + n * 0.2 + sc * 0.42, ey = a + n * 0.08 + sc * 0.2, g = o.createRadialGradient(ex, ey, 0, ex, ey, sc * 0.5);
+          g.addColorStop(0, "rgba(14,12,30," + al + ")"), g.addColorStop(0.6, "rgba(14,12,30," + al * 0.55 + ")"), g.addColorStop(1, "rgba(14,12,30,0)");
+          o.save(), o.translate(ex, ey), o.rotate(0.4), o.scale(1, 0.34 * Math.max(0.6, this.tilt * 1.6)), o.translate(-ex, -ey), o.fillStyle = g, o.beginPath(), o.arc(ex, ey, sc * 0.5, 0, Math.PI * 2), o.fill(), o.restore();
+        }
+      } catch (e) {}
       i.addColorStop(0, "rgba(6,10,14,0.68)"), i.addColorStop(0.65, "rgba(6,10,14,0.4)"), i.addColorStop(1, "rgba(6,10,14,0)"), o.save(), o.translate(t, a), o.scale(1, r / n), o.translate(-t, -a), o.fillStyle = i, o.beginPath(), o.arc(t, a, n, 0, Math.PI * 2), o.fill(), o.restore();
     }
     text(t, a, n, o, r, i = false) {
@@ -20003,7 +20012,7 @@ function ROXQM(f, c, s, l, def, ex) {
       this._occF && (this._occF = false, i.save(), i.globalAlpha = 0.95, this.drawPlayer(t), i.restore());
       Ca.on = false;
       for (let q of this.anims.keys()) !z.has(q) && q !== "p" && !q.startsWith("n:") && this.anims.delete(q);
-      n.city && this.cityAmbience(n, a.player.pos), this.drawTopFx(), this.drawParticles(), n.sea && n.sea.all && this.underwaterFx(), this.ambient(n), n.city && this.forgeFx(n, a.player.pos), this.applyLighting(a, n), i.setTransform(this.dpr, 0, 0, this.dpr, 0, 0), this.drawLevelBanner(i), this.evView && (this.wfx.update(t, this.evView, n.theme, !!n.city, this.w, this.h), this.wfx.draw(i, this.evView, n.theme, this.w, this.h));
+      n.city && this.cityAmbience(n, a.player.pos), this.drawTopFx(), this.drawParticles(), n.sea && n.sea.all && this.underwaterFx(), this.ambient(n), n.city && this.forgeFx(n, a.player.pos), this.applyLighting(a, n), this.cineGrade(n), i.setTransform(this.dpr, 0, 0, this.dpr, 0, 0), this.drawLevelBanner(i), this.evView && (this.wfx.update(t, this.evView, n.theme, !!n.city, this.w, this.h), this.wfx.draw(i, this.evView, n.theme, this.w, this.h));
       let I = i.createRadialGradient(this.w / 2, this.h / 2, Math.min(this.w, this.h) * 0.36, this.w / 2, this.h / 2, Math.max(this.w, this.h) * 0.72);
       I.addColorStop(0, "rgba(4,6,12,0)"), I.addColorStop(1, "rgba(4,6,12,0.66)"), i.fillStyle = I, i.fillRect(0, 0, this.w, this.h), this.drawMinimap(a, n), this.drawMapTitle(), this.drawAnnounce();
       let J = this.fade, D = Math.min(1, (this.clock - J.t0) / J.dur), Z = J.from + (J.to - J.from) * D;
@@ -20895,6 +20904,23 @@ function ROXQM(f, c, s, l, def, ex) {
         T.addColorStop(0, `rgba(${k.c},${Math.min(0.5, k.a * 0.3)})`), T.addColorStop(1, `rgba(${k.c},0)`), n.fillStyle = T, n.fillRect(R - M, w - M, M * 2, M * 2);
       }
       n.restore();
+    }
+    cineGrade(t) {
+      try {
+        let c = this.ctx, w = this.w, h = this.h, dl = this.evView ? this.evView.daylight : 1;
+        c.save(), c.setTransform(this.dpr, 0, 0, this.dpr, 0, 0);
+        // calor dourado no dia, azul-violeta no crepusculo/noite (soft-light preserva o detalhe)
+        c.globalCompositeOperation = "soft-light";
+        let warm = Math.max(0, dl - 0.55) / 0.45, dusk = dl > 0.15 && dl < 0.7 ? 1 - Math.abs(dl - 0.42) / 0.28 : 0;
+        if (warm > 0.01) c.fillStyle = "rgba(255,196,110," + (0.3 * warm).toFixed(3) + ")", c.fillRect(0, 0, w, h);
+        if (dusk > 0.01) { let g = c.createLinearGradient(0, 0, 0, h); g.addColorStop(0, "rgba(110,70,200," + (0.75 * dusk).toFixed(3) + ")"), g.addColorStop(1, "rgba(255,130,60," + (0.8 * dusk).toFixed(3) + ")"), c.fillStyle = g, c.fillRect(0, 0, w, h); }
+        if (dl < 0.35) { c.globalCompositeOperation = "multiply"; let nt0 = 1 - dl / 0.35; c.fillStyle = "rgba(" + Math.round(255 - 120 * nt0) + "," + Math.round(255 - 95 * nt0) + "," + Math.round(255 - 30 * nt0) + ",1)", c.fillRect(0, 0, w, h); }
+        // vinheta suave que concentra o olhar no heroi
+        c.globalCompositeOperation = "source-over";
+        let v = c.createRadialGradient(w / 2, h / 2, Math.min(w, h) * 0.38, w / 2, h / 2, Math.hypot(w, h) * 0.58), va = 0.3 + 0.25 * (1 - dl);
+        v.addColorStop(0, "rgba(4,6,16,0)"), v.addColorStop(1, "rgba(4,6,16," + va.toFixed(3) + ")"), c.fillStyle = v, c.fillRect(0, 0, w, h);
+        c.restore();
+      } catch (e) {}
     }
     drawSnowPrints(t) {
       let a = this.ctx;
