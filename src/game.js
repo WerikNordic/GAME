@@ -19272,8 +19272,8 @@ function ROXQM(f, c, s, l, def, ex) {
       const breathe=Math.sin(t*2.2)*.02;
       let yaw=st.yaw;if(st.spin>=0)yaw+=st.spin*Math.PI*2;
       const bob=mv?Math.abs(Math.cos(w))*.08:breathe*.5;
-      const root=X(T(st.x,st.y,st.z),SC(-st.k,st.k,st.k),RY(yaw));
-      const hips=X(root,T(0,1.42+bob,0),RY(sw*.12),RZ(Math.sin(w)*.03*mv));
+      const root=st.dead?X(T(st.x,st.y,st.z),SC(-st.k,st.k,st.k),RY(yaw),T(0,.35,-1.2),RX(-Math.PI/2*.96)):X(T(st.x,st.y,st.z),SC(-st.k,st.k,st.k),RY(yaw));
+      const hips=X(root,T(0,st.sit?.72:1.42+bob,0),RY(sw*.12),RZ(Math.sin(w)*.03*mv));
       let chestRotX=mv*.1+(st.hurt>0?-.25*st.hurt:0),chestRotY=-sw*.18;
       // attack: wind up (0..0.35) then strike (0.35..1)
       let shR=[-.15-sw*.6,0,.12],elR=-.25,shL=[sw*.6,0,-.12],elL=-.3;
@@ -19286,8 +19286,8 @@ function ROXQM(f, c, s, l, def, ex) {
       const uaL=X(chest,T(.58,.78,0),RZ(-shL[2]),RX(shL[0])),faL=X(uaL,T(0,-.52,0),RX(elL));
       const axe=X(faR,T(0,-.56,.02),RX(1.25),RY(Math.PI/2));
       const legA=sw*.7,kneeA=mv?Math.max(0,-Math.sin(w+.6))*1.1+.15:.05,kneeB=mv?Math.max(0,Math.sin(w+.6))*1.1+.15:.05;
-      const thL=X(hips,T(.22,-.12,0),RX(-legA)),shL_=X(thL,T(0,-.62,0),RX(kneeA));
-      const thR=X(hips,T(-.22,-.12,0),RX(legA)),shR_=X(thR,T(0,-.62,0),RX(kneeB));
+      const thL=X(hips,T(.22,-.12,0),RX(st.sit?-1.45:-legA)),shL_=X(thL,T(0,-.62,0),RX(st.sit?1.5:kneeA));
+      const thR=X(hips,T(-.22,-.12,0),RX(st.sit?-1.45:legA)),shR_=X(thR,T(0,-.62,0),RX(st.sit?1.5:kneeB));
       return{hips,chest,neck,head,uaR,faR,uaL,faL,axe,thL,shL:shL_,thR,shR:shR_,root}}
      const map={hips:'hips',chest:'chest',neck:'neck',head:'head',uaL:'uaL',uaR:'uaR',faL:'faL',faR:'faR',axe:'axe',thL:'thL',thR:'thR',shL:'shL',shR:'shR'};
      let cloakState=null;
@@ -19577,35 +19577,107 @@ precision highp float;precision highp int;in vec2 vUV;in float vK;uniform sample
           for (const s of [-1, 1]) { m.ell("body", s * .3, .82, .82, .13, .16, .06, [.06, .07, .05], 8, 6); m.ell("body", s * .3 + .05, .88, .87, .045, .05, .02, [1, 1, 1], 5, 3); }
           return m.bake(); }
       };
+      // ---- formas adicionais ----
+      const humanoidLimbs = (m, skin, skinD, ua, fa, th, sh, rA, rL, foot, hand) => { for (const s of ["L", "R"]) {
+        m.tube("ua" + s, [[0, 0, 0, rA, rA], [0, -ua, 0, rA * .82, rA * .82]], skin, 8); m.tube("fa" + s, [[0, 0, 0, rA * .8, rA * .8], [0, -fa, 0, rA * .66, rA * .66]], skinD, 8); m.ell("fa" + s, 0, -fa - .08, 0, rA * 1.05, rA * 1.05, rA * 1.05, hand || skinD, 8, 6);
+        m.tube("th" + s, [[0, 0, 0, rL, rL], [0, -th, 0, rL * .85, rL * .85]], skinD, 8); m.tube("sh" + s, [[0, 0, 0, rL * .8, rL * .8], [0, -sh, 0, rL * .7, rL * .7]], skin, 8); m.ell("sh" + s, 0, -sh - .04, .08, rL * 1.05, rL * .55, rL * 1.5, foot || skinD, 8, 5); } };
+      Object.assign(build, {
+        draugr(col) { const m = Model(), skin = mix(col, [.62, .68, .72], .55), skinD = darken(skin, .3), rust = [.45, .3, .2], mail = [.42, .44, .48], cloth = darken(mix(col, [.25, .22, .3], .5), .2), eye = [.5, .95, 1];
+          m.ell("pelvis", 0, 0, 0, .4, .3, .3, mail, 10, 6); m.tube("pelvis", [[0, -.05, 0, .44, .34], [0, -.55, 0, .52, .4]], (y) => y < -.5 ? rust : cloth, 10);
+          m.ell("chest", 0, .5, 0, .5, .6, .36, (p, n) => mix(mail, darken(mail, .35), clamp(.4 - n[1], 0, 1) * .6 + nz(p, 9) * .2), 10, 8); m.tube("chest", [[0, .1, 0, .5, .38], [0, .02, 0, .5, .38]], rust, 10);
+          m.ell("chest", 0, .45, -.32, .55, .62, .1, cloth, 10, 6); m.ell("chest", .0, .42, -.45, .42, .42, .06, [.38, .24, .14], 12, 5); m.ell("chest", 0, .42, -.5, .1, .1, .05, mail, 6, 4);
+          m.ell("head", 0, .32, .02, .3, .34, .3, (p, n) => mix(skin, skinD, clamp(.3 - n[1], 0, 1)), 10, 8); m.ell("head", 0, .45, 0, .33, .27, .33, (p, n) => mix(mail, [.75, .78, .82], clamp(n[1], 0, 1) * .5), 10, 6, {}); m.tube("head", [[0, .4, .3, .04, .03], [0, .18, .34, .04, .03]], mail, 6);
+          for (const s of [-1, 1]) m.ell("head", s * .11, .3, .27, .05, .035, .03, eye, 6, 4);
+          m.ell("head", 0, .1, .2, .2, .18, .14, darken(skin, .45), 8, 6);
+          humanoidLimbs(m, skin, skinD, .5, .45, .5, .5, .13, .15, rust, skinD);
+          m.tube("club", [[0, .15, 0, .04, .04], [0, -.25, 0, .04, .04]], [.3, .2, .12], 6); m.tube("club", [[0, -.25, 0, .14, .03], [0, -.3, 0, .14, .03]], rust, 6); m.tube("club", [[0, -.3, 0, .055, .02], [0, -1.25, 0, .04, .015]], [.7, .74, .78], 6);
+          return m.bake(); },
+        yeti(col) { const m = Model(), fur = mix(col, [.92, .94, .97], .35), furD = darken(fur, .25), face = [.45, .55, .66], eye = [.2, .7, 1];
+          const furry = (p, n) => mix(fur, furD, clamp(.35 - n[1] * .5 + nz(p, 8) * .35, 0, 1));
+          m.ell("pelvis", 0, 0, 0, .55, .45, .45, furry, 10, 7); m.ell("chest", 0, .55, 0, .78, .72, .6, furry, 12, 9);
+          m.ell("head", 0, .3, .12, .4, .38, .38, furry, 10, 8); m.ell("head", 0, .22, .42, .26, .24, .1, face, 10, 6); for (const s of [-1, 1]) { m.ell("head", s * .1, .3, .5, .05, .05, .03, eye, 6, 4); m.cone("head", s * .22, .02, .45, .045, .18, [.95, .95, .9], [0, -1, .2]); }
+          humanoidLimbs(m, fur, furD, .75, .7, .42, .4, .22, .26, face, face);
+          return m.bake(); },
+        jotun(col) { const m = Model(), skin = mix(col, [.7, .6, .55], .3), skinD = darken(skin, .3), arm = [.4, .42, .46], fur = [.62, .52, .38], beard = darken(mix(col, [.85, .85, .9], .4), .1), eye = lighten(col, .5);
+          m.ell("pelvis", 0, 0, 0, .55, .4, .45, [.35, .25, .18], 10, 6); m.tube("pelvis", [[0, -.05, 0, .6, .5], [0, -.6, 0, .66, .55]], fur, 10);
+          m.ell("chest", 0, .6, 0, .72, .75, .55, (p, n) => mix(arm, darken(arm, .4), clamp(.3 - n[1], 0, 1) * .6 + nz(p, 6) * .15), 12, 9); for (const s of [-1, 1]) m.ell("chest", s * .72, 1.15, 0, .3, .2, .3, arm, 8, 5); m.ell("chest", 0, 1.22, 0, .62, .2, .5, fur, 12, 6);
+          m.ell("head", 0, .35, .05, .36, .4, .36, skin, 10, 8); m.ell("head", 0, .1, .22, .32, .38, .26, beard, 10, 8); m.ell("head", 0, .55, 0, .4, .25, .4, arm, 10, 6); for (const s of [-1, 1]) { m.ell("head", s * .13, .4, .32, .06, .04, .03, eye, 6, 4); m.cone("head", s * .36, .62, 0, .09, .38, [.85, .82, .7], [s, .7, 0]); }
+          humanoidLimbs(m, skin, skinD, .65, .6, .6, .58, .2, .24, [.3, .22, .15], skinD);
+          m.tube("club", [[0, .15, 0, .08, .08], [0, -1.4, 0, .2, .2]], [.4, .28, .16], 8); m.ell("club", 0, -1.45, 0, .26, .26, .26, [.38, .26, .15], 8, 6);
+          return m.bake(); },
+        sentinel(col) { const m = Model(), st = mix(col, [.55, .55, .58], .55), stD = darken(st, .35), rune = lighten(mix(col, [.4, .9, 1], .5), .2);
+          const rock = (p, n) => mix(st, stD, clamp(.35 - n[1] * .4 + nz(p, 5) * .5, 0, 1));
+          m.ell("pelvis", 0, 0, 0, .55, .38, .45, rock, 7, 5); m.ell("chest", 0, .55, 0, .82, .7, .62, rock, 8, 6); for (let i = 0; i < 5; i++) m.ell("chest", -.3 + i * .15, .55 + Math.sin(i) * .2, .6, .06, .06, .03, rune, 5, 3);
+          m.ell("head", 0, .22, .1, .32, .28, .3, rock, 7, 5); for (const s of [-1, 1]) m.ell("head", s * .11, .25, .37, .06, .04, .03, rune, 5, 3);
+          for (const s of [-1, 1]) m.ell("chest", s * .8, 1.05, 0, .38, .32, .38, rock, 7, 5);
+          humanoidLimbs(m, st, stD, .7, .65, .42, .4, .24, .28, stD, rock);
+          for (const s of ["L", "R"]) m.ell("fa" + s, 0, -.78, 0, .32, .3, .32, rock, 7, 5);
+          return m.bake(); },
+        automaton(col) { const m = Model(), met = mix(col, [.6, .62, .66], .4), metD = darken(met, .4), brass = [.78, .6, .3], core = [1, .6, .2];
+          m.tube("pelvis", [[0, .1, 0, .4, .32], [0, -.25, 0, .45, .35]], metD, 10); m.tube("chest", [[0, .05, 0, .5, .4], [0, .9, 0, .62, .48], [0, 1.1, 0, .5, .4]], (y) => ((y * 6) % 1 + 1) % 1 < .12 ? brass : met, 10); m.ell("chest", 0, .55, .42, .16, .16, .08, core, 8, 6);
+          for (let i = 0; i < 6; i++) { const a = i / 6 * 6.28; m.ell("chest", Math.cos(a) * .2, .55 + Math.sin(a) * .2, .44, .04, .04, .03, brass, 5, 3); }
+          m.tube("head", [[0, 0, 0, .25, .22], [0, .4, 0, .28, .24]], met, 8); m.ell("head", 0, .22, .24, .16, .05, .04, [1, .4, .2], 8, 4); m.cone("head", 0, .4, 0, .05, .3, brass);
+          humanoidLimbs(m, met, metD, .6, .55, .5, .48, .16, .18, metD, brass);
+          for (const s of ["L", "R"]) { m.cone("fa" + s, .08, -.6, 0, .05, .25, metD, [.3, -1, 0]); m.cone("fa" + s, -.08, -.6, 0, .05, .25, metD, [-.3, -1, 0]); }
+          return m.bake(); },
+        voidling(col) { const m = Model(), c1 = mix(col, [.25, .1, .4], .5), c2 = lighten(mix(col, [.7, .4, 1], .5), .2), eye = [1, .85, 1];
+          m.ell("body", 0, 1.4, 0, .65, .6, .6, (p, n) => mix(darken(c1, .4), c1, clamp(n[1] * .6 + .5 + nz(p, 6) * .3, 0, 1)), 12, 9); m.ell("body", 0, 1.45, .55, .25, .22, .08, eye, 10, 6); m.ell("body", 0, 1.45, .62, .1, .12, .03, [.15, 0, .2], 8, 5);
+          for (let i = 0; i < 5; i++) { const a = i / 5 * 6.28; m.cone("body", Math.cos(a) * .55, 1.75, Math.sin(a) * .55, .07, .45, c2, [Math.cos(a) * .4, 1, Math.sin(a) * .4]); }
+          for (let i = 0; i < 6; i++) m.tube("t" + i, [[0, 0, 0, .14, .14], [0, -.45, 0, .1, .1], [0, -.9, 0, .06, .06], [0, -1.2, 0, .02, .02]], (y) => mix(c1, c2, clamp(-y * .7, 0, 1)), 6);
+          return m.bake(); },
+        prism(col) { const m = Model(), c1 = lighten(col, .25), c2 = lighten(col, .6), cD = darken(col, .25);
+          const octa = (b, x, y, z, r, h, c) => { m.cone(b, x, y, z, r, h, c, [0, 1, 0], 4); m.cone(b, x, y, z, r, h, darken(c, .2), [0, -1, 0], 4); };
+          octa("body", 0, 1.4, 0, .5, .8, c1); octa("body", 0, 1.4, 0, .25, .45, c2);
+          for (let i = 0; i < 5; i++) octa("s" + i, 0, 0, 0, .15, .32, i % 2 ? c2 : cD);
+          return m.bake(); },
+        cinder(col) { const m = Model(), sk = darken(mix(col, [.3, .15, .1], .4), .1), glow = lighten(mix(col, [1, .55, .15], .6), .2), eye = [1, .9, .3];
+          const scaly = (p, n) => mix(sk, glow, Math.max(0, nz(p, 7) - .62) * 2.5);
+          m.ell("body", 0, .7, -.1, .55, .38, 1.25, scaly, 12, 8); for (let i = 0; i < 6; i++) m.cone("body", 0, 1.02, -.8 + i * .3, .08, .2, glow, [0, 1, -.3]);
+          m.ell("head", 0, .05, .4, .4, .28, .55, scaly, 10, 7); for (const s of [-1, 1]) m.ell("head", s * .22, .18, .65, .07, .05, .05, eye, 6, 4); m.ell("head", 0, -.05, .9, .22, .1, .2, darken(sk, .3), 8, 5);
+          m.tube("tail", [[0, 0, 0, .3, .26], [0, -.5, -.3, .2, .18], [0, -.9, -.6, .12, .1], [0, -1.3, -.8, .03, .03]], (y) => y < -.8 ? glow : sk, 7);
+          for (const k of ["fl", "fr", "bl", "br"]) { m.tube(k + "1", [[0, 0, 0, .16, .16], [0, -.3, 0, .12, .12]], sk, 6); m.tube(k + "2", [[0, 0, 0, .11, .11], [0, -.28, .05, .1, .1]], darken(sk, .2), 6); m.ell(k + "2", 0, -.3, .12, .14, .05, .18, glow, 6, 4); }
+          return m.bake(); },
+        bird(col) { const m = Model(), b = col, bD = darken(col, .35), beak = [.9, .7, .25];
+          m.ell("body", 0, .5, 0, .32, .3, .55, (p, n) => mix(b, bD, clamp(.3 - n[1], 0, 1)), 10, 7); m.ell("head", 0, .1, .1, .22, .22, .22, b, 8, 6); m.cone("head", 0, .08, .28, .07, .28, beak, [0, -.15, 1]); for (const s of [-1, 1]) m.ell("head", s * .12, .16, .2, .03, .03, .02, [.05, .05, .05], 5, 3);
+          for (const s of ["L", "R"]) m.ell("wing" + s, (s === "L" ? 1 : -1) * .35, 0, 0, .38, .05, .28, bD, 8, 4); m.cone("tail", 0, 0, 0, .14, .4, bD, [0, .2, -1]);
+          return m.bake(); }
+      });
       build.frostwolf = build.wolf; build.hati = build.wolf;
       const cache = new Map();
       function model(shape, color) { const k = shape + ":" + color; let b = cache.get(k); if (!b) { const f = build[shape]; if (!f) return null; b = f(hex(color)); cache.set(k, b); } return b; }
       // poses: devolve matrizes por parte (local, raio=1). st: {ph (0..1 andar), mv, atk:-1|0..1 (preparo->golpe), idle (0..1)}
+      const QC = { wolf: { fx: .32, bx: .32, fz: .85, bz: -.85, hy: 1.2, u: .7, hY: 1.55, hZ: 1.35, tY: 1.55, tZ: -1.15 }, boar: { fx: .4, bx: .45, fz: .8, bz: -.75, hy: 1.15, u: .4, hY: 1.45, hZ: 1.15, tY: 1.55, tZ: -1.15 }, cinder: { fx: .42, bx: .42, fz: .65, bz: -.6, hy: .62, u: .3, hY: .75, hZ: 1.15, tY: .7, tZ: -1.2 } };
+      QC.frostwolf = QC.wolf; QC.hati = QC.wolf;
+      const HCF = { goblin: [.95, .15, .95, .55, .78, .45, .45, .22, -.2, .45, -.5], sylvan: [1.0, 0, 0, .6, 1.45, .6, .6, .29, .05, .45, -.5], draugr: [1.15, .1, 1.12, .58, .95, .5, .45, .22, -.15, .5, -.5], yeti: [1.0, .15, 1.2, .85, 1.0, .75, .7, .3, -.2, .42, -.7],
+        jotun: [1.3, .15, 1.4, .8, 1.1, .65, .6, .3, -.25, .6, -.62], sentinel: [.95, .15, 1.2, .9, 1.0, .7, .65, .3, -.2, .42, -.7], automaton: [1.05, .1, 1.15, .68, .95, .6, .55, .22, -.2, .5, -.6] };
       function pose(shape, st) {
-        const w = st.ph * Math.PI * 2, mv = st.mv ? 1 : 0, br = Math.sin(st.idle * Math.PI * 2) * .03, a = st.atk;
-        if (shape === "wolf" || shape === "frostwolf" || shape === "hati" || shape === "boar") {
-          const boar = shape === "boar"; const bob = mv ? Math.abs(Math.sin(w)) * .12 : br; let lunge = 0, headP = 0;
+        const w = st.ph * Math.PI * 2, mv = st.mv ? 1 : 0, br = Math.sin(st.idle * Math.PI * 2) * .03, a = st.atk, t = st.idle * 6.283;
+        const q = QC[shape];
+        if (q) { const boar = shape === "boar"; const bob = mv ? Math.abs(Math.sin(w)) * .12 : br; let lunge = 0, headP = 0;
           if (a >= 0) { if (a < .5) { lunge = -.25 * (a / .5); headP = .35 * (a / .5); } else { const k = (a - .5) / .5; lunge = Math.sin(k * Math.PI) * (boar ? .9 : .7) - .25 * (1 - k); headP = .35 - .7 * Math.sin(k * Math.PI); } }
-          const root = X(T(0, bob, lunge), RX(-mv * .05));
-          const sw = (ph) => mv ? Math.sin(w + ph) * .6 : 0, kn = (ph) => mv ? Math.max(0, Math.sin(w + ph + .8)) * .9 : .05;
-          const L = boar ? { fx: .4, bx: .45, fz: .8, bz: -.75, hy: 1.15 } : { fx: .32, bx: .32, fz: .85, bz: -.85, hy: 1.2 };
-          const out = { body: root, head: X(root, T(0, 1.55 + (boar ? -.1 : 0), boar ? 1.15 : 1.35), RX(headP + (mv ? Math.sin(w * 2) * .05 : 0))), tail: X(root, T(0, 1.55, -1.15), RY(Math.sin(st.idle * 6.28 * (mv ? 3 : 1)) * .35), RX(-.6)) };
-          for (const [k, x, z, ph] of [["fl", L.fx, L.fz, 0], ["fr", -L.fx, L.fz, Math.PI], ["bl", L.bx, L.bz, Math.PI], ["br", -L.bx, L.bz, 0]]) { const up = X(root, T(x, L.hy, z), RX(sw(ph))); out[k + "1"] = up; out[k + "2"] = X(up, T(0, boar ? -.4 : -.7, 0), RX(z > 0 ? -kn(ph) * .4 : kn(ph))); }
+          const root = X(T(0, bob, lunge), RX(-mv * .05)); const sw = (ph) => mv ? Math.sin(w + ph) * .6 : 0, kn = (ph) => mv ? Math.max(0, Math.sin(w + ph + .8)) * .9 : .05;
+          const out = { body: root, head: X(root, T(0, q.hY, q.hZ), RX(headP + (mv ? Math.sin(w * 2) * .05 : 0))), tail: X(root, T(0, q.tY, q.tZ), RY(Math.sin(t * (mv ? 3 : 1)) * .35), RX(-.6)) };
+          for (const [k, x, z, ph] of [["fl", q.fx, q.fz, 0], ["fr", -q.fx, q.fz, Math.PI], ["bl", q.bx, q.bz, Math.PI], ["br", -q.bx, q.bz, 0]]) { const up = X(root, T(x, q.hy, z), RX(sw(ph))); out[k + "1"] = up; out[k + "2"] = X(up, T(0, -q.u, 0), RX(z > 0 ? -kn(ph) * .4 : kn(ph))); }
           return out; }
-        if (shape === "goblin" || shape === "sylvan") {
-          const syl = shape === "sylvan", bob = mv ? Math.abs(Math.sin(w)) * .08 : br, sw = mv ? Math.sin(w) * .55 : 0;
-          let shR = -.2 - sw * .6, elR = -.3, twist = -sw * .15;
-          if (a >= 0) { if (a < .5) { const k = a / .5; shR = -2.6 * k; elR = -.4 - .5 * k; twist = .4 * k; } else { const k = (a - .5) / .5, e = 1 - Math.pow(1 - k, 3); shR = -2.6 + 2.2 * e; elR = -.9 + .7 * e; twist = .4 - .8 * e; } }
-          const hip = syl ? 1.0 : .95, root = X(T(0, hip + bob, 0)), chest = X(root, T(0, syl ? 0 : .15, 0), RY(twist), RX(mv * .08));
-          const o = { pelvis: root, chest, body: root, head: X(chest, T(0, syl ? 0 : .95, 0), RX(Math.sin(st.idle * 6.28) * .04)) };
-          const sx = syl ? .6 : .55, sy = syl ? 1.45 : .78;
-          o.uaR = X(chest, T(-sx, sy, 0), RZ(.15), RX(shR)); o.faR = X(o.uaR, T(0, syl ? -.6 : -.45, 0), RX(elR)); o.club = X(o.faR, T(0, -.5, 0), RX(1.3));
-          o.uaL = X(chest, T(sx, sy, 0), RZ(-.15), RX(sw * .6)); o.faL = X(o.uaL, T(0, syl ? -.6 : -.45, 0), RX(-.35));
-          for (const [s, x, ph] of [["L", .22, 0], ["R", -.22, Math.PI]]) { const leg = mv ? Math.sin(w + ph) * .7 : 0; o["th" + s] = X(root, T(x * (syl ? 1.3 : 1), syl ? .05 : -.2, 0), RX(-leg)); o["sh" + s] = X(o["th" + s], T(0, -.45, 0), RX(mv ? Math.max(0, -Math.sin(w + ph + .5)) * 1.1 + .1 : .05)); }
+        const hc = HCF[shape];
+        if (hc) { const [hip, cOff, hOff, sx, sy, ua, fa, thX, thY, , clubOff] = hc; const syl = shape === "sylvan", heavy = shape === "jotun" || shape === "sentinel" || shape === "yeti";
+          const bob = mv ? Math.abs(Math.sin(w)) * (heavy ? .05 : .08) : br, sw = mv ? Math.sin(w) * (heavy ? .4 : .55) : 0;
+          let shR = -.2 - sw * .6, elR = -.3, twist = -sw * .15, shL = sw * .6;
+          if (a >= 0) { if (a < .5) { const k = a / .5; shR = -2.6 * k; elR = -.4 - .5 * k; twist = .4 * k; if (heavy) shL = -2.4 * k; } else { const k = (a - .5) / .5, e = 1 - Math.pow(1 - k, 3); shR = -2.6 + 2.2 * e; elR = -.9 + .7 * e; twist = .4 - .8 * e; if (heavy) shL = -2.4 + 2.0 * e; } }
+          const root = X(T(0, hip + bob, 0)), chest = X(root, T(0, cOff, 0), RY(twist), RX(mv * .08 + (heavy ? .06 : 0)));
+          const o = { pelvis: root, chest, body: root, head: X(chest, T(0, hOff, 0), RX(Math.sin(t) * .04)) };
+          o.uaR = X(chest, T(-sx, sy, 0), RZ(.15), RX(shR)); o.faR = X(o.uaR, T(0, -ua, 0), RX(elR)); o.club = X(o.faR, T(0, clubOff, 0), RX(1.3));
+          o.uaL = X(chest, T(sx, sy, 0), RZ(-.15), RX(shL)); o.faL = X(o.uaL, T(0, -ua, 0), RX(-.35));
+          for (const [s, x, ph] of [["L", thX, 0], ["R", -thX, Math.PI]]) { const leg = mv ? Math.sin(w + ph) * (heavy ? .45 : .7) : 0; o["th" + s] = X(root, T(x, thY, 0), RX(-leg)); o["sh" + s] = X(o["th" + s], T(0, -hc[9], 0), RX(mv ? Math.max(0, -Math.sin(w + ph + .5)) * 1.1 + .1 : .05)); }
           if (syl) delete o.club;
           return o; }
+        if (shape === "voidling") { const bob = Math.sin(t) * .12 + (a >= 0 ? -Math.sin(a * Math.PI) * .2 : 0); let lunge = a >= 0 ? Math.sin(a * Math.PI) * .6 : 0; const body = X(T(0, bob, lunge)); const o = { body };
+          for (let i = 0; i < 6; i++) { const ang = i / 6 * 6.283; o["t" + i] = X(body, T(Math.cos(ang) * .38, 1.0, Math.sin(ang) * .38), RZ(Math.cos(ang) * (.35 + Math.sin(t * 2 + i) * .2)), RX(-Math.sin(ang) * (.35 + Math.cos(t * 2 + i) * .2))); } return o; }
+        if (shape === "prism") { const body = X(T(0, Math.sin(t) * .1, a >= 0 ? Math.sin(a * Math.PI) * .5 : 0), RY(t * .5)); const o = { body };
+          for (let i = 0; i < 5; i++) { const ang = i / 5 * 6.283 + t * .8; o["s" + i] = X(T(Math.cos(ang) * 1.05, 1.4 + Math.sin(t * 2 + i) * .25, Math.sin(ang) * 1.05), RY(ang)); } return o; }
+        if (shape === "bird") { const fl = st.fly ? Math.sin(st.idle * 6.283 * 2) * .9 : .15; const body = X(T(0, 0, 0), RX(st.fly ? .2 : 0)); return { body, head: X(body, T(0, .7, .45)), wingL: X(body, T(.15, .6, 0), RZ(-fl)), wingR: X(body, T(-.15, .6, 0), RZ(fl)), tail: X(body, T(0, .5, -.5)) }; }
         // blob
-        const hop = mv ? Math.abs(Math.sin(w)) * .4 : 0, sq = mv ? Math.cos(w * 2) * .12 : Math.sin(st.idle * 6.28) * .05; let lunge = 0; if (a >= 0) lunge = a < .5 ? -.2 * a / .5 : Math.sin((a - .5) / .5 * Math.PI) * .7;
+        const hop = mv ? Math.abs(Math.sin(w)) * .4 : 0, sq = mv ? Math.cos(w * 2) * .12 : Math.sin(t) * .05; let lunge = 0; if (a >= 0) lunge = a < .5 ? -.2 * a / .5 : Math.sin((a - .5) / .5 * Math.PI) * .7;
         return { body: X(T(0, hop, lunge), SC(1 + sq * .6, 1 - sq, 1 + sq * .6)) };
       }
       function skin(shape, color, st, k, yaw, out) { const B = model(shape, color); if (!B) return false; const P = pose(shape, st); const root = X(SC(-k, k, k), RY(yaw));
@@ -19616,35 +19688,85 @@ precision highp float;precision highp int;in vec2 vUV;in float vK;uniform sample
       return { skin, has: (s) => !!build[s] };
     })();
     const monCache = new Map(); let bakesThisFrame = 0, lastBakeFrame = -1;
-    const MSZ = { wolf: 1.1, frostwolf: 1.1, hati: 1.1, boar: 1.0, goblin: .95, sylvan: 1.4, blob: 1.3 };
+    const MSZ = { wolf: 1.1, frostwolf: 1.1, hati: 1.1, boar: 1.0, goblin: .95, sylvan: 1.4, blob: 1.3, draugr: 1.05, yeti: 1.05, jotun: 1.0, sentinel: 1.0, automaton: 1.05, voidling: .95, prism: .9, cinder: 1.0 };
     function monSprite(m, anim, clock, frameNo) {
-      if (!on || broken || !gl || !TB_FB) return null; const d = m.def, shape = d.shape; if (!MM.has(shape) || m.state === "dead" || d.ghostLine || d.boss && shape !== "hati") return null;
+      if (!on || broken || !gl || !TB_FB) return null; const d = m.def, shape = d.shape; if (!MM.has(shape) || m.state === "dead") return null;
       if (frameNo !== lastBakeFrame) { lastBakeFrame = frameNo; bakesThisFrame = 0; }
       const mv = !!anim.moving, dir = ((Math.round((m.facing || 0) / (Math.PI * 2) * 12) % 12) + 12) % 12, yb = Math.round(_8 / (Math.PI * 2) * 24), tb = Math.round(zr * 20);
       let anm = "i", fr = 0, atk = -1;
       if (m.state === "windup") { anm = "w"; atk = .35; } else if (m.state === "recover" || m.state === "attack") { anm = "a"; atk = .8; } else if (m.state === "charge") { anm = "c"; fr = Math.floor((clock / 70) % 6); } else if (mv) { anm = "m"; fr = Math.floor(anim.phase * 6) % 6; } else { fr = Math.floor((clock / 600 + (anim.seed || 0)) % 2); }
       const key = shape + d.color + ":" + d.radius + ":" + dir + ":" + anm + fr + ":" + yb + ":" + tb; let c = monCache.get(key); if (c) return c;
-      if (bakesThisFrame >= 6) return null; bakesThisFrame++;
+      if (bakesThisFrame >= 8) return null; bakesThisFrame++;
       if (monCache.size > 900) monCache.clear();
-      const k = d.radius * (MSZ[shape] || 1);
+      const k = d.radius * (MSZ[shape] || 1), fsc = Math.min(1, 220 / (k * 4.2));
       const st = { ph: anm === "c" ? fr / 6 : anm === "m" ? fr / 6 : 0, mv: anm === "m" || anm === "c", atk, idle: fr * .25 };
       const verts = []; if (!MM.skin(shape, d.color, st, k, Math.PI / 2 - dir / 12 * Math.PI * 2, verts)) return null;
-      const [Pa, Pb, Pc, Pd] = Pu(); const sx = 2 / TBW, sy = 2 / TBH, q2 = 1 / 900;
-      const TV = new Float32Array([sx * Pa, -sy * Pb, -Pb * q2, 0, 0, sy, -1.15 * q2, 0, sx * Pc, -sy * Pd, -Pd * q2, 0, (TAX - TBW / 2) * sx, 1 - sy * TAY, 0, 1]);
+
+      const b = bakeVerts(verts, fsc); if (!b) return null; c = { cv: b.cv, ax: b.ax, ay: b.ay - 4, k: 1 / fsc, key: "e3d" + key, e3d: true }; monCache.set(key, c); return c;
+    }
+    // renderiza vértices (espaço local, base no chão) num sprite recortado com contorno
+    function bakeVerts(verts, fsc, mode = 10, lodTree) {
+      const [Pa, Pb, Pc, Pd] = Pu(); const sx = 2 / TBW * fsc, sy = 2 / TBH * fsc, q2 = 1 / 900;
+      const TV = new Float32Array([sx * Pa, -sy * Pb, -Pb * q2, 0, 0, sy, -1.15 * q2, 0, sx * Pc, -sy * Pd, -Pd * q2, 0, (TAX - TBW / 2) * 2 / TBW, 1 - 2 / TBH * TAY, 0, 1]);
       const V = vao(verts, false);
       gl.bindFramebuffer(gl.FRAMEBUFFER, TB_FB); gl.viewport(0, 0, TBW, TBH); gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT); gl.enable(gl.DEPTH_TEST); gl.disable(gl.BLEND);
       gl.useProgram(P1); gl.uniformMatrix4fv(ul(P1, "uVP"), false, TV); gl.uniform1i(ul(P1, "uNoSh"), 1); gl.uniform3fv(ul(P1, "uSun"), norm([-.5, .78, -.38])); gl.uniform3fv(ul(P1, "uSunCol"), [1, .9, .74]); gl.uniform3fv(ul(P1, "uSky"), [.55, .66, .86]); gl.uniform3fv(ul(P1, "uGnd"), [.4, .33, .24]);
       gl.uniform1f(ul(P1, "uAmbK"), .68); gl.uniform1f(ul(P1, "uNight"), 0); gl.uniform1i(ul(P1, "uNL"), 0); gl.uniform1f(ul(P1, "uFlash"), 0); gl.uniform3fv(ul(P1, "uView"), norm([0, 1, 1.4]));
-      gl.uniform1i(ul(P1, "uMode"), 10); gl.bindVertexArray(V.a); gl.drawArrays(gl.TRIANGLES, 0, V.n);
+      if (mode === 5) { const [rv, uv] = basisOf(TV); gl.uniform3fv(ul(P1, "uRight"), rv); gl.uniform3fv(ul(P1, "uUp"), uv); gl.activeTexture(gl.TEXTURE2); gl.bindTexture(gl.TEXTURE_2D, leafTex); gl.uniform1i(ul(P1, "uLeaf"), 2); }
+      gl.uniform1i(ul(P1, "uMode"), mode); gl.bindVertexArray(V.a); gl.drawArrays(gl.TRIANGLES, 0, V.n);
       const px = new Uint8Array(TBW * TBH * 4); gl.readPixels(0, 0, TBW, TBH, gl.RGBA, gl.UNSIGNED_BYTE, px); gl.bindFramebuffer(gl.FRAMEBUFFER, null); gl.uniform1i(ul(P1, "uNoSh"), 0); gl.deleteVertexArray(V.a); gl.deleteBuffer(V.b);
-      // recorte + contorno
       let x0 = TBW, y0 = TBH, x1 = -1, y1 = -1; const A = (x, y) => x >= 0 && y >= 0 && x < TBW && y < TBH ? px[((TBH - 1 - y) * TBW + x) * 4 + 3] : 0;
       for (let y = 0; y < TBH; y++) for (let x = 0; x < TBW; x++) if (A(x, y) > 127) { if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y; }
       if (x1 < 0) return null; x0 = Math.max(0, x0 - 1); y0 = Math.max(0, y0 - 1); x1 = Math.min(TBW - 1, x1 + 1); y1 = Math.min(TBH - 1, y1 + 1);
       const w = x1 - x0 + 1, h = y1 - y0 + 1, cvs = document.createElement("canvas"); cvs.width = w; cvs.height = h; const g = cvs.getContext("2d"), im = g.createImageData(w, h), D = im.data;
       for (let y = y0; y <= y1; y++) for (let x = x0; x <= x1; x++) { const si = ((TBH - 1 - y) * TBW + x) * 4, di = ((y - y0) * w + (x - x0)) * 4;
-        if (px[si + 3] > 127) { D[di] = px[si]; D[di + 1] = px[si + 1]; D[di + 2] = px[si + 2]; D[di + 3] = 255; } else if (A(x + 1, y) > 127 || A(x - 1, y) > 127 || A(x, y + 1) > 127 || A(x, y - 1) > 127) { D[di] = 10; D[di + 1] = 7; D[di + 2] = 8; D[di + 3] = 255; } }
-      g.putImageData(im, 0, 0); c = { cv: cvs, ax: TAX - x0, ay: TAY - y0 - 4, k: 1, key: "e3d" + key }; monCache.set(key, c); return c;
+        if (px[si + 3] > 127) { D[di] = px[si]; D[di + 1] = px[si + 1]; D[di + 2] = px[si + 2]; D[di + 3] = 255; } else if (mode !== 5 && (A(x + 1, y) > 127 || A(x - 1, y) > 127 || A(x, y + 1) > 127 || A(x, y - 1) > 127)) { D[di] = 10; D[di + 1] = 7; D[di + 2] = 8; D[di + 3] = 255; } }
+      g.putImageData(im, 0, 0); return { cv: cvs, ax: (TAX - x0) / fsc, ay: (TAY - y0) / fsc };
+    }
+    function canBake(frameNo) { if (!on || broken || !gl || !TB_FB) return false; if (frameNo !== lastBakeFrame) { lastBakeFrame = frameNo; bakesThisFrame = 0; } return bakesThisFrame < 8; }
+    // ---- humanos (NPCs, moradores, outros jogadores) ----
+    const humCache = new Map(), humModels = new Map();
+    const HPALS = [[0x7a3a2a, 0x3a2a24], [0x2f5a86, 0x8a8f98], [0x3f6a32, 0x6e4a2a], [0x6a4a8a, 0x2a2240], [0x8a7a5a, 0x5a3a2a], [0x2f7a76, 0x8a2a3e], [0x9a6a2a, 0x3a3a44], [0x5a5a62, 0x7a2a2a], [0xb8b0a0, 0x3a5a7a]];
+    const HAIRS = [0x2a1a10, 0x5a3418, 0xb8481c, 0xd8b060, 0x8a8a8a, 0x1a1a22, 0x7a2a12, 0xe0d8c8];
+    function humSprite(seedStr, opts, facing, anim, clock, frameNo) {
+      let h = 0; for (let i = 0; i < seedStr.length; i++) h = h * 31 + seedStr.charCodeAt(i) >>> 0;
+      const pal = opts.line ? (CLASSPAL[opts.line] || CLASSPAL.aprendiz) : HPALS[h % HPALS.length], hair = opts.hair ?? HAIRS[(h >> 4) % HAIRS.length];
+      const mv = !!(anim && anim.moving), dir = ((Math.round((facing || 0) / (Math.PI * 2) * 12) % 12) + 12) % 12, yb = Math.round(_8 / (Math.PI * 2) * 24), tb = Math.round(zr * 20);
+      let anm = opts.dead ? "d" : opts.sit ? "s" : mv ? "m" : "i", fr = mv ? Math.floor((anim.phase || 0) * 6) % 6 : opts.dead || opts.sit ? 0 : Math.floor((clock / 700 + (h % 7)) % 2);
+      if (opts.atk >= 0) { anm = "a"; fr = opts.atk < .3 ? 0 : opts.atk < .6 ? 1 : 2; }
+      const key = pal[0] + ":" + pal[1] + ":" + hair + ":" + dir + ":" + anm + fr + ":" + yb + ":" + tb; let c = humCache.get(key); if (c) return c;
+      if (!canBake(frameNo)) return null; bakesThisFrame++; if (humCache.size > 1200) humCache.clear();
+      const mk = pal.join(",") + ":" + hair; let H3 = humModels.get(mk); if (!H3) { const t = hex(pal[0]), c2 = hex(pal[1]), hc = hex(hair); H3 = mkHero({ tunic: t, tunicD: scl(t, .75), cloak: c2, cloakD: scl(c2, .72), hair: hc, hairL: mix(hc, [1, .9, .7], .3) }); humModels.set(mk, H3); }
+      const v = []; H3.skin({ x: 0, y: 0, z: 0, k: 19, yaw: Math.PI / 2 - dir / 12 * Math.PI * 2, walk: fr / 6 * 2, moving: anm === "m", atk: anm === "a" ? [.2, .45, .8][fr] : -1, spin: -1, t: fr * .3, hurt: 0, sit: anm === "s", dead: anm === "d" }, v);
+      const b = bakeVerts(v, 1); if (!b) return null; c = { cv: b.cv, ax: b.ax, ay: b.ay, k: 1, key: "e3dh" + key }; humCache.set(key, c); return c;
+    }
+    // ---- bichos de cenário ----
+    const CRIT = { cao: ["wolf", 0x8a6a4a, .7], gato: ["wolf", 0x6a6a72, .45], raposa: ["wolf", 0xc8662a, .6], coelho: ["blob", 0xc8b8a0, .45], corvo: ["bird", 0x22222a, .55], gaivota: ["bird", 0xe8e8ec, .55], abutre: ["bird", 0x4a3a30, .8] };
+    function critSprite(q, clock, frameNo) {
+      const cdef = CRIT[q.kind]; if (!cdef) return null; const [shape, colr, sc] = cdef, col = q.col || colr, mv = q.st === 1 || q.st === 2, bird = shape === "bird", fly = bird && (q.z || 0) > 4;
+      const dir = ((Math.round((q.fa || 0) / (Math.PI * 2) * 12) % 12) + 12) % 12, yb = Math.round(_8 / (Math.PI * 2) * 24), tb = Math.round(zr * 20), fr = mv || fly ? Math.floor(clock / (q.st === 2 ? 70 : 110) % 6) : Math.floor(clock / 800 % 2);
+      const key = shape + col + ":" + dir + ":" + (fly ? "f" : mv ? "m" : "i") + fr + ":" + yb + ":" + tb + ":" + sc; let c = monCache.get(key); if (c) return c;
+      if (!canBake(frameNo)) return null; bakesThisFrame++;
+      const v = []; if (!MM.skin(shape, col, { ph: fr / 6, mv: mv && !bird, atk: -1, idle: fr / 6, fly }, 13 * sc, Math.PI / 2 - dir / 12 * Math.PI * 2, v)) return null;
+      const b = bakeVerts(v, 1); if (!b) return null; c = { cv: b.cv, ax: b.ax, ay: b.ay, k: 1, key: "e3dc" + key }; monCache.set(key, c); return c;
+    }
+    // ---- pedras, caixas e barris ----
+    const propCache = new Map();
+    function propSprite(kind, variant, frameNo) {
+      const yb = Math.round(_8 / (Math.PI * 2) * 24), tb = Math.round(zr * 20), key = kind + variant + ":" + yb + ":" + tb; let c = propCache.get(key); if (c) return c;
+      if (!canBake(frameNo)) return null; bakesThisFrame++;
+      const v = [], push = (p, n, col) => v.push(p[0], p[1], p[2], col[0], col[1], col[2], 0, 0, n[0], n[1], n[2], 0);
+      let sd = variant * 977 + 13; const rnd = () => (sd = (sd * 16807) % 2147483647) / 2147483647;
+      if (kind === "rock") { const s = variant ? 16 : 22, rows = 6, cols = 12, Vv = []; for (let r = 0; r <= rows; r++) { Vv.push([]); for (let cc = 0; cc <= cols; cc++) { const th = r / rows * Math.PI * .62, ph = cc / cols * 6.283, j = .8 + .4 * vnoise(Math.cos(ph) * 1.5 + variant * 3, Math.sin(ph) * 1.5 + r * .6); Vv[r].push([Math.sin(th) * Math.cos(ph) * 1.25 * s * j, -.2 * s + Math.cos(th) * .95 * s * j, Math.sin(th) * Math.sin(ph) * s * j]); } }
+        for (let r = 0; r < rows; r++) for (let cc = 0; cc < cols; cc++) { const a = Vv[r][cc], b2 = Vv[r][cc + 1], d = Vv[r + 1][cc], e = Vv[r + 1][cc + 1], n = norm(cross(sub(d, a), sub(b2, a))), up = Math.max(0, n[1]); const col = mix(mix([.48, .5, .54], [.62, .64, .68], hash(r, cc)), [.36, .5, .24], clamp((up - .6) / .3, 0, 1) * .8); for (const p of [a, d, b2, b2, d, e]) push(p, n, col); } }
+      else if (kind === "barrel") { const R = 11, H = 24, seg = 14; for (let i = 0; i < seg; i++) { const a0 = i / seg * 6.283, a1 = (i + 1) / seg * 6.283; for (let k = 0; k < 4; k++) { const y0 = k / 4 * H, y1 = (k + 1) / 4 * H, b0 = 1 + Math.sin(k / 4 * Math.PI) * .12, b1 = 1 + Math.sin((k + 1) / 4 * Math.PI) * .12;
+          const col = (k === 0 || k === 3) ? [.32, .3, .3] : (i % 2 ? [.55, .36, .2] : [.5, .32, .18]); const p = (a, y, b) => [Math.cos(a) * R * b, y, Math.sin(a) * R * b]; const n0 = [Math.cos(a0), 0, Math.sin(a0)], n1 = [Math.cos(a1), 0, Math.sin(a1)];
+          push(p(a0, y0, b0), n0, col); push(p(a1, y0, b0), n1, col); push(p(a1, y1, b1), n1, col); push(p(a0, y0, b0), n0, col); push(p(a1, y1, b1), n1, col); push(p(a0, y1, b1), n0, col); }
+          push([0, H, 0], [0, 1, 0], [.6, .42, .25]); push([Math.cos(a0) * R, H, Math.sin(a0) * R], [0, 1, 0], [.6, .42, .25]); push([Math.cos(a1) * R, H, Math.sin(a1) * R], [0, 1, 0], [.6, .42, .25]); } }
+      else { const S = 13, H = 22; const F = [[[1, 0, 0], [S, 0, -S], [S, 0, S], [S, H, S], [S, H, -S]], [[-1, 0, 0], [-S, 0, S], [-S, 0, -S], [-S, H, -S], [-S, H, S]], [[0, 0, 1], [S, 0, S], [-S, 0, S], [-S, H, S], [S, H, S]], [[0, 0, -1], [-S, 0, -S], [S, 0, -S], [S, H, -S], [-S, H, -S]], [[0, 1, 0], [-S, H, -S], [S, H, -S], [S, H, S], [-S, H, S]]];
+        for (const [n, a, b2, c2, d] of F) { const col = [.62, .44, .26]; push(a, n, col); push(b2, n, col); push(c2, n, col); push(a, n, col); push(c2, n, col); push(d, n, col);
+          const e = [.4, .27, .15]; const off = n.map((x) => x * .6); const st = (p) => [p[0] + off[0], p[1] + off[1], p[2] + off[2]]; push(st(a), n, e); push(st(c2), n, e); push(st([(a[0] + c2[0]) / 2 + (b2[0] - a[0]) * .06, (a[1] + c2[1]) / 2, (a[2] + c2[2]) / 2 + (b2[2] - a[2]) * .06]), n, e); } }
+      const b = bakeVerts(v, 1); if (!b) return null; c = { cv: b.cv, ax: b.ax, ay: b.ay, k: 1, key: "e3dp" + key }; propCache.set(key, c); return c;
     }
     // ---------- composição final (cena 3D + camada 2D) com pós-processamento ----------
     const POST = !MOB; let PP = null, SCF = null, SCT = null, SCD = null, OVT = null, SW = 0, SH2 = 0;
@@ -19691,13 +19813,13 @@ void main(){vec2 px=1./uRes;float band=smoothstep(.26,.5,abs(vUV.y-.5));float r=
         for (const p of map.portals || []) lights.push([p.x + p.w / 2, p.y + p.h / 2, 130, .5 + .4 * night, [.7, .6, 1.4]]);
         lights.sort((a, b) => Math.hypot(a[0] - P.x, a[1] - P.y) - Math.hypot(b[0] - P.x, b[1] - P.y)); lights.length = Math.min(12, lights.length);
         // herói
-        const ps = world.ps, pl = world.player, hero = !world.isDead() && !(ps.mount && ps.mountOwned) && !world.sitting && !world.crouching;
+        const ps = world.ps, pl = world.player, hero = !(ps.mount && ps.mountOwned);
         const anim = r.animOf ? r.anims && r.anims.get("p") : null;
         const hv = [];
         if (hero) {
           let hairInt = 0xb8481c; try { const ap = cs(ps); if (typeof ps.hc === "number") hairInt = ps.hc; else if (ap && typeof ap.hair === "number" && typeof xh !== "undefined") hairInt = xh[ap.hair % xh.length]; } catch (e) { }
           const H3 = heroFor(ps, hairInt), a2 = anim || {}, clk = r.clock, at = clk - (a2.atkAt || -1e9), dur = Math.max(260, a2.atkDur || 0);
-          H3.skin({ x: P.x, y: 0, z: P.y, k: 19, yaw: Math.PI / 2 - (pl.facing || 0), walk: (a2.phase || 0) * 2, moving: !!a2.moving, atk: at < dur ? at / dur : -1, spin: -1, t: time, hurt: 0 }, hv);
+          const dd = world.isDead(), si = !!(world.sitting || world.crouching); H3.skin({ x: P.x, y: 0, z: P.y, k: 19, yaw: Math.PI / 2 - (pl.facing || 0), walk: (a2.phase || 0) * 2, moving: !!a2.moving && !dd && !si, atk: at < dur && !dd ? at / dur : -1, spin: -1, t: time, hurt: 0, sit: si && !dd, dead: dd }, hv);
         }
         upd(VH, hv);
         // sombras: luz ortográfica ao redor da câmera
@@ -19751,7 +19873,7 @@ void main(){vec2 px=1./uRes;float band=smoothstep(.26,.5,abs(vUV.y-.5));float r=
       } catch (e) { console.error("Modo 3D desativado:", e); broken = true; if (cv) cv.style.display = "none"; r.canvas.style.opacity = "1"; return false; }
     }
     function drawHero(r, ctx, c0) { if (!heroReady || !r._e3dHero) return false; const h = { cx: c0 ? c0.x : r._e3dHero.cx, cy: c0 ? c0.y - HC : r._e3dHero.cy }; ctx.save(); ctx.imageSmoothingEnabled = false; ctx.drawImage(heroCanvas, h.cx - TWW / 2, h.cy - THW / 2, TWW, THW); ctx.restore(); return true; }
-    return { frame, drawHero, treeSprite, monSprite, isOn: () => on && !broken, setOn, toggle() { setOn(!on); return on; }, heroOk: () => heroReady };
+    return { frame, drawHero, treeSprite, monSprite, humSprite, critSprite, propSprite, isOn: () => on && !broken, setOn, toggle() { setOn(!on); return on; }, heroOk: () => heroReady };
   })();
   var B4 = '"Cinzel Decorative", "Uncial Antiqua", Georgia, serif', ms = 'Arial, "Helvetica Neue", Helvetica, sans-serif', X0 = 30, CS = { common: "#d9d9d9", uncommon: "#6fe08a", rare: "#5aa9ff", epic: "#c07bff", legendary: "#ffb02e" }, $a = 0.74, monScale = (d) => (d.boss ? 1.5 + Math.max(0, d.radius - 26) / 28 : d.radius <= 14 ? 0.62 : d.radius <= 17 ? 0.78 : d.radius <= 20 ? 0.96 : 1.2) * (d.boss ? 1.12 : 1.22), Cn = 188, $r = 124, I4 = (e) => Math.max(0, Math.min(1, e)), TS = (e) => e * e * (3 - 2 * e), RS = (e, t) => {
     let a = (t - e) % (Math.PI * 2);
@@ -20159,10 +20281,12 @@ void main(){vec2 px=1./uRes;float band=smoothstep(.26,.5,abs(vUV.y-.5));float r=
             p ? (r.deco === "santachair" ? (() => { let q = this.clock % 7000, ho = q < 1700, dy = Math.sin(this.clock / 640) * 0.6 - (ho ? Math.abs(Math.sin(q / 85)) * 2.4 : 0); nt(a, p, f.x, f.y + dy, false, 1, 1 + (ho ? Math.sin(q / 85) * 0.012 : Math.sin(this.clock / 900) * 0.004)); ho && this.text("Ho ho ho!", f.x + 6, f.y - 188 + Math.sin(this.clock / 120) * 2, 17, "#ff6a6a", true); })() : nt(a, p, f.x, f.y)) : m && nt(a, m, s.x, s.y + 4), r.deco === "bench" && this.benchMark(f.x, f.y - 16);
           } });
         } else if (r.kind === "crate") o.push({ depth: l, sx: s.x, sy: s.y, draw: () => {
+          let m3 = this.e3dOn ? E3D.propSprite(c < 0.5 ? "crate" : "barrel", 0, this.clock) : null; if (m3) { nt(a, m3, f.x, f.y); return; }
           let m = u({ kind: c < 0.5 ? "crate" : "barrel", theme: d, variant: 0 });
           m ? nt(a, m, f.x, f.y) : nt(a, c < 0.5 ? n.crate : n.barrel, s.x, s.y + 4);
         } });
         else if (r.kind === "rock") o.push({ depth: l, sx: s.x, sy: s.y, draw: () => {
+          let m3 = this.e3dOn ? E3D.propSprite("rock", c < 0.5 ? 0 : 1, this.clock) : null; if (m3) { nt(a, m3, f.x, f.y); return; }
           let m = u({ kind: "rock", theme: d, variant: c < 0.5 ? 0 : 1 });
           m ? nt(a, m, f.x, f.y, c < 0.25) : nt(a, n.rocks[c < 0.5 ? 0 : 1], s.x, s.y + 4, c < 0.25);
         } });
@@ -20297,6 +20421,7 @@ void main(){vec2 px=1./uRes;float band=smoothstep(.26,.5,abs(vUV.y-.5));float r=
     drawWalker(t) {
       t.say && this.clock < t.sayUntil && this.speechBalloon(t.say, ce(t.x, t.y).x, ce(t.x, t.y).y - 64, Math.min(1, (t.sayUntil - this.clock) / 500));
       let a = this.ctx, { x: n, y: o } = ce(t.x, t.y), { dir: r, flip: i } = Kl(t.ang), s = t.ph < 0 ? -1 : Math.floor(t.ph * ea) % ea, l = fa(t.id, r, s, 0), c = t.ph < 0 ? 0 : t.ph * Math.PI * 2, d = Xi(t.ang), f = d.x / (Math.hypot(d.x, d.y) || 1), u = Math.sin(this.clock / 480 + t.seed) * 0.012;
+      if (this.e3dOn) { let hs = E3D.humSprite("w" + t.id, {}, t.ang, { moving: t.ph >= 0, phase: t.ph < 0 ? 0 : t.ph }, this.clock, this.clock); if (hs) { this.blob(n, o + 4, 14), nt(a, hs, n, o); return; } }
       this.blob(n, o + 4, 14), nt(a, l, n + Math.sin(c) * 0.5, o + 6, i, $a * (1 - u * 0.5), $a * (1 + u - (t.ph < 0 ? 0 : 0.02 * Math.abs(Math.cos(c)))), t.ph < 0 ? 0 : Math.sin(c) * 0.028 + f * 0.05);
     }
     fountainLife(f, c, T) {
@@ -20791,7 +20916,7 @@ void main(){vec2 px=1./uRes;float band=smoothstep(.26,.5,abs(vUV.y-.5));float r=
       let f = l.idleFace ?? l.face;
       l.face = l.idleFace;
       t === "papainoel" && (l.face = Math.PI / 2); let sk = 0, sq = 1, hoho = false; if (t === "papainoel") { let q = this.clock % 7000; hoho = q < 1700; if (hoho) sk = -Math.abs(Math.sin(q / 85)) * 3, sq = 1 + Math.sin(q / 85) * 0.014; sk += Math.sin(this.clock / 640) * 0.7; } let { dir: u, flip: m } = Kl(l.face), p = (t === "munin" ? (() => { try { return ROX2M.mon("corvo", u, -1, 0, { id: "munin", color: 0x23233f }, { S: 2.8, clk: this.clock, seed: 3 }); } catch (e) { return null; } })() : null) || fa(t, u, t === "papainoel" ? -2 : -1, 0), h = this.organic(l, l.face, { moving: false, breath: 0.014 });
-      t === "papainoel" ? i += 9 : 0, t !== "papainoel" && (this.blob(i, s + 4, 15), nt(r, p, i + h.dx, s + 6 + h.dy - (t === "papainoel" ? 6 : 0) + sk, m, $a * h.sx * (t === "papainoel" ? 1.38 : 1), $a * h.sy * sq * (t === "papainoel" ? 1.38 : 1), h.rot)), this.nameOn(`n${t}`) && this.text(n0(t)?.name ?? t, i, s + 16, 12, "#ffffff");
+      t === "papainoel" ? i += 9 : 0, t !== "papainoel" && (this.blob(i, s + 4, 15), (this.e3dOn && (this._hs = E3D.humSprite("n" + t, {}, l.face, l, this.clock, this.clock)) ? nt(r, this._hs, i, s) : nt(r, p, i + h.dx, s + 6 + h.dy - (t === "papainoel" ? 6 : 0) + sk, m, $a * h.sx * (t === "papainoel" ? 1.38 : 1), $a * h.sy * sq * (t === "papainoel" ? 1.38 : 1), h.rot))), this.nameOn(`n${t}`) && this.text(n0(t)?.name ?? t, i, s + 16, 12, "#ffffff");
       let x = this.marks.get(t);
       x && this.text(x, i, s - 76 + Math.sin(this.clock / 190) * 3, 24, x === "?" ? "#7dff9a" : "#ffd34d", true);
     }
@@ -20896,7 +21021,7 @@ void main(){vec2 px=1./uRes;float band=smoothstep(.26,.5,abs(vUV.y-.5));float r=
     drawPlayer(t) {
       let a = this.store.world;
       if (!a) return;
-      if (this.e3dOn && E3D.heroOk() && !a.isDead() && !(a.ps.mount && a.ps.mountOwned) && !a.sitting && !a.crouching) { let r0 = ce(a.player.pos.x, a.player.pos.y); this.animOf("p", a.player.pos.x, a.player.pos.y, t); this.useFx(r0.x, r0.y), a.ps.level >= 99 && this.epicFx(r0.x, r0.y, 0), E3D.drawHero(this, this.ctx, r0); return; }
+      if (this.e3dOn && E3D.heroOk() && !(a.ps.mount && a.ps.mountOwned)) { let r0 = ce(a.player.pos.x, a.player.pos.y); this.animOf("p", a.player.pos.x, a.player.pos.y, t); this.useFx(r0.x, r0.y), a.ps.level >= 99 && this.epicFx(r0.x, r0.y, 0), E3D.drawHero(this, this.ctx, r0); return; }
       let n = this.ctx, o = a.player, r = ce(o.pos.x, o.pos.y), i = this.animOf("p", o.pos.x, o.pos.y, t), { dir: s, flip: l } = Kl(o.facing), c = a.isDead(), d = Km(this.clock - i.atkAt, i.atkImpact, i.atkDur), f = a.sitting || a.crouching ? -2 : i.moving ? Math.floor(i.phase * ea) : -1, u = fa(po({ ...cs(a.ps), cw: this.capeSw(r.x, a) }), s, f, d, i.atkStyle);
       a.ps.mount && a.ps.mountOwned && !c && !d && (u = fa(po(cs(a.ps)), s, -2, 0, i.atkStyle));
       admOn() && !c && this.admAura(r);
@@ -21223,7 +21348,7 @@ void main(){vec2 px=1./uRes;float band=smoothstep(.26,.5,abs(vUV.y-.5));float r=
     drawOther(t, a) {
       t.say && performance.now() < t.sayUntil && this.speechBalloon(t.say, ce(t.x, t.y).x, ce(t.x, t.y).y - 70, Math.min(1, (t.sayUntil - performance.now()) / 500));
       let n = this.ctx, o = ce(t.x, t.y), r = this.animOf(`o${t.id}`, t.x, t.y, a), { dir: i, flip: s } = Kl(t.facing), l = t.state === "dead", c = Km(this.clock - r.atkAt, r.atkImpact, r.atkDur), d = r.moving ? Math.floor(r.phase * ea) : -1, f = fa(po({ base: t.line, hair: kh(t.name), sx: t.sx || void 0, ti: t.tier || 0, ep: t.level >= 99 ? 1 : 0 }), i, d, c, r.atkStyle);
-      n.save(), n.globalAlpha = l ? 0.3 : 1, l ? (n.translate(o.x, o.y), n.rotate(Math.PI / 2), nt(n, f, 0, 0, s, $a, $a)) : nt(n, f, o.x, o.y + 6, s, $a, $a), n.restore(), l || (t.afk && this.text(`[AFK] ${t.name} \xB7 Nv ${t.level}`, o.x, o.y + 16, 12, "#ffd27a"), !t.afk && this.nameOn(`o${t.id}`) && this.text(`${t.name} \xB7 Nv ${t.level}`, o.x, o.y + 16, 12, "#9fe8ff"), this.bar(o.x, o.y - 52, 38, Math.max(0, t.hpf ?? 1), t.hpf !== void 0 && t.hpf < 0.3 ? "#e05858" : "#58b8d4"));
+      n.save(), n.globalAlpha = l ? 0.3 : 1, l ? (n.translate(o.x, o.y), n.rotate(Math.PI / 2), nt(n, f, 0, 0, s, $a, $a)) : (this.e3dOn && (this._hs = E3D.humSprite("o" + t.id, { line: t.line }, t.facing, r, this.clock, this.clock)) ? nt(n, this._hs, o.x, o.y) : nt(n, f, o.x, o.y + 6, s, $a, $a)), n.restore(), l || (t.afk && this.text(`[AFK] ${t.name} \xB7 Nv ${t.level}`, o.x, o.y + 16, 12, "#ffd27a"), !t.afk && this.nameOn(`o${t.id}`) && this.text(`${t.name} \xB7 Nv ${t.level}`, o.x, o.y + 16, 12, "#9fe8ff"), this.bar(o.x, o.y - 52, 38, Math.max(0, t.hpf ?? 1), t.hpf !== void 0 && t.hpf < 0.3 ? "#e05858" : "#58b8d4"));
     }
     drawMonster(t, a) {
       if (t.def.id === "jormungandr") return this.drawSerpent(t, a);
@@ -21233,7 +21358,7 @@ void main(){vec2 px=1./uRes;float band=smoothstep(.26,.5,abs(vUV.y-.5));float r=
       t.def.ghostLine ? (u = ghostSpr(t, c, s), p = d) : f === "xx" ? u = Xr(f, c, s, l) ?? fa(f, c, s, l) : (u = ROXQM(f, c, s, l, t.def, s < 0 && l === 0 && t.state !== "dead" ? { clk: this.clock, seed: (typeof t.id === "number" ? t.id : String(t.id).split("").reduce((q, ch) => q + ch.charCodeAt(0), 0)) % 97 } : void 0) ?? Xr(f, c, s, l) ?? us(f, s, l, c), p = mo ? d : Xi(t.facing).x < 0);
       if (this.e3dOn) { let s3 = E3D.monSprite(t, i, this.clock, this.clock); s3 && (u = s3, m = 1, p = false); }
       let h = `${f}:${c}:${s}:${l}:${u && u.key || ""}`;
-      t.def.boss && f === "jotun" && t.def.id !== "hrimgar" && (u = ds(u, `bs${t.def.id}:${s}:${l}`, t.def.color, 0.78)), t.state === "windup" ? u = ds(u, h, 16724016, 0.5) : n.time < t.stunUntil ? u = ds(u, h, 16769126, 0.5) : n.time < t.slowUntil ? u = ds(u, h, 7321855, 0.45) : t.phase === 2 && (u = ds(u, h, 16736352, 0.28)), t.state === "charge" && (m *= 1.08);
+      t.def.boss && f === "jotun" && t.def.id !== "hrimgar" && !(u && u.e3d) && (u = ds(u, `bs${t.def.id}:${s}:${l}`, t.def.color, 0.78)), t.state === "windup" ? u = ds(u, h, 16724016, 0.5) : n.time < t.stunUntil ? u = ds(u, h, 16769126, 0.5) : n.time < t.slowUntil ? u = ds(u, h, 7321855, 0.45) : t.phase === 2 && (u = ds(u, h, 16736352, 0.28)), t.state === "charge" && (m *= 1.08);
       let x = this.hover?.kind === "monster" && this.hover.id === t.id;
       x && (o.save(), o.shadowColor = "#ffd34d", o.shadowBlur = 14), t.state !== "dead" && this.blob(r.x, r.y + 3, Math.max(11, t.def.radius * 1.15));
       let b = t.state === "dead" ? { dx: 0, dy: 0, rot: 0, sx: 1, sy: 1 } : this.organic(i, t.facing, { moving: i.moving, breath: f === "goblin" || f === "draugr" ? 0.014 : 0.02, windup: t.state === "windup", charge: t.state === "charge", atkT: t.state === "recover" ? 1 : void 0 });
@@ -21313,6 +21438,7 @@ void main(){vec2 px=1./uRes;float band=smoothstep(.26,.5,abs(vUV.y-.5));float r=
       let o = this.ctx, bird = q.kind === "corvo" || q.kind === "abutre" || q.kind === "gaivota", r = ce(q.x, q.y), { dir: d, flip: f } = Kl(q.st === 2 ? q.fa : q.st === 1 ? q.fa : q.fa), mv = q.st === 1 || q.st === 2;
       let nm = bird ? "corvo" : q.kind, sc = { cao: 0.95, gato: 0.8, raposa: 0.95, coelho: 0.8, corvo: 0.55, gaivota: 0.55, abutre: 1.0 }[q.kind] || 0.9;
       let sp = ROXQM(nm, d, mv || bird ? Math.floor(this.clock / (q.st === 2 ? 70 : 120) % ea) : -1, 0, { id: "c_" + q.kind + (q.col || 0), color: q.col }, !mv ? { clk: this.clock, seed: Math.floor(q.seed * 10) % 97 } : void 0), z = q.z || 0;
+      if (this.e3dOn) { let cs3 = E3D.critSprite(q, this.clock, this.clock); cs3 && (sp = cs3, f = false, sc = 1 / $a); }
       sp && ((z < 30) && this.blob(r.x, r.y + 2, bird ? 4 : 7), nt(o, sp, r.x, r.y + 3 - (bird ? 10 + z + (q.st === 0 ? Math.sin(this.clock / 300 + q.seed) * 2 : 0) : q.st === 2 ? Math.abs(Math.sin(this.clock / 90 + q.seed)) * 3 : 0), f, $a * sc, $a * sc));
       q.st === 2 && !bird && this.text("!", r.x, r.y - 34, 13, "#ffe070");
     }

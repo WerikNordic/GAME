@@ -810,3 +810,9 @@
 ## v262
 - Modo 3D: monstros dos primeiros mapas em 2.5D, no mesmo padrão do herói (modelo 3D desenhado em pixel art, com contorno e animações de andar, respirar, preparar golpe, atacar e investida): lobos (inclusive lobos de gelo e Hati), javalis, goblins, guardiões de raiz/ents e brotos espinhosos. Cor e tamanho vêm de cada monstro.
 - Desempenho: sombras das árvores e grama montadas por pedaços perto da câmera (sem travar ao entrar em mapas grandes).
+
+## v263
+- Modo 3D: todos os tipos de monstro de terra em 2.5D (draugr, criaturas do vazio, sentinelas de pedra, autômatos, construtos de prisma, salamandras e cães de magma, yetis e jotuns), inclusive chefes e espectros.
+- NPCs, moradores e outros jogadores em 2.5D (modelo humano com roupas e cabelos variados; jogadores com as cores da classe).
+- Bichos de cenário (cães, gatos, raposas, coelhos, corvos, gaivotas e abutres), pedras, caixas e barris em 2.5D.
+- Herói 2.5D também sentado e caído.
