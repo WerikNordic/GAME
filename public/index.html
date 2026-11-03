@@ -252,6 +252,42 @@ body.armed canvas{cursor:crosshair!important}
 .hud-name{flex-wrap:wrap;justify-content:flex-start;align-items:baseline;gap:0 8px;min-width:0;max-width:100%}
 .hud-name strong{white-space:nowrap}
 .hud-name span{white-space:normal;overflow-wrap:anywhere;min-width:0;flex:1 1 auto}
+
+/* ===== v258: interface em madeira escura e pergaminho nórdico ===== */
+:root{--parch1:#f6ecd2;--parch2:#e4d3a8;--parch3:#d3bd8a;--wood1:#4a301a;--wood2:#2a180b;--ink:#2b1d0e;--ink2:#5b4426;--rune:#b8902f}
+.hud-card,.panel,.logp,.dialogue{background:linear-gradient(180deg,var(--parch1),var(--parch2) 70%,var(--parch3))!important;color:var(--ink)!important;border:2px solid #6b4a20!important;border-radius:5px!important;box-shadow:inset 0 0 0 1px #d9b45a88,inset 0 0 22px #8a5a1c33,0 6px 20px #000a!important}
+.panel-head,.logp-toggle,.dialogue header{background:linear-gradient(180deg,var(--wood1),var(--wood2))!important;color:#f3dca0!important;text-shadow:0 1px 0 #000;border-bottom:2px solid var(--rune)!important;font-family:"Cinzel",Georgia,serif;letter-spacing:.06em;border-radius:3px 3px 0 0}
+.panel-head strong,.panel-head span,.dialogue header strong,.dialogue header span{color:#f3dca0!important;font-family:"Cinzel",Georgia,serif}
+.panel .btn,.panel .btn-small,.btn{background:linear-gradient(180deg,#f8efd6,#dcc795)!important;color:var(--ink)!important;border:1px solid #7a5726!important;border-radius:3px!important}
+.panel-head .btn{background:linear-gradient(180deg,#5a3d20,#35210f)!important;color:#f3dca0!important;border-color:var(--rune)!important}
+.panel .btn:hover:not(:disabled),.btn:hover:not(:disabled){background:linear-gradient(180deg,#ffe9a6,#e0b84f)!important;border-color:#8a6a1d!important}
+.panel .btn-primary,.btn-primary{background:linear-gradient(180deg,#ffe29a,#d2a23a)!important;color:#2a1600!important;border-color:#8a6a1d!important;font-weight:700}
+.btn.active,.btn-small.active,.skill-tab.active,.tab.active{background:linear-gradient(180deg,var(--wood1),var(--wood2))!important;color:#f3dca0!important;border-color:var(--rune)!important}
+.attr-points,.skill-bonus{background:linear-gradient(180deg,#efe0b8,#e0cb98)!important;border:1px solid #a98a4e!important;color:var(--ink)!important}
+.skill-bonus>b{color:#6b3a10!important}
+.panel .tabs{border-bottom:1px solid #a98a4e!important}
+.attr-row,.derived li{border-bottom:1px dotted #b79a5e!important}
+.hud-lv,.hud-line,.coin-line,.muted,.panel .muted,.hud-card .muted{color:var(--ink2)!important}
+.hud-name,.hud-card{color:var(--ink)!important}
+.fslot{background:linear-gradient(180deg,#f6ecd2dd,#d9c48fdd)!important;border-color:#7a5726!important;color:var(--ink)!important}
+.fslot .fk{color:#7a2d12!important}
+.logp-body,.chat-in{background:#fbf3dc!important;color:var(--ink)!important}
+.chat-in{border:1px solid #a98a4e!important}
+.bar{background:#2a1c10!important;border:1px solid #6b4a20!important}
+.cell{background:#e8d6a4!important;border-color:#8a6a35!important}
+.skill-ico{background:#1d130a!important}
+.hud-card header,.logp header,.hud-player>header,.hud-player .hud-title{background:linear-gradient(180deg,var(--wood1),var(--wood2))!important;color:#f3dca0!important;text-shadow:0 1px 0 #000;border-bottom:2px solid var(--rune)!important;font-family:"Cinzel",Georgia,serif;letter-spacing:.05em}
+.logp header button{color:#e8d6a0!important}
+.logp header button.on,.logp header [aria-selected=true]{background:#f3dca0!important;color:#2a180b!important;border-radius:3px}
+.hud-player:before{background:linear-gradient(180deg,var(--wood1),var(--wood2))!important;color:#f3dca0!important;text-shadow:0 1px 0 #000!important;border-bottom:2px solid var(--rune)!important;font-family:"Cinzel",Georgia,serif;letter-spacing:.05em}
+.hud-id-text,.hud-id-text *,.hud-lv{color:var(--ink2)!important}
+.panel .tab,.dialogue .tab{background:linear-gradient(180deg,#f8efd6,#dcc795)!important;color:var(--ink)!important;border:1px solid #7a5726!important}
+.panel .tab.active,.panel .tab[aria-selected=true],.panel .skill-tab.active{background:linear-gradient(180deg,var(--wood1),var(--wood2))!important;color:#f3dca0!important;border-color:var(--rune)!important}
+main.title .btn{background:linear-gradient(#2a3556,#161d34)!important;color:#f1e7c6!important;border:1px solid #b8902f!important}
+main.title .btn:hover:not(:disabled){background:linear-gradient(#3d4c7c,#222c4d)!important;border-color:#ffe29a!important;color:#fff!important}
+main.title .btn-primary{background:linear-gradient(#f3d27a,#b8862a)!important;color:#241600!important;border-color:#ffe29a!important}
+.inv-tab{background:linear-gradient(180deg,#f8efd6,#dcc795)!important;color:var(--ink)!important;border:1px solid #7a5726!important}
+.inv-tab.on{background:linear-gradient(180deg,var(--wood1),var(--wood2))!important;color:#f3dca0!important;border-color:var(--rune)!important}
 </style></head>
   <body>
     <div id="root"></div>
@@ -22291,6 +22327,15 @@ function ROXQM(f, c, s, l, def, ex) {
     }
     blob(t, a, n) {
       let o = this.ctx, r = n * Math.max(0.3, this.tilt) * 0.9, i = o.createRadialGradient(t, a, 0, t, a, n);
+      try {
+        // sombra projetada: sol ao noroeste; a sombra alonga no entardecer e some de noite
+        let dl = this.evView ? this.evView.daylight : 1, ln = (1.15 - 0.55 * dl) * Math.min(1, 0.35 + dl * 1.1), sc = n * (1.5 + 1.6 * ln), al = 0.34 * Math.min(1, dl * 1.4);
+        if (n >= 5 && al > 0.02) {
+          let ex = t + n * 0.2 + sc * 0.42, ey = a + n * 0.08 + sc * 0.2, g = o.createRadialGradient(ex, ey, 0, ex, ey, sc * 0.5);
+          g.addColorStop(0, "rgba(14,12,30," + al + ")"), g.addColorStop(0.6, "rgba(14,12,30," + al * 0.55 + ")"), g.addColorStop(1, "rgba(14,12,30,0)");
+          o.save(), o.translate(ex, ey), o.rotate(0.4), o.scale(1, 0.34 * Math.max(0.6, this.tilt * 1.6)), o.translate(-ex, -ey), o.fillStyle = g, o.beginPath(), o.arc(ex, ey, sc * 0.5, 0, Math.PI * 2), o.fill(), o.restore();
+        }
+      } catch (e) {}
       i.addColorStop(0, "rgba(6,10,14,0.68)"), i.addColorStop(0.65, "rgba(6,10,14,0.4)"), i.addColorStop(1, "rgba(6,10,14,0)"), o.save(), o.translate(t, a), o.scale(1, r / n), o.translate(-t, -a), o.fillStyle = i, o.beginPath(), o.arc(t, a, n, 0, Math.PI * 2), o.fill(), o.restore();
     }
     text(t, a, n, o, r, i = false) {
@@ -22477,7 +22522,7 @@ function ROXQM(f, c, s, l, def, ex) {
       this._occF && (this._occF = false, i.save(), i.globalAlpha = 0.95, this.drawPlayer(t), i.restore());
       Ca.on = false;
       for (let q of this.anims.keys()) !z.has(q) && q !== "p" && !q.startsWith("n:") && this.anims.delete(q);
-      n.city && this.cityAmbience(n, a.player.pos), this.drawTopFx(), this.drawParticles(), n.sea && n.sea.all && this.underwaterFx(), this.ambient(n), n.city && this.forgeFx(n, a.player.pos), this.applyLighting(a, n), i.setTransform(this.dpr, 0, 0, this.dpr, 0, 0), this.drawLevelBanner(i), this.evView && (this.wfx.update(t, this.evView, n.theme, !!n.city, this.w, this.h), this.wfx.draw(i, this.evView, n.theme, this.w, this.h));
+      n.city && this.cityAmbience(n, a.player.pos), this.drawTopFx(), this.drawParticles(), n.sea && n.sea.all && this.underwaterFx(), this.ambient(n), n.city && this.forgeFx(n, a.player.pos), this.applyLighting(a, n), this.cineGrade(n), i.setTransform(this.dpr, 0, 0, this.dpr, 0, 0), this.drawLevelBanner(i), this.evView && (this.wfx.update(t, this.evView, n.theme, !!n.city, this.w, this.h), this.wfx.draw(i, this.evView, n.theme, this.w, this.h));
       let I = i.createRadialGradient(this.w / 2, this.h / 2, Math.min(this.w, this.h) * 0.36, this.w / 2, this.h / 2, Math.max(this.w, this.h) * 0.72);
       I.addColorStop(0, "rgba(4,6,12,0)"), I.addColorStop(1, "rgba(4,6,12,0.66)"), i.fillStyle = I, i.fillRect(0, 0, this.w, this.h), this.drawMinimap(a, n), this.drawMapTitle(), this.drawAnnounce();
       let J = this.fade, D = Math.min(1, (this.clock - J.t0) / J.dur), Z = J.from + (J.to - J.from) * D;
@@ -22776,7 +22821,7 @@ function ROXQM(f, c, s, l, def, ex) {
         a.ps.level >= 99 && this.epicFx(r.x, r.y, 1);
         thr && (s === "up" || s === "uq") && this.admThrone(r.x, r.y, 2, s, l);
         };
-        this.waterPass(n, r.x, r.y + 6, wd0, 42, __body);
+        this.waterPass(n, r.x, r.y + 6, wd0, 42, () => { let cf = this.ctx; try { cf.shadowColor = "rgba(255,226,140,0.95)", cf.shadowBlur = 5 * (this.dpr || 1); } catch (e) {} try { __body(); } finally { try { cf.shadowColor = "rgba(0,0,0,0)", cf.shadowBlur = 0; } catch (e) {} } });
       }
       if (n.restore(), !c) {
         a.ps.pet && a.ps.petData || (window.__petHit = null);
@@ -23369,6 +23414,23 @@ function ROXQM(f, c, s, l, def, ex) {
         T.addColorStop(0, `rgba(${k.c},${Math.min(0.5, k.a * 0.3)})`), T.addColorStop(1, `rgba(${k.c},0)`), n.fillStyle = T, n.fillRect(R - M, w - M, M * 2, M * 2);
       }
       n.restore();
+    }
+    cineGrade(t) {
+      try {
+        let c = this.ctx, w = this.w, h = this.h, dl = this.evView ? this.evView.daylight : 1;
+        c.save(), c.setTransform(this.dpr, 0, 0, this.dpr, 0, 0);
+        // calor dourado no dia, azul-violeta no crepusculo/noite (soft-light preserva o detalhe)
+        c.globalCompositeOperation = "soft-light";
+        let warm = Math.max(0, dl - 0.55) / 0.45, dusk = dl > 0.15 && dl < 0.7 ? 1 - Math.abs(dl - 0.42) / 0.28 : 0;
+        if (warm > 0.01) c.fillStyle = "rgba(255,196,110," + (0.3 * warm).toFixed(3) + ")", c.fillRect(0, 0, w, h);
+        if (dusk > 0.01) { let g = c.createLinearGradient(0, 0, 0, h); g.addColorStop(0, "rgba(110,70,200," + (0.75 * dusk).toFixed(3) + ")"), g.addColorStop(1, "rgba(255,130,60," + (0.8 * dusk).toFixed(3) + ")"), c.fillStyle = g, c.fillRect(0, 0, w, h); }
+        if (dl < 0.35) { c.globalCompositeOperation = "multiply"; let nt0 = 1 - dl / 0.35; c.fillStyle = "rgba(" + Math.round(255 - 120 * nt0) + "," + Math.round(255 - 95 * nt0) + "," + Math.round(255 - 30 * nt0) + ",1)", c.fillRect(0, 0, w, h); }
+        // vinheta suave que concentra o olhar no heroi
+        c.globalCompositeOperation = "source-over";
+        let v = c.createRadialGradient(w / 2, h / 2, Math.min(w, h) * 0.38, w / 2, h / 2, Math.hypot(w, h) * 0.58), va = 0.3 + 0.25 * (1 - dl);
+        v.addColorStop(0, "rgba(4,6,16,0)"), v.addColorStop(1, "rgba(4,6,16," + va.toFixed(3) + ")"), c.fillStyle = v, c.fillRect(0, 0, w, h);
+        c.restore();
+      } catch (e) {}
     }
     drawSnowPrints(t) {
       let a = this.ctx;

@@ -1,8 +1,3 @@
-## v258
-- Interface em madeira escura e pergaminho nórdico; contorno dourado no herói.
-- Visual: sombras projetadas em personagens e criaturas (alongam no entardecer).
-- Gradação de cor: dia dourado, entardecer laranja/violeta, noite azul-lunar e vinheta suave.
-
 ## v238
 - Removido o contador "N HITS": aparece só o número de dano de cada golpe.
 
@@ -792,3 +787,7 @@
 ## v257
 - Montaria: o personagem não some mais no meio das asas (asas em camada separada, mais baixas e recolhidas); removidas as "bolas" das articulações e do peito (joelhos, ombros, placa), trocadas por faixas de armadura.
 - Novo ícone do jogo e do atalho: Yggdrasil (a árvore do mundo) dourada sobre um eclipse de Ragnarök, anel de runas e moldura dourada, sem a montaria. Também é o ícone da aba do navegador.
+
+## v258
+- Visual: sombras projetadas em personagens e criaturas (alongam no entardecer); gradação de cor dia/entardecer/noite com vinheta suave.
+- Interface em madeira escura e pergaminho nórdico (painéis, chat, HUD, abas, botões) e brilho dourado de destaque no herói.
