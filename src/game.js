@@ -19334,7 +19334,7 @@ void main(){vec3 p=aP;vec2 uv=aUV;
     const FS = `#version 300 es
 precision highp float;precision highp int;
 in vec3 vC,vW,vN;in vec2 vUV;in vec4 vL;in float vK;
-uniform sampler2D uSh,uGround,uLeaf;uniform int uNoSh;uniform vec3 uSun,uSunCol,uSky,uGnd,uView;uniform int uMode;uniform float uTime,uAmbK,uNight,uFlash;
+uniform sampler2D uSh,uGround,uLeaf;uniform int uNoSh;uniform vec3 uSun,uSunCol,uSky,uGnd,uView;uniform int uMode;uniform float uTime,uAmbK,uNight,uFlash,uCloud;
 uniform vec4 uLights[12];uniform vec3 uLightC[12];uniform int uNL;
 out vec4 o;
 float h21(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
@@ -19349,7 +19349,7 @@ void main(){
  if(uMode==10){vec3 fn=normalize(cross(dFdx(vW),dFdy(vW)));if(dot(n,fn)<0.)n=-n;}
  bool leaf=uMode==5&&vK!=0.;if(leaf){vec4 t=texture(uLeaf,vUV);if(t.a<.5)discard;base*=pow(t.rgb,vec3(2.2))*1.15;}
  float sh=shadowF(uMode==10?.004:bias);
- float cl=vn(vW.xz*.0016+vec2(uTime*.01,uTime*.006))*.7+vn(vW.xz*.004-uTime*.008)*.3;float cloud=1.-smoothstep(.52,.72,cl)*.22*(1.-uNight);
+ float cl=vn(vW.xz*.0016+vec2(uTime*.01,uTime*.006))*.7+vn(vW.xz*.004-uTime*.008)*.3;float cloud=1.-smoothstep(.52,.72,cl)*.22*(1.-uNight)*uCloud;
  vec3 col;
  if(uMode==4){col=base*(vec3(uAmbK)*mix(uGnd,uSky,.6)*1.55+uSunCol*.62*sh)*cloud;}
  else if(uMode==7){col=base*(.55+.45*uAmbK);}
@@ -19433,7 +19433,7 @@ precision highp float;precision highp int;in vec2 vUV;in float vK;uniform sample
     }
     // ---------- árvores 3D (folhagem em cartões pintados) ----------
     let leafTex = null, TB_FB = null, TB_CT = null, TB_DR = null, treeCache = new Map(), treeShadow = null, VT = null;
-    const TBW = 240, TBH = 260, TAX = 120, TAY = 232, TK = 19, TBW0 = TBW, TBH0 = TBH, TAX0 = TAX, TAY0 = TAY, OBM = 640;
+    const TBW = 240, TBH = 260, TAX = 120, TAY = 232, TK = 19, TBW0 = TBW, TBH0 = TBH, TAX0 = TAX, TAY0 = TAY, OBM = MOB ? 768 : 1024;
     let OB_FB = null;
     const TREE_THEMES = { grass: "broad", lush: "broad", meadow: "broad", forest: "broad", snow: "pine", frost: "pine", ice: "pine", mountain: "pine", marsh: "broad", swamp: "broad" };
     function treeKind(theme, variant) { const k = TREE_THEMES[theme || "grass"]; if (!k) return null; if (k === "pine") return "pine"; return variant === 2 ? "pine" : "broad"; }
@@ -19516,7 +19516,7 @@ precision highp float;precision highp int;in vec2 vUV;in float vK;uniform sample
         if (o.kind !== "tree") continue; const c = Sh(o.x, o.y, 11), m = c < .5 ? 0 : c < .82 ? 1 : 2, kind = treeKind(th, m);
         if (!kind) { add(key, ["obj", { kind: "tree", theme: th, variant: m }, x, z, 1.15 + .5 * Sh(o.x, o.y, 29)]); continue; }
         add(key, [kind, Math.floor(Sh(o.x, o.y, 7) * 4), x, z]); }
-      for (const q of map.portals || []) { const x = q.x + q.w / 2, z = q.y + q.h / 2; add(Math.floor(x / CK) + "," + Math.floor(z / CK), ["obj", { kind: "portal", theme: d0, variant: 0 }, x, z, 1]); }
+      if (!map.indoor) for (const q of map.portals || []) { const x = q.x + q.w / 2, z = q.y + q.h / 2; add(Math.floor(x / CK) + "," + Math.floor(z / CK), ["obj", { kind: "portal", theme: d0, variant: 0 }, x, z, 1]); }
       treeSnow = /snow|frost|ice/.test(th);
     }
     let treeSnow = false;
@@ -19655,6 +19655,32 @@ precision highp float;precision highp int;in vec2 vUV;in float vK;uniform sample
           return m.bake(); }
       });
       build.frostwolf = build.wolf; build.hati = build.wolf;
+      build.peixe = function (col) { const m = Model(), b = col, bel = lighten(col, .55), bD = darken(col, .4), fin = mix(col, [1, .6, .3], .3);
+        m.ell("body", 0, 1.3, 0, .32, .5, .85, (p, n) => mix(mix(b, bD, clamp(n[1], 0, 1) * .6), bel, clamp(-n[1] * 1.3, 0, 1) * .8), 12, 8);
+        for (const sx of [-1, 1]) { m.ell("body", sx * .2, 1.45, .55, .09, .09, .05, [.95, .95, .85], 6, 4); m.ell("body", sx * .23, 1.45, .58, .045, .05, .03, [.05, .05, .08], 5, 3); }
+        m.ell("body", 0, 1.2, .82, .12, .07, .06, darken(col, .6), 6, 4); m.cone("body", 0, 1.7, .05, .1, .45, fin, [0, 1, -.5], 5); m.cone("body", 0, .88, -.1, .08, .3, fin, [0, -1, -.4], 4);
+        m.ell("tail", 0, .22, -.25, .05, .32, .25, fin, 8, 5); m.ell("tail", 0, -.22, -.25, .05, .32, .25, fin, 8, 5);
+        for (const s2 of ["L", "R"]) m.ell("fin" + s2, 0, 0, -.12, .04, .14, .22, fin, 6, 4);
+        return m.bake(); };
+      build.tubarao = function (col) { const m = Model(), b = col, bel = [.9, .9, .88], bD = darken(col, .35);
+        m.ell("body", 0, 1.3, -.1, .45, .48, 1.35, (p, n) => mix(mix(b, bD, clamp(n[1], 0, 1) * .5), bel, clamp(-n[1] * 1.6 - .1, 0, 1)), 14, 9);
+        m.ell("body", 0, 1.22, 1.15, .36, .34, .5, (p, n) => mix(b, bel, clamp(-n[1] * 1.6 - .1, 0, 1)), 12, 8); m.ell("body", 0, 1.06, 1.35, .22, .06, .22, [.25, .05, .06], 8, 4);
+        for (let i = -2; i <= 2; i++) m.cone("body", i * .08, 1.08, 1.5 - Math.abs(i) * .05, .025, .07, [1, 1, 1], [0, 1, 0], 3);
+        for (const sx of [-1, 1]) { m.ell("body", sx * .26, 1.36, 1.3, .05, .06, .04, [.04, .04, .05], 5, 3); for (let g = 0; g < 3; g++) m.ell("body", sx * .4, 1.3, .7 - g * .14, .02, .12, .02, bD, 4, 3); }
+        m.cone("body", 0, 1.7, 0, .3, .85, bD, [0, 1, -.55], 6);
+        m.ell("tail", 0, .35, -.35, .07, .5, .22, bD, 8, 5); m.ell("tail", 0, -.25, -.25, .07, .32, .18, bD, 8, 5);
+        for (const s2 of ["L", "R"]) m.ell("fin" + s2, 0, 0, -.2, .06, .1, .4, bD, 8, 4);
+        return m.bake(); };
+      build.medusa = function (col) { const m = Model(), c1 = lighten(col, .3), c2 = lighten(col, .65), cD = darken(col, .2);
+        m.ell("body", 0, 1.75, 0, .78, .55, .78, (p, n) => mix(c1, c2, clamp(n[1] * .8 + nz(p, 4) * .3, 0, 1)), 14, 8); m.ell("body", 0, 1.38, 0, .74, .14, .74, cD, 14, 4);
+        for (let i = 0; i < 8; i++) { const a = i / 8 * 6.283; m.ell("body", Math.cos(a) * .4, 1.95, Math.sin(a) * .4, .1, .06, .1, [1, .95, 1], 5, 3); }
+        for (let i = 0; i < 6; i++) m.tube("t" + i, [[0, .3, 0, .07, .07], [0, -.3, 0, .06, .06], [0, -.8, 0, .04, .04], [0, -1.1, 0, .015, .015]], (y) => mix(c1, c2, clamp(-y, 0, 1)), 5);
+        return m.bake(); };
+      build.polvo = function (col) { const m = Model(), b = col, bD = darken(col, .4), suck = lighten(col, .5);
+        m.ell("body", 0, 1.55, -.15, .62, .78, .62, (p, n) => mix(bD, b, clamp(n[1] * .5 + .5 + nz(p, 5) * .3, 0, 1)), 12, 9); m.ell("body", 0, .95, .05, .55, .3, .5, b, 12, 6);
+        for (const sx of [-1, 1]) { m.ell("body", sx * .3, 1.2, .42, .16, .17, .1, [.98, .9, .55], 8, 5); m.ell("body", sx * .32, 1.2, .5, .05, .12, .04, [.05, .03, .05], 6, 4); }
+        for (let i = 0; i < 8; i++) m.tube("a" + i, [[0, 0, 0, .14, .14], [0, -.05, .45, .11, .11], [0, -.2, .85, .08, .08], [0, -.1, 1.15, .04, .04]].map(([x, y, z, rx, rz]) => [x, y, z, rx, rz]), (y) => b, 6);
+        return m.bake(); };
       build.raven = function (col) { const m = Model(), b = col, bD = darken(col, .45), sheen = mix(col, [.3, .4, .7], .35), beak = [.32, .3, .3], leg = [.55, .48, .32], red = [.62, .12, .1], gold = [.9, .72, .3];
         m.ell("body", 0, 1.35, -.05, .58, .5, .85, (p, n) => mix(mix(b, sheen, clamp(n[1], 0, 1) * .5), bD, clamp(-n[1], 0, 1) * .5), 12, 8);
         m.ell("body", 0, 1.35, .45, .5, .5, .45, (p, n) => mix(b, bD, clamp(-n[1] * .8, 0, 1)), 10, 7);
@@ -19678,6 +19704,13 @@ precision highp float;precision highp int;in vec2 vUV;in float vK;uniform sample
       const HCF = { goblin: [.95, .15, .95, .55, .78, .45, .45, .22, -.2, .45, -.5], sylvan: [1.0, 0, 0, .6, 1.45, .6, .6, .29, .05, .45, -.5], draugr: [1.15, .1, 1.12, .58, .95, .5, .45, .22, -.15, .5, -.5], yeti: [1.0, .15, 1.2, .85, 1.0, .75, .7, .3, -.2, .42, -.7],
         jotun: [1.3, .15, 1.4, .8, 1.1, .65, .6, .3, -.25, .6, -.62], sentinel: [.95, .15, 1.2, .9, 1.0, .7, .65, .3, -.2, .42, -.7], automaton: [1.05, .1, 1.15, .68, .95, .6, .55, .22, -.2, .5, -.6] };
       function pose(shape, st) {
+        if (shape === "peixe" || shape === "tubarao") { const w = (st.mv ? st.ph : st.idle) * Math.PI * 2, a = st.atk, t = st.idle * 6.283, shk = shape === "tubarao";
+          let lunge = a >= 0 ? (a < .5 ? -.2 * a / .5 : Math.sin((a - .5) / .5 * Math.PI) * (shk ? 1 : .7)) : 0; const body = X(T(0, Math.sin(t) * .12 + .3, lunge), RY(Math.sin(w * 2) * (st.mv ? .14 : .05)));
+          return { body, tail: X(body, T(0, 1.3, shk ? -1.3 : -.82), RY(Math.sin(w * 2 + 1.2) * (st.mv ? .7 : .3))), finL: X(body, T(shk ? .42 : .3, shk ? 1.05 : 1.15, shk ? .6 : .2), RZ(-.6 - Math.sin(w * 2) * .2)), finR: X(body, T(shk ? -.42 : -.3, shk ? 1.05 : 1.15, shk ? .6 : .2), RZ(.6 + Math.sin(w * 2) * .2)) }; }
+        if (shape === "medusa") { const t = st.idle * 6.283, a = st.atk, pu = Math.sin(t * 2) * .08, body = X(T(0, Math.sin(t) * .15 + .5 - (a >= 0 ? Math.sin(a * Math.PI) * .2 : 0), a >= 0 ? Math.sin(a * Math.PI) * .5 : 0), SC(1 + pu, 1 - pu, 1 + pu)); const o = { body };
+          for (let i = 0; i < 6; i++) { const ang = i / 6 * 6.283; o["t" + i] = X(body, T(Math.cos(ang) * .45, 1.35, Math.sin(ang) * .45), RZ(Math.cos(ang) * (.15 + Math.sin(t * 2 + i) * .15)), RX(-Math.sin(ang) * (.15 + Math.cos(t * 2 + i) * .15))); } return o; }
+        if (shape === "polvo") { const t = st.idle * 6.283, w = st.ph * 6.283, a = st.atk, body = X(T(0, Math.sin(t) * .06 + (st.mv ? Math.abs(Math.sin(w)) * .12 : 0), a >= 0 ? Math.sin(a * Math.PI) * .45 : 0)); const o = { body };
+          for (let i = 0; i < 8; i++) { const ang = (i + .5) / 8 * 6.283, cu = Math.sin(t * 2 + i * .9 + (st.mv ? w * 2 : 0)) * .25 + (a >= 0 && i < 3 ? -Math.sin(a * Math.PI) * .6 : 0); o["a" + i] = X(body, T(Math.sin(ang) * .3, .85, Math.cos(ang) * .3), RY(ang), RX(.25 + cu)); } return o; }
         if (shape === "raven") { const w = st.ph * Math.PI * 2, mv = st.mv ? 1 : 0, t = st.idle * 6.283, a = st.atk, bob = mv ? Math.abs(Math.sin(w)) * .1 : Math.sin(t) * .02, lie = st.lie ? 1 : 0;
           const root = X(T(0, bob - lie * .55, 0), RX(mv * .06)); let peck = a >= 0 ? Math.sin(Math.min(1, a) * Math.PI) * .9 : 0;
           const o = { body: root, head: X(root, T(0, 2.12 + (mv ? Math.sin(w * 2) * .04 : 0), .82 + (mv ? Math.sin(w * 2) * .06 : 0) + peck * .25), RX((mv ? Math.sin(w * 2) * .12 : Math.sin(t) * .05) + peck * .6)),
@@ -19721,7 +19754,7 @@ precision highp float;precision highp int;in vec2 vUV;in float vK;uniform sample
       return { skin, has: (s) => !!build[s] };
     })();
     const monCache = new Map(); let bakesThisFrame = 0, lastBakeFrame = -1;
-    const MSZ = { wolf: 1.1, frostwolf: 1.1, hati: 1.1, boar: 1.0, goblin: .95, sylvan: 1.4, blob: 1.3, draugr: 1.05, yeti: 1.05, jotun: 1.0, sentinel: 1.0, automaton: 1.05, voidling: .95, prism: .9, cinder: 1.0 };
+    const MSZ = { peixe: 1.05, tubarao: 1.0, medusa: 1.05, polvo: 1.0, wolf: 1.1, frostwolf: 1.1, hati: 1.1, boar: 1.0, goblin: .95, sylvan: 1.4, blob: 1.3, draugr: 1.05, yeti: 1.05, jotun: 1.0, sentinel: 1.0, automaton: 1.05, voidling: .95, prism: .9, cinder: 1.0 };
     function monSprite(m, anim, clock, frameNo) {
       if (!on || broken || !gl || !TB_FB) return null; const d = m.def, shape = d.shape; if (!MM.has(shape) || m.state === "dead") return null;
       if (frameNo !== lastBakeFrame) { lastBakeFrame = frameNo; bakesThisFrame = 0; }
@@ -19829,6 +19862,45 @@ precision highp float;precision highp int;in vec2 vUV;in float vK;uniform sample
       for (let i = 0; i < m.length; i += 12) { const x = m[i], z = m[i + 2], nx = m[i + 8], nz = m[i + 10]; v[i] = x * ca - z * sa; v[i + 1] = m[i + 1] + 3; v[i + 2] = x * sa + z * ca; for (let k = 3; k < 8; k++) v[i + k] = m[i + k]; v[i + 8] = nx * ca - nz * sa; v[i + 9] = m[i + 9]; v[i + 10] = nx * sa + nz * ca; v[i + 11] = m[i + 11]; }
       const b = bakeVerts(v, 1); c = b ? { cv: b.cv, ax: b.ax, ay: b.ay, k: 1, key: "e3di" + key } : EMPTY; itemCache.set(key, c); return c;
     }
+    // ---- Jörmungandr: serpente enrolada em 3D ----
+    function ellB(v, c, a, b, d, colF, gw = 0, su = 12, sv = 8) { const la = dot(a, a), lb = dot(b, b), ld = dot(d, d), P = [];
+      for (let j = 0; j <= sv; j++) { P.push([]); const th = j / sv * Math.PI; for (let i = 0; i <= su; i++) { const ph = i / su * 6.283, x = Math.sin(th) * Math.cos(ph), y = Math.cos(th), z = Math.sin(th) * Math.sin(ph);
+        const p = [c[0] + a[0] * x + b[0] * y + d[0] * z, c[1] + a[1] * x + b[1] * y + d[1] * z, c[2] + a[2] * x + b[2] * y + d[2] * z], n = norm([a[0] * x / la + b[0] * y / lb + d[0] * z / ld, a[1] * x / la + b[1] * y / lb + d[1] * z / ld, a[2] * x / la + b[2] * y / lb + d[2] * z / ld]);
+        P[j].push([p, n, typeof colF === "function" ? colF(x, y, z) : colF]); } }
+      for (let j = 0; j < sv; j++) for (let i = 0; i < su; i++) for (const q of [P[j][i], P[j + 1][i], P[j][i + 1], P[j][i + 1], P[j + 1][i], P[j + 1][i + 1]]) v.push(q[0][0], q[0][1], q[0][2], q[2][0], q[2][1], q[2][2], 0, 0, q[1][0], q[1][1], q[1][2], gw); }
+    function coneB(v, base, dir, r, col, gw = 0, seg = 6) { const h = Math.hypot(dir[0], dir[1], dir[2]), d = norm(dir), up = Math.abs(d[1]) < .9 ? [0, 1, 0] : [1, 0, 0], u = norm(cross(d, up)), w = cross(d, u), tip = [base[0] + dir[0], base[1] + dir[1], base[2] + dir[2]];
+      for (let i = 0; i < seg; i++) { const a0 = i / seg * 6.283, a1 = (i + 1) / seg * 6.283, P0 = [0, 1, 2].map((k) => base[k] + (u[k] * Math.cos(a0) + w[k] * Math.sin(a0)) * r), P1 = [0, 1, 2].map((k) => base[k] + (u[k] * Math.cos(a1) + w[k] * Math.sin(a1)) * r), n = norm(cross(sub(P1, P0), sub(tip, P0)));
+        for (const q of [P0, P1, tip]) v.push(q[0], q[1], q[2], col[0], col[1], col[2], 0, 0, n[0], n[1], n[2], gw); } }
+    const serpCache = new Map(); let serpLast = null, serpFrame = -1;
+    function serpSprite(clock, flip, wind, dead, frameNo) {
+      if (!on || broken || !gl || !OB_FB) return null; const fi = dead ? 0 : Math.floor(clock / 1000 * 1.7 / 6.283 * 16) % 16, yb = Math.round(_8 / (Math.PI * 2) * 24), tb = Math.round(zr * 20), key = fi + ":" + flip + ":" + (wind ? 1 : 0) + (dead ? "d" : "") + ":" + yb + ":" + tb;
+      let c = serpCache.get(key); if (c) return serpLast = c; if (serpFrame === frameNo) return serpLast; serpFrame = frameNo; if (serpCache.size > 80) serpCache.clear();
+      const S = 5, N = 62, ph = fi / 16 * 6.283, v = [], C = [], body = wind ? [.48, .23, .3] : [.42, .34, .44], bel = wind ? [.78, .55, .6] : [.72, .64, .7], bone = [.9, .86, .76], iris = wind ? [1, .2, .08] : [.85, .64, .12];
+      for (let i = 0; i < N; i++) { const sN = i / (N - 1), th = sN * 6.283 * 1.55 + .6, rho = (22 + 112 * Math.pow(sN, .85)) * S, lift = Math.pow(1 - sN, 2.2) * (dead ? 12 : 62) * S / .98, und = dead ? 0 : Math.sin(ph - sN * 9) * 4 * S * (1 - sN * .5);
+        C.push({ p: [Math.cos(th) * rho * flip, Math.max(0, lift + und) + (sN < .04 ? 17 : 21 * (1 - Math.pow(sN, 2.6) * .9) + 2.5) * S * .55, Math.sin(th) * rho], w: (sN < .04 ? 17 : 21 * (1 - Math.pow(sN, 2.6) * .9) + 2.5) * S * .66, s: sN }); }
+      const [Pa, Pb, Pc, Pd] = Pu(), fw = norm([Pb, 0, Pd]), sd = norm(cross([0, 1, 0], fw));
+      const R = 10, rings = []; for (let i = 0; i < N; i++) { const a = C[Math.max(0, i - 1)].p, b = C[Math.min(N - 1, i + 1)].p, t = norm(sub(b, a)), up0 = Math.abs(t[1]) > .9 ? [1, 0, 0] : [0, 1, 0], u = norm(cross(t, up0)), w = cross(u, t), ring = [];
+        for (let k = 0; k <= R; k++) { const an = k / R * 6.283, n = [0, 1, 2].map((q) => u[q] * Math.cos(an) + w[q] * Math.sin(an)), up = n[1]; const mot = .5 + .5 * Math.sin(i * 1.7 + k * 2.3) * Math.sin(i * .6); ring.push([[0, 1, 2].map((q) => C[i].p[q] + n[q] * C[i].w), n, scl(mix(bel, body, clamp(up * 1.5 + .6, 0, 1)), .8 + mot * .25)]); } rings.push(ring); }
+      for (let i = 0; i < N - 1; i++) for (let k = 0; k < R; k++) for (const q of [rings[i][k], rings[i + 1][k], rings[i][k + 1], rings[i][k + 1], rings[i + 1][k], rings[i + 1][k + 1]]) v.push(q[0][0], q[0][1], q[0][2], q[2][0], q[2][1], q[2][2], 0, 0, q[1][0], q[1][1], q[1][2], 0);
+      for (let i = 3; i < N; i++) { const P0 = C[i].p, w0 = C[i].w;
+        if (i % 2 === 0) coneB(v, [P0[0], P0[1] + w0 * .85, P0[2]], [-fw[0] * w0 * .3, w0 * (wind ? 1.35 : 1.05), -fw[2] * w0 * .3], w0 * .2, bone, 0, 5);
+        if (i % 4 === 1 && C[i].s < .95) { const ep = [P0[0] + fw[0] * w0 * .8, P0[1] + w0 * .45, P0[2] + fw[2] * w0 * .8], er = w0 * .4; ellB(v, ep, [sd[0] * er, 0, sd[2] * er], [0, er * .85, 0], [fw[0] * er * .5, 0, fw[2] * er * .5], (x, y, z) => z > .6 ? [.03, .01, .02] : z > .2 ? iris : [.94, .88, .76], .85, 8, 6); } }
+      // cabeça: virada para a câmera
+      const H0 = C[0].p, hc = [H0[0], H0[1] + 22 * S, H0[2]], hr = 30 * S, jaw = wind ? 1 : .4;
+      ellB(v, hc, [sd[0] * hr, 0, sd[2] * hr], [0, hr * 1.02, 0], [fw[0] * hr * .9, 0, fw[2] * hr * .9], (x, y, z) => mix(bel, body, clamp(.4 - y + z * .2, 0, 1)), 0, 16, 10);
+      const mc = [hc[0] + fw[0] * hr * .78, hc[1] - hr * .35, hc[2] + fw[2] * hr * .78], mr = (10 + jaw * 12) * S;
+      ellB(v, mc, [sd[0] * mr, 0, sd[2] * mr], [0, mr * .95, 0], [fw[0] * mr * .3, 0, fw[2] * mr * .3], wind ? [.55, .05, .08] : [.3, .04, .08], .5, 14, 6);
+      ellB(v, [mc[0] + fw[0] * mr * .2, mc[1], mc[2] + fw[2] * mr * .2], [sd[0] * mr * .62, 0, sd[2] * mr * .62], [0, mr * .6, 0], [fw[0] * mr * .2, 0, fw[2] * mr * .2], [.03, 0, .02], 0, 12, 5);
+      for (let q = 0; q < 22; q++) { const an = q / 22 * 6.283, rp = [mc[0] + (sd[0] * Math.cos(an)) * mr * .95 + fw[0] * mr * .25, mc[1] + Math.sin(an) * mr * .9, mc[2] + (sd[2] * Math.cos(an)) * mr * .95 + fw[2] * mr * .25]; coneB(v, rp, [-sd[0] * Math.cos(an) * mr * .35 + fw[0] * 4, -Math.sin(an) * mr * .33, -sd[2] * Math.cos(an) * mr * .35 + fw[2] * 4], 1.6 * S, bone, 0, 4); }
+      for (const [ex, ey, er] of [[-.62, .55, .2], [-.25, .78, .24], [.25, .74, .18], [.6, .5, .23], [0, .45, .34], [-.8, .12, .14], [.78, .15, .13]]) { const r2 = er * hr, ep = [hc[0] + sd[0] * ex * hr + fw[0] * hr * .78 * Math.sqrt(Math.max(0, 1 - ex * ex - ey * ey * .5)), hc[1] + ey * hr * .9, hc[2] + sd[2] * ex * hr + fw[2] * hr * .78 * Math.sqrt(Math.max(0, 1 - ex * ex - ey * ey * .5))];
+        ellB(v, ep, [sd[0] * r2, 0, sd[2] * r2], [0, r2 * .85, 0], [fw[0] * r2 * .4, 0, fw[2] * r2 * .4], (x, y, z) => z > .55 ? [.03, .01, .02] : z > .2 ? iris : [.94, .88, .76], .85, 10, 6); }
+      for (const [hx, hh] of [[-.75, .7], [-.4, 1.05], [-.05, .9], [.3, 1.1], [.62, .8], [.85, .5]]) coneB(v, [hc[0] + sd[0] * hx * hr - fw[0] * hr * .1, hc[1] + hr * (.72 - Math.abs(hx) * .3), hc[2] + sd[2] * hx * hr - fw[2] * hr * .1], [sd[0] * hx * hr * .3 - fw[0] * hr * .35, hh * hr * .9, sd[2] * hx * hr * .3 - fw[2] * hr * .35], 3.2 * S, bone, 0, 6);
+      for (let q = 0; q < 6; q++) { const sg = q % 2 ? 1 : -1, b0 = [mc[0] + sd[0] * sg * mr * 1.15, mc[1] + (q - 2.5) * 4 * S, mc[2] + sd[2] * sg * mr * 1.15], sw = Math.sin(ph + q * 1.3) * 6 * S, e2 = [b0[0] + sd[0] * sg * (22 + q * 3) * S + fw[0] * 8 * S, b0[1] - (18 + q * 3) * S * .6 + sw * .3, b0[2] + sd[2] * sg * (22 + q * 3) * S + fw[2] * 8 * S];
+        coneB(v, b0, sub(e2, b0), 2.4 * S, [.56, .48, .57], 0, 5); ellB(v, e2, [2.4 * S, 0, 0], [0, 2.4 * S, 0], [0, 0, 2.4 * S], iris, .7, 6, 4); }
+      const vv = v; let x0 = 1e9, x1 = -1e9, y0 = 1e9, y1 = -1e9; for (let i = 0; i < vv.length; i += 12) { const sx = Pa * vv[i] + Pc * vv[i + 2], sy = Pb * vv[i] + Pd * vv[i + 2] - vv[i + 1]; if (sx < x0) x0 = sx; if (sx > x1) x1 = sx; if (sy < y0) y0 = sy; if (sy > y1) y1 = sy; }
+      const W = x1 - x0 + 6, H = y1 - y0 + 6, fsc = Math.min(1, (OBM - 2) / W, (OBM - 2) / H), tg = { w: Math.min(OBM, Math.ceil(W * fsc) + 2), h: Math.min(OBM, Math.ceil(H * fsc) + 2), ax: (-x0 + 3) * fsc, ay: (-y0 + 3) * fsc };
+      const b = bakeVerts(vv, fsc, 10, false, tg); c = b ? { cv: b.cv, ax: b.ax, ay: b.ay, k: 1 / fsc, key: "e3ds" + key } : null; if (c) serpCache.set(key, c); return serpLast = c || serpLast;
+    }
     function canBake(frameNo) { if (!on || broken || !gl || !TB_FB) return false; if (frameNo !== lastBakeFrame) { lastBakeFrame = frameNo; bakesThisFrame = 0; } return bakesThisFrame < 8; }
     // ---- humanos (NPCs, moradores, outros jogadores) ----
     const humCache = new Map(), humModels = new Map();
@@ -19896,7 +19968,7 @@ void main(){vec2 px=1./uRes;float band=smoothstep(.26,.5,abs(vUV.y-.5));float r=
     let t0 = performance.now();
     function frame(r, world, ev) {
       if (!on || broken) return false;
-      const map = world.map; if (map.indoor || map.sea && map.sea.all || map.aquatic) { if (cv) cv.style.display = "none"; r.canvas.style.opacity = "1"; return false; }
+      const map = world.map; if (false) { }
       try {
         if (!gl) init(r);
         cv.style.display = "block";
@@ -19947,7 +20019,7 @@ void main(){vec2 px=1./uRes;float band=smoothstep(.26,.5,abs(vUV.y-.5));float r=
         // cena
         if (POST) { ensureSC(W, H); gl.bindFramebuffer(gl.FRAMEBUFFER, SCF); } else gl.bindFramebuffer(gl.FRAMEBUFFER, null); gl.viewport(0, 0, W, H); gl.clearColor(.055 + .03 * dl, .1 + .05 * dl, .1 + .06 * dl, 1); gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
         gl.useProgram(P1); gl.uniformMatrix4fv(ul(P1, "uVP"), false, VP); gl.uniformMatrix4fv(ul(P1, "uLVP"), false, LVP); gl.uniform1f(ul(P1, "uTime"), time); gl.uniform2fv(ul(P1, "uMap"), [map.width, map.height]);
-        gl.uniform3fv(ul(P1, "uSun"), dir); gl.uniform3fv(ul(P1, "uSunCol"), col); gl.uniform3fv(ul(P1, "uSky"), sky); gl.uniform3fv(ul(P1, "uGnd"), gnd); gl.uniform1f(ul(P1, "uAmbK"), amb); gl.uniform1f(ul(P1, "uNight"), night); gl.uniform1f(ul(P1, "uFlash"), 0); gl.uniform1i(ul(P1, "uNoSh"), 0);
+        gl.uniform3fv(ul(P1, "uSun"), dir); gl.uniform3fv(ul(P1, "uSunCol"), col); gl.uniform3fv(ul(P1, "uSky"), sky); gl.uniform3fv(ul(P1, "uGnd"), gnd); gl.uniform1f(ul(P1, "uAmbK"), amb); gl.uniform1f(ul(P1, "uNight"), night); gl.uniform1f(ul(P1, "uFlash"), 0); gl.uniform1i(ul(P1, "uNoSh"), 0); gl.uniform1f(ul(P1, "uCloud"), map.indoor ? 0 : 1);
         gl.uniform3fv(ul(P1, "uView"), norm([0, 1, 1.4]));
         const L4 = new Float32Array(48), LC = new Float32Array(36); lights.forEach((l, i) => { L4.set([l[0], l[1], l[2], l[3]], i * 4); LC.set(l[4], i * 3); });
         gl.uniform4fv(ul(P1, "uLights"), L4); gl.uniform3fv(ul(P1, "uLightC"), LC); gl.uniform1i(ul(P1, "uNL"), lights.length);
@@ -19982,8 +20054,9 @@ void main(){vec2 px=1./uRes;float band=smoothstep(.26,.5,abs(vUV.y-.5));float r=
       } catch (e) { console.error("Modo 3D desativado:", e); broken = true; if (cv) cv.style.display = "none"; r.canvas.style.opacity = "1"; return false; }
     }
     function drawHero(r, ctx, c0) { if (!heroReady || !r._e3dHero) return false; const h = { cx: c0 ? c0.x : r._e3dHero.cx, cy: c0 ? c0.y - HC : r._e3dHero.cy }; ctx.save(); ctx.imageSmoothingEnabled = false; ctx.drawImage(heroCanvas, h.cx - TWW / 2, h.cy - THW / 2, TWW, THW); ctx.restore(); return true; }
-    return { frame, drawHero, treeSprite, monSprite, humSprite, critSprite, propSprite, objSprite, tombSprite, itemSprite, isOn: () => on && !broken, setOn, toggle() { setOn(!on); return on; }, heroOk: () => heroReady };
+    return { frame, drawHero, treeSprite, monSprite, humSprite, critSprite, propSprite, objSprite, tombSprite, itemSprite, serpSprite, isOn: () => on && !broken, setOn, toggle() { setOn(!on); return on; }, heroOk: () => heroReady };
   })();
+  typeof location < 'u' && location.search.includes('debug') && (window.__e3d = E3D);
   var B4 = '"Cinzel Decorative", "Uncial Antiqua", Georgia, serif', ms = 'Arial, "Helvetica Neue", Helvetica, sans-serif', X0 = 30, CS = { common: "#d9d9d9", uncommon: "#6fe08a", rare: "#5aa9ff", epic: "#c07bff", legendary: "#ffb02e" }, $a = 0.74, monScale = (d) => (d.boss ? 1.5 + Math.max(0, d.radius - 26) / 28 : d.radius <= 14 ? 0.62 : d.radius <= 17 ? 0.78 : d.radius <= 20 ? 0.96 : 1.2) * (d.boss ? 1.12 : 1.22), Cn = 188, $r = 124, I4 = (e) => Math.max(0, Math.min(1, e)), TS = (e) => e * e * (3 - 2 * e), RS = (e, t) => {
     let a = (t - e) % (Math.PI * 2);
     return a > Math.PI && (a -= Math.PI * 2), a < -Math.PI && (a += Math.PI * 2), a;
@@ -20298,7 +20371,7 @@ void main(){vec2 px=1./uRes;float band=smoothstep(.26,.5,abs(vUV.y-.5));float r=
         if (!o) return;
         this.sfx.volume = n.getSnapshot().settings.volume, this.music.setVolume(n.getSnapshot().settings.music), this.music.setScene({ mapId: o.map.id, theme: o.map.theme, city: !!o.map.city, night: !!this.evView?.night, hidden: !!o.map.hidden }), this.updateCamera(a, o.map), this.readInput(), n.tick(a), this.markTimer += a, this.markTimer > 400 && (this.markTimer = 0, this.updateMarks());
         let r = this.dead;
-        this.e3dOn = E3D.isOn() && !o.map.indoor && !(o.map.sea && o.map.sea.all) && !o.map.aquatic && typeof WebGL2RenderingContext !== "undefined";
+        this.e3dOn = E3D.isOn() && typeof WebGL2RenderingContext !== "undefined";
         this.dead = o.isDead(), r && !this.dead && this.startFade(1, 0, 500), this.updateHover(), this.draw(a), this.e3dOn && !E3D.frame(this, o, this.evView) && (this.e3dOn = false);
       } catch (n) {
         console.error("Erro no desenho do quadro", n);
@@ -20785,7 +20858,7 @@ void main(){vec2 px=1./uRes;float band=smoothstep(.26,.5,abs(vUV.y-.5));float r=
       }
       for (let q of a.loot) T.push({ depth: Ja(q.pos.x, q.pos.y), draw: () => (q.mvp && this.drawMvpLootFx(q), this.drawLoot(q.itemId, q.pos.x, q.pos.y, q.id, q.qty)) });
       for (let q of a.tombList()) T.push({ depth: Ja(q.x, q.y), draw: () => this.drawTomb(q) });
-      if (this.e3dOn) for (let q of n.portals) { let px = q.x + q.w / 2, py = q.y + q.h / 2, H = ce(px, py); M(H.x, H.y) && T.push({ depth: Ja(px, py) - 2, draw: () => { let g = E3D.objSprite({ kind: "portal", theme: n.theme ?? "grass", variant: 0 }, this.clock); g && nt(this.ctx, g, H.x, H.y); } }); }
+      if (this.e3dOn && !n.indoor) for (let q of n.portals) { let px = q.x + q.w / 2, py = q.y + q.h / 2, H = ce(px, py); M(H.x, H.y) && T.push({ depth: Ja(px, py) - 2, draw: () => { let g = E3D.objSprite({ kind: "portal", theme: n.theme ?? "grass", variant: 0 }, this.clock); g && nt(this.ctx, g, H.x, H.y); } }); }
       let z = /* @__PURE__ */ new Set(["p"]);
       for (let q of a.monsters) {
         if (q.state === "dead") { q._boom && a.time - (q.diedAt ?? 0) < 8e3 && T.push({ depth: Ja(q.pos.x, q.pos.y) + 5e4, draw: () => (this.drawSerpent(q, t), this.bossBoom(ce(q.pos.x, q.pos.y), (a.time - (q.diedAt ?? 0)) / 1e3)) }); continue; }
@@ -21584,6 +21657,7 @@ void main(){vec2 px=1./uRes;float band=smoothstep(.26,.5,abs(vUV.y-.5));float r=
       let o = this.ctx, r = ce(t.pos.x, t.pos.y), T = this.clock / 1e3, dead = t.state === "dead", fade = dead ? Math.max(0, 1 - (n.time - (t.diedAt ?? 0)) / 3600) : 1;
       if (fade <= 0) return;
       let S = 5, wind = t.state === "windup" || t.state === "charge", flip = Xi(t.facing).x < 0 ? -1 : 1, N = 62, pts = [];
+      if (this.e3dOn && E3D.isOn()) { let sp3 = E3D.serpSprite(this.clock, flip, wind, dead, this.clock); if (sp3) { o.save(), o.globalAlpha = fade; let hov3 = this.hover?.kind === "monster" && this.hover.id === t.id; hov3 && (o.shadowColor = "#ffd34d", o.shadowBlur = 18); nt(o, sp3, r.x, r.y + 20), o.restore(); let g3 = Math.max(0, t.hp / t.maxHp), top3 = r.y - 470; !dead && (this.bar(r.x, top3 + 8, 460, g3, "#c77dff"), this.text(t.def.name, r.x, top3 - 6, 22, "#ffe9a8")); return; } }
       let dx = n.player.pos.x - t.pos.x, dy = n.player.pos.y - t.pos.y, dl = Math.hypot(dx, dy) || 1, lx = dx / dl, ly = dy / dl;
       let hash = (k) => { let q = Math.sin(k * 127.1 + 311.7) * 43758.5453; return q - Math.floor(q); };
       for (let i = 0; i < N; i++) {

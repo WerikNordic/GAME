@@ -830,3 +830,8 @@
 ## v266
 - Modo 3D: montaria agora é um corvo de guerra 3D (sela vermelha com dourado, pernas que andam, asas e bico que bica no ataque), com o herói 3D montado em cima; a cor segue o tingimento.
 - Filhote de lobo, falcão do Caçador e os quatro homúnculos (Lif, Amistr, Filir e Vanilmirth, com cores de evoluído e alternativa) em 2.5D.
+
+## v267
+- Modo 3D agora também nos interiores (casas de guilda, Salão VIP, igreja) e nos mapas de mar aberto e submersos, sem sombra de nuvem dentro de casa.
+- Criaturas marinhas em 2.5D: peixes (piranha, peixe-lanterna, peixe abissal), tubarões (cinzento, martelo e o Leviatã), águas-vivas/medusas e polvos/kraken, nadando com cauda e barbatanas animadas.
+- Werikr, a Serpente do Fim, refeita em 3D: corpo enrolado ondulando com espinhos de osso e olhos pelo corpo, crânio coroado de chifres, boca circular cheia de dentes e tentáculos com olhos; fica avermelhada ao preparar o ataque.
