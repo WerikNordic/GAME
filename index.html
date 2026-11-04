@@ -94,7 +94,7 @@ canvas#c{display:block;width:100vw;height:100vh;cursor:pointer}
 @keyframes zoneIn{0%{opacity:0;transform:translate(-50%,-8px)}12%{opacity:1;transform:translate(-50%,0)}75%{opacity:1}100%{opacity:0}}
 #aimBan{position:fixed;left:50%;top:44px;transform:translateX(-50%);padding:3px 10px;background:#1b1f27e8;color:#fff;border:1px solid #ffffff60;border-radius:4px;font:700 13px "Alegreya Sans",sans-serif;display:none;pointer-events:none}#aimBan b{color:#ffd77a}
 #chatTabs{display:flex;gap:2px;padding:2px 4px}#chatTabs button{all:unset;cursor:pointer;padding:1px 6px;border-radius:3px;font-size:11px;color:#b8c4d8}#chatTabs button.on{background:#ffffff22;color:#fff}
-#log[data-tab=sys] div:not([data-ch=sys]){display:none}#log[data-tab=priv] div,#log[data-tab=party] div:not([data-ch=party]),#log[data-tab=guild] div{display:none}#log div[data-ch=party]{color:#a8f0b8}
+#log[data-tab=sys] div:not([data-ch=sys]){display:none}#log[data-tab=priv] div:not([data-ch=priv]),#log[data-tab=party] div:not([data-ch=party]),#log[data-tab=guild] div{display:none}#log div[data-ch=party]{color:#a8f0b8}#log div[data-ch=priv]{color:#ffb8e8}
 #party{position:fixed;left:max(10px,env(safe-area-inset-left));top:120px;width:170px;display:none;background:#121822c8;border:1px solid #ffffff30;border-radius:6px;padding:4px 6px;color:#e8eef8;font:600 11px "Alegreya Sans",sans-serif}#party h4{margin:0 0 3px;font:700 11px Silkscreen,monospace;color:#a8f0b8}
 .pm{margin-bottom:4px}.pm b{font-size:12px;color:#fff}.pm.me b{color:#ffd77a}.pm small{display:block;color:#b8c4d8;font-size:10px}.pm i{display:block;height:4px;background:#1d2533;border-radius:2px;overflow:hidden}.pm s{display:block;height:100%;background:linear-gradient(#9cf58a,#3fb03a);text-decoration:none}body.sel #party{display:none!important}
 .skbasic{display:flex;align-items:center;gap:10px;margin:0 0 8px;padding:4px 8px;border:1px solid #c3d0e4;border-radius:6px;background:#eef3fa}.skbasic small{font:700 10px Silkscreen,monospace;color:#56657e}.skbasic [data-basic]{display:flex;align-items:center;gap:6px;cursor:grab;padding:2px 8px 2px 2px;border-radius:5px;background:#fff;border:1px solid #c3d0e4}.skbasic img{width:24px;height:24px;image-rendering:pixelated}.skbasic b{font:700 12px "Alegreya Sans",sans-serif;color:#1d2a3d}#drag{position:fixed;left:0;top:0;display:none;width:32px;height:32px;pointer-events:none;z-index:60;image-rendering:pixelated;opacity:.9;filter:drop-shadow(0 3px 4px #0008)}#hotbar.dnd .slot{outline:2px dashed #ffd23a;outline-offset:-2px}#skw img,#inv img{-webkit-user-drag:none;user-select:none}.advtag.down b,.advtag.down small{color:#9a9a9a!important;text-decoration:line-through}#ctx{position:fixed;display:none;z-index:6;min-width:160px;background:#f7f9fcf2;border:1px solid #8ea6cb;border-radius:6px;box-shadow:0 6px 18px #0008;padding:5px;font:600 12px "Alegreya Sans",sans-serif;color:#1d2a3d}#ctx b{display:block;padding:0 4px}#ctx small{display:block;padding:0 4px 4px;color:#56657e;border-bottom:1px solid #c3d0e4;margin-bottom:3px}#ctx button{all:unset;display:block;cursor:pointer;padding:3px 6px;border-radius:4px}#ctx button:hover{background:#3b6db3;color:#fff}#logEmpty{display:none;position:absolute;left:8px;top:26px;color:#8193b0}
@@ -156,6 +156,14 @@ body.mob .win.hide{display:none}
 #accBody .row{display:flex;gap:6px;margin-top:10px}#accBody button{all:unset;cursor:pointer;flex:1;text-align:center;padding:6px;border-radius:4px;background:#3b6db3;color:#fff;font-weight:800}#accBody button.alt{background:#8a96a8}#accMsg{min-height:16px;margin-top:6px;font-size:12px;color:#2f7a3a}#accMsg.err{color:#b8322a}#accBody p{margin:4px 0;font-size:12px;color:#33405a}
 #netSt{position:fixed;left:max(10px,env(safe-area-inset-left));bottom:4px;font:700 11px "Alegreya Sans";color:#ffffff90;text-shadow:0 1px 2px #000;pointer-events:none;z-index:2}#netSt.on{color:#7cf08a}body.sel #netSt{display:none}
 .advtag.oth b{color:#ffd27a}
+#rparty{position:fixed;left:max(10px,env(safe-area-inset-left));top:120px;width:170px;display:none;z-index:2;background:#121822c8;border:1px solid #ffffff30;border-radius:6px;padding:4px 6px;color:#e8eef8;font:600 11px "Alegreya Sans",sans-serif}
+#rparty h4{margin:0 0 3px;font:700 11px Silkscreen,monospace;color:#a8f0b8;display:flex;justify-content:space-between;align-items:center}
+#rparty h4 button{all:unset;cursor:pointer;font:700 10px "Alegreya Sans";color:#ffb0a0;padding:0 3px}
+#rparty .rpm{margin:3px 0}#rparty .pn{display:flex;justify-content:space-between;gap:4px;line-height:14px;white-space:nowrap}#rparty .pn b{display:inline;font:700 12px "Alegreya Sans",sans-serif;color:#fff;overflow:hidden;text-overflow:ellipsis}#rparty .ri{font-style:normal;color:#9fb0c8;font-size:10px;overflow:hidden;text-overflow:ellipsis}#rparty .rpm.far{opacity:.55}
+#rparty .hb{height:5px;background:#0008;border-radius:3px;overflow:hidden;margin-top:1px}#rparty .hb div{height:100%;background:linear-gradient(#7fe08a,#3fa84c)}
+#pinvBox{position:fixed;left:50%;top:84px;transform:translateX(-50%);display:none;z-index:7;background:#f7f9fcf2;border:1px solid #8ea6cb;border-radius:8px;box-shadow:0 6px 18px #0008;padding:8px 12px;font:600 13px "Alegreya Sans",sans-serif;color:#1d2a3d;text-align:center}
+#pinvBox div{display:flex;gap:8px;justify-content:center;margin-top:6px}#pinvBox button{all:unset;cursor:pointer;padding:4px 12px;border-radius:4px;background:#3b6db3;color:#fff;font-weight:800;font-size:12px}#pinvBox button.alt{background:#8a96a8}
+.advtag.oth.pt b{color:#a8f0b8}
 </style></head><body>
 <canvas id="c"></canvas><canvas id="wx"></canvas><div id="flash"></div>
 <div id="fx"><div id="heroTag"><i id="htHp"><s></s></i><i id="htSp"><s></s></i><b></b></div><div id="cast"><s></s></div><div id="shout"></div><div id="say"></div></div>
@@ -174,12 +182,12 @@ body.mob .win.hide{display:none}
 <div class="win hide" id="skw"><h3><span>Habilidades</span><button data-close>✕</button></h3><div class="body" id="skBody"></div></div>
 <div class="win hide" id="wmap"><h3><span>Mapa-múndi</span><button data-close>✕</button></h3><div class="body" id="wmBody"></div></div>
 <div class="win hide" id="emo"><h3><span>Emotes</span><button data-close>✕</button></h3><div class="body" id="emoBody"></div></div>
-<img id="drag" alt=""><div id="party"></div><div id="ctx"></div><div id="zoneBan"></div><div id="fade"></div><div id="aimBan"></div><img id="emoteB" alt="">
+<img id="drag" alt=""><div id="party"></div><div id="rparty"></div><div id="pinvBox"></div><div id="ctx"></div><div id="zoneBan"></div><div id="fade"></div><div id="aimBan"></div><img id="emoteB" alt="">
 <div id="selUI"><button id="selPow" title="Recarregar">⏻</button><button id="selAcc">☁ Conta: offline</button><div id="selTags"></div><button id="selDel">Excluir personagem</button><button id="selPlay">Jogar</button><div id="selTitle">ELDVAR <small>Floresta de Freyra</small></div></div>
 <div class="win hide" id="createWin"><h3><span>Crie seu personagem ✦</span></h3><div class="body" id="crBody"></div></div>
 <div class="win hide" id="help"><h3><span>Controles</span><button data-close>✕</button></h3><div class="body">
 <kbd>Clique</kbd><span>no chão para andar · no monstro para atacar · em itens para pegar</span><kbd>1 – 8 · 9 · 0</kbd><span>habilidades · poções · <b>Espaço</b> golpe · alvo: clique no monstro (Esc cancela)</span><kbd>Barra</kbd><span>arraste habilidades (K) e poções (I) para a barra · arraste para fora para tirar</span><kbd>K · I · C</kbd><span>habilidades e classe · inventário · atributos</span><kbd>O · V · N</kbd><span>emotes · câmera clássica/alta · mapa-múndi</span>
-<kbd>Minerar</kbd><span>clique num veio com a Picareta · a Hilda forja equipamentos com os minérios (aba 🔨 Forjar)</span><kbd>R · F · P</kbd><span>montar (lobo comprado com a Gudrun na vila) · pescar com vara na beira da água · soltar o mascote (dome com Isca: monstro com menos de 50% de vida)</span><kbd>Portais</kbd><span>círculos azuis levam à Costa, Dunas e Picos · ☠ chefes no mapa (fuja do círculo vermelho!)</span><kbd>Lojas</kbd><span>Bjorn compra e vende · placas 🏷 são lojinhas de jogadores</span><kbd>Grupo</kbd><span>clique num aventureiro → Convidar para o grupo · eles seguem, lutam, curam (magos) e caem se apanharem demais</span><kbd>WASD</kbd><span>mover · roda: zoom</span><kbd>Botão direito</kbd><span>arrastar gira a câmera · <b>Shift</b>+arrastar inclina · duplo clique reseta</span><kbd>C · Y · T</kbd><span>atributos · mudar clima · avançar hora</span><kbd>Enter</kbd><span>conversar · <b>M</b> som · <b>H</b> esta ajuda</span></div></div>
+<kbd>Minerar</kbd><span>clique num veio com a Picareta · a Hilda forja equipamentos com os minérios (aba 🔨 Forjar)</span><kbd>R · F · P</kbd><span>montar (lobo comprado com a Gudrun na vila) · pescar com vara na beira da água · soltar o mascote (dome com Isca: monstro com menos de 50% de vida)</span><kbd>Portais</kbd><span>círculos azuis levam à Costa, Dunas e Picos · ☠ chefes no mapa (fuja do círculo vermelho!)</span><kbd>Lojas</kbd><span>Bjorn compra e vende · placas 🏷 são lojinhas de jogadores</span><kbd>Grupo</kbd><span>clique num aventureiro → Convidar para o grupo · eles seguem, lutam, curam (magos) e caem se apanharem demais</span><kbd>WASD</kbd><span>mover · roda: zoom</span><kbd>Botão direito</kbd><span>arrastar gira a câmera · <b>Shift</b>+arrastar inclina · duplo clique reseta</span><kbd>C · Y · T</kbd><span>atributos · mudar clima · avançar hora</span><kbd>Enter</kbd><span>conversar · <b>M</b> som · <b>H</b> esta ajuda</span><kbd>Online</kbd><span>clique no nome de outro jogador para convidar ao grupo · <b>/p</b> grupo · <b>/w Nome</b> privado · <b>/r</b> responder</span></div></div>
 <div id="chat"><div class="tab" id="chatTabs"><button data-tab="all" class="on">Todos</button><button data-tab="priv">Privado</button><button data-tab="party">Grupo</button><button data-tab="guild">Guilda</button><button data-tab="sys">Sistema</button></div><div id="logEmpty">Nada aqui ainda.</div><div id="log" data-tab="all"></div><input id="chatIn" placeholder="Enter para conversar…" maxlength="80" autocomplete="off"></div>
 <div id="bottom"><div id="hotbar"></div><div id="xpbars"><span>BASE</span><div class="xb" id="bxp"><i></i></div><div class="xb" id="cxp"><i></i></div><span>CLASSE</span></div></div>
 <div id="joy"><div id="joyK"></div></div><div id="atkBtn">⚔</div><div id="chatBtn">💬</div><div class="win hide" id="accWin"><h3><span>Conta Eldvar</span><button data-close>✕</button></h3><div class="body" id="accBody"></div></div><div id="netSt">● Offline</div><div id="tip"></div><div id="fps"></div><div id="err"></div><div id="loading">Carregando a Floresta de Freyra…</div>
@@ -1010,7 +1018,7 @@ function sfx(kind){if(muted)return;try{AC=AC||new (window.AudioContext||window.w
 const $=s=>document.querySelector(s);const floaters=[];const chatIn=$('#chatIn');
 function floatText(x,y,z,txt,cls,dur=1.1){const el=document.createElement('div');el.className='ft '+(cls||'');el.textContent=txt;$('#fx').appendChild(el);floaters.push({x,y,z,el,t0:now,dur})}
 function clockStr(){const hrs=(world.sky.clock*24+6)%24;return String(Math.floor(hrs)).padStart(2,'0')+':'+String(Math.floor((hrs%1)*60)).padStart(2,'0')}
-function log(msg,tag='Sistema'){const l=$('#log');const d=document.createElement('div');d.dataset.ch=tag==='Grupo'?'party':tag?'sys':'all';d.innerHTML=`<span class="t">[${clockStr()}]</span> ${tag?`<span class="s">[${tag}]</span> `:''}${msg}`;l.appendChild(d);while(l.children.length>30)l.firstChild.remove()}
+function log(msg,tag='Sistema'){const l=$('#log');const d=document.createElement('div');d.dataset.ch=tag==='Grupo'?'party':tag==='Privado'?'priv':tag?'sys':'all';d.innerHTML=`<span class="t">[${clockStr()}]</span> ${tag?`<span class="s">[${tag}]</span> `:''}${msg}`;l.appendChild(d);while(l.children.length>30)l.firstChild.remove()}
 const plates=new Map();function plate(m){let el=plates.get(m);if(!el){el=document.createElement('div');el.className='plate';el.innerHTML='<i><s></s></i><b></b>';$('#fx').appendChild(el);plates.set(m,el)}return el}
 // ================= camera & input =================
 // RO-style camera: north-up by default, right-drag rotates, Shift+right-drag tilts, wheel zooms, double right-click resets
@@ -1047,6 +1055,7 @@ function onTap(sx,sy){if(MODE!=='play'){selTap(sx,sy);return}if(H.dead)return;in
  {const r=cv.getBoundingClientRect();for(const t of TN){const q=project(t.x,height(t.x,t.z)+1.4,t.z);if(q&&Math.hypot(q[0]-(sx-r.left),q[1]-(sy-r.top))<45){H.talk=t;H.target=null;H.pick=null;H.dest=[t.x+(H.x>t.x?1.6:-1.6),t.z];return}}}
  {const r=cv.getBoundingClientRect(),q=project(QN.x,height(QN.x,QN.z)+1.4,QN.z);if(q&&Math.hypot(q[0]-(sx-r.left),q[1]-(sy-r.top))<45){H.talk=QN;H.target=null;H.pick=null;H.dest=[QN.x+(H.x>QN.x?1.6:-1.6),QN.z];return}}
  {const r=cv.getBoundingClientRect(),s=BIO.key==='floresta'&&project(NPC.x,height(NPC.x,NPC.z)+1.4,NPC.z);if(s&&Math.hypot(s[0]-(sx-r.left),s[1]-(sy-r.top))<45){H.talk=NPC;H.target=null;H.pick=null;H.dest=[NPC.x+(H.x>NPC.x?1.6:-1.6),NPC.z];return}}
+ if(MODE==='play'&&NET.pick(sx,sy))return;
  {const r=cv.getBoundingClientRect();for(const a of ADV){const s=project(a.x,height(a.x,a.z)+1.4,a.z);if(s&&Math.hypot(s[0]-(sx-r.left),s[1]-(sy-r.top))<34){if(a.vend)talkTo(a);else ctxMenu(a,sx,sy);return}}}
  H.talk=null;H.pick=null;const m=pick(sx,sy);if(m){H.target=m;H.dest=null;return}const g=screenToGround(sx,sy);if(g&&!blocked(g[0],g[2],.3)){if(H.cast)cancelCast();H.dest=[g[0],g[2]];H.target=null;clickFx=[g[0],g[2],now]}}
 function initAudio(){try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();AC.resume&&AC.resume()}catch(e){}}
@@ -1178,7 +1187,7 @@ function killMon(m){m.dead=true;partyXp(m);m.respawn=now+(m.d.boss?150:12);if(m.
  const bm=wx.blood?1.5:1,bx=Math.round(m.d.xp*bm),zy=Math.round(m.d.z[0]+rnd()*(m.d.z[1]-m.d.z[0])),cx=Math.round(m.d.xp*.7*bm);H.zeny+=zy;
  floatText(m.x,y+3,m.z,'+'+bx+' EXP','xp');log(`<span class="k">${m.d.name}</span> derrotado. +${bx} EXP base · +${cx} EXP classe · +${zy} zeny`);
  let k=0;for(const[id,ch]of DROPS[m.kind])if(rnd()<ch)spawnDrop(id,m.x,m.z,k++);
- gainXp(bx,cx);questEv(m.kind);if(H.target===m)H.target=null;plate(m).style.display='none'}
+ gainXp(bx,cx);NET.kill(bx,cx);questEv(m.kind);if(H.target===m)H.target=null;plate(m).style.display='none'}
 function gainXp(b,c){if(H.pet){b=Math.round(b*1.05);c=Math.round(c*1.05)}H.bxp+=b;H.cxp+=c;const y=height(H.x,H.z);
  while(H.bxp>=H.bnx){H.bxp-=H.bnx;H.blv++;H.bnx=Math.round(H.bnx*1.4);H.pts+=3;recalc(true);
   for(let i=0;i<40;i++)emit({x:H.x+rr(-.8,.8),y:y+rr(0,.5),z:H.z+rr(-.8,.8),vy:rr(2,6),life:rr(.8,1.6),size:rr(.25,.5),col:[1,.85,.4]});
@@ -1455,7 +1464,7 @@ const PL={join:['bora!','partiu, líder','opa, tô dentro','vamos nessa!'],refus
 function ctxMenu(a,sx,sy){const m=$('#ctx'),inP=PARTY.includes(a);
  m.innerHTML=`<b>${a.name}</b><small>${CLS[a.cls].n} · Nv ${a.lv}</small>`+(a.vend?'<button data-c="shop">Ver lojinha</button>':'')+(!a.vend&&!inP?'<button data-c="inv">Convidar para o grupo</button>':'')+(inP?'<button data-c="kick">Remover do grupo</button>':'')+'<button data-c="hi">Cumprimentar</button>';
  m.style.display='block';m.style.left=Math.min(innerWidth-180,sx+8)+'px';m.style.top=Math.min(innerHeight-140,sy+8)+'px';m.target=a}
-$('#ctx').addEventListener('pointerdown',e=>{e.stopPropagation();const b=e.target.closest('button');if(!b)return;const a=$('#ctx').target,c=b.dataset.c;$('#ctx').style.display='none';
+$('#ctx').addEventListener('pointerdown',e=>{e.stopPropagation();const b=e.target.closest('button');if(!b)return;const a=$('#ctx').target,c=b.dataset.c;$('#ctx').style.display='none';if(a&&a.net){NET.ctxAct(c,a.net);return}
  if(c==='shop')talkTo(a);if(c==='hi'){H.emote={id:'rir',t0:now};setTimeout(()=>{if(ADV.includes(a))advSay(a,pickOne(ADVL.greet))},700)}
  if(c==='inv'){if(PARTY.length>=3){log('O grupo já está cheio (4 pessoas).');return}setTimeout(()=>{if(!ADV.includes(a))return;if(rnd()<.9){PARTY.push(a);a.party=true;a.target=null;advSay(a,pickOne(PL.join));log(`<span class="p">${a.name}</span> entrou no grupo.`,'Grupo');renderParty();questEv('party')}else advSay(a,pickOne(PL.refuse))},900)}
  if(c==='kick')leaveParty(a,true)});
@@ -2097,6 +2106,7 @@ function renderQuest(){const q=qCur();let h=q?`<div class="qt">${q.t}</div><div 
  for(const c of H.side||[])h+=`<div class="qside"><div class="qt">${c.title}</div><div class="qn">${c.t==='kill'?c.n:Math.min(invCount(c.k),c.goal)} / ${c.goal}${(c.t==='kill'?c.n>=c.goal:invCount(c.k)>=c.goal)?` · volte a ${QG[c.r].name}`:''}</div></div>`;$('#qBody').innerHTML=h}
 // ---- chat
 function sendChat(){const v=chatIn.value.trim();chatIn.value='';chatIn.blur();if(!v)return;
+ if(NET.cmd(v))return;
  if(v.startsWith('/clima')){const a=(v.split(/\s+/)[1]||'').toLowerCase();const k=a&&WXO.find(w=>w.startsWith(a)||WXT[w].n.toLowerCase().startsWith(a));if(k)setWeather(k);else log('Climas: '+WXO.join(', '));return}
  const esc=v.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'})[c]);log(`<span class="p">${H.name}:</span> ${esc}`,'');H.say={txt:v,t0:now};NET.chat(v)}
 // ---- windows: close / minimise / drag by the title bar
@@ -2227,24 +2237,78 @@ const NET=(()=>{
  function connect(){if(Q.get('offline'))return;try{ws=new WebSocket(WS)}catch(e){return}
   ws.onopen=()=>{ok=true;retry=0;joined={};join('e3d-global');if(MODE==='play')setRoom(true);clearInterval(hb);hb=setInterval(()=>send('phoenix','heartbeat',{}),25000);st()};
   ws.onmessage=ev=>{let m;try{m=JSON.parse(ev.data)}catch(e){return}if(m.event!=='broadcast'||!m.payload)return;const e=m.payload.event,d=m.payload.payload||{};if(!d||d.id===id)return;
-   if(e==='st'&&m.topic==='realtime:'+room)upd(d);else if(e==='atk'){const o=OTH.get(d.id);if(o)o.atkAnim=now}else if(e==='bye'){drop(d.id)}else if(e==='hi'&&m.topic==='realtime:'+room){lastSend=0}
+   if(e==='st'&&m.topic==='realtime:'+room)upd(d);else if(e==='atk'){const o=OTH.get(d.id);if(o)o.atkAnim=now}else if(e==='bye'){drop(d.id)}else if(e[0]==='p'&&m.topic==='realtime:e3d-global'){onParty(e,d)}else if(e==='hi'&&m.topic==='realtime:'+room){lastSend=0}
    else if(e==='chat'){const t=String(d.t||'').slice(0,160).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'})[c]),n=String(d.n||'?').slice(0,16).replace(/[&<>]/g,'');log(`<span class="p" style="color:#ffd27a">${n}:</span> ${t}`,'');const o=OTH.get(d.id);if(o)o.say={txt:String(d.t||'').slice(0,80),t0:now}}};
-  ws.onclose=()=>{ok=false;clearInterval(hb);for(const k of[...OTH.keys()])drop(k);st();retry=Math.min(30,retry*2+2);setTimeout(connect,retry*1000)};ws.onerror=()=>{try{ws.close()}catch(e){}}}
+  ws.onclose=()=>{ok=false;if(PT.pid){PT.pid=null;PT.mem.clear();renderRP()}clearInterval(hb);for(const k of[...OTH.keys()])drop(k);st();retry=Math.min(30,retry*2+2);setTimeout(connect,retry*1000)};ws.onerror=()=>{try{ws.close()}catch(e){}}}
  function setRoom(force){const r='e3d-'+BIO.key;if(r===room&&!force)return;if(room&&room!==r){bc(room,'bye',{id});leave(room)}for(const k of[...OTH.keys()])drop(k);room=r;join(r);bc(r,'hi',{id});lastSend=0;st()}
  function upd(d){let o=OTH.get(d.id);if(!o){o={id:d.id,x:+d.x||0,z:+d.z||0,walk:0,atkAnim:-9,say:null};const el=document.createElement('div');el.className='advtag oth';el.innerHTML='<b></b><small></small><div class="abub"></div>';$('#fx').appendChild(el);o.el=el;OTH.set(d.id,o);st()}
   o.tx=+d.x||0;o.tz=+d.z||0;o.face=+d.f||0;o.mv=!!d.m;o.cls=CLS[d.c]?d.c:'andarilho';o.lv=d.l|0;o.name=String(d.n||'?').slice(0,16);o.look=d.lk&&d.lk.hair?d.lk:{hair:[.5,.3,.2],skin:[.9,.7,.55],clothes:[.4,.4,.5]};o.seen=now;
   o.el.querySelector('b').textContent=o.name;o.el.querySelector('small').textContent=`${CLS[o.cls].n} · Nv ${o.lv}`}
  function drop(k){const o=OTH.get(k);if(!o)return;o.el.remove();OTH.delete(k);st()}
- function tick(dt){if(!ok||MODE!=='play')return;if(room!=='e3d-'+BIO.key)setRoom();
+ function tick(dt){for(const[k,p]of PT.pend)if(++p.f>15&&performance.now()-p.t0>6500){PT.pend.delete(k);log(`<span class="r">${escH(p.to)} não está online.</span>`,'Privado')}
+  if(!ok||MODE!=='play')return;if(room!=='e3d-'+BIO.key)setRoom();ptTick();
   const pos=`${H.x.toFixed(2)},${H.z.toFixed(2)},${(H.faceAng||0).toFixed(2)},${H.moving?1:0}`;const t=performance.now();
   if((pos!==lastPos&&t-lastSend>190)||t-lastSend>2500){lastPos=pos;lastSend=t;const lk=heroLook(),r=c=>c.map(v=>Math.round(v*100)/100);bc(room,'st',{id,n:H.name,c:H.cls,l:H.blv,x:+H.x.toFixed(2),z:+H.z.toFixed(2),f:+(H.faceAng||0).toFixed(2),m:H.moving?1:0,lk:{hair:r(lk.hair),skin:r(lk.skin),clothes:r(lk.clothes)}})}
   if(H.atkT!==lastAtk){lastAtk=H.atkT;bc(room,'atk',{id})}
   for(const o of OTH.values()){if(now-o.seen>8){drop(o.id);continue}const k=Math.min(1,dt*10),dx=o.tx-o.x,dz=o.tz-o.z,d=Math.hypot(dx,dz);if(d>12){o.x=o.tx;o.z=o.tz}else{o.x+=dx*k;o.z+=dz*k}o.moving=o.mv||d>.08;if(o.moving)o.walk+=dt*3.2}}
  function draw(cv3,actors){for(const o of OTH.values()){if(actors.length>=ATC*ATR-6)break;if(Math.hypot(o.x-camX,o.z-camZ)>40)continue;const y=height(o.x,o.z),st0=cv3.length/12,at=now-o.atkAnim;
   CH3.skin({x:o.x,y,z:o.z,yaw:Math.PI/2-o.face,walk:o.walk,moving:o.moving,atk:at<.42?at/.42:-1,spin:-1,t:now+o.x,hurt:0,weapon:CLS[o.cls].w,look:o.look,fl:o.moving?1:0},cv3);actors.push({x:o.x,y,z:o.z,s:st0,n:cv3.length/12-st0,flash:false})}}
- function hud(){for(const o of OTH.values()){const s=project(o.x,height(o.x,o.z)-.15,o.z);if(!s||MODE!=='play'){o.el.style.display='none';continue}o.el.style.display='';o.el.style.transform=`translate(${s[0]}px,${s[1]}px)`;
+ function hud(){for(const o of OTH.values()){const s=project(o.x,height(o.x,o.z)-.15,o.z);if(!s||MODE!=='play'){o.el.style.display='none';continue}o.el.style.display='';o.el.classList.toggle('pt',PT.mem.has(o.id));o.el.style.transform=`translate(${s[0]}px,${s[1]}px)`;
   const b=o.el.querySelector('.abub'),on=o.say&&now-o.say.t0<5;b.style.display=on?'block':'none';if(on)b.textContent=o.say.txt}}
  function chat(t){if(ok)bc('e3d-global','chat',{id,n:H.name,t:String(t).slice(0,160)})}
+
+ // ---- party & private messages between real players (global channel)
+ const PT={pid:null,mem:new Map(),inv:null,lastW:null,pend:new Map()};let pupT=0,rpT=0;
+ const escH=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c]);
+ const inParty=()=>!!PT.pid&&PT.mem.size>0;
+ function pick(sx,sy){const r=cv.getBoundingClientRect();for(const o of OTH.values()){const s=project(o.x,height(o.x,o.z)+1.4,o.z);if(s&&Math.hypot(s[0]-(sx-r.left),s[1]-(sy-r.top))<34){netCtx(o,sx,sy);return true}}return false}
+ function netCtx(o,sx,sy){const m=$('#ctx'),inP=PT.mem.has(o.id);
+  m.innerHTML=`<b>${escH(o.name)}</b><small>${CLS[o.cls].n} · Nv ${o.lv} · jogador</small>`+(inP?'':'<button data-c="ninv">Convidar para o grupo</button>')+'<button data-c="nmsg">Mensagem privada</button>'+(inP?'<button data-c="nleave">Sair do grupo</button>':'')+'<button data-c="hi">Cumprimentar</button>';
+  m.style.display='block';m.style.left=Math.min(innerWidth-180,sx+8)+'px';m.style.top=Math.min(innerHeight-140,sy+8)+'px';m.target={net:o}}
+ function ctxAct(c,o){if(c==='ninv')invite(o);else if(c==='nmsg'){const ci=$('#chatIn');$('#chat').classList.remove('closed');ci.value=`/w ${o.name} `;ci.focus()}else if(c==='nleave')leaveP();else if(c==='hi'){H.emote={id:'rir',t0:now};chat(`Olá, ${o.name}!`);H.say={txt:`Olá, ${o.name}!`,t0:now}}}
+ function invite(o){if(!ok){log('Você está offline.','Grupo');return}if(PT.mem.has(o.id))return;if(PT.mem.size>=3){log('O grupo já está cheio (4 pessoas).','Grupo');return}
+  if(!PT.pid)PT.pid=id;bc('e3d-global','pinv',{id,n:H.name,to:o.id,pid:PT.pid});log(`Convite enviado para <span class="p">${escH(o.name)}</span>.`,'Grupo')}
+ function showInv(){const w=$('#pinvBox'),d=PT.inv;if(!d){w.style.display='none';return}
+  w.innerHTML=`<b>${escH(d.n)}</b> convidou você para o grupo.<div><button data-p="yes">Aceitar</button><button data-p="no" class="alt">Recusar</button></div>`;w.style.display='block';sfx('cast')}
+ function answer(yes){const d=PT.inv;PT.inv=null;showInv();if(!d)return;
+  if(!yes){bc('e3d-global','pno',{id,n:H.name,to:d.id,why:'recusou o convite'});return}
+  if(inParty())leaveP(true);PT.pid=d.pid;PT.mem.clear();PT.mem.set(d.id,{n:d.n,hp:1,mhp:1,lv:0,cls:'andarilho',reg:'',seen:now});
+  bc('e3d-global','pacc',{id,n:H.name,to:d.id,pid:d.pid});sendUpd();log(`Você entrou no grupo de <span class="p">${escH(d.n)}</span>. Use <b>/p texto</b> para falar com o grupo.`,'Grupo');questEv('party');renderRP()}
+ function leaveP(quiet){if(!PT.pid)return;bc('e3d-global','pleave',{id,pid:PT.pid});const had=PT.mem.size;PT.pid=null;PT.mem.clear();if(!quiet&&had)log('Você saiu do grupo.','Grupo');renderRP()}
+ function sendUpd(){if(!PT.pid||!ok)return;pupT=performance.now();bc('e3d-global','pupd',{id,pid:PT.pid,n:H.name,hp:Math.round(H.hp),mhp:Math.round(H.mhp),lv:H.blv,cls:H.cls,reg:BIO.key})}
+ function addMem(d,fresh){if(PT.mem.size>=3&&!PT.mem.has(d.id))return;const had=PT.mem.has(d.id);const m=PT.mem.get(d.id)||{};Object.assign(m,{n:String(d.n||'?').slice(0,16),seen:now});
+  if(d.mhp){m.hp=d.hp|0;m.mhp=Math.max(1,d.mhp|0);m.lv=d.lv|0;m.cls=CLS[d.cls]?d.cls:'andarilho';m.reg=BIOMES[d.reg]?d.reg:''}PT.mem.set(d.id,m);
+  if(!had){log(`<span class="p">${escH(m.n)}</span> entrou no grupo.`,'Grupo');if(fresh)sendUpd();questEv('party')}renderRP()}
+ function dropMem(k,why){const m=PT.mem.get(k);if(!m)return;PT.mem.delete(k);log(`<span class="p">${escH(m.n)}</span> ${why||'saiu do grupo'}.`,'Grupo');renderRP()}
+ function renderRP(){const p=$('#rparty');if(!p)return;if(!inParty()){p.style.display='none';return}p.style.display='block';{const c=$('#chat').getBoundingClientRect();p.style.top=(c.height>20&&c.bottom<innerHeight*.7?c.bottom+6:120)+'px'}
+  let h=`<h4>Grupo (${PT.mem.size+1}/4)<button data-pl>Sair</button></h4><div class="rpm"><div class="pn"><b>${escH(H.name)}</b><span class="ri">Nv ${H.blv}</span></div><div class="hb"><div style="width:${Math.max(0,Math.min(100,H.hp/H.mhp*100))}%"></div></div></div>`;
+  for(const m of PT.mem.values()){const far=m.reg&&m.reg!==BIO.key;h+=`<div class="rpm${far?' far':''}"><div class="pn"><b>${escH(m.n)}</b><span class="ri">${m.lv?'Nv '+m.lv+' · '+CLS[m.cls].n:''}${far?' · '+BIOMES[m.reg].n:''}</span></div><div class="hb"><div style="width:${Math.max(0,Math.min(100,m.hp/m.mhp*100))}%"></div></div></div>`}
+  p.innerHTML=h}
+ function kill(b,c){if(inParty())bc('e3d-global','pxp',{id,pid:PT.pid,reg:BIO.key,b,c})}
+ function whisper(to,t){to=String(to).slice(0,16);t=String(t).slice(0,160);if(!ok){log('Você está offline.','Privado');return}const k=Math.random().toString(36).slice(2,8);
+  bc('e3d-global','pm',{id,n:H.name,to:to.toLowerCase(),t,k});log(`<b>Para ${escH(to)}:</b> ${escH(t)}`,'Privado');
+  PT.pend.set(k,{to,t0:performance.now(),f:0})}
+ function cmd(v){let m;
+  if((m=v.match(/^\/(p|g|grupo)\s+(.+)/i))){if(!inParty()){log('Você não está em um grupo.','Grupo');return true}bc('e3d-global','pchat',{id,pid:PT.pid,n:H.name,t:m[2].slice(0,160)});log(`<span class="p">${escH(H.name)}:</span> ${escH(m[2])}`,'Grupo');H.say={txt:m[2].slice(0,80),t0:now};return true}
+  if((m=v.match(/^\/(w|m|msg)\s+(\S+)\s+(.+)/i))){whisper(m[2],m[3]);return true}
+  if((m=v.match(/^\/r\s+(.+)/i))){if(!PT.lastW)log('Ninguém mandou mensagem privada ainda.','Privado');else whisper(PT.lastW,m[1]);return true}
+  if(/^\/(sair|leave)\b/i.test(v)){if(inParty())leaveP();else log('Você não está em um grupo.','Grupo');return true}
+  if(/^\/(w|m|msg|p|g|grupo|r)\b/i.test(v)){log('Uso: <b>/p texto</b> (grupo) · <b>/w Nome texto</b> (privado) · <b>/r texto</b> (responder) · <b>/sair</b> (sair do grupo)');return true}
+  return false}
+ function onParty(e,d){
+  if(e==='pinv'){if(d.to!==id)return;if(PT.inv)return bc('e3d-global','pno',{id,n:H.name,to:d.id,why:'está ocupado'});if(inParty()&&PT.pid===d.pid)return;PT.inv={id:d.id,n:String(d.n||'?').slice(0,16),pid:String(d.pid||d.id).slice(0,12)};showInv();return}
+  if(e==='pno'){if(d.to===id)log(`<span class="p">${escH(String(d.n||'?').slice(0,16))}</span> ${escH(String(d.why||'recusou').slice(0,40))}.`,'Grupo');return}
+  if(e==='pacc'){if(d.to===id&&PT.pid===d.pid)addMem(d,true);return}
+  if(e==='pupd'){if(!PT.pid)return;if(d.pid===PT.pid)addMem(d,!PT.mem.has(d.id));else if(PT.mem.has(d.id))dropMem(d.id);return}
+  if(e==='pleave'){if(PT.mem.has(d.id)&&d.pid===PT.pid)dropMem(d.id);return}
+  if(e==='pxp'){if(!PT.pid||d.pid!==PT.pid||!PT.mem.has(d.id)||d.reg!==BIO.key||MODE!=='play')return;const b=Math.max(0,Math.min(5000,Math.round((+d.b||0)*.4))),c=Math.max(0,Math.min(5000,Math.round((+d.c||0)*.4)));if(!b)return;
+   floatText(H.x,height(H.x,H.z)+2.6,H.z,'+'+b+' EXP','xp');log(`+${b} EXP base · +${c} EXP classe (grupo)`,'Grupo');gainXp(b,c);return}
+  if(e==='pchat'){if(!PT.pid||d.pid!==PT.pid)return;const n=escH(String(d.n||'?').slice(0,16)),t=String(d.t||'').slice(0,160);log(`<span class="p">${n}:</span> ${escH(t)}`,'Grupo');const o=OTH.get(d.id);if(o)o.say={txt:t.slice(0,80),t0:now};return}
+  if(e==='pm'){if(String(d.to||'')!==H.name.toLowerCase()||MODE!=='play')return;const n=String(d.n||'?').slice(0,16);PT.lastW=n;bc('e3d-global','pmok',{id,to:d.id,k:d.k});log(`<b>De ${escH(n)}:</b> ${escH(String(d.t||'').slice(0,160))}`,'Privado');sfx('pick');return}
+  if(e==='pmok'){if(d.to===id)PT.pend.delete(d.k);return}}
+ function ptTick(){if(!PT.pid)return;for(const[k,m]of PT.mem)if(now-m.seen>12)dropMem(k,'desconectou');if(inParty()&&performance.now()-pupT>1500)sendUpd();if(inParty()&&performance.now()-rpT>300){rpT=performance.now();renderRP()}}
+ $('#pinvBox').addEventListener('pointerdown',e=>{e.stopPropagation();const b=e.target.closest('button');if(b)answer(b.dataset.p==='yes')});
+ $('#rparty').addEventListener('pointerdown',e=>{e.stopPropagation();if(e.target.closest('[data-pl]'))leaveP()});
  // ---- accounts (RPC functions on the database)
  async function rpc(fn,args){const r=await fetch(`${HTTP}/rest/v1/rpc/${fn}`,{method:'POST',headers:{apikey:KEY,Authorization:'Bearer '+KEY,'Content-Type':'application/json'},body:JSON.stringify(args)});if(!r.ok)throw new Error('HTTP '+r.status);return r.json()}
  const pushed=new Map();let pushT=0;
@@ -2267,8 +2331,8 @@ const NET=(()=>{
    <div class="row"><button id="accIn">Entrar</button><button id="accNew" class="alt">Criar conta</button></div><div id="accMsg">${msg||''}</div>`;
   const go=async fn=>{const n=$('#accN').value.trim(),pw=$('#accP').value;$('#accMsg').textContent='Conectando…';try{const r=await rpc(fn,{p_name:n,p_pass:pw});if(!r.ok){$('#accMsg').textContent=r.err||'Erro.';$('#accMsg').classList.add('err');return}setTok(r.token,r.name);await pull();accWin(fn==='e3d_register'?'Conta criada!':'Bem-vindo de volta!')}catch(e){$('#accMsg').textContent='Sem conexão com o servidor. Abra o jogo pelo arquivo index.html (ou pelo site) para usar contas.';$('#accMsg').classList.add('err')}};
   $('#accIn').onclick=()=>go('e3d_login');$('#accNew').onclick=()=>go('e3d_register');$('#accP').onkeydown=e=>{e.stopPropagation();if(e.key==='Enter')go('e3d_login')};$('#accN').onkeydown=e=>e.stopPropagation()}
- addEventListener('beforeunload',()=>{if(room)bc(room,'bye',{id})});
- return{connect,tick,draw,hud,chat,setRoom,pull,push,schedulePush,accWin,accBtn,OTH,get ok(){return ok},get tok(){return tok},id}})();
+ addEventListener('beforeunload',()=>{if(room)bc(room,'bye',{id});if(PT.pid)bc('e3d-global','pleave',{id,pid:PT.pid})});
+ return{pick,ctxAct,kill,cmd,PT,answer,invite,leaveP,connect,tick,draw,hud,chat,setRoom,pull,push,schedulePush,accWin,accBtn,OTH,get ok(){return ok},get tok(){return tok},id}})();
 // ---- touch controls (phones/tablets): analog joystick on the left, attack button on the right
 const JOY={on:false,x:0,y:0,id:null};
 if(MOB||Q.get('mob')){document.body.classList.add('mob');const jb=$('#joy'),jk=$('#joyK');
