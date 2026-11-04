@@ -1001,7 +1001,9 @@ function findPath(x0,z0,x1,z1){const g=pgrid(),ci=x=>clamp(Math.floor((x+S)/PC),
  const out=[];let cx=x0,cz=z0,i=0;while(i<pts.length){let j=pts.length-1;while(j>i&&!lineFree(cx,cz,pts[j][0],pts[j][1]))j--;out.push(pts[j]);cx=pts[j][0];cz=pts[j][1];i=j+1}
  if(!g[ci(z1)*PN+ci(x1)])out[out.length-1]=[x1,z1];return out}
 function moveEnt(e,dx,dz,r){const nx=e.x+dx,nz=e.z+dz;if(blocked(e.x,e.z,r)&&Math.abs(nx)<S-1.5&&Math.abs(nz)<S-1.5){e.x=nx;e.z=nz;return true}if(!blocked(nx,nz,r)){e.x=nx;e.z=nz;return true}const L=Math.hypot(dx,dz);if(Math.abs(dx)>L*.2&&!blocked(nx,e.z,r)){e.x=nx;return true}if(Math.abs(dz)>L*.2&&!blocked(e.x,nz,r)){e.z=nz;return true}return false}
-const H={name:'Ragnvald',cls:'andarilho',x:-1.6,z:2.0,hp:0,mhp:0,mp:0,mmp:0,blv:1,clv:1,bxp:0,bnx:60,cxp:0,cnx:40,pts:3,st:{FOR:5,AGI:5,VIT:5,INT:5,DES:5,SOR:5},zeny:0,
+// experience needed per level: polynomial (the old ×1.4 per level made level 30+ take thousands of kills)
+const BNX=L=>Math.round((12+1.8*L)*2.2*Math.pow(L,1.55)),CNX=c=>Math.round(.82*BNX(c*1.18));
+const H={name:'Ragnvald',cls:'andarilho',x:-1.6,z:2.0,hp:0,mhp:0,mp:0,mmp:0,blv:1,clv:1,bxp:0,bnx:30,cxp:0,cnx:20,pts:3,st:{FOR:5,AGI:5,VIT:5,INT:5,DES:5,SOR:5},zeny:0,
  inv:[{id:'pocao_v',q:4},{id:'pocao_a',q:2}],eq:{arma:null,corpo:null,cabeca:null,pes:null,acess:null},buffAtk:0,buffFlee:0,pick:null,talk:null,sl:{},spts:1,shield:0,shieldT:0,pend:null,emote:null,
  look:{hair:[.78,.33,.13],skin:[.9,.68,.53],clothes:[.2,.36,.55]},
  cd:0,atkT:-9,atkDur:.42,face:0,flip:0,walk:0,moving:false,target:null,dest:null,lastHit:-99,dead:false,skCd:{},cast:null,lunge:null,ghosts:[],shout:'',shoutT:-9,say:null};
@@ -1034,6 +1036,8 @@ const MDEF={slime:{name:'Lodo do Bosque',lv:3,hp:60,dmg:[6,9],hit:72,flee:8,xp:1
  lodo_gelo:{name:'Lodo de Gelo',lv:17,hp:470,dmg:[32,42],hit:135,flee:30,xp:150,z:[40,70],spd:2,aggro:7,r:.65,model:'slime',tint:'ice'},lebre:{name:'Lebre da Neve',lv:18,hp:430,dmg:[34,44],hit:140,flee:40,xp:160,z:[40,75],spd:3.3,aggro:8,r:.5,model:'bunny',tint:'white'}};
 const mons=[];
 // monsters for the current region: 18 spots away from paths, camp and the arrival point
+// balance: monsters get tougher with level (HP +4,5%/nível, dano +1,5%/nível); bosses a bit less HP so fights last ~1 min
+for(const k in MDEF){const d=MDEF[k],b=!!d.boss;const hm=(1+d.lv*.045)*(b?.9:1),dm=(1+d.lv*.015)*(b?.85:1);d.hp=Math.round(d.hp*hm);d.dmg=d.dmg.map(v=>Math.round(v*dm))}
 function spawnMons(){for(const m of mons){const el=plates.get(m);if(el){el.remove();plates.delete(m)}}mons.length=0;if(!BIO.mons.length)return;seed=2024+BIO.key.length*13;const pool=[];for(const[k,w]of BIO.mons)for(let i=0;i<w;i++)pool.push(k);
  const spots=[];let g=0;while(spots.length<18&&g<5000){g++;const x=rr(-S+5,S-5),z=rr(-S+5,S-5);if(blocked(x,z,1.2)||distPath(x,z)<2.5||Math.hypot(x-H.x,z-H.z)<9||Math.hypot(x-fire.x,z-fire.z)<8||BIO.portals.some(p=>Math.hypot(x-p.x,z-p.z)<6))continue;if(spots.some(s=>Math.hypot(s[0]-x,s[1]-z)<5.5))continue;spots.push([x,z])}
  spots.forEach((s,i)=>{const kind=BIO.key==='floresta'&&i<6?(i%3===2?'shroom':'slime'):pool[(i*7)%pool.length],d=MDEF[kind];mons.push({kind,d,x:s[0],z:s[1],hx:s[0],hz:s[1],hp:d.hp,mhp:d.hp,state:'idle',t:rnd()*3,ph:rnd()*4,atkT:0,hitT:-9,stunT:0,dead:false,respawn:0,wx:s[0],wz:s[1],flip:0,kx:0,kz:0,id:i})});
@@ -1139,7 +1143,8 @@ const CLSCOL={mago:[.42,.2,.58],arqueiro:[.26,.46,.2],cavaleiro:[.24,.3,.42],bru
 const heroLook=()=>({hair:H.look.hair,skin:H.look.skin,clothes:CLSCOL[H.cls]||H.look.clothes});
 // ---- items
 const IT={
- pocao_v:{n:'Poção Vermelha',t:'use',heal:45,price:25,ic:'potR',d:'Recupera 45 HP.'},
+ pocao_b:{n:'Poção Branca',t:'use',heal:420,price:380,ic:'potR',d:'Recupera 420 HP.'},
+pocao_v:{n:'Poção Vermelha',t:'use',heal:45,price:25,ic:'potR',d:'Recupera 45 HP.'},
  pocao_a:{n:'Poção Azul',t:'use',spr:30,price:60,ic:'potB',d:'Recupera 30 SP.'},
  gosma:{n:'Gosma Verde',t:'etc',price:8,ic:'goo',d:'Restos pegajosos de um Lodo. Vale alguns zeny.'},
  esporo:{n:'Esporo Vermelho',t:'etc',price:14,ic:'spore',d:'Esporo de Cogumelo Saltador. Vale alguns zeny.'},
@@ -1236,7 +1241,7 @@ function recalc(full){const s=H.st,L=H.blv,C=heroCls();const r=H.mhp?H.hp/H.mhp:
  H.atkB=Math.round(H.atkB*(1+.03*skLv('furia')));H.matk=Math.round(H.matk*(1+.03*skLv('mente')));
  H.hit=82+s.DES*1.6+L+skLv('olho')*2+eqSum('hit');H.flee=4+s.AGI*1.5+L+eqSum('flee');H.crit=4+s.SOR*1.2+eqSum('crit')+skLv('olho');H.aspd=Math.max(.32,.78-s.AGI*.014-(baseCls()==='arqueiro'?.05:0));
  H.hp=full?H.mhp:Math.min(H.mhp,H.mhp*r);H.mp=full?H.mmp:Math.min(H.mmp,H.mmp*rs)}
-const clsMul=()=>1+(H.clv-1)*.05+(H.cls!=='andarilho'?.15:0)+(CLS[H.cls].parent?.2:0);
+const clsMul=()=>1+(H.clv-1)*.03+(H.cls!=='andarilho'?.1:0)+(CLS[H.cls].parent?.15:0);
 function heroDmg(mult=1){return Math.max(1,Math.round(H.atkB*(.85+rnd()*.3)*mult*clsMul()*(now<H.buffAtk?1+(H.buffAtkV||.35):1)))}
 function magicDmg(mult=1){return Math.max(1,Math.round(H.matk*(.9+rnd()*.2)*mult*clsMul()))}
 function rollHit(m){return rnd()*100<clamp(H.hit-m.d.flee,50,98)}
@@ -1250,10 +1255,10 @@ function killMon(m){m.dead=true;partyXp(m);m.respawn=now+(m.d.boss?150:12);if(BI
  let k=0;for(const[id,ch]of DROPS[m.kind])if(rnd()<ch)spawnDrop(id,m.x,m.z,k++);
  gainXp(bx,cx);NET.kill(bx,cx);questEv(m.kind);if(H.target===m)H.target=null;plate(m).style.display='none'}
 function gainXp(b,c){if(H.pet){b=Math.round(b*1.05);c=Math.round(c*1.05)}H.bxp+=b;H.cxp+=c;const y=height(H.x,H.z);
- while(H.bxp>=H.bnx){H.bxp-=H.bnx;H.blv++;H.bnx=Math.round(H.bnx*1.4);H.pts+=3;recalc(true);
+ while(H.bxp>=H.bnx){H.bxp-=H.bnx;H.blv++;H.bnx=BNX(H.blv);H.pts+=3;recalc(true);
   for(let i=0;i<40;i++)emit({x:H.x+rr(-.8,.8),y:y+rr(0,.5),z:H.z+rr(-.8,.8),vy:rr(2,6),life:rr(.8,1.6),size:rr(.25,.5),col:[1,.85,.4]});
   floatText(H.x,y+4.4,H.z,'BASE NV '+H.blv+'!','lvl',1.8);log(`<span class="g">Nível base ${H.blv}!</span> +3 pontos de atributo (C).`);sfx('lvl');renderAttr()}
- while(H.cxp>=H.cnx){H.cxp-=H.cnx;H.clv++;H.spts++;H.cnx=Math.round(H.cnx*1.35);floatText(H.x,y+5.4,H.z,'CLASSE NV '+H.clv+'!','lvl',1.8);log(`<span class="g">Nível de classe ${H.clv}!</span> +1 ponto de habilidade (K).`);sfx('lvl');renderSkills();
+ while(H.cxp>=H.cnx){H.cxp-=H.cnx;H.clv++;H.spts++;H.cnx=CNX(H.clv);floatText(H.x,y+5.4,H.z,'CLASSE NV '+H.clv+'!','lvl',1.8);log(`<span class="g">Nível de classe ${H.clv}!</span> +1 ponto de habilidade (K).`);sfx('lvl');renderSkills();
   if(CLS2[H.cls]&&H.clv===CLS2_REQ){log(`<span class="g">Segunda classe liberada: ${CLS[CLS2[H.cls]].n}!</span> Abra a janela de classes (K → Escolher classe).`);openClassWin()}
   if(H.cls==='andarilho'&&H.clv>=CLS_REQ){log('<span class="g">Você pode escolher sua classe!</span> A janela de classes foi aberta.');openClassWin()}}}
 function nearestMon(range,pref){if(pref&&!pref.dead&&Math.hypot(pref.x-H.x,pref.z-H.z)<=range)return pref;let best=null,bd=range;for(const m of mons){if(m.dead)continue;const d=Math.hypot(m.x-H.x,m.z-H.z);if(d<bd){bd=d;best=m}}return best}
@@ -1445,7 +1450,7 @@ function updDrops(){for(let i=drops.length-1;i>=0;i--){const d=drops[i];if(now-d
  const dd=Math.hypot(d.x-H.x,d.z-H.z);if(!H.dead&&(dd<.8||H.pick===d&&dd<1.3))pickUp(d)}}
 // ---- merchant NPC by the campfire
 const NPC={name:'Bjorn',title:'Mercador',x:fire.x-4.3,z:fire.z+1.4};
-const SHOP=['pocao_v','pocao_g','pocao_a','pedra_ref','isca','vara','picareta','tunica_couro','botas_couro','machado_ferro','cajado_carvalho','arco_curto'];
+const SHOP=['pocao_v','pocao_g','pocao_b','pocao_a','pedra_ref','isca','vara','picareta','tunica_couro','botas_couro','machado_ferro','cajado_carvalho','arco_curto'];
 const decals=[];
 // ================= day / night =================
 let timeOfs=parseFloat(Q.get('hour')||'0.18');const DAY=360;// seconds per full day
@@ -2301,6 +2306,7 @@ $('#selDel').addEventListener('click',()=>{const c=charAt(SEL.sel);if(!c)return;
 $('#selPlay').addEventListener('click',()=>{if(charAt(SEL.sel))startPlay(SEL.sel)});
 function startPlay(i){const c=charAt(i);H.slot=i;H.hbc=(c.save&&c.save.hbc)||null;H.name=c.name;H.look=c.look;const s=c.save;
  if(s){Object.assign(H,{blv:s.blv,clv:s.clv,cls:s.cls,bxp:s.bxp,bnx:s.bnx,cxp:s.cxp,cnx:s.cnx,pts:s.pts,st:s.st,zeny:s.zeny,inv:s.inv,eq:s.eq,sl:s.sl||{},spts:s.spts??1});H.seen=(s.seen||[]).slice();H.pet=s.pet||null;H.mountOwned=!!s.mountOwned;H.mounted=false;if(H.pet)placePet();if(!H.seen.includes('floresta'))H.seen.push('floresta');if(s.qv===2){qi=s.qi||0;qn=s.qn||0;qs=s.qs||'act';H.side=s.side||[]}else{const t=OLDQ[s.qi||0];const j=QS.findIndex(q=>q.t===t);qi=j>=0?j:0;qStart();H.side=[]}}else{qi=0;qStart();H.side=[]}
+ H.bnx=BNX(H.blv);H.cnx=CNX(H.clv);
  MODE='play';document.body.classList.remove('sel');H.dead=false;H.x=-1.6;H.z=2;H.hp=1;H.mhp=0;recalc(true);camX=H.x;camZ=H.z;camYaw=camYawT=CAM0.yaw;camPitchT=CAM0.pitch;camDistT=CAM0.dist;
  if(s&&s.region&&BIOMES[s.region]&&s.region!==BIO.key)enterRegion(s.region,null);restoreParty(s&&s.party);
  timeOfs=.15-((now/DAY)%1);$('#stName').textContent=H.name;buildHotbar();renderQuest();renderAttr();renderInv();renderSkills();
