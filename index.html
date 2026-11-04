@@ -250,8 +250,18 @@ const BIOMES={
   zones:{camp:'Praça de Vindheim',water:'Fonte',path:'Rua Principal',wild:'Vila de Vindheim',edge:'Muralha'}},
  caverna:{key:'caverna',n:'Caverna de Ymir',lv:'Nv 22–26',dark:1,path:[[0,30],[-6,18],[4,6],[-4,-8],[6,-20],[0,-30]],pond:{x:-14,z:-2,r:4.2},ice:1,fire:{x:2,z:24},
   G:[0x2a2e3a,0x343a48,0x3e4656,0x4a5466,0x586478],DIRT:[0x3a3a44,0x46464f,0x52525c,0x5e5e6a],SAND:0x5a6474,MUD:0x2a2e38,rock:[0x3a4050,0x4e5668,0x8ac8e8],
-  tree:'stalag',trees:48,grass:0,flowers:0,bush:[0x2a3442,0x6aa8c8],mons:[['aranha_prof',5],['esquecido',5],['golem_gelo',3],['draugr',3]],boss:'guardiao',wx:{neblina:3},portals:[{x:0,z:31,to:'neve'}],
+  tree:'stalag',trees:48,grass:0,flowers:0,bush:[0x2a3442,0x6aa8c8],mons:[['aranha_prof',5],['esquecido',5],['golem_gelo',3],['draugr',3]],boss:'guardiao',wx:{neblina:3},portals:[{x:0,z:31,to:'neve'},{x:0,z:-31,to:'pantano'}],
   zones:{camp:'Entrada da Caverna',water:'Lago Subterrâneo',path:'Galeria de Gelo',wild:'Caverna de Ymir',edge:'Paredes Geladas'}},
+ pantano:{key:'pantano',n:'Pântano de Hel',lv:'Nv 29–33',murk:1,path:[[0,44],[0,30],[-8,18],[-14,4],[-6,-8],[8,-16],[20,-24],[30,-30],[44,-40]],pond:{x:13,z:7,r:7.5},fire:{x:-5,z:24},
+  G:[0x2a3220,0x343c26,0x40482c,0x4c5434,0x5c6040],DIRT:[0x3a3428,0x4a4232,0x5a503c,0x6a5e48],SAND:0x5a5a3a,MUD:0x2a2a1c,rock:[0x3a3a34,0x4e4c44,0x4a5a34],
+  tree:'dead',trees:54,grass:.45,flowers:0,bush:[0x2e3a22,0x6a7448],mons:[['lodo_hel',4],['carnical',5],['cao_hel',4],['aranha_pantano',4],['tartaruga_lodo',3]],
+  boss:'garm',wx:{nublado:3,chuva:2,neblina:1.5},portals:[{x:0,z:31,to:'caverna'},{x:30,z:-30,to:'cripta'}],
+  zones:{camp:'Ponte de Gjallar',water:'Charco dos Afogados',path:'Caminho dos Mortos',wild:'Pântano de Hel',edge:'Névoa de Hel'}},
+ cripta:{key:'cripta',n:'Cripta dos Draugr',lv:'Masmorra · Nv 33–37',dun:1,dark:1,path:[[0,44],[0,28],[-9,16],[-11,2],[-2,-10],[10,-20],[2,-34]],pond:{x:0,z:80,r:1},fire:{x:3,z:25},
+  G:[0x2c2a30,0x35323a,0x3e3a44,0x48444e,0x54505a],DIRT:[0x3c3834,0x48423c,0x544e46,0x605850],SAND:0x5a5650,MUD:0x2a2826,rock:[0x48464e,0x5c5a62,0x7a6a9a],
+  tree:'tomb',trees:44,grass:0,flowers:0,bush:[0x2c2a30,0x6a5a8a],mons:[['draugr_anciao',6],['sentinela',3],['aranha_cripta',5]],
+  boss:'rei_draugr',wx:{nublado:3,neblina:1},portals:[{x:0,z:31,to:'pantano'}],
+  zones:{camp:'Entrada da Cripta',water:'Poço Selado',path:'Corredor dos Reis',wild:'Cripta dos Draugr',edge:'Muralhas da Cripta'}},
  neve:{key:'neve',n:'Picos de Niflheim',lv:'Nv 17–20',path:[[-30,44],[-26,28],[-16,14],[-2,4],[10,-6],[20,-18],[30,-40]],pond:{x:-12,z:-6,r:5.6},ice:1,fire:{x:4,z:8},hills:1,
   G:[0xc8d4e0,0xd8e2ec,0xe4ecf4,0xeef4fa,0xf8fbff],DIRT:[0x8a8a90,0x9a9aa4,0xacacb8,0xbcc0cc],SAND:0xd0dce8,MUD:0x8a98a8,rock:[0x6a7484,0x8a94a4,0xe8eef6],
   tree:'snowpine',trees:58,grass:.1,flowers:0,bush:[0x6a8a8a,0xe8f0f8],mons:[['lodo_gelo',4],['lebre',4],['lobo_neve',4],['golem_gelo',3],['draugr',4]],
@@ -352,11 +362,20 @@ function houseMesh(h){const y=Math.min(height(h.x-h.w/2,h.z-h.d/2),height(h.x+h.
 function townLayout(){houses.length=0;seed=5150;const spots=[[-11,-9,0],[-11,9,Math.PI],[11,9,Math.PI],[-20,-9,0],[-20,9,Math.PI],[20,9,Math.PI],[20,-9,0],[-11,-20,0],[11,-20,0],[-11,20,Math.PI],[11,20,Math.PI],[-24,-20,0],[24,-20,0],[-24,20,Math.PI],[24,20,Math.PI]];
  const WC=[0xd8c8a8,0xe0d4bc,0xc8b08a,0xd0c0a0,0xbfa888],RC=[0x8a3a2a,0x5a4a3a,0x3a4a6a,0x6a3a2a,0x4a5a3a];
  for(const[x,z,a]of spots){houses.push({x,z,a,w:rr(4.2,5.6),d:rr(3.6,4.6),h:rr(2.6,3.2),wc:WC[(rnd()*WC.length)|0],rc:RC[(rnd()*RC.length)|0]})}}
+function deadTree(t){const y=height(t.x,t.z),s=t.s;const bark=mix(hex(0x3a3028),hex(0x4e4436),t.hue),moss=hex(0x4a5a30),moss2=hex(0x7a8a50);const H=(3.4+t.hue*2)*s;
+ const lx=Math.cos(t.hue*9)*.6*s,lz=Math.sin(t.hue*9)*.6*s;trunk(t.x,y-.3,t.z,.4*s,.14*s,H,bark,7,[lx,lz]);
+ for(let b=0;b<4;b++){const a=b*1.7+t.hue*5,h=(1.6+b*.55)*s,k=h/H,tx=t.x+lx*k,tz=t.z+lz*k,L=(1.1+.35*(b%2))*s;trunk(tx,y+h,tz,.13*s,.04*s,.9*s,bark,5,[Math.cos(a)*L,Math.sin(a)*L]);
+  for(let i=0;i<3;i++){const r=(.45+i*.35)*s;card(BF,[tx+Math.cos(a)*r,y+h+(.25+i*.22)*s-i*.25*s,tz+Math.sin(a)*r],mix(moss,moss2,rnd()),norm([Math.cos(a)*.4,1,Math.sin(a)*.4]),rr(.45,.75)*s,1)}}
+ if(t.hue>.55)for(let i=0;i<5;i++){const a=rnd()*6.283,r=rr(.2,.9)*s;card(BF,[t.x+lx+Math.cos(a)*r,y+H*.85-i*.35*s,t.z+lz+Math.sin(a)*r],mix(moss,moss2,.3),[Math.cos(a),.2,Math.sin(a)],.5*s,1)}}
+function tombTree(t){const y=height(t.x,t.z),s=t.s;const st=mix(hex(0x55525c),hex(0x6c6874),t.hue),dk=hex(0x3e3c44),gl=hex(0x9a7ad8);
+ if(t.hue<.45){const H=(2.6+t.hue*5)*s;trunk(t.x,y-.3,t.z,.62*s,.58*s,H,st,6);trunk(t.x,y-.3,t.z,.85*s,.85*s,.5*s,dk,6);trunk(t.x,y+H-.35,t.z,.8*s,.75*s,.35*s,dk,6);
+  if(t.hue<.2)card(BF,[t.x,y+H+.2,t.z],gl,[0,1,0],.5*s,2)}
+ else{for(let k=0;k<(t.hue>.8?3:2);k++){const a=t.hue*20+k*2.1,d=k?1.1*s:0,x=t.x+Math.cos(a)*d,z=t.z+Math.sin(a)*d;trunk(x,y-.2,z,.38*s,.34*s,(.9+k*.15)*s,k%2?st:dk,4);trunk(x,y+(.7+k*.15)*s,z,.34*s,.05*s,.25*s,st,4)}}}
 function stalagTree(t){const y=height(t.x,t.z),s=t.s;const c1=hex(0x3a4252),c2=hex(0x5a6478),ic=hex(0x9ad8f0);const H=(3.5+t.hue*4)*s;
  trunk(t.x,y-.3,t.z,.9*s,.08*s,H,mix(c1,c2,t.hue),7);if(t.hue>.4){trunk(t.x+.7*s,y-.3,t.z+.4*s,.45*s,.04*s,H*.55,c2,6)}
  if(t.hue>.6)for(let k=0;k<3;k++){const a=k*2.1+t.hue*5,d=1.1*s;trunk(t.x+Math.cos(a)*d,y-.2,t.z+Math.sin(a)*d,.22*s,.02,(.9+k*.3)*s,ic,5,[Math.cos(a)*.2,Math.sin(a)*.2])}}
 // ---------- ore veins (mineração) ----------
-const VEINS=[];const VORE={floresta:['min_ferro'],praia:['min_ferro'],deserto:['min_prata','min_ferro'],neve:['min_prata','min_mithril'],caverna:['min_mithril','min_prata'],vila:[]};
+const VEINS=[];const VORE={floresta:['min_ferro'],praia:['min_ferro'],deserto:['min_prata','min_ferro'],neve:['min_prata','min_mithril'],caverna:['min_mithril','min_prata'],pantano:['min_mithril','min_prata'],cripta:['min_mithril'],vila:[]};
 const OREN={min_ferro:'Veio de Ferro',min_prata:'Veio de Prata',min_mithril:'Veio de Mithril'},OREC={min_ferro:0xd8a070,min_prata:0xeef4ff,min_mithril:0x6af0ff};
 function veinMesh(v){rockMesh(v.x,v.z,.9);const y=height(v.x,v.z),c=hex(OREC[v.ore]);for(let k=0;k<6;k++){const a=k*1.13+v.x,r=.35+.25*(k%3);trunk(v.x+Math.cos(a)*r,y+.15+(k%2)*.25,v.z+Math.sin(a)*r,.16,.01,.55+.15*(k%3),c,5,[Math.cos(a)*.25,Math.sin(a)*.25])}}
 // ---------- build the whole region ----------
@@ -366,7 +385,7 @@ function buildWorld(){for(const B of[BT,BO,BF,BG,BW,BX])B.v.length=0;trees.lengt
  seed=BIO.key==='floresta'?99:99+BIO.key.length*7;let tries=0;if(BIO.town)townLayout();else houses.length=0;const nT=BIO.trees,isPine=BIO.tree==='snowpine'||BIO.tree==='cactus'||BIO.tree==='palm';
  while(trees.length<nT&&tries<6000){tries++;const x=rr(-S+1,S-1),z=rr(-S+1,S-1);if(clearArea(x,z))continue;if(BIO.sea&&pondD(x,z)<6)continue;if(houses.some(h=>Math.hypot(h.x-x,h.z-z)<5.5))continue;if(BIO.town&&Math.max(Math.abs(x),Math.abs(z))<26)continue;const dens=fbm(x*.06+20,z*.06);if(dens<.47&&Math.abs(x)<22&&Math.abs(z)<17)continue;
   const sp=BIO.tree==='cactus'?1.6:BIO.tree==='palm'?1.8:2.6;if(trees.some(t=>Math.hypot(t.x-x,t.z-z)<(t.s+1)*sp))continue;trees.push({x,z,s:rr(.85,1.35),pine:isPine||rnd()<.38,hue:rnd(),kind:BIO.tree})}
- const nR=BIO.town?4:BIO.tree==='stalag'?30:BIO.tree==='cactus'?26:BIO.tree==='snowpine'?20:14;for(let k=0;k<nR;k++){const x=rr(-S+3,S-3),z=rr(-S+3,S-3);if(houses.some(h=>Math.hypot(h.x-x,h.z-z)<4.5))continue;if(distPath(x,z)<3.2||pondD(x,z)<.8||Math.hypot(x-fire.x,z-fire.z)<4||BIO.portals.some(p=>Math.hypot(x-p.x,z-p.z)<3))continue;rocks.push({x,z,s:rr(.5,BIO.tree==='cactus'?1.8:1.3)})}
+ const nR=BIO.town?4:BIO.tree==='stalag'||BIO.tree==='tomb'?30:BIO.tree==='cactus'?26:BIO.tree==='snowpine'?20:14;for(let k=0;k<nR;k++){const x=rr(-S+3,S-3),z=rr(-S+3,S-3);if(houses.some(h=>Math.hypot(h.x-x,h.z-z)<4.5))continue;if(distPath(x,z)<3.2||pondD(x,z)<.8||Math.hypot(x-fire.x,z-fire.z)<4||BIO.portals.some(p=>Math.hypot(x-p.x,z-p.z)<3))continue;rocks.push({x,z,s:rr(.5,BIO.tree==='cactus'?1.8:1.3)})}
  // terrain
  {const N=170,st=2*S/N,P=[];for(let j=0;j<=N;j++)for(let i=0;i<=N;i++){const x=-S+i*st,z=-S+j*st,e=.25;const n=norm([height(x-e,z)-height(x+e,z),2*e,height(x,z-e)-height(x,z+e)]);P.push([[x,height(x,z),z],tcol(x,z),n])}
   for(let j=0;j<N;j++)for(let i=0;i<N;i++){const a=P[j*(N+1)+i],b=P[j*(N+1)+i+1],c=P[(j+1)*(N+1)+i],d=P[(j+1)*(N+1)+i+1];for(const q of[a,c,b,b,c,d])BT.push(q[0],q[1],[0,0],q[2],0)}}
@@ -376,15 +395,15 @@ function buildWorld(){for(const B of[BT,BO,BF,BG,BW,BX])B.v.length=0;trees.lengt
   seed=31337;const deco=[];let g=0;const nD=BIO.tree==='cactus'?70:BIO.tree==='palm'?60:150;
   while(deco.length<nD&&g<20000){g++;const x=rr(-R+4,R-4),z=rr(-R+4,R-4);if(Math.max(Math.abs(x),Math.abs(z))<S+1.5)continue;if(pondD(x,z)<3||distPath(x,z)<4)continue;if(deco.some(t=>Math.hypot(t.x-x,t.z-z)<(BIO.tree==='cactus'?4:2.8)))continue;
    deco.push({x,z,s:rr(.9,1.4),pine:BIO.tree!=='forest'||rnd()<.45,hue:rnd(),kind:BIO.tree})}
-  for(const t of deco){if(t.kind==='stalag'){stalagTree(t);continue}if(t.kind==='palm')palmTree(t);else if(t.kind==='cactus'){cactusTree(t);if(rnd()<.5)rockMesh(t.x+2,t.z+1,rr(.8,2))}else if(t.kind==='snowpine')pineTree(t,1);else t.pine?pineTree(t):broadTree(t)}}
- for(const t of trees){if(t.kind==='stalag'){stalagTree(t);continue}if(t.kind==='palm')palmTree(t);else if(t.kind==='cactus')cactusTree(t);else if(t.kind==='snowpine')pineTree(t,1);else t.pine?pineTree(t):broadTree(t)}
+  for(const t of deco){if(t.kind==='stalag'){stalagTree(t);continue}if(t.kind==='dead'){deadTree(t);continue}if(t.kind==='tomb'){tombTree(t);continue}if(t.kind==='palm')palmTree(t);else if(t.kind==='cactus'){cactusTree(t);if(rnd()<.5)rockMesh(t.x+2,t.z+1,rr(.8,2))}else if(t.kind==='snowpine')pineTree(t,1);else t.pine?pineTree(t):broadTree(t)}}
+ for(const t of trees){if(t.kind==='stalag'){stalagTree(t);continue}if(t.kind==='dead'){deadTree(t);continue}if(t.kind==='tomb'){tombTree(t);continue}if(t.kind==='palm')palmTree(t);else if(t.kind==='cactus')cactusTree(t);else if(t.kind==='snowpine')pineTree(t,1);else t.pine?pineTree(t):broadTree(t)}
  for(const r of rocks)rockMesh(r.x,r.z,r.s);
  for(const v of VEINS)v.el&&v.el.remove();VEINS.length=0;{const L=VORE[BIO.key]||[];seed=909+BIO.key.length*31;let g=0;while(L.length&&VEINS.length<7&&g<3000){g++;const x=rr(-S+4,S-4),z=rr(-S+4,S-4);if(clearArea(x,z)||distPath(x,z)<4||pondD(x,z)<2||trees.some(t=>Math.hypot(t.x-x,t.z-z)<2.6)||rocks.some(r=>Math.hypot(r.x-x,r.z-z)<2.4)||houses.some(h=>Math.hypot(h.x-x,h.z-z)<5)||VEINS.some(v=>Math.hypot(v.x-x,v.z-z)<7))continue;VEINS.push({x,z,ore:L[VEINS.length%L.length],until:0})}}
  for(const v of VEINS)veinMesh(v);
  for(const h of houses)houseMesh(h);
  if(BIO.town){const y=height(0,0);for(let k=0;k<10;k++){const a=k/10*6.283;trunk(Math.cos(a)*1.3,y-.1,Math.sin(a)*1.3+0,.32,.3,.7,hex(0x8a8a90),5)}trunk(0,y-.1,0,1.25,1.25,.4,hex(0x3a6aa8),12)}
  // bushes near trees and edges
- seed=4242;for(let k=0;k<44;k++){const x=rr(-S+2,S-2),z=rr(-S+2,S-2);if(houses.some(h=>Math.hypot(h.x-x,h.z-z)<3.8))continue;if(BIO.tree==='stalag'){if(k<20)rockMesh(x,z,rr(.3,.7));continue}if(clearArea(x,z)&&!(distPath(x,z)>3.2&&distPath(x,z)<5))continue;if(distPath(x,z)<3.2||pondD(x,z)<1.2)continue;
+ seed=4242;for(let k=0;k<44;k++){const x=rr(-S+2,S-2),z=rr(-S+2,S-2);if(houses.some(h=>Math.hypot(h.x-x,h.z-z)<3.8))continue;if(BIO.tree==='stalag'||BIO.tree==='tomb'){if(k<20)rockMesh(x,z,rr(.3,.7));continue}if(clearArea(x,z)&&!(distPath(x,z)>3.2&&distPath(x,z)<5))continue;if(distPath(x,z)<3.2||pondD(x,z)<1.2)continue;
   if(BIO.dry){dryBush(x,z);continue}
   const y=height(x,z),s=rr(.6,1.1),base=hex(BIO.bush[0]),hi=hex(BIO.bush[1]);for(let i=0;i<14;i++){const d=norm([rr(-1,1),rr(0,1),rr(-1,1)]);const p=[x+d[0]*s,y+.35*s+d[1]*s*.7,z+d[2]*s];card(BF,p,mix(base,hi,clamp(d[1]*.6+rnd()*.3,0,1)),norm([d[0],d[1]+.5,d[2]]),rr(.7,1)*s,0)}}
  // grass blades
@@ -699,7 +718,7 @@ const MON3=(()=>{
   for(const k of['fl','fr','bl','br']){const sd=k[1]==='l'?1:-1,fr=k[0]==='f';m.ell(k,sd*.22,-.05,fr?.08:-.02,fr?.36:.24,.08,fr?.18:.15,sk,10,5)}
   return m.bake()})();
  // colour variants for other regions (dark details such as eyes are kept)
- const TINT={sand:c=>{const l=c[0]*.3+c[1]*.59+c[2]*.11;return[Math.min(1,l*.7+.36),Math.min(1,l*.62+.27),Math.min(1,l*.45+.14)]},green:c=>[c[0]*.55,Math.min(1,c[1]*1.05+.12),c[2]*.6],dark:c=>scl(c,.55),blue:c=>[c[0]*.45,c[1]*.75+c[2]*.2,Math.min(1,c[1]*1.15+.15)],ice:c=>{const l=(c[0]+c[1]+c[2])/3;return[Math.min(1,l*.9+.25),Math.min(1,l*1.05+.32),Math.min(1,l*1.1+.42)]},
+ const TINT={hel:c=>{const l=c[0]*.3+c[1]*.59+c[2]*.11;return[Math.min(1,l*.62+.16),Math.min(1,l*.48+.09),Math.min(1,l*.8+.22)]},swamp:c=>[c[0]*.5+.06,c[1]*.62+.08,c[2]*.35+.03],sand:c=>{const l=c[0]*.3+c[1]*.59+c[2]*.11;return[Math.min(1,l*.7+.36),Math.min(1,l*.62+.27),Math.min(1,l*.45+.14)]},green:c=>[c[0]*.55,Math.min(1,c[1]*1.05+.12),c[2]*.6],dark:c=>scl(c,.55),blue:c=>[c[0]*.45,c[1]*.75+c[2]*.2,Math.min(1,c[1]*1.15+.15)],ice:c=>{const l=(c[0]+c[1]+c[2])/3;return[Math.min(1,l*.9+.25),Math.min(1,l*1.05+.32),Math.min(1,l*1.1+.42)]},
   red:c=>[Math.min(1,c[0]*1.05),c[1]*.45,c[2]*.5],white:c=>{const l=c[0]*.3+c[1]*.59+c[2]*.11;return[Math.min(1,l*.6+.48),Math.min(1,l*.6+.5),Math.min(1,l*.6+.55)]}};
  function emitParts(B,mats,out,tint){const tf=TINT[tint];for(const k in mats){const f=B[k],m=mats[k];if(!f)continue;for(let i=0;i<f.length;i+=9){const x=f[i],y=f[i+1],z=f[i+2];
    const nx=f[i+3],ny=f[i+4],nzv=f[i+5];const q=[m[0]*nx+m[4]*ny+m[8]*nzv,m[1]*nx+m[5]*ny+m[9]*nzv,m[2]*nx+m[6]*ny+m[10]*nzv];const l=Math.hypot(q[0],q[1],q[2])||1;
@@ -905,7 +924,8 @@ void main(){
   vec3 w=mix(vec3(.015,.09,.13),vec3(.06,.24,.26),smoothstep(.45,1.,pd))*(uAmbK*1.6+.2);vec3 refl=mix(uSky*.8,uSky*1.1,rip);w=mix(w,refl,.08+fr*.35);
   vec3 h=normalize(uSun+v);float sp=pow(max(dot(nn,h),0.),220.)*3.*sh*length(uSunCol);float foam=smoothstep(.92,.99,pd)*smoothstep(.55,.75,vn(q*5.+uTime*.5))*.35*(uAmbK*1.5);
   col=w*(.55+.45*sh)+sp+foam;alpha=mix(.93,.5,smoothstep(.86,1.,pd));
-  if(uIce>.5){float cr=smoothstep(.47,.5,abs(vn(q*.9)-.5))*.25+vn(q*4.)*.08;col=mix(vec3(.62,.76,.86),vec3(.88,.94,1.),cr+rip*.2)*(uAmbK*1.3+.35)*(.6+.4*sh)+sp*.4;alpha=.97;}
+  if(uIce>1.5){float sc=smoothstep(.55,.75,vn(q*.7+uTime*.02))*.6+smoothstep(.6,.8,vn(q*2.3))*.3;col=mix(vec3(.05,.07,.03),vec3(.2,.26,.08),sc+rip*.12)*(uAmbK*1.6+.25)*(.6+.4*sh)+sp*.25;alpha=.96;}
+  else if(uIce>.5){float cr=smoothstep(.47,.5,abs(vn(q*.9)-.5))*.25+vn(q*4.)*.08;col=mix(vec3(.62,.76,.86),vec3(.88,.94,1.),cr+rip*.2)*(uAmbK*1.3+.35)*(.6+.4*sh)+sp*.4;alpha=.97;}
   float fdw=length(vW.xz-uFire.xz);col+=vec3(1.,.5,.2)*pow(max(0.,1.-fdw/14.),3.)*uNight*.25;}
  float d=length(uCam-vW);col=mix(col,uFog,clamp((d-uFogP.x)/uFogP.y,0.,uFogP.z));
  if(uMist>.001){float mm=vn(vW.xz*.06+vec2(uTime*.04,uTime*.015))*.65+vn(vW.xz*.17-vec2(uTime*.03,0.))*.35;col=mix(col,uFog*1.1,uMist*smoothstep(.3,.9,mm)*.6);}
@@ -999,6 +1019,16 @@ const MDEF={slime:{name:'Lodo do Bosque',lv:3,hp:60,dmg:[6,9],hit:72,flee:8,xp:1
  lobo_neve:{name:'Lobo das Neves',lv:19,hp:520,dmg:[36,46],hit:142,flee:36,xp:175,z:[45,80],spd:3.4,aggro:9,r:.6,model:'wolf',tint:'white'},golem_gelo:{name:'Golem de Gelo',lv:20,hp:720,dmg:[40,52],hit:138,flee:18,xp:210,z:[55,95],spd:1.6,aggro:7,r:.75,model:'golem'},
  aranha_prof:{name:'Aranha das Profundezas',lv:23,hp:760,dmg:[46,58],hit:155,flee:40,xp:260,z:[70,120],spd:3,aggro:9,r:.6,model:'spider',tint:'dark'},
  esquecido:{name:'Guerreiro Esquecido',lv:24,hp:880,dmg:[50,62],hit:160,flee:34,xp:290,z:[80,130],spd:2.3,aggro:10,r:.55,model:'skeleton',tint:'dark'},
+ lodo_hel:{name:'Lodo de Hel',lv:29,hp:980,dmg:[56,70],hit:170,flee:30,xp:340,z:[90,150],spd:2.1,aggro:8,r:.65,model:'slime',tint:'hel'},
+ carnical:{name:'Carniçal do Pântano',lv:30,hp:1150,dmg:[62,76],hit:176,flee:38,xp:390,z:[100,170],spd:2.4,aggro:10,r:.55,model:'skeleton',tint:'swamp'},
+ cao_hel:{name:'Cão de Hel',lv:31,hp:1080,dmg:[66,80],hit:182,flee:46,xp:410,z:[105,175],spd:3.5,aggro:10,r:.6,model:'wolf',tint:'hel'},
+ aranha_pantano:{name:'Aranha do Pântano',lv:30,hp:1000,dmg:[60,74],hit:178,flee:48,xp:380,z:[95,160],spd:3.1,aggro:9,r:.6,model:'spider',tint:'swamp'},
+ tartaruga_lodo:{name:'Tartaruga de Lodo',lv:32,hp:1700,dmg:[58,70],hit:170,flee:16,xp:450,z:[120,190],spd:1.4,aggro:0,r:.65,model:'turtle',tint:'swamp'},
+ garm:{name:'Garm, Cão de Hel',lv:34,hp:18000,dmg:[88,108],hit:200,flee:40,xp:7800,z:[3200,4400],spd:2.6,aggro:11,r:1.3,model:'wolf',tint:'red',boss:2.3},
+ draugr_anciao:{name:'Draugr Ancião',lv:34,hp:1500,dmg:[74,90],hit:195,flee:42,xp:520,z:[140,220],spd:2.4,aggro:11,r:.55,model:'skeleton',tint:'hel'},
+ sentinela:{name:'Sentinela da Cripta',lv:36,hp:2300,dmg:[82,98],hit:198,flee:22,xp:640,z:[170,260],spd:1.7,aggro:9,r:.75,model:'golem',tint:'hel'},
+ aranha_cripta:{name:'Aranha da Cripta',lv:35,hp:1400,dmg:[76,92],hit:200,flee:52,xp:560,z:[150,230],spd:3.2,aggro:10,r:.6,model:'spider',tint:'dark'},
+ rei_draugr:{name:'Rei Draugr',lv:38,hp:26000,dmg:[96,120],hit:215,flee:44,xp:12000,z:[5000,7000],spd:2,aggro:12,r:1.2,model:'skeleton',tint:'ice',boss:2.4},
  guardiao:{name:'Guardião de Ymir',lv:28,hp:12000,dmg:[70,88],hit:180,flee:30,xp:4800,z:[2000,2800],spd:1.6,aggro:10,r:1.3,model:'golem',boss:1.9},
  draugr:{name:'Draugr',lv:18,hp:480,dmg:[34,45],hit:140,flee:28,xp:165,z:[42,78],spd:2.2,aggro:9,r:.55,model:'skeleton',tint:'ice'},
  lodo_gelo:{name:'Lodo de Gelo',lv:17,hp:470,dmg:[32,42],hit:135,flee:30,xp:150,z:[40,70],spd:2,aggro:7,r:.65,model:'slime',tint:'ice'},lebre:{name:'Lebre da Neve',lv:18,hp:430,dmg:[34,44],hit:140,flee:40,xp:160,z:[40,75],spd:3.3,aggro:8,r:.5,model:'bunny',tint:'white'}};
@@ -1009,7 +1039,15 @@ function spawnMons(){for(const m of mons){const el=plates.get(m);if(el){el.remov
  spots.forEach((s,i)=>{const kind=BIO.key==='floresta'&&i<6?(i%3===2?'shroom':'slime'):pool[(i*7)%pool.length],d=MDEF[kind];mons.push({kind,d,x:s[0],z:s[1],hx:s[0],hz:s[1],hp:d.hp,mhp:d.hp,state:'idle',t:rnd()*3,ph:rnd()*4,atkT:0,hitT:-9,stunT:0,dead:false,respawn:0,wx:s[0],wz:s[1],flip:0,kx:0,kz:0,id:i})});
  // region boss: far from the camp and the portals
  if(BIO.boss){let g2=0,bx=0,bz=0,best=-1;while(g2++<400){const x=rr(-S+7,S-7),z=rr(-S+7,S-7);if(blocked(x,z,1.6)||pondD(x,z)<3)continue;const sc=Math.min(Math.hypot(x-fire.x,z-fire.z),...BIO.portals.map(p=>Math.hypot(x-p.x,z-p.z)),Math.hypot(x-H.x,z-H.z));if(sc>best){best=sc;bx=x;bz=z}}
-  const d=MDEF[BIO.boss];mons.push({kind:BIO.boss,d,x:bx,z:bz,hx:bx,hz:bz,hp:d.hp,mhp:d.hp,state:'idle',t:2,ph:0,atkT:0,hitT:-9,stunT:0,dead:false,respawn:0,wx:bx,wz:bz,flip:0,kx:0,kz:0,id:99,slamT:0})}}
+  const d=MDEF[BIO.boss];mons.push({kind:BIO.boss,d,x:bx,z:bz,hx:bx,hz:bz,hp:d.hp,mhp:d.hp,state:'idle',t:2,ph:0,atkT:0,hitT:-9,stunT:0,dead:!!BIO.dun,sealed:!!BIO.dun,respawn:BIO.dun?1e12:0,wx:bx,wz:bz,flip:0,kx:0,kz:0,id:99,slamT:0})}
+ DUN.done=false;DUN.left=BIO.dun?mons.filter(m=>!m.d.boss).length:0}
+const DUN={done:false,left:0};
+function dunKill(m){m.respawn=1e12;if(m.d.boss){if(DUN.done)return;DUN.done=true;H.zeny+=2000;invAdd('pedra_ref',2);const ep=pickOne(['machado_hel','cajado_hel','arco_hel','coroa_draugr','manto_hel']);if(rnd()<.35)spawnDrop(ep,m.x+1,m.z,9);
+  log('<span class="g">★ Masmorra concluída!</span> Baú do Rei: +2.000 zeny · Pedra de Refino ×2. Saia e volte pelo portal para enfrentar a cripta de novo.','Evento');setTimeout(()=>showZone('Cripta purificada',true),1200);sfx('lvl');questEv('dun_'+BIO.key);return}
+ DUN.left=mons.filter(x=>!x.d.boss&&!x.dead).length;const y=height(m.x,m.z);
+ if(DUN.left>0){floatText(m.x,y+3.8,m.z,`Restam ${DUN.left}`,'info',1);if(DUN.left<=3||DUN.left%5===0)log(`Cripta: restam <b>${DUN.left}</b> mortos-vivos para quebrar o selo.`,'Evento');return}
+ const b=mons.find(x=>x.d.boss&&x.sealed);if(!b)return;b.sealed=false;b.dead=false;b.hp=b.mhp;b.x=b.hx;b.z=b.hz;b.state='idle';b.enr=false;plate(b).style.display='';
+ log(`<span class="r">☠ O selo se quebrou! ${b.d.name} desperta no fundo da cripta.</span>`,'Evento');showZone(b.d.name+' despertou',true);sfx('boom');shakeT=now+.8}
 // ---- particles
 const parts=[];function emit(p){parts.push(Object.assign({x:0,y:0,z:0,vx:0,vy:0,vz:0,g:0,life:1,age:0,size:.3,col:[1,1,1],a:1,cell:0,rot:0,vr:0,fade:1,grow:0},p))}
 function burst(x,y,z,n,col,spd=4,size=.35,life=.7,up=2,cell=0){for(let i=0;i<n;i++){const a=rnd()*6.283,s=spd*(.4+rnd()*.6);emit({x,y,z,vx:Math.cos(a)*s,vz:Math.sin(a)*s,vy:up*(.5+rnd()),g:-9,life:life*(.6+rnd()*.6),size:size*(.6+rnd()*.8),col,cell})}}
@@ -1116,7 +1154,16 @@ const IT={
  sal:{n:'Cristal de Sal',t:'etc',price:30,ic:'salt',d:'Sal cristalizado do Lodo Salgado.'},espinho:{n:'Espinho de Cacto',t:'etc',price:48,ic:'spine',d:'Espinho longo e afiado.'},
  cristal:{n:'Cristal de Gelo',t:'etc',price:85,ic:'ice',d:'Nunca derrete. Muito valioso.'},
  presa:{n:'Presa de Lobo',t:'etc',price:22,ic:'fang',d:'Presa afiada de lobo.'},seda:{n:'Seda de Aranha',t:'etc',price:18,ic:'silk',d:'Fio resistente e grudento.'},
- casco_tart:{n:'Casco de Tartaruga',t:'etc',price:42,ic:'tshell',d:'Pedaço duro de casco.'},osso:{n:'Osso Velho',t:'etc',price:36,ic:'bone',d:'Osso de um morto que andava.'},
+ casco_tart:{n:'Casco de Tartaruga',t:'etc',price:42,ic:'tshell',d:'Pedaço duro de casco.'},essencia_hel:{n:'Essência de Hel',t:'etc',price:160,ic:'soul',d:'Névoa dos mortos presa num frasco.'},
+presa_garm:{n:'Presa de Garm',t:'etc',price:1500,ic:'fang',d:'Arrancada do cão que guarda os portões de Hel.'},
+machado_hel:{n:'Machado de Hel',t:'eq',slot:'arma',cls:['andarilho','guerreiro'],atk:112,hp:90,rar:3,sl:1,price:9000,ic:'axe',d:'Arma épica · ATQ +112 · HP +90 · 1 encaixe.'},
+cajado_hel:{n:'Cajado das Almas',t:'eq',slot:'arma',cls:['mago'],matk:138,sp:70,rar:3,sl:1,price:9200,ic:'staff',d:'Arma épica (Mago) · MATQ +138 · SP +70 · 1 encaixe.'},
+arco_hel:{n:'Arco de Garm',t:'eq',slot:'arma',cls:['arqueiro'],atk:100,crit:11,rar:3,sl:1,price:9000,ic:'bow',d:'Arma épica (Arqueiro) · ATQ +100 · Crítico +11 · 1 encaixe.'},
+manto_hel:{n:'Manto de Hel',t:'eq',slot:'corpo',def:19,hp:170,rar:2,sl:1,price:4200,ic:'armor',d:'Corpo · DEF +19 · HP +170 · 1 encaixe.'},
+coroa_draugr:{n:'Coroa do Rei Draugr',t:'eq',slot:'cabeca',def:10,hp:140,matk:18,atk:10,rar:3,sl:1,price:8000,ic:'hat',d:'Cabeça épica · DEF +10 · HP +140 · ATQ +10 · MATQ +18 · 1 encaixe.'},
+anel_hel:{n:'Anel de Hel',t:'eq',slot:'acess',atk:14,matk:14,crit:4,rar:2,price:3600,ic:'ring',d:'Acessório · ATQ +14 · MATQ +14 · Crítico +4.'},
+botas_pantano:{n:'Botas do Pântano',t:'eq',slot:'pes',def:6,flee:16,hp:60,rar:2,sl:1,price:3000,ic:'boots',d:'Pés · DEF +6 · Esquiva +16 · HP +60 · 1 encaixe.'},
+osso:{n:'Osso Velho',t:'etc',price:36,ic:'bone',d:'Osso de um morto que andava.'},
  ferrao:{n:'Ferrão de Escorpião',t:'etc',price:60,ic:'stinger',d:'Ainda tem veneno na ponta.'},nucleo:{n:'Núcleo Gélido',t:'etc',price:120,ic:'ice',d:'O coração frio de um golem.'},
  pedra_ref:{n:'Pedra de Refino',t:'etc',price:180,ic:'ore',d:'Usada pelo Bjorn para refinar equipamentos (aba Refinar).'},
  machado_runico:{n:'Machado Rúnico',t:'eq',slot:'arma',cls:['andarilho','guerreiro'],atk:55,rar:2,sl:1,price:2600,ic:'axe',d:'Arma · ATQ +55 · 1 encaixe.'},
@@ -1149,7 +1196,7 @@ const IT={
  botas_areia:{n:'Botas de Areia',t:'eq',slot:'pes',def:3,flee:11,price:560,ic:'boots',d:'Pés · DEF +3 · Esquiva +11.'},
  amuleto_gelo:{n:'Amuleto Gélido',t:'eq',slot:'acess',hp:60,sp:30,crit:3,price:900,ic:'ring',d:'Acessório · HP +60 · SP +30 · Crítico +3.'}};
 const SLOTN={arma:'Arma',corpo:'Corpo',cabeca:'Cabeça',pes:'Pés',acess:'Acessório'};
-const DROPS={aranha_prof:[['seda',.7],['pocao_g',.25],['capuz_seda',.02],['pedra_ref',.06]],esquecido:[['osso',.7],['pocao_g',.25],['machado_runico',.015],['elmo_osseo',.02],['pedra_ref',.06]],guardiao:[['nucleo',1],['pedra_ref',1],['lamina_inverno',.3],['cetro_coracao',.3],['arco_aurora',.3]],lobo:[['presa',.65],['pocao_v',.2],['botas_couro',.04],['machado_ferro',.025]],aranha:[['seda',.65],['pocao_a',.15],['anel_runa',.02],['arco_curto',.03]],
+const DROPS={lodo_hel:[['essencia_hel',.55],['pocao_g',.25],['anel_hel',.012],['pedra_ref',.07]],carnical:[['osso',.6],['essencia_hel',.35],['manto_hel',.015],['pedra_ref',.07]],cao_hel:[['presa',.6],['essencia_hel',.3],['botas_pantano',.018]],aranha_pantano:[['seda',.65],['pocao_g',.25],['botas_pantano',.015]],tartaruga_lodo:[['casca',.6],['essencia_hel',.3],['manto_hel',.02],['pedra_ref',.08]],garm:[['presa_garm',1],['pedra_ref',2],['machado_hel',.3],['cajado_hel',.3],['arco_hel',.3]],draugr_anciao:[['osso',.7],['essencia_hel',.4],['coroa_draugr',.006],['manto_hel',.02],['pedra_ref',.08]],sentinela:[['nucleo',.5],['min_mithril',.4],['manto_hel',.025],['pedra_ref',.1]],aranha_cripta:[['seda',.7],['pocao_g',.3],['anel_hel',.02]],rei_draugr:[['coroa_draugr',.45],['pedra_ref',3],['machado_hel',.25],['cajado_hel',.25],['arco_hel',.25]],aranha_prof:[['seda',.7],['pocao_g',.25],['capuz_seda',.02],['pedra_ref',.06]],esquecido:[['osso',.7],['pocao_g',.25],['machado_runico',.015],['elmo_osseo',.02],['pedra_ref',.06]],guardiao:[['nucleo',1],['pedra_ref',1],['lamina_inverno',.3],['cetro_coracao',.3],['arco_aurora',.3]],lobo:[['presa',.65],['pocao_v',.2],['botas_couro',.04],['machado_ferro',.025]],aranha:[['seda',.65],['pocao_a',.15],['anel_runa',.02],['arco_curto',.03]],
  tartaruga:[['casco_tart',.6],['pocao_v',.25],['tunica_couro',.05]],marujo:[['osso',.6],['pocao_g',.12],['machado_aco',.02],['arco_longo',.015]],
  escorpiao:[['ferrao',.6],['pocao_g',.2],['botas_areia',.04],['arco_longo',.02]],aranha_areia:[['seda',.7],['pocao_g',.15],['cajado_gelo',.015]],
  lobo_neve:[['presa',.6],['pelo',.4],['manto_pele',.04]],golem_gelo:[['nucleo',.5],['cristal',.3],['amuleto_gelo',.04]],draugr:[['osso',.6],['pocao_g',.22],['machado_aco',.03],['manto_pele',.03]],
@@ -1167,6 +1214,8 @@ const CARDS={slime:['corpo',{hp:40},'HP +40'],shroom:['cabeca',{sp:25},'SP +25']
  cactorro:['pes',{def:3,hp:50},'DEF +3 · HP +50'],caranguejo_ard:['arma',{atk:18},'ATQ +18'],escorpiao:['acess',{crit:7},'Crítico +7'],aranha_areia:['cabeca',{flee:8},'Esquiva +8'],
  lodo_gelo:['cabeca',{matk:14},'MATQ +14'],lebre:['pes',{flee:12},'Esquiva +12'],lobo_neve:['arma',{atk:24},'ATQ +24'],golem_gelo:['corpo',{def:10,hp:120},'DEF +10 · HP +120'],draugr:['acess',{atk:12,hp:60},'ATQ +12 · HP +60'],
  aranha_prof:['pes',{flee:10,crit:3},'Esquiva +10 · Crítico +3'],esquecido:['arma',{atk:30},'ATQ +30'],guardiao:['corpo',{def:16,hp:300},'DEF +16 · HP +300'],
+ lodo_hel:['acess',{sp:45,matk:10},'SP +45 · MATQ +10'],carnical:['arma',{atk:34,hit:6},'ATQ +34 · Precisão +6'],cao_hel:['pes',{flee:14,atk:8},'Esquiva +14 · ATQ +8'],aranha_pantano:['cabeca',{flee:10,crit:4},'Esquiva +10 · Crítico +4'],tartaruga_lodo:['corpo',{hp:220,def:6},'HP +220 · DEF +6'],
+ draugr_anciao:['arma',{atk:40},'ATQ +40'],sentinela:['corpo',{def:14,hp:200},'DEF +14 · HP +200'],aranha_cripta:['acess',{crit:9,flee:6},'Crítico +9 · Esquiva +6'],garm:['arma',{atk:50,crit:5},'ATQ +50 · Crítico +5'],rei_draugr:['cabeca',{hp:400,matk:30},'HP +400 · MATQ +30'],
  rei_lodo:['corpo',{hp:200,def:4},'HP +200 · DEF +4'],colosso:['arma',{atk:30,def:4},'ATQ +30 · DEF +4'],anciao:['acess',{crit:10,atk:10},'Crítico +10 · ATQ +10'],coracao:['arma',{atk:40,matk:40},'ATQ +40 · MATQ +40']};
 for(const k in CARDS){const[sl,b,txt]=CARDS[k];IT['c_'+k]=Object.assign({n:'Carta '+MDEF[k].name,t:'card',cslot:sl,price:MDEF[k].boss?3000:400+MDEF[k].lv*40,ic:'card:'+k,rar:MDEF[k].boss?3:2,d:`Carta (${SLOTN[sl]}) · ${txt}. Clique para encaixar no equipamento de ${SLOTN[sl].toLowerCase()} que tiver encaixe livre.`},{cb:b});
  (DROPS[k]=DROPS[k]||[]).push(['c_'+k,MDEF[k].boss?.2:.012])}
@@ -1195,7 +1244,7 @@ function hitMon(m,dmg,crit,kb=5,skill=0){m.hp-=dmg;m.foe=null;m.hitT=now;const a
  const y=height(m.x,m.z);floatText(m.x+rr(-.3,.3),y+2.4,m.z,dmg+(skill||crit?' !!':''),crit?'crit':'');burst(m.x,y+1,m.z,crit?14:8,m.kind==='slime'?[.6,1,.4]:[1,.55,.4],4,.3,.5,2.5);sfx(m.kind==='slime'?'slime':'hit');
  if(m.hp<=0)killMon(m)}
 function missMon(m){const y=height(m.x,m.z);floatText(m.x+rr(-.3,.3),y+2.4,m.z,'Miss','miss');sfx('miss');if(m.state!=='chase')m.state='chase'}
-function killMon(m){m.dead=true;partyXp(m);m.respawn=now+(m.d.boss?150:12);if(m.d.boss)bossDown(m);const y=height(m.x,m.z);burst(m.x,y+1,m.z,26,m.kind==='slime'?[.5,1,.4]:[1,.6,.35],5,.45,.9,3.5);burst(m.x,y+1,m.z,12,[1,1,.85],3,.25,1.2,5);sfx('die');
+function killMon(m){m.dead=true;partyXp(m);m.respawn=now+(m.d.boss?150:12);if(BIO.dun)dunKill(m);if(m.d.boss)bossDown(m);const y=height(m.x,m.z);burst(m.x,y+1,m.z,26,m.kind==='slime'?[.5,1,.4]:[1,.6,.35],5,.45,.9,3.5);burst(m.x,y+1,m.z,12,[1,1,.85],3,.25,1.2,5);sfx('die');
  const bm=wx.blood?1.5:1,bx=Math.round(m.d.xp*bm),zy=Math.round(m.d.z[0]+rnd()*(m.d.z[1]-m.d.z[0])),cx=Math.round(m.d.xp*.7*bm);H.zeny+=zy;
  floatText(m.x,y+3,m.z,'+'+bx+' EXP','xp');log(`<span class="k">${m.d.name}</span> derrotado. +${bx} EXP base · +${cx} EXP classe · +${zy} zeny`);
  let k=0;for(const[id,ch]of DROPS[m.kind])if(rnd()<ch)spawnDrop(id,m.x,m.z,k++);
@@ -1459,12 +1508,12 @@ function updSlams(dt){for(let i=slams.length-1;i>=0;i--){const s=slams[i],k=(now
  for(const a of PARTY)if(!a.down&&Math.hypot(a.x-s.x,a.z-s.z)<s.r){const dm=Math.round(s.m.d.dmg[1]*1.6);a.hp-=dm;a.lastHit=now;floatText(a.x,height(a.x,a.z)+3,a.z,String(dm),'other');if(a.hp<=0)partyDown(a)}
  if(!H.dead&&Math.hypot(H.x-s.x,H.z-s.z)<s.r){const dm=hurtHero(Math.round((s.m.d.dmg[1]*2.2)*(wx.blood?1.3:1)-H.def*.6));H.lastHit=now;floatText(H.x,height(H.x,H.z)+3.2,H.z,String(dm),'hurt');
   if(H.hp<=0){H.hp=0;H.dead=true;H.respawnAt=now+3;H.target=null;H.dest=null;H.cast=null;H.lunge=null;log('<span class="r">Você caiu em combate…</span>')}}}}
-function bossDown(m){log(`<span class="g">☠ ${m.d.name} foi derrotado!</span> Ele volta em 2 minutos e meio.`,'Evento');showZone(m.d.name+' derrotado',true);questEv('boss')}
+function bossDown(m){log(`<span class="g">☠ ${m.d.name} foi derrotado!</span>${BIO.dun?'':' Ele volta em 2 minutos e meio.'}`,'Evento');showZone(m.d.name+' derrotado',true);questEv('boss')}
 // simulated adventurers: planned, not implemented yet
 // ---- world map (N): regions as islands linked by portal routes
-const WMP={floresta:[230,150],praia:[390,120],deserto:[90,190],neve:[110,60],vila:[350,215],caverna:[250,45]};
+const WMP={floresta:[230,150],praia:[390,120],deserto:[90,190],neve:[110,60],vila:[350,215],caverna:[250,45],pantano:[468,44],cripta:[478,200]};
 function toggleWorldMap(){const w=$('#wmap');w.classList.toggle('hide');if(w.classList.contains('hide'))return;
- const col={floresta:'#4b8a3a',praia:'#d8c48a',deserto:'#d8904a',neve:'#e8f0f8',vila:'#c8a878',caverna:'#6a7a98'};let s=`<svg viewBox="0 0 460 250"><rect width="460" height="250" fill="#2a4a6a"/>`;const seen=new Set();
+ const col={floresta:'#4b8a3a',praia:'#d8c48a',deserto:'#d8904a',neve:'#e8f0f8',vila:'#c8a878',caverna:'#6a7a98',pantano:'#6a7a4a',cripta:'#7a6a9a'};let s=`<svg viewBox="0 0 540 250"><rect width="540" height="250" fill="#2a4a6a"/>`;const seen=new Set();
  for(const k in BIOMES)for(const p of BIOMES[k].portals){const id=[k,p.to].sort().join();if(seen.has(id))continue;seen.add(id);const a=WMP[k],b=WMP[p.to];s+=`<line x1="${a[0]}" y1="${a[1]}" x2="${b[0]}" y2="${b[1]}" stroke="#bfe4ff" stroke-width="2" stroke-dasharray="6 5"/>`}
  for(const k in BIOMES){const[x,y]=WMP[k],b=BIOMES[k],cur=k===BIO.key;s+=`<ellipse cx="${x}" cy="${y}" rx="62" ry="38" fill="${col[k]}" stroke="${cur?'#ffd23a':'#1d2a3d'}" stroke-width="${cur?4:2}"/>`+
   `<text x="${x}" y="${y-2}" text-anchor="middle" font-family="Cinzel,serif" font-weight="700" font-size="13" fill="#1d2a3d">${b.n}</text><text x="${x}" y="${y+15}" text-anchor="middle" font-family="Alegreya Sans" font-size="11" fill="#1d2a3d">${b.lv}${b.boss?' · ☠ '+MDEF[b.boss].name:''}</text>`+(cur?`<text x="${x}" y="${y-44}" text-anchor="middle" font-size="12" font-weight="800" fill="#ffd23a">▼ você está aqui</text>`:'')}
@@ -1514,7 +1563,7 @@ function partyAI(a,dt){const t=H.target&&!H.target.dead?H.target:a.target&&!a.ta
  if(now>a.chatT){a.chatT=now+rr(30,80);if(rnd()<.6){const l=pickOne(PL.chat);a.say={txt:l,t0:now};log(`<span class="p">${a.name}:</span> ${l}`,'Grupo')}}
  return true}
 // ---- ambient music: a soft procedural loop per region (scale, tempo, timbre), darker near an awake boss
-const MUS={floresta:{root:57,sc:[0,2,4,7,9],bpm:84,wave:'triangle'},praia:{root:60,sc:[0,2,4,7,9],bpm:96,wave:'sine'},deserto:{root:52,sc:[0,1,4,5,7,8,10],bpm:76,wave:'sawtooth'},neve:{root:62,sc:[0,2,3,7,8],bpm:64,wave:'sine'},vila:{root:60,sc:[0,2,4,5,7,9],bpm:92,wave:'triangle'},caverna:{root:50,sc:[0,1,3,6,7,10],bpm:58,wave:'sine'}};
+const MUS={floresta:{root:57,sc:[0,2,4,7,9],bpm:84,wave:'triangle'},praia:{root:60,sc:[0,2,4,7,9],bpm:96,wave:'sine'},deserto:{root:52,sc:[0,1,4,5,7,8,10],bpm:76,wave:'sawtooth'},neve:{root:62,sc:[0,2,3,7,8],bpm:64,wave:'sine'},vila:{root:60,sc:[0,2,4,5,7,9],bpm:92,wave:'triangle'},caverna:{root:50,sc:[0,1,3,6,7,10],bpm:58,wave:'sine'},pantano:{root:49,sc:[0,1,3,5,6,8,10],bpm:62,wave:'triangle'},cripta:{root:45,sc:[0,1,3,6,7,8],bpm:54,wave:'sawtooth'}};
 let musT=0,musStep=0,musGain=null;
 function note(f,t,d,v,w){const o=AC.createOscillator(),g=AC.createGain();o.type=w;o.frequency.value=f;o.connect(g);g.connect(musGain);g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v,t+Math.min(.08,d*.3));g.gain.exponentialRampToValueAtTime(.0005,t+d);o.start(t);o.stop(t+d+.05)}
 const mtof=m=>440*Math.pow(2,(m-69)/12);
@@ -1542,7 +1591,7 @@ function mkAdv(home,vend){const cls=pickOne(['guerreiro','mago','arqueiro','anda
  if(vend)el.querySelector('.vsign').addEventListener('pointerdown',e=>{e.stopPropagation();if(e.button===0)talkTo(a)});
  ADV.push(a);return a}
 function spawnAdv(){for(const a of ADV)if(!a.party)a.el.remove();ADV.length=0;for(const a of PARTY){a.x=H.x+rr(-2,2);a.z=H.z+rr(-2,2);a.hx=a.x;a.hz=a.z;a.target=null;ADV.push(a)}seed=777+BIO.key.length;
- for(let i=0;i<4;i++){let x,z,g=0;do{x=rr(-S+6,S-6);z=rr(-S+6,S-6);g++}while((blocked(x,z,.6)||pondD(x,z)<2)&&g<200);mkAdv([x,z])}
+ for(let i=0;i<(BIO.dun?0:4);i++){let x,z,g=0;do{x=rr(-S+6,S-6);z=rr(-S+6,S-6);g++}while((blocked(x,z,.6)||pondD(x,z)<2)&&g<200);mkAdv([x,z])}
  if(BIO.key==='floresta'){const pool=Object.keys(IT).filter(k=>k!=='gosma'&&k!=='esporo'&&!((IT[k].rar||1)>=3));
   for(const[dx,dz]of[[3.6,-2.6],[-.6,-4.6]]){const stock=[];for(let k=0;k<4;k++){const id=pickOne(pool);if(stock.some(s=>s.id===id))continue;stock.push({id,q:IT[id].t==='use'?(rr(3,8)|0):1,price:Math.round(IT[id].price*rr(.7,1.2))})}
    const a=mkAdv([fire.x+dx,fire.z+dz],{title:'',stock});a.vend.title=`${pickOne(VENDT)} ${a.name}`;a.el.querySelector('.vsign').textContent='🏷 '+a.vend.title;a.faceAng=Math.atan2(fire.z-a.z,fire.x-a.x);colliders.push({x:a.x,z:a.z,r:.5})}}}
@@ -1716,7 +1765,7 @@ let tShift=0;function frame(ms){const t=(fixedT!==null?fixedT+frames*.016:ms/100
  gl.uniform3fv(ul(P1,'uSunCol'),sk.col);gl.uniform3fv(ul(P1,'uSky'),sk.skyC);gl.uniform3fv(ul(P1,'uGnd'),sk.gnd);gl.uniform3fv(ul(P1,'uFog'),sk.fog);gl.uniform1f(ul(P1,'uNight'),sk.night);gl.uniform1f(ul(P1,'uAmbK'),sk.amb);
  gl.uniform1f(ul(P1,'uFireK'),.5+sk.night*1.3);gl.uniform3fv(ul(P1,'uRight'),cr);gl.uniform3fv(ul(P1,'uUp'),cu);gl.uniform3fv(ul(P1,'uFire'),[fire.x,height(fire.x,fire.z),fire.z]);
  const WK=wx.k;gl.uniform3fv(ul(P1,'uFogP'),[camDist*(1-.2*WK.fog)+10*(1-WK.fog),70-38*WK.fog,.45+.2*WK.fog]);gl.uniform1f(ul(P1,'uSnow'),WK.snow);gl.uniform1f(ul(P1,'uWet'),WK.rain);gl.uniform1f(ul(P1,'uMist'),WK.fog);gl.uniform1f(ul(P1,'uCloudK'),Math.max(.06,.28+.22*WK.cloud-.3*WK.rain));
- gl.uniform4fv(ul(P1,'uPond'),BIO.sea?[0,BIO.sea.z,0,1]:[pond.x,pond.z,pond.r,0]);gl.uniform1f(ul(P1,'uIce'),BIO.ice?1:0);
+ gl.uniform4fv(ul(P1,'uPond'),BIO.sea?[0,BIO.sea.z,0,1]:[pond.x,pond.z,pond.r,0]);gl.uniform1f(ul(P1,'uIce'),BIO.ice?1:BIO.murk?2:0);
  gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,stex);gl.uniform1i(ul(P1,'uSh'),0);gl.activeTexture(gl.TEXTURE1);gl.bindTexture(gl.TEXTURE_2D,TS);gl.uniform1i(ul(P1,'uSpr'),1);
  gl.activeTexture(gl.TEXTURE2);gl.bindTexture(gl.TEXTURE_2D,TL);gl.uniform1i(ul(P1,'uLeaf'),2);gl.activeTexture(gl.TEXTURE3);gl.bindTexture(gl.TEXTURE_2D,TFX);gl.uniform1i(ul(P1,'uFx'),3);
  gl.activeTexture(gl.TEXTURE4);gl.bindTexture(gl.TEXTURE_2D,null);
@@ -1857,7 +1906,7 @@ function itemIcon(ic){if(ICC[ic])return ICC[ic];const c=document.createElement('
  if(ic==='shell'){g.fillStyle='#e0703a';g.beginPath();g.moveTo(16,5);g.quadraticCurveTo(30,10,27,24);g.lineTo(5,24);g.quadraticCurveTo(2,10,16,5);g.fill();g.strokeStyle='#8a3a18';g.lineWidth=1.5;for(const x of[10,16,22]){g.beginPath();g.moveTo(16,7);g.lineTo(x,24);g.stroke()}}
  if(ic==='salt'||ic==='ice'){const c1=ic==='ice'?'#a8e8ff':'#f4f4f0',c2=ic==='ice'?'#4aa8e0':'#c8c8c0';for(const[x,y,s]of[[16,16,9],[9,22,5],[23,22,5]]){g.fillStyle=c1;g.beginPath();g.moveTo(x,y-s);g.lineTo(x+s*.6,y);g.lineTo(x,y+s*.7);g.lineTo(x-s*.6,y);g.closePath();g.fill();g.strokeStyle=c2;g.lineWidth=1;g.stroke()}}
  if(ic==='spine'){g.strokeStyle='#f0ecd0';g.lineWidth=2;for(let i=0;i<4;i++){g.beginPath();g.moveTo(6+i*5,27);g.lineTo(12+i*5,5);g.stroke()}g.fillStyle='#4a7a3a';g.fillRect(4,24,24,5)}
- if(ic.startsWith('card:')){const k=ic.slice(5),bs=MDEF[k]&&MDEF[k].boss;g.fillStyle=bs?'#3a2a10':'#2a2418';g.fillRect(6,3,20,26);g.strokeStyle=bs?'#ffd23a':'#c8a860';g.lineWidth=2;g.strokeRect(6,3,20,26);g.fillStyle={slime:'#5ab84a',shroom:'#d04a30',coelho:'#e8c8a0',lobo:'#8a8a94',aranha:'#5a3a6a',caranguejo:'#e0703a',lodo_sal:'#4a8ad0',tartaruga:'#4a8a4a',marujo:'#6aa86a',cactorro:'#4a9a3a',caranguejo_ard:'#e04a2a',escorpiao:'#c08a48',aranha_areia:'#c8a060',lodo_gelo:'#a8e0ff',lebre:'#f0f0f8',lobo_neve:'#e8eef8',golem_gelo:'#8aa8c8',draugr:'#c8d8e8'}[k]||'#ffd23a';g.beginPath();g.arc(16,14,6,0,6.283);g.fill();g.fillStyle='#ffffff60';g.fillRect(9,23,14,2)}
+ if(ic.startsWith('card:')){const k=ic.slice(5),bs=MDEF[k]&&MDEF[k].boss;g.fillStyle=bs?'#3a2a10':'#2a2418';g.fillRect(6,3,20,26);g.strokeStyle=bs?'#ffd23a':'#c8a860';g.lineWidth=2;g.strokeRect(6,3,20,26);g.fillStyle={slime:'#5ab84a',shroom:'#d04a30',coelho:'#e8c8a0',lobo:'#8a8a94',aranha:'#5a3a6a',caranguejo:'#e0703a',lodo_sal:'#4a8ad0',tartaruga:'#4a8a4a',marujo:'#6aa86a',cactorro:'#4a9a3a',caranguejo_ard:'#e04a2a',escorpiao:'#c08a48',aranha_areia:'#c8a060',lodo_gelo:'#a8e0ff',lebre:'#f0f0f8',lobo_neve:'#e8eef8',golem_gelo:'#8aa8c8',draugr:'#c8d8e8',lodo_hel:'#8a6ac8',carnical:'#7a8a4a',cao_hel:'#7a5aa8',aranha_pantano:'#5a6a3a',tartaruga_lodo:'#4a5a2a',garm:'#c83a2a',draugr_anciao:'#9a7ad8',sentinela:'#6a5a8a',aranha_cripta:'#3a3048',rei_draugr:'#c8e8ff'}[k]||'#ffd23a';g.beginPath();g.arc(16,14,6,0,6.283);g.fill();g.fillStyle='#ffffff60';g.fillRect(9,23,14,2)}
  if(ic==='ore'){g.fillStyle='#4a5a7a';g.beginPath();g.moveTo(6,22);g.lineTo(11,9);g.lineTo(22,6);g.lineTo(27,17);g.lineTo(20,27);g.lineTo(9,27);g.closePath();g.fill();g.fillStyle='#8ad0ff';for(const[x,y]of[[13,14],[19,12],[17,21]]){g.beginPath();g.moveTo(x,y-3);g.lineTo(x+2,y);g.lineTo(x,y+3);g.lineTo(x-2,y);g.closePath();g.fill()}}
  if(ic==='pick'){g.strokeStyle='#8a5a30';g.lineWidth=3;g.beginPath();g.moveTo(8,29);g.lineTo(20,8);g.stroke();g.strokeStyle='#b8c4d0';g.lineWidth=4;g.beginPath();g.moveTo(8,8);g.quadraticCurveTo(20,2,30,12);g.stroke()}
  if(ic==='ore_fe'||ic==='ore_ag'||ic==='ore_mi'){const c={ore_fe:['#6a5a52','#c8a080'],ore_ag:['#6a6a74','#e8eef8'],ore_mi:['#3a4a6a','#7af0ff']}[ic];g.fillStyle=c[0];g.beginPath();g.moveTo(5,24);g.lineTo(9,10);g.lineTo(20,6);g.lineTo(28,15);g.lineTo(24,27);g.lineTo(10,28);g.closePath();g.fill();g.fillStyle=c[1];for(const[x,y]of[[12,14],[20,12],[17,21],[23,19]]){g.beginPath();g.arc(x,y,2.3,0,6.283);g.fill()}}
@@ -1868,6 +1917,7 @@ function itemIcon(ic){if(ICC[ic])return ICC[ic];const c=document.createElement('
  if(ic==='fang'){g.fillStyle='#f4ecd8';g.beginPath();g.moveTo(10,5);g.quadraticCurveTo(24,10,22,28);g.quadraticCurveTo(15,18,10,5);g.fill();g.strokeStyle='#a89870';g.lineWidth=1.5;g.stroke();g.fillStyle='#6a4a2a';g.fillRect(6,4,8,4)}
  if(ic==='silk'){g.strokeStyle='#f0f0f8';g.lineWidth=1.2;for(let r=4;r<=13;r+=3){g.beginPath();g.arc(16,16,r,0,6.283);g.stroke()}for(let i=0;i<8;i++){const a=i/8*6.283;g.beginPath();g.moveTo(16,16);g.lineTo(16+Math.cos(a)*14,16+Math.sin(a)*14);g.stroke()}}
  if(ic==='tshell'){g.fillStyle='#4a7a3a';g.beginPath();g.ellipse(16,17,12,10,0,0,6.283);g.fill();g.strokeStyle='#2a4a22';g.lineWidth=1.5;for(const[x,y]of[[16,17],[10,13],[22,13],[10,21],[22,21]]){g.beginPath();for(let i=0;i<6;i++){const a=i/6*6.283;g[i?'lineTo':'moveTo'](x+Math.cos(a)*4,y+Math.sin(a)*4)}g.closePath();g.stroke()}}
+ if(ic==='soul'){g.fillStyle='#3a2a4a';g.fillRect(11,4,10,4);g.fillStyle='#c8b8e8a0';g.beginPath();g.moveTo(10,9);g.lineTo(22,9);g.lineTo(26,26);g.quadraticCurveTo(16,31,6,26);g.closePath();g.fill();g.fillStyle='#9a6ae8';g.beginPath();g.arc(16,20,5,0,6.283);g.fill();g.fillStyle='#e8d8ff';g.beginPath();g.arc(14,18,2,0,6.283);g.fill()}
  if(ic==='bone'){g.strokeStyle='#ece2c8';g.lineWidth=5;g.beginPath();g.moveTo(9,23);g.lineTo(23,9);g.stroke();g.fillStyle='#ece2c8';for(const[x,y]of[[7,21],[11,25],[21,7],[25,11]]){g.beginPath();g.arc(x,y,3.5,0,6.283);g.fill()}}
  if(ic==='stinger'){g.strokeStyle='#8a5a2a';g.lineWidth=4;g.beginPath();g.moveTo(6,26);g.quadraticCurveTo(10,8,22,8);g.stroke();g.fillStyle='#2a1a0e';g.beginPath();g.moveTo(22,4);g.lineTo(29,12);g.lineTo(20,12);g.closePath();g.fill();g.fillStyle='#8aff6a';g.beginPath();g.arc(27,14,2,0,6.283);g.fill()}
  return ICC[ic]=c.toDataURL()}
@@ -1993,7 +2043,30 @@ const QS=[{t:'Primeiros passos',d:'Gaste um ponto de atributo (tecla C).',goal:1
   outro:'O caminho está livre. O Coração bate no ponto mais distante dos picos.'},
  {t:'Coração do Inverno',d:'Derrote o guardião gelado de Niflheim.',goal:1,k:'coracao',xp:7000,z:5000,g:'neve',rw:[['pedra_ref',4]],
   intro:'É agora, herói. O Coração do Inverno alimenta o Fimbulvetr. Destrua-o e o Ragnarök vai esperar mais um pouco.',
-  outro:'O inverno recua! Você adiou o Fim. Os skalds vão cantar seu nome em todos os salões dos Nove Reinos. Mas Yggdrasil ainda treme… a jornada não acabou.'}];
+  outro:'O inverno recua! Você adiou o Fim. Os skalds vão cantar seu nome em todos os salões dos Nove Reinos. Mas Yggdrasil ainda treme… a jornada não acabou.'},
+ {t:'Os ossos de Ymir',d:'Pelo portal no fim dos picos de Niflheim, entre na Caverna de Ymir.',goal:1,k:'reg_caverna',xp:2500,z:1200},
+ {t:'O explorador',d:'Fale com Thorvald na entrada da caverna.',goal:1,k:'talk_caverna',xp:500,z:300},
+ {t:'Guerreiros sem nome',d:'Derrote Guerreiros Esquecidos.',goal:6,k:'esquecido',xp:7000,z:3200,g:'caverna',rw:[['pocao_g',8]],
+  intro:'Esses guerreiros caíram aqui antes de nascer o primeiro rei. Esqueceram até o próprio nome, mas não esqueceram como matar. Derrote seis.',
+  outro:'Ouvi o eco das armas deles parar. Pela primeira vez em mil anos, silêncio.'},
+ {t:'O Guardião de Ymir',d:'Derrote o Guardião de Ymir, no fundo da caverna.',goal:1,k:'guardiao',xp:11000,z:6000,g:'caverna',rw:[['pedra_ref',4]],
+  intro:'O Guardião protege uma passagem que desce até Hel. Se ele cair, a porta se abre… e alguém precisa ver o que tem do outro lado.',
+  outro:'A passagem está aberta. Desça pelo portal no fim da galeria. Que os deuses te guardem: lá embaixo, eles não olham.'},
+ {t:'A ponte de Gjallar',d:'Pelo portal no fundo da caverna, chegue ao Pântano de Hel.',goal:1,k:'reg_pantano',xp:4000,z:1800},
+ {t:'A guardiã da ponte',d:'Fale com Módgud, na Ponte de Gjallar.',goal:1,k:'talk_pantano',xp:800,z:400},
+ {t:'Os que não descansam',d:'Derrote Carniçais do Pântano.',goal:8,k:'carnical',xp:12000,z:5000,g:'pantano',rw:[['pocao_g',10]],
+  intro:'Vivo atravessando a minha ponte? Faz tempo. Os carniçais estão saindo do pântano e subindo para Midgard. Mande oito de volta para a lama.',
+  outro:'Você pisa leve para alguém tão vivo. Fique com isto.'},
+ {t:'Cães de Hel',d:'Derrote Cães de Hel.',goal:6,k:'cao_hel',xp:14000,z:6000,g:'pantano',rw:[['pedra_ref',3]],
+  intro:'Os cães de Hel caçam em matilha. São os filhotes de Garm. Derrote seis antes que sintam o seu cheiro.',
+  outro:'Agora Garm vai sentir falta deles. E vai vir atrás de você.'},
+ {t:'Garm',d:'Derrote Garm, o Cão de Hel (☠ no mapa).',goal:1,k:'garm',xp:22000,z:10000,g:'pantano',rw:[['pedra_ref',4],['anel_hel',1]],
+  intro:'No Ragnarök, Garm vai se soltar e matar Tyr. A não ser que alguém o derrube antes. Ele dorme longe da ponte. Vá.',
+  outro:'Garm caiu… o uivo parou. Tyr vai viver mais um pouco. Mas ainda há o Rei Draugr, preso na cripta no fim do caminho.'},
+ {t:'A Cripta dos Draugr',d:'Entre na Cripta dos Draugr pelo portal no fim do pântano.',goal:1,k:'reg_cripta',xp:6000,z:2500},
+ {t:'O Rei Draugr',d:'Derrote todos os mortos da cripta, quebre o selo e vença o Rei Draugr. Depois volte até Módgud.',goal:1,k:'rei_draugr',xp:30000,z:15000,g:'pantano',rw:[['pedra_ref',5]],
+  intro:'A cripta é uma masmorra: os mortos lá dentro não voltam enquanto você estiver lá. Derrote todos e o selo do Rei se quebra. Vença o Rei e traga a notícia.',
+  outro:'O Rei Draugr caiu! Eu vou contar isso a Hel em pessoa. A cripta vai acordar de novo quando você voltar: o tesouro do Rei é seu sempre que tiver coragem.'}];
 // old saves (before the story update) stored an index into this shorter list
 const OLDQ=['Primeiros passos','Aprendiz','Limpeza do bosque','Juntos é melhor','O caminho do Andarilho','Chapéus vermelhos','Caçador de Freyra','O rei da floresta','Rumo à costa','Pinças afiadas','O Colosso','Dunas escaldantes','Espinhos','O Ancião das areias','Frio de Niflheim','Coração do Inverno'];
 let qi=0,qn=0,qs='act';
@@ -2010,6 +2083,7 @@ function qDone(){const q=qCur();log(`<span class="g">Missão concluída: ${q.t}!
 const SIDEP={floresta:[['kill','slime',8],['kill','shroom',6],['kill','coelho',6],['col','presa',6],['col','seda',6],['col','gosma',10]],
  praia:[['kill','tartaruga',5],['kill','lodo_sal',8],['col','casca',6],['col','osso',6],['col','sal',8]],
  deserto:[['kill','aranha_areia',6],['kill','caranguejo_ard',6],['col','ferrao',6],['col','espinho',8],['col','seda',8]],
+ pantano:[['kill','carnical',8],['kill','cao_hel',6],['kill','lodo_hel',8],['col','essencia_hel',10],['col','seda',12],['col','casca',8]],cripta:[],
  vila:[],caverna:[['kill','aranha_prof',6],['kill','esquecido',6],['col','nucleo',5],['col','seda',10]],
  neve:[['kill','lodo_gelo',8],['kill','lebre',6],['kill','lobo_neve',6],['col','nucleo',4],['col','cristal',6],['col','osso',8]]};
 function sideOffers(){const r=BIO.key,act=(H.side||[]);const day=Math.floor(Date.now()/36e5);const L=SIDEP[r].map((x,i)=>({x,i})).filter(o=>!act.some(c=>c.r===r&&c.i===o.i));
@@ -2055,7 +2129,7 @@ function hudVeins(){for(const v of VEINS){if(!v.el){v.el=document.createElement(
 // ---- forja da Hilda: receitas com minérios e materiais de monstros
 const RECIPES=[['pedra_ref',[['min_ferro',3],['min_prata',1]],100],['botas_lobo',[['presa',8],['pelo',4]],600],['armadura_escamas',[['min_ferro',10],['casca',4]],1200],['arco_osso',[['osso',6],['min_ferro',4]],1200],
  ['machado_runico',[['min_ferro',8],['min_prata',4]],1500],['capuz_seda',[['seda',10],['min_prata',2]],900],['anel_ferrao',[['ferrao',4],['min_prata',3]],800],['colar_perola',[['perola',4],['min_prata',2]],900],
- ['cajado_estelar',[['min_prata',5],['nucleo',3]],1500],['lamina_inverno',[['min_mithril',6],['nucleo',4],['cristal',1]],5000],['cetro_coracao',[['min_mithril',6],['nucleo',5]],5000],['arco_aurora',[['min_mithril',6],['peixe_dourado',2]],5000]];
+ ['cajado_estelar',[['min_prata',5],['nucleo',3]],1500],['lamina_inverno',[['min_mithril',6],['nucleo',4],['cristal',1]],5000],['cetro_coracao',[['min_mithril',6],['nucleo',5]],5000],['arco_aurora',[['min_mithril',6],['peixe_dourado',2]],5000],['manto_hel',[['essencia_hel',10],['min_mithril',4]],3000],['botas_pantano',[['essencia_hel',6],['seda',8]],2200]];
 function forgeRows(){let h='<div class="srow" style="display:block"><small>Junte os materiais (minere veios com a Picareta, derrote monstros) e a Hilda forja para você.</small></div>';
  RECIPES.forEach(([id,mats,z],i)=>{const it=IT[id],ok=H.zeny>=z&&mats.every(([m,q])=>invCount(m)>=q);h+=`<div class="srow"><img src="${itemIcon(it.ic)}"><div><span style="color:${RARD[it.rar||1]}">${it.n}</span><small>${mats.map(([m,q])=>`${IT[m].n} ${Math.min(invCount(m),q)}/${q}`).join(' · ')} · ${z} z</small></div><b></b><button data-forge="${i}" ${ok?'':'disabled'}>Forjar</button></div>`});return h}
 function forge(i){const[id,mats,z]=RECIPES[i];if(H.zeny<z||!mats.every(([m,q])=>invCount(m)>=q))return;H.zeny-=z;for(const[m,q]of mats)invTake(m,q);invAdd(id);const y=height(H.x,H.z);burst(H.x,y+1.4,H.z,30,[1,.7,.3],4,.35,.9,3.5);sfx('boom');setTimeout(()=>sfx('lvl'),180);log(`<span class="g">A Hilda forjou ${IT[id].n} para você!</span>`);renderShop();renderInv()}
@@ -2086,6 +2160,8 @@ const QG={floresta:{name:'Sigrun',title:'Völva',off:[1.8,4.2],look:{hair:[.92,.
  deserto:{name:'Eirik',title:'Caravaneiro',off:[-1.8,4.2],look:{hair:[.15,.1,.08],skin:[.62,.42,.28],clothes:[.72,.52,.2]}},
  vila:{name:'Gudrun',title:'Guia dos Portais',off:[-3.6,3.2],look:{hair:[.85,.65,.3],skin:[.92,.74,.6],clothes:[.2,.42,.5]}},
  caverna:{name:'Thorvald',title:'Explorador',off:[2.4,-2.8],look:{hair:[.4,.25,.15],skin:[.85,.66,.5],clothes:[.3,.32,.36]}},
+ pantano:{name:'Módgud',title:'Guardiã da Ponte',off:[2.2,-2.6],look:{hair:[.2,.2,.24],skin:[.7,.72,.78],clothes:[.22,.2,.3]}},
+ cripta:{name:'Skuld',title:'Norna',off:[-2.4,-2.4],look:{hair:[.9,.9,.95],skin:[.86,.8,.82],clothes:[.42,.34,.6]}},
  neve:{name:'Halvard',title:'Jarl',off:[1.8,4.2],look:{hair:[.82,.82,.86],skin:[.88,.7,.58],clothes:[.5,.14,.12]}}};
 const QN={name:'',title:'',x:0,z:0,look:null};
 function placeQN(){const g=QG[BIO.key];Object.assign(QN,{name:g.name,title:g.title,look:g.look,x:fire.x+g.off[0],z:fire.z+g.off[1]});let t=0;while(blocked(QN.x,QN.z,.5)&&t<80){QN.x+=rr(-.7,.7);QN.z+=rr(-.7,.7);t++}}
@@ -2095,9 +2171,9 @@ function openDlg(){const q=qCur(),g=QG[BIO.key];let h='',b=[];const who=`<span c
  if(q&&q.g===BIO.key){if(qs==='off'){h+=`<h4>${q.t}</h4><p>${who}${q.intro}</p><p class="rw">Objetivo: ${q.d} (${q.goal}) · Recompensa: ${q.xp} EXP, ${q.z} zeny${(q.rw||[]).map(([id,n])=>', '+IT[id].n+(n>1?' ×'+n:'')).join('')}</p>`;b.push(['Aceitar','qacc'])}
   else if(qs==='rdy'){h+=`<h4>${q.t}</h4><p>${who}${q.outro}</p>`;b.push(['Concluir','qdone'])}
   else h+=`<h4>${q.t}</h4><p>${who}Ainda falta: ${q.d} (${qn} / ${q.goal}).</p>`}
- else h+=`<p>${who}${pickOne({floresta:['As raízes da árvore do mundo passam por baixo desta clareira. Fique atento ao que elas sussurram.','Bjorn tem poções e sabe refinar armas. Fale com ele.'],praia:['O mar de Njord dá e o mar de Njord toma.','Cuidado com as tartarugas: são lentas, mas a casca é dura.'],deserto:['Beba água, viajante. Muspel não perdoa.','Os escorpiões atacam de lado. Mantenha distância.'],neve:['Aqui o frio mata mais que os Draugr.','Dizem que o Coração do Inverno bate no ponto mais distante dos picos.'],vila:['Bem-vindo a Vindheim! Posso te levar a qualquer região que você já visitou.','Hilda, a ferreira, refina armas. Eir cura de graça. Astrid guarda seus itens.'],caverna:['Esta caverna desce até os ossos de Ymir. Volte se a tocha apagar.','O Guardião dorme no fundo. Ninguém que eu conheço voltou de lá.']}[BIO.key])}</p>`;
+ else h+=`<p>${who}${pickOne({floresta:['As raízes da árvore do mundo passam por baixo desta clareira. Fique atento ao que elas sussurram.','Bjorn tem poções e sabe refinar armas. Fale com ele.'],praia:['O mar de Njord dá e o mar de Njord toma.','Cuidado com as tartarugas: são lentas, mas a casca é dura.'],deserto:['Beba água, viajante. Muspel não perdoa.','Os escorpiões atacam de lado. Mantenha distância.'],neve:['Aqui o frio mata mais que os Draugr.','Dizem que o Coração do Inverno bate no ponto mais distante dos picos.'],vila:['Bem-vindo a Vindheim! Posso te levar a qualquer região que você já visitou.','Hilda, a ferreira, refina armas. Eir cura de graça. Astrid guarda seus itens.'],caverna:['Esta caverna desce até os ossos de Ymir. Volte se a tocha apagar.','O Guardião dorme no fundo. Ninguém que eu conheço voltou de lá.'],pantano:['Ninguém atravessa a Ponte de Gjallar sem dizer o próprio nome. Eu já sei o seu.','Garm uiva no fundo do pântano. Quando ele cala, alguém morreu.','A cripta dos Draugr fica no fim do Caminho dos Mortos. Só os corajosos voltam com a coroa.'],cripta:['Eu vejo o que ainda vai ser. Derrote todos os mortos desta cripta e o selo do Rei se quebra.','Quando o Rei Draugr cair, a cripta adormece. Saia e volte para enfrentá-lo de novo.']}[BIO.key])}</p>`;
  if(BIO.key==='vila'&&!H.mountOwned){h+='<h4>Estábulo</h4><p>Lobo de Montaria: corre 60% mais rápido. Aperte R (ou 🐺) para montar. 1.500 zeny.</p>';b.push(['Comprar montaria (1.500 z)','buymount'])}
- if(BIO.key==='vila'){h+='<h4>Viagem rápida</h4><p>Leve-me a uma região que você já visitou (100 zeny).</p>';for(const k of['floresta','praia','deserto','neve','caverna'])if((H.seen||[]).includes(k))b.push(['→ '+BIOMES[k].n,'tp:'+k])}
+ if(BIO.key==='vila'){h+='<h4>Viagem rápida</h4><p>Leve-me a uma região que você já visitou (100 zeny).</p>';for(const k of['floresta','praia','deserto','neve','caverna','pantano'])if((H.seen||[]).includes(k))b.push(['→ '+BIOMES[k].n,'tp:'+k])}
  const mine=(H.side||[]).filter(c=>c.r===BIO.key);
  if(SIDEP[BIO.key].length||mine.length)h+='<h4>Contratos</h4>';for(const c of mine){const ok=c.t==='kill'?c.n>=c.goal:invCount(c.k)>=c.goal;h+=`<p>• <b>${c.title}</b> (${c.t==='kill'?c.n:Math.min(invCount(c.k),c.goal)} / ${c.goal}) · ${c.z} zeny, ${c.xp} EXP${c.rf?', Pedra de Refino':''}</p>`;if(ok)b.push(['Entregar: '+c.title.split(': ')[1],'sdone:'+c.i]);else b.push(['Desistir: '+c.title.split(': ')[1],'sdrop:'+c.i,1])}
  if(!SIDEP[BIO.key].length){}else if((H.side||[]).length<2)for(const o of sideOffers()){h+=`<p>◦ ${o.title} · ${o.goal} ${o.t==='kill'?'abates':'unidades'} · ${o.z} zeny, ${o.xp} EXP${o.rf?', Pedra de Refino':''}</p>`;b.push(['Aceitar: '+o.title.split(': ')[1],'sacc:'+o.i])}
