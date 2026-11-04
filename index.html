@@ -164,6 +164,18 @@ body.mob .win.hide{display:none}
 #pinvBox{position:fixed;left:50%;top:84px;transform:translateX(-50%);display:none;z-index:7;background:#f7f9fcf2;border:1px solid #8ea6cb;border-radius:8px;box-shadow:0 6px 18px #0008;padding:8px 12px;font:600 13px "Alegreya Sans",sans-serif;color:#1d2a3d;text-align:center}
 #pinvBox div{display:flex;gap:8px;justify-content:center;margin-top:6px}#pinvBox button{all:unset;cursor:pointer;padding:4px 12px;border-radius:4px;background:#3b6db3;color:#fff;font-weight:800;font-size:12px}#pinvBox button.alt{background:#8a96a8}
 .advtag.oth.pt b{color:#a8f0b8}
+#trWin{left:calc(50% - min(230px,47vw));top:90px;width:min(460px,94vw);z-index:4}
+#trWin .cols{display:flex;gap:8px}#trWin .col{flex:1;min-width:0;border:1px solid #c3d0e4;border-radius:6px;padding:4px;background:#fff8}
+#trWin .col.lk{border-color:#3fa84c;box-shadow:0 0 0 2px #3fa84c55}#trWin h5{margin:0 0 4px;font:700 11px Silkscreen,monospace;color:#2f5a9c;display:flex;justify-content:space-between}
+#trWin .tg{display:grid;grid-template-columns:repeat(4,34px);gap:3px;min-height:72px;align-content:start}
+#trWin .ts,#trInv .ts{position:relative;width:34px;height:34px;border:1px solid #c3d0e4;border-radius:4px;background:#eef3fa;cursor:pointer;box-sizing:border-box}
+#trWin .ts img{width:28px;height:28px;margin:2px;image-rendering:pixelated}#trWin .ts u{position:absolute;right:2px;bottom:0;text-decoration:none;font:700 10px "Alegreya Sans";color:#1d2a3d;text-shadow:0 0 2px #fff}
+#trWin .ts u.rf{left:2px;right:auto;top:0;bottom:auto;color:#c08a00}#trWin .zr{display:flex;align-items:center;gap:4px;margin-top:4px;font-size:11px}
+#trWin .zr input{width:80px;padding:2px 4px;border:1px solid #9fb3d1;border-radius:4px;font:600 12px "Alegreya Sans"}#trWin .zr b{color:#9a6a00}
+#trInv{display:grid;grid-template-columns:repeat(auto-fill,34px);gap:3px;max-height:116px;overflow:auto;margin-top:6px;padding:4px;border-radius:6px;background:#dfe7f2}
+#trWin .btns{display:flex;gap:6px;margin-top:8px}#trWin .btns button{all:unset;cursor:pointer;flex:1;text-align:center;padding:5px;border-radius:4px;background:#3b6db3;color:#fff;font-weight:800}
+#trWin .btns button.alt{background:#8a96a8}#trWin .btns button.go{background:#3fa84c}#trWin .btns button:disabled,#trWin .btns button.off{opacity:.4;pointer-events:none}
+#trSt{margin-top:5px;font-size:11px;color:#56657e;min-height:14px}#trWin small.hint{display:block;font-size:10px;color:#56657e;margin-top:4px}
 </style></head><body>
 <canvas id="c"></canvas><canvas id="wx"></canvas><div id="flash"></div>
 <div id="fx"><div id="heroTag"><i id="htHp"><s></s></i><i id="htSp"><s></s></i><b></b></div><div id="cast"><s></s></div><div id="shout"></div><div id="say"></div></div>
@@ -187,10 +199,10 @@ body.mob .win.hide{display:none}
 <div class="win hide" id="createWin"><h3><span>Crie seu personagem ✦</span></h3><div class="body" id="crBody"></div></div>
 <div class="win hide" id="help"><h3><span>Controles</span><button data-close>✕</button></h3><div class="body">
 <kbd>Clique</kbd><span>no chão para andar · no monstro para atacar · em itens para pegar</span><kbd>1 – 8 · 9 · 0</kbd><span>habilidades · poções · <b>Espaço</b> golpe · alvo: clique no monstro (Esc cancela)</span><kbd>Barra</kbd><span>arraste habilidades (K) e poções (I) para a barra · arraste para fora para tirar</span><kbd>K · I · C</kbd><span>habilidades e classe · inventário · atributos</span><kbd>O · V · N</kbd><span>emotes · câmera clássica/alta · mapa-múndi</span>
-<kbd>Minerar</kbd><span>clique num veio com a Picareta · a Hilda forja equipamentos com os minérios (aba 🔨 Forjar)</span><kbd>R · F · P</kbd><span>montar (lobo comprado com a Gudrun na vila) · pescar com vara na beira da água · soltar o mascote (dome com Isca: monstro com menos de 50% de vida)</span><kbd>Portais</kbd><span>círculos azuis levam à Costa, Dunas e Picos · ☠ chefes no mapa (fuja do círculo vermelho!)</span><kbd>Lojas</kbd><span>Bjorn compra e vende · placas 🏷 são lojinhas de jogadores</span><kbd>Grupo</kbd><span>clique num aventureiro → Convidar para o grupo · eles seguem, lutam, curam (magos) e caem se apanharem demais</span><kbd>WASD</kbd><span>mover · roda: zoom</span><kbd>Botão direito</kbd><span>arrastar gira a câmera · <b>Shift</b>+arrastar inclina · duplo clique reseta</span><kbd>C · Y · T</kbd><span>atributos · mudar clima · avançar hora</span><kbd>Enter</kbd><span>conversar · <b>M</b> som · <b>H</b> esta ajuda</span><kbd>Online</kbd><span>clique no nome de outro jogador para convidar ao grupo · <b>/p</b> grupo · <b>/w Nome</b> privado · <b>/r</b> responder</span></div></div>
+<kbd>Minerar</kbd><span>clique num veio com a Picareta · a Hilda forja equipamentos com os minérios (aba 🔨 Forjar)</span><kbd>R · F · P</kbd><span>montar (lobo comprado com a Gudrun na vila) · pescar com vara na beira da água · soltar o mascote (dome com Isca: monstro com menos de 50% de vida)</span><kbd>Portais</kbd><span>círculos azuis levam à Costa, Dunas e Picos · ☠ chefes no mapa (fuja do círculo vermelho!)</span><kbd>Lojas</kbd><span>Bjorn compra e vende · placas 🏷 são lojinhas de jogadores</span><kbd>Grupo</kbd><span>clique num aventureiro → Convidar para o grupo · eles seguem, lutam, curam (magos) e caem se apanharem demais</span><kbd>WASD</kbd><span>mover · roda: zoom</span><kbd>Botão direito</kbd><span>arrastar gira a câmera · <b>Shift</b>+arrastar inclina · duplo clique reseta</span><kbd>C · Y · T</kbd><span>atributos · mudar clima · avançar hora</span><kbd>Enter</kbd><span>conversar · <b>M</b> som · <b>H</b> esta ajuda</span><kbd>Online</kbd><span>clique no nome de outro jogador para chamar ao grupo ou propor troca · <b>/p</b> grupo · <b>/w Nome</b> privado · <b>/r</b> responder</span></div></div>
 <div id="chat"><div class="tab" id="chatTabs"><button data-tab="all" class="on">Todos</button><button data-tab="priv">Privado</button><button data-tab="party">Grupo</button><button data-tab="guild">Guilda</button><button data-tab="sys">Sistema</button></div><div id="logEmpty">Nada aqui ainda.</div><div id="log" data-tab="all"></div><input id="chatIn" placeholder="Enter para conversar…" maxlength="80" autocomplete="off"></div>
 <div id="bottom"><div id="hotbar"></div><div id="xpbars"><span>BASE</span><div class="xb" id="bxp"><i></i></div><div class="xb" id="cxp"><i></i></div><span>CLASSE</span></div></div>
-<div id="joy"><div id="joyK"></div></div><div id="atkBtn">⚔</div><div id="chatBtn">💬</div><div class="win hide" id="accWin"><h3><span>Conta Eldvar</span><button data-close>✕</button></h3><div class="body" id="accBody"></div></div><div id="netSt">● Offline</div><div id="tip"></div><div id="fps"></div><div id="err"></div><div id="loading">Carregando a Floresta de Freyra…</div>
+<div id="joy"><div id="joyK"></div></div><div id="atkBtn">⚔</div><div id="chatBtn">💬</div><div class="win hide" id="trWin"><h3><span id="trTit">Troca</span><button data-tclose>✕</button></h3><div class="body"><div class="cols"><div class="col" id="trMe"></div><div class="col" id="trThem"></div></div><small class="hint">Clique num item do seu inventário para oferecer (itens acumulados entram 1 por clique). Clique num item oferecido para tirar.</small><div id="trInv"></div><div class="btns"><button id="trLock">Travar oferta</button><button id="trOk" class="go">Confirmar troca</button><button id="trCan" class="alt">Cancelar</button></div><div id="trSt"></div></div></div><div class="win hide" id="accWin"><h3><span>Conta Eldvar</span><button data-close>✕</button></h3><div class="body" id="accBody"></div></div><div id="netSt">● Offline</div><div id="tip"></div><div id="fps"></div><div id="err"></div><div id="loading">Carregando a Floresta de Freyra…</div>
 <script>
 "use strict";
 addEventListener('error',e=>{window.__err=String(e.error&&e.error.stack||e.message);const el=document.getElementById('err');el.style.display='block';el.textContent=window.__err});
@@ -2237,14 +2249,14 @@ const NET=(()=>{
  function connect(){if(Q.get('offline'))return;try{ws=new WebSocket(WS)}catch(e){return}
   ws.onopen=()=>{ok=true;retry=0;joined={};join('e3d-global');if(MODE==='play')setRoom(true);clearInterval(hb);hb=setInterval(()=>send('phoenix','heartbeat',{}),25000);st()};
   ws.onmessage=ev=>{let m;try{m=JSON.parse(ev.data)}catch(e){return}if(m.event!=='broadcast'||!m.payload)return;const e=m.payload.event,d=m.payload.payload||{};if(!d||d.id===id)return;
-   if(e==='st'&&m.topic==='realtime:'+room)upd(d);else if(e==='atk'){const o=OTH.get(d.id);if(o)o.atkAnim=now}else if(e==='bye'){drop(d.id)}else if(e[0]==='p'&&m.topic==='realtime:e3d-global'){onParty(e,d)}else if(e==='hi'&&m.topic==='realtime:'+room){lastSend=0}
+   if(e==='st'&&m.topic==='realtime:'+room)upd(d);else if(e==='atk'){const o=OTH.get(d.id);if(o)o.atkAnim=now}else if(e==='bye'){drop(d.id)}else if(e[0]==='p'&&m.topic==='realtime:e3d-global'){onParty(e,d)}else if(e[0]==='t'&&m.topic==='realtime:e3d-global'){onTrade(e,d)}else if(e==='hi'&&m.topic==='realtime:'+room){lastSend=0}
    else if(e==='chat'){const t=String(d.t||'').slice(0,160).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'})[c]),n=String(d.n||'?').slice(0,16).replace(/[&<>]/g,'');log(`<span class="p" style="color:#ffd27a">${n}:</span> ${t}`,'');const o=OTH.get(d.id);if(o)o.say={txt:String(d.t||'').slice(0,80),t0:now}}};
   ws.onclose=()=>{ok=false;if(PT.pid){PT.pid=null;PT.mem.clear();renderRP()}clearInterval(hb);for(const k of[...OTH.keys()])drop(k);st();retry=Math.min(30,retry*2+2);setTimeout(connect,retry*1000)};ws.onerror=()=>{try{ws.close()}catch(e){}}}
  function setRoom(force){const r='e3d-'+BIO.key;if(r===room&&!force)return;if(room&&room!==r){bc(room,'bye',{id});leave(room)}for(const k of[...OTH.keys()])drop(k);room=r;join(r);bc(r,'hi',{id});lastSend=0;st()}
  function upd(d){let o=OTH.get(d.id);if(!o){o={id:d.id,x:+d.x||0,z:+d.z||0,walk:0,atkAnim:-9,say:null};const el=document.createElement('div');el.className='advtag oth';el.innerHTML='<b></b><small></small><div class="abub"></div>';$('#fx').appendChild(el);o.el=el;OTH.set(d.id,o);st()}
   o.tx=+d.x||0;o.tz=+d.z||0;o.face=+d.f||0;o.mv=!!d.m;o.cls=CLS[d.c]?d.c:'andarilho';o.lv=d.l|0;o.name=String(d.n||'?').slice(0,16);o.look=d.lk&&d.lk.hair?d.lk:{hair:[.5,.3,.2],skin:[.9,.7,.55],clothes:[.4,.4,.5]};o.seen=now;
   o.el.querySelector('b').textContent=o.name;o.el.querySelector('small').textContent=`${CLS[o.cls].n} · Nv ${o.lv}`}
- function drop(k){const o=OTH.get(k);if(!o)return;o.el.remove();OTH.delete(k);st()}
+ function drop(k){if(TR&&TR.with===k)trClose('<span class="r">Troca cancelada: o outro jogador saiu.</span>');const o=OTH.get(k);if(!o)return;o.el.remove();OTH.delete(k);st()}
  function tick(dt){for(const[k,p]of PT.pend)if(++p.f>15&&performance.now()-p.t0>6500){PT.pend.delete(k);log(`<span class="r">${escH(p.to)} não está online.</span>`,'Privado')}
   if(!ok||MODE!=='play')return;if(room!=='e3d-'+BIO.key)setRoom();ptTick();
   const pos=`${H.x.toFixed(2)},${H.z.toFixed(2)},${(H.faceAng||0).toFixed(2)},${H.moving?1:0}`;const t=performance.now();
@@ -2263,14 +2275,14 @@ const NET=(()=>{
  const inParty=()=>!!PT.pid&&PT.mem.size>0;
  function pick(sx,sy){const r=cv.getBoundingClientRect();for(const o of OTH.values()){const s=project(o.x,height(o.x,o.z)+1.4,o.z);if(s&&Math.hypot(s[0]-(sx-r.left),s[1]-(sy-r.top))<34){netCtx(o,sx,sy);return true}}return false}
  function netCtx(o,sx,sy){const m=$('#ctx'),inP=PT.mem.has(o.id);
-  m.innerHTML=`<b>${escH(o.name)}</b><small>${CLS[o.cls].n} · Nv ${o.lv} · jogador</small>`+(inP?'':'<button data-c="ninv">Convidar para o grupo</button>')+'<button data-c="nmsg">Mensagem privada</button>'+(inP?'<button data-c="nleave">Sair do grupo</button>':'')+'<button data-c="hi">Cumprimentar</button>';
+  m.innerHTML=`<b>${escH(o.name)}</b><small>${CLS[o.cls].n} · Nv ${o.lv} · jogador</small>`+(inP?'':'<button data-c="ninv">Convidar para o grupo</button>')+'<button data-c="ntrade">Propor troca</button><button data-c="nmsg">Mensagem privada</button>'+(inP?'<button data-c="nleave">Sair do grupo</button>':'')+'<button data-c="hi">Cumprimentar</button>';
   m.style.display='block';m.style.left=Math.min(innerWidth-180,sx+8)+'px';m.style.top=Math.min(innerHeight-140,sy+8)+'px';m.target={net:o}}
- function ctxAct(c,o){if(c==='ninv')invite(o);else if(c==='nmsg'){const ci=$('#chatIn');$('#chat').classList.remove('closed');ci.value=`/w ${o.name} `;ci.focus()}else if(c==='nleave')leaveP();else if(c==='hi'){H.emote={id:'rir',t0:now};chat(`Olá, ${o.name}!`);H.say={txt:`Olá, ${o.name}!`,t0:now}}}
+ function ctxAct(c,o){if(c==='ntrade')tradeAsk(o);else if(c==='ninv')invite(o);else if(c==='nmsg'){const ci=$('#chatIn');$('#chat').classList.remove('closed');ci.value=`/w ${o.name} `;ci.focus()}else if(c==='nleave')leaveP();else if(c==='hi'){H.emote={id:'rir',t0:now};chat(`Olá, ${o.name}!`);H.say={txt:`Olá, ${o.name}!`,t0:now}}}
  function invite(o){if(!ok){log('Você está offline.','Grupo');return}if(PT.mem.has(o.id))return;if(PT.mem.size>=3){log('O grupo já está cheio (4 pessoas).','Grupo');return}
   if(!PT.pid)PT.pid=id;bc('e3d-global','pinv',{id,n:H.name,to:o.id,pid:PT.pid});log(`Convite enviado para <span class="p">${escH(o.name)}</span>.`,'Grupo')}
  function showInv(){const w=$('#pinvBox'),d=PT.inv;if(!d){w.style.display='none';return}
-  w.innerHTML=`<b>${escH(d.n)}</b> convidou você para o grupo.<div><button data-p="yes">Aceitar</button><button data-p="no" class="alt">Recusar</button></div>`;w.style.display='block';sfx('cast')}
- function answer(yes){const d=PT.inv;PT.inv=null;showInv();if(!d)return;
+  w.innerHTML=`<b>${escH(d.n)}</b> ${d.trade?'quer fazer uma troca com você.':'convidou você para o grupo.'}<div><button data-p="yes">Aceitar</button><button data-p="no" class="alt">Recusar</button></div>`;w.style.display='block';sfx('cast')}
+ function answer(yes){const d=PT.inv;PT.inv=null;showInv();if(!d)return;if(d.trade)return tradeAnswer(d,yes);
   if(!yes){bc('e3d-global','pno',{id,n:H.name,to:d.id,why:'recusou o convite'});return}
   if(inParty())leaveP(true);PT.pid=d.pid;PT.mem.clear();PT.mem.set(d.id,{n:d.n,hp:1,mhp:1,lv:0,cls:'andarilho',reg:'',seen:now});
   bc('e3d-global','pacc',{id,n:H.name,to:d.id,pid:d.pid});sendUpd();log(`Você entrou no grupo de <span class="p">${escH(d.n)}</span>. Use <b>/p texto</b> para falar com o grupo.`,'Grupo');questEv('party');renderRP()}
@@ -2309,6 +2321,60 @@ const NET=(()=>{
  function ptTick(){if(!PT.pid)return;for(const[k,m]of PT.mem)if(now-m.seen>12)dropMem(k,'desconectou');if(inParty()&&performance.now()-pupT>1500)sendUpd();if(inParty()&&performance.now()-rpT>300){rpT=performance.now();renderRP()}}
  $('#pinvBox').addEventListener('pointerdown',e=>{e.stopPropagation();const b=e.target.closest('button');if(b)answer(b.dataset.p==='yes')});
  $('#rparty').addEventListener('pointerdown',e=>{e.stopPropagation();if(e.target.closest('[data-pl]'))leaveP()});
+
+ // ---- trade between real players: both lock the offer, then both confirm; each client applies its own side
+ let TR=null;const TRMAX=8;
+ const trSlot=(e,q,k)=>`<div class="ts" ${k}><img src="${itemIcon(IT[e.id].ic)}">${q>1?`<u>${q}</u>`:''}${e.rf?`<u class="rf">+${e.rf}</u>`:''}</div>`;
+ function tradeAsk(o){if(!ok){log('Você está offline.');return}if(TR){log('Você já está numa troca.');return}if(PT.inv){return}
+  TR={tid:Math.random().toString(36).slice(2,9),with:o.id,name:o.name,pending:true};bc('e3d-global','tinv',{id,n:H.name,to:o.id,tid:TR.tid});log(`Pedido de troca enviado para <span class="p">${escH(o.name)}</span>.`);
+  const tid=TR.tid;setTimeout(()=>{if(TR&&TR.tid===tid&&TR.pending){TR=null;log(`<span class="p">${escH(o.name)}</span> não respondeu ao pedido de troca.`)}},30000)}
+ function tradeAnswer(d,yes){if(!yes||TR||!OTH.has(d.id)){bc('e3d-global','tno',{id,n:H.name,to:d.id,tid:d.tid,why:yes?'não pode trocar agora':'recusou a troca'});return}
+  bc('e3d-global','tacc',{id,n:H.name,to:d.id,tid:d.tid});tradeOpen(d.tid,d.id,d.n)}
+ function tradeOpen(tid,wid,name){TR={tid,with:wid,name:String(name).slice(0,16),mine:[],theirs:[],mz:0,tz:0,ml:false,tl:false,mc:false,tc:false};
+  $('#trTit').textContent=`Troca com ${TR.name}`;$('#trWin').classList.remove('hide');sfx('cast');trRender()}
+ function trSend(){if(TR&&!TR.pending)bc('e3d-global','toff',{id,to:TR.with,tid:TR.tid,items:TR.mine.map(m=>({id:m.e.id,q:m.q,rf:m.e.rf||0,cd:m.e.cd||null})),z:TR.mz,lock:TR.ml})}
+ function trChanged(){TR.ml=false;TR.mc=false;TR.tc=false;trSend();trRender()}
+ function trAdd(i){if(!TR||TR.ml)return;const e=H.inv[i];if(!e)return;const m=TR.mine.find(m=>m.e===e);if(m){if(m.q<e.q){m.q++;trChanged()}return}
+  if(TR.mine.length>=TRMAX){trMsg(`No máximo ${TRMAX} itens por troca.`);return}TR.mine.push({e,q:1});trChanged()}
+ function trRemove(k){if(!TR||TR.ml)return;const m=TR.mine[k];if(!m)return;if(m.q>1)m.q--;else TR.mine.splice(k,1);trChanged()}
+ function trMsg(t){const el=$('#trSt');if(el)el.textContent=t}
+ function trRender(){if(!TR||TR.pending)return;const used=new Map(TR.mine.map(m=>[m.e,m.q]));
+  $('#trMe').className='col'+(TR.ml?' lk':'');$('#trThem').className='col'+(TR.tl?' lk':'');
+  $('#trMe').innerHTML=`<h5><span>Você oferece</span><span>${TR.ml?'🔒':''}${TR.mc?' ✔':''}</span></h5><div class="tg">${TR.mine.map((m,k)=>trSlot(m.e,m.q,`data-tm="${k}"`)).join('')}</div><div class="zr">◆ <input id="trZ" type="number" min="0" max="${H.zeny}" value="${TR.mz||''}" placeholder="0" ${TR.ml?'disabled':''}> zeny</div>`;
+  $('#trThem').innerHTML=`<h5><span>${escH(TR.name)} oferece</span><span>${TR.tl?'🔒':''}${TR.tc?' ✔':''}</span></h5><div class="tg">${TR.theirs.map((e,k)=>trSlot(e,e.q,`data-tt="${k}"`)).join('')}</div><div class="zr">◆ <b>${(TR.tz||0).toLocaleString('pt-BR')}</b> zeny</div>`;
+  $('#trInv').innerHTML=H.inv.map((e,i)=>{const left=e.q-(used.get(e)||0);return left>0?trSlot(e,left,`data-ti="${i}"`):''}).join('')||'<small class="hint">Inventário vazio.</small>';
+  const lb=$('#trLock');lb.textContent=TR.ml?'Destravar':'Travar oferta';const ob=$('#trOk');ob.classList.toggle('off',!(TR.ml&&TR.tl)||TR.mc);
+  trMsg(TR.mc?`Aguardando ${TR.name} confirmar…`:TR.ml&&TR.tl?'As duas ofertas estão travadas. Confira e confirme.':TR.ml?`Aguardando ${TR.name} travar a oferta…`:TR.tl?`${TR.name} travou a oferta.`:'Monte sua oferta e trave.');
+  const z=$('#trZ');if(z){z.onkeydown=e=>e.stopPropagation();z.onchange=()=>{const v=Math.max(0,Math.min(H.zeny,Math.floor(+z.value||0)));if(v!==TR.mz){TR.mz=v;trChanged()}else z.value=v||''}}}
+ function trClose(msg,notify){if(!TR)return;if(notify&&!TR.pending)bc('e3d-global','tcan',{id,to:TR.with,tid:TR.tid});TR=null;$('#trWin').classList.add('hide');if(msg)log(msg)}
+ function trValidItem(x){const it=IT[x&&x.id];if(!it)return null;const q=Math.max(1,Math.min(999,x.q|0));const o={id:x.id,q:it.t==='eq'?1:q};if(it.t==='eq'){o.rf=Math.max(0,Math.min(10,x.rf|0));if(x.cd&&IT[x.cd]&&IT[x.cd].t==='card')o.cd=x.cd}return o}
+ function trTry(){if(!TR||!(TR.ml&&TR.tl&&TR.mc&&TR.tc))return;
+  for(const m of TR.mine)if(!H.inv.includes(m.e)||m.e.q<m.q){trClose('<span class="r">Troca cancelada: um item oferecido não está mais no inventário.</span>',true);return}
+  if(TR.mz>H.zeny){trClose('<span class="r">Troca cancelada: zeny insuficiente.</span>',true);return}
+  const cnt=H.inv.reduce((s,e)=>s+e.q,0)-TR.mine.reduce((s,m)=>s+m.q,0)+TR.theirs.reduce((s,e)=>s+e.q,0);if(cnt>100){trClose('<span class="r">Troca cancelada: seu inventário ficaria cheio.</span>',true);return}
+  for(const m of TR.mine){m.e.q-=m.q;if(m.e.q<=0)H.inv.splice(H.inv.indexOf(m.e),1)}
+  for(const e of TR.theirs){if(IT[e.id].t==='eq')H.inv.push({id:e.id,q:1,rf:e.rf||0,cd:e.cd||null});else invAdd(e.id,e.q)}
+  H.zeny+=TR.tz-TR.mz;const got=TR.theirs.map(e=>(e.q>1?e.q+'× ':'')+(e.rf?'+'+e.rf+' ':'')+IT[e.id].n).concat(TR.tz?[TR.tz.toLocaleString('pt-BR')+' zeny']:[]).join(', ')||'nada';
+  const name=TR.name;TR=null;$('#trWin').classList.add('hide');renderInv();sfx('lvl');log(`<span class="g">Troca concluída com ${escH(name)}!</span> Você recebeu: ${got}.`);if(typeof saveGame==='function')saveGame()}
+ function onTrade(e,d){if(d.to!==id)return;
+  if(e==='tinv'){if(TR||PT.inv||MODE!=='play'){bc('e3d-global','tno',{id,n:H.name,to:d.id,tid:d.tid,why:'está ocupado'});return}PT.inv={id:d.id,n:String(d.n||'?').slice(0,16),tid:String(d.tid).slice(0,12),trade:true};showInv();return}
+  if(!TR||d.tid!==TR.tid||d.id!==TR.with)return;
+  if(e==='tno'){log(`<span class="p">${escH(TR.name)}</span> ${escH(String(d.why||'recusou').slice(0,40))}.`);TR=null;return}
+  if(e==='tacc'&&TR.pending){tradeOpen(TR.tid,TR.with,TR.name);return}
+  if(e==='tcan'){trClose(`<span class="r">${escH(TR.name)} cancelou a troca.</span>`);return}
+  if(e==='toff'){const items=(Array.isArray(d.items)?d.items:[]).slice(0,TRMAX).map(trValidItem).filter(Boolean),z=Math.max(0,Math.min(1e9,Math.floor(+d.z||0)));
+   const sig=JSON.stringify([items,z]),changed=sig!==TR.tsig;TR.tsig=sig;TR.theirs=items;TR.tz=z;TR.tl=!!d.lock;
+   if(changed||!TR.tl){TR.mc=false;TR.tc=false;if(changed&&TR.ml){TR.ml=false;trSend()}}trRender();return}
+  if(e==='tcf'){if(TR.ml&&TR.tl){TR.tc=true;trRender();trTry()}return}}
+ $('#trWin').addEventListener('pointerdown',e=>{const b=e.target.closest('[data-ti],[data-tm],button');if(!b||!TR)return;e.stopPropagation();
+  if(b.dataset.ti!==undefined)trAdd(+b.dataset.ti);else if(b.dataset.tm!==undefined)trRemove(+b.dataset.tm);
+  else if(b.id==='trLock'){if(!TR.ml){const z=$('#trZ');if(z){TR.mz=Math.max(0,Math.min(H.zeny,Math.floor(+z.value||0)))}}TR.ml=!TR.ml;TR.mc=false;TR.tc=false;trSend();trRender()}
+  else if(b.id==='trOk'){if(TR.ml&&TR.tl&&!TR.mc){TR.mc=true;bc('e3d-global','tcf',{id,to:TR.with,tid:TR.tid});trRender();trTry()}}
+  else if(b.id==='trCan')trClose('Troca cancelada.',true);
+  else if(b.hasAttribute('data-tclose'))trClose('Troca cancelada.',true)});
+ $('#trWin').addEventListener('pointerover',e=>{const s=e.target.closest('[data-ti],[data-tm],[data-tt]');if(!s||!TR){$('#tip').style.display='none';return}
+  const x=s.dataset.ti!==undefined?H.inv[+s.dataset.ti]:s.dataset.tm!==undefined?(TR.mine[+s.dataset.tm]||{}).e:TR.theirs[+s.dataset.tt];if(x&&IT[x.id])tipAt(s,itemTip(x.id,x));});
+ $('#trWin').addEventListener('pointerleave',()=>{$('#tip').style.display='none'});
  // ---- accounts (RPC functions on the database)
  async function rpc(fn,args){const r=await fetch(`${HTTP}/rest/v1/rpc/${fn}`,{method:'POST',headers:{apikey:KEY,Authorization:'Bearer '+KEY,'Content-Type':'application/json'},body:JSON.stringify(args)});if(!r.ok)throw new Error('HTTP '+r.status);return r.json()}
  const pushed=new Map();let pushT=0;
@@ -2332,7 +2398,7 @@ const NET=(()=>{
   const go=async fn=>{const n=$('#accN').value.trim(),pw=$('#accP').value;$('#accMsg').textContent='Conectando…';try{const r=await rpc(fn,{p_name:n,p_pass:pw});if(!r.ok){$('#accMsg').textContent=r.err||'Erro.';$('#accMsg').classList.add('err');return}setTok(r.token,r.name);await pull();accWin(fn==='e3d_register'?'Conta criada!':'Bem-vindo de volta!')}catch(e){$('#accMsg').textContent='Sem conexão com o servidor. Abra o jogo pelo arquivo index.html (ou pelo site) para usar contas.';$('#accMsg').classList.add('err')}};
   $('#accIn').onclick=()=>go('e3d_login');$('#accNew').onclick=()=>go('e3d_register');$('#accP').onkeydown=e=>{e.stopPropagation();if(e.key==='Enter')go('e3d_login')};$('#accN').onkeydown=e=>e.stopPropagation()}
  addEventListener('beforeunload',()=>{if(room)bc(room,'bye',{id});if(PT.pid)bc('e3d-global','pleave',{id,pid:PT.pid})});
- return{pick,ctxAct,kill,cmd,PT,answer,invite,leaveP,connect,tick,draw,hud,chat,setRoom,pull,push,schedulePush,accWin,accBtn,OTH,get ok(){return ok},get tok(){return tok},id}})();
+ return{get TR(){return TR},tradeAsk,pick,ctxAct,kill,cmd,PT,answer,invite,leaveP,connect,tick,draw,hud,chat,setRoom,pull,push,schedulePush,accWin,accBtn,OTH,get ok(){return ok},get tok(){return tok},id}})();
 // ---- touch controls (phones/tablets): analog joystick on the left, attack button on the right
 const JOY={on:false,x:0,y:0,id:null};
 if(MOB||Q.get('mob')){document.body.classList.add('mob');const jb=$('#joy'),jk=$('#joyK');
